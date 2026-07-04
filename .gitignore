@@ -1,0 +1,26 @@
+# Local/editor state
+.vscode/
+.idea/
+*.swp
+*.tmp
+Thumbs.db
+Desktop.ini
+
+# Codex/runtime scratch
+.codex/
+tmp/
+temp/
+
+# Stellaris/generated packaging outputs
+*.zip
+*.7z
+*.rar
+dist/
+build/
+exports/
+
+# Large or local-only reference drops
+vanilla-dumps/
+local/
+*.local.*
+
