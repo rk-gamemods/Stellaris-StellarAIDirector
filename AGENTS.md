@@ -60,6 +60,38 @@ This folder is for Stellaris modding, mod preparation, experiments, and supporti
 - Current integrated modding guide: `research/stellaris-modding-guide-2026-07-04.md`.
 - Full attached research bundle: `research/stellaris-modding-research-bundle-2026-07-04/`.
 
+## Delivery Status Reporting
+
+Every final or substantive status answer for Stellaris mod work must end with an
+explicit, current status block covering all three surfaces below. This is a
+reporting requirement, not a requirement that every task must be committed,
+pushed, or live-installed.
+
+- Live mod launch status: state whether the actual mod that Stellaris will load
+  on the next game launch is updated. Check and report the relevant launcher
+  descriptor under `C:\Users\Admin\Documents\Paradox Interactive\Stellaris\mod`,
+  the descriptor `path=...`, and whether `dlc_load.json` or the active launcher
+  surface includes the mod when that is relevant. If the live-launch surface was
+  not checked, say `not checked`; do not imply live readiness from project files
+  alone.
+- Commit status: state the current Git branch, whether the worktree is clean,
+  whether relevant changes are uncommitted, staged, or committed, and the latest
+  commit SHA/message when committed. Do not use words such as "done",
+  "complete", "ready", or "good to go" without this status.
+- Push status: state whether the current commit is pushed to the remote, the
+  remote/branch checked, and the exact relationship such as
+  `master...origin/master`, `ahead`, `behind`, or matching SHA. If no push was
+  performed or remote status was not checked, say so explicitly.
+
+Use a concise block like:
+
+```text
+Status:
+- Live mod: updated / not updated / not checked. Evidence: ...
+- Commit: committed <sha> / uncommitted changes / staged only / clean at <sha>.
+- Push: pushed to <remote>/<branch> at <sha> / not pushed / not checked.
+```
+
 ## User Mod Preferences
 
 - Do not recommend Real Space by default. The user dislikes its UI/readability impact and finds it makes ships harder to see.
