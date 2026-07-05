@@ -1,0 +1,71 @@
+trait_rk_cheat_500_points = {
+	cost = -500
+	category = normal
+	icon = "gfx/interface/icons/traits/trait_communal.dds"
+	initial = yes
+	randomized = no
+	sorting_priority = -100
+
+	species_potential_add = {
+		from = { is_ai = no }
+	}
+	species_possible_add = {
+		from = { is_ai = no }
+	}
+	species_possible_remove = {
+		from = { is_ai = no }
+	}
+	species_possible_merge_add = {
+		from = { is_ai = no }
+	}
+
+	allowed_archetypes = { BIOLOGICAL LITHOID ROBOT MACHINE }
+	tags = { organic lithoid machine positive special }
+
+	modifier = {
+		BIOLOGICAL_species_trait_picks_add = 99
+		LITHOID_species_trait_picks_add = 99
+		ROBOT_species_trait_picks_add = 99
+		MACHINE_species_trait_picks_add = 99
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+trait_rk_cheat_immortality = {
+	cost = 0
+	category = normal
+	icon = "gfx/interface/icons/traits/trait_venerable.dds"
+	initial = yes
+	randomized = no
+	immortal_leaders = yes
+	sorting_priority = -99
+
+	species_potential_add = {
+		from = { is_ai = no }
+	}
+	species_possible_add = {
+		from = { is_ai = no }
+	}
+	species_possible_remove = {
+		from = { is_ai = no }
+	}
+	species_possible_merge_add = {
+		from = { is_ai = no }
+	}
+
+	allowed_archetypes = { BIOLOGICAL LITHOID ROBOT MACHINE }
+	tags = { organic lithoid machine positive leader special }
+	opposites = {
+		"trait_enduring"
+		"trait_venerable"
+		"trait_fleeting"
+		"trait_fleeting_lithoid"
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
