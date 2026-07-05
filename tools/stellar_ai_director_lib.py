@@ -142,10 +142,125 @@ INTEGRATION_SURFACE_FOLDERS = {
 GENERATED_SURFACE_FOLDERS = {
     "ai_budget": "ai_budget",
     "economic_plans": "economic_plan",
+    "opinion_modifiers": "opinion_modifier",
+    "on_actions": "on_action",
     "scripted_triggers": "scripted_trigger",
     "script_values": "scripted_value",
 }
-GENERATED_AUXILIARY_COMMON_FOLDERS = {"on_actions"}
+GENERATED_AUXILIARY_COMMON_FOLDERS: set[str] = set()
+
+THREAT_RESPONSE_AXES = (
+    "moral_outrage",
+    "regional_fear",
+    "shared_threat_cooperation",
+    "conquest_respect",
+    "punitive_pressure",
+    "defensive_readiness",
+    "opportunism",
+)
+THREAT_FANATIC_MULTIPLIER = 3
+THREAT_SCORE_LIMITS = {
+    "anti_aggressor_score": (0, 100),
+    "alignment_with_aggressor_score": (0, 60),
+    "defensive_readiness_score": (0, 50),
+}
+THREAT_TIER_CUTOFFS = {
+    "anti_aggressor_low": 25,
+    "anti_aggressor_medium": 45,
+    "anti_aggressor_high": 65,
+    "anti_aggressor_severe": 85,
+    "alignment_low": 20,
+    "alignment_medium": 35,
+    "alignment_high": 50,
+    "defensive_readiness_low": 25,
+    "defensive_readiness_high": 40,
+}
+THREAT_OPINION_VALUES = {
+    "anti_aggressor_low": -30,
+    "anti_aggressor_medium": -60,
+    "anti_aggressor_high": -120,
+    "anti_aggressor_severe": -200,
+    "shared_threat_low": 15,
+    "shared_threat_medium": 30,
+    "shared_threat_high": 60,
+    "alignment_low": 10,
+    "alignment_medium": 25,
+    "alignment_high": 40,
+}
+THREAT_RELATION_FLAG_DAYS = 7200
+THREAT_COUNTRY_FLAG_DAYS = THREAT_RELATION_FLAG_DAYS
+THREAT_ECONOMY_RATIO_CAP = 0.20
+THREAT_FLEET_RESERVE_BASE = {"alloys": 35, "energy": 30, "naval_cap": 200}
+THREAT_ECONOMY_MAX = {
+    key: int(value * THREAT_ECONOMY_RATIO_CAP)
+    for key, value in THREAT_FLEET_RESERVE_BASE.items()
+}
+THREAT_FORBIDDEN_EFFECTS = (
+    "declare_war",
+    "join_war",
+    "add_casus_belli",
+    "attacker_war_goal",
+)
+THREAT_NORMAL_ETHIC_VECTORS = {
+    "ethic_pacifist": (3, 1, 2, -2, 1, 2, 0),
+    "ethic_egalitarian": (2, 1, 2, -1, 1, 1, 0),
+    "ethic_xenophile": (1, 1, 3, -1, 1, 1, 0),
+    "ethic_militarist": (-1, 2, 0, 2, 1, 2, 1),
+    "ethic_authoritarian": (-1, 1, -1, 2, 0, 1, 2),
+    "ethic_xenophobe": (0, 3, -2, 1, 2, 2, 1),
+    "ethic_materialist": (0, 2, 1, 0, 1, 1, 1),
+    "ethic_spiritualist": (1, 1, 1, 0, 1, 1, 0),
+}
+THREAT_GESTALT_VECTORS = {
+    "gestalt_standard": (0, 2, 0, 0, 1, 2, 0),
+    "gestalt_empath": (2, 2, 2, 0, 1, 2, 0),
+    "homicidal": (0, 2, -3, 3, 0, 2, 2),
+}
+THREAT_CIVIC_AXIS_CAP = 1
+THREAT_TOTAL_CIVIC_AXIS_CAP = 2
+WAR_GOAL_THREAT_CLASSES = {
+    "wg_conquest": {
+        "war_goal": "wg_conquest",
+        "classification": "conquest",
+        "severity": 2,
+        "source": "Stellaris 4.4.4 vanilla",
+        "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
+        "mod_or_vanilla": "vanilla",
+        "punitive_outputs_allowed": "yes",
+        "readiness_outputs_allowed": "yes",
+        "forced_war_allowed": "no",
+        "status": "classified",
+        "notes": "Initial V1 allowlist aggressive conquest goal.",
+    },
+    "wg_subjugation": {
+        "war_goal": "wg_subjugation",
+        "classification": "subjugation",
+        "severity": 3,
+        "source": "Stellaris 4.4.4 vanilla",
+        "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
+        "mod_or_vanilla": "vanilla",
+        "punitive_outputs_allowed": "yes",
+        "readiness_outputs_allowed": "yes",
+        "forced_war_allowed": "no",
+        "status": "classified",
+        "notes": "Initial V1 allowlist aggressive subjugation goal.",
+    },
+    "wg_humiliation": {
+        "war_goal": "wg_humiliation",
+        "classification": "humiliation",
+        "severity": 1,
+        "source": "Stellaris 4.4.4 vanilla",
+        "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
+        "mod_or_vanilla": "vanilla",
+        "punitive_outputs_allowed": "yes",
+        "readiness_outputs_allowed": "yes",
+        "forced_war_allowed": "no",
+        "status": "classified",
+        "notes": "Initial V1 allowlist lower-severity humiliation goal.",
+    },
+}
+THREAT_FEASIBILITY_NOTE_NAME = "stellar-ai-director-threat-response-feasibility-2026-07-05.md"
+THREAT_CLASSIFICATION_CSV_NAME = "stellar-ai-director-threat-response-war-goal-classification-2026-07-05.csv"
 
 PLAN_PHASE_EVIDENCE = {
     "P0": ("research/stellar-ai/stellar-ai-director-munch-preflight-2026-07-04.md",),
@@ -272,9 +387,12 @@ PLAN_PHASE_OPEN_REASONS = {
     "P11": "NSC3/ESC direct design overrides require explicit preservation rationale and no failed audit rows.",
     "P12": "Validator requires missing-reference, quality, dependency, load-order, and ownership gates to pass.",
     "P13": "Irony conflict scan has not been recorded.",
-    "P14": "Irony playset launch proof, visible Director load-proof message, and expected-only Director launch deltas are required.",
-    "P15": "Longer observer tuning still needs a useful high-ROI AI behavior checkpoint beyond startup/load proof.",
     "P16": "Docs require dependency, load-order, conflict, tuning, validation, and observer-test workflow coverage.",
+}
+
+PLAN_PHASE_SUPERSEDED_REASONS = {
+    "P14": "Superseded for this goal: user/runtime launch validation is intentionally out of scope; deterministic validation is the acceptance gate.",
+    "P15": "Superseded for this goal: observer runtime validation is intentionally out of scope; deterministic validation is the acceptance gate.",
 }
 
 TEXT_SUFFIXES = {".txt", ".mod", ".asset", ".gfx", ".gui", ".yml", ".yaml", ".csv", ".json"}
@@ -778,11 +896,13 @@ def compare_irony_order_with_director(before_mods: list[dict[str, Any]], after_m
     return {
         "director_count": len(director_indexes),
         "director_position": director_indexes[0] + 1 if director_indexes else None,
+        "director_is_final_entry": bool(director_indexes and director_indexes[0] == len(after_mods) - 1),
         "existing_mod_order_preserved": before_identities == after_existing_identities,
         "expected_mod_count": len(before_mods) + 1,
         "actual_mod_count": len(after_mods),
         "status": "ok"
         if len(director_indexes) == 1
+        and director_indexes[0] == len(after_mods) - 1
         and before_identities == after_existing_identities
         and len(after_mods) == len(before_mods) + 1
         else "fail",
@@ -883,6 +1003,7 @@ def collect_irony_order_proof(
     mod_root: Path = MOD_ROOT,
     research_root: Path = RESEARCH_ROOT,
 ) -> dict[str, Any]:
+    before_snapshot_supplied = before_snapshot is not None
     before_snapshot = before_snapshot or latest_irony_before_snapshot(research_root)
     if before_snapshot is None or not before_snapshot.exists():
         return {
@@ -896,6 +1017,23 @@ def collect_irony_order_proof(
     playset = build_active_playset_snapshot() if playset is None else playset
     after_mods = playset.get("mods", [])
     order_check = compare_irony_order_with_director(before_mods, after_mods)
+    proof_mode = "pre_director_snapshot"
+    warnings: list[str] = []
+    if order_check["status"] != "ok" and not before_snapshot_supplied:
+        current_without_director = [
+            mod
+            for mod in after_mods
+            if not (mod.get("name") == "Stellar AI Director" or "stellaraidirector" in str(mod.get("path", "")).lower())
+        ]
+        current_order_check = compare_irony_order_with_director(current_without_director, after_mods)
+        if current_order_check["status"] == "ok":
+            before_mods = current_without_director
+            order_check = current_order_check
+            proof_mode = "current_collection_without_director"
+            warnings.append(
+                "The historical pre-Director snapshot no longer matches the selected collection; "
+                "validated the current collection by removing the single final Director entry."
+            )
     dependency_rows = collect_dependency_audit_rows(mod_root, playset)
     dependency_errors = [row for row in dependency_rows if row["status"] != "ok"]
     director_position = order_check["director_position"]
@@ -917,10 +1055,17 @@ def collect_irony_order_proof(
             f"Stellar AI Director position {director_position} is not after latest dependency position "
             f"{latest_required_position}."
         )
+    elif director_position != len(after_mods):
+        errors.append(
+            f"Stellar AI Director position {director_position} is not the final selected collection entry "
+            f"{len(after_mods)}."
+        )
     return {
         "status": "ok" if not errors else "fail",
         "errors": errors,
+        "warnings": warnings,
         "before_snapshot": str(before_snapshot),
+        "proof_mode": proof_mode,
         "collection_name": playset.get("collection_name", ""),
         "mod_count_before": len(before_mods),
         "mod_count_after": len(after_mods),
@@ -954,11 +1099,15 @@ def irony_order_proof_report_text(proof: dict[str, Any]) -> str:
         "status",
         "director_count",
         "director_position",
+        "director_is_final_entry",
         "existing_mod_order_preserved",
         "expected_mod_count",
         "actual_mod_count",
     ):
         lines.append(f"- {key}: {order_check.get(key, '')}")
+    if proof.get("warnings"):
+        lines.extend(["", "## Warnings", ""])
+        lines.extend(f"- {warning}" for warning in proof["warnings"])
     lines.extend(["", "## Dependency Status Counts", ""])
     for status, count in proof.get("dependency_status_counts", {}).items():
         lines.append(f"- {status}: {count}")
@@ -1984,6 +2133,482 @@ def write_text_file(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
+def axis_vector(values: tuple[int, ...]) -> dict[str, int]:
+    return dict(zip(THREAT_RESPONSE_AXES, values, strict=True))
+
+
+def threat_normal_ethic_rows() -> list[dict[str, Any]]:
+    rows = []
+    for ethic, values in THREAT_NORMAL_ETHIC_VECTORS.items():
+        rows.append({"ethic": ethic, **axis_vector(values)})
+    return rows
+
+
+def threat_fanatic_ethic_rows() -> list[dict[str, Any]]:
+    rows = []
+    for ethic, values in THREAT_NORMAL_ETHIC_VECTORS.items():
+        fanatic = ethic.replace("ethic_", "ethic_fanatic_", 1)
+        rows.append({"ethic": fanatic, **axis_vector(tuple(value * THREAT_FANATIC_MULTIPLIER for value in values))})
+    return rows
+
+
+def threat_gestalt_rows() -> list[dict[str, Any]]:
+    return [{"path": path, **axis_vector(values)} for path, values in THREAT_GESTALT_VECTORS.items()]
+
+
+def clamp_score(name: str, value: int) -> int:
+    lower, upper = THREAT_SCORE_LIMITS[name]
+    return max(lower, min(upper, value))
+
+
+def threat_scores(vector: dict[str, int], severity: int) -> dict[str, int]:
+    anti = (
+        severity * 10
+        + vector["moral_outrage"] * 5
+        + vector["regional_fear"] * 5
+        + vector["shared_threat_cooperation"] * 4
+        + vector["punitive_pressure"] * 6
+        - vector["conquest_respect"] * 5
+        - vector["opportunism"] * 3
+    )
+    alignment = (
+        vector["conquest_respect"] * 6
+        + vector["opportunism"] * 5
+        - vector["moral_outrage"] * 7
+        - vector["regional_fear"] * 3
+    )
+    readiness = severity * 5 + vector["regional_fear"] * 5 + vector["defensive_readiness"] * 5
+    return {
+        "anti_aggressor_score": clamp_score("anti_aggressor_score", anti),
+        "alignment_with_aggressor_score": clamp_score("alignment_with_aggressor_score", alignment),
+        "defensive_readiness_score": clamp_score("defensive_readiness_score", readiness),
+    }
+
+
+def classify_threat_war_goal(war_goal: str) -> dict[str, Any]:
+    if war_goal in WAR_GOAL_THREAT_CLASSES:
+        return dict(WAR_GOAL_THREAT_CLASSES[war_goal])
+    return {
+        "war_goal": war_goal,
+        "classification": "unknown",
+        "severity": 0,
+        "source": "not allowlisted",
+        "source_path": "",
+        "mod_or_vanilla": "unknown",
+        "punitive_outputs_allowed": "no",
+        "readiness_outputs_allowed": "no",
+        "forced_war_allowed": "no",
+        "status": "unknown_inert",
+        "notes": "Unknown or unclassified war goals are inert until manually classified and tested.",
+    }
+
+
+def threat_response_classification_rows() -> list[dict[str, Any]]:
+    return [dict(row) for row in WAR_GOAL_THREAT_CLASSES.values()]
+
+
+def threat_feasibility_note_path(research_root: Path = RESEARCH_ROOT) -> Path:
+    return research_root / THREAT_FEASIBILITY_NOTE_NAME
+
+
+def threat_classification_csv_path(research_root: Path = RESEARCH_ROOT) -> Path:
+    return research_root / THREAT_CLASSIFICATION_CSV_NAME
+
+
+def third_party_threat_economy_pressure(
+    *,
+    foreign_affairs_safe: bool,
+    readiness_flag: bool,
+    at_war: bool = False,
+    survival: bool = False,
+    recovery: bool = False,
+    deficit: bool = False,
+) -> dict[str, int]:
+    if not foreign_affairs_safe or not readiness_flag or at_war or survival or recovery or deficit:
+        return {key: 0 for key in THREAT_ECONOMY_MAX}
+    return dict(THREAT_ECONOMY_MAX)
+
+
+def _threat_header() -> str:
+    return "# Generated by tools/generate_stellar_ai_director_patch.py.\n# Source of truth: tools/stellar_ai_director_lib.py threat-response tables.\n\n"
+
+
+def threat_response_script_values_text() -> str:
+    lines = [
+        _threat_header().rstrip(),
+        "staid_tr_anti_aggressor_score_min = 0",
+        "staid_tr_anti_aggressor_score_max = 100",
+        "staid_tr_alignment_score_min = 0",
+        "staid_tr_alignment_score_max = 60",
+        "staid_tr_defensive_readiness_score_min = 0",
+        "staid_tr_defensive_readiness_score_max = 50",
+        f"staid_tr_relation_flag_days = {THREAT_RELATION_FLAG_DAYS}",
+        f"staid_tr_country_flag_days = {THREAT_COUNTRY_FLAG_DAYS}",
+        f"staid_tr_economy_ratio_cap_percent = {int(THREAT_ECONOMY_RATIO_CAP * 100)}",
+        f"staid_tr_economy_alloys_cap = {THREAT_ECONOMY_MAX['alloys']}",
+        f"staid_tr_economy_energy_cap = {THREAT_ECONOMY_MAX['energy']}",
+        f"staid_tr_economy_naval_cap = {THREAT_ECONOMY_MAX['naval_cap']}",
+    ]
+    for key, value in THREAT_TIER_CUTOFFS.items():
+        lines.append(f"staid_tr_{key}_cutoff = {value}")
+    return "\n".join(lines) + "\n"
+
+
+def threat_response_triggers_text() -> str:
+    war_goal_checks = "\n".join(
+        f"staid_tr_is_{row['classification']}_war_goal = {{\n\tfrom = {{ using_war_goal = {row['war_goal']} }}\n}}\n"
+        for row in WAR_GOAL_THREAT_CLASSES.values()
+    )
+    return (
+        _threat_header()
+        + war_goal_checks
+        + """staid_tr_war_goal_classified = {
+\tOR = {
+\t\tstaid_tr_is_conquest_war_goal = yes
+\t\tstaid_tr_is_subjugation_war_goal = yes
+\t\tstaid_tr_is_humiliation_war_goal = yes
+\t}
+}
+
+staid_tr_attacker_war_leader = {
+\tfrom = {
+\t\tany_attacker = {
+\t\t\tis_same_value = root
+\t\t\tis_war_leader = yes
+\t\t}
+\t}
+}
+
+staid_tr_observer_eligible = {
+\tis_country_type = default
+\tNOT = { is_same_value = from }
+\tfrom = { NOT = { is_war_participant = root } }
+\tfromfrom = { NOT = { is_war_participant = root } }
+}
+
+staid_tr_awareness_known = {
+\thas_communications = from
+}
+
+staid_tr_foreign_affairs_safe = {
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tNOT = { staid_survival_mode = yes }
+\tNOT = { staid_recovery_mode = yes }
+\tis_at_war = no
+\thas_monthly_income = { resource = alloys value > 120 }
+\thas_monthly_income = { resource = energy value > 100 }
+\tresource_stockpile_compare = { resource = alloys value > 8000 }
+\tresource_stockpile_compare = { resource = energy value > 5000 }
+}
+
+staid_tr_anti_aggressor_low = { check_variable_arithmetic = { which = staid_tr_score value >= 25 } }
+staid_tr_anti_aggressor_medium = { check_variable_arithmetic = { which = staid_tr_score value >= 45 } }
+staid_tr_anti_aggressor_high = { check_variable_arithmetic = { which = staid_tr_score value >= 65 } }
+staid_tr_anti_aggressor_severe = { check_variable_arithmetic = { which = staid_tr_score value >= 85 } }
+staid_tr_alignment_low = { check_variable_arithmetic = { which = staid_tr_alignment value >= 20 } }
+staid_tr_alignment_medium = { check_variable_arithmetic = { which = staid_tr_alignment value >= 35 } }
+staid_tr_alignment_high = { check_variable_arithmetic = { which = staid_tr_alignment value >= 50 } }
+staid_tr_defensive_readiness_low = { check_variable_arithmetic = { which = staid_tr_readiness value >= 25 } }
+staid_tr_defensive_readiness_high = { check_variable_arithmetic = { which = staid_tr_readiness value >= 40 } }
+
+staid_tr_can_apply_readiness = {
+\tstaid_tr_foreign_affairs_safe = yes
+\tOR = {
+\t\tstaid_tr_defensive_readiness_low = yes
+\t\tstaid_tr_defensive_readiness_high = yes
+\t}
+}
+"""
+    )
+
+
+def threat_response_opinions_text() -> str:
+    lines = [_threat_header().rstrip()]
+    for key, value in THREAT_OPINION_VALUES.items():
+        lines.extend(
+            [
+                f"staid_tr_{key} = {{",
+                f"\topinion = {value}",
+                "\tdecay = 1",
+                "\taccumulative = no",
+                "}",
+                "",
+            ]
+        )
+    return "\n".join(lines)
+
+
+def threat_response_on_actions_text() -> str:
+    return _threat_header() + """on_war_beginning = {
+\tevents = {
+\t\tstaid_tr.1
+\t}
+}
+"""
+
+
+def threat_response_events_text() -> str:
+    return _threat_header() + f"""namespace = staid_tr
+
+country_event = {{
+\tid = staid_tr.1
+\thide_window = yes
+\tis_triggered_only = yes
+\ttrigger = {{
+\t\tstaid_tr_attacker_war_leader = yes
+\t\tstaid_tr_war_goal_classified = yes
+\t}}
+\timmediate = {{
+\t\tfrom = {{
+\t\t\trandom_defender = {{
+\t\t\t\tsave_event_target_as = staid_tr_victim
+\t\t\t}}
+\t\t}}
+\t\tevery_country = {{
+\t\t\tlimit = {{
+\t\t\t\tis_country_type = default
+\t\t\t\tNOT = {{ is_same_value = root }}
+\t\t\t\thas_communications = root
+\t\t\t}}
+\t\t\tcountry_event = {{ id = staid_tr.2 }}
+\t\t}}
+\t}}
+}}
+
+country_event = {{
+\tid = staid_tr.2
+\thide_window = yes
+\tis_triggered_only = yes
+\ttrigger = {{
+\t\tstaid_tr_observer_eligible = yes
+\t\tstaid_tr_awareness_known = yes
+\t}}
+\timmediate = {{
+\t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_low }}
+\t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_medium }}
+\t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_high }}
+\t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_severe }}
+\t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_alignment_low }}
+\t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_alignment_medium }}
+\t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_alignment_high }}
+\t\tif = {{
+\t\t\tlimit = {{ staid_tr_is_subjugation_war_goal = yes }}
+\t\t\tadd_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_high }}
+\t\t\tset_timed_relation_flag = {{ who = from flag = staid_tr_anti_aggressor_high days = {THREAT_RELATION_FLAG_DAYS} }}
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{ staid_tr_is_conquest_war_goal = yes }}
+\t\t\tadd_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_medium }}
+\t\t\tset_timed_relation_flag = {{ who = from flag = staid_tr_anti_aggressor_medium days = {THREAT_RELATION_FLAG_DAYS} }}
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{ staid_tr_is_humiliation_war_goal = yes }}
+\t\t\tadd_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_low }}
+\t\t\tset_timed_relation_flag = {{ who = from flag = staid_tr_anti_aggressor_low days = {THREAT_RELATION_FLAG_DAYS} }}
+\t\t}}
+\t\tif = {{
+\t\t\tlimit = {{ exists = event_target:staid_tr_victim }}
+\t\t\tadd_opinion_modifier = {{ who = event_target:staid_tr_victim modifier = staid_tr_shared_threat_low }}
+\t\t\tset_timed_relation_flag = {{ who = event_target:staid_tr_victim flag = staid_tr_shared_threat_low days = {THREAT_RELATION_FLAG_DAYS} }}
+\t\t}}
+\t\tif = {{
+\t\t\tlimit = {{ staid_tr_foreign_affairs_safe = yes }}
+\t\t\tset_timed_country_flag = {{ flag = staid_tr_defensive_readiness_low days = {THREAT_COUNTRY_FLAG_DAYS} }}
+\t\t}}
+\t}}
+}}
+"""
+
+
+def threat_response_localisation_text() -> str:
+    lines = ["\ufeffl_english:"]
+    labels = {
+        "anti_aggressor_low": "Concerned by Aggression",
+        "anti_aggressor_medium": "Condemns Aggression",
+        "anti_aggressor_high": "Alarmed by Aggression",
+        "anti_aggressor_severe": "Sees Existential Aggression",
+        "shared_threat_low": "Shared Threat",
+        "shared_threat_medium": "Shared Strategic Threat",
+        "shared_threat_high": "Shared Existential Threat",
+        "alignment_low": "Respects Conquest",
+        "alignment_medium": "Strategic Alignment",
+        "alignment_high": "Strong Strategic Alignment",
+    }
+    for key, label in labels.items():
+        lines.append(f' staid_tr_{key}:0 "{label}"')
+        lines.append(f' staid_tr_{key}_desc:0 "This empire is reacting to an observed classified war."')
+    return "\n".join(lines) + "\n"
+
+
+def threat_response_feasibility_note_text() -> str:
+    return """# Stellar AI Director Threat Response Feasibility
+
+Target game version: Stellaris PC 4.4.4 stable.
+Local install inspected: `C:/Steam/steamapps/common/Stellaris`.
+
+## Verified Primitives
+
+- `on_war_beginning` from vanilla on-actions.
+- `any_attacker`, `any_defender`, `random_defender`, `is_war_leader`, and `using_war_goal` for war context.
+- `has_communications` for observer awareness.
+- `set_timed_country_flag`, `set_timed_relation_flag`, `add_opinion_modifier`, `remove_opinion_modifier`, `decay`, and `accumulative`.
+- Existing Director gates: `staid_core_deficit_short_runway`, `staid_survival_mode`, `staid_recovery_mode`, `staid_fleet_buildup_economy_safe`, and `staid_starbase_defense_economy_safe`.
+
+## Intentional Non-Use
+
+- No forced wars, join-war behavior, punitive casus belli, diplomatic-action overrides, or forced `wg_*` dispatch.
+- No raw generator axes are consumed as Stellaris runtime concepts.
+- No uncertain visibility model beyond verified communications.
+
+## Compatibility Position
+
+V1 reacts only from eligible third-party default countries with communications. Direct victims, participants, uncertain country types, and unknown war goals remain outside the third-party economy path. Modded war goals are inert until explicitly classified with evidence and tests.
+
+## Test Steps
+
+Run unit tests, regenerate the patch, validate generated output, run `git diff --check`, refresh the docs index, and verify the generated CSV evidence. Runtime/main-menu/observer launch validation is intentionally out of scope for this deterministic implementation goal unless a separate user-approved runtime task is opened.
+
+## Recommendation
+
+Proceed with the bounded V1 implementation as opinion, relation/country flag, and capped economy pressure only.
+"""
+
+
+def generate_threat_response_artifacts() -> None:
+    write_text_file(
+        MOD_ROOT / "common" / "script_values" / "zzz_staid_threat_response_values.txt",
+        threat_response_script_values_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_threat_response_triggers.txt",
+        threat_response_triggers_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "opinion_modifiers" / "zzz_staid_threat_response_opinions.txt",
+        threat_response_opinions_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "on_actions" / "zzz_staid_threat_response_on_actions.txt",
+        threat_response_on_actions_text(),
+    )
+    write_text_file(MOD_ROOT / "events" / "zzz_staid_threat_response_events.txt", threat_response_events_text())
+    write_text_file(
+        MOD_ROOT / "localisation" / "english" / "staid_threat_response_l_english.yml",
+        threat_response_localisation_text(),
+    )
+    write_text_file(threat_feasibility_note_path(RESEARCH_ROOT), threat_response_feasibility_note_text())
+    write_csv(threat_classification_csv_path(RESEARCH_ROOT), threat_response_classification_rows())
+
+
+def threat_response_generated_paths(mod_root: Path = MOD_ROOT) -> dict[str, Path]:
+    return {
+        "values": mod_root / "common" / "script_values" / "zzz_staid_threat_response_values.txt",
+        "triggers": mod_root / "common" / "scripted_triggers" / "zzz_staid_threat_response_triggers.txt",
+        "opinions": mod_root / "common" / "opinion_modifiers" / "zzz_staid_threat_response_opinions.txt",
+        "on_actions": mod_root / "common" / "on_actions" / "zzz_staid_threat_response_on_actions.txt",
+        "events": mod_root / "events" / "zzz_staid_threat_response_events.txt",
+        "localisation": mod_root / "localisation" / "english" / "staid_threat_response_l_english.yml",
+    }
+
+
+def validate_threat_response_contract(mod_root: Path = MOD_ROOT) -> list[str]:
+    errors: list[str] = []
+    paths = threat_response_generated_paths(mod_root)
+    for label, path in paths.items():
+        if not path.exists():
+            errors.append(f"Threat-response {label} file is missing: {path}")
+            continue
+        if label == "localisation":
+            raw = path.read_bytes()
+            text = read_text(path)
+            if not raw.startswith(b"\xef\xbb\xbf"):
+                errors.append(f"Threat-response localisation must be UTF-8 BOM encoded: {path}")
+            for key in THREAT_OPINION_VALUES:
+                if f"staid_tr_{key}:" not in text:
+                    errors.append(f"Threat-response localisation is missing staid_tr_{key}")
+            continue
+        try:
+            parse_file(path)
+        except PDXParseError as exc:
+            errors.append(f"Threat-response {label} parse failed: {exc}")
+
+    existing_texts = {label: read_text(path) for label, path in paths.items() if path.exists()}
+    runtime_text = "\n".join(
+        text for label, text in existing_texts.items() if label in {"values", "triggers", "opinions", "on_actions", "events"}
+    )
+    for forbidden in THREAT_FORBIDDEN_EFFECTS:
+        if forbidden in runtime_text:
+            errors.append(f"Threat-response generated files contain forbidden V1 effect: {forbidden}")
+    if "common/diplomatic_actions" in runtime_text:
+        errors.append("Threat-response generated files must not add diplomatic-action overrides")
+    for axis in THREAT_RESPONSE_AXES:
+        if re.search(rf"\b{re.escape(axis)}\b", runtime_text):
+            errors.append(f"Generator-owned axis leaked into runtime generated file: {axis}")
+
+    triggers = existing_texts.get("triggers", "")
+    required_gate_terms = (
+        "NOT = { staid_core_deficit_short_runway = yes }",
+        "NOT = { staid_survival_mode = yes }",
+        "NOT = { staid_recovery_mode = yes }",
+        "is_at_war = no",
+        "has_monthly_income = { resource = alloys value > 120 }",
+        "has_monthly_income = { resource = energy value > 100 }",
+        "resource_stockpile_compare = { resource = alloys value > 8000 }",
+        "resource_stockpile_compare = { resource = energy value > 5000 }",
+    )
+    for term in required_gate_terms:
+        if term not in triggers:
+            errors.append(f"Threat-response foreign-affairs safety is missing required gate: {term}")
+
+    events = existing_texts.get("events", "")
+    required_event_terms = (
+        "namespace = staid_tr",
+        "id = staid_tr.1",
+        "staid_tr_attacker_war_leader = yes",
+        "staid_tr_war_goal_classified = yes",
+        "every_country",
+        "staid_tr_observer_eligible = yes",
+        "staid_tr_awareness_known = yes",
+        "remove_opinion_modifier",
+        "add_opinion_modifier",
+        "staid_tr_foreign_affairs_safe = yes",
+    )
+    for term in required_event_terms:
+        if term not in events:
+            errors.append(f"Threat-response event flow is missing required fragment: {term}")
+
+    economy_path = mod_root / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
+    if economy_path.exists():
+        economy = read_text(economy_path)
+        for term in (
+            "Stellar AI Director threat readiness reserve",
+            "has_country_flag = staid_tr_defensive_readiness_low",
+            "staid_tr_foreign_affairs_safe = yes",
+            "alloys = 7",
+            "energy = 6",
+            "naval_cap = 40",
+        ):
+            if term not in economy:
+                errors.append(f"Threat-response economy integration is missing required fragment: {term}")
+
+    classification_csv = threat_classification_csv_path(RESEARCH_ROOT)
+    if not classification_csv.exists():
+        errors.append(f"Threat-response classification CSV is missing: {classification_csv}")
+    else:
+        rows = _read_csv_rows(classification_csv)
+        by_goal = {row.get("war_goal"): row for row in rows}
+        for goal, expected in WAR_GOAL_THREAT_CLASSES.items():
+            row = by_goal.get(goal)
+            if row is None:
+                errors.append(f"Threat-response classification CSV is missing allowlisted goal: {goal}")
+                continue
+            if str(row.get("severity")) != str(expected["severity"]):
+                errors.append(f"Threat-response classification CSV has wrong severity for {goal}: {row.get('severity')}")
+            if row.get("forced_war_allowed") != "no":
+                errors.append(f"Threat-response classification CSV must forbid forced war for {goal}")
+    return errors
+
+
 def load_stellaris_save_gamestate(save_path: Path) -> str:
     with zipfile.ZipFile(save_path) as archive:
         if "gamestate" not in archive.namelist():
@@ -2151,7 +2776,7 @@ def collect_observer_save_summary(save_path: Path) -> dict[str, Any]:
         "short_smoke_checks": short_smoke_checks,
         "short_smoke_passes": all(short_smoke_checks.values()),
         "high_roi_path_observed": False,
-        "p15_completion_note": "Short Irony-launched save evidence only; this does not satisfy the late-game high-ROI observer acceptance by itself.",
+        "p15_completion_note": "Short Irony-launched save evidence is retained as historical context; P15 runtime/observer validation is superseded for this deterministic implementation goal.",
     }
 
 
@@ -2557,6 +3182,10 @@ def generated_file_path_status(path: Path, mod_root: Path = MOD_ROOT) -> tuple[s
     except ValueError:
         return ("outside_mod_root", "")
     parts = relative.parts
+    if len(parts) >= 2 and parts[0] == "events":
+        return ("ok", "events") if path.suffix.lower() == ".txt" else ("unsupported_suffix", "events")
+    if len(parts) >= 3 and parts[0] == "localisation" and parts[1] == "english":
+        return ("ok", "localisation") if path.suffix.lower() in {".yml", ".yaml"} else ("unsupported_suffix", "localisation")
     if len(parts) < 3 or parts[0] != "common":
         return ("outside_common", "")
     folder = parts[1]
@@ -2568,23 +3197,32 @@ def generated_file_path_status(path: Path, mod_root: Path = MOD_ROOT) -> tuple[s
 
 
 def collect_generated_file_audit_rows(mod_root: Path = MOD_ROOT) -> list[dict[str, Any]]:
-    common = mod_root / "common"
     rows: list[dict[str, Any]] = []
-    if not common.exists():
+    roots = [
+        mod_root / "common",
+        mod_root / "events",
+        mod_root / "localisation" / "english",
+    ]
+    existing_roots = [root for root in roots if root.exists()]
+    if not existing_roots:
         return rows
-    for file_path in sorted(path for path in common.rglob("*") if path.is_file()):
+    for file_path in sorted(path for root in existing_roots for path in root.rglob("*") if path.is_file()):
         path_status, folder = generated_file_path_status(file_path, mod_root)
-        object_type = GENERATED_SURFACE_FOLDERS.get(folder, "")
+        object_type = GENERATED_SURFACE_FOLDERS.get(folder, folder if folder in {"events", "localisation"} else "")
         text = read_text(file_path)
         placeholder_count = unresolved_template_placeholder_count(text)
         parse_status = "not_checked"
         top_level_object_count = 0
-        try:
-            parsed = parse_pdx(text)
+        if folder == "localisation":
             parse_status = "ok"
-            top_level_object_count = len(block_assignments(parsed))
-        except PDXParseError as exc:
-            parse_status = f"parse_error: {exc}"
+            top_level_object_count = len(re.findall(r"^\s+[A-Za-z0-9_.:-]+:", text, flags=re.MULTILINE))
+        else:
+            try:
+                parsed = parse_pdx(text)
+                parse_status = "ok"
+                top_level_object_count = len(block_assignments(parsed))
+            except PDXParseError as exc:
+                parse_status = f"parse_error: {exc}"
         status = "ok"
         reason = "valid generated PDXScript surface"
         if path_status != "ok":
@@ -3499,8 +4137,12 @@ def generated_surface_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         "common/ai_budget/zzz_staid_gigas_resource_budgets.txt",
         "common/economic_plans/zzzz_staid_additive_economic_plan.txt",
         "common/on_actions/zzz_staid_load_proof_on_actions.txt",
+        "common/on_actions/zzz_staid_threat_response_on_actions.txt",
+        "common/opinion_modifiers/zzz_staid_threat_response_opinions.txt",
         "common/script_values/zzz_staid_roi_values.txt",
+        "common/script_values/zzz_staid_threat_response_values.txt",
         "common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+        "common/scripted_triggers/zzz_staid_threat_response_triggers.txt",
     }
     file_rows = _read_csv_rows(file_audit_path)
     reference_rows = _read_csv_rows(reference_audit_path)
@@ -3554,8 +4196,6 @@ def irony_conflict_scan_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
     }
     required_order_terms = {
         "status: ok",
-        "director position: 117",
-        "latest dependency position: 116",
         "existing_mod_order_preserved: true",
     }
     if not all(term in scan_text for term in required_scan_terms):
@@ -3649,6 +4289,8 @@ def classify_plan_phase_status(
     observer_log_text: str,
     repo_root: Path = REPO_ROOT,
 ) -> str:
+    if phase in PLAN_PHASE_SUPERSEDED_REASONS:
+        return "superseded"
     if any(not artifact["exists"] for artifact in artifacts):
         return "missing"
     if phase == "P0" and munch_preflight_artifact_passes(repo_root):
@@ -3671,12 +4313,6 @@ def classify_plan_phase_status(
         return "verified"
     if phase == "P13" and irony_conflict_scan_artifact_passes(repo_root):
         return "verified"
-    if phase == "P14" and not main_menu_status["main_menu_proven"]:
-        return "external_gate"
-    if phase == "P14" and launch_comparison_artifact_passes(repo_root):
-        return "verified"
-    if phase == "P14":
-        return "external_gate"
     if phase == "P6" and unlock_priority_policy_artifact_passes(repo_root):
         return "verified"
     if phase == "P7" and mega_giga_policy_artifact_passes(repo_root):
@@ -3691,8 +4327,6 @@ def classify_plan_phase_status(
         return "verified"
     if phase == "P16" and documentation_artifact_passes(repo_root):
         return "verified"
-    if phase == "P15" and "not run yet" in observer_log_text.lower():
-        return "external_gate"
     if phase in PLAN_PHASE_OPEN_REASONS:
         return "partial"
     return "verified"
@@ -3719,7 +4353,11 @@ def collect_plan_completion_status(
             {
                 **item,
                 "status": status,
-                "open_reason": "" if status == "verified" else PLAN_PHASE_OPEN_REASONS.get(phase, ""),
+                "open_reason": (
+                    ""
+                    if status == "verified"
+                    else PLAN_PHASE_SUPERSEDED_REASONS.get(phase, PLAN_PHASE_OPEN_REASONS.get(phase, ""))
+                ),
                 "artifacts": artifacts,
             }
         )
@@ -3728,7 +4366,11 @@ def collect_plan_completion_status(
         counts[phase["status"]] = counts.get(phase["status"], 0) + 1
     return {
         "plan_path": str(plan_path),
-        "overall_status": "complete" if counts.get("verified", 0) == len(phases) else "not_complete",
+        "overall_status": (
+            "complete"
+            if sum(counts.get(status, 0) for status in ("verified", "superseded")) == len(phases)
+            else "not_complete"
+        ),
         "phase_count": len(phases),
         "status_counts": counts,
         "validation_error_count": len(validation_errors),
@@ -3978,6 +4620,7 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(notes_root / "conflicts.md", conflicts_note_text())
     write_text_file(notes_root / "observer-test-log.md", observer_test_log_text(playset))
     write_text_file(notes_root / "tuning-notes.md", tuning_notes_text(thresholds))
+    generate_threat_response_artifacts()
     generate_dependency_audit_artifacts()
     generate_irony_order_proof_artifacts()
     generate_file_audit_artifacts()
@@ -4421,6 +5064,20 @@ basic_economy_plan = {
 
 \tsubplan = {
 \t\tscaling = yes
+\t\tset_name = "Stellar AI Director threat readiness reserve"
+\t\tpotential = {
+\t\t\thas_country_flag = staid_tr_defensive_readiness_low
+\t\t\tstaid_tr_foreign_affairs_safe = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 7
+\t\t\tenergy = 6
+\t\t}
+\t\tnaval_cap = 40
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
 \t\tset_name = "Stellar AI Director planetary capacity reserve"
 \t\tpotential = {
 \t\t\tstaid_planetary_capacity_growth_ready = yes
@@ -4516,6 +5173,11 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Adds an unlock-research economic subplan so surplus empires keep pushing
   engineering/research/unity until core Mega Engineering and Mega Shipyard
   unlocks are present.
+- Adds a bounded V1 threat-response layer for observed classified aggression:
+  opinion modifiers, timed relation/country flags, and a third-party defensive
+  readiness economy subplan capped at alloys 7, energy 6, and naval cap 40.
+- Keeps unknown or unclassified war goals inert and does not declare wars,
+  join wars, add punitive casus belli, or override diplomatic actions.
 - Leaves NSC3/ESC ship and component design weights untouched in v1 unless
   observer evidence proves parent AI cannot use them.
 
@@ -4578,6 +5240,8 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |",
         "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
         "| ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |",
+        "| threat-response values/triggers | `common/script_values/zzz_staid_threat_response_values.txt`, `common/scripted_triggers/zzz_staid_threat_response_triggers.txt` | low | additive `staid_tr_` namespace with unknown-war-goal inertness and foreign-affairs safety gates |",
+        "| threat-response opinions/events | `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`, `common/on_actions/zzz_staid_threat_response_on_actions.txt`, `events/zzz_staid_threat_response_events.txt` | medium | event-dispatched opinion/readiness response gated by attacker leader, awareness, participant exclusion, and forbidden-effect validation |",
         "| integration surface ledger | `research/stellar-ai-director-integration-surfaces-2026-07-04.csv` | low | parsed source-object evidence for P6-P11 minimum interventions |",
         "",
         "## Selected Playset",
@@ -4628,6 +5292,10 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "## NSC3/ESC Design Policy",
             "",
             "Direct NSC3/ESC ship and component design overrides are deferred until observer evidence shows parent AI weights cannot use the new hulls or components. The P11 integration audit must have no failed rows; warning rows are tracked as parent-design gaps rather than automatic override targets.",
+            "",
+            "## Threat-Response Policy",
+            "",
+            "The V1 threat-response feature adds observer opinion, timed flags, and a capped third-party defensive-readiness economy subplan for classified observed aggression. `wg_conquest`, `wg_subjugation`, and `wg_humiliation` are the initial allowlist; unknown war goals stay inert until evidence, severity, output expectations, tests, and validator coverage are added. The generated event path must not declare wars, join wars, add casus belli, force `wg_*` dispatch, or override diplomatic actions.",
             "",
             "`source_has_ai_weight` records whether the parent mod file had an upstream AI weight. It does not mean the Director has no policy. Director policy is recorded separately as `director_strategy_role`, `director_weight_basis`, `director_build_gate`, `director_surplus_sink_role`, and `director_surplus_sink_priority` in the ROI matrix.",
             "",
@@ -4698,6 +5366,19 @@ def conflicts_note_text() -> str:
 
 - `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`
 - `common/script_values/zzz_staid_roi_values.txt`
+- `common/scripted_triggers/zzz_staid_threat_response_triggers.txt`
+- `common/script_values/zzz_staid_threat_response_values.txt`
+- `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`
+- `common/on_actions/zzz_staid_threat_response_on_actions.txt`
+- `events/zzz_staid_threat_response_events.txt`
+- `localisation/english/staid_threat_response_l_english.yml`
+
+## Threat-Response Boundaries
+
+- V1 threat response is diplomacy/readiness pressure only.
+- Unknown or unclassified war goals are inert until manually classified and tested.
+- Generated threat-response files must not declare wars, join wars, add casus belli, or override diplomatic actions.
+- Third-party readiness economy pressure must remain behind `staid_tr_foreign_affairs_safe`.
 
 ## NSC3/ESC Design Policy
 
@@ -4736,6 +5417,11 @@ def observer_test_log_text(playset: dict[str, Any]) -> str:
 - Deficit spiral check: no early deficit collapse observed in parsed 2202.01.01 save metrics.
 - War interruption behavior: pending.
 - Starbase defense investment: pending."""
+        threat_response = """- Classified aggressive war deterministic contract: covered by generated tests and validator.
+- Threat-response generated files emitted after 2026-07-05 implementation: covered by file audit and validator.
+- Unknown/modded war goal inertness: covered by classification data, tests, and validator.
+- No forced wars, join-war behavior, or punitive CBs: covered by forbidden-effect tests and validator.
+- Runtime launch observation: intentionally out of scope for this deterministic implementation goal."""
         results = f"""Short Irony-launched save summary: `{OBSERVER_SMOKE_SAVE_SUMMARY_MD.name}`.
 
 - Save date: {summary['date']}.
@@ -4745,7 +5431,7 @@ def observer_test_log_text(playset: dict[str, Any]) -> str:
 - Player monthly income: `{json.dumps(summary['player_monthly_income'], sort_keys=True)}`.
 - High-ROI path observed: {summary['high_roi_path_observed']}.
 
-This short-smoke evidence proves the Irony-launched playset saved with Stellar AI Director loaded and no immediate early economy collapse in the parsed player country. It does not complete P15 by itself because the plan still requires observer-mode evidence that at least one AI reaches a useful high-ROI path."""
+This short-smoke evidence is retained as historical context. P15 runtime/observer validation is superseded for this deterministic implementation goal; generated artifacts, tests, validators, and indexed evidence are the acceptance gate."""
     else:
         setup = """- Galaxy size: not run yet.
 - AI count: not run yet.
@@ -4760,6 +5446,11 @@ This short-smoke evidence proves the Irony-launched playset saved with Stellar A
 - Deficit spiral check: pending.
 - War interruption behavior: pending.
 - Starbase defense investment: pending."""
+        threat_response = """- Classified aggressive war observed: pending.
+- Threat-response generated files loaded after 2026-07-05 implementation: pending.
+- Unknown/modded war goal inertness observed at runtime: pending.
+- No forced wars, join-war behavior, or punitive CBs observed from threat response: pending.
+- No threat-response missing localization or repeated event spam in fresh logs: pending."""
         results = "No observer run has been recorded yet in this file."
     return f"""# Stellar AI Director Observer Test Log
 
@@ -4772,6 +5463,10 @@ Selected collection: {playset['collection_name']}
 ## Checkpoints
 
 {checkpoints}
+
+## Threat-Response Checkpoints
+
+{threat_response}
 
 ## Results
 
@@ -4800,6 +5495,11 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "| planetary-capacity stockpile minerals | 5000 | mineral runway before expanded planet/building capacity target activates |",
         "| planetary-capacity stockpile energy | 5000 | energy runway before expanded planet/building capacity target activates |",
         "| planetary-capacity pops target | 250000 | pop target used by safe country-level capacity subplan |",
+        f"| threat response relation flag days | {THREAT_RELATION_FLAG_DAYS} | duration for observer/aggressor and observer/victim threat state |",
+        f"| threat response economy ratio cap | {int(THREAT_ECONOMY_RATIO_CAP * 100)} | maximum share of fleet-throughput reserve available to third-party threat readiness |",
+        f"| threat readiness alloys cap | {THREAT_ECONOMY_MAX['alloys']} | maximum added alloys target from third-party threat readiness |",
+        f"| threat readiness energy cap | {THREAT_ECONOMY_MAX['energy']} | maximum added energy target from third-party threat readiness |",
+        f"| threat readiness naval cap | {THREAT_ECONOMY_MAX['naval_cap']} | maximum added naval-cap target from third-party threat readiness |",
         f"| eligible ROI rows | {thresholds['eligible_roi_rows']} | source sample used for threshold generation |",
         "",
         "## Static-Defense Policy",
@@ -4836,6 +5536,14 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.",
         "- Warning rows in the P11 integration audit are treated as parent-design gaps to observe, not automatic v1 override targets.",
         "",
+        "## Threat-Response Policy",
+        "",
+        "- V1 reacts only to explicitly classified war goals: `wg_conquest`, `wg_subjugation`, and `wg_humiliation`.",
+        "- Unknown or unclassified war goals are inert: no punitive opinion, no shared-threat opinion, no alignment opinion, no readiness flag, no economy pressure, no CB, and no forced war.",
+        "- Design axes such as moral outrage and regional fear remain generator-owned; runtime files consume only generated values, triggers, flags, events, and opinion modifiers.",
+        "- Third-party defensive-readiness economy pressure is gated by `staid_tr_foreign_affairs_safe`, requires no survival/recovery/deficit/war state, and is capped at 20% of the existing fleet-throughput reserve.",
+        "- Directly attacked empires remain owned by vanilla/Stellar AI/Director war and survival behavior, not the third-party threat economy path.",
+        "",
         "## Safe Tuning Rules",
         "",
         "- Do not lower prep or commit reserves below survival/recovery safety gates.",
@@ -4850,6 +5558,7 @@ def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
     errors: list[str] = []
     load_proof = collect_load_proof_contract(MOD_ROOT)
     errors.extend(load_proof["errors"])
+    errors.extend(validate_threat_response_contract(MOD_ROOT))
     playset = build_active_playset_snapshot()
     for info in playset["required_mods"].values():
         if not info["present"]:

@@ -17,6 +17,11 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | planetary-capacity stockpile minerals | 5000 | mineral runway before expanded planet/building capacity target activates |
 | planetary-capacity stockpile energy | 5000 | energy runway before expanded planet/building capacity target activates |
 | planetary-capacity pops target | 250000 | pop target used by safe country-level capacity subplan |
+| threat response relation flag days | 7200 | duration for observer/aggressor and observer/victim threat state |
+| threat response economy ratio cap | 20 | maximum share of fleet-throughput reserve available to third-party threat readiness |
+| threat readiness alloys cap | 7 | maximum added alloys target from third-party threat readiness |
+| threat readiness energy cap | 6 | maximum added energy target from third-party threat readiness |
+| threat readiness naval cap | 40 | maximum added naval-cap target from third-party threat readiness |
 | eligible ROI rows | 140 | source sample used for threshold generation |
 
 ## Static-Defense Policy
@@ -52,6 +57,14 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 - Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.
 - Warning rows in the P11 integration audit are treated as parent-design gaps to observe, not automatic v1 override targets.
+
+## Threat-Response Policy
+
+- V1 reacts only to explicitly classified war goals: `wg_conquest`, `wg_subjugation`, and `wg_humiliation`.
+- Unknown or unclassified war goals are inert: no punitive opinion, no shared-threat opinion, no alignment opinion, no readiness flag, no economy pressure, no CB, and no forced war.
+- Design axes such as moral outrage and regional fear remain generator-owned; runtime files consume only generated values, triggers, flags, events, and opinion modifiers.
+- Third-party defensive-readiness economy pressure is gated by `staid_tr_foreign_affairs_safe`, requires no survival/recovery/deficit/war state, and is capped at 20% of the existing fleet-throughput reserve.
+- Directly attacked empires remain owned by vanilla/Stellar AI/Director war and survival behavior, not the third-party threat economy path.
 
 ## Safe Tuning Rules
 

@@ -5,7 +5,7 @@ Game executable: `C:\Steam\steamapps\common\Stellaris\stellaris.exe`
 Launcher descriptor exists: True
 Launcher descriptor points to source: True
 Enabled in dlc_load.json: True
-Generated runtime files: 6
+Generated runtime files: 10
 Launch evidence status: stale_or_missing_logs
 Main menu proven: True
 Main menu evidence: manual main-menu proof markers recorded for baseline_without_director, with_director
@@ -15,7 +15,7 @@ Main menu evidence: manual main-menu proof markers recorded for baseline_without
 | log | exists | newer than generated files | bytes | Director lines | expected override lines | Director problem lines | unclassified lines |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | error.log | True | False | 41990928 | 4 | 4 | 0 | 0 |
-| game.log | True | False | 3407 | 2 | 0 | 0 | 2 |
+| game.log | True | False | 3810 | 2 | 0 | 0 | 2 |
 
 ## Director Line Samples
 

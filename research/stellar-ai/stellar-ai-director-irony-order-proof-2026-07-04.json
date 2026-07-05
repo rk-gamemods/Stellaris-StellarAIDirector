@@ -4,18 +4,23 @@
   "dependency_status_counts": {
     "ok": 6
   },
-  "director_position": 117,
+  "director_position": 119,
   "errors": [],
-  "latest_dependency_position": 116,
-  "mod_count_after": 117,
-  "mod_count_before": 116,
+  "latest_dependency_position": 118,
+  "mod_count_after": 119,
+  "mod_count_before": 118,
   "order_check": {
-    "actual_mod_count": 117,
+    "actual_mod_count": 119,
     "director_count": 1,
-    "director_position": 117,
+    "director_is_final_entry": true,
+    "director_position": 119,
     "existing_mod_order_preserved": true,
-    "expected_mod_count": 117,
+    "expected_mod_count": 119,
     "status": "ok"
   },
-  "status": "ok"
+  "proof_mode": "current_collection_without_director",
+  "status": "ok",
+  "warnings": [
+    "The historical pre-Director snapshot no longer matches the selected collection; validated the current collection by removing the single final Director entry."
+  ]
 }

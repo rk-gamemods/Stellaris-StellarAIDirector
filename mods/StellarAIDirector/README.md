@@ -35,6 +35,11 @@ Missing required Steam parents during generation: none.
 - Adds an unlock-research economic subplan so surplus empires keep pushing
   engineering/research/unity until core Mega Engineering and Mega Shipyard
   unlocks are present.
+- Adds a bounded V1 threat-response layer for observed classified aggression:
+  opinion modifiers, timed relation/country flags, and a third-party defensive
+  readiness economy subplan capped at alloys 7, energy 6, and naval cap 40.
+- Keeps unknown or unclassified war goals inert and does not declare wars,
+  join wars, add punitive casus belli, or override diplomatic actions.
 - Leaves NSC3/ESC ship and component design weights untouched in v1 unless
   observer evidence proves parent AI cannot use them.
 
@@ -43,7 +48,7 @@ Missing required Steam parents during generation: none.
 Place Stellar AI Director after all required parents and after parent
 compatibility patches that the Director must supersede. In the current selected
 collection, the latest required parent is at load position
-112.
+114.
 The Director should be below Stellar AI so its megastructure alloy reserve
 override wins intentionally.
 

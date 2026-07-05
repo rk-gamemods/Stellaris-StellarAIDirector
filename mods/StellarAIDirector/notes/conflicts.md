@@ -10,6 +10,19 @@
 
 - `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`
 - `common/script_values/zzz_staid_roi_values.txt`
+- `common/scripted_triggers/zzz_staid_threat_response_triggers.txt`
+- `common/script_values/zzz_staid_threat_response_values.txt`
+- `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`
+- `common/on_actions/zzz_staid_threat_response_on_actions.txt`
+- `events/zzz_staid_threat_response_events.txt`
+- `localisation/english/staid_threat_response_l_english.yml`
+
+## Threat-Response Boundaries
+
+- V1 threat response is diplomacy/readiness pressure only.
+- Unknown or unclassified war goals are inert until manually classified and tested.
+- Generated threat-response files must not declare wars, join wars, add casus belli, or override diplomatic actions.
+- Third-party readiness economy pressure must remain behind `staid_tr_foreign_affairs_safe`.
 
 ## NSC3/ESC Design Policy
 

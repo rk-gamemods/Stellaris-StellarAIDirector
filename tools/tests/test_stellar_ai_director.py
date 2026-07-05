@@ -553,7 +553,7 @@ class GeneratedTextAndWriterTests(unittest.TestCase):
         self.assertIn("do not emit `empire_size`", tuning)
         self.assertIn("Re-run generator", tuning)
 
-    def test_observer_log_uses_save_summary_without_marking_p15_complete(self):
+    def test_observer_log_retains_save_summary_as_historical_context(self):
         with tempfile.TemporaryDirectory() as tmp:
             summary_json = Path(tmp) / "summary.json"
             summary_md = Path(tmp) / "summary.md"
@@ -577,7 +577,7 @@ class GeneratedTextAndWriterTests(unittest.TestCase):
                     log = observer_test_log_text(self.playset)
         self.assertIn("Short Irony-launched save summary", log)
         self.assertIn("Short smoke passes: True", log)
-        self.assertIn("does not complete P15 by itself", log)
+        self.assertIn("P15 runtime/observer validation is superseded", log)
         self.assertIn("High-ROI path observed: False", log)
 
     def test_write_helpers_create_parent_directories_and_content(self):
@@ -1287,7 +1287,7 @@ country=
         self.assertEqual(summary["player_monthly_income"]["energy"], 25.0)
         self.assertEqual(summary["player_monthly_income"]["engineering_research"], 12.0)
 
-    def test_observer_save_summary_report_and_artifact_writer_keep_p15_partial(self):
+    def test_observer_save_summary_report_and_artifact_writer_keep_runtime_context(self):
         summary = {
             "save_path": "C:/save/autosave_2202.01.01.sav",
             "date": "2202.01.01",
@@ -1303,11 +1303,11 @@ country=
             "player_metrics": {"economy_power": 540.2},
             "player_monthly_income": {"energy": 25.0},
             "short_smoke_checks": {"director_mod_listed": True},
-            "p15_completion_note": "Short Irony-launched save evidence only; this does not satisfy the late-game high-ROI observer acceptance by itself.",
+            "p15_completion_note": "Short Irony-launched save evidence is retained as historical context; P15 runtime/observer validation is superseded for this deterministic implementation goal.",
         }
         report = observer_save_summary_report_text(summary)
         self.assertIn("Short smoke passes: True", report)
-        self.assertIn("does not satisfy the late-game high-ROI observer acceptance by itself", report)
+        self.assertIn("P15 runtime/observer validation is superseded", report)
         with tempfile.TemporaryDirectory() as tmp:
             json_path = Path(tmp) / "summary.json"
             md_path = Path(tmp) / "summary.md"
@@ -1799,7 +1799,7 @@ country=
                     "",
                     root,
                 ),
-                "external_gate",
+                "superseded",
             )
             report = launch_comparison_report_text(
                 {
@@ -1831,7 +1831,7 @@ country=
                     "",
                     root,
                 ),
-                "verified",
+                "superseded",
             )
             report = launch_comparison_report_text(
                 {
@@ -2143,8 +2143,8 @@ country_event = {
             by_phase = {phase["phase"]: phase for phase in status["phases"]}
             self.assertEqual(status["overall_status"], "not_complete")
             self.assertEqual(by_phase["P0"]["status"], "missing")
-            self.assertEqual(by_phase["P14"]["status"], "missing")
-            self.assertEqual(by_phase["P15"]["status"], "external_gate")
+            self.assertEqual(by_phase["P14"]["status"], "superseded")
+            self.assertEqual(by_phase["P15"]["status"], "superseded")
             self.assertEqual(status["main_menu_missing_modes"], ["baseline_without_director", "with_director"])
             self.assertEqual(
                 classify_plan_phase_status(
@@ -2155,7 +2155,7 @@ country_event = {
                     "",
                     root,
                 ),
-                "external_gate",
+                "superseded",
             )
             report = plan_completion_report_text(status)
             self.assertIn("Overall status: not_complete", report)
@@ -2535,8 +2535,12 @@ country_event = {
                 "common/ai_budget/zzz_staid_gigas_resource_budgets.txt": gigas_resource_budget_text(),
                 "common/economic_plans/zzzz_staid_additive_economic_plan.txt": economic_plan_text(),
                 "common/on_actions/zzz_staid_load_proof_on_actions.txt": "on_game_start_country = { events = { staid_load_proof.1 } }\n",
+                "common/on_actions/zzz_staid_threat_response_on_actions.txt": staid.threat_response_on_actions_text(),
+                "common/opinion_modifiers/zzz_staid_threat_response_opinions.txt": staid.threat_response_opinions_text(),
                 "common/script_values/zzz_staid_roi_values.txt": script_values_text(thresholds),
+                "common/script_values/zzz_staid_threat_response_values.txt": staid.threat_response_script_values_text(),
                 "common/scripted_triggers/zzz_staid_decision_state_triggers.txt": triggers_text(thresholds),
+                "common/scripted_triggers/zzz_staid_threat_response_triggers.txt": staid.threat_response_triggers_text(),
             }
             for relative, content in generated_files.items():
                 path = common / relative.removeprefix("common/")
@@ -2613,7 +2617,7 @@ country_event = {
         with tempfile.TemporaryDirectory() as tmp:
             research = Path(tmp)
             sample = {
-                "overall_status": "not_complete",
+                "overall_status": "complete",
                 "phase_count": 1,
                 "validation_error_count": 0,
                 "main_menu_proven": False,
@@ -2621,9 +2625,9 @@ country_event = {
                 "phases": [
                     {
                         "phase": "P14",
-                        "status": "external_gate",
+                        "status": "superseded",
                         "requirement": "Stellaris reaches main menu with the patch enabled",
-                        "open_reason": "manual marker required",
+                        "open_reason": "Superseded for this goal: user/runtime launch validation is intentionally out of scope.",
                         "artifacts": [{"path": "launch.json", "exists": True, "size_bytes": 2}],
                     }
                 ],
@@ -2634,7 +2638,7 @@ country_event = {
                         status = generate_plan_status_artifacts()
             self.assertEqual(status, sample)
             self.assertTrue((research / "status.json").exists())
-            self.assertIn("manual marker required", (research / "status.md").read_text(encoding="utf-8"))
+            self.assertIn("runtime launch validation is intentionally out of scope", (research / "status.md").read_text(encoding="utf-8"))
 
     def test_generate_launch_comparison_artifacts_writes_json_and_markdown(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -2727,6 +2731,14 @@ country_event = {
                                         staid.generate_mod_files(self.sample_rows())
             self.assertTrue((mod_root / "descriptor.mod").exists())
             self.assertTrue((mod_root / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").exists())
+            self.assertTrue((mod_root / "common" / "scripted_triggers" / "zzz_staid_threat_response_triggers.txt").exists())
+            self.assertTrue((mod_root / "common" / "script_values" / "zzz_staid_threat_response_values.txt").exists())
+            self.assertTrue((mod_root / "common" / "opinion_modifiers" / "zzz_staid_threat_response_opinions.txt").exists())
+            self.assertTrue((mod_root / "common" / "on_actions" / "zzz_staid_threat_response_on_actions.txt").exists())
+            self.assertTrue((mod_root / "events" / "zzz_staid_threat_response_events.txt").exists())
+            self.assertTrue((mod_root / "localisation" / "english" / "staid_threat_response_l_english.yml").exists())
+            self.assertTrue((research / "stellar-ai-director-threat-response-feasibility-2026-07-05.md").exists())
+            self.assertTrue((research / "stellar-ai-director-threat-response-war-goal-classification-2026-07-05.csv").exists())
             self.assertTrue((mod_root / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt").exists())
             self.assertTrue((research / "stellar-ai-director-active-playset-2026-07-04.json").exists())
             self.assertIn("Generated Test", (mod_root / "README.md").read_text(encoding="utf-8"))
@@ -3192,6 +3204,110 @@ class DecisionTreeTests(unittest.TestCase):
             used_naval_capacity_percent=0.9,
         )
         self.assertEqual(choose_decision_state(state), "normal_growth_mode")
+
+
+class ThreatResponseTests(unittest.TestCase):
+    def test_threat_response_ethic_vectors_and_fanatic_ratio_are_stable(self):
+        self.assertEqual(
+            staid.THREAT_RESPONSE_AXES,
+            (
+                "moral_outrage",
+                "regional_fear",
+                "shared_threat_cooperation",
+                "conquest_respect",
+                "punitive_pressure",
+                "defensive_readiness",
+                "opportunism",
+            ),
+        )
+        normal = {row["ethic"]: row for row in staid.threat_normal_ethic_rows()}
+        fanatic = {row["ethic"]: row for row in staid.threat_fanatic_ethic_rows()}
+        for ethic, row in normal.items():
+            fanatic_row = fanatic[ethic.replace("ethic_", "ethic_fanatic_", 1)]
+            for axis in staid.THREAT_RESPONSE_AXES:
+                self.assertEqual(fanatic_row[axis], row[axis] * staid.THREAT_FANATIC_MULTIPLIER)
+        self.assertEqual(staid.THREAT_CIVIC_AXIS_CAP, 1)
+        self.assertEqual(staid.THREAT_TOTAL_CIVIC_AXIS_CAP, 2)
+        self.assertEqual(staid.axis_vector(staid.THREAT_GESTALT_VECTORS["homicidal"])["moral_outrage"], 0)
+
+    def test_threat_scores_ranges_and_scenario_matrix_outputs(self):
+        pacifist = staid.axis_vector(staid.THREAT_NORMAL_ETHIC_VECTORS["ethic_pacifist"])
+        militarist_authoritarian = {
+            axis: staid.axis_vector(staid.THREAT_NORMAL_ETHIC_VECTORS["ethic_militarist"])[axis]
+            + staid.axis_vector(staid.THREAT_NORMAL_ETHIC_VECTORS["ethic_authoritarian"])[axis]
+            for axis in staid.THREAT_RESPONSE_AXES
+        }
+        pacifist_scores = staid.threat_scores(pacifist, severity=2)
+        conqueror_scores = staid.threat_scores(militarist_authoritarian, severity=2)
+        self.assertGreaterEqual(pacifist_scores["anti_aggressor_score"], 45)
+        self.assertGreater(conqueror_scores["alignment_with_aggressor_score"], pacifist_scores["alignment_with_aggressor_score"])
+        for name, score in {**pacifist_scores, **conqueror_scores}.items():
+            lower, upper = staid.THREAT_SCORE_LIMITS[name]
+            self.assertGreaterEqual(score, lower)
+            self.assertLessEqual(score, upper)
+
+    def test_war_goal_classification_unknown_is_inert(self):
+        self.assertEqual(staid.classify_threat_war_goal("wg_conquest")["severity"], 2)
+        unknown = staid.classify_threat_war_goal("wg_unseen_mod_goal")
+        self.assertEqual(unknown["severity"], 0)
+        self.assertEqual(unknown["punitive_outputs_allowed"], "no")
+        self.assertEqual(unknown["readiness_outputs_allowed"], "no")
+        self.assertEqual(unknown["forced_war_allowed"], "no")
+        self.assertEqual(unknown["status"], "unknown_inert")
+
+    def test_third_party_threat_economy_pressure_is_capped_and_fail_closed(self):
+        self.assertEqual(
+            staid.third_party_threat_economy_pressure(foreign_affairs_safe=True, readiness_flag=True),
+            {"alloys": 7, "energy": 6, "naval_cap": 40},
+        )
+        for blocked in ("at_war", "survival", "recovery", "deficit"):
+            kwargs = {"foreign_affairs_safe": True, "readiness_flag": True, blocked: True}
+            self.assertEqual(staid.third_party_threat_economy_pressure(**kwargs), {"alloys": 0, "energy": 0, "naval_cap": 0})
+        self.assertEqual(
+            staid.third_party_threat_economy_pressure(foreign_affairs_safe=False, readiness_flag=True),
+            {"alloys": 0, "energy": 0, "naval_cap": 0},
+        )
+        for resource, value in staid.THREAT_ECONOMY_MAX.items():
+            self.assertLessEqual(value, staid.THREAT_FLEET_RESERVE_BASE[resource] * staid.THREAT_ECONOMY_RATIO_CAP)
+
+    def test_generated_threat_response_text_contains_required_contracts(self):
+        triggers = staid.threat_response_triggers_text()
+        events = staid.threat_response_events_text()
+        economy = economic_plan_text()
+        for term in (
+            "NOT = { staid_core_deficit_short_runway = yes }",
+            "NOT = { staid_survival_mode = yes }",
+            "NOT = { staid_recovery_mode = yes }",
+            "is_at_war = no",
+            "has_communications = from",
+        ):
+            self.assertIn(term, triggers)
+        self.assertIn("staid_tr_attacker_war_leader = yes", events)
+        self.assertIn("staid_tr_war_goal_classified = yes", events)
+        self.assertIn("remove_opinion_modifier", events)
+        self.assertIn("add_opinion_modifier", events)
+        for forbidden in staid.THREAT_FORBIDDEN_EFFECTS:
+            self.assertNotIn(forbidden, events)
+        self.assertIn("Stellar AI Director threat readiness reserve", economy)
+        self.assertIn("alloys = 7", economy)
+        self.assertIn("energy = 6", economy)
+        self.assertIn("naval_cap = 40", economy)
+
+    def test_validate_threat_response_contract_reports_seeded_breaks(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            mod_root = root / "StellarAIDirector"
+            research = root / "research"
+            with patch.object(staid, "MOD_ROOT", mod_root), patch.object(staid, "RESEARCH_ROOT", research):
+                staid.generate_threat_response_artifacts()
+                economy_path = mod_root / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
+                economy_path.parent.mkdir(parents=True)
+                economy_path.write_text(economic_plan_text(), encoding="utf-8")
+                self.assertEqual(staid.validate_threat_response_contract(mod_root), [])
+                events_path = mod_root / "events" / "zzz_staid_threat_response_events.txt"
+                events_path.write_text(events_path.read_text(encoding="utf-8") + "\ndeclare_war = from\n", encoding="utf-8")
+                errors = staid.validate_threat_response_contract(mod_root)
+        self.assertIn("forbidden V1 effect: declare_war", "\n".join(errors))
 
 
 class PatchValidationTests(unittest.TestCase):

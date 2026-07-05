@@ -29,7 +29,7 @@
     }
   ],
   "director_delta_status": "expected_only",
-  "launch_surface": "irony_launcher",
+  "launch_surface": "direct_executable_probe",
   "main_menu_evidence": "manual main-menu proof markers recorded for baseline_without_director, with_director",
   "main_menu_missing_modes": [],
   "main_menu_proof_path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\research\\stellar-ai\\stellar-ai-director-main-menu-proof-2026-07-04.json",

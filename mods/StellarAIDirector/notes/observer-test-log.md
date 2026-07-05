@@ -21,15 +21,23 @@ Selected collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary 
 - War interruption behavior: pending.
 - Starbase defense investment: pending.
 
+## Threat-Response Checkpoints
+
+- Classified aggressive war deterministic contract: covered by generated tests and validator.
+- Threat-response generated files emitted after 2026-07-05 implementation: covered by file audit and validator.
+- Unknown/modded war goal inertness: covered by classification data, tests, and validator.
+- No forced wars, join-war behavior, or punitive CBs: covered by forbidden-effect tests and validator.
+- Runtime launch observation: intentionally out of scope for this deterministic implementation goal.
+
 ## Results
 
 Short Irony-launched save summary: `stellar-ai-director-observer-smoke-save-summary-2026-07-04.md`.
 
-- Save date: 2202.01.01.
+- Save date: 2202.07.01.
 - Director listed in save mod list: True.
 - Short smoke passes: True.
-- Player metrics: `{"economy_power": 540.27566, "empire_size": 51.0, "fleet_size": 15.0, "navy_coverage": 0.58823, "num_sapient_pops": 5261.0, "tech_power": 277.5, "used_naval_capacity": 15.0}`.
-- Player monthly income: `{"alloys": 15.2, "consumer_goods": 62.602, "energy": 166.347, "engineering_research": 16.728, "food": 119.737, "influence": 4.176, "minerals": 68.246, "physics_research": 21.228, "society_research": 16.728, "trade": 151.633, "unity": 43.527}`.
+- Player metrics: `{"economy_power": 540.44128, "empire_size": 51.0, "fleet_size": 15.0, "navy_coverage": 0.58823, "num_sapient_pops": 5276.0, "tech_power": 277.5, "used_naval_capacity": 15.0}`.
+- Player monthly income: `{"alloys": 15.2, "consumer_goods": 62.602, "energy": 166.524, "engineering_research": 16.728, "food": 119.737, "influence": 4.176, "minerals": 68.246, "physics_research": 21.228, "society_research": 16.728, "trade": 152.165, "unity": 43.527}`.
 - High-ROI path observed: False.
 
-This short-smoke evidence proves the Irony-launched playset saved with Stellar AI Director loaded and no immediate early economy collapse in the parsed player country. It does not complete P15 by itself because the plan still requires observer-mode evidence that at least one AI reaches a useful high-ROI path.
+This short-smoke evidence is retained as historical context. P15 runtime/observer validation is superseded for this deterministic implementation goal; generated artifacts, tests, validators, and indexed evidence are the acceptance gate.

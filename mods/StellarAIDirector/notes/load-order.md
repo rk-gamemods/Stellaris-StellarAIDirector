@@ -1,7 +1,7 @@
 # Stellar AI Director Load Order
 
 Selected collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-Required parent maximum load position: 112
+Required parent maximum load position: 114
 
 ## Required Position
 
@@ -18,11 +18,11 @@ Required parent maximum load position: 112
 
 | mod | present | load position |
 | --- | --- | ---: |
-| Stellar AI | True | 112 |
-| Gigastructural Engineering & More (4.4) | True | 59 |
-| NSC3 | True | 68 |
-| Extra Ship Components NEXT | True | 67 |
-| Starbase Extended 3.0 | True | 69 |
+| Stellar AI | True | 114 |
+| Gigastructural Engineering & More (4.4) | True | 61 |
+| NSC3 | True | 70 |
+| Extra Ship Components NEXT | True | 69 |
+| Starbase Extended 3.0 | True | 71 |
 
 ## Current Intentional Supersession
 

@@ -15,23 +15,25 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |
 | planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |
 | ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |
+| threat-response values/triggers | `common/script_values/zzz_staid_threat_response_values.txt`, `common/scripted_triggers/zzz_staid_threat_response_triggers.txt` | low | additive `staid_tr_` namespace with unknown-war-goal inertness and foreign-affairs safety gates |
+| threat-response opinions/events | `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`, `common/on_actions/zzz_staid_threat_response_on_actions.txt`, `events/zzz_staid_threat_response_events.txt` | medium | event-dispatched opinion/readiness response gated by attacker leader, awareness, participant exclusion, and forbidden-effect validation |
 | integration surface ledger | `research/stellar-ai-director-integration-surfaces-2026-07-04.csv` | low | parsed source-object evidence for P6-P11 minimum interventions |
 
 ## Selected Playset
 
 - Collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-- Mod count: 117
+- Mod count: 119
 - Irony patch mod enabled: True
 
 ## Required Parent Detection
 
 | mod | present | load position |
 | --- | --- | ---: |
-| Stellar AI | True | 112 |
-| Gigastructural Engineering & More (4.4) | True | 59 |
-| NSC3 | True | 68 |
-| Extra Ship Components NEXT | True | 67 |
-| Starbase Extended 3.0 | True | 69 |
+| Stellar AI | True | 114 |
+| Gigastructural Engineering & More (4.4) | True | 61 |
+| NSC3 | True | 70 |
+| Extra Ship Components NEXT | True | 69 |
+| Starbase Extended 3.0 | True | 71 |
 
 ## Generated ROI Thresholds
 
@@ -69,6 +71,10 @@ Expanded planet and building capacity is covered in v1 through a safe country-le
 ## NSC3/ESC Design Policy
 
 Direct NSC3/ESC ship and component design overrides are deferred until observer evidence shows parent AI weights cannot use the new hulls or components. The P11 integration audit must have no failed rows; warning rows are tracked as parent-design gaps rather than automatic override targets.
+
+## Threat-Response Policy
+
+The V1 threat-response feature adds observer opinion, timed flags, and a capped third-party defensive-readiness economy subplan for classified observed aggression. `wg_conquest`, `wg_subjugation`, and `wg_humiliation` are the initial allowlist; unknown war goals stay inert until evidence, severity, output expectations, tests, and validator coverage are added. The generated event path must not declare wars, join wars, add casus belli, force `wg_*` dispatch, or override diplomatic actions.
 
 `source_has_ai_weight` records whether the parent mod file had an upstream AI weight. It does not mean the Director has no policy. Director policy is recorded separately as `director_strategy_role`, `director_weight_basis`, `director_build_gate`, `director_surplus_sink_role`, and `director_surplus_sink_priority` in the ROI matrix.
 

@@ -10,6 +10,8 @@ automation in `tools/`.
 ## Current Plans
 
 - [Stellar AI Director V1 Remaining Work](stellar-ai-director-v1-remaining-plan.md)
+- [Stellar AI Director Threat Response Source Plan](stellar-ai-director-threat-response-plan.md)
+- [Stellar AI Director Threat Response Focused Plan Set](stellar-ai-director-threat-response/README.md)
 
 ## Update Rules
 

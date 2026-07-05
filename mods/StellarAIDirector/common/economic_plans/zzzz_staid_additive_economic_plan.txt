@@ -75,6 +75,20 @@ basic_economy_plan = {
 
 	subplan = {
 		scaling = yes
+		set_name = "Stellar AI Director threat readiness reserve"
+		potential = {
+			has_country_flag = staid_tr_defensive_readiness_low
+			staid_tr_foreign_affairs_safe = yes
+		}
+		income = {
+			alloys = 7
+			energy = 6
+		}
+		naval_cap = 40
+	}
+
+	subplan = {
+		scaling = yes
 		set_name = "Stellar AI Director planetary capacity reserve"
 		potential = {
 			staid_planetary_capacity_growth_ready = yes

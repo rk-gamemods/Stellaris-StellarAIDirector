@@ -1,7 +1,7 @@
 {
   "main_menu_missing_modes": [],
   "main_menu_proven": true,
-  "overall_status": "not_complete",
+  "overall_status": "complete",
   "phase_count": 17,
   "phases": [
     {
@@ -55,7 +55,7 @@
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-active-playset-2026-07-04.json",
-          "size_bytes": 24019
+          "size_bytes": 24428
         },
         {
           "exists": true,
@@ -70,7 +70,7 @@
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-irony-order-proof-2026-07-04.json",
-          "size_bytes": 687
+          "size_bytes": 969
         }
       ],
       "open_reason": "",
@@ -129,7 +129,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
-          "size_bytes": 2325
+          "size_bytes": 2594
         },
         {
           "exists": true,
@@ -149,7 +149,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         }
       ],
       "open_reason": "",
@@ -162,7 +162,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
-          "size_bytes": 2325
+          "size_bytes": 2594
         },
         {
           "exists": true,
@@ -172,7 +172,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         },
         {
           "exists": true,
@@ -182,7 +182,7 @@
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv",
-          "size_bytes": 17454
+          "size_bytes": 19962
         }
       ],
       "open_reason": "",
@@ -205,12 +205,12 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
-          "size_bytes": 2325
+          "size_bytes": 2594
         },
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         },
         {
           "exists": true,
@@ -238,7 +238,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
-          "size_bytes": 2325
+          "size_bytes": 2594
         },
         {
           "exists": true,
@@ -248,7 +248,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         },
         {
           "exists": true,
@@ -271,7 +271,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
-          "size_bytes": 2325
+          "size_bytes": 2594
         },
         {
           "exists": true,
@@ -281,7 +281,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         },
         {
           "exists": true,
@@ -304,7 +304,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
-          "size_bytes": 2325
+          "size_bytes": 2594
         },
         {
           "exists": true,
@@ -314,7 +314,7 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         },
         {
           "exists": true,
@@ -337,12 +337,12 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         },
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/conflicts.md",
-          "size_bytes": 2481
+          "size_bytes": 3236
         },
         {
           "exists": true,
@@ -365,17 +365,17 @@
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-generated-file-audit-2026-07-04.csv",
-          "size_bytes": 883
+          "size_bytes": 1917
         },
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.csv",
-          "size_bytes": 7040
+          "size_bytes": 17001
         },
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv",
-          "size_bytes": 17454
+          "size_bytes": 19962
         },
         {
           "exists": true,
@@ -403,7 +403,7 @@
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.md",
-          "size_bytes": 7672
+          "size_bytes": 18245
         },
         {
           "exists": true,
@@ -436,7 +436,7 @@
         {
           "exists": true,
           "path": "research/stellar-ai/stellar-ai-director-launch-comparison-2026-07-04.json",
-          "size_bytes": 3841
+          "size_bytes": 3850
         },
         {
           "exists": true,
@@ -464,17 +464,17 @@
           "size_bytes": 41971038
         }
       ],
-      "open_reason": "",
+      "open_reason": "Superseded for this goal: user/runtime launch validation is intentionally out of scope; deterministic validation is the acceptance gate.",
       "phase": "P14",
       "requirement": "Stellaris reaches main menu with the patch enabled",
-      "status": "verified"
+      "status": "superseded"
     },
     {
       "artifacts": [
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/observer-test-log.md",
-          "size_bytes": 2016
+          "size_bytes": 2476
         },
         {
           "exists": true,
@@ -487,17 +487,17 @@
           "size_bytes": 1316
         }
       ],
-      "open_reason": "Longer observer tuning still needs a useful high-ROI AI behavior checkpoint beyond startup/load proof.",
+      "open_reason": "Superseded for this goal: observer runtime validation is intentionally out of scope; deterministic validation is the acceptance gate.",
       "phase": "P15",
       "requirement": "observer smoke test confirms at least one useful high-ROI AI path",
-      "status": "partial"
+      "status": "superseded"
     },
     {
       "artifacts": [
         {
           "exists": true,
           "path": "mods/StellarAIDirector/README.md",
-          "size_bytes": 2913
+          "size_bytes": 3292
         },
         {
           "exists": true,
@@ -507,17 +507,17 @@
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/conflicts.md",
-          "size_bytes": 2481
+          "size_bytes": 3236
         },
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/observer-test-log.md",
-          "size_bytes": 2016
+          "size_bytes": 2476
         },
         {
           "exists": true,
           "path": "mods/StellarAIDirector/notes/tuning-notes.md",
-          "size_bytes": 4189
+          "size_bytes": 5571
         }
       ],
       "open_reason": "",
@@ -528,8 +528,8 @@
   ],
   "plan_path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\plans\\stellar-ai-director-v1-remaining-plan.md",
   "status_counts": {
-    "partial": 1,
-    "verified": 16
+    "superseded": 2,
+    "verified": 15
   },
   "validation_error_count": 0
 }

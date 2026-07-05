@@ -2,7 +2,7 @@
 
 Generated from preserved baseline and Director-enabled launch logs.
 
-Launch surface: irony_launcher
+Launch surface: direct_executable_probe
 Director delta status: expected_only
 Main menu proven: True
 Main menu evidence: manual main-menu proof markers recorded for baseline_without_director, with_director
@@ -44,6 +44,6 @@ No Director-specific lines found in this log.
 
 ## Current Conclusion
 
-The comparison shows both required main-menu proof markers are present and the Director-specific log delta is limited to expected intentional override lines for the launcher-resolved playset.
+The comparison shows main-menu proof markers and an expected-only Director log delta, but the recorded launch surface is `direct_executable_probe`, not an Irony or launcher-resolved playset launch.
 
-P14 launch validation is satisfied for the preserved baseline and Director-enabled probes; continue with observer testing and longer-run tuning validation.
+Next validation must launch the actual parent playset through Irony or another launcher-resolved playset surface before P14 can be marked complete.
