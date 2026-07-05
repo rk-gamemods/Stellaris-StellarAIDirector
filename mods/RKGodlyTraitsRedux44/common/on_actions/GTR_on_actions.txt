@@ -1,0 +1,26 @@
+on_leader_spawned = {
+	events = {
+		GTR_trait.101
+		GTR_trait.102
+	}
+}
+on_modification_complete = {
+	events = {
+		GTR_trait.103
+	}
+}
+on_ruler_created = {
+	events = {
+		GTR_trait.104
+		GTR_trait.105
+		GTR_trait.107
+		GTR_trait.108
+	}
+}
+
+on_ruler_removed = {
+	events = {
+		GTR_trait.106
+	}
+}
+

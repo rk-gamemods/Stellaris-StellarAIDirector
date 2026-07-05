@@ -1,0 +1,874 @@
+#########Species
+
+GTR_trait_hyper_fertile = {
+	icon = "gfx/interface/icons/traits/trait_hyper_fertile.dds"
+	cost = 5
+	initial = yes
+	modification = yes
+	randomized = no
+	advanced_trait = yes
+	immortal_leaders = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	opposites = { "GTR_trait_super_fertile" "GTR_trait_nano_assemblers" }
+
+	tags = {
+		organic
+		positive
+		pop_growth
+		leader
+		housing
+	}
+	modifier = {
+        logistic_growth_mult = 3.0
+		pop_housing_usage_mult = 0.25
+		planet_building_build_speed_mult = 0.5
+		pop_cat_slave_happiness = -0.2
+		leaders_upkeep_mult = -0.3
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_super_fertile = {
+	icon = "gfx/interface/icons/traits/trait_super_fertile.dds"
+	cost = 3
+	initial = yes
+	modification = yes
+	randomized = no
+	immortal_leaders = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	opposites = { "GTR_trait_hyper_fertile" "GTR_trait_nano_assemblers" }
+
+	modifier = {
+        logistic_growth_mult = 1.0
+		pop_housing_usage_mult = -0.1
+		pop_cat_slave_happiness = -0.2
+		leaders_upkeep_mult = -0.1
+	}
+
+	tags = {
+		housing
+		leader
+		pop_growth
+		positive
+		organic
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_nano_assemblers = {
+	icon = "gfx/interface/icons/traits/trait_hyper_fertile.dds"
+	cost = 3
+	initial = yes
+	modification = yes
+	randomized = no
+	immortal_leaders = yes
+	allowed_archetypes = { MACHINE ROBOT }
+	opposites = { "GTR_trait_super_fertile" "GTR_trait_hyper_fertile" }
+
+	modifier = {
+        planet_pop_assembly_mult = 2.0
+        pop_housing_usage_mult = -0.25
+		negative_leader_traits_species = -3
+		leaders_upkeep_mult = -0.2
+	}
+
+	tags = {
+		housing
+		leader
+		pop_growth
+		positive
+		machine
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_nephalem = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 5
+    initial = no
+	modification = no
+	randomized = no
+	advanced_trait = yes
+	immortal_leaders = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	opposites = { "GTR_trait_godly_species" "GTR_trait_deus_machina" "GTR_trait_borg" "GTR_trait_divine_ancestors" "GTR_trait_demigods"}
+	
+    modifier = {
+		pop_bonus_workforce_mult = 2.0
+		pop_happiness = 1.0
+		pop_government_ethic_attraction = 0.5
+        logistic_growth_mult = 2.0
+        pop_housing_usage_mult = -0.50
+        pop_environment_tolerance = 1.0
+		army_health = 2.0
+        army_morale = 2.0
+		army_morale_damage_mult = 1.0
+        army_defense_damage_mult = 1.0
+        army_damage_mult = 0.50
+		army_starting_experience_add = 10000
+		species_leader_exp_gain = 10.0
+        leader_skill_levels = 10
+		negative_leader_traits_species = -6
+		leaders_upkeep_mult = -0.6
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_godly_species = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 5
+    initial = yes
+	modification = yes
+	randomized = no
+	advanced_trait = yes
+	immortal_leaders = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	opposites = { "GTR_trait_nephalem" "GTR_trait_deus_machina" "GTR_trait_borg" "GTR_trait_divine_ancestors" "GTR_trait_demigods"}
+	
+    modifier = {
+		pop_bonus_workforce_mult = 1.0
+		pop_happiness = 0.5
+		pop_government_ethic_attraction = 0.5
+        logistic_growth_mult = 1.0
+        pop_housing_usage_mult = -0.25
+        pop_environment_tolerance = 0.5
+		army_health = 1.0
+        army_morale = 1.0
+		army_morale_damage_mult = 0.5
+        army_defense_damage_mult = 0.5
+        army_damage_mult = 0.25
+		army_starting_experience_add = 1000
+		species_leader_exp_gain = 5.0
+        leader_skill_levels = 10
+		negative_leader_traits_species = -3
+		leaders_upkeep_mult = -0.3
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_demigods = {
+	icon = "gfx/interface/icons/traits/trait_demigod.dds"
+	cost = 3
+    initial = yes
+	modification = yes
+	randomized = no
+	allowed_archetypes = { BIOLOGICAL LITHOID MACHINE ROBOT }
+	opposites = { "GTR_trait_nephalem" "GTR_trait_godly_species" "GTR_trait_deus_machina" "GTR_trait_borg" "GTR_trait_divine_ancestors" }
+	
+    modifier = {
+		pop_bonus_workforce_mult = 0.5
+		pop_happiness = 0.20
+		pop_government_ethic_attraction = 0.5
+        logistic_growth_mult = 0.50
+        pop_housing_usage_mult = -0.10
+        pop_environment_tolerance = 0.15
+		army_health = 0.5
+        army_morale = 0.5
+		army_morale_damage_mult = 0.20
+        army_defense_damage_mult = 0.20
+        army_damage_mult = 0.10
+		army_starting_experience_add = 500
+		species_leader_exp_gain = 2.0
+        leader_lifespan_add = 300
+        leader_skill_levels = 5
+		negative_leader_traits_species = -2
+		leaders_upkeep_mult = -0.2
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_divine_ancestors = {
+	icon = "gfx/interface/icons/traits/trait_ancient.dds"
+	
+	cost = 3
+    initial = yes
+	modification = yes
+	randomized = no
+	opposites = { "GTR_trait_nephalem" "GTR_trait_godly_species" "GTR_trait_deus_machina" "GTR_trait_borg" "GTR_trait_demigods" }
+
+	allowed_archetypes = { BIOLOGICAL LITHOID MACHINE ROBOT }
+	
+    modifier = {
+		pop_bonus_workforce_mult = 0.2
+		pop_happiness = 0.10
+		pop_government_ethic_attraction = 0.5
+        pop_environment_tolerance = 0.10
+		army_health = 0.25
+        army_morale = 0.25
+		army_morale_damage_mult = 0.10
+        army_defense_damage_mult = 0.10
+        army_damage_mult = 0.10
+        army_starting_experience_add = 200
+		species_leader_exp_gain = 1.0
+        leader_lifespan_add = 100
+        leader_skill_levels = 2
+		negative_leader_traits_species = -1
+		leaders_upkeep_mult = -0.1
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_everlasting = {
+	icon = "gfx/interface/icons/traits/trait_ancient.dds"
+	cost = 3
+	initial = yes
+	modification = yes
+	randomized = no
+	advanced_trait = yes
+	immortal_leaders = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID MACHINE ROBOT }
+	opposites = { "trait_venerable" "trait_enduring" "trait_fleeting" "GTR_trait_ancient_hive" "GTR_trait_ancient" }
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_ancient = {
+	icon = "gfx/interface/icons/traits/trait_ancient.dds"
+	cost = 5
+	initial = yes
+	modification = no
+	randomized = no
+	immortal_leaders = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	opposites = { "trait_venerable" "trait_enduring" "trait_fleeting" "GTR_trait_ancient_hive" "GTR_trait_everlasting" }
+	
+	modifier = {
+		leader_skill_levels = 10
+		leaders_upkeep_mult = 1
+		species_leader_exp_gain = -0.25
+		negative_leader_traits_species = -2
+	}
+	
+	leader_age_min = 100
+	leader_age_max = 10000
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_ancient_hive = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 0
+	initial = no
+	randomized = no
+	modification = no
+	immortal_leaders = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	opposites = { "trait_venerable" "trait_enduring" "trait_fleeting" "GTR_trait_ancient" "GTR_trait_everlasting" }
+
+	modifier = {
+		leader_skill_levels = 10
+		leaders_upkeep_mult = 1
+		species_leader_exp_gain = -0.25
+		negative_leader_traits_species = -2
+		leaders_upkeep_mult = -0.2
+	}
+	
+	leader_age_min = 100
+	leader_age_max = 10000
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_deus_machina = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 5
+    initial = yes
+	modification = yes
+	randomized = no
+	immortal_leaders = yes
+	allowed_archetypes = { ROBOT MACHINE }
+	opposites = { "GTR_trait_nephalem" "GTR_trait_godly_species" "GTR_trait_borg" "GTR_trait_divine_ancestors" "GTR_trait_demigods"}
+
+	
+    modifier = {
+		# 1.75x Elite, 2.5x specialist, 1.75x worker
+		pop_bonus_workforce_mult = 0.75
+		specialist_and_complex_drone_cat_bonus_workforce_mult = 0.75
+		planet_pop_assembly_mult = 1.0
+        pop_housing_usage_mult = -0.30
+        pop_environment_tolerance = 0.50
+        army_health = 1.0
+        army_morale = 1.0
+		army_morale_damage_mult = 1.0
+        army_defense_damage_mult = 1.0
+        army_damage_mult = 0.5
+        army_starting_experience_add = 1000
+		species_leader_exp_gain = 5.0
+        leader_skill_levels = 10
+		negative_leader_traits_species = -2
+		leaders_upkeep_mult = -0.2
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+GTR_trait_borg = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 5
+    initial = yes
+	modification = yes
+	randomized = no
+	immortal_leaders = yes
+	allowed_archetypes = { ROBOT MACHINE }
+	opposites = { "GTR_trait_nephalem" "GTR_trait_godly_species" "GTR_trait_deus_machina" "GTR_trait_divine_ancestors" "GTR_trait_demigods"}
+	
+    modifier = {
+		pop_bonus_workforce_mult = 1.0
+		planet_pops_food_upkeep_mult = -0.25
+		army_health = 1.0
+        army_morale = 1.0
+		army_morale_damage_mult = 1.0
+        army_defense_damage_mult = 1.0
+        army_damage_mult = 0.5
+        army_starting_experience_add = 1000
+		planet_pop_assembly_mult = 0.5
+		logistic_growth_mult = 0.5
+        pop_housing_usage_mult = -0.5
+        pop_environment_tolerance = -0.50
+		species_leader_exp_gain = 2.5
+        leader_skill_levels = 10
+		negative_leader_traits_species = -2
+		leaders_upkeep_mult = -0.2
+	}
+
+	ai_weight = {
+		weight = 0
+	}
+}
+
+trait_4_point = {
+	icon = "gfx/interface/icons/traits/trait_4_extra.dds"
+	cost = -4
+	initial = yes
+	modification = yes
+	randomized = no
+	advanced_trait = no
+	allowed_archetypes = { BIOLOGICAL LITHOID ROBOT MACHINE }
+	
+	ai_weight = { 
+		weight = 0
+	} 
+}
+
+trait_8_point = {
+	icon = "gfx/interface/icons/traits/trait_8_extra.dds"
+	cost = -8
+	initial = yes
+	modification = yes
+	randomized = no
+	advanced_trait = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID ROBOT MACHINE }
+	
+	ai_weight = { 
+		weight = 0
+	} 
+}
+
+trait_16_point = {
+	icon = "gfx/interface/icons/traits/trait_16_extra.dds"
+	cost = -16
+	initial = yes
+	modification = yes
+	randomized = no
+	advanced_trait = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID ROBOT MACHINE }
+	
+	ai_weight = { 
+		weight = 0
+	} 
+}
+
+trait_32_point = {
+	icon = "gfx/interface/icons/traits/trait_32_extra.dds"
+	cost = -32
+	initial = yes
+	modification = no
+	randomized = no
+	advanced_trait = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID ROBOT MACHINE }
+
+	ai_weight = { 
+		weight = 0
+	} 
+}
+
+##############Commanders
+
+leader_trait_commander_godly = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 0
+	modification = no
+	planet_modifier = {
+		planet_defense_armies_add = 20
+		job_soldier_per_pop = 0.10
+		job_researcher_naval_cap_add = 4
+		planet_soldiers_engineering_research_produces_add = 1
+		planet_orbital_bombardment_damage = -0.5
+		army_defense_damage_mult = 1
+		planet_army_build_speed_mult = 1
+		army_starting_experience_add = 1000
+	}
+	sector_modifier = {
+		planet_defense_armies_add = 10
+		job_soldier_per_pop = 0.05
+		job_researcher_naval_cap_add = 2
+		planet_soldiers_engineering_research_produces_add = 0.5
+		planet_orbital_bombardment_damage = -0.25
+		army_defense_damage_mult = 0.5
+		planet_army_build_speed_mult = 0.2
+		army_starting_experience_add = 500
+	}
+	fleet_modifier = {
+		ship_experience_gain_mult = 1.0
+        ship_fire_rate_mult = 0.25
+		ship_weapon_damage = 0.25
+		ship_weapon_range_mult = 0.25
+        ship_speed_mult = 0.5
+		ship_evasion_mult = 0.25
+		ship_tracking_mult = 0.25
+	}
+	army_modifier = {
+		army_experience_gain_mult = 1.0
+        army_damage_mult = 0.25
+        army_morale_damage_mult = 0.50
+        army_morale = 0.20
+        army_health = 0.50
+		army_disengage_chance_mult = 0.25
+	}
+	councilor_modifier = {
+		shipclass_military_station_damage_mult = 0.5
+		shipclass_military_station_hull_mult = 0.5
+		monthly_loyalty_from_subjects = 1
+		army_experience_gain_mult = 1
+		planet_army_build_speed_mult = 1
+		armies_cost_mult = -0.5
+		envoy_improve_relations_mult = 1
+		intel_decryption_add = 2
+		intel_encryption_add = 2
+		planet_defense_armies_add = 2
+		planet_orbital_bombardment_damage = -0.2
+		spy_network_daily_value_mult = 2
+		operations_cost_mult = -0.5
+		envoys_add = 2
+	}
+	leader_class = { commander }
+	initial = no
+	randomized = no
+}
+
+leader_trait_commander_demigod = {
+	icon = "gfx/interface/icons/traits/trait_demigod.dds"
+	cost = 0
+	modification = no
+	planet_modifier = {
+		planet_defense_armies_add = 10
+		job_soldier_per_pop = 0.05
+		job_researcher_naval_cap_add = 2
+		planet_soldiers_engineering_research_produces_add = 0.5
+		planet_orbital_bombardment_damage = -0.25
+		army_defense_damage_mult = 0.5
+		planet_army_build_speed_mult = 0.5
+		army_starting_experience_add = 500
+	}
+	sector_modifier = {
+		planet_defense_armies_add = 5
+		job_soldier_per_pop = 0.025
+		job_researcher_naval_cap_add = 1
+		planet_soldiers_engineering_research_produces_add = 0.25
+		planet_orbital_bombardment_damage = -0.1
+		army_defense_damage_mult = 0.25
+		planet_army_build_speed_mult = 0.1
+		army_starting_experience_add = 250
+	}
+	fleet_modifier = {
+		ship_experience_gain_mult = 0.5
+        ship_fire_rate_mult = 0.10
+		ship_weapon_damage = 0.10
+		ship_weapon_range_mult = 0.10
+        ship_speed_mult = 0.25
+		ship_evasion_mult = 0.10
+		ship_tracking_mult = 0.10
+	}
+	army_modifier = {
+		army_experience_gain_mult = 0.5
+        army_damage_mult = 0.10
+        army_morale_damage_mult = 0.25
+        army_morale = 0.10
+        army_health = 0.25
+		army_disengage_chance_mult = 0.10
+	}
+	councilor_modifier = {
+		shipclass_military_station_damage_mult = 0.25
+		shipclass_military_station_hull_mult = 0.25
+		monthly_loyalty_from_subjects = 0.5
+		army_experience_gain_mult = 0.5
+		planet_army_build_speed_mult = 0.5
+		armies_cost_mult = -0.25
+		envoy_improve_relations_mult = 0.5
+		intel_decryption_add = 1
+		intel_encryption_add = 1
+		planet_defense_armies_add = 1
+		planet_orbital_bombardment_damage = -0.1
+		spy_network_daily_value_mult = 1
+		operations_cost_mult = -0.25
+		envoys_add = 1
+	}
+	leader_class = { commander }
+	initial = no
+	randomized = no
+}
+
+############Officials
+
+leader_trait_official_godly = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 0
+	modification = no
+	modifier = {
+		planet_jobs_engineering_research_produces_mult = 0.25
+		planet_jobs_physics_research_produces_mult = 0.25
+		planet_jobs_society_research_produces_mult = 0.25
+        planet_districts_cost_mult = -0.25
+		planet_buildings_cost_mult = -0.25
+		planet_building_build_speed_mult = 1.0
+		deposit_blockers_cost_mult = -0.25
+		planet_clear_blocker_time_mult = -0.50
+        planet_stability_add = 25
+		planet_crime_add = -25
+		planet_army_build_speed_mult = 0.25
+		pop_happiness = 0.25
+		logistic_growth_mult = 0.2
+		planet_pop_assembly_mult = 0.2
+	}
+	councilor_modifier = {
+		ship_colonizer_cost_mult = -0.5
+		planet_colony_development_speed_mult = 0.3
+		planet_resettlement_unemployed_mult = 1
+		planet_jobs_produces_mult = 0.3
+	}
+	leader_class = { official }
+	initial = no
+	randomized = no
+}
+
+leader_trait_official_demigod = {
+	icon = "gfx/interface/icons/traits/trait_demigod.dds"
+	cost = 0
+	modification = no
+	modifier = {
+		planet_jobs_engineering_research_produces_mult = 0.10
+		planet_jobs_physics_research_produces_mult = 0.10
+		planet_jobs_society_research_produces_mult = 0.10
+        planet_districts_cost_mult = -0.10
+		planet_buildings_cost_mult = -0.10
+		planet_building_build_speed_mult = 0.50
+		deposit_blockers_cost_mult = -0.10
+		planet_clear_blocker_time_mult = -0.25
+        planet_stability_add = 10
+		planet_crime_add = -10
+		planet_army_build_speed_mult = 0.10
+		pop_happiness = 0.10
+		logistic_growth_mult = 0.1
+		planet_pop_assembly_mult = 0.1
+	}
+	councilor_modifier = {
+		ship_colonizer_cost_mult = -0.25
+		planet_colony_development_speed_mult = 0.15
+		planet_resettlement_unemployed_mult = 0.5
+		planet_jobs_produces_mult = 0.15
+	}
+	leader_class = { official }
+	initial = no
+	randomized = no
+}
+
+###############Scientists
+
+leader_trait_scientist_godly = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	cost = 0
+	modification = no
+	modifier = {
+        science_ship_survey_speed = 0.50
+		ship_anomaly_research_speed_mult = 0.50
+		ship_anomaly_generation_chance_mult = 0.50
+		ship_disengage_chance_mult = 1.0
+        ship_hull_mult = 2.5
+		ship_shield_mult = 2.5
+		ship_armor_mult = 2.5
+		ship_speed_mult = 1.0
+	}
+	councilor_modifier = {
+		all_technology_research_speed = 0.25
+		num_tech_alternatives_add = 1
+		species_leader_exp_gain = 0.3
+		starbase_shipyard_build_speed_mult = 0.5
+		ship_archaeological_site_excavation_speed_mult = 0.5
+		station_gatherers_produces_mult = 0.10
+		station_gatherers_cost_mult = -0.20
+		starbase_modules_cost_mult = -0.2
+		starbase_upgrade_cost_mult = -0.1
+		starbase_outpost_cost_mult = -0.1
+		country_starbase_influence_cost_mult = -0.1
+		scientist_exp_gain = 0.3
+		ship_archaeological_site_clues_add = 2
+	}
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.1
+		planet_jobs_society_research_produces_mult = 0.1
+		planet_jobs_engineering_research_produces_mult = 0.1
+		planet_amenities_add = 2000
+	}
+	sector_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.025
+		planet_jobs_society_research_produces_mult = 0.025
+		planet_jobs_engineering_research_produces_mult = 0.025
+	}
+	triggered_planet_modifier = {
+		potential = {
+			trait_is_wilderness_check = no
+		}
+		planet_miners_minerals_produces_add = 0.5
+	}
+	triggered_planet_modifier = {
+		potential = {
+			trait_is_wilderness_check = yes
+		}
+		planet_jobs_minerals_produces_mult = 0.05
+	}
+	triggered_sector_modifier = {
+		potential = {
+			trait_is_wilderness_check = no
+		}
+		planet_miners_minerals_produces_add = 0.25
+	}
+	triggered_sector_modifier = {
+		potential = {
+			trait_is_wilderness_check = yes
+		}
+		planet_jobs_minerals_produces_mult = 0.025
+	}
+	
+	leader_class = { scientist }
+	initial = no
+	randomized = no
+	
+	ai_categories = {
+		physics
+		society
+		engineering
+	}
+}
+
+leader_trait_scientist_demigod = {
+	icon = "gfx/interface/icons/traits/trait_demigod.dds"
+	cost = 0
+	modification = no
+	modifier = {
+        science_ship_survey_speed = 0.25
+		ship_anomaly_research_speed_mult = 0.25
+		ship_anomaly_generation_chance_mult = 0.25
+		ship_disengage_chance_mult = 0.5
+        ship_hull_mult = 1.5
+		ship_shield_mult = 1.5
+		ship_armor_mult = 1.5
+		ship_speed_mult = 0.5
+	}
+	councilor_modifier = {
+		all_technology_research_speed = 0.15
+		species_leader_exp_gain = 0.15
+		starbase_shipyard_build_speed_mult = 0.25
+		ship_archaeological_site_excavation_speed_mult = 0.25
+		station_gatherers_produces_mult = 0.05
+		station_gatherers_cost_mult = -0.10
+		starbase_modules_cost_mult = -0.2
+		starbase_upgrade_cost_mult = -0.05
+		starbase_outpost_cost_mult = -0.05
+		country_starbase_influence_cost_mult = -0.05
+		scientist_exp_gain = 0.15
+		ship_archaeological_site_clues_add = 1
+	}
+	planet_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.05
+		planet_jobs_society_research_produces_mult = 0.05
+		planet_jobs_engineering_research_produces_mult = 0.05
+		planet_amenities_add = 1000
+	}
+	sector_modifier = {
+		planet_jobs_physics_research_produces_mult = 0.025
+		planet_jobs_society_research_produces_mult = 0.025
+		planet_jobs_engineering_research_produces_mult = 0.025
+	}
+	triggered_planet_modifier = {
+		potential = {
+			trait_is_wilderness_check = no
+		}
+		planet_miners_minerals_produces_add = 0.25
+	}
+	triggered_planet_modifier = {
+		potential = {
+			trait_is_wilderness_check = yes
+		}
+		planet_jobs_minerals_produces_mult = 0.025
+	}
+	triggered_sector_modifier = {
+		potential = {
+			trait_is_wilderness_check = no
+		}
+		planet_miners_minerals_produces_add = 0.125
+	}
+	triggered_sector_modifier = {
+		potential = {
+			trait_is_wilderness_check = yes
+		}
+		planet_jobs_minerals_produces_mult = 0.012
+	}
+	leader_class = { scientist }
+	initial = no
+	randomized = no
+	
+	ai_categories = {
+		physics
+		society
+		engineering
+	}
+}
+
+################Ruler
+
+leader_trait_ruler_godly = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	force_councilor_trait = yes
+	councilor_modifier = {
+		all_technology_research_speed = 0.20
+		starbase_upgrade_cost_mult = -0.50
+        starbase_upgrade_speed_mult = 0.50
+        starbase_shipyard_build_cost_mult = -0.50
+        country_ship_upgrade_cost_mult = -0.50
+		terraform_speed_mult = 1.00
+		terraforming_cost_mult = -0.50
+		species_leader_exp_gain = 1.00
+		station_researchers_produces_mult = 1.00
+		num_tech_alternatives_add = 2
+		planet_colony_development_speed_mult = 1.0
+		armies_cost_mult = -0.25
+        pop_government_ethic_attraction = 0.25
+		country_base_influence_produces_add = 1.0
+		country_subject_acceptance_add = 0.25
+		country_command_limit_add = 200
+		country_naval_cap_mult = 0.25
+	}
+	leader_class = { official commander scientist }
+	initial = no
+	randomized = no
+}
+
+leader_trait_ruler_demigod = {
+	icon = "gfx/interface/icons/traits/trait_demigod.dds"
+	force_councilor_trait = yes
+	councilor_modifier = {
+		all_technology_research_speed = 0.10
+		starbase_upgrade_cost_mult = -0.25
+        starbase_upgrade_speed_mult = 0.25
+        starbase_shipyard_build_cost_mult = -0.25
+        country_ship_upgrade_cost_mult = -0.25
+		terraform_speed_mult = 0.50
+		terraforming_cost_mult = -0.25
+		species_leader_exp_gain = 0.50
+		station_researchers_produces_mult = 0.50
+		num_tech_alternatives_add = 1
+		planet_colony_development_speed_mult = 0.5
+		armies_cost_mult = -0.10
+        pop_government_ethic_attraction = 0.10
+		country_base_influence_produces_add = 0.5
+		country_subject_acceptance_add = 0.10
+		country_command_limit_add = 100
+		country_naval_cap_mult = 0.10
+	}
+	leader_class = { official commander scientist }
+	initial = no
+	randomized = no
+}
+
+leader_trait_ruler_godly_nexus = {
+	icon = "gfx/interface/icons/traits/trait_god.dds"
+	force_councilor_trait = yes
+	councilor_modifier = {
+		all_technology_research_speed = 0.20
+		starbase_upgrade_cost_mult = -0.50
+        starbase_upgrade_speed_mult = 0.50
+        starbase_shipyard_build_cost_mult = -0.50
+        country_ship_upgrade_cost_mult = -0.50
+		terraform_speed_mult = 1.00
+		terraforming_cost_mult = -0.50
+		species_leader_exp_gain = 1.00
+		station_researchers_produces_mult = 1.00
+		num_tech_alternatives_add = 2
+		planet_colony_development_speed_mult = 1.0
+		armies_cost_mult = -0.25
+        pop_government_ethic_attraction = 0.25
+		country_base_influence_produces_add = 1.0
+		country_subject_acceptance_add = 0.25
+		country_command_limit_add = 200
+		country_naval_cap_mult = 0.25
+	}
+	leader_class = { official commander scientist }
+	initial = no
+	randomized = no
+}
+
+leader_trait_ruler_demigod_nexus = {
+	icon = "gfx/interface/icons/traits/trait_demigod.dds"
+	force_councilor_trait = yes
+	councilor_modifier = {
+		all_technology_research_speed = 0.10
+		starbase_upgrade_cost_mult = -0.25
+        starbase_upgrade_speed_mult = 0.25
+        starbase_shipyard_build_cost_mult = -0.25
+        country_ship_upgrade_cost_mult = -0.25
+		terraform_speed_mult = 0.50
+		terraforming_cost_mult = -0.25
+		species_leader_exp_gain = 0.50
+		station_researchers_produces_mult = 0.50
+		num_tech_alternatives_add = 1
+		planet_colony_development_speed_mult = 0.5
+		armies_cost_mult = -0.10
+        pop_government_ethic_attraction = 0.10
+		country_base_influence_produces_add = 0.5
+		country_subject_acceptance_add = 0.10
+		country_command_limit_add = 100
+		country_naval_cap_mult = 0.10
+	}
+	leader_class = { official commander scientist }
+	initial = no
+	randomized = no
+}

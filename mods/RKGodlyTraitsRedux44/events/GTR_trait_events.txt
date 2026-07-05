@@ -1,0 +1,453 @@
+namespace = GTR_trait
+
+country_event = {
+    id = GTR_trait.101
+    hide_window = yes
+ 	is_triggered_only = yes
+
+    trigger = {
+        from = {
+            species = {
+                OR = {
+                    has_trait = GTR_trait_deus_machina
+                    has_trait = GTR_trait_borg
+                    has_trait = GTR_trait_godly_species
+                    has_trait = GTR_trait_nephalem
+                }
+            }
+            NOR = {
+                has_trait = leader_trait_commander_godly
+                has_trait = leader_trait_official_godly
+                has_trait = leader_trait_scientist_godly
+                has_trait = leader_trait_ruler_godly
+            }
+        }
+    }
+
+    immediate = {
+        from = {
+            if = {
+                limit = { leader_class = commander }
+                add_trait = { 
+					trait = leader_trait_commander_godly 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = official }
+                add_trait = { 
+					trait = leader_trait_official_godly 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = scientist }
+				add_trait = { 
+					trait = leader_trait_scientist_godly 
+					show_message = no 
+				}
+            }
+            set_leader_flag = leader_death_events_blocked
+            set_leader_flag = immune_to_negative_traits
+        }
+	}
+}
+
+country_event = {
+    id = GTR_trait.102
+    hide_window = yes
+ 	is_triggered_only = yes
+
+    trigger = {
+        from = {
+            species = {
+                OR = {
+                    has_trait = GTR_trait_demigods
+                    has_trait = GTR_trait_divine_ancestors
+                }
+            }
+            NOR = {
+                has_trait = leader_trait_commander_demigod
+                has_trait = leader_trait_official_demigod
+                has_trait = leader_trait_scientist_demigod
+                has_trait = leader_trait_ruler_demigod
+            }
+        }
+    }
+    immediate = {
+        from = {
+            if = {
+                limit = { leader_class = commander }
+                add_trait = { 
+					trait = leader_trait_commander_demigod 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = official }
+                add_trait = { 
+					trait = leader_trait_official_demigod 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = scientist }
+				add_trait = { 
+					trait = leader_trait_scientist_demigod 
+					show_message = no 
+				}
+            }
+            set_leader_flag = leader_death_events_blocked
+            set_leader_flag = immune_to_negative_traits
+        }
+	}
+}
+
+country_event = {
+    id = GTR_trait.103
+    hide_window = yes
+ 	is_triggered_only = yes
+
+    immediate = {
+        every_owned_leader = {
+            limit = {
+                species = {
+                    OR = {
+                        has_trait = GTR_trait_demigods
+                        has_trait = GTR_trait_divine_ancestors
+                    }
+                }
+                NOR = {
+                    has_trait = leader_trait_commander_demigod
+                    has_trait = leader_trait_official_demigod
+                    has_trait = leader_trait_scientist_demigod
+                }
+            }
+            if = {
+                limit = { leader_class = commander }
+                add_trait = { 
+					trait = leader_trait_commander_demigod 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = official }
+                add_trait = { 
+					trait = leader_trait_official_demigod 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = scientist }
+				add_trait = { 
+					trait = leader_trait_scientist_demigod 
+					show_message = no 
+				}
+            }
+            set_leader_flag = leader_death_events_blocked
+            set_leader_flag = immune_to_negative_traits
+        }
+        every_pool_leader = {
+            limit = {
+                species = {
+                    OR = {
+                        has_trait = GTR_trait_demigods
+                        has_trait = GTR_trait_divine_ancestors
+                    }
+                }
+                NOR = {
+                    has_trait = leader_trait_commander_demigod
+                    has_trait = leader_trait_official_demigod
+                    has_trait = leader_trait_scientist_demigod
+                }
+            }
+            if = {
+                limit = { leader_class = commander }
+                add_trait = { 
+					trait = leader_trait_commander_demigod 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = official }
+                add_trait = { 
+					trait = leader_trait_official_demigod
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = scientist }
+				add_trait = { 
+					trait = leader_trait_scientist_demigod 
+					show_message = no 
+				}
+            }
+            set_leader_flag = leader_death_events_blocked
+            set_leader_flag = immune_to_negative_traits
+        }
+        every_owned_leader = {
+            limit = {
+                species = {
+                    OR = {
+                        has_trait = GTR_trait_deus_machina
+                        has_trait = GTR_trait_borg
+                        has_trait = GTR_trait_godly_species
+                        has_trait = GTR_trait_nephalem
+                    }
+                }
+                NOR = {
+                    has_trait = leader_trait_commander_godly
+                    has_trait = leader_trait_official_godly
+                    has_trait = leader_trait_scientist_godly
+                }
+            }
+            if = {
+                limit = { leader_class = commander }
+                add_trait = { 
+					trait = leader_trait_commander_godly 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = official }
+                add_trait = { 
+					trait = leader_trait_official_godly 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = scientist }
+				add_trait = { 
+					trait = leader_trait_scientist_godly 
+					show_message = no 
+				}
+            }
+            set_leader_flag = leader_death_events_blocked
+            set_leader_flag = immune_to_negative_traits
+        }
+        every_pool_leader = {
+            limit = {
+                species = {
+                    OR = {
+                        has_trait = GTR_trait_deus_machina
+                        has_trait = GTR_trait_borg
+                        has_trait = GTR_trait_godly_species
+                        has_trait = GTR_trait_nephalem
+                    }
+                }
+                NOR = {
+                    has_trait = leader_trait_commander_godly
+                    has_trait = leader_trait_official_godly
+                    has_trait = leader_trait_scientist_godly
+                }
+            }
+            if = {
+                limit = { leader_class = commander }
+                add_trait = { 
+					trait = leader_trait_commander_godly 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = official }
+                add_trait = { 
+					trait = leader_trait_official_godly 
+					show_message = no 
+				}
+            }
+            if = {
+                limit = { leader_class = scientist }
+				add_trait = { 
+					trait = leader_trait_scientist_godly 
+					show_message = no 
+				}
+            }
+            set_leader_flag = leader_death_events_blocked
+            set_leader_flag = immune_to_negative_traits
+        }
+    }
+}
+
+country_event = {
+    id = GTR_trait.104
+    hide_window = yes
+ 	is_triggered_only = yes
+
+    
+    trigger = {
+        from = {
+            species = {
+                OR = {
+                    has_trait = GTR_trait_deus_machina
+                    has_trait = GTR_trait_borg
+                    has_trait = GTR_trait_godly_species
+                    has_trait = GTR_trait_nephalem
+                }
+            }
+            is_ruler = yes
+            NOR = {
+                has_trait = leader_trait_ruler_godly
+                has_trait = leader_trait_ruler_godly_nexus
+            }
+        }
+    }
+    immediate = {
+        
+        if = {
+            limit = {
+                NOR = {
+                    has_authority = auth_hive_mind
+                    has_authority = auth_machine_intelligence
+                }
+                from = {
+                    add_trait = { 
+					trait = leader_trait_ruler_godly 
+					show_message = no 
+				}
+                    set_leader_flag = leader_death_events_blocked
+                    set_leader_flag = immune_to_negative_traits
+                }
+            }
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_authority = auth_hive_mind
+                    has_authority = auth_machine_intelligence
+                }
+                from = { 
+                add_trait = { 
+					trait = leader_trait_ruler_godly_nexus 
+					show_message = no 
+				}
+                }
+            }
+        }
+	}
+}
+
+country_event = {
+    id = GTR_trait.105
+    hide_window = yes
+ 	is_triggered_only = yes
+
+    
+    trigger = {
+        from = {
+            species = {
+                OR = {
+                    has_trait = GTR_trait_demigods
+                    has_trait = GTR_trait_divine_ancestors
+                }
+            }
+            is_ruler = yes
+            NOR = {
+                has_trait = leader_trait_ruler_demigod
+                has_trait = leader_trait_ruler_demigod_nexus
+            }
+        }
+    }
+    immediate = {
+        from = {
+            add_trait = { 
+					trait = leader_trait_ruler_demigod 
+					show_message = no 
+				}
+        }
+        if = {
+            limit = {
+                OR = {
+                    has_authority = auth_hive_mind
+                    has_authority = auth_machine_intelligence
+                }
+                from = { is_ruler = yes }
+            }
+            from = { 
+                add_trait = { 
+					trait = leader_trait_ruler_demigod_nexus 
+					show_message = no 
+				}
+            }
+        }
+	}
+}
+country_event = {
+    id = GTR_trait.106
+    hide_window = yes
+ 	is_triggered_only = yes
+    immediate = {
+        from = {
+            if = {
+                limit = { has_trait = leader_trait_ruler_demigod }
+                remove_trait = leader_trait_ruler_demigod
+            }
+            if = {
+                limit = { has_trait = leader_trait_ruler_godly }
+                remove_trait = leader_trait_ruler_godly
+            }
+        }
+	}
+}
+
+country_event = {
+    id = GTR_trait.107
+    hide_window = yes
+ 	is_triggered_only = yes
+
+    trigger = {
+        from = {
+            species = {
+                OR = {
+                    has_trait = GTR_trait_demigods
+                    has_trait = GTR_trait_divine_ancestors
+                }
+            }
+            NOR = {
+                has_trait = leader_trait_ruler_demigod
+                has_trait = leader_trait_ruler_demigod_nexus
+            }
+        }
+    }
+
+    immediate = {
+        ruler = {
+            add_trait = { 
+					trait = leader_trait_ruler_demigod_nexus 
+					show_message = no 
+				}
+        }
+	}
+}
+
+country_event = {
+    id = GTR_trait.108
+    hide_window = yes
+ 	is_triggered_only = yes
+
+    trigger = {
+        from = {
+            species = {
+                OR = {
+                    has_trait = GTR_trait_deus_machina
+                    has_trait = GTR_trait_borg
+                    has_trait = GTR_trait_godly_species
+                    has_trait = GTR_trait_nephalem
+                }
+            }
+            NOR = {
+                has_trait = leader_trait_ruler_godly
+                has_trait = leader_trait_ruler_godly_nexus
+            }
+        }
+    }
+
+    immediate = {
+        ruler = {
+            add_trait = { 
+					trait = leader_trait_ruler_godly_nexus 
+					show_message = no 
+				}
+        }
+	}
+}
+

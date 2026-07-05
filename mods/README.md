@@ -31,6 +31,7 @@ The attached research bundle includes a starter skeleton at `research/stellaris-
 - `StellarAIDirector/` - AI budget/priority patch for the Irony playset.
 - `RKImmortalLeadersTrait/` - local 4.4 replacement for the old Immortal Leaders Trait mod.
 - `RKCheatTraits44/` - local 4.4 replacement for udk Cheat Traits; use this for effectively unlimited custom empire trait points/picks.
+- `RKGodlyTraitsRedux44/` - local 4.4 compatibility copy of Godly Traits Redux 4.0 with powerful species and leader traits.
 - `RKMoreTraitPoints/` - local 4.4 replacement for More Trait Points; do not stack with other species-archetype trait-point mods.
 - `RKMilitusExtraTraitPicks/` - local 4.4 replacement for Militus' Extra Trait Points; do not stack with other species-archetype trait-point mods.
 - `RKThreeCivicMoreTraitPointsPicks/` - local 4.4 replacement for 3 Civic Points + More Trait Points/Picks; do not stack with other species-archetype trait-point mods.

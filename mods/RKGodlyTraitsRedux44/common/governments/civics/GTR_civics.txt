@@ -1,0 +1,75 @@
+GTR_extra_traits_4 = {						
+	icon = "gfx/interface/icons/traits/trait_4_extra.dds"
+
+	modification = no
+	pickable_at_start = yes
+	random_weight = {
+		base = 0
+		modifier = {
+			factor = 0
+		}
+	}
+	modifier = { 
+        BIOLOGICAL_species_trait_picks_add = 4
+		LITHOID_species_trait_picks_add = 4
+		MACHINE_species_trait_picks_add = 4
+		ROBOT_species_trait_picks_add = 4
+	}
+}
+
+GTR_extra_traits_8 = {						
+	icon = "gfx/interface/icons/traits/trait_8_extra.dds"
+
+	modification = no
+	pickable_at_start = yes
+	random_weight = {
+		base = 0
+		modifier = {
+			factor = 0
+		}
+	}
+	modifier = { 
+        BIOLOGICAL_species_trait_picks_add = 8
+		LITHOID_species_trait_picks_add = 8
+		MACHINE_species_trait_picks_add = 8
+		ROBOT_species_trait_picks_add = 8
+	}
+}
+
+GTR_extra_traits_16 = {						
+	icon = "gfx/interface/icons/traits/trait_16_extra.dds"
+
+	modification = no
+	pickable_at_start = yes
+	random_weight = {
+		base = 0
+		modifier = {
+			factor = 0
+		}
+	}
+	modifier = { 
+        BIOLOGICAL_species_trait_picks_add = 16
+		LITHOID_species_trait_picks_add = 16
+		MACHINE_species_trait_picks_add = 16
+		ROBOT_species_trait_picks_add = 16
+	}
+}
+
+GTR_extra_traits_32 = {						
+	icon = "gfx/interface/icons/traits/trait_32_extra.dds"
+
+	modification = no
+	pickable_at_start = yes
+	random_weight = {
+		base = 0
+		modifier = {
+			factor = 0
+		}
+	}
+	modifier = { 
+        BIOLOGICAL_species_trait_picks_add = 32
+		LITHOID_species_trait_picks_add = 32
+		MACHINE_species_trait_picks_add = 32
+		ROBOT_species_trait_picks_add = 32
+	}
+}

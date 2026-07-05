@@ -1,0 +1,76 @@
+﻿l_english:
+leader_trait_commander_godly: "A godly commander"
+leader_trait_commander_godly_desc: "An commander only gods could produce."
+leader_trait_official_godly: "A godly official"
+leader_trait_official_godly_desc: "A official only gods could produce."
+leader_trait_scientist_godly: "A godly scientist"
+leader_trait_scientist_godly_desc: "A scientist only gods could produce."
+leader_trait_ruler_godly: "A godly Ruler"
+leader_trait_ruler_godly_desc: "A Monarch to rule gods."
+leader_trait_ruler_godly_nexus: "A godly Ruler"
+leader_trait_ruler_godly_nexus_desc: "A Monarch to rule gods."
+
+leader_trait_commander_demigod: "A demigod commander"
+leader_trait_commander_demigod_desc: "Can do the Kessel run in 11 Parsec!"
+leader_trait_official_demigod: "A demigod official"
+leader_trait_official_demigod_desc: "You don't want to see their spreadsheets."
+leader_trait_scientist_demigod: "A demigod scientist"
+leader_trait_scientist_demigod_desc: "Writes a full 100-page research paper in only 15 hours."
+leader_trait_ruler_demigod: "A demigod Ruler"
+leader_trait_ruler_demigod_desc: "Has a very pointy finger. People know better than to doubt them."
+leader_trait_ruler_demigod_nexus: "A demigod Ruler"
+leader_trait_ruler_demigod_nexus_desc: "Has a very pointy finger. People know better than to doubt them."
+
+GTR_trait_nephalem: "Neffalim"
+GTR_trait_nephalem_desc: "Xeno-compatibility gone wrong. At least Diablo and Malthael aren't coming after you."
+
+GTR_trait_godly_species: "Godly Species"
+GTR_trait_godly_species_desc: "You are gods. They will respect you as they should respect gods. \n\nLeaders from this species gain an additional trait."
+
+GTR_trait_demigods: "Demigods"
+GTR_trait_demigods_desc: "The result of ancient Xeno-compatibility. Is it really that bad?"
+
+GTR_trait_divine_ancestors: "Divine Ancestors"
+GTR_trait_divine_ancestors_desc: "Divine blood runs thin..."
+
+GTR_trait_hyper_fertile: "Hyper Fertile"
+GTR_trait_hyper_fertile_desc: "9 months of pregnancy? What about 9 weeks."
+
+GTR_trait_super_fertile: "Super Fertile"
+GTR_trait_super_fertile_desc: "100% Twins guaranteed. Buy now with 40% off."
+
+GTR_trait_nano_assemblers: "Nano Assemblers"
+GTR_trait_nano_assemblers_desc: "> 4 & X"
+
+GTR_trait_everlasting: "Everlasting"
+GTR_trait_everlasting_desc: "We just don't die. Unless we do die, then we die."
+
+GTR_trait_ancient: "Ancient Species"
+GTR_trait_ancient_desc: "Immortal, but not invulnerable."
+
+GTR_trait_ancient_hive: "Ancient Hive Drones"
+GTR_trait_ancient_hive_desc: "These drones belong in the Ancient Hive."
+
+GTR_trait_deus_machina: "Deus Machina"
+GTR_trait_deus_machina_desc: "The ex was destroyed, must have been the Terminator \n\nLeaders from this species gain an additional trait."
+
+GTR_trait_borg: "Borg"
+GTR_trait_borg_desc: "I am become Borg, the destroyer of worlds. \n\nLeaders from this species gain an additional trait."
+
+trait_4_point: "4 extra points"
+trait_4_point_desc: "It took you a while to get to space. +4 trait points."
+trait_8_point: "8 extra points"
+trait_8_point_desc: "It took you a long time to get to space. +8 trait points."
+trait_16_point: "16 extra points"
+trait_16_point_desc: "It took you ages to get to space. Legend says that you are older than the fallen empires. +16 trait points."
+trait_32_point: "32 extra points"
+trait_32_point_desc: "It took you almost forever to get to space. You were the first intelligent lifeforms. +32 trait points."
+
+GTR_extra_traits_4: "4 extra perk picks"
+GTR_extra_traits_4_desc: "Your genome is impressive. +4 trait picks."
+GTR_extra_traits_8: "8 extra perk picks"
+GTR_extra_traits_8_desc: "Your genome catalogues all life on your planet. +8 trait picks."
+GTR_extra_traits_16: "16 extra perk picks"
+GTR_extra_traits_16_desc: "Your genome catalogues all life in the galaxy. +16 trait picks."
+GTR_extra_traits_32: "32 extra perk picks"
+GTR_extra_traits_32_desc: "Your genome catalouges all life in the known universe. +32 trait picks."
