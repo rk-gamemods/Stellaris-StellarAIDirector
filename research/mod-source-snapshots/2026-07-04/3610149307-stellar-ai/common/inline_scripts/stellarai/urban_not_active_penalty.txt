@@ -1,0 +1,4 @@
+modifier = {
+  NOR = { planet = { has_planet_flag = stellarai_trade_commitment_soft } }
+  factor = 0.1
+}

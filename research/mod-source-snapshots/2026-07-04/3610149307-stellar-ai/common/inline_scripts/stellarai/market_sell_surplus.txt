@@ -1,0 +1,19 @@
+if = {
+	limit = {
+		check_variable = { which = stellarai_market_sale_count value < 2 }
+		NOT = { has_deficit = $RESOURCE$ }
+		has_monthly_income = { resource = $RESOURCE$ value > 0 }
+		resource_stockpile_compare = { resource = $RESOURCE$ value > $RESERVE$ }
+	}
+	set_variable = {
+		which = stellarai_market_trade_value
+		value = value:stellarai_market_sell_value|RESOURCE|$RESOURCE$|AMOUNT|$AMOUNT$|
+	}
+	if = {
+		limit = { check_variable = { which = stellarai_market_trade_value value > 0 } }
+		add_resource = { $RESOURCE$ = -$AMOUNT$ }
+		add_resource = { trade = 1 mult = stellarai_market_trade_value }
+		change_variable = { which = stellarai_market_sale_count value = 1 }
+	}
+	clear_variable = stellarai_market_trade_value
+}

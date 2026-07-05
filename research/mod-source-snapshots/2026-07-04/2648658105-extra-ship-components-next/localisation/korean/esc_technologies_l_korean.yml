@@ -1,0 +1,1443 @@
+﻿l_korean:
+
+### KOREAN LOCALIZATION
+
+############################################################
+###                   Core Technologies                  ###
+############################################################
+
+esc_tech_grand_research_initiative: "거대 연구 계획"
+esc_tech_grand_research_initiative_desc: "지난 수백년동안 우리의 주변 세상에 대한 지식은 아주 크게 성장했지만, 이 우주에는 지금도 많은 미스테리가 있습니다. 이것을 연구해야 우리의 밝은 미래가 보장됩니다. 우리는 이 계몽을 성취하기 위해 우리의 가장 밝은 정신들과 가용한 모든 자원들을 뭉쳐야 합니다."
+ESC_TECH_UNLOCK_ADV_RESEARCH_TITLE: "§H잠금 해제§!: 고급 기술 및 연구 분야"
+ESC_TECH_UNLOCK_ADV_RESEARCH_DESC: "$esc_tech_grand_research_initiative_desc$"
+gateway_ESC_TECHNOLOGIES: "고급 기술"
+
+esc_tech_culture_nexus: "고급 사회생물학 연구"
+esc_tech_culture_nexus_desc: "우리의 제국을 더욱더 개선하기 위해, 우리는 유능한 신체와 건전한 정신이 작동하는 방식을 더 잘 이해하기 위해 분투하고 있습니다. 특별한 사회생물학 연구 시설을 건립하면 이 노력에 아주 큰 도움이 될 것입니다."
+
+esc_tech_advanced_materials_lab: "고급 물질 연구소"
+esc_tech_advanced_materials_lab_desc: "시대가 발전함에 따라, 유용하고 매력적인 특성을 지닌 신소재에 대한 요구가 끊임없이 늘고 있습니다. 고급 물질 연구에 특화된 연구소를 건립하면 우리 제국에 아주 큰 도움이 될 것입니다."
+
+esc_tech_technology_institute: "기술 연구소"
+esc_tech_technology_institute_desc: "이 세상과 그를 지배하는 자연의 힘에 대한 이해를 심화하기 위해 새롭고 혁신적인 기술이 절실하게 필요합니다. 우리의 삶을 더 쉽고 편하게 만들기 위해서이기도 합니다. 이러한 연구 분야에 전념하는 전문 연구소와 실험실을 통해 우리 제국은 과학 발전의 최전선에 남아 있을 것입니다."
+
+esc_tech_new_age_warfare: "신세대 전쟁"
+esc_tech_new_age_warfare_desc: "군사력은 이 은하의 유일한 공용어입니다. 새롭고 개선된 무기들은 우리가 은하계 무대에서 우리의 정당한 위치를 확고히 하는 데 도움이 될 것입니다. 이런 무기들을 개발하고 사용하기 위해 새롭고 특이한 방법이 필요할 것입니다. 우리는 다가올 교리 변화에 우리의 기술력과 국민들을 대비시켜야 합니다."
+ESC_TECH_UNLOCK_ADV_WEAPONS_TITLE: "§H기술 분야 잠금 해제§!: 고급 무기 타입"
+ESC_TECH_UNLOCK_ADV_WEAPONS_DESC: "우리의 우주 함대를 위한 새롭고 개선된 무기를 개발하는 것은 은하 안에서 우리의 힘을 유지하는 데에 필수적입니다."
+gateway_ESC_WEAPONS: "고급 무기"
+
+esc_tech_advanced_heavy_weapons: "고급 중화기 시스템"
+esc_tech_advanced_heavy_weapons_desc: "주축 탑재형 무기가 개발되어 우리의 함대에 새로운 관점을 열어주었고, 우리가 이전에 만들어본 적이 없는 화력의 힘을 부여했습니다. 하지만 우리는 여기서 멈추지 않고 우리의 함선에 장착할 초중량 무기의 개발을 계속해야 합니다."
+ESC_TECH_UNLOCK_ADV_HEAVY_WEAPONS_TITLE: "§H기술 분야 잠금 해제§!: 고급 주축 탑재형 무기"
+ESC_TECH_UNLOCK_ADV_HEAVY_WEAPONS_DESC: "우리의 함선을 위한 새롭고 강력한 주축 탑재형 무기를 개발합니다."
+gateway_ESC_SUPERHEAVY_WEAPONS: "고급 주축 탑재형 무기"
+
+esc_tech_synthesis_tech_age: "기술 시대의 융합"
+esc_tech_synthesis_tech_age_desc: "태고적의 아이디어를 맹목적으로 복사해대면 딱 거기까지만 갈 수 있을 뿐입니다. 정말로 선구자 문명을 계승하려면, 우리는 그들의 기술력을 우리 시대의 현실에 맞게 받아들이고 수정해야 합니다."
+ESC_TECH_UNLOCK_ADV_ARCHEO_WEAPONS_TITLE: "§H기술 분야 잠금 해제§!: 고급 고대 무기"
+ESC_TECH_UNLOCK_ADV_ARCHEO_WEAPONS_DESC: "고급 고대 무기의 더 발전된 버전을 개발합니다."
+gateway_ESC_ARCHEOTECH_WEAPONS: "고급 고대 무기"
+
+esc_tech_gravity_manipulation: "중력 조작 기술"
+esc_tech_gravity_manipulation_desc: "지역 중력을 조작하는 방법을 배움으로써 우리에게는 새 지평이 열렸습니다. 이것으로 우리는 건설 기법을 크게 발전시킬 수 있고, 시민들의 삶을 더 쉽게 만들 수 있습니다. 아니면 우리의 적들을 중력이라는 자연의 기본 힘으로 찢어버릴 수 있습니다."
+ESC_TECH_UNLOCK_GRAVITY_MANIPULATION_TITLE: "§H기술 분야 잠금 해제§!: 중력 조작 기술"
+ESC_TECH_UNLOCK_GRAVITY_MANIPULATION_DESC: "중력의 힘을 활용하여 우리 삶의 다양한 측면을 개선하는 것이야말로 우리 문명이 위대함으로 나아가는 다음 단계가 될 것입니다."
+gateway_ESC_GRAVITY_MANIPULATION: "중력 조작"
+
+esc_tech_gravity_weapons: "중력 무기화"
+esc_tech_gravity_weapons_desc: "중력 조작은 적에게 고통을 주는 수단으로 활용될 수 있습니다. 자연의 기본 힘을 우리 편으로 삼아, 우리는 이 은하를 위해서 전투를 지배할 것입니다!"
+ESC_TECH_UNLOCK_GRAV_WEAPONS_TITLE: "§H기술 분야 잠금 해제§!: 중력 기반 무기"
+ESC_TECH_UNLOCK_GRAV_WEAPONS_DESC: "우리 제국의 적을 우주 먼지로 찢어버리는 중력 기반 무기입니다."
+gateway_ESC_GRAVITIC_WEAPONS: "중력 무기"
+
+esc_tech_advanced_materials: "고급 물질"
+esc_tech_advanced_materials_desc: "우리는 지금 다룰 수 있는 것보다 더 강하고 좋고 똑똑한 새로운 물질들이 필요합니다. 이 고급 물질들은 우리가 이전까지는 꿈도 꾸지 못했던 것들을 성취하게 해줄 것입니다."
+ESC_TECH_UNLOCK_ADV_MATERIALS_TITLE: "§H기술 분야 잠금 해제§!: 고급 물질 및 나노기술"
+ESC_TECH_UNLOCK_ADV_MATERIALS_DESC: "새 물질들은 우리에게 새로운 지평을 열어주며, 이전까지는 꿈도 꾸지 못했던 것들을 가능하게 합니다."
+gateway_ESC_MATERIALS: "고급 물질"
+
+esc_tech_superconductors: "초전도체"
+esc_tech_superconductors_desc: "고온 초전도체의 광범위한 사용은 에너지의 전송 중에 발생하는 손실을 크게 줄일 것입니다."
+
+esc_tech_neutronium_tools: "뉴트로늄 코팅된 전동 공구"
+esc_tech_neutronium_tools_desc: "극도로 얇은 뉴트로늄 합금 코팅을 추가함으로써, 우리의 공구를 마모에 훨씬 더 강하게 만들어 보다 공격적인 채굴이 가능해집니다."
+
+esc_tech_synthetic_lifeform_studies: "합성 생명체 연구"
+esc_tech_synthetic_lifeform_studies_desc: "나노머신을 개발하고 연구하여 우리는 새 지평을 열 것입니다."
+ESC_TECH_UNLOCK_NANITIES_TITLE: "§H기술 분야 잠금 해제§!: 나노물질 기반 무기 및 장갑"
+ESC_TECH_UNLOCK_NANITIES_DESC: "목적에 의해서 만들어진 나노머신들은 믿을 수 없는 속도와 정확성으로 많은 일을 할 수 있습니다. 이것을 이용하면 우리의 함선들이 입을 수 있는 피해를 빠르고 완벽하게 수리할 수 있습니다. 아니면 이것으로 우리의 적들을 원자 단위로 해체할 수 있습니다. 나노머신이 할 수 있는 일에 제약이란 없습니다."
+gateway_ESC_NANITE_COMPONENTS: "나노물질 기반 무기 및 장갑"
+
+esc_tech_psionic_weapons: "사이오닉 무기"
+esc_tech_psionic_weapons_desc: "정신이 현실을 창조할 수 있다는 것을 확실하게 증명해낸 이상, 이젠 우리의 사이오닉의 힘을 우리 제국의 검과 방패로 만들어야 합니다."
+ESC_TECH_UNLOCK_PSI_WEAPONS_TITLE: "§H기술 분야 잠금 해제§!: 사이오닉 무기 및 부품"
+ESC_TECH_UNLOCK_PSI_WEAPONS_DESC: "사이오닉 무기는 선원들의 생각의 힘을 활용하여 우리의 제국의 적들을 파괴합니다."
+gateway_ESC_PSIONIC_WEAPONS: "사이오닉 무기 및 장비"
+
+esc_tech_biological_weapons: "생물학 무기"
+esc_tech_biological_weapons_desc: "생명의 비밀에 대한 이해를 크게 발전시킴으로써 우리는 우리의 제국을 위해서 생물 그 자체를 무기로 만들 수 있는가? 라는 의문을 갖게 되었습니다. 무엇보다도, 불가능이란 없고 생명은 언제나 방법을 찾아냅니다."
+ESC_TECH_UNLOCK_BIO_WEAPONS_TITLE: "§H기술 분야 잠금 해제§!: 생물학 장갑 및 무기"
+ESC_TECH_UNLOCK_BIO_WEAPONS_DESC: "우리 함대를 위한 특수 무장 및 장갑으로, 생명체의 일부를 활용하여 제작되었습니다."
+gateway_ESC_BIOLOGICAL_WEAPONS: "생물학 무기 및 장갑"
+
+esc_tech_tesla_weapons: "테슬라 무기"
+esc_tech_tesla_weapons_desc: "신세대의 초전도체를 활용하여 텅 빈 것처럼 보이는 공간을 가로지르는 전기 폭발을 만들어낼 수 있게 되었습니다. 약간의 독창성을 발휘해서, 우리는 이 매우 사소한 장난을 우주전에서의 파괴적인 무기로 변화시킬 수 있습니다."
+ESC_TECH_UNLOCK_TESLA_WEAPONS_TITLE: "§H기술 분야 잠금 해제§!: 테슬라 무기"
+ESC_TECH_UNLOCK_TESLA_WEAPONS_DESC: "테슬라 코일을 통해 번개 폭발의 형태로 전해지는 순수한 에너지는 적 함선에 대한 효과적인 무기로서 작용해야 합니다."
+esc_tech_tesla_weapons_bio: "생체 전기 무기"
+esc_tech_tesla_weapons_bio_desc: "꽤 많은 생물체들이 먹잇감을 잡기 위해 생체 전기 무기를 발달시켰습니다. 적절한 생명공학적 증강술에 의해, 이런 기법이 크기와 출력을 키워 생물함선에 적용되어 그들에게 우주전에 사용할 파괴적인 무기를 주는 것으로 응용될 수 있음은 당연합니다."
+ESC_TECH_UNLOCK_TESLA_WEAPONS_BIO_TITLE: "§H기술 분야 잠금 해제§!: 생체 전기 무기"
+ESC_TECH_UNLOCK_TESLA_WEAPONS_BIO_DESC: "생명공학적 수단을 통해 번개 폭발의 형태로 전해지는 순수한 에너지는 적 함선에 대한 효과적인 무기로서 작용해야 합니다."
+gateway_ESC_TESLA_WEAPONS: "테슬라 무기"
+
+esc_tech_spacetime_manipulation: "시공간 연속체 조작"
+esc_tech_spacetime_manipulation_desc: "우리 주변의 현실을 제어하는 능력을 활용함으로써 우리는 새로운 과학적 고지를 달성할 것입니다."
+ESC_TECH_UNLOCK_REALITY_ALTER_TITLE: "§H기술 분야 잠금 해제§!: 현실 왜곡 기술"
+ESC_TECH_UNLOCK_REALITY_ALTER_DESC: "현실을 마음대로 변경하는 능력은 우리가 이전에 꿈도 꾸지 못했던 일들을 할 수 있게 합니다."
+gateway_ESC_SPACETIME_TECH: "시공간 조작 기술"
+
+esc_tech_chrono_spatial_weapons: "현실 왜곡 무기화"
+esc_tech_chrono_spatial_weapons_desc: "우리의 새로운 현실을 비틀어 우리의 필요에 맞추는 능력은 이 우주가 본 가장 강력한 무기를 약속합니다."
+gateway_ESC_CHRONOSPATIAL_WEAPONS: "시공간 무기"
+
+esc_tech_watcher_of_eternity: "영원의 감시자"
+esc_tech_watcher_of_eternity_desc: "우리의 의도에 따라 현실의 구조를 비틀어 과거와 먼 미래를 들여다보며, 우리 우주를 형성하는 사건들을 최전선에서 관찰할 수 있습니다. 이는 자연의 법칙과 존재하는, 존재했던, 그리고 앞으로 존재할 모든 것에 대한 비할 데 없는 이해를 부여할 것입니다."
+
+esc_tech_phase_shifted_ammunition: "위상 이동 탄약"
+esc_tech_phase_shifted_ammunition_desc: "시공간 연속체에 대한 우리의 이해를 무기에 적용하면 가장 강력한 방어를 뚫고 들어갈 수 있게 됩니다."
+
+esc_tech_time_dilation_chambers: "시간 지연실"
+esc_tech_time_dilation_chambers_desc: "우리의 현재 기술력으로는 모두에게 더 많은 시간을 줄 수는 없지만, 가장 필요한 이들에게 더 많은 시간을 살게 하는 것은 우리 제국을 크게 발전시킬 것입니다."
+
+############################################################
+###         Required Ship Components Technologies        ###
+############################################################
+
+# reactors
+esc_tech_reactor_6: "개선된 영점 반응로"
+esc_tech_reactor_6_desc: "소형화를 통해 새로운 세대의 영점 반응로를 이전 세대보다 훨씬 더 효율적으로 만들 수 있습니다."
+esc_tech_reactor_6_bio: "개선된 영점 신진대사"
+esc_tech_reactor_6_bio_desc: "선택적 육종을 통해 우리의 생물함선의 신진대사를 위한 영점 에너지를 추출하는 데 더 효율적인 새로운 장기 변종을 개발할 수 있습니다."
+ESC_TECH_UNLOCK_REACTOR_6_TITLE: "§H부품 잠금 해제§!: 개선된 영점 반응로"
+ESC_TECH_UNLOCK_REACTOR_6_DESC: "에너지 추출 밀도가 개선된 영점 반응로입니다."
+gateway_ESC_REACTORS: "함선 반응로"
+
+esc_tech_reactor_7: "특이점 반응로"
+esc_tech_reactor_7_desc: "영점 특이점을 에너지원으로 수확하는 방식을 약간 조정함으로써, 우리는 부피가 더 크거나 복잡성이 크게 증가하지 않으면서도 더 많은 전력을 생산하는 반응로를 만들 수 있습니다. 이 신세대의 반응로는 지금까지 가장 효율적인 반응로가 될 것입니다."
+esc_tech_reactor_7_bio: "특이점 신진대사"
+esc_tech_reactor_7_bio_desc: "생명공학을 목표에 맞춰 적용함으로써 우리는 우리의 생물함선들의 영점 추출 대사 과정 효율을 한층 더 증대시킬 수 있습니다."
+ESC_TECH_UNLOCK_REACTOR_7_TITLE: "§H부품 잠금 해제§!: 특이점 반응로"
+ESC_TECH_UNLOCK_REACTOR_7_DESC: "더욱더 많은 에너지를 공급하는 신세대 영점 반응로입니다."
+
+esc_tech_reactor_8: "개선된 특이점 반응로"
+esc_tech_reactor_8_desc: "추가적인 소형화를 거쳐서 우리는 표준 함선 반응로의 패키지에 훨씬 더 강력한 에너지 발전기를 맞출 수 있습니다. 이러한 새롭고 개선된 특이점 반응로는 우리가 지금까지 만든 것 중 가장 안전하고 강력할 것입니다."
+esc_tech_reactor_8_bio: "개선된 특이점 신진대사"
+esc_tech_reactor_8_bio_desc: "유전공학을 통해 일련의 변이를 추가함으로써 우리는 생물함선들에게 거의 무한한 동력을 제공할 수 있는 더 효율적인 영점 에너지 추출 기관을 만들 수 있습니다."
+ESC_TECH_UNLOCK_REACTOR_8_TITLE: "§H부품 잠금 해제§!: 개선된 특이점 반응로"
+ESC_TECH_UNLOCK_REACTOR_8_DESC: "더욱더 많은 에너지를 생산할 수 있는 특이점 반응로의 업그레이드 버전입니다."
+
+esc_tech_dark_matter_power_core_2: "개선된 암흑 물질 반응로"
+esc_tech_dark_matter_power_core_2_desc: "고에너지 입자를 채널링하기 위한 새롭고 개선된 프로토콜을 통해 암흑 물질 반응로의 에너지 수입을 늘릴 수 있습니다."
+esc_tech_dark_matter_power_core_2_bio: "개선된 암흑물질 신진대사"
+esc_tech_dark_matter_power_core_2_bio_desc: "일련의 공생 변이를 유도함으로써 우리의 생물함선들이 암흑 물질에서 더 높은 효율로 에너지를 추출할 수 있도록 할 수 있습니다."
+ESC_TECH_UNLOCK_DM_REACTOR_2_TITLE: "§H부품 잠금 해제§!: 개선된 암흑 물질 반응로"
+ESC_TECH_UNLOCK_DM_REACTOR_2_DESC: "선구자 제국이 사용하던 암흑 물질 반응로의 업그레이드된 버전입니다."
+
+esc_tech_dark_matter_power_core_3: "완벽한 암흑 물질 반응로"
+esc_tech_dark_matter_power_core_3_desc: "암흑 물질의 본질에 대한 깊은 이해를 통해 우리는 그 방대한 잠재력을 활용하는 완벽한 반응로를 구축할 수 있게 되었습니다."
+esc_tech_dark_matter_power_core_3_bio: "완벽한 암흑 물질 신진대사"
+esc_tech_dark_matter_power_core_3_bio_desc: "우리의 생물함선들의 살을 특수한 생체 고분자 물질과 융합시킴으로써 우리는 생물함선들이 암흑 물질에서 추출할 수 있는 에너지의 양을 극적으로 늘릴 수 있습니다. 이 증강을 통해, 극미량의 암흑 물질만으로도 우리 함대에 필요한 에너지를 충족시킬 수 있게 되었습니다."
+ESC_TECH_UNLOCK_DM_REACTOR_3_TITLE: "§H부품 잠금 해제§!: 완벽한 암흑 물질 반응로"
+ESC_TECH_UNLOCK_DM_REACTOR_3_DESC: "암흑 물질에 기반한 반응로의 완벽해진 버전입니다."
+
+esc_tech_reactor_psionic: "장막 우물"
+esc_tech_reactor_psionic_desc: "§M장막§!의 영역은 거의 무한한 사이오닉 에너지의 근원이 될 수 있습니다. 그리고 약간의 사소한 꼼수를 통해, 우리는 그것을 우리의 기술력으로 활용할 수 있는 더 전통적인 형태의 에너지로 전환할 수 있습니다. 우리는 확실히 이것을 조사해야 합니다."
+ESC_TECH_UNLOCK_PSI_REACTOR_TITLE: "§H부품 잠금 해제§!: 장막 우물"
+ESC_TECH_UNLOCK_PSI_REACTOR_DESC: "§M장막§!은 거의 무한한 사이오닉 에너지의 근원입니다. 사용하지 않는 것이 멍청한 일입니다."
+
+# combat computers
+esc_tech_dreadnought_computer: "자동화 드레드노트 전투 알고리즘"
+esc_tech_dreadnought_computer_desc: "자동화 드레드노트는 수천 년 동안 경계를 유지하며 강력한 함대와 뛰어난 제독들과 싸워온 고대 전투함입니다. 그 전투 프로토콜을 복제하면 우리 함선의 능력을 크게 향상시킬 수 있습니다."
+ESC_TECH_UNLOCK_DREADNOUGHT_COMPUTER_TITLE: "§H부품 잠금 해제§!: 자동화 드레드노트 프로토콜 전투 컴퓨터"
+ESC_TECH_UNLOCK_DREADNOUGHT_COMPUTER_DESC: "고대 자동화 드레드노트를 관찰해서 알아낸 행동 논리를 기반으로 한 전투 컴퓨터입니다."
+
+esc_tech_nanite_thought_matrix: "나노머신 사고망"
+esc_tech_nanite_thought_matrix_desc: "실제 뇌를 모방한 나노머신 기판에서 구동되는 인공지능은 이론적으로 생물의 정신의 가장 비일반적인 버릇도 흉내낼 능력이 있어 1초도 안 되는 시간 안에 복잡한 결정을 내릴 때 전례없는 능력을 발휘할 수 있습니다. 이것이 개발되면 우리의 해군은 확실히 이런 AI가 쓰일 곳을 찾아낼 수 있을 것입니다."
+ESC_TECH_UNLOCK_COMBAT_COMPUTERS_NANITE_TITLE: "§H부품 잠금 해제§!: $esc_tech_nanite_thought_matrix$ 전투 컴퓨터"
+ESC_TECH_UNLOCK_COMBAT_COMPUTERS_NANITE_DESC: "실제 뇌를 모방한 나노머신 기판에서 구동되는 인공지능은 이론적으로 생물의 정신의 가장 비일반적인 버릇도 흉내낼 능력이 있어 1초도 안 되는 시간 안에 복잡한 결정을 내릴 때 전례없는 능력을 발휘할 수 있습니다."
+
+esc_tech_gigapredator_instincts: "최고 포식자의 본능"
+esc_tech_gigapredator_instincts_desc: "우주 태생 레비아탄들의 생물학적이고 행동학적인 적응형을 연구해 온 덕에, 우리 연구자들은 그것에 대한 연구가 우리의 통제 하에 있는 생물함선들에게 적용되어 그들의 생존 및 전투 능력을 크게 향상시킬 수 있을 가능성을 긍정적으로 보고 있습니다."
+ESC_TECH_UNLOCK_GIGAPREDATOR_TITLE: "§H부품 잠금 해제§!: 최고 포식자의 본능 신경 임플란트"
+ESC_TECH_UNLOCK_GIGAPREDATOR_DESC: "우주의 가장 크고 강한 포식자의 행동 적응형을 구현하는 신경 임플란트입니다."
+
+# sensors
+esc_tech_sensors_5: "개선된 타키온 감지기"
+esc_tech_sensors_5_desc: "이전 세대의 감지기보다 더 깊고 멀리 볼 수 있는 개선된 버전의 타키온 감지기입니다."
+ESC_TECH_UNLOCK_ADV_TACHYON_SENSOR_TITLE: "§H부품 잠금 해제§!: 개선된 타키온 감지기"
+ESC_TECH_UNLOCK_ADV_TACHYON_SENSOR_DESC: "$esc_tech_sensors_5_desc$"
+
+esc_tech_sensors_6: "끈 이론"
+esc_tech_sensors_6_desc: "우리 세계의 설명할 수 없었던 현상들을 설명하는 상대적으로 새로운 이론입니다."
+ESC_TECH_UNLOCK_STRING_SENSOR_TITLE: "§H부품 잠금 해제§!: 차원 끈 감지기"
+ESC_TECH_UNLOCK_STRING_SENSOR_DESC: "$esc_tech_sensors_6_desc$"
+
+esc_tech_sensors_7: "끈 변동 분석"
+esc_tech_sensors_7_desc: "끈 이론이 우리에게 열어준 지식을 마스터함으로써, 우리는 마침내 우리 주변의 세계를 이해할 수 있게 되었습니다."
+ESC_TECH_UNLOCK_ADV_STRING_SENSOR_TITLE: "§H부품 잠금 해제§!: 개선된 끈 감지기"
+ESC_TECH_UNLOCK_ADV_STRING_SENSOR_DESC: "$esc_tech_sensors_7_desc$"
+
+esc_tech_sensors_psionic: "사이오닉 감지기"
+esc_tech_sensors_psionic_desc: "차원 끈에 사이오닉 능력을 적용하여 우리 주변 세계에 대한 전례 없는 깊이의 인식을 가능하게 합니다."
+ESC_TECH_UNLOCK_PSI_SENSOR_TITLE: "§H부품 잠금 해제§!: 사이오닉 감지기"
+ESC_TECH_UNLOCK_PSI_SENSOR_DESC: "$esc_tech_sensors_psionic_desc$"
+
+esc_tech_sensors_precursor: "선구자 감지기 배열"
+esc_tech_sensors_precursor_desc: "£sr_dark_matter£ §Y$sr_dark_matter$§!의 신비로운 특성을 활용하여 우주에서 아주 멀리 떨어진 개체를 즉시 찾아내는 고급 감지기 배열입니다."
+esc_tech_sensors_precursor_bio: "선구자 생물함선의 눈"
+esc_tech_sensors_precursor_bio_desc: "£sr_dark_matter£ §Y$sr_dark_matter$§! 조작과 관련된 역설계된 선구자 기술을 통해, 우리는 생물함선의 감각 기관을 크게 향상시켜 아주 멀리 떨어진 개체를 즉시 찾아낼 수 있게 됩니다."
+ESC_TECH_UNLOCK_PRECURSOR_SENSOR_TITLE: "§H부품 잠금 해제§!: $esc_tech_sensors_precursor$"
+ESC_TECH_UNLOCK_PRECURSOR_SENSOR_DESC: "$esc_tech_sensors_precursor_desc$"
+
+esc_tech_clairvoyancy_eyes_1: "예지력의 눈"
+esc_tech_clairvoyancy_eyes_1_desc: "과거에는 믿을 수 없는 힘과 전투 경험을 가진 영웅들의 이야기가 있는데, 그런 영웅들은 특이한 눈을 가진 경우가 많았습니다. 몇몇 연구자들은 우리가 전설 속의 그 눈을 현실로 만들자고 제안해왔습니다. 그런 눈을 우리 종족에게 만들어줄 수는 없을 지 몰라도, 우리 함선들은 유전 암호가 유연해서 그것을 받아들일 수 있을지도 모릅니다."
+ESC_TECH_UNLOCK_CLAIVOYANCY_1_TITLE: "§H부품 잠금 해제§!: $esc_tech_clairvoyancy_eyes_1$"
+ESC_TECH_UNLOCK_CLAIVOYANCY_1_DESC: "$esc_tech_clairvoyancy_eyes_1_desc$"
+
+esc_tech_clairvoyancy_eyes_2: "우월한 예지력의 눈"
+esc_tech_clairvoyancy_eyes_2_desc: "전설적인 영웅의 눈을 처음 만드는 것에는 성공했지만, 우리가 더 나아가서 우리의 함선을 위한 새로운 눈을 더 훌륭하게 만들 수 있다고 믿는 사람들이 있습니다."
+ESC_TECH_UNLOCK_CLAIVOYANCY_2_TITLE: "§H부품 잠금 해제§!: $esc_tech_clairvoyancy_eyes_2$"
+ESC_TECH_UNLOCK_CLAIVOYANCY_2_DESC: "$esc_tech_clairvoyancy_eyes_2_desc$"
+
+esc_tech_clairvoyancy_eyes_3: "신의 눈"
+esc_tech_clairvoyancy_eyes_3_desc: "더 발전되고 믿을 수 없을만큼 복잡한 예지력의 눈의 유전 암호가 알려지지 않은 무엇인가로 더욱더 변이하려고 하고 있습니다. 우리 연구자들은 이 진화의 끝이 정확히 어떻게 될 것인지 찾는 데 열심입니다."
+ESC_TECH_UNLOCK_CLAIVOYANCY_3_TITLE: "§H부품 잠금 해제§!: $esc_tech_clairvoyancy_eyes_3$"
+ESC_TECH_UNLOCK_CLAIVOYANCY_3_DESC: "$esc_tech_clairvoyancy_eyes_3_desc$"
+
+# thrusters
+esc_tech_thrusters_5: "반물질 추진기"
+esc_tech_thrusters_5_desc: "물질-반물질 쌍소멸로 발생된 에너지를 활용하여 우리는 이전보다 더 강력한 엔진을 만들 수 있습니다."
+esc_tech_thrusters_5_bio: "반물질 활용 추진 기관"
+esc_tech_thrusters_5_bio_desc: "우리의 생물함선들에게 추진을 위해서 반물질을 활용하는 것을 허락하면 우리는 그들의 기동성을 이전에 듣지 못 했던 수준으로 개선시킬 수 있습니다. 당연하게도, 이 생물체들이 폭발의 위험 없이 반물질을 안전하게 다룰 수 있게 하기 위해 몇몇 변이가 추가되어야 합니다."
+ESC_TECH_UNLOCK_THRUSTERS_5_TITLE: "§H부품 잠금 해제§!: 반물질 추진기"
+ESC_TECH_UNLOCK_THRUSTERS_5_DESC: "$esc_tech_thrusters_5_desc$"
+
+esc_tech_thrusters_6: "중력장 조작 엔진"
+esc_tech_thrusters_6_desc: "워프 기술의 원리를 아광속 여행에 적용하여 함선을 믿을 수 없는 속도로 추진할 수 있게 되었습니다."
+esc_tech_thrusters_6_bio: "중력 조작 추진 기관"
+esc_tech_thrusters_6_bio_desc: "기발한 유전자 조작을 통해 우리는 우리의 생물함선들이 추진을 위해 중력을 직접 조작하여 믿을 수 없는 속도로 움직일 수 있게 했습니다."
+ESC_TECH_UNLOCK_THRUSTERS_6_TITLE: "§H부품 잠금 해제§!: 중력장 조작 엔진"
+ESC_TECH_UNLOCK_THRUSTERS_6_DESC: "$esc_tech_thrusters_6_desc$"
+
+# ftl drives
+esc_tech_jump_drive_2: "개선된 점프 드라이브"
+esc_tech_jump_drive_2_desc: "점프 드라이브 기술이 성숙하면서 우리는 우리가 현존하는 점프 드라이브 설계를 작동 범위를 늘리고 우리의 함선을 시공간 연속체를 찢는 효과로부터 더 잘 보호할 수 있도록 개선할 능력이 있음을 알게 되었습니다."
+esc_tech_jump_drive_2_bio: "개선된 초차원 전정 기관"
+esc_tech_jump_drive_2_bio_desc: "몇몇 변이를 도입함으로써, 우리는 유기체 점프 드라이브의 더 효율적이고 더 정확하게 성간 점프를 하는 새로운 종을 만들 수 있습니다."
+
+esc_tech_jump_drive_3: "초쌍곡 점프 드라이브"
+esc_tech_jump_drive_3_desc: "정상적으로는 볼 수 없는 높은 차원들을 초광속 슬링샷의 닻으로 활용함으로써 우리는 점프 드라이브의 작동 범위와 속도를 더 늘릴 수 있습니다. 그런 초쌍곡 드라이브는 최고의 모습을 보이기 위해서 많은 동력을 필요로 함에 의심의 여지가 없지만, 우리는 우리의 반응로 기술로써 그 도전을 극복하고도 남을 것이라고 자신있게 말할 수 있습니다."
+esc_tech_jump_drive_3_bio: "초쌍곡 전정 기관"
+esc_tech_jump_drive_3_bio_desc: "우리의 생물함선들이 정상적으로는 볼 수 없는 높은 차원들을 초광속 슬링샷의 닻으로 활용할 수 있게 함으로써, 우리는 그들의 초광속 점프의 범위와 속도를 더 늘릴 수 있습니다."
+
+esc_tech_jump_drive_precursor: "선구자 점프 드라이브"
+esc_tech_jump_drive_precursor_desc: "태고적의 선구자 문명에서 개발된 완벽한 점프 드라이브입니다."
+esc_tech_jump_drive_precursor_bio: "선구자 초차원 슬립스트림 시각"
+esc_tech_jump_drive_precursor_bio_desc: "£sr_dark_matter£ §Y$sr_dark_matter$§! 조작에 대한 선구자의 지식을 활용함으로써, 우리는 우리의 생물함선들이 은하를 가로지르는 전혀 새로운 방법을 유전적으로 설계할 수 있었으며 그것은 우리가 지금 갖고 있는 그 어떤 것보다 더 우월합니다."
+
+esc_tech_psi_jump_drive_2: "개선된 사이오닉 점프 드라이브"
+esc_tech_psi_jump_drive_2_desc: "성숙하고 세련된 버전의 사이오닉 점프 드라이브로, 작동 범위가 더 늘었으며 충전 속도가 더 빨라졌습니다."
+esc_tech_psi_jump_drive_2_bio: "개선된 사이킥 강화 생체 드라이브"
+esc_tech_psi_jump_drive_2_bio_desc: "생물함선들의 사이오닉 잠재력을 더 높임으로써, 우리는 그들이 §M장막§!과 더 강하게 연결되도록 할 수 있었으며, 그들이 더 먼 거리를 훨씬 더 빠른 속도로 가로지를 수 있게 했습니다."
+
+esc_tech_psi_jump_drive_3: "장막의 인도"
+esc_tech_psi_jump_drive_3_desc: "장막을 가로지르는 것들에게서 배운 것으로 우리는 사이오닉 점프 드라이브를 완벽하게 만들 수 있습니다."
+esc_tech_psi_jump_drive_3_bio: "공생하는 §M장막§!의 인도"
+esc_tech_psi_jump_drive_3_bio_desc: "우리의 생물함선들에게 이 현실로 불려온 §M장막§!의 존재와 그들 사이의 계약을 묶는 존재로 작용할 특수한 기관을 달아줌으로써, 우리는 그들이 일반 공간과 영원히 신비로운 §M장막§! 차원 모두를 안전하게 항해하도록 할 것입니다."
+
+esc_tech_aura_mirage_system: "타이탄 오라: 신기루 시스템"
+esc_tech_aura_mirage_system_desc: "특수한 영상 출력 시스템을 통해 우리의 함선들이 실제 위치와 다른 곳에 나타나게 함으로써 적의 표적 시스템의 효율성을 크게 감소시킬 수 있습니다."
+ESC_TECH_UNLOCK_TITAN_AURA_MIRAGE: "§H타이탄 오라 잠금 해제§!: 신기루 시스템"
+ESC_TECH_UNLOCK_TITAN_AURA_MIRAGE_DESC: "$esc_tech_aura_mirage_system_desc$"
+
+esc_tech_aura_nanite_swarm: "타이탄 오라: 나노머신 침투 무리"
+esc_tech_aura_nanite_swarm_desc: "나노머신 무리를 적 함선의 장갑 층과 내부 구조를 공격하도록 프로그래밍함으로써 우리는 적 함선이 무기 피해를 훨씬 더 잘 받게 만들 수 있습니다."
+ESC_TECH_UNLOCK_TITAN_AURA_NANITES: "§H타이탄 오라 잠금 해제§!: 나노머신 침투 무리"
+ESC_TECH_UNLOCK_TITAN_AURA_NANITES_DESC: "$esc_tech_aura_nanite_swarm_desc$"
+
+esc_tech_aura_space_distortion: "타이탄 오라: 공간 왜곡 모듈"
+esc_tech_aura_space_distortion_desc: "우주전에서 중력장을 조작함으로써 무엇과도 비길 수 없는 전장 통제력을 보장하며, 우리의 적들이 이동하고 우리를 공격할 자유를 박탈합니다."
+ESC_TECH_UNLOCK_TITAN_AURA_SPATIAL: "§H타이탄 오라 잠금 해제§!: 공간 왜곡 모듈"
+ESC_TECH_UNLOCK_TITAN_AURA_SPATIAL_DESC: "$esc_tech_aura_space_distortion_desc$"
+
+esc_tech_precursor_armaments: "선구자 무장 기술"
+esc_tech_precursor_armaments_desc: "오래된 문명이 이 특화된 반응로를 만들어서 그들의 무기의 위력을 새로운 경지로 끌어올렸습니다."
+
+############################################################
+###            Biological Weapons Technologies           ###
+############################################################
+
+esc_tech_bio_cannon_1: "담즙 분출포"
+esc_tech_bio_cannon_1_desc: "헤아릴 수 없는 세월 동안 우주 생물들은 적대적인 환경의 우주에서 살아남고 번성했으며 먹잇감을 사냥하기 위한 환상적인 도구와 방법을 진화시켜왔습니다. 우리는 그들로부터 많은 것을 배울 수 있으며 몇몇 종을 수정하여 우리 제국에 봉사할 수 있는 존재로 만들 수도 있습니다."
+gateway_ESC_BIOLOGICAL_CANNON: "생물학 포"
+
+esc_tech_bio_cannon_2: "혐오스러운 담즙 분출포"
+esc_tech_bio_cannon_2_desc: "수정된 우주 유기체를 우리의 함대를 위한 무기로 바꾸는 실험은 완전히 성공했습니다. 지금은 자연의 창조물들을 바탕으로 우리의 살아있는 함포를 우주전의 진정한 무기로 바꿔나갈 시간입니다."
+
+esc_tech_bio_cannon_3: "산 분출포"
+esc_tech_bio_cannon_3_desc: "생명 자체에 대해 완전히 통달하게 된 지금, 우리는 우리의 생물 기반 무기들을 다시 살펴보면서 그것들을 우리의 은하 정복의 더욱더 강력한 도구로 만들기 위해 새롭고 개선된 지놈으로 업그레이드해야 합니다."
+
+esc_tech_bio_cannon_4: "산 구토포"
+esc_tech_bio_cannon_4_desc: "이 프로젝트를 위해 몇몇 새로운 지놈 서열을 만들어왔으니, 우리는 살아있는 함포로 이용하기 위해서 완전한 생물학적 생명체를 만들어내기 직전에 와 있습니다. 이것으로 우리는 은하의 진정한 지배자로 우뚝 서야 합니다."
+
+esc_tech_bio_missile_1: "산 방울 폭탄"
+esc_tech_bio_missile_1_desc: "헤아릴 수 없는 세월 동안 우주 생물들은 적대적인 환경의 우주에서 살아남고 번성했으며 먹잇감을 사냥하기 위한 환상적인 도구와 방법을 진화시켜왔습니다. 우리는 그들로부터 많은 것을 배울 수 있으며 몇몇 종을 수정하여 우리 제국에 봉사할 수 있는 존재로 만들 수도 있습니다."
+gateway_ESC_BIOLOGICAL_MISSILES: "생물학 미사일"
+
+esc_tech_bio_missile_2: "혐오스러운 산 방울 폭탄"
+esc_tech_bio_missile_2_desc: "생명 자체에 대해 완전히 통달하게 된 지금, 우리는 우리의 생물 기반 무기들을 다시 살펴보면서 그것들을 우리의 은하 정복의 더욱더 강력한 도구로 만들기 위해 새롭고 개선된 지놈으로 업그레이드해야 합니다."
+
+esc_tech_bio_missile_3: "포식하는 산 방울 폭탄"
+esc_tech_bio_missile_3_desc: "이 프로젝트를 위해 몇몇 새로운 지놈 서열을 만들어왔으니, 우리는 살아있는 미사일 발사기로 이용하기 위해서 완전한 생물학적 생명체를 만들어내기 직전에 와 있습니다. 이것으로 우리는 은하의 진정한 지배자로 우뚝 서야 합니다."
+
+esc_tech_bio_missile_x_1: "산 방울 탄막"
+esc_tech_bio_missile_x_1_desc: "우리는 큰 함선을 위한 큰 무기가 필요하며, 몇몇 연구자들은 산 방울 폭탄 분출포를 더 크게 만들어서 산 방울을 빠르게 연속해서 발사할 수 있도록 수정하는 것을 제안했습니다. 이 제안은 좋은 아이디어로 들립니다. 탐구하십시오."
+gateway_ESC_BIOLOGICAL_X_MISSILES: "초대형 생물학 미사일"
+
+esc_tech_bio_missile_x_2: "포식하는 산 방울 탄막"
+esc_tech_bio_missile_x_2_desc: "산 방울 탄막 생성기라는 이 거대한 살아있는 미사일 발사기에 몇 가지 간단한 지놈 조작을 가함으로써, 우리는 우리의 최고의 함선들을 위한 더욱더 강력한 무기를 만들 수 있습니다."
+
+esc_tech_bio_missile_titanic: "산 방울 폭풍"
+esc_tech_bio_missile_titanic_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 또다시 우리의 산 방울 탄막 발사기를 더욱더 크고 더 강력한, 매 공격마다 산성 투사체의 폭풍을 만들어낼 수 있는 살아있는 미사일 발사기로 수정해야 하게 됐습니다."
+
+esc_tech_repeatable_bio_damage: "산 불안정성"
+esc_tech_repeatable_bio_damage_desc: "우리의 생명체 무기가 가하는 산성 기반 공격의 피해를 증가시키는 방법 중 하나는 그들의 산의 효능과 불안정성을 증가시키는 것입니다."
+
+esc_tech_repeatable_bio_fire_rate: "고용량 산 분비선"
+esc_tech_repeatable_bio_fire_rate_desc: "우리는 최소한 잠깐동안은 우리의 살아있는 무기들이 더 빠르게 공격하도록 만들 수 있습니다. 하지만 더 크고 빠르게 작동하는 산 분비선을 만들기 위해서는 지놈 조작이 필요합니다."
+
+############################################################
+###             Archaeo Component Technologies           ###
+############################################################
+
+esc_tech_archaeo_laser_2: "기술 융합 빔 포"
+esc_tech_archaeo_laser_2_desc: "선구자 문명의 공동 현상 붕괴기와 우리가 개발한 레이저 기술을 접목하여 우리의 함선을 위한 개선되고 더 강력한 빔 포를 만들 수 있을 것입니다."
+esc_tech_archaeo_laser_2_bio: "기술 융합 붕괴기 안광"
+esc_tech_archaeo_laser_2_bio_desc: "선구자의 공동 현상 붕괴기 기술을 생물학적 빔 방출기에 융합시켜서 새롭고 극도로 강력한 무기를 만들 수 있습니다."
+
+esc_tech_archaeo_laser_3: "고급 기술 융합 빔 포"
+esc_tech_archaeo_laser_3_desc: "기술 융합 빔 포 기술을 더욱더 개선한 결과로 더욱더 강하고 치명적이게 만들어진 공동 현상 붕괴기입니다."
+esc_tech_archaeo_laser_3_bio: "진화된 기술 융합 붕괴기 안광"
+esc_tech_archaeo_laser_3_bio_desc: "지금까지 성공을 거둬왔음에도 불구하고, 우리는 아직 공동 현상 붕괴기 기술의 진정한 능력을 보기엔 멀었습니다. 그리고 이것의 잠재력을 최대로 발휘하기 위해서는 조심스럽게 유도된 진화가 필요합니다. 이 연구를 통해서 우리는 그것을 이루기 위해 필요한 지식을 얻을 수 있을 것입니다."
+
+esc_tech_archaeo_mass_driver_2: "기술 융합 포대"
+esc_tech_archaeo_mass_driver_2_desc: "선구자 문명의 초대형 포대와 우리가 개발한 매스 드라이버 기술을 접목하여 우리의 함대를 위한 개선되고 더 강력한 레일건을 만들 수 있을 것입니다."
+esc_tech_archaeo_mass_driver_2_bio: "기술 융합 초대형 조각 포대"
+esc_tech_archaeo_mass_driver_2_bio_desc: "선구자의 기술을 우리의 초대형 조각 포대에 더 긴밀하게 융합시키는 것은 이 무기의 출력과 정밀성이 증가하는 큰 성과를 약속합니다. 우리의 생물함선들을 전장에서 가장 강하게 만들고 싶다면 반드시 연구해야 합니다."
+
+esc_tech_archaeo_mass_driver_3: "고급 기술 융합 포대"
+esc_tech_archaeo_mass_driver_3_desc: "기술 융합 포대 기술을 더욱더 개선한 결과로 더욱더 강하고 치명적이게 만들어진 레일건입니다."
+esc_tech_archaeo_mass_driver_3_bio: "진화된 기술 융합 초대형 조각 포대"
+esc_tech_archaeo_mass_driver_3_bio_desc: "초대형 조각 포대를 선구자 기술로 개선한 첫 결과는 아주 희망적이었습니다. 하지만 우리가 탐구하지 못한 더 많은 잠재력이 있습니다. 우리는 진화를 촉진하고 유도하여 우리 자신들을 원하는 결과로 이끌어야 합니다."
+
+esc_tech_archaeo_mass_accelerator_2: "기술 융합 함포"
+esc_tech_archaeo_mass_accelerator_2_desc: "선구자 문명의 과포화 함포와 우리가 개발한 초대형 실탄 가속기 기술을 접목하여 우리의 함대를 위한 개선되고 더 강력한 함포를 만들 수 있을 것입니다."
+esc_tech_archaeo_mass_accelerator_2_bio: "기술 융합 파편화 함포"
+esc_tech_archaeo_mass_accelerator_2_bio_desc: "융합된 선구자 기술력에 의해 조심스럽게 통제되는 더 강력한 불안정 혼합물을 추가함으로써, 우리의 파편화 함포 생물학 시스템의 파괴력의 현저한 증가를 약속합니다."
+
+esc_tech_archaeo_mass_accelerator_3: "고급 기술 융합 함포"
+esc_tech_archaeo_mass_accelerator_3_desc: "기술 융합 함포 기술을 더욱더 개선한 결과로 더욱더 강하고 치명적이게 만들어진 아주 큰 함포입니다."
+esc_tech_archaeo_mass_accelerator_3_bio: "진화된 기술 융합 파편화 함포"
+esc_tech_archaeo_mass_accelerator_3_bio_desc: "조심스럽게 유도된 진화로써 더 발전된 기술 융합 파편화 함포는 훨씬 더 강력한 생물학 무기의 새로운 종을 개발할 수 있도록 해야 합니다."
+
+esc_tech_archaeo_missiles_2: "기술 융합 나노 미사일"
+esc_tech_archaeo_missiles_2_desc: "선구자 문명의 나노 미사일 군집 발사기와 우리가 개발한 미사일 기술을 접목하여 우리의 함대를 위한 개선되고 더 강력한 미사일 무리를 만들 수 있을 것입니다."
+esc_tech_archaeo_missiles_2_bio: "기술 융합 나노 발톱 군집 발사기"
+esc_tech_archaeo_missiles_2_bio_desc: "선구자의 기술을 나노 발톱 군집 발사기에 더 잘 융합시킴으로써, 생물학 미사일 발사기의 위력의 현저한 증가를 약속합니다."
+
+esc_tech_archaeo_missiles_3: "고급 기술 융합 나노 미사일"
+esc_tech_archaeo_missiles_3_desc: "기술 융합 미사일 기술을 더욱더 개선한 결과로 더욱더 강하고 치명적이게 만들어진 나노 미사일입니다."
+esc_tech_archaeo_missiles_3_bio: "진화된 기술 융합 나노 발톱 군집 발사기"
+esc_tech_archaeo_missiles_3_bio_desc: "유도된 진화를 통해 우리는 기술 융합 나노 발톱 군집 발사기를 더욱더 개발하여 그 위력을 더욱더 강화할 수 있어야 합니다."
+
+esc_tech_archaeo_strikecraft_2: "기술 융합 드론"
+esc_tech_archaeo_strikecraft_2_desc: "선구자 문명의 드릴 드론과 우리가 개발한 소형 강습기 기술을 접목하여 우리의 함대를 위한 개선되고 더 강력한 공격기를 만들 수 있을 것입니다."
+esc_tech_archaeo_strikecraft_2_bio: "기술 융합 드릴러"
+esc_tech_archaeo_strikecraft_2_bio_desc: "고급 유전 공학을 통해 우리는 선구자의 기술을 우리의 드릴러에 더 긴밀하게 융합하여 그들에게 더 강한 전투력을 부여해야 합니다."
+
+esc_tech_archaeo_strikecraft_3: "고급 기술 융합 드론"
+esc_tech_archaeo_strikecraft_3_desc: "기술 융합 드론 기술을 더욱더 개선한 결과로 더욱더 강하고 치명적이게 만들어진 공격기입니다."
+esc_tech_archaeo_strikecraft_3_bio: "진화된 기술 융합 드릴러"
+esc_tech_archaeo_strikecraft_3_bio_desc: "우리는 우리의 기술 융합 드릴러의 진화를 선조 기술을 더욱 긴밀하게 통합하도록 유도함으로써 그들에게 더 강한 위력을 부여할 수 있습니다."
+
+esc_tech_archaeo_point_defense_2: "기술 융합 근접 방어 무기 체계"
+esc_tech_archaeo_point_defense_2_desc: "선구자 문명의 그물망 투척기와 우리가 개발한 CIWS 기술을 접목하여 우리의 함대를 위한 개선되고 더 강력한 포인트 방어 시스템을 만들 수 있을 것입니다."
+esc_tech_archaeo_point_defense_2_bio: "기술 융합 그물망 투척기"
+esc_tech_archaeo_point_defense_2_bio_desc: "그물망 투척기 생명공학 거점 방어 체계를 선구자 기술로 강화함으로써 이것의 능률을 더욱더 증가시킬 수 있습니다."
+
+esc_tech_archaeo_point_defense_3: "고급 기술 융합 근접 방어 무기 체계"
+esc_tech_archaeo_point_defense_3_desc: "기술 융합 거점 방어 체계 기술을 더욱더 개선한 결과로 더욱더 강하고 치명적이게 만들어진 CIWS입니다."
+esc_tech_archaeo_point_defense_3_bio: "진화된 기술 융합 그물망 투척기"
+esc_tech_archaeo_point_defense_3_bio_desc: "기술 융합 그물망 투척기의 위력과 정확성은 생명공학 거점 방어 체계의 진화를 선구자 기술력에 대한 더 긴밀한 통합으로 유도함으로써 더욱더 강화될 수 있습니다."
+
+esc_tech_archaeo_titanic_2: "기술 융합 파멸 광선"
+esc_tech_archaeo_titanic_2_desc: "선구자 문명의 파멸 광선과 우리가 개발한 초대형 무기 기술을 접목하여 우리의 함대를 위한 개선되고 더 강력한 초대형 무기를 만들 수 있을 것입니다."
+
+esc_tech_archaeo_titanic_3: "고급 기술 융합 파멸 광선"
+esc_tech_archaeo_titanic_3_desc: "기술 융합 파멸 광선 기술을 더욱더 개선한 결과로 더욱더 강하고 치명적이게 만들어진 초대형 빔 캐논입니다."
+
+esc_tech_archaeoarmor_2: "기술 융합 장갑"
+esc_tech_archaeoarmor_2_desc: "우리 자신들의 물질 및 보호막 기술력의 최고 역량을 포함시킨 발전된 형태의 선구자 파동 장갑입니다."
+esc_tech_archaeoarmor_2_bio: "기술 융합 갑각"
+esc_tech_archaeoarmor_2_bio_desc: "유도된 진화를 통해 생물 갑각에 선구자 기술력을 더한 것으로, 증가된 내구성과 보호 에너지 역장을 생성하는 더 개선된 능력을 부여할 수 있습니다."
+
+esc_tech_archaeoarmor_3: "고급 기술 융합 장갑"
+esc_tech_archaeoarmor_3_desc: "새로운 버전의 기술 융합 장갑으로 내구성이 더 강하고 더 강한 보호막을 생성할 수 있습니다."
+esc_tech_archaeoarmor_3_bio: "진화된 기술 융합 갑각"
+esc_tech_archaeoarmor_3_bio_desc: "기술 융합 갑각은 생물함선의 살에 선조의 기술력을 더 긴밀하게 융합시킴으로써 더 개선될 수 있습니다. 그 결과로 우주 태생 생물체가 가질 수 있는 가장 강력한 방어를 얻을 수 있습니다."
+
+esc_tech_archaeoshield_2: "기술 융합 보호막"
+esc_tech_archaeoshield_2_desc: "선구자 정지장의 더 개선된 버전으로 우리의 역장 연구로 얻은 가장 값진 작품도 포함하고 있어, 그 결과로 훨씬 더 강력하게 만들어진 보호막입니다."
+esc_tech_archaeoshield_2_bio: "기술 융합 정지장 조직"
+esc_tech_archaeoshield_2_bio_desc: "유도된 진화를 통해 생물체 조직 내에 있는 선구자 기술의 혹에 의해 생긴 정지장의 활용을 눈에 띄게 개선할 수 있습니다."
+
+esc_tech_archaeoshield_3: "고급 기술 융합 보호막"
+esc_tech_archaeoshield_3_desc: "정지장 기술을 더욱더 개선하여 더욱더 강력한 버전의 기술 융합 보호막을 얻었습니다."
+esc_tech_archaeoshield_3_bio: "고급 기술 융합 정지장 조직"
+esc_tech_archaeoshield_3_bio_desc: "생물함선의 조직 구조와 정지장을 발생시키는 선구자 기술력의 혹을 통합시키는 생명공학은 더욱더 개선되어 훨씬 강한 역장을 생성하게 만들 수 있습니다."
+
+############################################################
+###            Crystalline Weapons Technologies          ###
+############################################################
+
+esc_tech_crystal_cannon_1: "크리스탈 조각 투척기"
+esc_tech_crystal_cannon_1_desc: "크리스탈 생명체를 구성하는 것과 유사한 유기체 크리스탈을 발사하는 무기입니다."
+gateway_ESC_CRYSTALLINE_CANNON: "크리스탈 무기"
+
+esc_tech_crystal_cannon_2: "개선된 크리스탈 조각 투척기"
+esc_tech_crystal_cannon_2_desc: "개선된 버전의 $esc_tech_crystal_cannon_1$로 개량되고 더 질긴 크리스탈과 훨씬 더 강력한 발사 시스템을 사용하는 무기입니다."
+
+esc_tech_crystal_cannon_3: "크리스탈 스파이크 투척기"
+esc_tech_crystal_cannon_3_desc: "더 강력한 크리스탈과 더 나은, 더 정확한 발사 시스템을 갖춘 신세대 버전의 크리스탈 무기입니다."
+
+esc_tech_crystal_cannon_4: "개선된 크리스탈 스파이크 투척기"
+esc_tech_crystal_cannon_4_desc: "더욱더 개선된 $esc_tech_crystal_cannon_3$로 화력과 명중률이 더 높습니다."
+
+esc_tech_crystal_cannon_5: "크리스탈 작살 포"
+esc_tech_crystal_cannon_5_desc: "크리스탈 포의 5번째 세대로 전례 없는 정확성과 화력을 자랑합니다."
+gateway_ESC_CRYSTALLINE_LANCE: "거대 크리스탈 무기"
+
+esc_tech_crystal_lance_1: "크리스탈 재블린 투척기"
+esc_tech_crystal_lance_1_desc: "우리는 기본적인 주축 탑재형 무기를 성공적으로 제작하고 시험했습니다. 우리가 얻은 지식은 우리의 크리스탈 기술에 적용되어 우리의 가장 크고 강력한 함선에 탑재될 진정으로 강력한 크리스탈 무기를 개발하는 데 사용될 것입니다."
+
+esc_tech_crystal_lance_2: "크리스탈 재블린 포"
+esc_tech_crystal_lance_2_desc: "반유기체 크리스탈로 이뤄진 거대한 창을 발사하는 아주 강력한 가속기로 가장 강력한 장갑도 뚫을 수 있습니다."
+
+esc_tech_crystal_lance_3: "크리스탈 랜스 포"
+esc_tech_crystal_lance_3_desc: "훨씬 더 강한 위력을 지닌 개선된 버전의 $esc_tech_crystal_lance_2$입니다."
+
+esc_tech_crystal_lance_titanic: "크리스탈 관통포"
+esc_tech_crystal_lance_titanic_desc: "우리의 가장 큰 함선들을 위한, 아주 커진 버전의 $esc_tech_crystal_lance_3$입니다."
+
+esc_tech_improved_crystal_farm: "개선된 크리스탈 농장"
+esc_tech_improved_crystal_farm_desc: "살아있는 크리스탈을 더 잘 이해하게 된 지금, 우리는 농장을 개선해서 크리스탈을 더 효율적인 방법으로 재배할 수 있습니다."
+
+############################################################
+###              Energy Weapons Technologies             ###
+############################################################
+
+esc_tech_laser_6: "고급 전투 레이저"
+esc_tech_laser_6_desc: "새로운 광학 및 양자 생성기 기술을 통해 우리는 이제 새로운 세대의 전투 레이저를 만들 수 있으며, 그 성능은 오늘날 우리가 가지고 있는 어떤 것보다도 뛰어날 것입니다."
+esc_tech_laser_6_bio: "고급 전투 빔 발사기"
+esc_tech_laser_6_bio_desc: "유도된 진화를 통해 우리는 생물학적 빔 발사기의 전투 성능을 더욱 최적화할 수 있습니다."
+gateway_ESC_LASERS: "고급 레이저 무기"
+
+esc_tech_laser_7: "오로라 레이저"
+esc_tech_laser_7_desc: "최근에 새로운 유형의 레이저 생성기가 개발되었습니다. 이 생성기는 믿을 수 없을 정도로 결맞고 매우 강력한 빔을 생성합니다. 현재는 몇 가지 기술 실증기만 존재하지만, 이것을 확장해서 제대로 함선에 탑재할 수 있다면..."
+esc_tech_laser_7_bio: "오로라 빔 발사기"
+esc_tech_laser_7_bio_desc: "최근의 빔 발사기 생물공학 발전을 통해 우리는 이제 믿을 수 없을 정도로 결맞고 매우 강력한 빔을 발사하는 유기체 무기를 만들 수 있습니다. 이러한 무기는 우리의 함대의 힘을 크게 향상시킬 것입니다."
+
+esc_tech_energy_torpedo_3: "뮤온 발사기"
+esc_tech_energy_torpedo_3_desc: "에너지 발사 무기는 이질적이고 더 불안정한 입자를 탄두로 사용하면 더 위력적으로 만들어질 수 있습니다. 우리 함대에 그런 무기를 사용할 수 있었으므로 이 아이디어는 더 깊이 탐구되어야 합니다."
+esc_tech_energy_torpedo_3_bio: "생물학 뮤온 발사기"
+esc_tech_energy_torpedo_3_bio_desc: "유도된 진화를 통해 우리는 대량의 불안정한 뮤온을 저장하고 발사할 수 있는 특수 기관을 만들 수 있습니다. 그 결과로 개발된 무기는 많은 전투 시나리오에서 매우 효과적일 것으로 예상됩니다."
+gateway_ESC_ENERTY_LAUNCHERS: "고급 에너지 발사기"
+
+esc_tech_energy_torpedo_4: "반물질 발사기"
+esc_tech_energy_torpedo_4_desc: "반물질은 이 우주에서 찾을 수 있는 최고의 '폭발물'입니다. 그것은 접촉하는 모든 물질을 에너지로 전환하기 때문입니다. 반입자의 칵테일을 발사하는 에너지 발사기는 궁극적인 파괴의 무기가 될 것입니다."
+esc_tech_energy_torpedo_4_bio: "생물학 반물질 발사기"
+esc_tech_energy_torpedo_4_bio_desc: "뮤온 발사기를 더욱더 진화시켜, 이제 반물질 덩어리를 축적하고 안전하게 보관하고 발사하는 더욱더 특화된 기관을 만들 수 있습니다. 이런 무기가 발사하는 것은 극도로 파괴적일 것입니다."
+
+esc_tech_disruptors_4: "타키온 분열기"
+esc_tech_disruptors_4_desc: "더 고전적인 입자 대신 타키온을 활용하는 분열기를 만들 수 있다면, 우리는 이전에 볼 수 없었던 위력을 지닌 무기를 얻을 수 있고 은하계에서 지배적인 세력이 되기 위한 또다른 발걸음을 내딛을 수 있을 것입니다."
+esc_tech_disruptors_4_bio: "타키온 생체 분열기"
+esc_tech_disruptors_4_bio_desc: "생물학 분열기를 꾸준히 개발하고 진화시킴으로써 우리는 아원자 결합을 방해하기 위해 일반적인 입자가 아니라 타키온을 활용하는 변종을 만들 수 있습니다. 그런 생물학 무기는 어떤 물질도 효과적으로 파괴할 수 있을 것입니다."
+gateway_ESC_DISRUPTORS: "고급 분열기"
+
+esc_tech_disruptors_5: "분열기 랜스"
+esc_tech_disruptors_5_desc: "분열기 빔은 집속력과 결맞음을 유지하기가 어렵기로 악명이 높지만, 새로운 양자 생성기 기술로 창과 같고 믿을 수 없이 강력한 분열기를 만들 수 있습니다."
+esc_tech_disruptors_5_bio: "생체 분열기 랜스"
+esc_tech_disruptors_5_bio_desc: "생물학 분열기 템플릿을 더 개선한 결과로 우리는 그 어떤 방어도 뚫을 수 있는 생물학 무기를 만들 수 있습니다."
+
+esc_tech_plasma_4: "고급 플라즈마 포"
+esc_tech_plasma_4_desc: "우리의 새 기술로 우리는 플라즈마를 더 안정된 형태로 응축할 수 있게 되었으며 더 강력하고 정밀한 플라즈마 포를 만들 수 있게 되었습니다."
+esc_tech_plasma_4_bio: "고급 생체 플라즈마 포"
+esc_tech_plasma_4_bio_desc: "선택적 육종의 힘을 통해 우리는 더 발전되고 강력한 생체 플라즈마 무기의 변종을 만들 수 있습니다."
+gateway_ESC_PLASMA_CANNONS: "고급 플라즈마 포"
+
+esc_tech_plasma_5: "드래곤브레스 포"
+esc_tech_plasma_5_desc: "새로운 고급 재료와 신세대 플라즈마 펌프 덕분에 플라즈마 포에서 사용하는 플라즈마의 온도를 크게 높일 수 있게 되었으며, 그 결과 믿을 수 없을 정도로 강력한 무기가 탄생하게 되었습니다."
+esc_tech_plasma_5_bio: "드래곤브레스 생체 플라즈마 포"
+esc_tech_plasma_5_bio_desc: "고급 생체 플라즈마 포의 실험 배치에서 발견된 이상한 변이를 통해 지금도 강력한 이 생체 무기의 잠재성이 드러났습니다. 우리는 이 변이를 이미 사용된 유전자 템플릿에 통합할 가능성을 탐구할 필요가 있습니다."
+
+esc_tech_chrono_cannon: "시간 폭풍 포"
+esc_tech_chrono_cannon_desc: "불안정하고 끊임없이 변화하는 시공간 왜곡보다 더 파괴적인 것은 거의 없습니다. 어떤 형태의 장갑이나 보호막도 이러한 것들을 효과적으로 보호할 수 없기 때문입니다. 이러한 왜곡을 생성할 수 있는 무기는 정말로 무서운 무기가 될 것입니다."
+esc_tech_chrono_cannon_bio: "시간 폭풍 발사기"
+esc_tech_chrono_cannon_bio_desc: "우리의 생체 플라즈마 포에 시공간 기술을 주입함으로써, 우리는 적에게 불안정한 시공간 이상을 발사하여 시공간 연속체의 왜곡으로 그들을 찢어버릴 수 있는 무서운 힘의 무기를 만들 수 있습니다."
+
+esc_tech_cloud_lightning_2: "증폭된 클라우드 라이트닝"
+esc_tech_cloud_lightning_2_desc: "우리 과학자들은 우주 구름이 만들어내는 이미 강력한 번개를 강화하여 현대의 우주 함대전에 적합한 무기로 만들기 위한 여러 방법을 찾아냈습니다."
+gateway_ESC_ADV_CLOUD_LIGHTNING: "고급 클라우드 라이트닝 무기"
+
+esc_tech_cloud_lightning_3: "번개폭풍 생성기"
+esc_tech_cloud_lightning_3_desc: "더 많은 개선을 통해 우리의 클라우드 라이트닝 생성기는 우주에 치명적인 번개폭풍을 만들 파괴적인 무기로 바뀔 수 있습니다."
+
+esc_tech_mining_laser_2: "플라즈마 커터"
+esc_tech_mining_laser_2_desc: "채굴 드론에서 유래한 이 발전된 채굴 레이저는 적의 함선의 선체를 쉽게 절단할 수 있습니다."
+esc_tech_mining_laser_2_bio: "플라즈마 빔 투사기"
+esc_tech_mining_laser_2_bio_desc: "이 빔 투사기는 원래 채굴 레이저를 기반으로 개발되었지만, 이것의 군사적 응용은 장갑을 절단하는 것보다 더 많은 능력을 보여주었습니다. 그리고 우리의 생명공학의 확정된 지식으로 우리는 이것을 훨씬 더 치명적인 무기로 업그레이드할 수 있습니다."
+gateway_ESC_ADV_MINING_LASER: "고급 채굴 드론 레이저"
+
+esc_tech_mining_laser_3: "고급 플라즈마 커터"
+esc_tech_mining_laser_3_desc: "최근 개발된 기술을 적용함으로써 우리는 플라즈마 커터의 성능을 더욱 향상시켜 우리의 함선에 더욱 강력한 무기로 만들 수 있습니다."
+esc_tech_mining_laser_3_bio: "고급 플라즈마 빔 투사기"
+esc_tech_mining_laser_3_bio_desc: "더 깊게 유도된 진화를 통해 우리는 플라즈마 빔 투사기의 출력을 더욱 증가시켜 우리의 함대에 더욱 정밀하고 치명적인 무기로 만들 수 있습니다."
+
+esc_tech_juggernaut_beam_1: "저거너트 빔 포"
+esc_tech_juggernaut_beam_1_desc: "저거너트는 극도로 비싸고 귀중한 함선이며 특화된 빔 무기 등의 특별한 무기를 필요로 합니다. 이 포는 이 도전에 응답하기 위해 개발되었습니다."
+gateway_ESC_JUGGERNAUT_BEAM_CANNONS: "저거너트 빔 포"
+esc_tech_juggernaut_beam_1_bio: "$esc_tech_juggernaut_beam_1$"
+esc_tech_juggernaut_beam_1_bio_desc: "생물학 빔 발사기의 크기와 출력을 개량하는 선택적 육종을 통해 저거너트급 생물함선을 위한 믿을 수 없을 정도로 강력한 무기를 만들 수 있습니다."
+
+esc_tech_juggernaut_beam_2: "개선된 저거너트 빔 포"
+esc_tech_juggernaut_beam_2_desc: "원래의 저거너트 빔 포도 이미 인상적인 무기 시스템이었지만, 우리는 그것을 더욱 개선하고 강력하게 만들 수 있습니다!"
+esc_tech_juggernaut_beam_2_bio: "$esc_tech_juggernaut_beam_2$"
+esc_tech_juggernaut_beam_2_bio_desc: "추가적인 유도된 진화를 통해 우리는 저거너트 빔 포의 출력과 정밀도를 더욱 강화하여 훨씬 더 공포스러운 무기로 만들 수 있습니다."
+
+esc_tech_particle_lance_3: "개선된 타키온 랜스"
+esc_tech_particle_lance_3_desc: "우주 전쟁과 그에 필요한 무기에 대한 우리의 새로운 이해를 바탕으로, 우리는 타키온 랜스의 설계를 개선하여 그 힘과 피해 출력을 향상시킬 수 있습니다."
+esc_tech_particle_lance_3_bio: "개선된 타키온 입자 빔"
+esc_tech_particle_lance_3_bio_desc: "선택적 육종의 힘을 통해 우리는 엄청나게 향상된 힘과 정밀성을 가진 유기체 타키온 빔 발사기를 만들어낼 수 있습니다."
+gateway_ESC_PARTICLE_LANCES: "고급 파티클 랜스"
+
+esc_tech_particle_lance_4: "초차원 랜스"
+esc_tech_particle_lance_4_desc: "타키온 랜스마저도 그 빔이 단 하나의 차원만을 가로지르기 때문에 방어하기가 상대적으로 쉽다는 몇 안 되는 단점이 있습니다. 우리가 어떻게든 우리의 무기를 한 번에 여러 차원을 통해서 공격할 수 있게 한다면 우리는 전례 없는 위력을 지닌 랜스를 얻게 될 것입니다."
+esc_tech_particle_lance_4_bio: "초차원 입자 빔"
+esc_tech_particle_lance_4_bio_desc: "초차원 기술에 이미 존재하는 타키온 빔 방출기 유전 틀을 결합하여 우리는 그것을 다음 단계로 진화시켜 목표물을 여러 다른 차원에서 동시에 공격하는 무기를 만들 수 있습니다."
+
+esc_tech_particle_lance_titanic: "파괴광선"
+esc_tech_particle_lance_titanic_desc: "믿을 수 없을 정도로 큰 새로운 함선을 개발하며, 우리는 더 크고 위력적인 파티클 랜스가 필요해졌습니다. 다행히도, 이 설계를 거기에 활용할 수 있습니다."
+esc_tech_particle_lance_titanic_bio: "$esc_tech_particle_lance_titanic$"
+esc_tech_particle_lance_titanic_bio_desc: "우리의 타키온 빔 방사기를 더 크고 훨씬 더 강하게 진화하도록 유도하며, 우리는 우리 함대의 생물함선들을 위한 궁극의 유기체 빔 무기를 만들 수 있습니다."
+
+esc_tech_arc_emitter_3: "번개 포"
+esc_tech_arc_emitter_3_desc: "신세대 전력 생성기와 집속 배열을 활용하여 강력한 전기 볼트를 발사하는 아크 에미터를 만들 수 있습니다."
+esc_tech_arc_emitter_3_bio: "번개 생체 포"
+esc_tech_arc_emitter_3_bio_desc: "유도된 진화를 통해 우리는 생물학적 아크 방출기를 개선하여 생물이 모든 것을 침투하는 전기 볼트를 발사할 수 있는 새로운 유기체 무기를 만들 수 있습니다."
+gateway_ESC_ADV_ARC_EMITTERS: "고급 아크 에미터"
+
+esc_tech_arc_emitter_4: "아크 포"
+esc_tech_arc_emitter_4_desc: "자기 렌즈 배열에 몇 가지 수정을 가하면 번개 포의 번개 폭발력을 더욱 증가시켜 더욱 파괴적인 무기로 만들 수 있습니다."
+esc_tech_arc_emitter_4_bio: "아크 생체 포"
+esc_tech_arc_emitter_4_bio_desc: "위력을 높이기 위한 추가적인 변이를 통해 우리의 함대에 사용할 더 치명적인 버전의 생물학 아크 포를 진화시킬 수 있습니다."
+
+esc_tech_arc_emitter_titanic: "신성한 천둥"
+esc_tech_arc_emitter_titanic_desc: "천상의 폭풍의 무자비한 힘으로 우리의 적을 공격하는 무기입니다."
+esc_tech_arc_emitter_titanic_bio: "$esc_tech_arc_emitter_titanic$"
+esc_tech_arc_emitter_titanic_bio_desc: "유기체 아크 포를 더 크고 강력하게 만들기 위한 선택적 육종의 결과로 우리는 천상의 폭풍의 무자비한 힘으로 우리의 적을 공격하는 전례 없는 스케일의 새로운 무기를 만들 수 있습니다."
+
+esc_tech_wave_motion_gun_1: "파동역학 포"
+esc_tech_wave_motion_gun_1_desc: "엔진 배기의 방향을 일시적으로 바꿔 그 경로에 있던 모든 불운한 대상을 파괴할 수 있는 피해를 주는 창으로 변환하는 특화된 배기구입니다."
+esc_tech_wave_motion_gun_1_bio: "양성자 비명"
+esc_tech_wave_motion_gun_1_bio_desc: "생물함선의 내부 장기를 재설계하고 목구멍에 특수한 집속 근육을 설치하여 우리는 그 생물체가 적들에게 결맞고 극도로 파괴적인 빔 입자의 숨결을 내쉬게 할 수 있습니다."
+gateway_ESC_WAVE_MOTION_GUN: "파동역학 포"
+
+esc_tech_wave_motion_gun_2: "차원 파동 포"
+esc_tech_wave_motion_gun_2_desc: "파동역학 포의 업그레이드 버전으로, 더 나은 정확성과 피해를 위해 빔 초점이 개선된, 업그레이드된 버전의 파동역학 포입니다."
+esc_tech_wave_motion_gun_2_bio: "원자 숨결"
+esc_tech_wave_motion_gun_2_bio_desc: "내부 장기를 더 수정하여, 우리는 양성자 1개짜리 입자가 아니라 고도로 이온화된 원자핵을 활용하게 하여 양성자 비명의 출력을 증폭할 수 있습니다."
+
+esc_tech_wave_motion_gun_titanic: "타이탄 차원 파동 포"
+esc_tech_wave_motion_gun_titanic_desc: "자기 렌즈 배열에 몇 가지 수정을 가하면, 우리는 마침내 원래 설계자가 이 무기를 처음 생각했을 때 염두에 두었던 것과 일치하는 믿을 수 없을 정도의 힘과 규모를 가진 파동역학 포를 만들 수 있습니다."
+esc_tech_wave_motion_gun_titanic_bio: "과충천된 원자 숨결"
+esc_tech_wave_motion_gun_titanic_bio_desc: "크기와 출력을 개선하기 위해 원자 숨결을 장비한 생물체를 선택적으로 육종함으로써 우리는 함대를 파괴하는 위력을 지닌 새로운 아종을 만들 수 있습니다."
+
+esc_tech_arcenciel: "무지개 포"
+esc_tech_arcenciel_desc: "시간과 공간 자체에 통달함으로써, 이제 우리는 목표물을 주머니 차원에 가두고 빅 크런치를 겪게 하여 목표물이 이 세상에 존재했었다는 사실의 모든 흔적을 파괴하는 공포스러운 무기를 만들 수 있습니다. "
+
+esc_tech_arcenciel_titanic: "$esc_tech_arcenciel$"
+esc_tech_arcenciel_titanic_desc: "$esc_tech_arcenciel_desc$"
+
+esc_tech_extradimensional_weapon_2: "물질 제거기"
+esc_tech_extradimensional_weapon_2_desc: "우리가 완벽히 통달한 최첨단 기술을 언비든 함선의 잔해를 연구하여 알게 된 새로운 기술에 결합함으로써 우리는 그들의 물질 분해기 무기를 개선할 수 있습니다."
+gateway_ESC_EXTRADIMENSIONAL: "고급 물질 분해기"
+
+esc_tech_extradimensional_weapon_2_x: "초대형 물질 제거기"
+esc_tech_extradimensional_weapon_2_x_desc: "물질 제거기는 아주 크게 성공했지만, 우리는 비슷한 능력을 가진, 전함의 주포로 쓰일 수 있는 무기가 필요합니다."
+
+esc_tech_extradimensional_weapon_2_t: "타이탄 물질 제거기"
+esc_tech_extradimensional_weapon_2_t_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 우리의 기함급 함선에 장착할 훨씬 더 크고 더 강력한 물질 제거기가 필요하게 되었습니다."
+
+esc_tech_extradimensional_weapon_3: "현실 지우개"
+esc_tech_extradimensional_weapon_3_desc: "물질 제거기 광선에 무효화 에너지를 덧붙여 물질은 물론이고 물질이 점유하는 공간까지 지우는 능력으로 현실을 수정할 수 있는 무기를 만들 수 있습니다."
+
+esc_tech_extradimensional_weapon_3_x: "초대형 현실 지우개"
+esc_tech_extradimensional_weapon_3_x_desc: "우리가 갖고 있는 그 어느 무기보다 현실을 더 빠르고 더 많이 지울 수 있는 거대화된 버전의 현실 지우개입니다."
+
+esc_tech_extradimensional_weapon_3_t: "타이탄 현실 지우개"
+esc_tech_extradimensional_weapon_3_t_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 우리의 기함급 함선에 장착할 훨씬 더 크고 더 강력한 현실 지우개가 필요하게 되었습니다."
+
+############################################################
+###             Gravitic Weapons Technologies            ###
+############################################################
+
+esc_tech_gravity_cannon_1: "중력 이상 투사기"
+esc_tech_gravity_cannon_1_desc: "지정된 구역 안에서 중력장을 정밀하게 조작함으로써 우리는 목표물에 문자 그대로 갈기갈기 찢어버리는 강력한 힘을 가합니다."
+esc_tech_gravity_cannon_1_bio: "$esc_tech_gravity_cannon_1$"
+esc_tech_gravity_cannon_1_bio_desc: "암흑 물질을 포접한 혹을 추가함으로써 군사용으로 활용할 수 있는 중력 이상을 투사할 수 있는 유기체 무기를 만들 수 있습니다."
+gateway_ESC_GRAVITY_CANNONS: "중력 포"
+
+esc_tech_gravity_cannon_2: "초소형 특이점 포"
+esc_tech_gravity_cannon_2_desc: "중력에 통달함으로써 우리는 우리가 지정한 구역에 작은 블랙홀을 생성할 수 있습니다. 이 능력은 명백히 군사적으로 활용할 수 있습니다. 탐구하지 않는 게 멍청한 일이죠."
+esc_tech_gravity_cannon_2_bio: "$esc_tech_gravity_cannon_2$"
+esc_tech_gravity_cannon_2_bio_desc: "유도된 진화를 통해서, 우리는 중력 이상을 만드는 유기체 무기의 위력과 정확성을 극도로 개선하여, 극도로 파괴적인 초소형 특이점을 마음대로 만들게 할 수 있었습니다."
+
+esc_tech_gravity_torpedo_1: "공간 왜곡 탄두"
+esc_tech_gravity_torpedo_1_desc: "이제 우리는 중력을 조작하는 방법을 배웠으니, 작은 블랙홀을 생성할 수 있는 장비를 만들 수 있습니다. 이런 장비를 탄두로 활용하면 가장 단단한 목표물을 제외한 모든 것을 쉽게 파괴할 수 있는 무기를 만들 수 있습니다."
+esc_tech_gravity_torpedo_1_bio: "$esc_tech_gravity_torpedo_1$"
+esc_tech_gravity_torpedo_1_bio_desc: "암흑 물질 포접체는 '폭발'할 때 공간을 심각하게 왜곡하는 생물학 미사일의 탄두로 쓰일 수 있습니다. 우리 군대는 이 아이디어를 실제로 적용하는 데 아주 큰 관심을 보입니다."
+gateway_ESC_GRAVITY_TORPEDOES: "중력 어뢰"
+
+esc_tech_gravity_torpedo_2: "초소형 특이점 탄두"
+esc_tech_gravity_torpedo_2_desc: "약간의 수정을 거치면, 공간 왜곡 탄두의 '출력'은 우주전에서 더 무서운 무기가 될 정도로 크게 증가할 수 있습니다."
+esc_tech_gravity_torpedo_2_bio: "$esc_tech_gravity_torpedo_2$"
+esc_tech_gravity_torpedo_2_bio_desc: "암흑 물질 포접체의 밀도를 높이고 유기체 미사일의 내부 시스템을 약간 업그레이드하면 공간 왜곡 탄두의 위력을 크게 증가시켜 '폭발'할 때 소형 블랙홀을 생성하도록 만들 수 있습니다. 이런 무기는 우리의 함대의 위력을 한 단계 끌어올릴 것입니다."
+
+esc_tech_gravity_lance_1: "초중력 포"
+esc_tech_gravity_lance_1_desc: "중력자를 결맞는 광선으로 응축함으로써, 우리는 발사 경로의 시공 연속체를 뒤틀어 그 곳에 있는 모든 불운한 것들을 찢는 무기를 만들 수 있습니다. 이것은 우리가 가질 수 있는 진정으로 두려운 무기가 될 것입니다."
+gateway_ESC_GRAVITY_LANCES: "초중력 포"
+
+esc_tech_gravity_lance_2: "집속 초중력 포"
+esc_tech_gravity_lance_2_desc: "새로운 중력자 렌즈 기술을 통해 우리는 광선의 결맞음을 증가시켜 초중력 포의 위력을 크게 향상시킬 수 있습니다."
+
+esc_tech_gravity_lance_titanic: "타이탄 초중력 포"
+esc_tech_gravity_lance_titanic_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 이미 존재하는 무기 설계는 그 함선에 충분하지 않다는 것이 명백해졌습니다. 우리는 그 함선에 걸맞는 스케일의 초중력 포를 개발해야 합니다."
+
+esc_tech_gravity_bombers: "특이점 폭격기"
+esc_tech_gravity_bombers_desc: "표준 공격기에 블랙홀 생성 장비를 담은 '폭탄'을 장착함으로써 우리는 진정으로 두려운 공격기를 만들 수 있습니다."
+esc_tech_gravity_bombers_bio: "특이점 생물함선"
+esc_tech_gravity_bombers_bio_desc: "우주 아메바에 암흑 물질 포접체의 혹을 융합시킴으로써 우리는 자연의 중력 조작 무기를 가진 우주 태생 생물체를 만들 수 있습니다. 이런 두려운 생물체들은 우리의 함대에 큰 보탬이 될 것입니다."
+
+############################################################
+###              Kinetic Weapons Technologies            ###
+############################################################
+
+esc_tech_mass_driver_6: "고급 가우스 캐논"
+esc_tech_mass_driver_6_desc: "우주 전쟁에 대한 우리의 새로운 이해를 바탕으로, 우리는 가우스 캐논의 설계를 개선하여 더 강력하고 정확하게 만들 수 있는 몇 가지 방법을 볼 수 있습니다."
+esc_tech_mass_driver_6_bio: "진화된 조각 가우스 가속기"
+esc_tech_mass_driver_6_bio_desc: "선택적 육종을 통해 우리는 생물학적 조각 가우스 가속기의 위력을 더 강화시켜 더 정확하고 치명적이게 만들 수 있습니다."
+gateway_ESC_MASS_DRIVERS: "고급 매스 드라이버"
+
+esc_tech_mass_driver_7: "스트라이크 포"
+esc_tech_mass_driver_7_desc: "새로운 초자석 기술로 더 작고 강력한 선형 가속기를 만들 수 있습니다. 우리는 이것으로 우리의 매스 드라이버 무기를 업그레이드하여 더욱더 정확하고 강력하게 만들어야 합니다."
+esc_tech_mass_driver_7_bio: "백발백중 샤드 가속기"
+esc_tech_mass_driver_7_bio_desc: "유도된 진화를 통해 우리는 우리의 조각 가우스 가속기를 매번 발사할 /때마다 오류 없이 강한 힘으로 목표를 타격하는 유기체 무기로 바꿀 수 있습니다."
+
+esc_tech_autocannon_4: "개선된 스톰파이어 오토캐논"
+esc_tech_autocannon_4_desc: "우주전에 대한 새로운 이해를 통해 우리는 기존의 스톰파이어 오토캐논의 설계를 화력과 연사속도를 더 높이는 방향으로 개선할 수 있습니다."
+esc_tech_autocannon_4_bio: "진화된 스톰파이어 가시 포대"
+esc_tech_autocannon_4_bio_desc: "스톰파이어 가시 포대를 선택적으로 육종하여 우리는 화력과 연사력이 향상된 새로운 종을 만들 수 있습니다."
+gateway_ESC_AUTOCANNONS: "고급 오토캐논"
+
+esc_tech_autocannon_5: "분쇄기 오토캐논"
+esc_tech_autocannon_5_desc: "새로운 고급 물질과 개선된 초자석으로 우리의 오토캐논 설계를 다소 업그레이드하여 적들을 쉽게 조각낼 수 있는 무기를 만들 수 있습니다."
+esc_tech_autocannon_5_bio: "분쇄기 가시 포대"
+esc_tech_autocannon_5_bio_desc: "약간의 생명설계를 통해 우리는 우리의 가시 포대를 진화의 정점에 닿게 할 수 있습니다. 이 신세대의 무기가 발사하는 치명적인 투사체의 폭풍으로 우리의 적을 분쇄할 수 있습니다."
+
+esc_tech_kinetic_artillery_3: "개선된 살탄 가속포"
+esc_tech_kinetic_artillery_3_desc: "우주 전쟁에 대한 우리의 새로운 이해를 바탕으로, 우리는 실탄 가속포의 설계를 개선하여 더 강력하고 정확하게 만들 수 있는 몇 가지 방법을 볼 수 있습니다."
+esc_tech_kinetic_artillery_3_bio: "진화된 키틴 함포"
+esc_tech_kinetic_artillery_3_bio_desc: "유도된 진화를 통해 우리는 키틴 함포를 더욱 개선하여 훨씬 더 강력하고 정확하게 만들 수 있습니다."
+gateway_ESC_KINETIC_ARTILLERY: "고급 실탄 가속포"
+
+esc_tech_kinetic_artillery_4: "하늘뚫개 함포"
+esc_tech_kinetic_artillery_4_desc: "우리는 우리의 실탄 가속포 설계를 더욱더 개선하여 적들뿐만 아니라 하늘 자체까지 뚫어버릴 수 있는 진정으로 강력한 무기를 만들 수 있습니다. "
+esc_tech_kinetic_artillery_4_bio: "하늘뚫개 키틴 함포"
+esc_tech_kinetic_artillery_4_bio_desc: "선택적 육종과 약간의 생명설계를 통해 우리는 적들뿐만 아니라 하늘 자체까지 뚫어버리기에 충분한 출력을 가진 키틴 함포의 새로운 종을 만들 수 있습니다."
+
+esc_tech_giga_cannon_3: "개선된 기가 캐논"
+esc_tech_giga_cannon_3_desc: "새로운 초자석 기술로 더 작고 강력한 선형 가속기를 만들 수 있습니다. 우리는 이것으로 우리의 기가 캐논을 업그레이드하여 더욱더 정확하고 강력하게 만들어야 합니다."
+esc_tech_giga_cannon_3_bio: "진화된 기가 캐논"
+esc_tech_giga_cannon_3_bio_desc: "유기체 기가 캐논의 진화에 개입하여 출력과 명중률을 증가시켜 선대의 그 어떤 것보다도 우월하게 만들었습니다."
+gateway_ESC_GIGA_CANNONS: "고급 질량 가속포"
+
+esc_tech_giga_cannon_4: "그랜드 캐논"
+esc_tech_giga_cannon_4_desc: "우리의 질량 가속기 설계는 무엇과도 비길 수 없는 출력과 정확성을 가진 포를 만들기 위해 더욱더 개선될 수 있습니다."
+esc_tech_giga_cannon_4_bio: "$esc_tech_giga_cannon_4$"
+esc_tech_giga_cannon_4_bio_desc: "우리 함대가 사용하는 현재 버전의 유기체 질량 가속기는 표적 유전자 설계를 통해 더욱더 개선될 수 있습니다. 그 결과물은 무엇과도 비길 수 없는 출력과 정확성을 가진 포일 것입니다."
+
+esc_tech_giga_cannon_titanic: "상대론적 키네틱 킬 투사체"
+esc_tech_giga_cannon_titanic_desc: "상대론적 키네틱 킬 투사체는 진정한 위력이 그 단순함에 가려진 무기입니다. 이것은 위력적인 탄두도 없고 기이한 에너지의 빔도 아닙니다. 하지만... 광속에 가깝게 움직이는 고밀도의 금속 덩어리는 그런 것들보다 더 파괴적일 수 있습니다. 아아, 그렇게 빠른 속도로 발사하는 무기에 필요한 가속기는 너무 커서, 오직 가장 큰 함선들만이 이 포를 사용할 수 있습니다."
+esc_tech_giga_cannon_titanic_bio: "$esc_tech_giga_cannon_titanic$"
+esc_tech_giga_cannon_titanic_bio_desc: "상대론적 키네틱 킬 투사체 진정한 위력이 그 단순함에 가려진 무기입니다. 이것은 위력적인 탄두도 없고 기이한 에너지의 빔도 아닙니다. 하지만... 광속에 가깝게 움직이는 고밀도의 키틴 발사체는 그런 것들보다 더 파괴적일 수 있습니다. 아아, 그렇게 빠른 속도로 발사하는 무기에 필요한 가속기는 너무 커서, 우리 함대에 있는 가장 크고 강력한 생물함선들만이 이 포를 사용할 수 있습니다."
+
+esc_tech_autocannon_x_1: "우박폭풍 오토캐논"
+esc_tech_autocannon_x_1_desc: "우리의 가장 큰 오토캐논의 힘을 목격한 후, 해군 본부는 그것들을 원한다고 결정했습니다. 그리고 전함의 주포로 사용될 수 있는 더 큰 무기도 말이죠."
+esc_tech_autocannon_x_1_bio: "우박폭풍 가시 포대"
+esc_tech_autocannon_x_1_bio_desc: "크기와 위력을 개선하기 위해 가시 포대를 선택적으로 육종함으로써 우리는 우리 함대에 있는 무리 지도자 생물함선들의 주무기로 사용될 수 있는 특수한 종을 만들 수 있습니다."
+gateway_ESC_X_AUTOCANNONS: "초대형 오토캐논"
+
+esc_tech_autocannon_x_2: "화염폭풍 오토캐논"
+esc_tech_autocannon_x_2_desc: "새로운 고급 물질과 개선된 초자석으로 우리는 우박폭풍 오토캐논의 설계를 더욱더 개선하여 훨씬 더 강한 화력을 가진 무기를 만들 수 있습니다."
+esc_tech_autocannon_x_2_bio: "화염폭풍 가시 포대"
+esc_tech_autocannon_x_2_bio_desc: "약간의 표적 유전자 설계를 통해 우리는 우박폭풍 가시 포대를 더욱더 개선하여 새롭고 훨씬 더 강력한 버전을 만들 수 있습니다."
+
+esc_tech_autocannon_titanic: "폭풍 오토캐논"
+esc_tech_autocannon_titanic_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 그 함선들의 주포로 사용할 더 크고 강력한 버전의 화염폭풍 오토캐논이 필요하게 되었습니다."
+esc_tech_autocannon_titanic_bio: "폭풍 가시 포대"
+esc_tech_autocannon_titanic_bio_desc: "추가적인 생물설계를 통해 우리는 타이탄급 생물함선을 위한 특별한 종의 가시 포대를 만들 수 있습니다. 이 가시 포대의 위력과 연사 속도는 무엇과도 견줄 수 없습니다."
+
+esc_tech_juggernaut_artillery_1: "저거너트 함포"
+esc_tech_juggernaut_artillery_1_desc: "저거너트는 극도로 비싸고 귀중한 함선이며 특화된 함포 등의 특별한 무기를 필요로 합니다. 이 포는 이 도전에 응답하기 위해 개발되었습니다."
+esc_tech_juggernaut_artillery_1_bio: "저거너트 키틴 함포"
+esc_tech_juggernaut_artillery_1_bio_desc: "약간의 유전자 설계를 통해 우리는 저거너트급 생물함선을 위한 특별한 종의 키틴 함포를 만들 수 있습니다."
+gateway_ESC_JUGGERNAUT_ARTILLERY: "저거너트 함포"
+
+esc_tech_juggernaut_artillery_2: "개선된 저거너트 함포"
+esc_tech_juggernaut_artillery_2_desc: "원래의 저거너트 함포도 이미 인상적인 무기 시스템이었지만, 우리는 그것을 더욱 개선하고 강력하게 만들 수 있습니다!"
+esc_tech_juggernaut_artillery_2_bio: "진화된 저거너트 키틴 함포"
+esc_tech_juggernaut_artillery_2_bio_desc: "표적 진화를 통해 우리는 개선된 버전의, 훨씬 더 강력하고 정밀한 저거너트 키틴 함포를 만들 수 있습니다. 이것은 우리 함대의 가장 강력한 생물함선들을 위한 이상적인 무기가 될 것입니다."
+
+esc_tech_mhd_cannon_1: "강자성 액체 포"
+esc_tech_mhd_cannon_1_desc: "흥미로운 무기에 대한 제안이 접수되었습니다. 이 의문스러운 무기 - 강자성 액체 포 - 는, 물 대신 자기장으로 가속된 녹은 금속을 사용하여 특수한 노즐 구조에 의해 젯의 안정적인 흐름과 응집성이 보장되는 거대한 워터젯 커터입니다. 이 아이디어는 약간 이상하게 들리지만, 초도 평가에서는 이것으로 공포스러울 정도로 강력한 무기를 만들 수 있음이 입증되었습니다. 우리는 명백히 이것을 더 연구해야 합니다."
+esc_tech_mhd_cannon_1_bio: "산성 젯 커터 포"
+esc_tech_mhd_cannon_1_bio_desc: "유기체 실탄 병기 개발의 새로운 방향이 제안되었습니다. 고체 투사체를 발사하는 대신 이 무기는 상대성 이론이 적용되는 강산의 흐름을 발생시킵니다. 이렇게 발생된 젯은 특화된 근육에 의해 안정적인 흐름을 이루며 우주전의 먼 거리에서도 흩어지지 않아, 아주 유능한 무기로 작용합니다."
+gateway_ESC_MHD_CANNONS: "자기유체역학 포"
+
+esc_tech_mhd_cannon_2: "개선된 강자성 액체 포"
+esc_tech_mhd_cannon_2_desc: "더 강력한 초자석을 이용하여 우리는 강자성 액체 포의 출력을 더욱더 개선할 수 있으며, 내열성이 강한 새로운 물질을 이용하여 우리는 이 포가 발사하는 녹은 금속의 온도를 더 높일 수 있습니다."
+esc_tech_mhd_cannon_2_bio: "진화된 산성 젯 커터 포"
+esc_tech_mhd_cannon_2_bio_desc: "유전자 조작을 통해 우리는 노즐 근육이 약간 다르게 배치되어 절삭력이 훨씬 더 강하고 더 집중된 젯을 발생시키는 산성 젯 커터의 새로운 종을 만들 수 있습니다."
+
+esc_tech_mhd_cannon_titanic: "자기유체역학 포"
+esc_tech_mhd_cannon_titanic_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 그 함선들의 주포로 사용할 더 크고 강력한 버전의 강자성 액체 포가 필요하게 되었습니다."
+esc_tech_mhd_cannon_titanic_bio: "초대형 산성 젯 커터"
+esc_tech_mhd_cannon_titanic_bio_desc: "선별적 육종과 딱 맞춰진 생명설계를 통해 우리는 우리 함대의 가장 크고 강한 생물함선에 맞는 버전의 산성 젯 커터를 만들 수 있습니다."
+
+############################################################
+###             Leviathan Weapons Technologies           ###
+############################################################
+
+esc_tech_enigmatic_energy_harvesting: "수수께끼 에너지 채집"
+esc_tech_enigmatic_energy_harvesting_desc: "최근에 점령당한 수수께끼 요새는 암흑 물질에 의해 공급되는 이전에 알려지지 않은 형태의 에너지를 사용합니다. 이 신비로운 수수께끼의 에너지는 채집될 수 있고 군사적 활용을 포함한 다양한 방법으로 활용될 수 있습니다."
+gateway_ESC_ENIGMATIC_WEAPONS: "수수께끼 에너지 무기"
+
+esc_tech_enigmatic_cannon: "수수께끼 에너지 방출기"
+esc_tech_enigmatic_cannon_desc: "수수께끼 에너지는 불안정한 통의 형태로 발사되면 접촉했을 때 강한 폭발을 일으킵니다. 큰 수수께끼 에너지 방울은 상상할 수 있는 어떤 목표물도 황폐화시키는 효과적인 함포 무기가 될 수 있습니다."
+
+esc_tech_enigmatic_lash: "수수께끼 에너지 채찍"
+esc_tech_enigmatic_lash_desc: "수수께끼 에너지는 표준적인 에너지 공격의 위력을 증강하는 데 사용되어, 파괴적인 힘을 지닌 휘몰아치는 번개 형태의 일격을 만들어낼 수 있습니다. 이 채찍은 물질적 대상에, 심지어 미사일 같은 아주 작은 대상에도 끌리기 때문에, 이 무기는 거점 방어 포의 역할도 겸할 수 있습니다."
+
+esc_tech_enigmatic_autocannon: "수수께끼 에너지 오토캐논"
+esc_tech_enigmatic_autocannon_desc: "수수께끼 에너지는 불안정한 통의 형태로 발사되면 접촉했을 때 강한 폭발을 일으킵니다. 비슷하게, 빠르게 발사되는 수수께끼 에너지 방울은 그 어떤 방어도 빠르게 압도할 수 있는 오토캐논과 같은 무기가 될 수 있습니다."
+
+esc_tech_enigmatic_lance: "수수께끼 에너지 창"
+esc_tech_enigmatic_lance_desc: "수수께끼 에너지는 입자 빔에 적용되면 모든 것을 소멸시킬 수 있는 믿을 수 없을 정도로 강력한 빔 병기가 됩니다.E"
+gateway_ESC_ENIGMAITC_LANCES: "수수께끼 에너지 창"
+
+esc_tech_enigmatic_lance_titanic: "거대화된 수수께끼 에너지 창"
+esc_tech_enigmatic_lance_titanic_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 더 크고 강력한 버전의 수수께끼 에너지 랜스가 필요합니다. 그리고 우리는 우리의 영광스러운 기함에 적합한 것을 만들 것입니다!"
+
+esc_tech_extradimensional_pd: "초차원 스파이크"
+esc_tech_extradimensional_pd_desc: "차원의 공포가 자신의 일부를 포탈로 가져와서 공격하는 방법을 관찰하며, 우리는 같은 원리로 작동하는 무기를 만드는 데 필요한 지식을 갖게 되었습니다. 목표 구역에 포탈을 열어서 초차원 존재들이 공격하게 하면 됩니다."
+
+esc_tech_space_whale_weapon_2: "고급 에너지 흡수"
+esc_tech_space_whale_weapon_2_desc: "티얀키의 에너지 사이폰의 자연적으로 진화된 에너지 흡수 능력은 개선될 수 있습니다. 우리가 이 무기를 게속해서 활용하고 싶다면 연구를 해야 합니다."
+
+esc_tech_space_whale_weapon_3: "패러독스 에너지 흡수"
+esc_tech_space_whale_weapon_3_desc: "몇몇 기이한 아이디어가 우리 과학자 사회에서 최근 등장했습니다. 이 아이디어를 구현할 수 있다면 우리의 에너지 흡수의 출력을 아주 크게 높일 수 있을 것입니다."
+
+esc_tech_tiyanki_beam: "티얀키 빔 포"
+esc_tech_tiyanki_beam_desc: "티얀키 대모는 자신의 주력 빔 '무기'로 가공할 만한 공격을 퍼부을 수 있었습니다. 우리가 이것을 복제하는 데 성공한다면, 우리는 많은 우주전에 승리를 가져다준 대형함에 장착할 강력한 무기를 얻게 될 것입니다."
+gateway_ESC_TIYANKI_BEAM: "티얀키 빔 포"
+
+esc_tech_tiyanki_beam_titanic: "거대화된 티얀키 빔 포"
+esc_tech_tiyanki_beam_titanic_desc: "이제 우리는 티얀키 대모의 유기체 빔 무기를 정말로 복제할 기술을 갖고 있습니다. 이것은 우리의 기함에 장착될 가치가 있는 무기가 될 것입니다."
+
+esc_tech_junk_mines: "고철 기뢰 발사기"
+esc_tech_junk_mines_desc: "청소부 로봇이 사용하는 자체 추진 기뢰는 단순함에도 불구하고 아주 강한 피해를 가하는 무기입니다. 사실, 이 지뢰는 꽤 높은 기술력의 고철로 만들어집니다. 이것을 사용하면 우리 함대를 훨씬 싼 값에 무장시킬 수 있을 것입니다."
+
+esc_tech_voidspawn_missile: "공허 태생체 미사일"
+esc_tech_voidspawn_missile_desc: "공허 태생체 유체가 사용하는 유기체 미사일은 진정으로 파괴적인 무기였습니다. 우리는 그것을 우리가 쓰기 위해 복제하는 것이 좋을 것입니다."
+
+esc_tech_voidspawn_missile_x: "공허 태생체 미사일 탄막"
+esc_tech_voidspawn_missile_x_desc: "우리의 가장 큰 함선들에는 공허 태생체 미사일보다도 더 강력한 무기가 필요합니다. 우리는 이 미사일의 규모를 적당히 키워 이 도전에 응답해야 합니다."
+
+############################################################
+###              Missile Weapons Technologies            ###
+############################################################
+
+esc_tech_missiles_6: "조커 미사일"
+esc_tech_missiles_6_desc: "우리가 개발하고 있는 새로운 기술과 함께라면, 새로운 강력하고 요격하기 어려운 미사일을 개발하는 것은 큰 도전이 아닐 것입니다."
+gateway_ESC_ADVANCED_MISSILES: "고급 미사일"
+
+esc_tech_missiles_7: "망령 미사일"
+esc_tech_missiles_7_desc: "우리는 우리 함대를 위해 다음 세대의 전투 미사일을 생각해봐야 합니다. 무엇이 되든간에 그것은 조용하고 탐지 불가능하며 치명적이어야 합니다."
+
+esc_tech_plasma_missiles_1: "플라즈마 미사일"
+esc_tech_plasma_missiles_1_desc: "플라즈마 포의 치명적인 위력과 미사일의 유도 능력을 결합하자는 아이디어는 그다지 새롭지 않습니다. 하지만 이제 우리는 우리 역사상 최초로 이 아이디어를 현실로 바꿀 능력이 있습니다."
+gateway_ESC_PLASMA_MISSILES: "플라즈마 미사일"
+
+esc_tech_plasma_missiles_2: "개선된 플라즈마 미사일"
+esc_tech_plasma_missiles_2_desc: "원래의 플라즈마 미사일은 큰 성공을 거뒀지만, 우리는 더 강력한 무기를 원합니다. 입자 조작 기술의 새로운 발전으로 인해, 우리는 열을 더 높여서, 플라즈마 미사일의 플라즈마를 더 뜨겁고 치명적이게 만들 수 있습니다."
+
+esc_tech_plasma_missiles_3: "소각자 미사일"
+esc_tech_plasma_missiles_3_desc: "신세대의 초자석 덕분에 우리는 더 뜨겁고 에너지 넘치는 플라즈마를 담고 유도할 수 있습니다. 이 업그레이드가 플라즈마 미사일에 적용된다면 이들은 가장 단단한 장갑도 견뎌낼 수 없을 정도로 더욱더 강력해질 것입니다."
+
+esc_tech_torpedoes_4: "폐기자 어뢰"
+esc_tech_torpedoes_4_desc: "우리가 개발하고 있는 새로운 기술을 통해, 현재의 어뢰 설계를 개선하는 것은 우리의 능력으로 충분히 가능합니다. 우리는 전체 함대를 죽은 금속의 버려진 껍데기로 만들 수 있는 파괴적인 위력의 무기를 만들 수 있습니다."
+gateway_ESC_ADVANCED_TORPEDOES: "고급 어뢰"
+
+esc_tech_torpedoes_5: "박멸자 어뢰"
+esc_tech_torpedoes_5_desc: "우리는 어뢰 설계를 더욱더 개선할 수 있습니다. 몇몇 업그레이드를 통해 우리는 현재의 어뢰를 적을 박멸할 무기로 바꿀 수 있습니다."
+
+esc_tech_corrosive_warhead_torpedo: "부식성 탄두 어뢰"
+esc_tech_corrosive_warhead_torpedo_desc: "어뢰의 동체에 시공간 연속체를 국소적으로 조작하는 장치를 설치함으로써 우리는 현실 자체를 찢어버릴 수 있는 진정으로 공포스러운 어뢰를 만들 수 있습니다."
+
+esc_tech_swarmer_missiles_3: "태풍 미사일"
+esc_tech_swarmer_missiles_3_desc: "우리의 기술이 발전을 거듭함에 따라, 우리는 새운 군집 미사일 설계가 필요함을 알게 되었습니다. 이 새로운 군집 미사일이 뭐가 되든간에, 그것은 쪽수와 폭발력으로 적의 어떤 방어도 압도할 수 있어야 합니다."
+esc_tech_swarmer_missiles_3_bio: "태풍 생체 미사일"
+esc_tech_swarmer_missiles_3_bio_desc: "생체 군집 미사일의 플랫폼을 선택적으로 육종하면서, 우리는 우리의 함대를 위해 새로운 세대의 생물학 군집 미사일 발사기를 만들 수 있습니다. 이 새롭게 개선된 군집 미사일들은 쪽수와 폭발력으로 적의 어떤 방어도 압도할 수 있을 것입니다."
+gateway_ESC_ADVANCED_SWARMER_MISSILES: "고급 군집 미일"
+
+esc_tech_swarmer_missiles_4: "허리케인 미사일"
+esc_tech_swarmer_missiles_4_desc: "이제는 더 빠르고 더 강하고 적의 거점 방어를 포화시킬 수 있는 다음 세대의 군집 미사일을 만드는 것을 검토해야 합니다."
+esc_tech_swarmer_missiles_4_bio: "허리케인 생체 미사일"
+esc_tech_swarmer_missiles_4_bio_desc: "유도된 진화를 통해 우리는 태풍 생체 미사일을 더 빠르고 더 강하고 적의 거점 방어 체계를 더 잘 압도할 수 있도록 더욱더 강화할 수 있습니다."
+
+esc_tech_xmissile_1: "이종 물질 탄두"
+esc_tech_xmissile_1_desc: "우리에게는 대 주력함 전투에 적합한 미사일이 전혀 없다는 것을 알게 되었습니다. 그런 미사일은 크고 강력하며 파괴하기 매우 어려워야 합니다. 우리는 최대한 빨리 그런 무기를 개발해야 합니다."
+gateway_ESC_X_MISISLES: "초대형 미사일 무기"
+
+esc_tech_xmissile_2: "기묘체 탄두"
+esc_tech_xmissile_2_desc: "최근에 각종의 이종 물질들에 새롭게 통달하게 된 덕택에, 우리는 기묘체를 활용한 더 강력한 탄두로 이종 물질 탄두 미사일의 최초 설계를 업그레이드할 수 있습니다."
+
+esc_tech_xmissile_titanic: "반사 탄두 발사기"
+esc_tech_xmissile_titanic_desc: "반사 탄두의 시제품을 새롭게 개발하여, 우리는 이 은하에 지금까지 선보인 가장 강력한 함선들을 상대할 때 사용될 수 있을 정도로 강력한 장비를 갖고 있습니다. 그것을 위해 설계된 새로운 미사일들을 당장 개발해야 합니다."
+
+############################################################
+###              Nanite Weapons Technologies             ###
+############################################################
+
+esc_tech_nanite_cannon_1: "나노머신 포"
+esc_tech_nanite_cannon_1_desc: "나노머신은 방치된 함선 전체를 문자 그대로 해체할 수 있는 강력한 무기가 될 수 있습니다. 하지만 나노머신을 목표물에 전달하는 일은 어렵습니다. 한 가지 방법은 그냥 포로 나노머신으로 채워진 통을 발사하는 것입니다."
+esc_tech_nanite_cannon_1_bio: "나노머신 생체 포"
+esc_tech_nanite_cannon_1_bio_desc: "고급 생명공학을 통해 우리는 많은 양의 나노머신을 포함한 공생체 포를 만들 수 있습니다. 이 나노머신들은 '정비'에도 쓰이고 생물함선들이 쉽게 섭취할 수 있도록 불운한 목표물을 공격적으로 해체하는 '탄약'으로도 쓰입니다."
+gateway_ESC_NANITE_CANNONS: "나노머신 포"
+
+esc_tech_nanite_cannon_2: "개선된 나노머신 포"
+esc_tech_nanite_cannon_2_desc: "나노머신 연구가 많이 발전한 덕에, 우리는 이제 더 나은 통 설계와 더 공격적인 나노머신을 활용하는 새롭게 개선된 버전의 나노머신 포를 만들 준비가 되었습니다."
+esc_tech_nanite_cannon_2_bio: "진화된 나노머신 생체 포"
+esc_tech_nanite_cannon_2_bio_desc: "유기적 투사체 발사기에 나노머신을 더 깊게 통합하고 더 공격적인 나노머신을 투사체로 활용함으로써 우리는 기존의 나노머신 생체 포 생물종을 개량할 수 있습니다."
+
+esc_tech_nanite_reconstructor: "나노머신 재건 빔"
+esc_tech_nanite_reconstructor_desc: "나노머신은 함선들을 잇는 임시 다리를 만들어 한 쪽에서 다른 쪽으로 물질을 전달하는 데 쓰일 수 있습니다. 무기로 전용된다면, 이것은 적 함선을 공격하고 우리 함선을 수리하는 것을 가능하게 할 것입니다."
+esc_tech_nanite_reconstructor_bio: "나노머신 조직 재건기"
+esc_tech_nanite_reconstructor_bio_desc: "나노머신 기술로 우리는 생체병기에 사이버네틱 무기를 이식할 수도 있습니다. 그런 무기는 그 때 나노머신을 활용하여 목표물로 가는 임시 다리를 만들어 그것을 통해 약간의 물질들을 운반합니다. 이를 통해 탑재된 나노머신들이 급속 조직 회복에 필요한 회복 효소와 유기물질들을 합성하게 합니다."
+
+esc_tech_nanite_torpedo_1: "나노머신 탄두 어뢰"
+esc_tech_nanite_torpedo_1_desc: "나노머신은 방치된 함선 전체를 문자 그대로 해체할 수 있는 강력한 무기가 될 수 있습니다. 하지만 나노머신을 목표물에 전달하는 일은 어렵습니다. 한 가지 방법은 어뢰와 미사일을 전달 수단으로 사용하는 것입니다."
+esc_tech_nanite_torpedo_1_bio: "$esc_tech_nanite_torpedo_1$"
+esc_tech_nanite_torpedo_1_bio_desc: "유기체 미사일은 자신이 안착한 모든 것을 공격적으로 분해하는 많은 중량의 나노머신을 운송하는 좋은 매개체가 될 수 있습니다."
+gateway_ESC_NANITE_TORPEDOES: "나노머신 어뢰"
+
+esc_tech_nanite_torpedo_2: "그레이 구 어뢰"
+esc_tech_nanite_torpedo_2_desc: "나노머신 연구의 많은 발전을 통해 우리는 이제 더 공격적인 새로운 나노머신들을 운반하는 새롭게 개선된 버전의 나노머신 탄두 어뢰를 개발할 준비가 되었습니다."
+esc_tech_nanite_torpedo_2_bio: "$esc_tech_nanite_torpedo_2$"
+esc_tech_nanite_torpedo_2_bio_desc: "유기체 미사일의 설계를 개선하여 우리는 유기체 미사일로 많은 양의 나노머신을 운반할 수 있습니다. 나노머신 자체도 더 공격적인 분해 프로토콜로 업데이트될 수 있습니다."
+
+esc_tech_nanite_missile_x_1: "나노머신 탄두 미사일 발사기"
+esc_tech_nanite_missile_x_1_desc: "나노머신 어뢰도 이미 꽤 강력한 무기입니다만, 우리의 큰 함선들에는 더 큰 것이 필요합니다. 가장 간단한 해결책은 나노머신 탄두를 탑재한 많은 미사일을 발사할 수 있는 큰 미사일 발사기를 만드는 것일 것입니다."
+esc_tech_nanite_missile_x_1_bio: "나노머신 탄두 생체 미사일 발사기"
+esc_tech_nanite_missile_x_1_bio_desc: "나노머신 생체 미사일로 적을 공격하는 것보다 뭐가 더 좋습니까? 수많은 나노머신 생체 미사일로 적을 공격하는 것이죠! 그런 미사일들을 발사하는 기관들을 더 거대해지도록 선별적으로 육종함으로써 우리는 가장 큰 생물함선들이 아주 많은 미사일들을 한 번에 퍼부을 수 있게 하는 특수한 종을 얻을 수 있었습니다."
+gateway_ESC_NANITE_X_WEAPONS: "초대형 나노머신 미사일 발사기"
+
+esc_tech_nanite_missile_x_2: "나노머신 탄두 다연장 미사일 발사기"
+esc_tech_nanite_missile_x_2_desc: "우리는 여전히 더 크고 강력한 무기가 필요합니다. 그리고 이 나노머신 탄두 미사일 발사기 업그레이드는 우리가 필요로 하는 것과 정확히 일치하는 것 같습니다."
+esc_tech_nanite_missile_x_2_bio: "$esc_tech_nanite_missile_x_2$"
+esc_tech_nanite_missile_x_2_bio_desc: "나노머신 탄두 생체 미사일 발사기가 더욱더 진화함에 따라 우리는 생체 미사일의 위력과 재생률을 개선할 수 있습니다. 그 결과로 이 유기체 무기는 우리의 적들에게 셀 수 없이 많은 나노머신 생체 미사일을 퍼부을 수 있게 될 것입니다."
+
+esc_tech_nanite_missile_titanic: "나노머신 탄두 로켓 포"
+esc_tech_nanite_missile_titanic_desc: "믿을 수 없을 정도로 큰 새로운 함선들을 진수시키면서, 이미 존재하는 무기 설계는 그 함선에 충분하지 않다는 것이 명백해졌습니다. 우리는 믿을 수 있는 나노머신 탄두 미사일 발사기의 스케일을 한 번 더 키워 우리의 기함들에 걸맞는 무기를 개발해야 합니다."
+esc_tech_nanite_missile_titanic_bio: "$esc_tech_nanite_missile_titanic$"
+esc_tech_nanite_missile_titanic_bio_desc: "규모와 위력을 높이기 위해 이미 있는 나노머신 생체 미사일 발사기를 선택적으로 육종하면서 우리는 우리의 가장 큰 생물함선에 맞는 진정으로 놀라운 힘을 지닌 유기체 무기를 만들 수 있습니다."
+
+esc_tech_nanite_bomber: "나노머신 폭격기"
+esc_tech_nanite_bomber_desc: "나노머신은 방치된 함선 전체를 문자 그대로 해체할 수 있는 강력한 무기가 될 수 있습니다. 하지만 나노머신을 목표물에 전달하는 일은 어렵습니다. 한 가지 방법은 공격기를 활용하는 것입니다."
+esc_tech_nanite_bomber_bio: "나노머신 증강된 폭격 아메바"
+esc_tech_nanite_bomber_bio_desc: "우주 태생 아메바를 우리의 적들을 향한 무기로 쓰일 수 있는 많은 양의 나노머신으로 증강하여 우리는 진실로 공포스러운 공격용 짐승을 만들 수 있습니다."
+
+esc_tech_repeatable_nanite_damage: "나노머신 공격성 프로토콜"
+esc_tech_repeatable_nanite_damage_desc: "나노머신을 더 효과적인 파괴 무기로 만들기 위한 한 가지 방법은 그들의 공격성을 높여 그들이 마주치는 모든 것을 분해하려는 열망을 더욱 강하게 만드는 것입니다."
+
+esc_tech_repeatable_nanite_fire_rate: "나노머신 자가 복제 프로토콜"
+esc_tech_repeatable_nanite_fire_rate_desc: "나노머신을 더 효과적인 파괴 무기로 만들기 위한 한 가지 방법은 더 많은 나노머신을 발사하는 것입니다. 그러나 이를 위해서는 최적화된 자가 복제 프로토콜을 통해 달성할 수 있는 높고 안정적인 생산 속도가 필요합니다."
+
+############################################################
+###               Point Defense Technologies             ###
+############################################################
+
+esc_tech_flak_cannon_4: "개선된 대공 함포"
+esc_tech_flak_cannon_4_desc: "최근의 기술적 발전을 통해 우리는 지금 우리가 쓸 수 있는 거점 방어 체계를 다시 살펴보게 되었습니다. 그리고 불행히도, 그것들은 다소 부족해 보입니다. 우리는 개선된 대공 함포 같은 새롭게 개선된 거점 방어 무기가 필요합니다."
+esc_tech_flak_cannon_4_bio: "진화된 미늘 함포"
+esc_tech_flak_cannon_4_bio_desc: "미늘 함포가 여분의 감각 기관과 신경 클러스터를 얻도록 진화시킴으로써 우리는 적 발사체를 추적하고 격추시키는 일의 정확성을 크게 높일 수 있습니다."
+gateway_ESC_FLAK_CANNONS: "고급 대공포"
+
+esc_tech_flak_cannon_5: "강철구름 방어기"
+esc_tech_flak_cannon_5_desc: "미사일 기술들이 '무기'로서 제공할 수 있는 모든 것을 보았으니 우리는 이제 그것을 막는 우리의 '방패'가 무엇이 되어야 하는지에 대한 명쾌한 시각을 얻었습니다. 그리고 새로 제안된 대공포의 설계는 어떤 미사일도 뚫고 지나갈 수 없을 무언가입니다."
+esc_tech_flak_cannon_5_bio: "강철구름 미늘 함포"
+esc_tech_flak_cannon_5_bio_desc: "더 깊게 유도된 잔회를 통해 우리는 미늘 함포를 우리의 적이 보낼 수 있는 모든 미사일 병기와 공격기로부터 우리의 함대를 보호할 수 있는 방패로 만들 수 있습니다."
+
+esc_tech_point_defense_4: "보호자 거점 방어"
+esc_tech_point_defense_4_desc: "최근의 기술적 발전을 통해 우리는 지금 우리가 쓸 수 있는 거점 방어 체계를 다시 살펴보게 되었습니다. 그리고 불행히도, 그것들은 다소 부족해 보입니다. 우리는 개선된 CIWS 거점 방어 포 같은 새롭게 개선된 거점 방어 무기가 필요합니다."
+esc_tech_point_defense_4_bio: "보호자 스내퍼 포"
+esc_tech_point_defense_4_bio_desc: "감각 정보 처리를 전담하는 신경 클러스터를 추가함으로써 우리의 스내퍼 포의 성능은 극적으로 개선될 것입니다."
+gateway_ESC_PD_CANNONS: "고급 거점 방어 체계"
+
+esc_tech_point_defense_5: "강철 커튼 거점 방어"
+esc_tech_point_defense_5_desc: "이 새롭게 근본적으로 개선된 설계의 거점 방어 포는 우리의 함선을 적의 미사일로부터 보호하는 강철 커튼이 될 것입니다."
+esc_tech_point_defense_5_bio: "강철 커튼 스내퍼 포"
+esc_tech_point_defense_5_bio_desc: "신경 클러스터와 특화된 감각 기관의 유도된 진화를 통해 우리는 우리의 자립적인, 상상할 수 있는 모든 발사체를 탐지하고 추적하는 생물학 요격 체계를 더욱더 개선할 수 있습니다."
+
+esc_tech_juggernaut_pd_1: "저거너트 거점 방어 체계"
+esc_tech_juggernaut_pd_1_desc: "저거너트는 극도로 비싸고 귀중한 함선이며 특화된 거점 방어 체계 등의 특별한 무기를 필요로 합니다. 이 포는 이 도전에 응답하기 위해 개발되었습니다."
+esc_tech_juggernaut_pd_1_bio: "저거너트 스내퍼 포"
+esc_tech_juggernaut_pd_1_bio_desc: "스내퍼 포의 몇몇 종이 점점 더 거대해지는 경향을 보였습니다. 그 거대한 크기 덕에 위력도 크게 늘었습니다. 우리 연구자들은 우리가 이것들을 우리 함대의 저거너트급 생물함선을 위해서 특화된 방어 무기로 만들기 위해 선택적으로 육종할 수 있다고 제안합니다."
+gateway_ESC_JUGGERNAUT_PD: "저거너트 거점 방어 체계"
+
+esc_tech_juggernaut_pd_2: "개선된 저거너트 거점 방어 체계"
+esc_tech_juggernaut_pd_2_desc: "원래의 저거너트 거점 방어 체계도 이미 인상적인 무기 시스템이었지만, 우리는 그것을 더욱 개선하고 강력하게 만들 수 있습니다!"
+esc_tech_juggernaut_pd_2_bio: "진화된 저거너트 스내퍼 포"
+esc_tech_juggernaut_pd_2_bio_desc: "여분의 감각 기관과 정보 처리를 위한 신경 클러스터를 추가함으로써 우리는 이미 강력한 저거너트 스내퍼 포를 훨씬 더 강하고 더 정확하게 만들 수 있습니다."
+
+esc_tech_point_defense_laser: "번개폭풍 거점 방어"
+esc_tech_point_defense_laser_desc: "레이저를 활용하는 거점 방어 체계를 만들자는 안은 새로운 것이 아니고 우리는 과거에 그런 체계로 제한적인 성공을 거둔 바 있습니다만 이제 우리는 드디어 우주 전투의 극단적인 범위에 적합한 레이저 기반의 거점 방어 체계를 개발하는 데 필요한 기술을 갖고 있습니다."
+esc_tech_point_defense_laser_bio: "사나운 안광 투사기"
+esc_tech_point_defense_laser_bio_desc: "레이저 기반 CIWS 체계에 대한 관심이 다시 높아졌으며, 우리의 군사 연구자들은 스내퍼 포의 감각 기관과 신경 클러스터를 안광 투사기로 이식함으로써 그런 체계를 만들자고 제안했습니다. 우리는 이 분야의 연구가 실제로 가치있는 결과를 가져다줄 지 봐야 합니다."
+
+############################################################
+###              Psionic Weapons Technologies            ###
+############################################################
+
+esc_tech_psionic_cannon_1: "사이오닉 에너지 투사기"
+esc_tech_psionic_cannon_1_desc: "다른 많은 형태의 에너지와 마찬가지로 사이오닉도 결맞는 빔의 형태로 먼 거리로 전송될 수 있습니다. 그리고 충분한 사이오닉 에너지가 그런 빔에 투입된다면 이것은 꽤 유능한 파괴 무기가 될 수 있습니다. 우리는 이 효과를 어떻게 적용할 수 있는지 연구해야 합니다."
+esc_tech_psionic_cannon_1_bio: "$esc_tech_psionic_cannon_1$"
+esc_tech_psionic_cannon_1_bio_desc: "특화된 뇌 분비선의 성장에 영향을 미침으로써 우리의 생물함선들에게 사이오닉 잠재성을 열어줘 그들이 우리 제국을 위해 싸울 다른 방법을 얻게 할 수 있을지도 모릅니다."
+gateway_ESC_PSIONIC_CANNONS: "사이오닉 포"
+
+esc_tech_psionic_cannon_2: "사이오닉 빔 포"
+esc_tech_psionic_cannon_2_desc: "우리가 사이오닉 능력을 더 잘 이해할 수 있게 되면서, 우리는 사이오닉 에너지를 다루는 새로운 기법과 방법을 배웠습니다. 지금은 그 지식을 우리의 군사 작전에 적용하고 사이오닉 에너지 방출기를 업그레이드해야 합니다."
+esc_tech_psionic_cannon_2_bio: "$esc_tech_psionic_cannon_2$"
+esc_tech_psionic_cannon_2_bio_desc: "지시된 진화를 통해 우리는 우리의 생물함선들의 사이오닉 능력을 더욱더 개선하여 그들에게 훨씬 더 큰 전투 능력을 부여할 수 있습니다."
+
+esc_tech_psionic_strike_1: "장막의 작은 계약"
+esc_tech_psionic_strike_1_desc: "장막이라고 알려진 영역의 탐사를 시작할 때, 그곳의 하급 거주자 중 몇몇이 우리에게 다가와서 서로에게 이득이 되는 계약을 제안했습니다. 그 계약들 중 일부는 우리가 우리의 적들을 징벌하기 위해 그들의 능력을 요청할 수 있게 합니다. 그리고 우리가 목표물을 적절하게 지시할 수단을 만들 수 있다면, 이 계약은 함선끼리 싸우는 전투에까지 적용할 수 있습니다."
+esc_tech_psionic_strike_1_bio: "$esc_tech_psionic_strike_1$"
+esc_tech_psionic_strike_1_bio_desc: "이제 우리가 장막의 하급 거주자들과 계약을 맺는 방법을 발견했음에 따라, 우리의 생물함선들이 닻 역할을 수행하여 그런 계약을 맺을 수 있게 됩니다. 그리고 생물함선들은 충분히 발달하지 못한 그들의 지능으로 직접 전투하는 도중에 장막의 존재들에게 지시를 내릴 수 있을 것입니다."
+gateway_ESC_PSIONIC_STRIKES: "장막 공습 무기"
+
+esc_tech_psionic_strike_2: "장막의 적은 계약"
+esc_tech_psionic_strike_2_desc: "우리가 장막의 거주자들과 맺은 계약의 수가 계속해서 늘어나면서 우리는 이제 훨씬 더 강력한 존재들의 힘에 접근할 수 있습니다. 그리고 유도 체계를 약간 재설계함으로써 우리는 그것을 우리의 무기에도 적용할 수 있습니다."
+esc_tech_psionic_strike_2_bio: "$esc_tech_psionic_strike_2$"
+esc_tech_psionic_strike_2_bio_desc: "우리의 생물함선들의 사이오닉 잠재력을 높이기 위 뇌 조직을 더욱더 변이시킨 덕분에 그들은 장막의 더 강한 거주자들과 맺은 계약을 유지하며 그들을 더 정밀하게 통제할 수 있을 것입니다."
+
+esc_tech_psionic_torpedo_1: "사이오닉 폭발 어뢰"
+esc_tech_psionic_torpedo_1_desc: "응축된 사이오닉 에너지가 한 순간에 해방되면 그 에너지의 본성대로 꽤나 폭발적인 효과가 발생합니다. 우리는 명백히 이것을 우리의 무기에 이용할 수 있습니다."
+esc_tech_psionic_torpedo_1_bio: "$esc_tech_psionic_torpedo_1$"
+esc_tech_psionic_torpedo_1_bio_desc: "유기체 미사일 공학을 사이오닉 에너지를 저장하는 데 특화된 생물학적 수단에 결합시킴으로써 사이오닉의 위력에 어뢰의 사거리와 유도 성능을 결합한 무기를 만들 수 있을 것입니다."
+gateway_ESC_PSIONIC_TORPEDOES: "사이오닉 어뢰"
+
+esc_tech_psionic_torpedo_2: "개선된 사이오닉 폭발 어뢰"
+esc_tech_psionic_torpedo_2_desc: "새로운 물질과 사이오닉 기법을 통해 우리는 이제 사이오닉 에너지를 훨씬 더 밀도 있게 저장할 수 있습니다. 그로써 우리는 파괴력이 훨씬 더 강한 신세대의 사이오닉 어뢰를 만들 수 있습니다."
+esc_tech_psionic_torpedo_2_bio: "$esc_tech_psionic_torpedo_2$"
+esc_tech_psionic_torpedo_2_bio_desc: "사이오닉 에너지 '탄두'를 운송하는 유기체 미사일에 대한 약간의 개선을 거쳐 사이오닉 어뢰의 파괴력을 크게 향상시킬 수 있을 것입니다."
+
+esc_tech_psionic_lance_1: "사이오닉 랜스"
+esc_tech_psionic_lance_1_desc: "우리는 이전엔 상상할 수 없었던 스케일의 사이오닉 빔 무기를 만들 수 있는 경지에 도달했습니다. 이 새로운 사이오닉 랜스는 우리의 강한 함선들의 강력한 주무기가 될 것입니다"
+gateway_ESC_PSIONIC_LANCES: "사이오닉 랜스"
+
+esc_tech_psionic_lance_2: "장막 관통기"
+esc_tech_psionic_lance_2_desc: "최신 기술 성과 덕분에 우리는 이제 사이오닉 랜스를 크게 개선하고 개선하여 더욱 강력하고 치명적인 무기를 만들 수 있게 되었습니다."
+
+esc_tech_psionic_lance_titanic: "공허 광선"
+esc_tech_psionic_lance_titanic_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 그 함선에 걸맞는 인상적인 무기가 필요함을 알게 되었습니다. 우리는 사이오닉 랜스의 더 크고 훨씬 더 강한 버전을 만들 것입니다."
+
+esc_tech_psionic_interceptors: "시이오닉 요격기"
+esc_tech_psionic_interceptors_desc: "맨 처음 사이오닉 무기의 정지 시험을 거친 직후부터 이들 무기가 우주 전투의 공격기를 포함한 다양한 방식으로 응용될 수 있다는 것은 명백했습니다. 이제 그런 무기를 현실로 만들 시간이 왔습니다."
+esc_tech_psionic_interceptors_bio: "사이오닉 증강된 아메바"
+esc_tech_psionic_interceptors_bio_desc: "선택적 육종과 직접 유전자 조작을 통해, 우주 아메바의 큰 사이오닉 잠재력을 지닌 종을 만들 수 있습니다. 이런 생물체들은 우리 함대에 큰 보탬이 될 것입니다."
+
+esc_tech_repeatable_psionic_damage: "집중된 정신"
+esc_tech_repeatable_psionic_damage_desc: "임무에 집중하는 정신은 엄청난 수준의 사이오닉 능력을 얻을 수 있습니다."
+
+esc_tech_repeatable_psionic_fire_rate: "능력의 우물"
+esc_tech_repeatable_psionic_fire_rate_desc: "사이오닉 능력을 사용하는 것은 정신과 육신에 부담이 됩니다. 이것을 더 강하게 훈련하면, 우리는 우리는 우리 자신들을 사이오닉 능력의 끝없는 우물로 바꿀 수 있습니다."
+
+esc_tech_psionic_disruptor_2: "Focused Psionic Disruptors"
+esc_tech_psionic_disruptor_2_desc: "Through improved focus of psionic energies we can further increase combat effectiveness of psionic disruptors."
+
+esc_tech_bio_psionic_disruptor_2: "$esc_tech_psionic_disruptor_2$"
+esc_tech_bio_psionic_disruptor_2_desc: "$esc_tech_psionic_disruptor_2_desc$"
+
+esc_tech_psionic_disruptor_3: "Shroud-Empowered Disruptors"
+esc_tech_psionic_disruptor_3_desc: "By channelling psionic energies directly from the Shroud we can push the power of our psionic disruptors to a new and previously unseen levels."
+
+esc_tech_bio_psionic_disruptor_3: "$esc_tech_psionic_disruptor_3$"
+esc_tech_bio_psionic_disruptor_3_desc: "$esc_tech_psionic_disruptor_3_desc$"
+
+esc_tech_psionic_lightning_2: "Focused Psionic Lightning"
+esc_tech_psionic_lightning_2_desc: "Through improved focus of psionic energies we can significantly increase the deadliness of our psionic lightning weapons."
+
+esc_tech_bio_psionic_lightning_2: "$esc_tech_psionic_lightning_2$"
+esc_tech_bio_psionic_lightning_2_desc: "$esc_tech_psionic_lightning_2_desc$"
+
+esc_tech_psionic_lightning_3: "Shroud Lightning"
+esc_tech_psionic_lightning_3_desc: "Lightning weapon powered by the vast psionic energies of the Shroud is going to be a weapon of never-seen-before destructive power."
+
+esc_tech_bio_psionic_lightning_3: "$esc_tech_psionic_lightning_3$"
+esc_tech_bio_psionic_lightning_3_desc: "$esc_tech_psionic_lightning_3_desc$"
+
+############################################################
+###                Strike Craft Technologies             ###
+############################################################
+
+esc_tech_strikecraft_4: "습격자 공격기"
+esc_tech_strikecraft_4_desc: "우주 전투가 계속해서 진화하면서, 우리는 더 파괴적인 공격기가 필요해졌습니다. 여러 가지 새로운 혁신적인 디자인이 제출되었습니다. 우리는 가까운 미래의 요구에 가장 적합한 것을 찾아야 합니다."
+gateway_ESC_STRIKECRAFTS: "고급 공격기"
+
+esc_tech_strikecraft_5: "공성파괴자 공격기"
+esc_tech_strikecraft_5_desc: "새로운 기술과 무기가 지속적으로 등장하고 있기에, 우리의 공격기는 뒤처져서는 안 됩니다. 따라서 신세대 공격기 개발 작업은 더 이상 지체 없이 시작되어야 합니다."
+
+esc_tech_strikecraft_6: "공허추적자 공격기"
+esc_tech_strikecraft_6_desc: "믿을 수 없을 정도로 발전된 선구자 기술력에 접근하면서, 우리는 이제 이전엔 꿈꾸지 못했던 능력을 지닌 공격기를 만들 수 있습니다."
+
+esc_tech_amoeba_2: "순종 아메바"
+esc_tech_amoeba_2_desc: "가축화된 아메바 편모는 이미 강력한 '무기'이지만, 우리는 이들을 목적에 의해 더 강하고 빠르고 강인하게 길러 더욱더 개선할 수 있습니다."
+gateway_ESC_AMOEBA_STRIKECRAFT: "고급 아메바 편모"
+
+esc_tech_amoeba_3b: "유전자 조작 아메바"
+esc_tech_amoeba_3b_desc: "최근에 유전 공학에 통달하게 된 덕택에 우리는 아메바 편모들의 약점을 없애고 그들의 힘을 더욱더 강화하여 그들을 우리의 함대의 더욱더 강력한 '무기'로 만들 수 있습니다. making them an even more powerful 'weapon' for our fleets."
+gateway_ESC_AMOEBA_STRIKECRAFT_BIO: "생체 증강 아메바 편모"
+
+esc_tech_amoeba_4b: "완벽한 우주 유기체"
+esc_tech_amoeba_4b_desc: "우리는 아메바 편모를 우리의 군사적 요구를 수행하는 완벽한 우주 유기체로 만들기 직전에 와 있습니다. 우리는 이것을 완성해야 합니다."
+
+esc_tech_amoeba_3c: "사이버네틱 증강 아메바"
+esc_tech_amoeba_3c_desc: "사이버네틱스와 기계 강화는 우리의 일상의 한 부분입니다. 이런 공생이 가져다주는 이익은 어마어마합니다. 이 똑같은 것이 우리가 통제하는 아메바 편모에게 적용되지 않을 거라고 생각할 이유는 없습니다. 사이버네틱 임플란트는 이들을 더 강하고 똑똑하며 잘 보호되게 만들며 이들을 훨씬 더 치명적인 '무기'로 만들 수 있습니다."
+gateway_ESC_AMOEBA_STRIKECRAFT_CYBER: "사이버네틱 아메바 편모"
+
+esc_tech_amoeba_4c: "바이오닉 아메바"
+esc_tech_amoeba_4c_desc: "사이오닉 강화를 더욱더 진행하여 우리는 아메바 편모를 믿을 수 없을 정도의 잠재력을 지닌 우리 함대의 '무기'로 만들 수 있습니다."
+
+esc_tech_strikecraft_mercenary_1: "용병 연락망"
+esc_tech_strikecraft_mercenary_1_desc: "돈으로는 많은 것을 살 수 있으며 전투 역량에 대해서는 훨씬 더 그렇습니다. 독립 우주 여행자들에게 접근하여, 우리는 자신들의 기체를 가지고 올 강력하고 숙련된 파일럿들을 통해 우리의 수준을 강화할 수 있을 것입니다."
+gateway_ESC_MERCENARY_CTRIKECRAFT: "용병 전투기 비행대대"
+
+esc_tech_strikecraft_mercenary_2: "엘리트 용병 연락망"
+esc_tech_strikecraft_mercenary_2_desc: "우리가 관대한 고용주라는 평판이 퍼지면서, 더 많은 숙련된 용병들이 우리를 위해 일하려 합니다. 당연히, 그만한 크레딧은 지불해야 하겠지만..."
+
+esc_tech_swarm_strike_craft_2: "유린하는 떼거지"
+esc_tech_swarm_strike_craft_2_desc: "우리는 포획되고 재프로그램된 스컬지 떼거지들을 특별 훈련과 정신을 변화시키는 약물의 지배 하애 놓음으로써 더 강력하고 사나운 전투기로 만들 수 있습니다."
+
+############################################################
+###               Tesla Weapons Technologies             ###
+############################################################
+
+esc_tech_tesla_coil_1: "테슬라 코일"
+esc_tech_tesla_coil_1_desc: "전기에 대한 깊은 지식을 바탕으로, 우리는 발전기에서 목적지로 흐르는 강력하게 솟구치는 에너지를 레이저 빔에 의해 만들어진 비물질적인 도체 띠를 따라 하르게 할 수 있습니다. 이 기술력에 기반한 무기는 절연되지 않은 전자장비에게 아주 치명적일 것입니다."
+esc_tech_tesla_coil_1_bio: "생체 전기 방전기"
+esc_tech_tesla_coil_1_bio_desc: "생명공학에 의해 막대한 양의 전기를 발생시키고 저장하는 특별한 근육 조직과, 전류를 형성하고 겨냥하는 특별한 전도체 조직을 설계하여, 우린느 우리의 생물함선들에게 절연되지 않은 전자장비와 우주 태생 생명체들에게 아주 치명적인 위력을 가진 무기를 만들어줄 수 있습니다."
+gateway_ESC_TESLA_CANNONS: "테슬라 포"
+
+esc_tech_tesla_coil_2: "개선된 테슬라 코일"
+esc_tech_tesla_coil_2_desc: "우리가 활용할 수 있는 새로운 초전도 물질을 이용하여, 우리는 훨씬 더 강력한 전류를 견딜 수 있는 발전기와 콘덴서를 만들 수 있습니다. 이것은 우리의 테슬라 코일을 눈에 띄게 발전시킬 것입니다."
+esc_tech_tesla_coil_2_bio: "진화된 생체 전기 방전기"
+esc_tech_tesla_coil_2_bio_desc: "생체 전기 방전기의 미래의 진화를 통제하고 유도하여 우리는 그것들의 출력을 개선하고 그것들을 훨씬 더 치명적인 전기 폭발을 만들어내게 할 수 있습니다."
+
+esc_tech_tesla_bomb_1: "테슬라 폭탄"
+esc_tech_tesla_bomb_1_desc: "강력한 전류가 끊임없이 흐르는 초전도체 고리는 어떤 방식으로 깨뜨려진다면 강력한 전자기 폭탄이 될 수 있습니다. 우리는 이것에 기반하여 신세대의 어뢰 무기를 만들 수 있습니다."
+esc_tech_tesla_bomb_1_bio: "생체 전기 폭탄"
+esc_tech_tesla_bomb_1_bio_desc: "아주 많은 양의 전기를 저장하여 그것을 치명적인 폭발의 형태로 한 번에 방출하는 도체 조직을 활용한 특수한 생체 미사일을 만드는 것은 우주 전투의 새로운 방법을 열어줄 것입니다."
+gateway_ESC_TESLA_TORPEDOES: "테슬라 폭탄"
+
+esc_tech_tesla_bomb_2: "개선된 테슬라 폭탄"
+esc_tech_tesla_bomb_2_desc: "우리가 활용할 수 있는 새로운 초전도 물질을 이용하여, 우리는 전류를 더 많이 담을 수 있는 초전도체 고리를 만들어 테슬라 폭탄을 훨씬 더 치명적으로 만들 수 있습니다."
+esc_tech_tesla_bomb_2_bio: "진화된 생체 전기 폭탄"
+esc_tech_tesla_bomb_2_bio_desc: "유도된 진화를 통해 우리는 다음 세대의 생체 전기 폭탄이 우리가 현재 가진 것보다 헐씬 더 강하고 치명적이게 될 것이라고 보장할 수 있습니다."
+
+esc_tech_tesla_cannon_1: "테슬라 포"
+esc_tech_tesla_cannon_1_desc: "우리가 현재 갖고 있는 테슬라 코일은 우리의 가장 강력한 함선의 주포로 쓰이기엔 충분히 크지 않습니다. 우리는 이 실수를 바로잡고 우리의 기함에 걸맞는 거대한 크기와 위력의 테슬라 포를 개발해야 합니다."
+esc_tech_tesla_cannon_1_bio: "생체 전기 포"
+esc_tech_tesla_cannon_1_bio_desc: "생체 전기 방전기를 크기와 출력을 개선하기 위해서 선택적으로 육종하여 우리는 우리의 가장 큰 생물함선의 장사정 주포로 사용할 수 있는 새로운 종을 만들 수 있습니다."
+gateway_ESC_TESLA_LANCES: "거대화된 테슬라 포"
+
+esc_tech_tesla_cannon_2: "개선된 테슬라 포"
+esc_tech_tesla_cannon_2_desc: "테슬라 포는 우리의 적들에게 훨씬 더 강력한 폭발을 안겨주기 위해 더욱더 개선되고 미세조정될 수 있습니다."
+esc_tech_tesla_cannon_2_bio: "진화된 생체 전기 포"
+esc_tech_tesla_cannon_2_bio_desc: "훨씬 더 강력한 출력을 향한 더 깊은 진화를 통해 우리는 치명적인 전류를 내뿜어 막대한 양의 피해를 입힐 수 있는 생체 전기 포를 얻을 수 있습니다."
+
+esc_tech_tesla_cannon_titanic: "타이탄 테슬라 포"
+esc_tech_tesla_cannon_titanic_desc: "믿을 수 없을 정도로 거대한 새로운 함선을 개발하며, 우리는 현재 갖고 있는 가장 큰 테슬라 포도 충분하지 않음을 알게 되었습니다. 그렇기에 이 무기의 더 새롭고 큰 설계를 개발해야 합니다."
+esc_tech_tesla_cannon_titanic_bio: "타이탄 생체 전기 포"
+esc_tech_tesla_cannon_titanic_bio_desc: "우리의 가장 강력한 생물함선들에게는 적들에게 휘두를 수 있는 가장 강력한 무기가 필요합니다. 생체 전기 포에 대한 더욱더 깊이 유도된 진화로 우리는 비길 데 없는 크기와 출력을 지닌, 우리의 레비아탄 생명체들에게 진정으로 어울리는 종을 만들 수 있습니다."
+
+esc_tech_tesla_interdictor: "테슬라 차단기"
+esc_tech_tesla_interdictor_desc: "강력한 전기 방출은 치명적인 무기이지만, 보호막에 쉽게 가로막힐 수 있기에, 우리의 적의 보호막의 보호 거품 안으로 우리의 포를 갖고 들어가서 적들을 완전히 파괴할 수 있는 플랫폼을 만드는 것은 좋은 아이디어일 것입니다."
+esc_tech_tesla_interdictor_bio: "생체 전기 생물함선"
+esc_tech_tesla_interdictor_bio_desc: "공격 생물체들도 강력한 생체 전기 무기를 휘둘러 우리의 적들에게 치명적인 폭발을 안겨줄 수 있습니다. 우리는 그런 우주 태생 생명체들의 번식 계획을 연구하여 그들을 우리의 함대에 포함시켜야 합니다."
+
+############################################################
+###               Other Weapons Technologies             ###
+############################################################
+
+esc_tech_mandibles_4: "뉴트로늄이 주입된 턱"
+esc_tech_mandibles_4_desc: "우리의 과학에서 가장 강력한 물질 중 하나로 알려진 뉴트로늄을 생물함선의 턱 구조에 우리는 그 기관의 내구성과 악력을 크게 개선할 수 있습니다."
+
+esc_tech_mandibles_5: "아다만티움 턱"
+esc_tech_mandibles_5_desc: "턱뼈 내부에 뉴트로늄을 포함한 물질들이 패턴화되어 분포되어 있어 더욱 강력한 구조를 만들어내어, 가장 강력한 장갑을 제외한 모든 것을 쉽게 베어낼 수 있는 자연적인 무기를 생성할 수 있습니다."
+
+esc_tech_mandibles_cyber_1: "사이버네틱 강화된 턱"
+esc_tech_mandibles_cyber_1_desc: "우리의 생물함선들의 턱은 이미 가공할 위력을 가졌습니다만, 우리는 그들의 악력을 더욱더 개선하기 위해 사이버네틱 증강을 도입할 수 있습니다. 그리고 강력한 에너지 방출기는 우리의 생물함선들에게 사용될 침투 방지 수단에 더 잘 대응하게 할 것입니다."
+
+esc_tech_mandibles_cyber_2: "바이오닉 턱"
+esc_tech_mandibles_cyber_2_desc: "우리의 생물함선의 턱의 위력을 더욱더 개선한 새 시대의 사이버네틱 강화입니다."
+
+esc_tech_shockwave: "Arc Energy Shockwave"
+esc_tech_shockwave_desc: "Lightning cannon can be improved upon in many different ways. Making it more powerful and able to hit targets at longer distances are the obvious ones. But what if we made it hit as many targets as there might be around the ship instead?"
+
+esc_tech_shockwave_dark_matter: "Dark Matter Halo Blast"
+esc_tech_shockwave_dark_matter_desc: "By applying principles we've learned during the development of energy shockwave weapons to dark matter, we can create the next generation of omni-directional blast weapons with previously-unseen levels of power."
+
+esc_tech_shockwave_psionic: "Psionic Catastrophe"
+esc_tech_shockwave_psionic_desc: "Omni-directional discharge of psionic energy can be a devastating weapon against the brave fools that want to charge right at our armadas."
+
+esc_tech_shockwave_tesla: "Omni-Directional Tesla Shockwave"
+esc_tech_shockwave_tesla_desc: "We can create an empowered version of the $esc_tech_shockwave$ by utilizing Tesla cannon technologies to increase its power and damage potential."
+
+############################################################
+###              Armor Component Technologies            ###
+############################################################
+
+esc_tech_armor_6: "개선된 뉴트로늄 장갑"
+esc_tech_armor_6_desc: "표준 뉴트로늄 장갑의 구성과 층을 개선함으로써, 우리는 그것을 더욱 단단하고 손상에 저항할 수 있도록 만들 수 있습니다. 일단 만들어지면, 이러한 장갑은 거의 모든 공격을 무시할 수 있을 것입니다."
+esc_tech_armor_6_bio: "진화된 뉴트로늄 갑각"
+esc_tech_armor_6_bio_desc: "고급 생명공학 기술을 통해, 생물체의 장갑에 심어진 뉴트로늄 섬유는 파손되지 않고 믿을 수 없을 정도의 피해를 흡수할 수 있는 특화된 직물로 변모할 수 있습니다. 이것은 실탄 무기에 대한 우리의 생물함선들의 저항을 극도로 증가시킬 수 있습니다."
+gateway_ESC_ARMOR: "고급 장갑"
+
+esc_tech_armor_7: "아다만티움 장갑"
+esc_tech_armor_7_desc: "장갑 제작 기술을 더욱더 개선하여 우리는 더욱더 질긴 버전의 뉴트로늄 장갑을 만들 수 있습니다. 우리는 이렇게 만들어진 물질이 거의 파괴할 수 없을 것이라고 예상합니다. 몇몇 과학자들은 이 물질을 명백히 이것의 기적적인 성질을 공유하고 있는 신화적 금속인 '아다만티움'이라고 부르고 있습니다."
+esc_tech_armor_7_bio: "아다만티움 갑각"
+esc_tech_armor_7_bio_desc: "생명공학과 유도된 진화를 더 깊게 적용하여, 우리는 훨씬 더 강한 버전의 뉴트로늄 갑각을 만들 수 있습니다. 우리의 에상이 맞다면, 이 새로운 종은 거의 파괴할 수 없습니다. 몇몇 과학자들은 이미 이것을 명백히 이것의 기적적인 성질을 공유하고 있는 신화적 금속인 '아다만티움'에 빗대고 있습니다."
+
+esc_tech_bio_armor_1: "생체물질 장갑"
+esc_tech_bio_armor_1_desc: "전통적인 장갑을 유전자 조작된 생물체의 거대한 군집에 결합시킴으로써, 우리는 아주 큰 인공 피부와 거의 닮은 형태의 장갑을 만들 수 있습니다. 이런 장갑은 피해를 아주 잘 견디며 살아있는 조직처럼 자가 수복할 능력도 갖고 있습니다."
+gateway_ESC_BIO_ARMOR: "생체물질 장갑"
+
+esc_tech_bio_armor_2: "개선된 생체물질 장갑"
+esc_tech_bio_armor_2_desc: "유전자 조작에 새롭게 통달하여 우리는 생체물질 장갑을 위한 새로운 종의 장갑형 생물체를 만들 수 있게 되었습니다. 이것들을 새롭게 개선된 장갑 물질에 결합하면, 신세대의 생체물질 장갑은 더 강하고 더 빠르게 수복될 것입니다."
+
+esc_tech_armor_nanite_1: "나노물질 장갑"
+esc_tech_armor_nanite_1_desc: "수리 프로토콜이 프로그램된 나노머신과의 융합을 통해, 우리는 피해를 막아줄뿐만 아니라 막아낼 수 없었던 어떤 피해도 능동적으로 수리할 수 있는 형태의 장갑을 만들 수 있습니다."
+esc_tech_armor_nanite_1_bio: "나노물질 융합 갑각"
+esc_tech_armor_nanite_1_bio_desc: "생물체의 갑각에 나노머신 클러스터를 통합함으로써 그것은 피해에 대한 저항이 증가할뿐만 아니라 가장 치명적인 형태의 피해마저 복구할 능력도 갖게 될 것입니다."
+gateway_ESC_NANITE_ARMOR: "나노머신 증강 장갑"
+
+esc_tech_armor_nanite_2: "개선된 나노물질 장갑"
+esc_tech_armor_nanite_2_desc: "고급 장갑 재료와 새로운 수리 나노머신 모델을 짝지어 우리는 이전 세대의 것보다 더 강하고 더 빠르게 손상 복구가 가능한 신세대 나노물질 장갑을 만들 수 있습니다."
+esc_tech_armor_nanite_2_bio: "개선된 나노물질 융합 갑각"
+esc_tech_armor_nanite_2_bio_desc: "나노규모 공학에 대한 우리의 개선된 이해를 고급 생명공학 기법과 짝지어 우리는 나노물질 융합 장갑을 상당한 정도로 개선할 수 있습니다."
+
+esc_tech_armor_dragonscales_nanite: "나노머신 증강 드래곤 비늘 장갑"
+esc_tech_armor_dragonscales_nanite_desc: "우리 과학자들에게 가장 질긴 물질 중 하나로 알려진 에테르 드래곤의 비닐에 수리 나노머신을 결합함으로써 우리는 자가 수복이 가능한 믿을 수 없을 정도로 강인한 장갑을 만들 수 있습니다. 이것은 우리의 장갑 공학의 정점이 될 것입니다."
+esc_tech_armor_dragonscales_nanite_bio: "나노머신이 주입된 드래곤 비늘"
+esc_tech_armor_dragonscales_nanite_bio_desc: "에테르 드래곤의 비늘은 우리의 통제 하에 있는 생무령기들이 진화시킬 수 있었던 어떤 것보다도 앞서 있는 괄목할만한 성질을 보입니다. 이것을 나노머신에 결합함으로써 이것은 아무것도 비길 수 없는 생물학 장갑이 될 수 있습니다."
+
+esc_tech_armor_shield_1: "보호막 생성 장갑"
+esc_tech_armor_shield_1_desc: "에너지를 생성하고 유지하도록 프로그램된 특수 나노머신의 추가로 인해 보호막을 생성하는 장갑 판금을 만들 수 있습니다."
+esc_tech_armor_shield_1_bio: "보호막 생성 갑각"
+esc_tech_armor_shield_1_bio_desc: "나노머신은 역장을 생성하고 유지하도록 프로그램될 수 있습니다. 그런 나노머신을 생물체의 갑각에 주입함으로써, 우리는 실탄 병기와 에너지 병기 모두를 효과적으로 막아낼 수 있는 생물학 장갑을 만들 수 있습니다."
+gateway_ESC_SHIELD_ARMOR: "보호막 생성 장갑"
+
+esc_tech_armor_shield_2: "개선된 보호막 생성 장갑"
+esc_tech_armor_shield_2_desc: "더 많은 양의 에너지를 조작할 수 있는 새로운 세대의 나노머신을 통해 우리는 우리의 보호막 생성 장갑을 더 강한 보호 효과를 내도록 업그레이드할 수 있습니다."
+esc_tech_armor_shield_2_bio: "개선된 보호막 생성 갑각"
+esc_tech_armor_shield_2_bio_desc: "생물체의 갑각과 보호막을 생성하는 나노머신의 통합을 개선함으로써 우리는 장갑의 강인함과 이런 장갑이 생성할 수 있는 보호막의 출력을 모두 강화할 수 있습니다."
+
+esc_tech_armor_shield_3: "보호막 생성 방벽"
+esc_tech_armor_shield_3_desc: "나노머신을 더욱더 개선하여 우리는 더 강인하고 더 강력한 보호막을 생성할 수 있는 장갑을 만들 수 있습니다."
+esc_tech_armor_shield_3_bio: "완벽한 보호막 생성 갑각"
+esc_tech_armor_shield_3_bio_desc: "생물체의 갑각에 대한 생명설계와 보호막 생성 나노머신을 더욱더 개선하여 우리는 우리의 생물함선을 위한 궁극의 보호구를 만들 수 있습니다."
+
+esc_tech_armor_wraith: "경화된 빛 장갑"
+esc_tech_armor_wraith_desc: "스펙트럼 망령은 경화된 빛으로만 만들어진 것으로 보이는 기이한 생명체입니다. 그 물질을 복제하여 우리는 이 은하에서 볼 수 있었던 어느 것과도 닮지 않은 장갑을 이용할 수 있습니다."
+
+esc_tech_armor_horror: "차원의 공포 장갑"
+esc_tech_armor_horror_desc: "포탈의 잔여물을 연구함으로써 우리는 차원의 공포의 가죽의 구성을 알아낼 수 있습니다. 이 믿을 수 없을만큼 질긴 물질로 우리 함선의 방어력을 한 단계 끌어올릴 수 있습니다."
+
+esc_tech_crystal_armor_3: "강화된 크리스탈 판금"
+esc_tech_crystal_armor_3_desc: "크리스탈 물질의 강도는 믿을 수 없을 정도입니다. 우리는 이것을 활용하여 궁극적인 선체 판금을 만들 수 있습니다."
+
+esc_tech_crystal_core_armor_1: "Crystal-core Neutronium Armor"
+esc_tech_crystal_core_armor_1_desc: "By buiding standard neutronium lattice around the crystalline core, it is possible to engineer a material with unprecedented hardness and resistance to fracture propagation. A material like this is ideal for ship armor plating."
+
+esc_tech_crystal_core_armor_2: "Crystal-core Adamantium Armor"
+esc_tech_crystal_core_armor_2_desc: "Applying improvements in advanced neutronium armor plating to crystal-core materials promises us a new level of armor plating materials that will beyond anything we have access to currently."
+
+############################################################
+###             Shields Component Technologies           ###
+############################################################
+
+esc_tech_shields_6: "개선된 초강화 보호막"
+esc_tech_shields_6_desc: "신세대의 보호막 콘덴서를 통해 우리는 초강화 보호막의 세기와 충전률을 더욱더 강화하여 적의 공격으로부터 우리의 함선을 보호할 능력을 크게 증가시킬 수 있습니다."
+esc_tech_shields_6_bio: "개선된 초강화 보호막 근육계"
+esc_tech_shields_6_bio_desc: "유도된 진화의 힘으로 우리는 생물체의 에너지 채널링 조직을 더욱 개선하여, 더 강력하고 빠르게 재생되는 보호막을 생성할 수 있도록 할 수 있습니다."
+gateway_ESC_SHIELDS: "고급 보호막"
+
+esc_tech_shields_7: "초쌍곡 보호막"
+esc_tech_shields_7_desc: "보호막 콘덴서가 발생시킨 역장을 다른 차원에 고정함으로써 우리는 그역장의 힘을 크게 강화할 수 있습니다. 이런 기술을 이용하면 우리는 이전에 볼 수 없었던 힘을 가진 보호막 부품을 만들 수 있습니다."
+esc_tech_shields_7_bio: "초쌍곡 보호막 근육계"
+esc_tech_shields_7_bio_desc: "초쌍곡 차원 기술력을 우리의 통제 하에 있는 생물함선의 살에 이식함으로써 우리는 그들의 보호막을 높은 차원에 고정할 수 있게 되었고 그 역장의 세기를 극적으로 증가시킬 수 있게 되었습니다."
+
+esc_tech_shields_8: "파동력 장갑"
+esc_tech_shields_8_desc: "우리는 다가오는 공격의 에너지의 일부 또는 전부를 다른 차원으로 넘길 수 있다면 우리의 방어막의 세기를 더욱더 강화할 수 있습니다."
+esc_tech_shields_8_bio: "파동력 장갑"
+esc_tech_shields_8_bio_desc: "다가오는 공격의 에너지를 전부 다른 차원으로 넘기는 초쌍곡 차원 생명공학을 진화시킴으로써 우리는 비길 수 없는 수준의 방호력을 제공하는 생물학 보호막을 만들 수 있습니다."
+
+esc_tech_shields_cyclonic_1: "사이클론 편향막"
+esc_tech_shields_cyclonic_1_desc: "사이클론 보호막 공명 기술은 보호막을 중첩시켜 서로의 재생력을 끌어올려 편향막 설계에 새 길을 열어줍니다."
+esc_tech_shields_cyclonic_1_bio: "사이클론 에너지 흐름 근육계"
+esc_tech_shields_cyclonic_1_bio_desc: "에너지 흐름 방향이 교번하는 여러 층으로 겹친 근육계는 우리가 통제하는 생물함선들이 서로를 강화하며 빠르게 충전되는 보호 장벽을 생성하게 할 것입니다."
+gateway_ESC_CYCLONIC_SHIELDS: "사이클론 보호막"
+
+esc_tech_shields_cyclonic_2: "사이클론 보호막"
+esc_tech_shields_cyclonic_2_desc: "강력한 실드 콘덴서의 통합을 자랑하는 사이클론 편향막 기술의 개선으로, 보호막의 재생률에 대한 일체의 양보 없이 더 강력한 보호막을 제공합니다."
+esc_tech_shields_cyclonic_2_bio: "진화된 사이클론 에너지 흐름 근육계"
+esc_tech_shields_cyclonic_2_bio_desc: "유도된 진화를 통해 우리는 우리의 생물함선들의 사이클론 에너지 흐름 근육계로 만들어진 보호막의 출력을 높이고 재충전률을 가속할 수 있습니다."
+
+esc_tech_shields_cyclonic_3: "개선된 사이클론 보호막"
+esc_tech_shields_cyclonic_3_desc: "몇몇 새로운 역장 조작 기술로 우리는 우리의 함선에 더 강력한 보호를 제공하는 더 강력한 버전의 사이클론 보호막을 만들 수 있습니다."
+esc_tech_shields_cyclonic_3_bio: "완벽한 사이클론 에너지 흐름 근육계"
+esc_tech_shields_cyclonic_3_bio_desc: "더 깊은 유전 설계를 통해 우리는 우주 태생 생물체에게 적용할 사이클론 보호막 기술의 정점을 성취할 수 있습니다."
+
+esc_tech_dark_matter_shields_2: "개선된 암흑 물질 보호막"
+esc_tech_dark_matter_shields_2_desc: "암흑 물질의 성질과 특성을 계속해서 더 잘 이해할 수 있게 됨에 따라, 우리는 암흑 물질 보호막의 설계의 몇 가지 개선을 구현하여, 이 장비가 생성하는 보호막의 세기와 재생률을 더 크게 향상시킬 수 있게 되었습니다."
+esc_tech_dark_matter_shields_2_bio: "진화된 암흑 물질 주입 근육계"
+esc_tech_dark_matter_shields_2_bio_desc: "유도된 진화를 통해 우리는 암흑 물질이 주입된 근육계에 의해 생성된 보호막의 방어력을 이전에 볼 수 없었던 수준으로 높일 수 있습니다."
+gateway_ESC_DARK_MATTER_SHIELDS: "고급 암흑 물질 보호막"
+
+esc_tech_dark_matter_shields_3: "완벽한 암흑 물질 보호막"
+esc_tech_dark_matter_shields_3_desc: "암흑 물질의 성질에 대한 깊은 이해를 기반으로 우리는 매우 강력한 보호막을 설계할 수 있습니다."
+esc_tech_dark_matter_shields_3_bio: "완벽한 암흑 물질 주입 근육계"
+esc_tech_dark_matter_shields_3_bio_desc: "표적 유전자 설계와 추가적인 생명공학 조작을 통해 우리는 우리가 통제하는 생물함선들의 암흑 물질이 주입된 근육계가 생성하는 보호막을 완벽하게 만들 수 있습니다."
+
+esc_tech_psionic_shield_2: "개선된 사이오닉 보호막"
+esc_tech_psionic_shield_2_desc: "더 강한 정신은 더 강력한 사이오닉 방벽을 투사할 수 있으며, 올바른 기술을 통해 우리는 그런 장벽의 세기를 훨씬 더 향상시킬 수 있습니다."
+esc_tech_psionic_shield_2_bio: "진화된 즈로 주입 근육계"
+esc_tech_psionic_shield_2_bio_desc: "유전자 조작의 힘으로 우리는 현존하는 종의 즈로 주입 근육계를 더 강한 흐름의 사이오닉 에너지를 발생시키고 더 높은 수준의 보호를 제공하도록 더 개선할 수 있었습니다."
+gateway_ESC_PSIONIC_SHIELDS: "고급 사이오닉 보호막"
+
+esc_tech_psionic_shield_3: "절대 공포 역장"
+esc_tech_psionic_shield_3_desc: "우리가 사이오닉을 더 잘 이해할 수 있게 됨에 따라, 우리는 자기 자신을 세상의 다른 모든 것으로부터 분리하는 상상의 경계인 절대 공포 역장이라는 현상을 알게 되었습니다. 더 큰 집단이 공유하는 경계를 만드는 것도 가능하며, 많은 사이오닉 능력자들이 힘을 합쳐, 그런 절대 공포 역장은 믿을 수 없는 강도를 지니며, 우리의 함선들을 위한 믿을 수 없는 방어막으로 활용됩니다."
+
+############################################################
+###            Auxiliary Component Technologies          ###
+############################################################
+
+esc_tech_auxiliary_fire_control_2: "고급 사격 통제 시스템"
+esc_tech_auxiliary_fire_control_2_desc: "타게팅 알고리즘을 개선하여 우리의 사격 통제 시스템은 더 빠르고 정확한 사격 제원을 생성할 수 있습니다."
+esc_tech_auxiliary_fire_control_2_bio: "진화된 전투 시냅스"
+esc_tech_auxiliary_fire_control_2_bio_desc: "전장의 정보를 처리하는 신경 노드를 강제로 진화시킴으로써 우리는 복잡한 우주 전투를 분석하는 생물함선의 능력을 크게 향상시킬 수 있습니다."
+
+esc_tech_afterburners_3: "맥동 플라즈마 재연소 장치"
+esc_tech_afterburners_3_desc: "맥동 플라즈마 추진법을 활용하는 고급 재연소 장치를 장착한 함선은 필요할 때마다 극소량의 연료를 소모하여 빠르게 가속할 수 있습니다."
+esc_tech_afterburners_3_bio: "진화된 기동 촉수"
+esc_tech_afterburners_3_bio_desc: "고급 생명설계를 통해 우리는 기동 촉수를 더욱더 강화하여 우리 생물체들이 모든 방향으로 빠르게 가속할 능력을 개선하였습니다."
+
+esc_tech_reactor_booster_4: "보조 영점 반응로"
+esc_tech_reactor_booster_4_desc: "영점 반응로를 소형화하여 우리는 우리의 함선에 장착할 작고 극도로 강력한 보조 반응로를 만들 수 있습니다."
+esc_tech_reactor_booster_4_bio: "보조 영점 신진대사 혹"
+esc_tech_reactor_booster_4_bio_desc: "우리의 생물체들의 신진대사 혹을 영점 에너지를 획득하고 활용하도록 유전적으로 설계하여 우리는 그들이 사용할 에너지의 총량을 극도로 증가시킬 수 있습니다."
+
+esc_tech_reactor_booster_5: "보조 특이점 반응로"
+esc_tech_reactor_booster_5_desc: "소형화된 특이점 반응로는 훨씬 더 많은 전력을 제공할 수 있습니다. 이는 상상할 수 있는 최고의 보조 반응로 중 하나가 될 것입니다."
+esc_tech_reactor_booster_5_bio: "보조 특이점 신진대사 혹"
+esc_tech_reactor_booster_5_bio_desc: "선택적 육종을 통해 우리는 영점 신진대사 혹의 기본 틀을 더욱 강화하여 에너지를 더 효과적으로 획득하게 할 수 있습니다."
+
+esc_tech_advanced_shield_capacitors: "개선된 보호막 콘덴서"
+esc_tech_advanced_shield_capacitors_desc: "새로운 세대의 고출력 보호막 콘덴서가 개발되어 우리는 함선의 보호막의 세기를 근본적으로 크게 강화하는 개선된 버전의 보호막 콘덴서를 만들 수 있습니다."
+
+esc_tech_crystal_infused_capacitor: "크리스탈 주입 보호막 콘덴서"
+esc_tech_crystal_infused_capacitor_desc: "크리스탈 물질을 추가하여 이 보호막 콘덴서들은 함선의 선체도 강화할 수 있습니다."
+
+esc_tech_crystal_forged_capacitor: "크리스탈 단조 보호 콘덴서"
+esc_tech_crystal_forged_capacitor_desc: "크리스탈 물질과 함께 단조된 금속을 이용한 주 콘덴서 뱅크를 이용하여 이 보호막 콘덴서들은 함선의 선체도 극도로 강화할 수 있습니다."
+
+esc_tech_aux_maneuver_thrusters: "보조 기동 추진기"
+esc_tech_aux_maneuver_thrusters_desc: "고급 반작용 제어 시스템은 함선이 급속도로 운동 경로를 바꿔 적의 사격을 더 효과적으로 피할 능력을 부여할 수 있습니다."
+
+esc_tech_stellarite_powercore: "스텔라라이트 동력 코어"
+esc_tech_stellarite_powercore_desc: "항성 포식자의 장기는 핵융합 발전기처럼 작동하는 것 같습니다. 아마도, 이것을 함선 시스템에 추가 동력을 공급하는 데 사용될 수 있을 것 같습니다."
+
+esc_tech_standardized_warheads: "탄두 표준화"
+esc_tech_standardized_warheads_desc: "제식 장비로 활용되는 다양한 탄두들을 표준화하면, 우리는 우리 함선의 무기고의 안정성을 높이면서 동시에 더 나은 미사일로 무장할 수 있습니다."
+esc_tech_standardized_warheads_bio: "구획화된 불안정 물질 주머니"
+esc_tech_standardized_warheads_bio_desc: "유기체 미사일을 만드는 데 필요한 불안정 물질들을 피해를 잘 견디는 분리된 주머니로 구획화하면 우리는 생물체에게 치명적인 피해를 입히는 공격의 위험성을 크게 낮출 수 있습니다. 덧붙여, 이것은 물질 수송의 능률을 높이며 그로써 폭발성 유기체 투사체의 생산 속도를 높입니다."
+
+esc_tech_structural_reinforcement: "구조 강화"
+esc_tech_structural_reinforcement_desc: "특화된 건설 기법으로 우리는 함선의 선체를 피해를 더 잘 견디도록 만들 수 있습니다."
+
+esc_tech_repair_drones: "수리 드론"
+esc_tech_repair_drones_desc: "우리의 함선의 전장 내 수리를 담당하는 특화된 자동 장치를 도입함으로써 우리는 우리 함대의 생존력을 크게 높일 수 있습니다."
+esc_tech_repair_drones_bio: "치유 효소 공생체"
+esc_tech_repair_drones_bio_desc: "자연에서 영감을 얻어, 우리는 생물함선들에게 그들의 피부에 살며 상처의 회복을 크게 가속시키는 특수한 효소를 생성하는 공생체를 만들어줄 수 있습니다. 당연히, 그 공생체들은 가장 혹독한 환경에서도 살아남고 번성하도록 유전적으로 설계되어 있습니다."
+
+esc_tech_psionic_reinforcement: "사이오닉 강화"
+esc_tech_psionic_reinforcement_desc: "승무원들의 사이오닉 능력은 보호막과 선체의 강도를 함께 강화하는 함선을 둘러싼 보호막 방울의 형태로 방출될 수 있습니다."
+
+esc_tech_temporal_displacer: "시간 전이법"
+esc_tech_temporal_displacer_desc: "시공간 연속체를 조작하고 왜곡함으로써 우리는 함선의 일부를 다른 차원으로 위상 이동시켜 피해를 회피할 능력을 높이고 불리한 전투 상황에서 쉽게 도망칠 수 있게 합니다."
+esc_tech_temporal_displacer_bio: "$esc_tech_temporal_displacer$"
+esc_tech_temporal_displacer_bio_desc: "공간 연속체를 조작하고 왜곡함으로써 우리는 생물함선의 일부를 다른 차원으로 위상 이동시켜 피해를 회피할 능력을 극적으로 높이고 불리한 전투 상황에서 쉽게 도망칠 수 있게 합니다."
+
+esc_tech_armor_hardening_3: "나노머신 반응 장갑"
+esc_tech_armor_hardening_3_desc: "나노머신은 그들 자신을 다른 구조로 빠르게 재구성하는 믿을 수 없는 능력이 있습니다. 이것은 외부 자극에 반응하여 자신을 수정하며 수많은 다른 형태의 공격을 같은 정도의 효율로 막아내는 다음 세대의 반응 장갑에 활용될 수 있습니다."
+
+esc_tech_shield_hardening_3: "성채 보호막 경화기"
+esc_tech_shield_hardening_3_desc: "보호막 축전기 기술의 발전은 크게 향상된 능력을 지닌 새로운 유형의 보호막 경화기 생성기를 위한 창을 열어줍니다."
+
+esc_tech_armor_hardening_lm_2: "생체 흡수 판금"
+esc_tech_armor_hardening_lm_2_desc: "생체 금속에 대한 많은 연구를 거쳐 우리는 이것의 놀라운 성질들을 활용할 새로운 방법을 알게 되었습니다. 예를 들어, 우리의 함선과 기지를 적의 공격에 더 잘 견딜 수 있게 하는 발전된 반응 장갑처럼 말입니다."
+
+esc_tech_shield_hardening_psi_2: "장막으로 강화된 보호막 경화기"
+esc_tech_shield_hardening_psi_2_desc: "장막으로부터 추가적인 사이오닉 에너지를 채널링함으로써 우리는 함선의 보호막 강도를 더욱 향상시킬 수 있으며, 어쩌면 전반적으로 더 강하게 만들 수도 있을 것입니다."
+
+esc_tech_dead_hand_switch_kill_1: "데드맨 스위치: 살해 명령 프로토콜"
+esc_tech_dead_hand_switch_kill_1_desc: "함선 자폭 프로토콜을 개발하고 시행함으로써 우리의 함대는 파멸에 직면했을 때 최후의 절망적인 공격을 가할 수 있습니다. 그 공격이 추가적인 사상자를 만드는 걸 감수할 수 있으면 말이죠."
+esc_tech_dead_hand_switch_kill_1_bio: "촉매 주머니 증강"
+esc_tech_dead_hand_switch_kill_1_bio_desc: "우리가 통제하는 생물함선들에게 그들이 죽을 때 파열해서 극도로 불안정한 물질을 방사하는 특별한 주머니를 제공하면 우리는 우리의 적들에게 추가적인 피해를 입힐 수 있을 것입니다."
+
+esc_tech_dead_hand_switch_kill_2: "데드맨 스위치: 말살 명령 프로토콜"
+esc_tech_dead_hand_switch_kill_2_desc: "자폭 프로토콜이 우주 전투의 사상자를 증가시켰음에도 불구하고 그 결과는 무시될 수 없습니다. 그리고 그로써, 함선의 자폭으로 인한 피해를 증가시킬 새로운 프로토콜 세트를 개발하고 시행해야 합니다."
+esc_tech_dead_hand_switch_kill_2_bio: "불안정 촉매 주머니"
+esc_tech_dead_hand_switch_kill_2_bio_desc: "더 깊은 유전 설계를 통해 우리는 촉매 주머니의 기존 설계를 개선할 수 있었고 그들에게 더 많은 양의 훨씬 더 불안정한 물질들을 제공할 수 있습니다. 이 주머니는 생물체가 죽을 때 폭발하여 그 과정에서 몇몇 적 함선을 제거할 수 있을 것입니다."
+
+esc_tech_dead_hand_switch_heal_1: "데드맨 스위치: 아군 수리 명령 프로토콜"
+esc_tech_dead_hand_switch_heal_1_desc: "함선에 탑재된 수리 드론들이 모두 함선과 함께 죽게 하는 것은 낭비입니다. 함대 전체의 생존성을 향상시키기 위해 그 드론들의 긴급 이송을 위한 프로토콜이 시행되어야 합니다."
+esc_tech_dead_hand_switch_heal_1_bio: "회복 효소 주머니"
+esc_tech_dead_hand_switch_heal_1_bio_desc: "우리의 생물함선들이 몸에 회복 효소 주머니를 달도록 설계함으로써 우리는 함대 전체의 생존성을 향상시킬 수 있습니다. 생물체 한 마리가 죽을 때, 주변의 생물체들은 그들의 회복을 돕고 상처를 치료하는 효소를 받습니다."
+
+esc_tech_dead_hand_switch_heal_2: "데드맨 스위치: 아군 지원 명령 프로토콜"
+esc_tech_dead_hand_switch_heal_2_desc: "함선 수리 드론 긴급 이송 프로토콜은 우리의 함대에 큰 이득이 되는 것으로 밝혀졌으니, 이것을 개선하는 것을 고려해봐야 합니다."
+esc_tech_dead_hand_switch_heal_2_bio: "최상급 회복 효소 주머니"
+esc_tech_dead_hand_switch_heal_2_bio_desc: "우리의 생물함선들이 소지하는 회복 효소의 능률을 기존 설계의 수준을 넘어서도록 증가시키는 것으로 우리는 우리 함대의 생존성을 더욱더 개선할 수 있습니다."
+
+############################################################
+###                  Other Technologies                  ###
+############################################################
+
+esc_tech_orbital_powerplant: "궤도 전력 스테이션"
+esc_tech_orbital_powerplant_desc: "대규모 우주 시설의 기반 시설을 지원하기 위해 수정된 표준 영점 반응로입니다."
+
+esc_tech_stellar_energy_tower: "항성 에너지 탑"
+esc_tech_stellar_energy_tower_desc: "항성 포식자에게 동력을 공급한 복잡한 핵융합 과정을 모사하여, 우리는 작은 항성으로써 이 지역의 농작물 생산량을 크게 높이고 우리의 과학자들이 연구를 진행할 추가적인 장소를 제공하는 건물을 만들 수 있습니다."
+
+esc_tech_quantum_node: "양자 연산 노드"
+esc_tech_quantum_node_desc: "무한 기계에서 얻은 고급 컴퓨터 설계를 바탕으로, 우리는 기술 발전을 크게 가속화할 수 있는 반자동 연구 시설을 개발할 수 있습니다."
+
+esc_tech_reprocessing_plant: "재처리 공장"
+esc_tech_reprocessing_plant_desc: "우리가 청소부 로봇을 처치하여 발견한 극도로 효율적인 자원 재처리 시설을 모사하여 평범한 쓰레기에서 값진 자원을 확보해 우리의 민간인 구역을 지원할 수 있다는 것에 의심의 여지는 없습니다."
+
+esc_tech_zro_distilleries: "즈로 증류소"
+esc_tech_zro_distilleries_desc: "자연 발생하는 £sr_zro£ §Y$sr_zro$§!는 극도로 희귀해서 영원히 성장할 우리의 수요를 충족시킬 수 없습니다. 감사하게도, 막대한 비용이 필요하지만 인공적으로 합성할 수 있는 것 같습니다."
+
+esc_tech_dark_matter_facilities: "암흑 물질 추출 시설"
+esc_tech_dark_matter_facilities_desc: "우리의 £sr_dark_matter£ §Y$sr_dark_matter$§!의 수요는 매일같이 늘어나지만, 블랙홀에 건설된 채굴 기지는 더 이상 그 수요를 따라가지 못하고 있습니다. 우리는 다른 공급처를 찾아야 합니다."
+
+esc_tech_magmaminer_1: "행성 핵 채굴"
+esc_tech_magmaminer_1_desc: "1차 자원의 수요가 늘어남에 따라, 우리는 행성의 심장부, 그러니까 핵과 맨틀을 주목하고 있습니다. 적절한 기술을 적용하면, 그 풍부한 자원들은 우리의 것이 될 것입니다!"
+
+esc_tech_magmaminer_2: "개선된 행성 핵 채굴"
+esc_tech_magmaminer_2_desc: "행성의 핵과 맨틀에서 가치 있는 자원을 직접 발굴하기 위한 개선된 절차를 통해 우리는 행성의 심장부에서 더 많은 부를 채굴할 수 있습니다."
+
+esc_tech_dragon_hatchery: "거대 생물 복제"
+esc_tech_dragon_hatchery_desc: "생명 그 자체에 통달하여 우리는 완전히 이질적인 생물학적 특성을 가진 거대한 생물체를 복제할 수 있습니다. 하지만 우리가 그래야 할까요?"
+
+esc_tech_autocannons_m: "대형 오토캐논"
+esc_tech_autocannons_m_desc: "오토캐논은 많은 시험을 통해 완전히 검증된 무기이지만 구형의 모델들은 상대적으로 작아서 크고 중장갑을 갖춘 목표물을 효과적으로 상대할 수 없었다는 문제가 있습니다. 오토캐논의 크기와 출력을 더 강화하여, 우리는 이 문제점을 일부 완화하여 오토캐논을 더 효과적인 무기로 만들 수 있습니다."
+ESC_TECH_UNLOCK_M_AUTOCANNONS_TITLE: "§H부품 잠금 해제§!: M슬롯 오토캐논"
+ESC_TECH_UNLOCK_M_AUTOCANNONS_DESC: "화력이 더 필요하면 더 큰 포를 꺼내야지!"
+gateway_ESC_BIG_AUTOCANNONS: "대형 오토캐논"
+
+esc_tech_autocannons_l: "초대형 오토캐논"
+esc_tech_autocannons_l_desc: "$esc_tech_autocannons_m$의 시험이 성공했으니 우리가 더 높은 목표를 추구하며 훨씬 크고 강한 오토캐논을 개발하는 것은 당연한 일입니다."
+ESC_TECH_UNLOCK_L_AUTOCANNONS_TITLE: "§H부품 잠금 해제§!: L슬롯 오토캐논"
+ESC_TECH_UNLOCK_L_AUTOCANNONS_DESC: "화력은 언제나 모자르다구!"
+
+esc_tech_bio_horror_army: "생체 공포 군단"
+esc_tech_bio_horror_army_desc: "우리는 유전공학에 통달하여 지상전에 실제로 투입할 수 있는 치명적이고 공포스러운 생물체들을 창조할 수 있습니다. 당연히 우리는 이 짐승들을 확실히 통제할 수 있습니다. 당연히요."
+
+esc_tech_psi_avatar_army: "사이오닉 아바타 소환"
+esc_tech_psi_avatar_army_desc: "우리는 사이오닉과 장막으로의 연결에 통달하여 장막에 존재하는 강력한 존재들과 계약을 맺고 그들을 우리 쪽으로 데려와 전쟁에서 우리를 돕게 할 수 있습니다."
+
+# re: crises technologies
+esc_tech_extradimensional_weapon_1: "$tech_extradimensional_weapon_1$"
+esc_tech_extradimensional_weapon_1_desc: "$tech_extradimensional_weapon_1_desc$"
+
+esc_tech_swarm_strike_craft_1: "$tech_swarm_strike_craft_1$"
+esc_tech_swarm_strike_craft_1_desc: "$tech_swarm_strike_craft_1_desc$"
+
+esc_tech_swarm_missile: "$tech_scourge_missile_1$"
+esc_tech_swarm_missile_desc: "$tech_scourge_missile_1_desc$"
+
+## hyperthermia crisis technologies
+
+esc_tech_energy_lens_beam_2: "Improved Flare Emitters"
+esc_tech_energy_lens_beam_2_desc: "First combat uses of the Lens Flare Paralazyer and the Solar Flare Emitter showed that such a weapon has great advantages in space combat. And we would be fools not to develop this concept further."
+
+esc_tech_energy_lens_beam_3: "Advanced Flare Cannons"
+esc_tech_energy_lens_beam_3_desc: "Based on the estimations provided by our brightest minds, we can improve the power of Flare emitters even further, giving these mighty weapon the power of dying stars."
+
+esc_tech_lm_accelerator_2: "Advanced Reshaping Projectile Accelerator"
+esc_tech_lm_accelerator_2_desc: "Using advanced predictive algorithms, we can further optimize reshaping logic of $sr_living_metal$ projectile accelerators, making them even deadlier while also reducing their wear and tear."
+
+esc_tech_lm_bio_accelerator_2: "$esc_tech_lm_accelerator_2$"
+esc_tech_lm_bio_accelerator_2_desc: "$esc_tech_lm_accelerator_2_desc$"
+
+esc_tech_lm_accelerator_3: "Flowing-shape Projectile Accelerator"
+esc_tech_lm_accelerator_3_desc: "With even better predictive algorithms we can create a weapon that fires projectiles that optimize their shape according to their target on their own, after they have been already fired. This will noticeably increase deadliness of the next generation of our reshaping projectile accelerators."
+
+esc_tech_lm_bio_accelerator_3: "$esc_tech_lm_accelerator_3$"
+esc_tech_lm_bio_accelerator_3_desc: "$esc_tech_lm_accelerator_3_desc$"
+
+esc_tech_lm_armor_6: "Regenrative Advanced Neutronium Armor"
+esc_tech_lm_armor_6_desc: "With the recent breakthrough in $sr_living_metal$ sciences, we can push durabiliy and regeneration of Infernal armors beyond all previous limits."
+
+esc_tech_lm_armor_7: "Regenrative Adamantium Armor"
+esc_tech_lm_armor_7_desc: "With some further refinement of armor-making technologies we can create and even tougher version the Infernal Neutronium Armor. Our projection show that the resulting material will be almost indestructible while also possessing powerful regeneration. Some scientists have already compared this theoretical material to mythical 'Adamantium'."
+
+esc_tech_lm_armor_bio_6: "Infernal Evolved Neutronium Carapace"
+esc_tech_lm_armor_bio_6_desc: "With the recent breakthrough in $sr_living_metal$ sciences, we can push durabiliy and regeneration of Infernal carapaces beyond all previous limits."
+
+esc_tech_lm_armor_bio_7: "Infernal Adamantium Carapace"
+esc_tech_lm_armor_bio_7_desc: "With some further applications of bio-engineering and guided evolution, we can create event stronger versions of Inferanl neutronium carapaces. If our projections are right, this new strain will be almost indestructible while also possessing powerful regeneration. Some scientists have already compared this theoretical material to mythical 'Adamantium'."

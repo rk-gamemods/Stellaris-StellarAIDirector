@@ -1,0 +1,70 @@
+pd_diamond = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_carbon = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_chthonian = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_iron = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_volcanic = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_hydrocarbon = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_hot_gas_giant = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_cloudless_gas_giant = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+	
+}
+pd_cold_gas_giant = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_ethane_ocean = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+pd_salt = {	
+	# district_mining_max_add = 6
+	# district_farming_max_add = -2
+	# pop_environment_tolerance = -0.2
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+
+acot_modifier_ascended_city = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+
+gpm_asteroid_moon = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+
+gpm_precursor_ruins = {
+	icon = "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds"
+	icon_frame = 1
+}
+
+# giga_debug_modifier = {
+# 	giga_gigastructures_ruined_produces_mult = 0.01
+# 	giga_gigastructures_not_ruined_upkeep_mult = 0.01
+# 	giga_gigastructures_not_ruined_cost_mult = 0.01
+
+# }

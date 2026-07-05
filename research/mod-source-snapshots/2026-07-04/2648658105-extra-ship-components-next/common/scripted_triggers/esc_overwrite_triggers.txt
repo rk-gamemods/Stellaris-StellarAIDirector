@@ -1,0 +1,91 @@
+############################################################
+###           ESC Scripted Triggers (Overwrites)         ###
+############################################################
+
+has_non_psionic_shields = {
+	OR = {
+		# vanilla tier 1
+		has_component = SMALL_SHIELD_1
+		has_component = MEDIUM_SHIELD_1
+		has_component = LARGE_SHIELD_1
+		# vanilla tier 2
+		has_component = SMALL_SHIELD_2
+		has_component = MEDIUM_SHIELD_2
+		has_component = LARGE_SHIELD_2
+		# vanilla tier 3
+		has_component = MEDIUM_SHIELD_3
+		has_component = LARGE_SHIELD_3
+		has_component = SMALL_SHIELD_3
+		# vanilla tier 4
+		has_component = MEDIUM_SHIELD_4
+		has_component = LARGE_SHIELD_4
+		has_component = SMALL_SHIELD_4
+		# vanilla tier 5
+		has_component = MEDIUM_SHIELD_5
+		has_component = LARGE_SHIELD_5
+		has_component = SMALL_SHIELD_5
+		# vanilla dark matter tier 1
+		has_component = SMALL_DARK_MATTER_DEFLECTOR
+		has_component = MEDIUM_DARK_MATTER_DEFLECTOR
+		has_component = LARGE_DARK_MATTER_DEFLECTOR
+		# vanilla archaeo armor
+		has_component = SMALL_ARCHAEO_ARMOR
+		has_component = MEDIUM_ARCHAEO_ARMOR
+		has_component = LARGE_ARCHAEO_ARMOR
+		# vanilla archaeo shields
+		has_component = SMALL_ARCHAEO_SHIELD
+		has_component = MEDIUM_ARCHAEO_SHIELD
+		has_component = LARGE_ARCHAEO_SHIELD
+
+		# ESC components
+		ESC_TRIGGER_is_non_psionic_shield = yes
+	}
+}
+
+has_non_psionic_shields_mutation = {
+	OR = {
+		# vanilla tier 1
+		has_component = ENERGY_EPIDERMIS_SMALL
+		has_component = ENERGY_EPIDERMIS_MEDIUM
+		has_component = ENERGY_EPIDERMIS_LARGE
+		has_component = ENERGY_EPIDERMIS_EXTRA_LARGE
+		# vanilla tier 2
+		has_component = IMPROVED_ENERGY_EPIDERMIS_SMALL
+		has_component = IMPROVED_ENERGY_EPIDERMIS_MEDIUM
+		has_component = IMPROVED_ENERGY_EPIDERMIS_LARGE
+		has_component = IMPROVED_ENERGY_EPIDERMIS_EXTRA_LARGE
+		# vanilla tier 3
+		has_component = HIGH_ENERGY_SKIN_SMALL
+		has_component = HIGH_ENERGY_SKIN_MEDIUM
+		has_component = HIGH_ENERGY_SKIN_LARGE
+		has_component = HIGH_ENERGY_SKIN_EXTRA_LARGE
+		# vanilla tier 4
+		has_component = ADVANCED_ENERGY_SKIN_SMALL
+		has_component = ADVANCED_ENERGY_SKIN_MEDIUM
+		has_component = ADVANCED_ENERGY_SKIN_LARGE
+		has_component = ADVANCED_ENERGY_SKIN_EXTRA_LARGE
+		# vanilla tier 5
+		has_component = HYPER_ENERGY_SKIN_SMALL
+		has_component = HYPER_ENERGY_SKIN_MEDIUM
+		has_component = HYPER_ENERGY_SKIN_LARGE
+		has_component = HYPER_ENERGY_SKIN_EXTRA_LARGE
+		# vanilla dark matter tier 1
+		has_component = DARK_MATTER_ENERGY_EPIDERMIS_SMALL
+		has_component = DARK_MATTER_ENERGY_EPIDERMIS_MEDIUM
+		has_component = DARK_MATTER_ENERGY_EPIDERMIS_LARGE
+		has_component = DARK_MATTER_ENERGY_EPIDERMIS_EXTRA_LARGE
+		# vanilla archaeo shields
+		has_component = ANCIENT_SUSPENSION_EPIDERMIS_SMALL
+		has_component = ANCIENT_SUSPENSION_EPIDERMIS_MEDIUM
+		has_component = ANCIENT_SUSPENSION_EPIDERMIS_LARGE
+		has_component = ANCIENT_SUSPENSION_EPIDERMIS_EXTRA_LARGE
+		# vanilla archaeo armor
+		has_component = ANCIENT_ENERGISED_CARAPACE_SMALL
+		has_component = ANCIENT_ENERGISED_CARAPACE_MEDIUM
+		has_component = ANCIENT_ENERGISED_CARAPACE_LARGE
+		has_component = ANCIENT_ENERGISED_CARAPACE_EXTRA_LARGE
+
+		# ESC components
+		ESC_TRIGGER_has_non_psionic_shields_mutation = yes
+	}
+}

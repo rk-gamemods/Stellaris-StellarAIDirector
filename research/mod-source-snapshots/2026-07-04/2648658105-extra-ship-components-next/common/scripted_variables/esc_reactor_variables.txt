@@ -1,0 +1,316 @@
+############################################################
+###              ESC NEXT : scripted variables           ###
+############################################################
+
+# - reactors
+
+############################################################
+###                       Reactors                       ###
+############################################################
+
+### ship_size classes:
+# - starbase
+# - corvette
+# - destroyer
+# - cruiser
+# - battleship
+# - titan
+# - juggernaut
+# - platform
+# - platform2
+# - platform3
+# - ion_cannon
+# - strikecruiser
+# - battlecruiser
+# - dreadnought
+# - flagship
+
+###
+### tier 6
+###
+
+# power
+@ESC_REACTOR_t6_power_starbase					= 60000
+@ESC_REACTOR_MOD_t6_starbase                    = 0
+@ESC_REACTOR_MOD_t6_starbase_nsc                = 0
+
+@ESC_REACTOR_t6_power_corvette					= 285
+@ESC_REACTOR_MOD_t6_corvette                    = 0
+@ESC_REACTOR_MOD_t6_corvette_nsc                = 535 # total = 820
+
+@ESC_REACTOR_t6_power_destroyer					= 550
+@ESC_REACTOR_MOD_t6_destroyer                   = 0
+@ESC_REACTOR_MOD_t6_destroyer_nsc               = 800 # total = 1350
+
+@ESC_REACTOR_t6_power_cruiser					= 1200
+@ESC_REACTOR_MOD_t6_cruiser                     = 0
+@ESC_REACTOR_MOD_t6_cruiser_nsc                 = 1210 # total = 2410
+
+@ESC_REACTOR_t6_power_battleship				= 2000
+@ESC_REACTOR_MOD_t6_battleship                  = 0
+@ESC_REACTOR_MOD_t6_battleship_nsc              = 3000 # total = 5000
+
+@ESC_REACTOR_t6_power_titan						= 4250
+@ESC_REACTOR_MOD_t6_titan                       = 0
+@ESC_REACTOR_MOD_t6_titan_nsc                   = 7250 # total = 12500
+
+@ESC_REACTOR_t6_power_juggernaut				= 20000
+@ESC_REACTOR_MOD_t6_juggernaut                  = 0
+@ESC_REACTOR_MOD_t6_juggernaut_nsc              = 11000 # total = 31000
+
+@ESC_REACTOR_t6_power_platform					= 2415
+@ESC_REACTOR_MOD_t6_platform                    = 0
+@ESC_REACTOR_MOD_t6_platform_nsc                = 585 # total = 3000
+
+@ESC_REACTOR_t6_power_platform2					= 3750
+@ESC_REACTOR_MOD_t6_platform2                   = 0
+@ESC_REACTOR_MOD_t6_platform2_nsc               = 2250 # total = 6000
+
+@ESC_REACTOR_t6_power_platform3					= 7200
+@ESC_REACTOR_MOD_t6_platform3                   = 0
+@ESC_REACTOR_MOD_t6_platform3_nsc               = 4800 # total = 12000
+
+@ESC_REACTOR_t6_power_ion_cannon				= 3750
+@ESC_REACTOR_MOD_t6_ion_cannon                  = 0
+@ESC_REACTOR_MOD_t6_ion_cannon_nsc              = 2250 # total = 6000
+
+@ESC_REACTOR_t6_power_strikecruiser				= 1725
+@ESC_REACTOR_MOD_t6_strikecruiser               = 0
+@ESC_REACTOR_MOD_t6_strikecruiser_nsc           = 0
+
+@ESC_REACTOR_t6_power_battlecruiser				= 2425
+@ESC_REACTOR_MOD_t6_battlecruiser               = 0
+@ESC_REACTOR_MOD_t6_battlecruiser_nsc           = 0
+
+@ESC_REACTOR_t6_power_dreadnought				= 10000
+@ESC_REACTOR_MOD_t6_dreadnought                 = 0
+@ESC_REACTOR_MOD_t6_dreadnought_nsc             = 0
+
+@ESC_REACTOR_t6_power_flagship					= 55000
+@ESC_REACTOR_MOD_t6_flagship                    = 0
+@ESC_REACTOR_MOD_t6_flagship_nsc                = 0
+
+# cost :: alloys
+@ESC_REACTOR_t6_cost_starbase					= 0
+@ESC_REACTOR_t6_cost_corvette 					= 37
+@ESC_REACTOR_t6_cost_destroyer 					= 75
+@ESC_REACTOR_t6_cost_cruiser 					= 150
+@ESC_REACTOR_t6_cost_cruiser_nsc 				= 150
+@ESC_REACTOR_t6_cost_battleship 				= 300
+@ESC_REACTOR_t6_cost_battleship_nsc 			= 300
+@ESC_REACTOR_t6_cost_titan 						= 600
+@ESC_REACTOR_t6_cost_titan_nsc 					= 600
+@ESC_REACTOR_t6_cost_juggernaut 				= 600
+@ESC_REACTOR_t6_cost_platform 					= 75
+@ESC_REACTOR_t6_cost_platform2 					= 150
+@ESC_REACTOR_t6_cost_platform3					= 300
+@ESC_REACTOR_t6_cost_ion_cannon 				= 150
+@ESC_REACTOR_t6_cost_strikecruiser 				= 180
+@ESC_REACTOR_t6_cost_battlecruiser 				= 220
+@ESC_REACTOR_t6_cost_carrier 					= 400
+@ESC_REACTOR_t6_cost_dreadnought				= 550
+@ESC_REACTOR_t6_cost_flagship					= 1000
+
+###
+### tier 7
+###
+
+# power
+@ESC_REACTOR_t7_power_starbase					= 80000
+@ESC_REACTOR_MOD_t7_starbase                    = 0
+@ESC_REACTOR_MOD_t7_starbase_nsc                = 0
+
+@ESC_REACTOR_t7_power_corvette 					= 400
+@ESC_REACTOR_MOD_t7_corvette                    = 0
+@ESC_REACTOR_MOD_t7_corvette_nsc                = 920 # total = 1320
+
+@ESC_REACTOR_t7_power_destroyer 				= 800
+@ESC_REACTOR_MOD_t7_destroyer                   = 0
+@ESC_REACTOR_MOD_t7_destroyer_nsc               = 1050 # total = 1850
+
+@ESC_REACTOR_t7_power_cruiser 					= 1600
+@ESC_REACTOR_MOD_t7_cruiser                     = 0
+@ESC_REACTOR_MOD_t7_cruiser_nsc                 = 1510 # total = 3110
+
+@ESC_REACTOR_t7_power_battleship 				= 2800
+@ESC_REACTOR_MOD_t7_battleship                  = 0
+@ESC_REACTOR_MOD_t7_battleship_nsc              = 4200 # total = 7000
+
+@ESC_REACTOR_t7_power_titan 					= 6000
+@ESC_REACTOR_MOD_t7_titan                       = 0
+@ESC_REACTOR_MOD_t7_titan_nsc                   = 9000 # total = 15000
+
+@ESC_REACTOR_t7_power_juggernaut				= 20000
+@ESC_REACTOR_MOD_t7_juggernaut                  = 0
+@ESC_REACTOR_MOD_t7_juggernaut_nsc              = 16100 # total = 36100
+
+@ESC_REACTOR_t7_power_platform 					= 3400
+@ESC_REACTOR_MOD_t7_platform                    = 0
+@ESC_REACTOR_MOD_t7_platform_nsc                = 600 # total = 4000
+
+@ESC_REACTOR_t7_power_platform2 				= 4900
+@ESC_REACTOR_MOD_t7_platform2                   = 0
+@ESC_REACTOR_MOD_t7_platform2_nsc               = 3100 # total = 8000
+
+@ESC_REACTOR_t7_power_platform3 				= 9000
+@ESC_REACTOR_MOD_t7_platform3                   = 0
+@ESC_REACTOR_MOD_t7_platform3_nsc               = 7000 # total = 16000
+
+@ESC_REACTOR_t7_power_ion_cannon 				= 4900
+@ESC_REACTOR_MOD_t7_ion_cannon                  = 0
+@ESC_REACTOR_MOD_t7_ion_cannon_nsc              = 3100 # total = 8000
+
+@ESC_REACTOR_t7_power_strikecruiser 			= 2475
+@ESC_REACTOR_MOD_t7_strikecruiser               = 0
+@ESC_REACTOR_MOD_t7_strikecruiser_nsc           = 0
+
+@ESC_REACTOR_t7_power_battlecruiser 			= 2925
+@ESC_REACTOR_MOD_t7_battlecruiser               = 0
+@ESC_REACTOR_MOD_t7_battlecruiser_nsc           = 0
+
+@ESC_REACTOR_t7_power_dreadnought 				= 12000
+@ESC_REACTOR_MOD_t7_dreadnought                 = 0
+@ESC_REACTOR_MOD_t7_dreadnought_nsc             = 0
+
+@ESC_REACTOR_t7_power_flagship 					= 75000
+@ESC_REACTOR_MOD_t7_flagship                    = 0
+@ESC_REACTOR_MOD_t7_flagship_nsc                = 0
+
+# cost :: alloys
+@ESC_REACTOR_t7_cost_starbase					= 0
+@ESC_REACTOR_t7_cost_corvette 					= 47
+@ESC_REACTOR_t7_cost_destroyer 					= 95
+@ESC_REACTOR_t7_cost_cruiser 					= 190
+@ESC_REACTOR_t7_cost_cruiser_nsc 				= 190
+@ESC_REACTOR_t7_cost_battleship 				= 375
+@ESC_REACTOR_t7_cost_battleship_nsc 			= 375
+@ESC_REACTOR_t7_cost_titan 						= 750
+@ESC_REACTOR_t7_cost_titan_nsc 					= 750
+@ESC_REACTOR_t7_cost_juggernaut 				= 750
+@ESC_REACTOR_t7_cost_platform 					= 95
+@ESC_REACTOR_t7_cost_platform2 					= 190
+@ESC_REACTOR_t7_cost_platform3 					= 380
+@ESC_REACTOR_t7_cost_ion_cannon 				= 190
+@ESC_REACTOR_t7_cost_strikecruiser 				= 240
+@ESC_REACTOR_t7_cost_battlecruiser 				= 290
+@ESC_REACTOR_t7_cost_carrier 					= 480
+@ESC_REACTOR_t7_cost_dreadnought 				= 700
+@ESC_REACTOR_t7_cost_flagship 					= 1300
+
+###
+### tier 8
+###
+
+# power
+@ESC_REACTOR_t8_power_starbase					= 100000
+@ESC_REACTOR_MOD_t8_starbase                    = 0
+@ESC_REACTOR_MOD_t8_starbase_nsc                = 0
+
+@ESC_REACTOR_t8_power_corvette 					= 600
+@ESC_REACTOR_MOD_t8_corvette                    = 0
+@ESC_REACTOR_MOD_t8_corvette_nsc                = 1470 # total = 2070
+
+@ESC_REACTOR_t8_power_destroyer 				= 1200
+@ESC_REACTOR_MOD_t8_destroyer                   = 0
+@ESC_REACTOR_MOD_t8_destroyer_nsc               = 1400 # total = 2600
+
+@ESC_REACTOR_t8_power_cruiser 					= 2400
+@ESC_REACTOR_MOD_t8_cruiser                     = 0
+@ESC_REACTOR_MOD_t8_cruiser_nsc                 = 1760 # total = 4160
+
+@ESC_REACTOR_t8_power_battleship 				= 3500
+@ESC_REACTOR_MOD_t8_battleship                  = 0
+@ESC_REACTOR_MOD_t8_battleship_nsc              = 6500 # total = 10000
+
+@ESC_REACTOR_t8_power_titan 					= 6750
+@ESC_REACTOR_MOD_t8_titan                       = 0
+@ESC_REACTOR_MOD_t8_titan_nsc                   = 10750 # total = 17500
+
+@ESC_REACTOR_t8_power_juggernaut				= 25000
+@ESC_REACTOR_MOD_t8_juggernaut                  = 0
+@ESC_REACTOR_MOD_t8_juggernaut_nsc              = 18600 # total = 43600
+
+@ESC_REACTOR_t8_power_platform 					= 5000
+@ESC_REACTOR_MOD_t8_platform                    = 0
+@ESC_REACTOR_MOD_t8_platform_nsc                = 0
+
+@ESC_REACTOR_t8_power_platform2 				= 7000
+@ESC_REACTOR_MOD_t8_platform2                   = 0
+@ESC_REACTOR_MOD_t8_platform2_nsc               = 3000 # total = 10000
+
+@ESC_REACTOR_t8_power_platform3 				= 12000
+@ESC_REACTOR_MOD_t8_platform3                   = 0
+@ESC_REACTOR_MOD_t8_platform3_nsc               = 8000 # total = 20000
+
+@ESC_REACTOR_t8_power_ion_cannon 				= 7000
+@ESC_REACTOR_MOD_t8_ion_cannon                  = 0
+@ESC_REACTOR_MOD_t8_ion_cannon_nsc              = 3000 # total = 10000
+
+@ESC_REACTOR_t8_power_strikecruiser 			= 3610
+@ESC_REACTOR_MOD_t8_strikecruiser               = 0
+@ESC_REACTOR_MOD_t8_strikecruiser_nsc           = 0
+
+@ESC_REACTOR_t8_power_battlecruiser 			= 5250
+@ESC_REACTOR_MOD_t8_battlecruiser               = 0
+@ESC_REACTOR_MOD_t8_battlecruiser_nsc           = 0
+
+@ESC_REACTOR_t8_power_dreadnought 				= 15000
+@ESC_REACTOR_MOD_t8_dreadnought                 = 0
+@ESC_REACTOR_MOD_t8_dreadnought_nsc             = 0
+
+@ESC_REACTOR_t8_power_flagship 					= 95000
+@ESC_REACTOR_MOD_t8_flagship                    = 0
+@ESC_REACTOR_MOD_t8_flagship_nsc                = 0
+
+# cost :: alloys
+@ESC_REACTOR_t8_cost_starbase					= 0
+@ESC_REACTOR_t8_cost_corvette 					= 55
+@ESC_REACTOR_t8_cost_destroyer					= 110
+@ESC_REACTOR_t8_cost_cruiser 					= 220
+@ESC_REACTOR_t8_cost_cruiser_nsc 				= 220
+@ESC_REACTOR_t8_cost_battleship 				= 440
+@ESC_REACTOR_t8_cost_battleship_nsc 			= 440
+@ESC_REACTOR_t8_cost_titan 						= 880
+@ESC_REACTOR_t8_cost_titan_nsc 					= 880
+@ESC_REACTOR_t8_cost_juggernaut 				= 880
+@ESC_REACTOR_t8_cost_platform 					= 110
+@ESC_REACTOR_t8_cost_platform2 					= 220
+@ESC_REACTOR_t8_cost_platform3 					= 330
+@ESC_REACTOR_t8_cost_ion_cannon 				= 220
+@ESC_REACTOR_t8_cost_strikecruiser 				= 300
+@ESC_REACTOR_t8_cost_battlecruiser 				= 360
+@ESC_REACTOR_t8_cost_carrier 					= 560
+@ESC_REACTOR_t8_cost_dreadnought 				= 800
+@ESC_REACTOR_t8_cost_flagship 					= 1600
+
+###
+### strategic resource cost
+###
+
+@ESC_REACTOR_sr_cost_starbase					= 0.0
+@ESC_REACTOR_sr_cost_corvette 					= 1.5
+@ESC_REACTOR_sr_cost_destroyer 					= 3.0
+@ESC_REACTOR_sr_cost_cruiser 					= 6.0
+@ESC_REACTOR_sr_cost_cruiser_nsc 				= 6.0
+@ESC_REACTOR_sr_cost_battleship 				= 12.0
+@ESC_REACTOR_sr_cost_battleship_nsc 			= 12.0
+@ESC_REACTOR_sr_cost_titan 						= 24.0
+@ESC_REACTOR_sr_cost_titan_nsc 					= 24.0
+@ESC_REACTOR_sr_cost_juggernaut 				= 24.0
+@ESC_REACTOR_sr_cost_platform 					= 3.0
+@ESC_REACTOR_sr_cost_platform2 					= 6.0
+@ESC_REACTOR_sr_cost_platform3 					= 12.0
+@ESC_REACTOR_sr_cost_ion_cannon 				= 6.0
+@ESC_REACTOR_sr_cost_strikecruiser 				= 9.0
+@ESC_REACTOR_sr_cost_battlecruiser 				= 9.0
+@ESC_REACTOR_sr_cost_carrier 					= 18.0
+@ESC_REACTOR_sr_cost_dreadnought 				= 21.0
+@ESC_REACTOR_sr_cost_flagship 					= 30.0
+
+############################################################
+###           Reactor baseline modifier values           ###
+############################################################
+
+@ESC_REACTOR_MOD_dark_matter_upkeep_1           = -0.05
+@ESC_REACTOR_MOD_dark_matter_upkeep_2           = -0.10
+@ESC_REACTOR_MOD_psionic_damage_mult            = 0.25

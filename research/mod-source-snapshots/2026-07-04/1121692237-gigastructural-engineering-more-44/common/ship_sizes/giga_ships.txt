@@ -1,0 +1,328 @@
+# giga_strike_corvette = {
+# 	formation_priority = @corvette_formation_priority
+# 	max_speed = @speed_very_fast
+# 	acceleration = 0.35
+# 	rotation_speed = 0.1
+# 	collision_radius = @corvette_collision_radius
+# 	max_hitpoints = @corvette_hp
+# 	modifier = {
+# 		ship_evasion_add = @corvette_evasion
+# 		ship_piracy_suppression_add = 10
+# 	}
+# 	size_multiplier = 1
+# 	fleet_slot_size = 1
+# 	section_slots = { "mid" = { locator = "part1" } }
+# 	num_target_locators = 2
+# 	is_space_station = no
+# 	icon = ship_size_military_1
+# 	can_have_federation_design = no
+# 	enable_default_design = yes	#if yes, countries will have an auto-generated design at start
+
+# 	default_behavior = swarm
+
+# 	prerequisites = { "giga_tech_planetary_drive_yard_defense" }
+
+# 	combat_disengage_chance = 0.00
+
+# 	required_component_set = "power_core"
+# 	required_component_set = "thruster_components"
+# 	required_component_set = "sensor_components"
+# 	required_component_set = "combat_computers"
+
+# 	possible_construction = { always = no }
+# 	class = shipclass_military
+# 	is_designable = yes
+# }
+
+asteroid_artillery = {
+	entity = giga_asteroid_artillery_core_entity
+	graphical_culture = no
+	max_speed = 0
+	acceleration = 0
+	rotation_speed = 0.025
+	collision_radius = 32
+	formation_priority = 32
+	modifier = {
+		ship_evasion_mult = -1
+		ship_armor_add = 40000
+		ship_shield_add = 40000
+	}
+	max_hitpoints = 60000
+	size_multiplier = 80
+	fleet_slot_size = 35
+	section_slots = {
+		"bow" =	{ locator = "part1" }
+		"mid" =	{ locator = "part1" }
+		"stern" =	{ locator = "part1" }
+	}
+	num_target_locators = 0
+	is_space_station = no
+	icon_frame = 7
+	combat_disengage_chance = 0.0
+	possible_construction = { always = no }
+	class = shipclass_military_station
+	is_designable = yes
+	enable_default_design = yes
+
+	ship_roles = { artillery }
+
+	required_component_set = "power_core"
+
+	prerequisites = { "giga_tech_asteroid_artillery" }
+
+	resources = {
+		category = ships
+		upkeep = {
+			energy = 75
+			alloys = 25
+		}
+
+		logistics = {
+			trade = 25
+		}
+	}
+
+	available_to_everyone = yes
+}
+
+Pouchkguard = {
+	max_speed = 20
+	acceleration = 0.2
+	graphical_culture = no
+	rotation_speed = 0.15
+	collision_radius = @battleship_collision_radius
+	modifier = {
+		ship_evasion_add = 5
+		ship_armor_add = 60
+		ships_upkeep_mult = -1
+	}
+	max_hitpoints = 4000
+	size_multiplier = 5
+	fleet_slot_size = 16
+	section_slots = { "mid" = { locator = "part1" } }
+	num_target_locators = 0
+	is_space_station = no
+	icon = ship_size_space_monster
+	possible_construction = { always = no }
+	class = shipclass_military
+	is_designable = no
+}
+
+giga_war_moon = {
+	graphical_culture = no
+	max_speed = 50
+	acceleration = 0.15
+	rotation_speed = 0.05
+	collision_radius = 32
+	formation_priority = 32
+	base_buildtime = 1800
+	modifier = {
+		ship_evasion_mult = -1
+		ship_armor_add = 150000
+		ship_shield_add = 100000
+		ship_speed_mult = 2
+	}
+	cloaking_forbidden = yes
+	max_hitpoints = 250000
+	size_multiplier = 250
+	fleet_slot_size = 50
+	section_slots = {
+		"bow" =				{ locator = "part1" }
+		"mid" =				{ locator = "part1" }
+		"stern" =			{ locator = "part1" }
+		"sternthrusters" =			{ locator = "part1" }
+	}
+	num_target_locators = 0
+	is_space_station = no
+	icon = ship_size_atk_moon
+	map_counter_icon = ship_counter_50
+	combat_disengage_chance = 0.5
+	possible_construction = { always = no }
+	potential_construction = { always = no }
+	construction_type = starbase_shipyard
+	class = shipclass_military
+	is_designable = yes
+	enable_default_design = yes
+
+	ship_roles = { screen brawler gunship artillery explosive energy_torpedoes }
+
+	required_component_set = "power_core"
+	required_component_set = "ftl_components"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+
+	prerequisites = { "giga_tech_war_moon_1" }
+
+	resources = {
+		category = ships
+		cost = {
+			alloys = 10000
+		}
+		upkeep = {
+			energy = 250
+			alloys = 75
+		}
+		logistics = {
+			trade = 75
+		}
+	}
+
+	available_to_everyone = yes
+}
+
+giga_planet_behemoth = {
+	entity = "war_planet_complete_entity"
+	max_speed = 40
+	acceleration = 0.15
+	rotation_speed = 0.05
+	collision_radius = 48
+	formation_priority = 48
+	base_buildtime = 2700
+	modifier = {
+		ship_evasion_mult = -1
+		ship_armor_add = 1250000
+		ship_shield_add = 1250000
+		ship_speed_mult = 2
+	}
+	cloaking_forbidden = yes
+	max_hitpoints = 2500000
+	size_multiplier = 750
+	fleet_slot_size = 250
+	section_slots = {
+		"bowgun" =			{ locator = "root" }
+		"bow" =				{ locator = "root" }
+		"mid" =				{ locator = "root" }
+		"stern" =			{ locator = "root" }
+		"sternthrusters" =	{ locator = "root" }
+	}
+	num_target_locators = 0
+	is_space_station = no
+	icon = ship_size_atk_planet
+	map_counter_icon = ship_counter_250
+	enable_default_design = yes
+	is_designable = yes
+	combat_disengage_chance = 0
+	prerequisites = { "giga_tech_war_planet" }
+	class = shipclass_military
+	possible_construction = { always = no }
+	potential_construction = { always = no }
+	construction_type = starbase_shipyard
+	ship_roles = { gunship artillery }
+
+	required_component_set = "power_core"
+	required_component_set = "ftl_components"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+	required_component_set = "ship_aura_components"
+
+	resources = {
+		category = ships
+		cost = {
+			alloys = 10000
+		}
+		upkeep = {
+			energy = 500
+			alloys = 125
+		}
+		logistics = {
+			trade = 125
+		}
+	}
+
+	available_to_everyone = yes
+}
+
+giga_systemcraft = {
+	graphical_culture = no
+	entity = "war_system_complete_entity"
+	max_speed = 30
+	acceleration = 0.10
+	rotation_speed = 0.05
+	collision_radius = 512
+	formation_priority = 512
+	base_buildtime = 3600
+	modifier = {
+		ship_evasion_mult = -1
+		ship_armor_add = 4800000
+		ship_shield_add = 1900000
+		ship_speed_mult = 2
+	}
+	cloaking_forbidden = yes
+	max_hitpoints = 12500000
+	size_multiplier = 1250
+	fleet_slot_size = 512
+	section_slots = {
+		"bowgun" =			{ locator = "root" }
+		"bow" =				{ locator = "root" }
+		"mid" =				{ locator = "root" }
+		"stern" =			{ locator = "root" }
+		"sternthrusters" =	{ locator = "root" }
+		"kugel" =			{ locator = "root" }
+	}
+	num_target_locators = 0
+	icon = ship_size_atk_system
+	map_counter_icon = ship_counter_500
+	ship_class_icon_frame = 28
+	combat_disengage_chance = 0
+	prerequisites = { "giga_tech_war_system_6" }
+	enable_default_design = yes
+	class = shipclass_military
+	can_disable = no
+	can_have_federation_design = no
+	possible_construction = { always = no }
+	potential_construction = { always = no }
+	construction_type = starbase_shipyard
+
+	ship_roles = { artillery }
+
+	required_component_set = "power_core"
+	required_component_set = "ftl_components"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+	required_component_set = "ship_aura_components"
+
+	resources = {
+		category = ships
+		upkeep = {
+			alloys = 1500
+			influence = 0.5
+		}
+		logistics = {
+			trade = 250
+		}
+	}
+
+	available_to_everyone = yes
+}
+
+###FLUSION STUFF###
+giga_war_moon_flusion = {
+	graphical_culture = no
+	can_be_inspected = yes
+	max_speed = 0
+	acceleration = 0
+	rotation_speed = 0.05
+	collision_radius = 24
+	modifier = {
+		ship_evasion_mult = -1
+		ship_armor_add = 100000
+		ships_upkeep_mult = -1
+		ship_hull_regen_add_perc = 0.4
+		ship_armor_regen_add_perc = 0.4
+	}
+	max_hitpoints = 200000
+	size_multiplier = 250
+	fleet_slot_size = 50
+	section_slots = { "mid" = { locator = "part1" } }
+	num_target_locators = 0
+	is_space_station = no
+	icon = ship_size_atk_moon
+	combat_disengage_chance = 0.5
+	possible_construction = { always = no }
+	is_designable = no
+	class = shipclass_military
+
+	required_component_set = "power_core"
+	required_component_set = "sensor_components"
+	required_component_set = "combat_computers"
+}

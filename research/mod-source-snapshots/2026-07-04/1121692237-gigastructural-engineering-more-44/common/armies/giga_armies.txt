@@ -1,0 +1,290 @@
+####################################
+### Assault Armies #################
+####################################
+shroud_summoned_army = {
+	damage = 2.0
+	health = 0.75
+	has_morale = no
+	morale_damage = 1.5
+	collateral_damage = 1.0
+	war_exhaustion = 1.0
+	time = 30
+	icon = GFX_army_type_psionic
+	prerequisites = { giga_tech_shroud_conduit }
+
+	resources = {
+		category = armies
+		cost = {
+			energy = 100
+			sr_zro = 10
+		}
+		upkeep = {
+			energy = 1
+			#sr_zro = 0.05
+		}
+	}
+
+	potential = {
+		has_building = building_giga_shroud_conduit
+		from = {
+			is_robotic = no
+			has_psionic_species_trait = yes
+		}
+	}
+}
+
+# Compound Transmogrifier - unused
+compound_assault = {
+	damage = 8.0
+	health = 12.0
+	has_morale = no
+	morale_damage = 3.0
+	collateral_damage = 8.0
+	war_exhaustion = 0.0
+	has_species = yes
+	icon = GFX_army_type_xenomorph
+	potential = { always = no }
+}
+
+# Katzen Army
+katzen_assault_army = {
+	damage = 3.0
+	health = 4.0
+	morale = 6.0
+	morale_damage = 3.0
+	collateral_damage = 1.0
+	war_exhaustion = 0.0
+	has_species = yes
+	icon = GFX_army_type_assault
+	potential = { always = no }
+}
+
+# Debug Grandbunny
+the_grandbunny_debug = {
+	damage = 500
+	health = 2500
+	has_morale = no
+	icon = GFX_army_type_psionic
+	potential = { always = no }
+}
+
+####################################
+### Defense Armies #################
+####################################
+giga_fe_special_army = {
+	defensive = yes
+	damage = 5
+	health = 8
+	morale = 8
+	icon = GFX_army_type_defensive
+	potential = {
+		OR = {
+			owner = {
+				is_country_type = fallen_empire
+				has_country_flag = giga_meopa_fe
+			}
+		}
+	}
+}
+
+beacon_shroud_army_defensive = {
+	defensive = yes
+	damage = 5.0
+	health = 7.0
+	has_morale = no
+	morale_damage = 2.0
+	icon = GFX_army_type_psionic
+	has_species = no
+
+	potential = {
+		always = no
+	}
+}
+
+pouchkinn_drone_army = {
+	defensive = yes
+	damage = 2
+	morale_damage = 1.5
+	health = 1.5
+	has_morale = no
+	icon = GFX_army_type_machine_assault
+	has_species = no
+	potential = { always = no }
+}
+
+the_grandbunny = {
+	defensive = yes
+	damage = 200
+	health = 650
+	has_morale = no
+	icon = GFX_army_type_psionic
+	potential = { always = no }
+}
+
+royal_paluush = {
+	defensive = yes
+	damage = 45
+	health = 100
+	has_morale = no
+	icon = GFX_army_type_xenomorph
+	potential = { always = no }
+}
+
+paluush_defender = {
+	defensive = yes
+	damage = 10
+	health = 25
+	morale = 5
+	icon = GFX_army_type_defensive
+	potential = { always = no }
+}
+
+flusion_army = {
+	defensive = yes
+	damage = 4
+	health = 7
+	morale = 7
+	icon = GFX_army_type_imperial
+	potential = {
+		OR = {
+			owner = {
+				is_country_type = primitive
+				is_country_type = katzenartig_imperium
+			}
+		}
+	}
+}
+
+flusion_early_army = {
+	defensive = yes
+	damage = 4
+	health = 7
+	morale = 5
+	icon = GFX_army_type_defensive
+	potential = { always = no }
+}
+
+dominion_defender = {
+	defensive = yes
+	damage = 2.5
+	health = 4
+	morale = 1.5
+	has_species = yes
+	icon = GFX_army_type_defensive
+	potential = { always = no }
+}
+
+excognitor_defender = {
+	defensive = yes
+	damage = 10
+	health = 25
+	morale = 8
+	has_species = yes
+	icon = GFX_army_type_defensive
+	potential = { always = no }
+}
+
+# Compound Savior - unused
+compound_defense = {
+	defensive = yes
+	occupation = yes
+	health = 2.50
+	damage = 8.00
+	has_morale = no
+	has_species = yes
+	collateral_damage = 0.0
+	war_exhaustion = 0.0 # No WE from defense armies
+	icon = GFX_army_type_defensive
+	potential = { always = no }
+}
+
+giga_defense_nexus_army = {
+	defensive = yes
+	health = 3.75
+	damage = 4.50
+	morale = 3.75
+	collateral_damage = 0.0
+	war_exhaustion = 0.0 # No WE from defense armies
+	icon = GFX_army_type_defense_nexus
+	potential = { always = no }
+	resources = {
+		category = armies
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { has_active_tradition = tr_unyielding_resistance_is_frugal }
+			}
+			unity = 0.5
+		}
+	}
+}
+
+###ACOT PALUUSH
+the_grandbunny_acot = {
+	defensive = yes
+	damage = 500
+	health = 2500
+	has_morale = no
+	icon = GFX_army_type_psionic
+	potential = { always = no }
+}
+
+royal_paluush_acot = {
+	defensive = yes
+	damage = 90
+	health = 200
+	morale = 200
+	icon = GFX_army_type_xenomorph
+	potential = { always = no }
+}
+
+paluush_defender_acot = {
+	defensive = yes
+	damage = 25
+	health = 50
+	morale = 10
+	icon = GFX_army_type_defensive
+	potential = { always = no }
+}
+
+####################################
+### Vanilla Overwritten Armies #####
+####################################
+cybrex_warform = {
+	damage = 5.0
+	health = 7.0
+	has_morale = no
+	morale_damage = 2
+	collateral_damage = 5.0
+	war_exhaustion = 4.0
+	time = 500
+	has_species = no
+
+	icon = GFX_army_type_machine_assault
+
+	resources = {
+		category = armies
+		cost = {
+			alloys = 250
+		}
+
+		upkeep = {
+			energy = 8
+		}
+	}
+
+	potential_country = {
+		OR = {
+			has_relic = r_war_forge
+			has_relic = r_ehof_war_forge
+		}
+	}
+	potential = {
+		custom_tooltip = {
+			planet = { is_capital = yes }
+		}
+	}
+	ai_weight = {
+		base = 50
+	}
+}

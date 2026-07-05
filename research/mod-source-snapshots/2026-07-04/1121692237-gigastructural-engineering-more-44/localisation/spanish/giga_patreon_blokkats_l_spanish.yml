@@ -1,0 +1,57 @@
+﻿l_spanish:
+  
+  trait_blokkat_blokkimous:0 "Entusiasta del Multiverso"
+  trait_blokkat_blokkimous_desc:0 "Este Blokkat parece haber encontrado evidencia de que nuestro universo es parte de una especie de 'multiverso temporal' que se extiende hacia la eternidad y muestra interés en estudiar este nuevo fenómeno."
+  
+  prison_blokkat_is_blokkimous:0 "§MEntusiasta del Multiverso§! - Este Blokkat parece haber encontrado evidencia de que nuestro universo es parte de una especie de 'multiverso temporal' que se extiende hacia la eternidad y muestra interés en estudiar este nuevo fenómeno."
+  
+  trait_blokkat_baron:0 "Completamente Desquiciado"
+  trait_blokkat_baron_desc:0 "Este Blokkat tiene una extraña fascinación por aleatorizar y torcer todo de su estado natural. También parecen haberse forjado un aire de aristocracia y elitismo."
+  
+  prison_blokkat_is_baron:0 "§RCompletamente Desquiciado§! - Este Blokkat tiene una extraña fascinación por aleatorizar y torcer todo de su estado natural. También parecen haberse forjado un aire de aristocracia y elitismo."
+  
+  trait_blokkat_blokkepsii:0 "Empático"
+  trait_blokkat_blokkepsii_desc:0 "Este Blokkat parece preocuparse profundamente por otras especies y dedica su tiempo a estudiarlas. Además, aunque aún parece centrado en las operaciones de cosecha, parece estar perfectamente dispuesto a ayudar a otras especies en todo lo que pueda."
+  
+  prison_blokkat_is_blokkepsii:0 "§EEmpático§! - Este Blokkat parece preocuparse profundamente por otras especies y dedica su tiempo a estudiarlas. Además, aunque aún parece centrado en las operaciones de cosecha, parece estar perfectamente dispuesto a ayudar a otras especies en todo lo que pueda."
+  
+  trait_blokkat_bloblokkad:0 "Líder Científico"
+  trait_blokkat_bloblokkad_desc:0 "Este Blokkat parece disfrutar de la búsqueda del conocimiento por encima de todo. Se les puede ver regularmente experimentando con 'primitivos' o jugueteando con algún proyecto loco."
+  
+  prison_blokkat_is_bloblokkad:0 "§ELíder Científico§! - Este Blokkat parece disfrutar de la búsqueda del conocimiento por encima de todo. Se les puede ver regularmente experimentando con 'primitivos' o jugueteando con algún proyecto loco."
+  
+  trait_blokkat_blokkofett:0 "Nuevo Enlace"
+  trait_blokkat_blokkofett_desc:0 "Este Blokkat formaba parte de una nación espacial como la nuestra que completó los Blokk-Protocolos y se unió a los Blokkats. Esta operación de cosecha galáctica es su primera y se les ha asignado estudiar entidades nacionales."
+  
+  prison_blokkat_is_blokkofett:0 "§HNuevo Enlace§! - Este Blokkat formaba parte de una nación espacial como la nuestra que completó los Blokk-Protocolos y se unió a los Blokkats. Esta operación de cosecha galáctica es su primera y se les ha asignado estudiar entidades nacionales."
+  
+  trait_blokkat_blokkutos:0 "Soñador"
+  trait_blokkat_blokkutos_desc:0 "Este Blokkat siempre tiene una sensación de nostalgia por el pasado y sueña con un futuro mejor. Sus sueños inspiran unidad, esperanza y una fascinación por lo desconocido a quienes están en su presencia."
+  
+  prison_blokkat_is_blokkutos:0 "§MSoñador§! - Este Blokkat siempre tiene una sensación de nostalgia por el pasado y sueña con un futuro mejor. Sus sueños inspiran unidad, esperanza y una fascinación por lo desconocido a quienes están en su presencia."
+  
+  trait_blokkat_sophia:0 "Caballero de la Rosa"
+  trait_blokkat_sophia_desc:0 "Este Blokkat, por la razón que sea, afirma y disfruta ser lo que él mismo se refiere como un Caballero de la Rosa, pareciendo conocer todos los métodos de guerra hasta los que parecen completamente arcaicos de alguna manera u otra."
+  
+  prison_blokkat_is_sophia:0 "§PCaballero de la Rosa§! - Este Blokkat, por la razón que sea, afirma y disfruta ser lo que él mismo se refiere como un Caballero de la Rosa, pareciendo conocer todos los métodos de guerra hasta los que parecen completamente arcaicos de alguna manera u otra. Parece bastante indiferente tanto a ayudarnos, como a ayudar a los Blokkats en sus operaciones de cosecha. También a menudo solicita simplemente ser llamado 'Rose'. Tiene un deseo fanático de disparar lo que sea que pueda caber en cañones a naves enemigas, y también a menudo huye cuando sabe que su vida está en peligro. Además, por la razón que sea, disfruta intentar embestir naves una contra otra.\n\nPor último, afirma que quiere ver 'La Mayor Espectáculo que cualquiera podría ver'. Todos están perplejos sobre qué podría ser eso."
+  
+  trait_blokkat_blokknight:0 "Caballero de la Rosa"
+  trait_blokkat_blokknight_desc:0 "Este Blokkat parece disfrutar jugando a disfrazarse, contando interminables historias de hazañas e interacciones valerosas con civilizaciones primitivas anteriores. También parecen tener una obsesión insana con las armas y blindajes primitivas, asegurándose constantemente de que se produzca tanto como sea posible."
+  
+  prison_blokkat_is_blokknight:0 "§LEl Blokknight Regresa§! - Este Blokkat parece disfrutar jugando a disfrazarse, contando interminables historias de hazañas e interacciones valerosas con civilizaciones primitivas anteriores. También parecen tener una obsesión insana con las armas y blindajes primitivas, asegurándose constantemente de que se produzcan tanto como sea posible."
+  
+  trait_blokkat_yoru:0 "Psicótico Vicioso"
+  trait_blokkat_yoru_desc:0 "Este Blokkat parece estar empeñado en la aniquilación total de todas las formas de vida."
+  
+  prison_blokkat_is_yoru:0 "§R¡Psicótico Vicioso§! - Este Blokkat parece estar empeñado en la aniquilación total de todas las formas de vida. ¿Por qué? Tal vez recibió un ping en el Blokkwork, tal vez quemó su blokktoast esta mañana, o tal vez... simplemente está loco."
+  
+  trait_blokkat_silly:99 "Silly"
+  trait_blokkat_silly_desc:99 "This Blokkat is full of whimsy and joy. Every Blokkat knows not to challenge PIEBLOKK because I'm the strongest! :3"
+  
+  prison_blokkat_is_pieblokk:99 "§CVery Silly :3§! - $trait_blokkat_silly_desc$"
+  
+  trait_blokkat_megastructure_obsession:99 "Megastructure Obsession"
+  trait_blokkat_megastructure_obsession_desc:99 "This Blokkat shows a great interest in any and all forms of artificial megastructures, from those shown in primitive science fiction entertainment to impossibly complicated plans for structures dwarfing entire galaxies."
+  
+  prison_blokkat_is_tempestkat:99 "§MMegastructure Obsession§! - $trait_blokkat_megastructure_obsession_desc$"
+  

@@ -1,0 +1,5 @@
+version,status,source_ids,modding_implications
+4.0 Phoenix,Major historical structural break,S005;S006,Pop groups/workforce; trade route removal; planet economy/UI/job/district rework; branch office and species modification changes.
+4.4 Pegasus stable line,Current released line; 4.4.4 stable checksum 5505,S001;S002,Nomads/Arkships/Waylines/Contracts; Situation Log/UI changes; job selection; test Arkship colonies and Waystations.
+4.4.5 Pegasus beta,Open beta on stellaris_test,S003;S004,New situation progress/tooltip features; starbase module cooldown fields; scripted automation options; home_colony/background_colony scopes.
+4.5 Cygnus beta,Experimental beta / breaking pop ethics/factions refactor,S004,Separate porting branch; old pop/faction/ethic triggers and UI assumptions unsafe.

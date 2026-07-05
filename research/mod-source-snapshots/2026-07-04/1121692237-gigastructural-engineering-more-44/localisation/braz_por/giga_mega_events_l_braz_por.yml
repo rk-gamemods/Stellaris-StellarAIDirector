@@ -1,0 +1,260 @@
+﻿l_braz_por:
+  
+  ########################################################
+  ##################### DYSON SPHERE #####################
+  ########################################################
+  giga_dialog.40041.desc:99 "Progress on the [From.From.GetName] Dyson Sphere continues, with the further installation of more of the advanced solar harvesters we have increased the benefits of the Dyson Sphere.\n\nThe energy gains have reached 50% of the projected maximum value of the completed work."
+  giga_dialog.40042.desc:99 "With the addition of another set of solar harvesting panels, We have nearly finished the Dyson Sphere being bult in the [From.From.GetName] system.\n\nThe structure is now outputting 75% of the projected maximum output for a star of this size.\n\nSoon the full power of the star itself will be at our fingertips."
+  
+  ########################################################
+  ##################### KUGELBLITZ #######################
+  ########################################################
+  giga_dialog.101.name:0 "$name_kugelblitz$Site construído"
+  giga_dialog.101.desc:0 "O canteiro de obras de$name_kugelblitz$no sistema [giga_system.GetName] está concluído. Ele abriga o pessoal e o equipamento necessário para construir um dispositivo capaz de gerar um Kugelblitz artificial, que é um Black Buraco feito de radiação em vez de matéria! Seremos capazes de injetar energia e matéria no Kugelblitz, e depois extraí-la e convertê-la em matéria novamente se necessário, efetivamente tornando o Kugelblitz um silo muito eficiente! "
+  giga_dialog.101.a:0 "Excelente."
+  
+  giga_dialog.102.name:0 "$name_kugelblitz$Built"
+  giga_dialog.102.desc:0 "Nossos engenheiros terminaram de construir o grande dispositivo capaz de gerar um Kugelblitz artificial."
+  giga_dialog.102.a:0 "Ótimo."
+  
+  giga_dialog.103.name:0 "Kugelblitz gerado!"
+  giga_dialog.103.desc:0 "Nosso$name_kugelblitz$gerou com sucesso um Kugelblitz artificial! Atualmente está fornecendo energia graças à radiação Hawking acelerada e agora pode armazenar matéria e energia na forma de radiação para uso posterior!"
+  giga_dialog.103.a:0 "Um grande feito."
+  
+  giga_dialog.106.name:99 "Kugelblitz Refined!"
+  giga_dialog.106.desc:99 "Our $name_kugelblitz$ above [giga_planet.GetName] has successfully been upgraded! Already storehouses elsewhere in the [giga_system_owner.GetName] have begin emptying out their contents and shipping them to [giga_planet.GetName] to take advantage of the increased capacity of the artificial singularity."
+  giga_dialog.106.a:99 "A great feat."
+  
+  giga_dialog.107.name:99 "The Grand Warehouse"
+  giga_dialog.107.desc:99 "Our $name_kugelblitz$ near [giga_planet.GetName] has been fully upgraded to the latest advances in tetra-dimensional technology. The artificial singularity at the structure's core has already grown to nearly surpass the planetoid it is based around.\n\nWith such a construct we can now store quantities of raw materials and refined goods that would previously have been thought nigh impossible. Output projections declare that it could be several years before the kugelblitz is filled to its stable capacity."
+  giga_dialog.107.a:99 "Truly incredible!"
+  
+  giga_dialog.104.name:0 "$name_kugelblitz$ Arruinado"
+  giga_dialog.104.desc:0 "Nossa nave científica entrando no sistema [from.GetName] foi saudada por algumas visões peculiares. Um$name_kugelblitz$foi avistado orbitando ao redor de um dos planetas! Esta construção incrivelmente avançada poderia abrigar uma singularidade controlada, capaz de gerar grandes quantidades de energia. Infelizmente, parece ter caído em um terrível estado de degradação. "
+  giga_dialog.104.a:0 "Fascinante."
+  
+  giga_dialog.105.name:0 "$name_kugelblitz$Reparado!"
+  giga_dialog.105.desc:0 "Um$name_kugelblitz$arruinado foi trazido de volta ao funcionamento por nossas equipes de engenheiros! Após a reativação, o construto começou a gerar uma maciça singularidade controlada, da qual podemos extrair grandes quantidades de energia, como bem como armazenar matéria na forma de radiação. "
+  giga_dialog.105.a:0 "Como isso funciona?"
+  
+  ########################################################
+  #################### PENROSE SPHERE ####################
+  ########################################################
+  giga_dialog.1207.title:0 "Objetivo do$name_penrose$"
+  giga_dialog.1207.a.desc:99 "With the mirror frame now finished around [giga_system.GetName], we can finally start our preparations to use it as a bomb.\n\nWe'll have to let it accumulate energy for a few years, then it will gain the ability to be detonated. Everything in the system will be destroyed, and the explosion will be so powerful it propagates through hyperlanes. Every planet in neighboring systems will be rendered uninhabitable from the flow of energy, and every planet two jumps away will be irradiated. Most importantly, it will send a shockwave through subspace, disturbing and rearranging hyperlanes from up to 4 jumps away!"
+  giga_dialog.1207.b.desc:99 "With the mirror frame now finished around [giga_system.GetName], we can finally start our preparations to stabilize the $name_penrose$ and use it for energy production.\n\nIts energy production capability remains somewhat mediocre for now, but by following the right research avenues, we should be able to bolster its output."
+  
+  giga_dialog.1207.a:0 "Faça uma bomba."
+  giga_dialog.1207.b:0 "Use para gerar energia."
+  
+  ###########################################################
+  #################### FUSION SUPPRESSOR ####################
+  ###########################################################
+  giga_dialog.3401.name:0 "$name_fusion_suppressor$Canteiro de obras construído"
+  giga_dialog.3401.desc:0 "O canteiro de obras de um futuro$name_fusion_suppressor$foi construído com sucesso no sistema [giga_system.GetName]. Ele abrigará a infraestrutura necessária paracomeçar a construir um$name_fusion_suppressor$, capaz de modificar os próprios processos dentro de uma estrela. "
+  giga_dialog.3401.a:0 "Ótimo."
+  
+  giga_dialog.3402.name:0 "Moduladores de gravidade construídos"
+  giga_dialog.3402.desc:0 "Nossos engenheiros terminaram de construir a grande variedade de moduladores de gravidade do nosso$name_fusion_suppressor$em torno de [giga_system.GetName]. Esses dispositivos volumosos são capazes de gerar um campo gravitacional artificial para comprimir uma estrela inteira e alterar sua processos de fusão interna. "
+  giga_dialog.3402.a:0 "Maravilhoso."
+  
+  giga_dialog.3403.name:0 "Estabilizadores estelares construídos"
+  giga_dialog.3403.desc:0 "Os Estabilizadores Estelares de nosso$name_fusion_suppressor$ao redor de [giga_system.GetName] estão completos. Eles são capazes de estabilizar a estrela enquanto os moduladores de gravidade geram o campo gravitacional artificial. Agora, podemos começar o real processo de compressão da estrela para, eventualmente, destruí-la ou transformá-la em um buraco negro. "
+  giga_dialog.3403.a:0 "Incrível."
+  
+  giga_dialog.3404.name:0 "Compressão estelar - Estágio I"
+  giga_dialog.3404.desc:0 "Nosso$name_fusion_suppressor$começou a comprimir com sucesso [giga_system.GetName]. Os processos de fusão da estrela foram alterados e um poderoso campo gravitacional foi gerado, diminuindo o volume aparente da estrela. Os muitos efeitos que isso tem teve no plasma estelar está sendo estudado por vários laboratórios dentro do$name_fusion_suppressor$. "
+  giga_dialog.3404.a:0 "Maravilhoso."
+  
+  giga_dialog.3405.name:0 "Compressão estelar - Estágio II"
+  giga_dialog.3405.desc:0 "O$name_fusion_suppressor$mais uma vez comprimiu [giga_system.GetName] para um volume ainda menor. Fenômenos interessantes surgiram dentro da estrela, produzindo grandes retornos científicos, e a estrela está começando a se comportar na física- maneiras desafiadoras. Uma maior compressão levará a mais resultados. "
+  giga_dialog.3405.a:0 "Ótimo."
+  
+  giga_dialog.3406.name:0 "Compressão estelar - Estrela de nêutrons"
+  giga_dialog.3406.desc:0 "O$name_fusion_suppressor$agora comprimiu [giga_system.GetName] a tal ponto que prótons e elétrons dentro do núcleo da estrela se fundiram e se tornaram nêutrons, transformando o núcleo em uma estrela de nêutrons, cercada por uma camada de plasma estelar exótico. \n \nAgora podemos manter a estrela como está, gerando pesquisas de física e engenharia. Como alternativa, podemos comprimir ainda mais a estrela, transformando-a em um buraco negro artificial, gerando pesquisas de física. Finalmente, o$name_fusion_suppressor$pode liberar toda a compressão gravitacional e exercer uma força repulsiva, fazendo com que as forças repulsivas dentro do núcleo da estrela detonem a estrela em uma supernova, destruindo o$name_fusion_suppressor$e depositando um novo recurso estratégico na superfície dos planetas deste sistema solar, que pode ser usado para criar edifícios poderosos. "
+  giga_dialog.3406.a:0 "Excelente."
+  
+  giga_dialog.3407.name:0 "$name_fusion_suppressor$Dismantled"
+  giga_dialog.3407.desc:0 "O$name_fusion_suppressor$no sistema [giga_system.GetName] foi desmontado com sucesso. O buraco negro que ele criou agora pode ser usado."
+  giga_dialog.3407.a:0 "Maravilhoso."
+  
+  giga_dialog.3409.title:99 "Supernova"
+  giga_dialog.3409.desc:0 "O$name_fusion_suppressor$liberou todos os campos gravitacionais exercidos na estrela e começou a aplicar um campo gravitacional negativo. \nEm segundos, as intensas forças repulsivas dentro do núcleo de nêutrons da estrela superam o campo gravitacional natural, e as energias ferventes de uma estrela superdensa são repentinamente liberadas. \nA estrela começa a brilhar mais forte e parece pulsar por alguns segundos, antes que as camadas externas da estrela sejam repentinamente ejetadas em velocidades relativísticas pelas forças repulsivas. Em questão de horas , todos os planetas do sistema são envidraçados pela enorme onda de energia, privando-os de suas superfícies e atmosferas. \n Depósitos de iodízio se formaram nos planetas agora derretidos, prontos para serem colhidos e usados."
+  giga_dialog.3409.a:0 "Maravilhoso!"
+  
+  giga_dialog.3410.title:0 "Buraco Negro"
+  giga_dialog.3410.desc:0 "O$name_fusion_suppressor$intensificou seu campo gravitacional artificial ao máximo. A estrela entrou em colapso a ponto de nem mesmo a luz escapar de sua atração gravitacional natural, transformando-a efetivamente em um buraco negro. Laboratórios de pesquisa dentro o$name_fusion_suppressor$começou a estudar o buraco negro artificial, produzindo dados científicos incríveis. "
+  giga_dialog.3410.a:0 "Maravilhoso!"
+  
+  ########################################################
+  #################### ALDERSON DISC #####################
+  ########################################################
+  
+  # giga_dialog.2501.title:0 "Alderson Slice Specialization"
+  # giga_dialog.2501.desc:0 "The time has come to decide what sort of Alderson Slice we want to upgrade this particular segment to. The type can be later changed when the segment is completed, through terraforming."
+  
+  giga_dialog.2502.title:0 "Construção de$name_alderson$concluída!"
+  giga_dialog.2502.desc:0 "O canteiro de obras do nosso$name_alderson$foi concluído no sistema [giga_system.GetName]. Esta plataforma servirá como palco para iniciar a construção da estrutura colossal da estrutura, que se estenderá por todo o caminho às bordas desse sistema. Também será possível construir Fatias de Alderson de Computação Planetária e Ecumenópolis se suas contrapartes planetárias já estiverem desbloqueadas. "
+  giga_dialog.2502.a:0 "Ótimo."
+  
+  giga_dialog.2503.title:0 "$name_alderson$Quadro concluído!"
+  giga_dialog.2503.desc:0 "Nosso quadro de abrangência do sistema do Disco de Alderson está concluído! Este colossal esqueleto metálico cobre todo o sistema e será usado como base para construir as próprias fatias. Cada fatia possuirá 15 distritos, cada uma dos quais é 4 vezes mais poderoso que um distrito normal do mundo do anel. Depois de concluída, esta estrutura poderosa certamente nos permitirá nos tornar os maiores construtores desta galáxia. "
+  giga_dialog.2503.a:0 "Mas como não desmorona sobre si mesmo?"
+  giga_dialog.2503.a.tooltip:0 "A engenharia multidimensional é literalmente um pré-requisito para isso."
+  
+  giga_dialog.2504.title:0 "Fatia de Gaia Alderson concluída!"
+  giga_dialog.2504.desc:0 "Uma de nossas fatias de$name_alderson$foi finalmente concluída! Este habitat colossal abrange várias unidades astronômicas e deve fornecer uma quantidade incalculável de espaço para a nossa população e indústrias. Apresenta uma ampla gama de ecossistemas e clima, e, portanto, é habitável por praticamente todas as espécies na galáxia. Devemos começar a colonizá-lo de uma vez. "
+  giga_dialog.2504.a:0 "Maravilhoso!"
+  
+  # giga_dialog.2505.title:0 "Alderson Computing Complex Complete!"
+  # giga_dialog.2505.desc:0 "One of our $name_alderson$'s slices has finally been completed! This colossal habitat spans several astronomical units, and shall provide untold amounts of living space for our population and industries. This slice is completely covered by layers and layers of powerful computers and processors. It will be able to provide our researchers with nearly unlimited amounts of computing power, and instantaneous access to our empire's knowledge databanks. This mighty construct will surely help us pierce the mysteries of the universe with even greater ease than before."
+  # giga_dialog.2505.a:0 "Marvelous! Can it run Crysis?"
+  # giga_dialog.2505.a.tooltip:0 "No."
+  
+  # giga_dialog.2506.title:0 "Ecumenopolis Alderson Complete!"
+  # giga_dialog.2506.desc:0 "One of our $name_alderson$'s slices has finally been completed! This colossal habitat spans several astronomical units, and shall provide untold amounts of living space for our population and industries. This slice is entirely covered by urbo-industrial sprawl, offering gargantuan amounts of industrial capacity and housing for our citizens."
+  # giga_dialog.2506.a:0 "Marvelous!"
+  
+  # giga_dialog.25061.title:0 "Hive Alderson Complete!"
+  # giga_dialog.25061.desc:0 "One of our $name_alderson$'s slices has finally been completed! This colossal habitat spans several astronomical units, and shall provide untold amounts of living space for our population and industries. This entire slice is a giant living organism, psionically connected with the Hive Mind that shaped it. Any beings not part of the Hive that set foot here will be attacked by the very terrain itself."
+  # giga_dialog.25061.a:0 "Marvelous!"
+  
+  # giga_dialog.25062.title:0 "Machine Alderson Complete!"
+  # giga_dialog.25062.desc:0 "One of our $name_alderson$'s slices has finally been completed! This colossal habitat spans several astronomical units, and shall provide untold amounts of living space for our population and industries. This slice is entirely covered with artificial structures. The thin atmosphere consists mostly of industrial pollutants and is not capable of supporting biological life."
+  # giga_dialog.25062.a:0 "Marvelous!"
+  
+  giga_dialog.25070.title:99 "$name_alderson$ Complete!"
+  giga_dialog.25070.desc:99 "It has been done! In the [giga_system.GetName] System, we have managed to fully assemble a colossal disk stretching all the way from the star to the edge of the system. This gargantuan gigastructure dwarfs anything we've built before, and stands as a testimony to our ultimate dominance over the laws of physics and engineering."
+  giga_dialog.25070.a:99 "Who could oppose us now?"
+  
+  giga_dialog.25071.title:99 "$name_alderson$ Complete! has origin"
+  giga_dialog.25071.desc:99 "It has been done! In the [giga_system.GetName] System, we have managed to fully assemble a colossal disk stretching all the way from the star to the edge of the system. This gargantuan gigastructure dwarfs anything we've built before, and stands as a testimony to our ultimate dominance over the laws of physics and engineering."
+  giga_dialog.25071.a:99 "Who could oppose us now?"
+  
+  ########################################################
+  ################# AUTOMATED STRIPMINE ##################
+  ########################################################
+  
+  giga_dialog.3301.name:0 "$name_auto_stripmine$Canteiro de obras construído"
+  giga_dialog.3301.desc:0 "Nossos engenheiros terminaram de montar o canteiro de obras de uma futura$name_auto_stripmine$perto de [giga_system.GetName]. Esta grande plataforma orbital hospedará tudo que precisamos para construir um grande complexo de mineração ao redor do planeta, eventualmente extração de quase todos os seus minerais. "
+  giga_dialog.3301.a:0 "Excelente."
+  
+  giga_dialog.3302.name:0 "$name_auto_stripmine$Aparelho orbital construído"
+  giga_dialog.3302.desc:0 "Nosso aparelho orbital de$name_auto_stripmine$agora está completo. Esta grande construção consiste em dois grandes feixes trator capazes de rastrear grandes quantidades de minerais extraídos e pode explodir a superfície com grandes feixes de energia em para derreter duramente para extrair partes do planeta. Também incorpora um anel de processamento, a fim de aumentar ainda mais a produção de minerais. Agora, devemos terminar de construir as instalações planetas, consistindo de milhões de unidades de perfuração robótica, para realmente começar operações de stripmining. "
+  giga_dialog.3302.a:0 "Maravilhoso!"
+  
+  giga_dialog.3303.title:0 "Planetary Strip Mine Operacional"
+  giga_dialog.3303.desc:0 "Nossa$name_auto_stripmine$foi ativada com sucesso! Vigas trator orbitais gigantescas estão irradiando toneladas e toneladas de minerais, extraídos por milhões de perfurações robóticas automatizadas que coletam os minerais do planeta em milhares de complexos de mineração. \n \nLembre-se de que as operações de mineração cessarão assim que o centro do planeta for atingido e todos os minerais extraídos, o que se estima que aconteça em algumas décadas."
+  giga_dialog.3303.monster.desc:99 "Our $name_auto_stripmine$ has been successfully activated! Gigantic orbital tractor beams are beaming tons upon tons of minerals, extracted by millions of automated robotic drilling collecting the planet's minerals in thousands of sprawling mining complexes.\n\nThe previous inhabitants of [giga_planet.GetName] failed to escape the activation of the structure in time. They will likely be gathered as if they were nothing but rocks and added to the $name_auto_stripmine$'s output."
+  giga_dialog.3303.a:0 "Saída mineral nominal."
+  giga_dialog.3303.b:99 "How horrifying... for them."
+  
+  giga_dialog.3304.title:0 "Planetary Strip Mine Atingiu o núcleo externo"
+  giga_dialog.3304.desc:0 "Nossos engenheiros e cientistas que trabalham no [giga_planet.GetName]$name_auto_stripmine$nos informam que as operações de mineração atingiram o núcleo externo derretido do planeta. \nIsso significa que as operações de extração de minerais cessarão em cerca de 6 anos, quando finalmente alcançamos o núcleo interno. "
+  giga_dialog.3304.a:0 "Confirmado."
+  
+  giga_dialog.3305.title:0 "Planetary Strip Mine esgotada"
+  giga_dialog.3305.desc:0 "O [giga_planet.GetName]$name_auto_stripmine$ficou sem minerais para extrair. [giga_planet.GetName] foi reduzido a um pequeno núcleo derretido exposto ao frio do espaço. Os minerais restantes do núcleo foram foi extraído por meio de técnicas de fraturamento avançadas, o que significa que apenas restos e materiais pouco exploráveis ​​permanecem. O aparato orbital foi desmontado e um depósito mineral está agora presente no núcleo exposto do planeta. "
+  giga_dialog.3305.a:0 "Era inevitável."
+  
+  giga_dialog.3306.name:99 "Planetary Strip Mine Found Resources"
+  giga_dialog.3306.desc.minerals:99 "The [fromfrom.GetName] $name_auto_stripmine$ has unearthed a rather sizeable rich ore veins. These veins will increase the £minerals£§YMineral§! yield of the orbiting $name_auto_stripmine$ by a significant margain.\n\nThey're only estimated to last for another [from.gigas_stripmine_rich_mineral_deposit_length] layers of the planet."
+  giga_dialog.3306.desc.alloys:99 "The [fromfrom.GetName] $name_auto_stripmine$ has uncovered a peculiarly dense portion of mantle. This extra dense section of lithosphere is incredibly structurally similar to £alloys£§YAlloys§!, effectively allowing us to directly mine refined materials. Unfortunately, excavating a material that is a worthy armor for spacefaring vessels is not a simple task, and the required focus on the dense deposit will cause £minerals£§YMineral§! production to slow.\n\nIt is estimated that we can remove another [from.gigas_stripmine_alloy_deposit_length] layers of the planet before the dense materials run out."
+  giga_dialog.3306.desc.gas:99 "The [fromfrom.GetName] $name_auto_stripmine$ has breached vast caverns, full of a highly pressurized form of £exotic_gases£§YExotic Gas§!! The drones on the surface should be able to extract the precious gas. Unfortunately to diverting drones to harvesting the gas will slow down £minerals£§YMineral§! production. \n\nWe have an estimated [from.gigas_stripmine_gas_deposit_length] layers of the planet before we stop seeing these caverns."
+  giga_dialog.3306.desc.motes:99 "The [fromfrom.GetName] $name_auto_stripmine$ has discovered a seam of highly volatile compounds. With minor refinement these materials could be used to substitate £volatile_motes£§YVolatile Motes§!. This bounty however, is expected to lower £minerals£§YMineral§! output as we must slow down our mining operations down to avoid any accidental ignition of the compounds. \n\nWe predict that the compounds will run out after [from.gigas_stripmine_motes_deposit_length] layers of the planet."
+  giga_dialog.3306.desc.crystals:99 "The [fromfrom.GetName] $name_auto_stripmine$ has located a cavern filled to the brim with crystalline structures. Proper purification and processing could turn fragments of these crystals into useable £rare_crystals£§YRare Crystals§!. The cavern is unstable and the need to carefully dissamble it so as to not damage the crystals within, will unfortunately slow £minerals£§YMinerals§! production. \n\nThe Caverns are predicted to be present for another [from.gigas_stripmine_crystal_deposit_length] layers of the planet"
+  giga_dialog.3306.desc.tensiles:99 "The [fromfrom.GetName] $name_auto_stripmine$ has struck something truly remarkable, a peculiar portion of the planet is 'hollow' with this internal hollow resisting the forces of gravity due to a naturally occuring £giga_sr_amb_megaconstruction£§YSupertensile Material§!, although the void will lower the £minerals£§YMineral§! output of the structure, the estimated harvest of this natural £giga_sr_amb_megaconstruction£§YSupertensile Material§! is truly invaluable for further mega-construction projects.\n\nThe pocket is not predicted to last long, only sustaining mining for an estamated [from.gigas_stripmine_supertensile_deposit_length] layers of the planet."
+  giga_dialog.3306.desc.default:99 "The [fromfrom.GetName] $name_auto_stripmine$ has located an abnormal concentration of resources buried deep within the surface of the planet. Theses resources should prove invaluable in increasing the output of the structure, although they will not last forever."
+  ########################################################
+  ######################### SUCC #########################
+  ########################################################
+  
+  giga_dialog.1901.name:0 "$name_succ$Obra Concluída"
+  giga_dialog.1901.desc:0 "O canteiro de obras para um futuro$name_succ_full$no sistema [giga_system.GetName] foi concluído! Sobre este andaime, construiremos um dispositivo enorme, que irá continuamente coletar a atmosfera e o filtro do gigante de gás Ele também irá gerar energia graças aos reatores de fusão que utilizam o hidrogênio encontrado na atmosfera. \n \nLembre-se de que ele acabará se esgotando, deixando um mundo árido para trás. "
+  giga_dialog.1901.a:0 "Quanto tempo demorou para aparecer essa sigla?"
+  # old interstage build Dialogue
+  # giga_dialog.1902.name:0 "$name_succ$ Orbital Apparatus Complete"
+  # giga_dialog.1902.desc:0 "Our $name_succ$'s Orbital Apparatus has been completed in the [giga_system.GetName] system. This massive ring houses the necessary facilities to harvest Gases, Motes and Energy from the planet's atmosphere. Now, we must begin to work on the actual tractor beams themselves."
+  # giga_dialog.1902.a:0 "Great."
+  
+  giga_dialog.1903.title:0 "$name_succ$Operacional!"
+  giga_dialog.1903.desc:0 "Nosso$name_succ$no sistema [giga_system.GetName] agora está operacional! Seus feixes trator foram ativados e a atmosfera do Gigante de Gás está sendo continuamente coletada. \n \nDe acordo com nossos cientistas, acabará em algumas décadas. "
+  giga_dialog.1903.a:0 "Maravilhoso!"
+  
+  giga_dialog.1904.title:0 "$name_succ$Esgotado"
+  giga_dialog.1904.desc:0 "Nosso$name_succ_full$no sistema [giga_system.GetName] agora atingiu o núcleo rochoso do gigante gasoso. Não há atmosfera para extrair e o antigo gigante gasoso foi reduzido a um Barren World, pequeno e rico em minerais. A própria megaestrutura foi desmontada e o núcleo agora pode ser utilizado da maneira que quisermos. "
+  giga_dialog.1904.a:0 "Todas as coisas devem acabar."
+  
+  ########################################################
+  ##################### SQUAREWORLD ######################
+  ########################################################
+  
+  giga_dialog.3001.name:0 "O Quadrado Mítico"
+  giga_dialog.3001.desc:0 "No sistema [from.GetName] reside uma construção estranha. Nossos cientistas estão perplexos com a visão desta instalação orbital massiva circulando a estrela do sistema. Na verdade, é tão ridículo que foi assumido ser uma pegadinha ou uma anomalia em nossos sensores. \n \nA$name_ringworld_square$. \n \nNo sistema [from.GetName] existe um mundo circular em forma de quadrado. Embora pareça ter sofrido muitos castigos no passado, ainda parece estar quase totalmente intacto. A forma estranha desta construção desafia tudo o que sabemos sobre física e engenharia, já que a gravidade deveria ter quebrado essa coisa há milênios. No entanto, aqui está parada, esperando algo para descobrir seus mistérios. \n \nUma estação pequena e quase totalmente abandonada também flutua silenciosamente acima da estrela, e nossos cientistas acreditam que ela pode conter informações úteis sobre esta estrutura peculiar. \n \nA§Projeto especial§! foi emitido para investigar esta coisa e a estação em um esforço para descobrir como ainda existe. "
+  giga_dialog.3001.a:0 "Que peculiar."
+  
+  giga_dialog.3002.name:0 "Os Mistérios do Quadrado"
+  giga_dialog.3002.desc:0 "Após dezenas de expedições e meses de pesquisa, nossos cientistas acreditam que finalmente penetraram os mistérios deste Mundo Quadrado. \n \nEnquanto o exterior do Mundo Quadrado está seriamente danificado, seu interior ainda está intacto, e a maioria dos sistemas internos são realmente funcionais! Sua estrutura é feita principalmente de Quberine, uma liga extremamente avançada embalada com componentes eletrônicos incrivelmente complexos de auto-reparo, explicando assim como é capaz de suportar as incríveis forças exercidas sobre ela. \n \nNossos cientistas acreditam que pode ser possível consertar essa coisa, com recursos suficientes e tecnologias suficientemente avançadas. Detectamos várias fábricas desativadas de Quberine no mundo do anel, que podem começar a produzir o Quberine novamente se restaurarmos a fonte de alimentação do mundo do anel durante reparos futuros. \n \nO equipes de pesquisa também concluíram que a pequena estação acima da estrela serve como uma espécie de 'ponto de acesso central' para o sistema interno do Mundo Quadrado em. Eles nos encorajam a gastar alguns créditos de energia e ligas para consertá-lo e subsequentemente reativá-lo, pois isso pode nos conceder acesso a dados valiosos sobre o Mundo Quadrado e seus construtores armazenados em seus vastos arquivos internos. Esses dados podem muito bem ser a chave para reparar esta construção maravilhosa ..."
+  giga_dialog.3002.a:0 "Maravilhoso! Vamos consertar esta estação imediatamente."
+  
+  giga_dialog.3003.name:0 "Mundo Quadrado restaurado!"
+  giga_dialog.3003.desc:0 "Nossos engenheiros têm o prazer de informar que uma seção do Mundo Quadrado em ruínas foi reparada com sucesso! A energia foi restaurada para os circuitos auxiliares e Quberine está fluindo das fábricas automatizadas, equipadas com energia avançada para - conversores de matéria. A grande quantidade de Quberine na estrutura e no solo teve o estranho efeito de tornar as plantas um pouco verdes demais, mas, fora isso, tudo parece inteiramente nominal. "
+  giga_dialog.3003.a:0 "Incrível!"
+  
+  giga_dialog.3004.name:0 "Mundo Quadrado Speaks"
+  giga_dialog.3004.desc:0 "Notícia incrível! Depois de reparar e repotencializar a estação nos sistemas do Mundo Quadrado, uma IA adormecida antiga hospedada tanto na estação quanto no próprio Mundo Quadrado parece ter despertado. \n \nEsta IA, cujo nome é§ YGaryx§! De acordo com dados recuperados da estação, aparentemente era responsável pela manutenção do Mundo Quadrado e seus vastos sistemas internos. Nossas equipes de pesquisa conseguiram estabelecer contato com ele, e está bastante ansioso para se comunicar conosco. "
+  giga_dialog.3004.a:0 "Na tela."
+  
+  giga_dialog.3005.name:0 "Garyx, Keeper of the Mundo Quadrado"
+  giga_dialog.3005.desc:0 "Ah, visitantes! Obrigado por enviar energia suficiente para a estação para tirá-la da hibernação. Já faz um tempo desde que falei com uma entidade sapiente. \n \nEu sou Garyx, o artificial inteligência responsável por manter o Mundo Quadrado e seus vastos arquivos de dados, e eu assumi a forma de um reptiliano holográfico, pois era assim que meus criadores se pareciam. \n \nDe qualquer forma, desculpas pelo lamentável estado do Mundo Quadrado. Eu encontrei um particularmente documentário interessante sobre a reprodução reptiliana, e venho estudando-o nos últimos 120 milênios usando backup de energia para entender melhor meus criadores. Infelizmente, parece que algo drástico aconteceu ao Mundo Quadrado nesse ínterim ... Oh, bem. \n \nAgora que você está aqui, e como meus criadores aparentemente já se foram, você pode ter permissão para acessar os bancos de dados do Mundo Quadrado, que estão surpreendentemente intactos. "
+  
+  giga_dialog.3005.a:0 "O que há nesses bancos de dados?"
+  giga_dialog.3005.a.response:0 "Oh, muitas coisas. Meus criadores armazenaram muitos dados sobre os vários impérios e espécies que conheciam, seus conhecimentos científicos e, o mais importante, sua divindade§BQubey§!. \nEles queriam preservá-lo para que as gerações futuras possam se beneficiar dele, e, bem, já que você está aqui agora, acho que eles tiveram sucesso nesta tarefa. Pena que eles não estão mais aqui para ver isso ... "
+  
+  giga_dialog.3005.b:0 "Quantos anos tem o Mundo Quadrado?"
+  giga_dialog.3005.b.response:0 "Bem, a julgar pela posição das estrelas, estimo que esta coisa esteve quebrada por cerca de 120.000 dos seus anos, mas é muito mais antiga do que isso. \nFoi construída cerca de 567.000 anos atrás pelos meus criadores, e abrigou sua civilização por muitos milênios. Não tenho certeza do que aconteceu com isso, pois, infelizmente, fui completamente cativado por minha pesquisa. A possibilidade mais provável é que a civilização deles tenha entrado em colapso devido à decadência ou simplesmente envelhecido e divergentes, assim como muitos outros grandes impérios antes deles. "
+  
+  giga_dialog.3005.c:0 "Quem construiu o Mundo Quadrado e por quê?"
+  giga_dialog.3005.c.response:0 "Meus criadores sim. Eles eram uma espécie de§R (DATA CORRUPTED)§ !, conhecido como§R (DATA CORRUPTED)§ !, e governavam um império bastante grande, o§R (DADOS CORROMPIDOS)§! \ N \nEles também eram incrivelmente religiosos e adoravam uma divindade que chamavam de§BQubey§ !. Diz-se que essa divindade ajudou sua espécie a evoluir durante milhões de anos, e muitos viram a perfeição da geometria formas como§BQubey§! 's maneira de manifestar sua presença para o mundo. \n \nMeus fabricantes descobriram uma substância incrível, possuindo propriedades de autorreparação incomparáveis. Eles a apelidaram de' Quberine ', pois acreditavam que a substância era decifrada do próprio§BQubey§ !, e decidiu usá-lo para construir esta magnífica estrutura geométrica que desafia a física como uma forma de adorar e mostrar sua gratidão para com§BQubey§! \n \nEles também aproveitaram a oportunidade para reunir o máximo de dados sobre seus avanços científicos, Quberine, o Mundo Quadrado e§BQubey§ !, nos bancos de dados, na esperança de que um futuro A civilização que tropeçar nele pode aprender sobre o todo-poderoso§BQubey§! também."
+  
+  giga_dialog.3005.d:0 "Podemos de alguma forma consertar o Mundo Quadrado?"
+  giga_dialog.3005.d.response:0 "Espero que sim! Os arquivos mais funcionais contêm muitos dados sobre a estrutura interna e externa do Mundo Quadrado. Se você me der algumas dezenas de meses para compilar tudo, posso dar aos seus cientistas um cache de dados contendo todas as informações necessárias para realizar grandes reparos na megaestrutura. Eu adoraria ver o Mundo Quadrado restaurado à sua antiga glória! "
+  
+  giga_dialog.3005.e:0 "Adeus."
+  giga_dialog.3005.e.response:0 "Que os arquivos lhe sirvam nósll, e não hesite em entrar em contato comigo novamente se precisar de mais informações. "
+  
+  giga_dialog.3006.name:0 "Os Arquivos"
+  giga_dialog.3006.desc:0 "Pouco antes de desconectarmos,§YGaryx§! garantiu que nos enviará um cache de dados contendo todas as informações necessárias para reparar o mundo quadrado em cerca de 2 anos. \n \nEnquanto isso, podemos contatá-lo novamente 'atualizando' a Megastrestrutura do Mundo Quadrado. Nossos cientistas acreditam que sua habilidade de navegar facilmente nos bancos de dados do Mundo Quadrado pode contribuir muito para nossa pesquisa. "
+  giga_dialog.3006.a:0 "Confirmado."
+  
+  giga_dialog.3007.name:0 "Garyx, Guardão do the Mundo Quadrado"
+  giga_dialog.3007.desc:0 "Saudações, mais uma vez. Terminei de compilar um cache de dados contendo todas as informações necessárias para reparar o Mundo Quadrado! Vou transferi-lo para seus cientistas imediatamente."
+  giga_dialog.3007.a:0 "Maravilhoso! Faremos bom uso deste conhecimento."
+  
+  giga_dialog.3008.name:0 "Garyx, Guardão do  the Mundo Quadrado"
+  giga_dialog.3008.desc:0 "Ah, saudações! Veio buscar mais dados nos arquivos? Em que posso ajudá-lo?"
+  giga_dialog.3008.a:0 "Você pode ajudar em nossa pesquisa?"
+  giga_dialog.3008.c:0 "Exibir tela desligada."
+  
+  giga_dialog.3009.name:0 "Garyx, Guardão do Mundo Quadrado"
+  giga_dialog.3009.desc:0 "Por que sim! Posso examinar o arquivo do Mundo Quadrado em busca de dados que você possa achar úteis. Que tipo de dados você quer que eu recupere?"
+  giga_dialog.3009.a:0 "Geral£física£§YPhysics Research§!"
+  giga_dialog.3009.a.response:0 "Tudo bem! Vou recuperar os dados relacionados à sua pesquisa em física, o que concederá a você um aumento de§Y10 %§! na velocidade de sua pesquisa nessa categoria. \n \nSe você quiser, impulsionar um campo diferente, basta entrar em contato comigo novamente e escolher uma opção diferente. "
+  giga_dialog.3009.b:0 "General£engineering£§YEngineering Research§!"
+  giga_dialog.3009.b.response:0 "Tudo bem! Vou recuperar os dados relacionados à sua pesquisa de engenharia, o que concederá a você um aumento de§Y10 %§! na velocidade de pesquisa nessa categoria. \n \nSe você desejar, impulsionar um campo diferente, basta entrar em contato comigo novamente e escolher uma opção diferente. "
+  giga_dialog.3009.c:0 "Geral£sociedade£§Sociedade Pesquisa§!"
+  giga_dialog.3009.c.response:0 "Tudo bem! Vou recuperar dados relacionados à pesquisa da sua sociedade, o que concederá a você um aumento de§Y10 %§! para a velocidade de pesquisa nessa categoria. \n \nSe você quiser, impulsionar um campo diferente, basta entrar em contato comigo novamente e escolher uma opção diferente. "
+  giga_dialog.3009.d:0 "Deixa pra lá, não ajude nossa pesquisa."
+  giga_dialog.3009.d.response:0 "Tudo bem, vou parar de ajudar na sua pesquisa, se é isso que você quer ..."
+  
+  #####################################################################
+  ##################### Mega Management Tutorial ######################
+  #####################################################################
+  giga_dialog.13701.name:99 "Megastructure Management"
+  giga_dialog.13701.desc:99 "The newly built [from.GetName] in [fromfrom.GetName] has extra options that can be accessed from a button in the of the megastructrure UI top right.\n\nBe on the look out for other megastructures where the button is available, as the [from.GetName] is not the only megastructure type that has such extra options.\n\nThis message will only shown be this once."
+  
+  giga_repeatables.001.name:99 "Kilostructure Capacity Increased"
+  giga_repeatables.001.desc:99 "Following our advances in mega-engineering engineers have applied modern techniques to our constructing methods, allowing us to construct and maintain a greater amount of kilostructures."
+  giga_repeatables.001.a.name:99 "$SPLENDID$"
+  giga_kilo_cap_increased:99 "§YEligible Kilostructures will have their capacity increased by 2.§!"
+  

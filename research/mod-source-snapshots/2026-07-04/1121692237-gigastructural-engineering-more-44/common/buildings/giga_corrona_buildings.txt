@@ -1,0 +1,91 @@
+##CORRONA##
+building_giga_corrona_capital = {
+	capital = yes
+	can_build = no
+	can_demolish = yes
+	can_be_ruined = no
+	position_priority = 0
+	capital_tier = 0
+	category = government
+	ai_weight = { weight = 0 }
+	potential = {
+		owner = { has_country_flag = corrona_primitives }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			NOT = { has_country_flag = corrona_primitives }
+		}
+	}
+	building_sets = {
+		pre_ftl
+	}
+	triggered_planet_modifier = {
+		potential = {
+			not = { has_global_flag = thaumstellaris_initialize }
+		}
+		planet_housing_add = 500
+		planet_amenities_add = 2500
+		job_primitive_researcher_add = 200
+		job_primitive_noble_add = 200
+		job_primitive_priest_add = 200
+		job_primitive_miner_add = 200
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_global_flag = thaumstellaris_initialize
+		}
+		planet_housing_add = 500
+		planet_amenities_add = 2500
+		job_politician_add = 200
+		job_tc_alchemical_job_add = 200
+		job_tc_arcane_miner_job_add = 200
+		job_tc_arcane_research_job_add = 200
+	}
+}
+
+building_giga_corrona_homes = {
+	can_build = no
+	can_demolish = yes
+	can_be_ruined = no
+	ai_weight = { weight = 0 }
+	category = amenity
+	potential = {
+		owner = { has_country_flag = corrona_primitives }
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			NOT = { has_country_flag = corrona_primitives }
+		}
+	}
+	building_sets = {
+		pre_ftl
+	}
+	triggered_planet_modifier = {
+		potential = {
+			not = { has_global_flag = thaumstellaris_initialize }
+		}
+		planet_housing_add = 1000
+		planet_amenities_add = 500
+		job_primitive_farmer_add = 100
+		job_primitive_priest_add = 100
+		job_primitive_miner_add = 100
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_global_flag = thaumstellaris_initialize
+		}
+		planet_housing_add = 1000
+		planet_amenities_add = 500
+		job_farmer_add = 100
+		job_tc_essence_distil_job_add = 100
+		job_tc_arcane_research_job_add = 100
+		job_tc_arcane_miner_job_add = 100
+	}
+}
+

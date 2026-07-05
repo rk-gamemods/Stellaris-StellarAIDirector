@@ -1,0 +1,240 @@
+namespace = giga_gas_giant_origin
+
+### game start
+country_event = {
+	id = giga_gas_giant_origin.001
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			has_origin = origin_gas_giant
+			has_origin = origin_gas_giant_robot
+		}
+	}
+
+	immediate = {
+		# starting technologies : ubiquitous
+		give_technology = { tech = tech_space_mining_1 message = no }
+		give_technology = { tech = tech_mine_exotic_gases message = no }
+		# only empires that use food
+		if  = {
+			limit = {
+				country_uses_food = yes
+			}
+			give_technology = { tech = tech_hydroponics message = no }
+		}
+
+		capital_scope = {
+			solar_system = {
+				random_system_planet = {
+					limit = {
+						has_planet_flag = giga_destroyed_homeworld
+					}
+					add_deposit = d_minerals_10
+					add_deposit = d_minerals_10
+					add_deposit = d_minerals_10
+					create_mining_station = { owner = solar_system.owner }
+				}
+			}
+			# clear normal planet stuff we can't use
+			clear_deposits = yes
+			remove_all_districts = yes
+			# add pops to compensate for removed slums and other pop-generating deposits
+			create_pop_group = { species = owner }
+			if = {
+				limit = {
+					exists = owner
+					owner = {
+						is_lithoid_empire = yes
+						NOT = { has_valid_civic = civic_hive_devouring_swarm }
+					}
+				}
+				create_pop_group = { 
+					species = owner 
+					size = 200
+				}
+			}
+			else_if = {
+				limit = {
+					exists = owner
+					owner = {
+						is_lithoid_empire = yes
+						has_valid_civic = civic_hive_devouring_swarm
+					}
+				}
+				create_pop_group = { species = owner }
+			}
+			add_deposit = d_fluffy_plains
+
+			add_modifier = { modifier = giga_gas_giant_hab }
+
+            #gas deposit for exotic metabolism empires
+            generate_home_planet_final_pass = yes
+
+            if = { #Galvanic civic game start compat due to deposits being wiped
+                limit = { is_galvanic_empire = yes }
+                if = {
+                    limit = { NOT = { has_deposit = d_galvanic_living_metal } }
+                    add_deposit = d_galvanic_living_metal
+                }
+            }
+
+            ########################################################################
+            # a bunch of district setup sigh
+            ########################################################################
+            # city / hive / nexus district
+
+            # INDIVID
+            if = {
+                limit = {
+                    root = { is_gestalt = no }
+                }
+                while = {
+                    count = 6
+                    add_district = district_giga_planet_city
+                }
+                add_zone = {
+                    district = district_giga_planet_city
+                    zone = zone_industrial
+                    zone_slot = 1
+                    replace = no
+                }
+                add_zone = {
+                    district = district_giga_planet_city
+                    zone = zone_research_unity
+                    zone_slot = 2
+                    replace = no
+                }
+                add_building = { building = building_factory_1 zone = zone_industrial }
+            }
+            else_if = {
+                limit = { root = { is_hive_empire = yes } }
+                while = {
+                    count = 6
+                    add_district = district_giga_planet_hive
+                }
+                if = {
+                    limit = { owner = { giga_has_consumer_goods_civic_or_individualist = yes } }
+                    add_zone = {
+                        district = district_giga_planet_hive
+                        zone = zone_industrial
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                else = {
+                    add_zone = {
+                        district = district_giga_planet_hive
+                        zone = zone_foundry
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                add_zone = {
+                    district = district_giga_planet_hive
+                    zone = zone_research_unity
+                    zone_slot = 2
+                    replace = no
+                }
+            }
+            else_if = {
+                limit = { root = { is_machine_empire = yes } }
+                while = {
+                    count = 6
+                    add_district = district_giga_planet_nexus
+                }
+                if = {
+                    limit = { owner = { giga_has_consumer_goods_civic_or_individualist = yes } }
+                    add_zone = {
+                        district = district_giga_planet_nexus
+                        zone = zone_industrial
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                else = {
+                    add_zone = {
+                        district = district_giga_planet_nexus
+                        zone = zone_foundry
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                add_zone = {
+                    district = district_giga_planet_nexus
+                    zone = zone_research_unity
+                    zone_slot = 2
+                    replace = no
+                }
+            }
+
+            # science district
+			add_district = district_giga_gas_giant_habitat_science
+
+			# energy district
+			add_district = district_giga_gas_giant_habitat_wind
+			add_district = district_giga_gas_giant_habitat_wind
+			add_district = district_giga_gas_giant_habitat_wind
+
+            # exotic district
+			add_district = district_giga_gas_giant_habitat_exotic
+			add_district = district_giga_gas_giant_habitat_exotic
+
+            # more energy / research if robot
+            if = {
+                limit = {
+                    owner = {
+                        is_robot_empire = yes
+                    }
+                }
+                add_building = { building = building_research_lab_1 zone = zone_research_unity }
+                add_district = district_giga_gas_giant_habitat_wind
+            }
+
+            # food if has any organic
+            if = {
+                limit = {
+                    exists = owner
+                    any_owned_species = {
+                        has_trait = trait_organic
+                    }
+                }
+                add_zone = {
+                    zone = zone_food
+                    district = district_giga_gas_giant_habitat_exotic
+                }
+
+                add_building = { building = building_hydroponics_farm zone = zone_food }
+                add_building = { building = building_hydroponics_farm zone = zone_food }
+            }
+
+            # if lithoid / infernal empire, well have another city
+            if = {
+                limit = {
+                    owner = {
+                        OR = {
+                            is_infernal = yes
+                            is_lithoid_empire = yes
+                        }
+                    }
+                }
+                if = {
+                    limit = {
+                        owner = {
+                            is_hive_empire = yes
+                        }
+                    }
+                    add_district = district_giga_planet_hive
+                }
+                else = {
+                    add_district = district_giga_planet_city
+                }
+
+            }
+
+			repair_all_buildings = yes
+			check_planet_employment = yes
+		}
+	}
+}

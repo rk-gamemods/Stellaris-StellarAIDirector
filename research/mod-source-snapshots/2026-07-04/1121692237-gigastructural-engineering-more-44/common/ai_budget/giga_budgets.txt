@@ -1,0 +1,69 @@
+alloys_expenditure_pre_megastructures = {
+	resource = alloys
+	type = expenditure
+	category = megastructures
+
+	potential = {
+		giga_is_standard_country_type = yes
+		has_technology = tech_starbase_3
+		or = {
+			is_at_war = yes
+			can_build_megastructures = no
+		}
+	}
+
+	weight = {
+		weight = 0.2
+	}
+}
+
+influence_expenditure_hyper_relays = {
+	resource = influence
+	type = expenditure
+	category = megastructures_hyper_relay
+
+	potential = {
+		giga_is_standard_country_type = yes
+		has_technology = tech_hyper_relays
+	}
+
+	weight = {
+		weight = 0.1
+	}
+
+	desired_min = {
+		weight = 25
+	}
+
+	desired_max = {
+		weight = 25
+	}
+}
+
+iodizium_expenditure_planets = {
+	resource = giga_sr_iodizium
+	type = expenditure
+	category = planets
+
+	potential = {
+		always = yes
+	}
+
+	weight = {
+		weight = 1.0
+	}
+}
+
+iodizium_upkeep_planets = {
+	resource = giga_sr_iodizium
+	type = upkeep
+	category = planets
+
+	potential = {
+		always = yes
+	}
+
+	weight = {
+		weight = 1.0
+	}
+}

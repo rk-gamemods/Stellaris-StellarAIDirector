@@ -1,0 +1,391 @@
+﻿l_german:
+  # moving modifiers over here because they honestly need a rewrite in many cases
+  # the format of many did not match vanilla patterns
+  
+  mod_op_cat_military_speed_mult:0 "Operationsgeschwindigkeit ($op_cat_military$)"
+  mod_op_cat_subterfuge_speed_mult:0 "Operationsgeschwindigkeit ($op_cat_subterfuge$)"
+  mod_op_cat_government_speed_mult:0 "Operationsgeschwindigkeit ($op_cat_government$)"
+  mod_op_cat_economy_speed_mult:0 "Operationsgeschwindigkeit ($op_cat_economy$)"
+  
+  mod_giga_jobs_opinion_add:0 "Meinung aller"
+  mod_giga_tooltips_influence_produces_add:0 "$mod_giga_jobs_opinion_add$"
+  
+  giga_tech_ai_scaling_evaluator:0 "Gigastruktur-Technik: KI-Skalierungsberechnung"
+  giga_tech_ai_scaling_evaluator_desc:0 "Dies ist eine Hilfstechnologie, die uns erlaubt, den §Y$DIFFICULTY_ADJUSTED_AI_MODIFIERS$§! Wert in Skripten auszulesen.\n\nSie hat keine direkte Spielfunktion."
+  mod_giga_tooltips_ai_unobtainium_produces_mult:0 "Modifikator Skalierungsauswertung"
+  
+  mod_defensive_pacts_influence_upkeep_mult:0 "Einflusskosten für Verteidigungspakte"
+  mod_research_agreements_influence_upkeep_mult:0 "Einflusskosten für Forschungsabkommen"
+  mod_commercial_pacts_unity_produces_add:0 "Einigkeit aus Handelspakten"
+  
+  mod_ship_colonizer_alloys_cost_add:0 "Kolonieschiff £alloys£ $alloys$ Kosten"
+  
+  mod_giga_system_resettlement_unemployed_mult:0 "Chance auf automatische Umsiedlung im System"
+  mod_giga_system_bio_trophy_propagation:0 "System $job_bio_trophy$ Produktionsbonus Ausbreitung"
+  mod_giga_system_habitat_amenities_add:0 "System Habitat Annehmlichkeiten"
+  mod_giga_system_habitat_amenities_no_happiness_add:0 "System Habitat Annehmlichkeiten"
+  
+  mod_planet_buildings_hab_capital_alloys_upkeep_mult:0 "£alloys£ $alloys$ Unterhalt für £building£ Habitat Hauptgebäude"
+  
+  mod_planet_buildings_giga_sr_iodizium_upkeep_mult:0 "Gebäude £giga_sr_iodizium£ Iodizium Unterhalt"
+  
+  mod_giga_planet_unemployment_coverage:0 "Arbeitsplätze für arbeitslose Bewohner"
+  
+  mod_giga_pop_assimilation_speed:0 "Bevölkerungsassimilationsgeschwindigkeit"
+  
+  mod_giga_virtual_colony_size:0 "['concept_giga_virtual_colony_size']"
+  concept_giga_virtual_colony_size:0 "Virtuelle Aufstiegskolonie Größe"
+  concept_giga_virtual_colony_size_desc:0 "Dieser Planet zählt als eine andere Anzahl von Kolonien bei der Berechnung der Effekte des ['trait:trait_robot_digital_2'] Merkmals."
+  
+  mod_giga_virtual_colony_efficiency:99 "['concept_giga_virtual_colony_efficiency']"
+  concept_giga_virtual_colony_efficiency:99 "Virtual Ascension Colony Efficiency"
+  concept_giga_virtual_colony_efficiency_desc:99 "Increasing this value reduces the effective ['concept_giga_virtual_colony_size', colony size] of this planet.\n\n+100% efficiency halves effective colony size, +200% thirds it, and so on.\n\n§tEffective Size = ( 1 + Colony Size modifier ) / ( 1 + Colony Efficiency modifier )§!"
+  
+  mod_planet_buildings_minerals_cost_mult:0 "Gebäude £minerals£ $minerals$ Kosten"
+  
+  mod_planet_districts_produces_mult:0 "Ressourcen aus Bezirken"
+  ############################################################################################################
+  # WEAPON MODIFIERS
+  mod_weapon_type_anticompound_weapon_fire_rate_mult:0 "$weapon_type_anticompound$ Feuerrate"
+  
+  ############################################################################################################
+  # COUNTRY MODIFIERS
+  mod_country_sr_living_metal_produces_mult:0 "Monatliches $sr_living_metal$"
+  mod_country_nanites_produces_mult:0 "Monatliche $nanites$"
+  mod_country_giga_sr_iodizium_produces_mult:0 "Monatliches $giga_sr_iodizium$"
+  
+  mod_country_base_giga_sr_negative_mass_produces_add:0 "Reichsweite $giga_sr_negative_mass$ Produktion"
+  mod_country_base_giga_sr_sentient_metal_produces_add:0 "Reichsweite $giga_sr_sentient_metal$ Produktion"
+  
+  mod_giga_kilostructures_cost_mult:99 "Kilostructure Build Cost"
+  mod_giga_kilostructures_upkeep_mult:99 "Kilostructure Upkeep"
+  mod_megastructures_hyper_relay_upkeep_mult:99 "Hyper Relay Upkeep"
+  mod_giga_kilostructures_influence_cost_mult:99 "Kilostructure £influence£ $influence$ Build Cost"
+  
+  
+  ############################################################################################################
+  # SHIP MODIFIERS
+  mod_station_researchers_physics_research_produces_mult:0 "£physics_research£ $physics_research$ von Forschungsstationen"
+  mod_station_researchers_society_research_produces_mult:0 "£society_research£ $society_research$ von Forschungsstationen"
+  mod_station_researchers_engineering_research_produces_mult:0 "£engineering_research£ $engineering_research$ von Forschungsstationen"
+  mod_shipsize_research_station_build_speed_mult:99 "Research Station Build Speed"
+  ############################################################################################################
+  # ECONOMIC CATEGORIES
+  giga_kilostructures:99 "Kilostructures"
+  giga_megastructures:99 "Megastructures"
+  giga_gigastructures:99 "Gigastructures"
+  # The categories below don't appear to show ingame but there's no harm in adding them
+  giga_succ:0 "$giga_mega_management_section_left$$succ_1$ Geschwindigkeit$giga_mega_management_section_right$"
+  giga_crystal_megabore:99 "$name_crystal_megabore$"
+  giga_attack_moon:99 "$name_war_moon$"
+  giga_dyson_sphere:99 "$dyson_sphere_5$"
+  giga_equatorial_shipyard:99 "$name_eq_shipyard$"
+  giga_maginot_world:99 "$name_maginot$"
+  giga_matter_decompressor:99 "$matter_decompressor_4$"
+  giga_mega_art_installation:99 "Mega Art Installation"
+  giga_mega_shipyard:99 "$mega_shipyard_3$"
+  giga_neutronium_gigaforge:99 "$name_neut_gigaforge$"
+  giga_planetary_computer:99 "$name_planetary_computer$"
+  giga_science_nexus:99 "$think_tank_3$"
+  giga_sentry_array:99 "$spy_orb_4$"
+  giga_star_lifter:99 "$name_starlifter$"
+  giga_strategic_coordination:99 "$strategic_coordination_center_3$"
+  giga_yggdrasil_orchid:99 "$name_yggdrasil$"
+  giga_hrae_mc:99 "$name_hraemc$"
+  giga_hyperstructural_ass:99 "$name_hyperstructural_ass$"
+  giga_lunar_macroreplicator:99 "$lunar_macroreplicator_2$"
+  giga_matrioshka_brain:99 "$name_matrioshka_brain$"
+  giga_nidavellir_forge:99 "$name_nidavellir$"
+  
+  planet_giga_virtual_diplomats:0 "Virtuelle Diplomatenberufe"
+  planet_giga_virtual_diplomats_icon:0 "£job_giga_virtual_diplomat£"
+  planet_giga_virtual_diplomats_icon_machine:0 "£job_giga_virtual_diplomat_servitor£"
+  planet_giga_virtual_trainers:0 "Virtuelle Ausbildungsberufe"
+  planet_giga_virtual_training_job_icon:0 "£job_giga_virtual_training_coordinator£"
+  planet_giga_virtual_training_job_icon_gestalt:0 "£job_evaluator£"
+  
+  planet_giga_dark_matter_weavers:0 "Dunkle Materie Weber Berufe"
+  
+  #######################################################################################################
+  # JOBS
+  
+  mod_country_base_consumer_goods_produces_add:0 "Monatliche £consumer_goods£ $consumer_goods$"
+  
+  job_artisan_icon:0 "£job_artisan£"
+  job_artificer_icon:0 "£job_artificer£"
+  
+  #######################################################################################################
+  # WORKFORCE MODIFIERS
+  
+  # groups
+  giga_birch_orykta_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ ['concept_giga_planet_orykta_jobs']"
+  giga_birch_orykta_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_orykta_jobs']: $VARIABLE|1%=+$"
+  mod_giga_birch_orykta_jobs_bonus_workforce_mult_fake:99 "$giga_birch_orykta_jobs_bonus_workforce_mult$"
+  
+  giga_birch_ktisma_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ ['concept_giga_planet_ktisma_jobs']"
+  giga_birch_ktisma_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_ktisma_jobs']: $VARIABLE|1%=+$"
+  mod_giga_birch_ktisma_jobs_bonus_workforce_mult_fake:99 "$giga_birch_ktisma_jobs_bonus_workforce_mult$"
+  
+  giga_birch_physma_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ ['concept_giga_planet_physma_jobs']"
+  giga_birch_physma_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_physma_jobs']: $VARIABLE|1%=+$"
+  mod_giga_birch_physma_jobs_bonus_workforce_mult_fake:99 "$giga_birch_physma_jobs_bonus_workforce_mult$"
+  
+  giga_refinery_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ $concept_giga_planet_refiners$"
+  giga_refinery_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_refiners']: $VARIABLE|1%=+$"
+  mod_giga_refinery_jobs_bonus_workforce_mult_fake:99 "$giga_refinery_jobs_bonus_workforce_mult$"
+  
+  giga_dark_matter_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ $concept_giga_planet_dark_matter_weavers$"
+  giga_dark_matter_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_dark_matter_weavers']: $VARIABLE|1%=+$"
+  mod_giga_dark_matter_jobs_bonus_workforce_mult_fake:99 "$giga_dark_matter_jobs_bonus_workforce_mult$"
+  
+  giga_negative_mass_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ $concept_giga_planet_energy_converters$"
+  giga_negative_mass_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_energy_converters']: $VARIABLE|1%=+$"
+  mod_giga_negative_mass_jobs_bonus_workforce_mult_fake:99 "$giga_negative_mass_jobs_bonus_workforce_mult$"
+  
+  giga_megaconstruction_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ $concept_giga_planet_megaengineers$"
+  giga_megaconstruction_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_megaengineers']: $VARIABLE|1%=+$"
+  mod_giga_megaconstruction_jobs_bonus_workforce_mult_fake:99 "$giga_megaconstruction_jobs_bonus_workforce_mult$"
+  
+  giga_sentient_metal_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ $concept_giga_planet_cultivators$"
+  giga_sentient_metal_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_cultivators']: $VARIABLE|1%=+$"
+  mod_giga_sentient_metal_jobs_bonus_workforce_mult_fake:99 "$giga_sentient_metal_jobs_bonus_workforce_mult$"
+  
+  giga_soldier_jobs_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ $concept_giga_planet_soldiers$"
+  giga_soldier_jobs_bonus_workforce_mult_tt:99 "$t$- $BONUS_WORKFORCE_FOR$ ['concept_giga_planet_soldiers']: $VARIABLE|1%=+$"
+  mod_giga_soldier_jobs_bonus_workforce_mult_fake:99 "$giga_soldier_jobs_bonus_workforce_mult$"
+  
+  # fake modifiers for vanilla groups
+  mod_technician_jobs_bonus_workforce_mult_fake:99 "$technician_jobs_bonus_workforce_mult$"
+  mod_miner_jobs_bonus_workforce_mult_fake:99 "$miner_jobs_bonus_workforce_mult$"
+  mod_foundry_jobs_bonus_workforce_mult_fake:99 "$foundry_jobs_bonus_workforce_mult$"
+  mod_artisan_jobs_bonus_workforce_mult_fake:99 "$artisan_jobs_bonus_workforce_mult$"
+  mod_trader_jobs_bonus_workforce_mult_fake:99 "$trader_jobs_bonus_workforce_mult$"
+  mod_farmer_jobs_bonus_workforce_mult_fake:99 "$farmer_jobs_bonus_workforce_mult$"
+  mod_researcher_jobs_bonus_workforce_mult_fake:99 "$researcher_jobs_bonus_workforce_mult$"
+  mod_bureaucrat_jobs_bonus_workforce_mult_fake:99 "$bureaucrat_jobs_bonus_workforce_mult$"
+  
+  # single jobs
+  mod_pop_chemist_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [chemist.GetNamePlural]"
+  mod_pop_chemist_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [chemist_drone.GetNamePlural]"
+  mod_pop_translucer_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [translucer.GetNamePlural]"
+  mod_pop_translucer_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [translucer_drone.GetNamePlural]"
+  mod_pop_gas_refiner_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [gas_refiner.GetNamePlural]"
+  mod_pop_gas_refiner_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [gas_refiner_drone.GetNamePlural]"
+  
+  mod_pop_organic_battery_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [organic_battery.GetNamePlural] Pops" # 'for Grid Amalgamated' was weird
+  
+  mod_pop_giga_dark_matter_weaver_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_dark_matter_weaver.GetNamePlural]"
+  mod_pop_giga_dark_matter_weaver_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_dark_matter_weaver_drone.GetNamePlural]"
+  mod_pop_ehof_energy_converter_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [ehof_energy_converter.GetNamePlural]"
+  mod_pop_ehof_energy_converter_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [ehof_energy_converter_drone.GetNamePlural]"
+  mod_pop_ehof_cultivator_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [ehof_cultivator.GetNamePlural]"
+  mod_pop_ehof_cultivation_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [ehof_cultivation_drone.GetNamePlural]"
+  mod_pop_giga_megaengineering_overseer_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_megaengineering_overseer.GetNamePlural]"
+  mod_pop_giga_megaengineering_overseer_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_megaengineering_overseer_drone.GetNamePlural]"
+  mod_pop_giga_megaengineer_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_megaengineer.GetNamePlural]"
+  mod_pop_giga_megaengineer_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_megaengineer_drone.GetNamePlural]"
+  mod_pop_giga_birch_orykta_worker_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_birch_orykta_worker.GetNamePlural]"
+  mod_pop_giga_birch_orykta_worker_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_birch_orykta_worker_drone.GetNamePlural]"
+  mod_pop_giga_birch_ktisma_worker_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_birch_ktisma_worker.GetNamePlural]"
+  mod_pop_giga_birch_ktisma_worker_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_birch_ktisma_worker_drone.GetNamePlural]"
+  mod_pop_giga_birch_physma_worker_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_birch_physma_worker.GetNamePlural]"
+  mod_pop_giga_birch_physma_worker_drone_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_birch_physma_worker_drone.GetNamePlural]"
+  mod_pop_giga_amb_fe_acolyte_foundry_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_amb_fe_acolyte_foundry.GetNamePlural]"
+  mod_pop_giga_amb_fe_celestial_architect_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ [giga_amb_fe_celestial_architect.GetNamePlural]"
+  
+  
+  #######################################################################################################
+  # POPS
+  
+  mod_planet_pops_biologicals_food_upkeep_mult:0 "Nahrungsunterhalt für biologische Bevölkerung"
+  mod_planet_pops_lithoids_minerals_upkeep_mult:0 "Mineralienunterhalt für Lithoiden Bevölkerung"
+  mod_planet_pops_energy_upkeep_mult:0 "Energieunterhalt für Bevölkerung"
+  
+  mod_planet_pops_biologicals_food_upkeep_add:0 "£food£ $food$ Unterhalt für biologische Bevölkerung:"
+  mod_planet_pops_lithoids_minerals_upkeep_add:0 "£minerals£ $minerals$ Unterhalt für Lithoiden Bevölkerung:"
+  mod_planet_pops_energy_upkeep_add:0 "£energy£ $energy$ Unterhalt für Bevölkerung:"
+  
+  giga_pop_energy_upkeep:0 "£energy£ $energy$ Unterhalt für"
+  giga_pop_upkeep_organics:0 "Organische"
+  giga_pop_upkeep_robotic:0 "Robotische"
+  
+  giga_pop_precursor:0 "£pop_cat_precursor£ Vorläufer"
+  mod_pop_category_precursor_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $giga_pop_precursor$"
+  
+  giga_pop_xeno_ward:0 "£pop_cat_xeno_ward£ Primitive"
+  mod_pop_category_xeno_ward_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $giga_pop_xeno_ward$"
+  
+  giga_pop_pre_sapient:0 "£pop_cat_pre_sapients£ $pop_category_pre_sapients$"
+  mod_pop_category_pre_sapients_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $giga_pop_pre_sapient$"
+  
+  mod_pop_category_bio_trophy_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $BIO_TROPHIES$"
+  
+  mod_pop_category_slave_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $SLAVES$"
+  
+  giga_pop_drone:0 "£pop_cat_simple_drone£ Drohnen"
+  mod_pop_category_drones_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $giga_pop_drone$"
+  mod_pop_category_drones_robotic_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_robotic$ $giga_pop_drone$"
+  
+  mod_pop_category_workers_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $WORKERS$"
+  mod_pop_category_workers_robotic_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_robotic$ $WORKERS$"
+  
+  mod_pop_category_specialists_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $SPECIALISTS$"
+  mod_pop_category_specialists_robotic_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_robotic$ $SPECIALISTS$"
+  
+  mod_pop_category_rulers_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $RULERS$"
+  mod_pop_category_rulers_robotic_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_robotic$ $RULERS$"
+  
+  giga_pop_assimilation:0 "Bevölkerung in £pop_cat_assimilation£ $pop_cat_assimilation$"
+  mod_pop_category_assimilation_organics_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ $giga_pop_upkeep_organics$ $giga_pop_assimilation$"
+  
+  mod_pop_category_workers_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ £pop_cat_worker£ $pop_cat_worker_plural$"
+  mod_pop_category_specialists_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ £pop_cat_specialist£ $pop_cat_specialist_plural$"
+  mod_pop_category_rulers_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ £pop_cat_ruler£ $pop_cat_ruler_plural$"
+  mod_pop_category_drones_energy_upkeep_add:0 "$giga_pop_energy_upkeep$ £pop_cat_simple_drone£ Drohnen"
+  
+  mod_pop_category_drones_consumer_goods_upkeep_add:0 "£consumer_goods£ Unterhalt für £pop_cat_simple_drone£ Drohnen"
+  
+  mod_pop_robot_worker_happiness:0 "Zufriedenheit robotischer [GetWorker]"
+  mod_pop_robot_specialist_happiness:0 "Zufriedenheit robotischer [GetSpecialist]"
+  mod_pop_robot_ruler_happiness:0 "Zufriedenheit robotischer Herrscher"
+  mod_pop_robot_slave_happiness:0 "Zufriedenheit robotischer Sklaven"
+  
+  mod_robotic_worker_pop_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ Robotic [GetWorkerPlural]"
+  mod_robotic_specialist_pop_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ Robotic [GetSpecialistPlural]"
+  mod_robotic_ruler_pop_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ Robotic $pop_cat_ruler_plural$"
+  mod_robotic_slave_pop_bonus_workforce_mult:99 "$BONUS_WORKFORCE_FOR$ $pop_cat_slave_plural$"
+  
+  
+  #######################################################################################################
+  # MISC SCRIPTED
+  
+  mod_giga_shroud_conduit_instability:0 "Monatliche Schleier Kanal Instabilität"
+  mod_giga_hypersiphon_network_size:0 "$psychic_hypersiphon_2$ Netzwerkgröße"
+  mod_giga_hypersiphon_safe_network_size:0 "§GVerursacht keine $mod_giga_shroud_conduit_instability$§!\n$mod_giga_hypersiphon_network_size$"
+  mod_giga_shroud_conduit_worker_bonus_mult:0 "Bonus Produktion von [GetGigaShroudConduitJobIcon][GetGigaShroudConduitJobPlural]"
+  
+  #######################################################################################################
+  # PLANET MODIFIERS
+  orbital_atmosphere_shredder_1_mod_tooltip:0 "Legt eine Größe §Y2§! £physics_research£ Lagerstätte auf jedem geeigneten Planeten, Mond und Asteroiden im System frei"
+  orbital_atmosphere_shredder_2_mod_tooltip:0 "Verbessert freigelegte Lagerstätten auf Größe §Y4§! £physics_research£"
+  orbital_atmosphere_shredder_3_mod:0 "$atmosphere_shredder_2$"
+  orbital_atmosphere_shredder_3_mod_desc:0 "$atmosphere_shredder_2_DESC$"
+  orbital_atmosphere_shredder_3_mod_tooltip:0 "Verbessert freigelegte Lagerstätte auf Größe §Y5§! £physics_research£ $NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_physics_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  orbital_atmosphere_shredder_4_mod:0 "$atmosphere_shredder_complete_name$"
+  orbital_atmosphere_shredder_4_mod_desc:0 "$atmosphere_shredder_3_DESC$"
+  orbital_atmosphere_shredder_4_mod_tooltip:0 "Verbessert freigelegte Lagerstätte auf Größe §Y6§! £physics_research£ $NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_physics_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!$TABBED_NEW_LINE$$mod_station_researchers_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  orbital_atmosphere_shredder_restored_mod_tooltip:0 "Legt eine Größe §Y6§! £physics_research£ Lagerstätte auf jedem geeigneten Planeten, Mond und Asteroiden im System frei$NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_physics_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!$TABBED_NEW_LINE$$mod_station_researchers_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  
+  orbital_eco_arcology_1_mod_tooltip:0 "Legt eine Größe §Y2§! £society_research£ Lagerstätte auf jedem geeigneten Planeten, Mond und Asteroiden im System frei"
+  orbital_eco_arcology_2_mod_tooltip:0 "Verbessert freigelegte Lagerstätten auf Größe §Y4§! £society_research£"
+  orbital_eco_arcology_3_mod:0 "$orbital_artificial_eco_2$"
+  orbital_eco_arcology_3_mod_desc:0 "$orbital_artificial_eco_3_DESC$"
+  orbital_eco_arcology_3_mod_tooltip:0 "Verbessert freigelegte Lagerstätte auf Größe §Y5§! £society_research£ $NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_society_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  orbital_eco_arcology_4_mod:0 "$orbital_artificial_eco_3$"
+  orbital_eco_arcology_4_mod_desc:0 "$orbital_artificial_eco_3_DESC$"
+  orbital_eco_arcology_4_mod_tooltip:0 "Verbessert freigelegte Lagerstätte auf Größe §Y6§! £society_research£ $NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_society_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!$TABBED_NEW_LINE$$mod_station_researchers_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  orbital_eco_arcology_restored_mod_tooltip:0 "Legt eine Größe §Y6§! £society_research£ Lagerstätte auf jedem geeigneten Planeten, Mond und Asteroiden im System frei$NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_society_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!$TABBED_NEW_LINE$$mod_station_researchers_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  
+  orbital_test_site_1_mod_tooltip:0 "Legt eine Größe §Y2§! £engineering_research£ Lagerstätte auf jedem geeigneten Planeten, Mond und Asteroiden im System frei"
+  orbital_test_site_2_mod_tooltip:0 "Verbessert freigelegte Lagerstätten auf Größe §Y4§! £engineering_research£"
+  orbital_test_site_3_mod:0 "$macro_test_site_2$"
+  orbital_test_site_3_mod_desc:0 "$macro_test_site_2_DESC$"
+  orbital_test_site_3_mod_tooltip:0 "Verbessert freigelegte Lagerstätte auf Größe §Y5§! £engineering_research£ $NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_engineering_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  orbital_test_site_4_mod:0 "$macro_test_site_3$"
+  orbital_test_site_4_mod_desc:0 "$macro_test_site_3_DESC$"
+  orbital_test_site_4_mod_tooltip:0 "Verbessert freigelegte Lagerstätte auf Größe §Y6§! £engineering_research£ $NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_engineering_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!$TABBED_NEW_LINE$$mod_station_researchers_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  orbital_test_site_restored_mod_tooltip:0 "Legt eine Größe §Y6§! £engineering_research£ Lagerstätte auf jedem geeigneten Planeten, Mond und Asteroiden im System frei$NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$mod_station_researchers_engineering_research_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!$TABBED_NEW_LINE$$mod_station_researchers_produces_mult$: §G+$@kilo_prod_bonus_4_mod_value|%0$§!"
+  
+  planetary_seeder_nexus_1_mod:99 "$planetary_seeder_nexus_0$"
+  planetary_seeder_nexus_1_mod_desc:99 "$planetary_seeder_nexus_0_DESC$"
+  planetary_seeder_nexus_1_mod_tooltip:99 "Uncovers a Size §Y1§! £food£ deposit on every Planet, Moon and Asteroid in the System that is not §YMolten§! or §YHabitable§!$NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$station_gatherers_food_produces_mult$: §G+$@arc_furnace_1_mod_value|%0$§!"
+  planetary_seeder_nexus_2_mod:99 "$planetary_seeder_nexus_1$"
+  planetary_seeder_nexus_2_mod_desc:99 "$planetary_seeder_nexus_1_DESC$"
+  planetary_seeder_nexus_2_mod_tooltip:99 "Improves uncovered deposits to Size §Y2§! £food£$NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$station_gatherers_food_produces_mult$: §G+$@arc_furnace_2_mod_value|%0$§!"
+  planetary_seeder_nexus_3_mod:99 "$planetary_seeder_nexus_2$"
+  planetary_seeder_nexus_3_mod_desc:99 "$planetary_seeder_nexus_2_DESC$"
+  planetary_seeder_nexus_3_mod_tooltip:99 "Improves uncovered deposits to Size §Y3§! £food£$NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$station_gatherers_food_produces_mult$: §G+$@arc_furnace_3_mod_value|%0$§!"
+  planetary_seeder_nexus_4_mod:99 "$planetary_seeder_nexus_3$"
+  planetary_seeder_nexus_4_mod_desc:99 "$planetary_seeder_nexus_3_DESC$"
+  planetary_seeder_nexus_4_mod_tooltip:99 "Improves uncovered deposits to Size §Y4§! £food£$NEW_LINE$§E$SYSTEM_MODIFIER$§!: $TABBED_NEW_LINE$$station_gatherers_food_produces_mult$: §G+$@arc_furnace_4_mod_value|%0$§!"
+  station_gatherers_food_produces_mult:99 "£food£ Produced from $station_gatherers$"
+  
+  succ_mod:0 "$succ_1$"
+  succ_mod_desc:0 "$succ_1_DESC$"
+  succ_mod_tooltip:0 "Legt eine Größe §Y2§! £exotic_gases£ Lagerstätte frei"
+  
+  megabore_mod:0 "$crystal_megabore_1$"
+  megabore_mod_desc:0 "$crystal_megabore_1_DESC$"
+  megabore_mod_tooltip:0 "Legt eine Größe §Y2§! £rare_crystals£ Lagerstätte frei"
+  
+  stripmine_mod:0 "$automated_stripmine_1$"
+  stripmine_mod_desc:0 "$automated_stripmine_1_DESC$"
+  stripmine_mod_tooltip:0 "Legt eine Größe §Y2§! £volatile_motes£ Lagerstätte frei"
+  
+  giga_kilo_cap_add:99 "$giga_kilo_cap_plus_2$\n$MOD_MEGASTRUCTURE_BUILD_SPEED_MULT$: §G+5%§!\n$TRADITIONS_FINISH_AP$"
+  giga_kilo_cap_plus_2:99 "All Kilostructure Capacity: §G+2§!"
+  giga_mega_eng_kilo_cap:99 "Additional Kilostructure Capacity"
+  
+  PLANET_MODIFIER:0 "Planetenmodifikator"
+  
+  #######################################################################################################
+  # JOB DESCS - because for SOME REASON some vanilla jobs break the pattern...
+  job_angler_effect_desc:0 "$job_aqu_angler_effect_desc$"
+  job_fe_acolyte_farm_per_pop:0 "§G+1§! $job_fe_acolyte_farm$ Arbeitsplatz pro $VALUE$ Bewohner"
+  mod_job_fe_acolyte_farm_per_pop_short:0 "\n§G+1§! £mod_job_farmer_add£ pro $VALUE$ £pop£"
+  job_fe_acolyte_mine_per_pop:0 "§G+1§! $job_fe_acolyte_mine$ Arbeitsplatz pro $VALUE$ Bewohner"
+  mod_job_fe_acolyte_mine_per_pop_short:0 "\n§G+1§! £mod_job_miner_add£ pro $VALUE$ £pop£"
+  job_fe_acolyte_generator_per_pop:0 "§G+1§! $job_fe_acolyte_generator$ Arbeitsplatz pro $VALUE$ Bewohner"
+  mod_job_fe_acolyte_generator_per_pop_short:0 "\n§G+1§! £mod_job_technician_add£ pro $VALUE$ £pop£"
+  
+  #######################################################################################################
+  # Capacity Modifiers
+  mod_giga_asteroid_artillary_limit_add:99 "$name_asteroid_artillery$ Capacity"
+  mod_giga_asteroid_manufactory_limit_add:99 "$name_asteroid_manufactory$ Capacity"
+  mod_giga_glue_limit_add:99 "$name_terraform_shattered$ Capacity"
+  mod_giga_kugel_limit_add:99 "$name_kugelblitz$ Capacity"
+  mod_giga_terraform_gasgiant_limit_add:99 "$name_terraform_gasgiant$ Capacity"
+  mod_giga_storm_observatory_limit_add:99 "$name_atmosphere_shredder$ Capacity"
+  mod_giga_megabase_limit_add:99 "$name_eng_test_site$ Capacity"
+  mod_giga_drill_limit_add:99 "$name_auto_stripmine$ Capacity"
+  mod_giga_crystal_limit_add:99 "$name_crystal_megabore$ Capacity"
+  mod_giga_orbital_artificial_eco_limit_add:99 "$name_orbital_artificial_eco$ Capacity"
+  mod_giga_planetary_seeder_nexus_limit_add:99 "$name_planetary_seeder_nexus$ Capacity"
+  mod_giga_succ_limit_add:99 "$name_succ$ Capacity"
+  mod_giga_terraform_toxic_limit_add:99 "$name_terraform_toxic$ Capacity"
+  mod_giga_terraform_barren_limit_add:99 "$name_terraform_barren$ Capacity"
+  mod_giga_geothermal_limit_add:99 "$name_terraform_molten$ Capacity"
+  mod_giga_warmoon_limit_add:99 "$name_war_moon$ Capacity"
+  mod_giga_the_vat_limit_add:99 "$name_the_vat$ Capacity"
+  mod_giga_vanilla_dyson_limit_add:99 "$dyson_sphere_5$ Capacity"
+  mod_giga_shipyard_limit_add:99 "$name_eq_shipyard$ Capacity"
+  mod_giga_suppressor_limit_add:99 "$name_fusion_suppressor$ Capacity"
+  mod_giga_vanilla_interstellar_limit_add:99 "$interstellar_assembly_4$ Capacity"
+  mod_giga_stellarhabitat_limit_add:99 "$name_interstellar_hab$ Capacity"
+  mod_giga_disco_moon_limit_add:99 "$name_discomoon$ Capacity"
+  mod_giga_maginot_limit_add:99 "$name_maginot$ Capacity"
+  mod_giga_vanilla_matter_limit_add:99 "$matter_decompressor_4$ Capacity"
+  mod_giga_vanilla_art_limit_add:99 "$mega_art_installation_3$ Capacity"
+  mod_giga_vanilla_shipyard_limit_add:99 "$mega_shipyard_3$ Capacity"
+  mod_giga_gigaforge_limit_add:99 "$name_neut_gigaforge$ Capacity"
+  mod_giga_orbital_arcologies_limit_add:99 "$name_orbital_arcology$ Capacity"
+  mod_giga_orbital_naval_logistics_limit_add:99 "$name_orb_naval_logistics$ Capacity"
+  mod_giga_penrose_sphere_limit_add:99 "$name_penrose$ Capacity"
+  mod_giga_planetary_computer_limit_add:99 "$name_planetary_computer$ Capacity"
+  mod_giga_planetshipyard_limit_add:99 "$name_planetshipyard$ Capacity"
+  mod_giga_psychic_beacon_limit_add:99 "$name_psychic_beacon$ Capacity"
+  mod_giga_siphon_limit_add:99 "$name_psy_siphon$ Capacity"
+  mod_giga_vanilla_ringworld_limit_add:99 "$ring_world_1$ Capacity"
+  mod_giga_vanilla_nexus_limit_add:99 "$think_tank_3$ Capacity"
+  mod_giga_vanilla_array_limit_add:99 "$spy_orb_4$ Capacity"
+  mod_giga_lifters_limit_add:99 "$name_starlifter$ Capacity"
+  mod_giga_vanilla_strategic_limit_add:99 "$strategic_coordination_center_3$ Capacity"
+  mod_giga_compressor_limit_add:99 "$name_sub_compressor$ Capacity"
+  mod_giga_orchid_limit_add:99 "$name_yggdrasil$ Capacity"
+  mod_giga_alderson_limit_add:99 "$name_alderson$ Capacity"
+  mod_giga_warplanet_limit_add:99 "$name_war_planet$ Capacity"
+  mod_giga_hraemc_limit_add:99 "$name_hraemc$ Capacity"
+  mod_giga_hyperstructural_ass_limit_add:99 "$name_hyperstructural_ass$ Capacity"
+  mod_giga_matrioshka_brain_limit_add:99 "$name_matrioshka_brain$ Capacity"
+  mod_giga_nidavellir_limit_add:99 "$name_nidavellir$ Capacity"
+  mod_giga_systemcraft_limit_add:99 "$name_war_system$ Capacity"

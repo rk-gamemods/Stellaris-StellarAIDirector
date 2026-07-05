@@ -1,0 +1,179 @@
+﻿l_russian:
+  d_flusion_katown:0 "ЗАМЕНИ МЕНЯ"
+  d_flusion_katown_desc:0 "ЗАМЕНИ МЕНЯ"
+  
+  d_fluffy_plains:0 "Пушистые равнины"
+  d_fluffy_plains_desc:0 "Большие «плоские» равнины облаков с сильными ветрами."
+  
+  d_gassy_rivers:0 "Газовая река"
+  d_gassy_rivers_desc:0 "Массивная «река» движущихся газов, которую легко собрать."
+  
+  d_mote_cloud:0 "Газообразное облако пылинок"
+  d_mote_cloud_desc:0 "Огромные плывущие облака летучих пылинок."
+  
+  d_floaters:0 "Плавающее стадо"
+  d_floaters_desc:0 "Большие стада переносимых по воздуху организмов дрейфуют в атмосфере."
+  
+  d_virtual_shipyard:0 "Солнечная верфь"
+  d_virtual_shipyard_desc:0 "В этом сегменте у нас может быть только одна Солнечная верфь."
+  
+  d_zro_cloud:0 "Туманность Зро"
+  d_zro_cloud_desc:0 "Большие плывущие облака драгоценных частиц Зро, плывущие бесконечно."
+  
+  #########################################
+  ### Resource Deposits ###################
+  #########################################
+  
+  d_giga_supertensiles_1:99 "£giga_sr_amb_megaconstruction£ +1"
+  d_giga_supertensiles_1_desc:99 ""
+  d_giga_supertensiles_2:99 "£giga_sr_amb_megaconstruction£ +2"
+  d_giga_supertensiles_2_desc:99 ""
+  d_iodizium_deposit:99 "£giga_sr_iodizium£ +3"
+  d_iodizium_deposit_1:99 "£giga_sr_iodizium£ +1"
+  d_nicoll_deposit:99 "£minerals£ +10"
+  d_depletedstripmine_deposit:99 "£minerals£ +20"
+  d_nicollboom_deposit:99 "£minerals£ +15"
+  d_pouchkinn_deposit:99 "£physics£ +30"
+  d_ringworld_deposit:99 "£energy£ +50"
+  d_succ_deposit:99 "£minerals£ +10 £exotic_gases£ +5 £rare_crystals£ +5"
+  d_giga_hab_nanites_1:99 "£nanites£ +1"
+  d_giga_hab_consumer_goods_1:99 "£consumer_goods£ +1"
+  d_giga_hab_astral_threads_1:99 "£astral_threads£ +1"
+  d_subsurface_ocean_deposit_1:99 "£food£ +4 £society£ +4"
+  d_iodizium_deposit_desc:99 ""
+  d_iodizium_deposit_1_desc:99 ""
+  d_nicoll_deposit_desc:99 ""
+  d_depletedstripmine_deposit_desc:99 ""
+  d_nicollboom_deposit_desc:99 ""
+  d_pouchkinn_deposit_desc:99 ""
+  d_ringworld_deposit_desc:99 ""
+  d_succ_deposit_desc:99 ""
+  d_giga_hab_nanites_1_desc:99 ""
+  d_giga_hab_consumer_goods_1_desc:99 ""
+  d_giga_hab_astral_threads_1_desc:99 ""
+  d_subsurface_ocean_deposit_1_desc:99 ""
+  d_giga_food_1:99 "£food£ +1"
+  d_giga_food_1_desc:99 "$d_giga_food_1$"
+  d_giga_food_2:99 "£food£ +2"
+  d_giga_food_2_desc:99 "$d_giga_food_2$"
+  
+  #########################################
+  ### Lifeless World Deposits #############
+  #########################################
+  
+  d_giga_lifeless_zro_1:99 "Zro Deposit"
+  d_giga_lifeless_zro_1_desc:99 "This world has an exploitable source of zro dust."
+  
+  d_giga_lifeless_dark_matter_1:99 "Dark Matter Deposit"
+  d_giga_lifeless_dark_matter_1_desc:99 "This world has an exploitable source of dark matter."
+  
+  d_giga_lifeless_living_metal_1:99 "Living Metal Deposit"
+  d_giga_lifeless_living_metal_1_desc:99 "This world has an exploitable source of living metal."
+  
+  d_giga_lifeless_nanites_1:99 "Nanite Deposit"
+  d_giga_lifeless_nanites_1_desc:99 "This world has an exploitable source of nanites."
+  
+  d_giga_lifeless_iodizium_1:99 "Iodizium Deposit"
+  d_giga_lifeless_iodizium_1_desc:99 "This world has an exploitable source of iodizium crystals."
+  
+  d_giga_hab_iodizium_1:99 "Iodizium Deposit"
+  d_giga_hab_iodizium_1_desc:99 "This Habitat Complex is built near an exploitable iodizium crystal deposit."
+  
+  #########################################
+  ### Mega Deposits ######################
+  #########################################
+  
+  d_small_natural_tunnel:0 "Туннель Борея"
+  d_small_natural_tunnel_desc:0 "Небольшой естественный туннель, соединяющий большое озеро, расположенное посреди одного из континентов планеты, с океаном. Его существование, по-видимому, бросает вызов всем законам природы и разума, заставляя туземцев полагать, что оно было создано самими богами."
+  
+  
+  #########################################
+  ### Flavor Deposits #####################
+  #########################################
+  
+  d_arcane_mineral_generator:0 "Волшебный преобразователь"
+  d_arcane_mineral_generator_desc:0 "Древнее устройство волшебного производства, которое добывает полезные ископаемые, казалось бы, из воздуха."
+  
+  d_giga_orbital_effects:99 "System Transport Network"
+  d_giga_orbital_effects_desc:99 "The $name_giga_orbital$ in this system dominates local logistical planning."
+  
+  d_pcc_origin_blocker:99 "Decayed Conduit"
+  d_pcc_origin_blocker_desc:99 "Large portions of the planet's huge processing arrays are currently unreachable from our research facilities due to damaged connections between computational subsections."
+  
+  d_giga_rogue_ai_relay_servers:0 "Разбойные массивы процессоров"
+  d_giga_rogue_ai_relay_servers_desc:0 "Огромные массивы процессоров и серверов, используемые ИИ-разбойником для проецирования своей мощности на Планетарный вычислительный комплекс, чтобы бороться с нами на каждом шагу, саботируя инфраструктуру и активно пытаясь убить наших колонистов."
+  
+  d_giga_rogue_ai_corrupt_code:0 "Поврежденный код"
+  d_giga_rogue_ai_corrupt_code_desc:0 "Большие блоки банков данных Планетарного вычислительного комплекса заполнены опасным вредоносным программным кодом, активно мешающим нашим научным исследованиям на этой планете."
+  
+  d_ringworld_capital_city:0 "Великая столица"
+  d_ringworld_capital_city_desc:0 "Великая столица, построенная на кольцевом мире. Это место служит центральным узлом для сегмента кольцевого мира и предоставляет местному населению различные услуги."
+  
+  d_interstellar_ringworld_commerce_blocker:0 "Заброшенная инфраструктура"
+  d_interstellar_ringworld_commerce_blocker_desc:0 "Поскольку кольцевой мир предлагает почти бесконечное пространство, перестройке земли уделялось мало внимания, что привело к тому, что большие участки земли были заполнены давно заброшенными зданиями. Если эти территории будут очищены и застроены заново, местный бизнес сможет значительно вырасти, увеличивая богатство империи."
+  
+  d_great_ring_excavated_mountain:0 "Узел системы самовосстановления Мира-кольца"
+  d_great_ring_excavated_mountain_desc:0 "Открытый узел автоматической системы самовосстановления кольцевого мира. Он непрерывно генерирует материю, необходимую для поддержания мегаструктуры в рабочем состоянии. И если мы будем осторожны, мы сможем перекачать часть этого материала для собственных нужд без ущерба для нашего искусственного дома."
+  
+  d_giga_arcane_generator:99 "$d_arcane_generator$"
+  d_giga_arcane_generator_desc:99 "$d_arcane_generator_desc$"
+  
+  
+  d_decrepit_tunnels_squareworld:99 "$d_decrepit_tunnels_1$"
+  d_decrepit_tunnels_squareworld_desc:99 "$d_decrepit_tunnels_1_desc$"
+  
+  d_predictable_solar_flares:99 "Predictable Solar Flares"
+  d_predictable_solar_flares_desc:99 "The star our homeworld orbits around exhibits specific behavior preceding a solar flare, making energy extraction significantly easier."
+  
+  d_giga_decrepit_tunnels_1:99 "$d_decrepit_tunnels_1$"
+  d_giga_decrepit_tunnels_1_desc:99 "$d_decrepit_tunnels_1_desc$"
+  
+  d_giga_decrepit_tunnels_2:99 "$d_decrepit_tunnels_1$"
+  d_giga_decrepit_tunnels_2_desc:99 "$d_decrepit_tunnels_1_desc$"
+  
+  d_giga_decrepit_tunnels_3:99 "$d_decrepit_tunnels_1$"
+  d_giga_decrepit_tunnels_3_desc:99 "$d_decrepit_tunnels_1_desc$"
+  
+  d_flusio_arcology_wreck:99 "Wrecked Megacities"
+  d_flusio_arcology_wreck_desc:99 "Cities partially or completely destroyed in the fighting that occurred on the Flusio-Arcology."
+  d_flusio_arcology_anarchy:99 "Flusionian Anarchy"
+  d_flusio_arcology_anarchy_desc:99 "Large swathes of Flusion have fallen into complete anarchy as a result of collateral damage from the devastating fighting to dislodge the Kaiser from the planet."
+  
+  d_flusio_arcology_administration:99 "Flusio-Arcology Administration"
+  d_flusio_arcology_administration_desc:99 "Administering the logistical nightmare that surrounds Flusion is no easy task. Due to the immense number of districts the Flusio-Arcology can support, more care must be taken to manage it properly."
+  
+  d_flusio_arcology_administration_tooltip:99 "[giga_flusion_administration_mechanics]"
+  
+  d_solaktropa_project:99 "Roqualtropa Project"
+  d_solaktropa_project_desc:99 "The Roqualtropa Project creates vast quantities of useable land for the Katzens to build upon as well as tremendous quantities of water for agriculture, at the cost of disturbing Flusion's natural climate."
+  
+  d_solaktropa_project_wreck:99 "Roqualtropa Wreck"
+  d_solaktropa_project_wreck_desc:99 "The destruction of the Roqualtropa Dam has caused untold quantities of devastation to Flusion and its inhabitants."
+  
+  d_katlantropa_project:99 "Katlantropa Project"
+  d_katlantropa_project_desc:99 "The Katlantropa Project irrigates formerly desertic areas, rendering them suitable for agriculture and irrigation."
+  
+  d_katlantropa_project_wreck:99 "Katlantropa Desertification"
+  d_katlantropa_project_wreck_desc:99 "The destruction of Katlantropa has reverted formerly arable areas into vast deserts."
+  
+  
+  #########################################
+  ### Birch Deposits ######################
+  #########################################
+  
+  d_aeternum_gigantic_fission_reactor:0 "Колоссальный реактор деления"
+  d_aeternum_gigantic_fission_reactor_desc:0 "Странный реактор деления, построенный Аэтернум в отдаленной части, обрабатывающий гигантский кусок урана и производящий огромное количество электричества."
+  
+  d_exp_civ_primitive_preserve:0 "Заповедник Бёрча первобытной цивилизации"
+  d_exp_civ_primitive_preserve_desc:0 "На куске Мира Бёрча обитает целая примитивная цивилизация. Их изучение представляет собой невероятный научный потенциал."
+  
+  d_exp_civ_space_preserve:0 "Заповедник Бёрча космической эры"
+  d_exp_civ_space_preserve_desc:0 "На куске Мира Бёрча обитает целая цивилизация космической эры. Их изучение представляет собой невероятный научный потенциал."
+  
+  d_exp_civ_fe_preserve:0 "Заповедник Бёрча цивилизации предтеч"
+  d_exp_civ_fe_preserve_desc:0 "На куске Мира Бёрча обитает целая древняя цивилизация-предтеч. Их изучение представляет собой невероятный научный потенциал."
+  
+  d_aeternum_decaying_hyperstructure:0 "Разрушающаяся гиперструктура"
+  d_aeternum_decaying_hyperstructure_desc:0 "Большая часть этого Мира Бёрча пришла в упадок после тысяч лет забвения. Их ремонт, несомненно, будет сложной задачей, но это позволит нам снова расширить пригодную для жизни территорию этого Мира Бёрча.\n\nОчистив это, мы получим §G3§! $aeternum_tech_intel$."
+  
+  

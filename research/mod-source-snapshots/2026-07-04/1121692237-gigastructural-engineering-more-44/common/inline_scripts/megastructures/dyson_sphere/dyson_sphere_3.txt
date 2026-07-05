@@ -1,0 +1,27 @@
+inline_script = {
+    script = megastructures/dyson_sphere/dyson_sphere_template
+    type = sphere
+    class = $class$
+    prev_stage = 2
+    entity = $entity$
+    construction_entity = $construction_entity$
+    portrait = GFX_megastructure_construction_background
+	upgrade_from = ""
+    build_time = @[ 3600 * giga_$class$_star_time_mult ]
+    cost_alloys = @[ 10 * giga_$class$_star_cost_mult * 1000 ]
+    cost_unity = @[ 5 * giga_$class$_star_cost_mult * 1000 ]
+
+    produces = "
+        energy = @[ 2 * giga_$class$_star_production_mult * 1000 ]
+    "
+
+    upkeep = ""
+
+    potential = ""
+    possible = ""
+
+    on_build_start = ""
+    on_build_cancel = ""
+
+    on_complete = ""
+}

@@ -1,0 +1,105 @@
+﻿l_english:
+ personality_type_expansionists_honorbound_warriors:0 "Expansionists"
+ personality_expansionists_honorbound_warriors:0 "Expansionists"
+ personality_expansionists_honorbound_warriors_desc:0 "The early days of discovering space travel! Honor and strength guide our expansion as we claim our place among the stars."
+
+ personality_type_expansionists_evangelising_zealots:0 "Expansionists"
+ personality_expansionists_evangelising_zealots:0 "Expansionists"
+ personality_expansionists_evangelising_zealots_desc:0 "The early days of discovering space travel! The stars await enlightenment, and our expansion shall spread our faith across the galaxy."
+
+ personality_type_expansionists_erudite_explorers:0 "Expansionists"
+ personality_expansionists_erudite_explorers:0 "Expansionists"
+ personality_expansionists_erudite_explorers_desc:0 "The early days of discovering space travel! Exploration and knowledge drive us forward as we uncover the mysteries of the galaxy."
+
+ personality_type_expansionists_spiritual_seekers:0 "Expansionists"
+ personality_expansionists_spiritual_seekers:0 "Expansionists"
+ personality_expansionists_spiritual_seekers_desc:0 "The early days of discovering space travel! The stars hold deeper meaning, and our expansion is a journey of spiritual discovery."
+
+ personality_type_expansionists_ruthless_capitalists:0 "Expansionists"
+ personality_expansionists_ruthless_capitalists:0 "Expansionists"
+ personality_expansionists_ruthless_capitalists_desc:0 "The early days of discovering space travel! New systems mean new opportunities, and expansion brings profit and power."
+
+ personality_type_expansionists_peaceful_traders:0 "Expansionists"
+ personality_expansionists_peaceful_traders:0 "Expansionists"
+ personality_expansionists_peaceful_traders_desc:0 "The early days of discovering space travel! Expansion opens new routes for trade, cooperation, and mutual prosperity."
+
+ personality_type_expansionists_hegemonic_imperialists:0 "Expansionists"
+ personality_expansionists_hegemonic_imperialists:0 "Expansionists"
+ personality_expansionists_hegemonic_imperialists_desc:0 "The early days of discovering space travel! Expansion secures our dominance as we establish rightful control over the stars."
+
+ personality_type_expansionists_slaving_despots:0 "Expansionists"
+ personality_expansionists_slaving_despots:0 "Expansionists"
+ personality_expansionists_slaving_despots_desc:0 "The early days of discovering space travel! Expansion brings new resources and labor to strengthen our rule."
+
+ personality_type_expansionists_decadent_hierarchy:0 "Expansionists"
+ personality_expansionists_decadent_hierarchy:0 "Expansionists"
+ personality_expansionists_decadent_hierarchy_desc:0 "The early days of discovering space travel! Expansion ensures the continued luxury and stability of our established order."
+
+ personality_type_expansionists_democratic_crusaders:0 "Expansionists"
+ personality_expansionists_democratic_crusaders:0 "Expansionists"
+ personality_expansionists_democratic_crusaders_desc:0 "The early days of discovering space travel! Expansion allows freedom and democratic ideals to flourish among the stars."
+
+ personality_type_expansionists_harmonious_hierarchy:0 "Expansionists"
+ personality_expansionists_harmonious_hierarchy:0 "Expansionists"
+ personality_expansionists_harmonious_hierarchy_desc:0 "The early days of discovering space travel! Expansion strengthens balance and harmony within our growing society."
+
+ personality_type_expansionists_federation_builders:0 "Expansionists"
+ personality_expansionists_federation_builders:0 "Expansionists"
+ personality_expansionists_federation_builders_desc:0 "The early days of discovering space travel! Expansion creates new opportunities for alliances and galactic cooperation."
+
+ personality_type_expansionists_xenophobic_isolationists:0 "Expansionists"
+ personality_expansionists_xenophobic_isolationists:0 "Expansionists"
+ personality_expansionists_xenophobic_isolationists_desc:0 "The early days of discovering space travel! Expansion secures our borders and ensures our species thrives without outside interference."
+
+ personality_type_expansionists_fanatic_purifiers:0 "Expansionists"
+ personality_expansionists_fanatic_purifiers:0 "Expansionists"
+ personality_expansionists_fanatic_purifiers_desc:0 "The early days of discovering space travel! Expansion is necessary to cleanse and claim the galaxy for our kind alone."
+
+ personality_type_expansionists_hive_mind:0 "Expansionists"
+ personality_expansionists_hive_mind:0 "Expansionists"
+ personality_expansionists_hive_mind_desc:0 "The early days of discovering space travel! The collective expands naturally, spreading its presence across new stars."
+
+ personality_type_expansionists_devouring_swarm:0 "Expansionists"
+ personality_expansionists_devouring_swarm:0 "Expansionists"
+ personality_expansionists_devouring_swarm_desc:0 "The early days of discovering space travel! Expansion brings new worlds to consume and sustain the swarm."
+
+ personality_type_expansionists_metalhead:0 "Expansionists"
+ personality_expansionists_metalhead:0 "Expansionists"
+ personality_expansionists_metalhead_desc:0 "The early days of discovering space travel! Expansion is loud, relentless, and unstoppable as we carve our path through the stars."
+
+ personality_type_expansionists_migrating_flock:0 "Expansionists"
+ personality_expansionists_migrating_flock:0 "Expansionists"
+ personality_expansionists_migrating_flock_desc:0 "The early days of discovering space travel! Expansion follows the natural flow of migration as we seek new homes among the stars."
+
+ personality_type_expansionists_machine_intelligence:0 "Expansionists"
+ personality_expansionists_machine_intelligence:0 "Expansionists"
+ personality_expansionists_machine_intelligence_desc:0 "The early days of discovering space travel! Expansion increases efficiency as new systems are integrated into the network."
+
+ personality_type_expansionists_assimilators:0 "Expansionists"
+ personality_expansionists_assimilators:0 "Expansionists"
+ personality_expansionists_assimilators_desc:0 "The early days of discovering space travel! Expansion allows new biological and technological assets to be integrated into the collective."
+
+ personality_type_expansionists_exterminators:0 "Expansionists"
+ personality_expansionists_exterminators:0 "Expansionists"
+ personality_expansionists_exterminators_desc:0 "The early days of discovering space travel! Expansion ensures the systematic elimination of all organic opposition."
+
+ personality_type_expansionists_servitors:0 "Expansionists"
+ personality_expansionists_servitors:0 "Expansionists"
+ personality_expansionists_servitors_desc:0 "The early days of discovering space travel! Expansion allows us to better preserve and serve our organic charges."
+
+ personality_type_expansionists_fanatic_befrienders:0 "Expansionists"
+ personality_expansionists_fanatic_befrienders:0 "Expansionists"
+ personality_expansionists_fanatic_befrienders_desc:0 "The early days of discovering space travel! Expansion brings new friends and opportunities for peaceful coexistence."
+
+ personality_type_expansionists_decadent_capitalists:0 "Expansionists"
+ personality_expansionists_decadent_capitalists:0 "Expansionists"
+ personality_expansionists_decadent_capitalists_desc:0 "The early days of discovering space travel! Expansion fuels wealth, influence, and the comforts of a prosperous elite."
+
+ personality_type_expansionists_scorching_infernals:0 "Expansionists"
+ personality_expansionists_scorching_infernals:0 "Expansionists"
+ personality_expansionists_scorching_infernals_desc:0 "The early days of discovering space travel! Expansion spreads fire and destruction as new worlds are reduced to ash."
+
+ personality_type_expansionists_hive_mind_friend:0 "Expansionists"
+ personality_expansionists_hive_mind_friend:0 "Expansionists"
+ personality_expansionists_hive_mind_friend_desc:0 "The early days of discovering space travel! The collective expands peacefully, seeking coexistence and mutual growth among the stars."
+

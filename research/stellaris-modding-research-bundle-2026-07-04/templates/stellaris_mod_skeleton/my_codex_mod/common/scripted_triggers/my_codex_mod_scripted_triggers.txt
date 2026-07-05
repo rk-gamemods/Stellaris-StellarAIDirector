@@ -1,0 +1,7 @@
+# Scripted triggers for My Codex Mod.
+# Validate with CWTools and current Stellaris vanilla files.
+
+my_codex_mod_is_regular_country = {
+    exists = this
+    is_country_type = default
+}

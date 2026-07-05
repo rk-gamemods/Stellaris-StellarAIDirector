@@ -1,0 +1,61 @@
+# Stellar AI Director Tuning Notes
+
+Generated thresholds are derived from decision-eligible, resolved ROI rows.
+
+| knob | current value | intent |
+| --- | ---: | --- |
+| prep stockpile alloys | 15000 | minimum reserve before new megastructure prep |
+| prep income alloys | 130 | minimum monthly alloy income for prep |
+| commit stockpile alloys | 27000 | reserve for continuing safe projects |
+| shipyard stockpile alloys | 12000 | reserve before shipyard payoff exploitation |
+| shipyard income alloys | 150 | monthly alloy floor for fleet-production sink |
+| fleet buildup stockpile energy | 8000 | energy runway before shipyard/fleet sink can add naval-cap pressure |
+| fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |
+| static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |
+| static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |
+| crisis starbase threat | 50 | threat floor that can activate crisis starbase reserve |
+| planetary-capacity stockpile minerals | 5000 | mineral runway before expanded planet/building capacity target activates |
+| planetary-capacity stockpile energy | 5000 | energy runway before expanded planet/building capacity target activates |
+| planetary-capacity pops target | 250000 | pop target used by safe country-level capacity subplan |
+| eligible ROI rows | 140 | source sample used for threshold generation |
+
+## Static-Defense Policy
+
+- Defensive or high-threat empires get additive starbase reserve subplans only after recovery and short-runway deficit gates are clear.
+- Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.
+- Direct starbase module/building weights remain deferred until each parent surface can be proven safe to override.
+
+## Fleet-Throughput Policy
+
+- Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, alloy stockpile, and energy stockpile are all safe.
+- Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).
+- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.
+
+## Unlock-Research Policy
+
+- Surplus empires use the unlock-research policy to keep pressure on physics, society, engineering, and unity until core Mega Engineering and Mega Shipyard gates are present.
+- Direct technology/AP/tradition object overrides are deferred in v1; generated references are limited to validator-checked technology gates.
+
+## Mega/Giga Build Priority Policy
+
+- ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.
+- Direct individual megastructure/gigastructure build-weight overrides are deferred unless a parent object surface is proven safe for the specific candidate.
+- Exotic or path-specific projects remain deferred until the core loop is observer-tested.
+
+## Planetary-Capacity Policy
+
+- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral and energy runway are safe.
+- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.
+- No generated building/job references are emitted in v1; direct planet automation rewrites remain deferred until a specific missing parent surface is proven.
+
+## NSC3/ESC Design Policy
+
+- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.
+- Warning rows in the P11 integration audit are treated as parent-design gaps to observe, not automatic v1 override targets.
+
+## Safe Tuning Rules
+
+- Do not lower prep or commit reserves below survival/recovery safety gates.
+- Keep research sink before fleet sink until core modded unlocks are available.
+- Treat unpriced resources as bottlenecks, not fake scalar value.
+- Re-run generator, validator, unit tests, and coverage after every tuning change.

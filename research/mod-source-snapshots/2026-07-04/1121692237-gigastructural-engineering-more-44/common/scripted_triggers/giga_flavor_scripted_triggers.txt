@@ -1,0 +1,23 @@
+is_valid_yggdrasil_food_beggar = {
+	is_ai = yes
+	giga_is_standard_country_type = yes
+	has_communications = ROOT
+	NOT = { is_rival = ROOT }
+	NOT = { is_at_war_with = ROOT }
+	NOT = { has_modifier = yggdrasil_food_share_recipient }
+	opinion = {
+		who = ROOT
+		value > -100
+	}
+	country_uses_food = yes
+	NOR = {
+		owner_main_species = { has_trait = trait_lithoid }
+		AND = {
+			is_machine_empire = yes
+			NOT = { has_valid_civic = civic_machine_servitor }
+		}
+		any_owned_megastructure = { is_megastructure_type = yggdrasil_orchid_3 }
+		any_owned_megastructure = { is_megastructure_type = yggdrasil_orchid_restored }
+		is_homicidal = yes
+	}
+}

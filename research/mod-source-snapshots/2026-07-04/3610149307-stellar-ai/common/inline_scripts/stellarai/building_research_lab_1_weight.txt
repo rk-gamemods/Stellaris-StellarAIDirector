@@ -1,0 +1,5 @@
+ai_weight = {
+	inline_script = {
+		script = stellarai/building_research_lab_1_weight_modifiers
+	}
+}

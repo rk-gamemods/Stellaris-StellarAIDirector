@@ -1,0 +1,38 @@
+# Planetcraft
+utility_component_template = {
+	key = "SHIP_AURA_PLANET"
+	size = medium
+	icon = "GFX_ship_part_aura_shield_dampener"
+	power = 0
+	icon_frame = 1
+	potential = { giga_ship_uses_war_planet_components = yes }
+	component_set = "ship_aura_components"
+
+	hostile_aura = {
+		name = "aura_ship_gravity_well"
+		radius = 125
+		apply_on = ships
+
+		stack_info = {			#A ship can only be affected by one aura of a certain id. If multiple auras have the same ID the one with the highest priority will be applied.
+			id = planetary_presence_aura
+			priority = 1
+		}
+
+		modifier = {
+			ship_evasion_mult = -0.15
+			ship_speed_mult = -0.2
+			ship_disengage_opportunities_add = -2
+		}
+
+		graphics = {
+			area_effect = {
+				entity = "circle_area_entity"
+				dynamic_scale = yes
+			}
+			ship_effect = {
+				entity = "ship_aura_negative_entity"
+				dynamic_scale = no
+			}
+		}
+	}
+}

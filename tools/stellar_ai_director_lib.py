@@ -1,0 +1,4912 @@
+#!/usr/bin/env python3
+"""Deterministic tooling for the Stellar AI Director patch mod.
+
+This module intentionally keeps Stellaris PDXScript parsing lightweight and
+local. It extracts enough structure for AI-budget, economic-plan, technology,
+and megastructure validation without pretending to be a full game compiler.
+"""
+
+from __future__ import annotations
+
+import csv
+import hashlib
+import json
+import math
+import os
+import re
+import zipfile
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Iterable
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+SNAPSHOT_ROOT = REPO_ROOT / "research" / "mod-source-snapshots" / "2026-07-04"
+IRONY_DATA_ROOT = Path(r"C:\Users\Admin\AppData\Roaming\Mario")
+STELLARIS_INSTALL_ROOT = Path(r"C:\Steam\steamapps\common\Stellaris")
+STELLARIS_LOG_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\logs")
+STELLARIS_SAVE_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\save games")
+PARADOX_MOD_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\mod")
+DLC_LOAD_PATH = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\dlc_load.json")
+MOD_ROOT = REPO_ROOT / "mods" / "StellarAIDirector"
+RESEARCH_ROOT = REPO_ROOT / "research" / "stellar-ai"
+DIRECTOR_DLC_LOAD_ENTRY = "mod/StellarAIDirector.mod"
+BASELINE_ERROR_LOG = RESEARCH_ROOT / "baseline-without-director-error-2026-07-04.log"
+BASELINE_GAME_LOG = RESEARCH_ROOT / "baseline-without-director-game-2026-07-04.log"
+WITH_DIRECTOR_ERROR_LOG = RESEARCH_ROOT / "with-director-error-2026-07-04.log"
+WITH_DIRECTOR_GAME_LOG = RESEARCH_ROOT / "with-director-game-2026-07-04.log"
+MAIN_MENU_PROOF_PATH = RESEARCH_ROOT / "stellar-ai-director-main-menu-proof-2026-07-04.json"
+MAIN_MENU_CONFIRMATION_ENV = "STELLAR_AI_DIRECTOR_MAIN_MENU_CONFIRMED"
+LAUNCH_SURFACE_ENV = "STELLAR_AI_DIRECTOR_LAUNCH_SURFACE"
+MAIN_MENU_REQUIRED_MODES = ("baseline_without_director", "with_director")
+LOAD_PROOF_EVENT_ID = "staid_load_proof.1"
+LOAD_PROOF_LOG_MARKER = "STELLAR_AI_DIRECTOR_LOAD_PROOF"
+LOAD_PROOF_TITLE = "Stellar AI Director Loaded"
+PLAN_PATH = REPO_ROOT / "plans" / "stellar-ai-director-v1-remaining-plan.md"
+PLAN_STATUS_JSON = RESEARCH_ROOT / "stellar-ai-director-v1-plan-status-2026-07-04.json"
+PLAN_STATUS_MD = RESEARCH_ROOT / "stellar-ai-director-v1-plan-status-2026-07-04.md"
+REFERENCE_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-generated-reference-audit-2026-07-04.csv"
+REFERENCE_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-generated-reference-audit-2026-07-04.md"
+DEPENDENCY_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-dependency-audit-2026-07-04.csv"
+DEPENDENCY_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-dependency-audit-2026-07-04.md"
+IRONY_ORDER_PROOF_JSON = RESEARCH_ROOT / "stellar-ai-director-irony-order-proof-2026-07-04.json"
+IRONY_ORDER_PROOF_MD = RESEARCH_ROOT / "stellar-ai-director-irony-order-proof-2026-07-04.md"
+IRONY_CONFLICT_SCAN_MD = RESEARCH_ROOT / "stellar-ai-director-irony-conflict-scan-2026-07-04.md"
+IRONY_REVIEWED_CONFLICT_OBJECTS = {
+    "alloys_expenditure_megastructures",
+    "negative_mass_expenditure_megastructures",
+    "sentient_metal_expenditure_megastructures",
+    "supertensiles_upkeep_megastructures",
+}
+FILE_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-generated-file-audit-2026-07-04.csv"
+FILE_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-generated-file-audit-2026-07-04.md"
+ROI_QUALITY_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-roi-quality-audit-2026-07-04.csv"
+ROI_QUALITY_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-roi-quality-audit-2026-07-04.md"
+INTEGRATION_POLICY_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-integration-policy-audit-2026-07-04.csv"
+INTEGRATION_POLICY_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-integration-policy-audit-2026-07-04.md"
+OBSERVER_SMOKE_SAVE_SUMMARY_JSON = RESEARCH_ROOT / "stellar-ai-director-observer-smoke-save-summary-2026-07-04.json"
+OBSERVER_SMOKE_SAVE_SUMMARY_MD = RESEARCH_ROOT / "stellar-ai-director-observer-smoke-save-summary-2026-07-04.md"
+
+REQUIRED_MODS = {
+    "3610149307": "Stellar AI",
+    "1121692237": "Gigastructural Engineering & More (4.4)",
+    "683230077": "NSC3",
+    "2648658105": "Extra Ship Components NEXT",
+    "3250900527": "Starbase Extended 3.0",
+}
+
+UNIVERSAL_RESOURCE_PATCH_NAME = "!!!Universal Resource Patch [2.4+]"
+
+OPTIONAL_MOD_NAME_MARKERS = {
+    "Universal Resource Patch": "Universal Resource Patch",
+    "Smarter Hyper Relays": "Smarter Hyper Relays",
+    "Spacefleet Tactica": "Spacefleet Tactica",
+    "Planetary Diversity": "Planetary Diversity",
+    "Guilli": "Guilli's Planet Modifiers and Features",
+}
+
+RESOURCE_VALUES = {
+    "alloys": 1.0,
+    "minerals": 0.35,
+    "energy": 0.25,
+    "consumer_goods": 0.75,
+    "unity": 0.50,
+    "physics_research": 0.75,
+    "society_research": 0.75,
+    "engineering_research": 0.75,
+    "volatile_motes": 4.0,
+    "exotic_gases": 4.0,
+    "rare_crystals": 4.0,
+    "sr_dark_matter": 8.0,
+    "sr_zro": 8.0,
+    "nanites": 8.0,
+    "giga_sr_sentient_metal": 10.0,
+    "giga_sr_negative_mass": 10.0,
+    "giga_sr_amb_megaconstruction": 10.0,
+    "giga_sr_iodizium": 10.0,
+}
+
+VANILLA_COMMON_ROOT = Path(r"C:\Steam\steamapps\common\Stellaris\common")
+MARKET_TRADE_FEE_BASE = 0.30
+MARKET_MIN_FLUCTUATION_FROM_BASE_PRICE = -80.0
+MARKET_MAX_FLUCTUATION_FROM_BASE_PRICE = 400.0
+SHIPYARD_SLOT_ANNUAL_ALLOY_THROUGHPUT = 450.0
+
+ROI_TARGETS = [
+    "mega_shipyard",
+    "equatorial_shipyard",
+    "neutronium_gigaforge",
+    "gigaforge",
+    "nidavellir",
+    "hrae",
+    "dyson",
+    "matrioshka",
+    "strategic_factory",
+    "flagship",
+    "headquarters",
+]
+
+INTEGRATION_SURFACE_FOLDERS = {
+    "technology": ("technology", "P6"),
+    "ascension_perks": ("ascension_perk", "P6"),
+    "traditions": ("tradition", "P6"),
+    "megastructures": ("megastructure", "P7"),
+    "starbase_modules": ("starbase_module", "P9"),
+    "starbase_buildings": ("starbase_building", "P9"),
+    "buildings": ("building", "P10"),
+    "ship_sizes": ("ship_size", "P11"),
+    "component_templates": ("component_template", "P11"),
+}
+
+GENERATED_SURFACE_FOLDERS = {
+    "ai_budget": "ai_budget",
+    "economic_plans": "economic_plan",
+    "scripted_triggers": "scripted_trigger",
+    "script_values": "scripted_value",
+}
+GENERATED_AUXILIARY_COMMON_FOLDERS = {"on_actions"}
+
+PLAN_PHASE_EVIDENCE = {
+    "P0": ("research/stellar-ai/stellar-ai-director-munch-preflight-2026-07-04.md",),
+    "P1": (
+        "research/mod-source-snapshots/2026-07-04/snapshot-manifest.csv",
+        "research/mod-source-snapshots/2026-07-04/descriptor-inventory.csv",
+        "research/mod-source-snapshots/2026-07-04/pdx-object-inventory.csv",
+        "research/mod-source-snapshots/2026-07-04/ai-surface-inventory.csv",
+        "research/stellar-ai/stellar-ai-director-corpus-status-2026-07-04.md",
+    ),
+    "P2": (
+        "research/stellar-ai/stellar-ai-director-active-playset-2026-07-04.json",
+        "mods/StellarAIDirector/notes/load-order.md",
+        "research/stellar-ai/stellar-ai-director-dependency-audit-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-irony-order-proof-2026-07-04.json",
+    ),
+    "P3": (
+        "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-market-values-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+    ),
+    "P4": ("mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",),
+    "P5": (
+        "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
+        "mods/StellarAIDirector/common/ai_budget/zzz_staid_gigas_resource_budgets.txt",
+        "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "mods/StellarAIDirector/common/script_values/zzz_staid_roi_values.txt",
+        "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+        "mods/StellarAIDirector/common/on_actions/zzz_staid_load_proof_on_actions.txt",
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+    ),
+    "P6": (
+        "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+        "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+    ),
+    "P7": (
+        "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
+        "mods/StellarAIDirector/common/ai_budget/zzz_staid_gigas_resource_budgets.txt",
+        "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+        "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.md",
+        "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+    ),
+    "P8": (
+        "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+        "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+    ),
+    "P9": (
+        "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+        "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+    ),
+    "P10": (
+        "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+        "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+    ),
+    "P11": (
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+        "mods/StellarAIDirector/notes/conflicts.md",
+        "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+    ),
+    "P12": (
+        "research/stellar-ai/stellar-ai-director-generated-file-audit-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-dependency-audit-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+        "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+    ),
+    "P13": (
+        "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.md",
+        "research/stellar-ai/stellar-ai-director-irony-conflict-scan-2026-07-04.md",
+    ),
+    "P14": (
+        "mods/StellarAIDirector/common/on_actions/zzz_staid_load_proof_on_actions.txt",
+        "mods/StellarAIDirector/events/zzz_staid_load_proof_events.txt",
+        "mods/StellarAIDirector/localisation/english/staid_load_proof_l_english.yml",
+        "research/stellar-ai/stellar-ai-director-launch-comparison-2026-07-04.json",
+        "research/stellar-ai/stellar-ai-director-main-menu-proof-2026-07-04.json",
+        "research/stellar-ai/baseline-without-director-screenshot-2026-07-04.png",
+        "research/stellar-ai/with-director-screenshot-2026-07-04.png",
+        "research/stellar-ai/baseline-without-director-error-2026-07-04.log",
+        "research/stellar-ai/with-director-error-2026-07-04.log",
+    ),
+    "P15": (
+        "mods/StellarAIDirector/notes/observer-test-log.md",
+        "research/stellar-ai/stellar-ai-director-observer-smoke-save-summary-2026-07-04.json",
+        "research/stellar-ai/stellar-ai-director-observer-smoke-save-summary-2026-07-04.md",
+    ),
+    "P16": (
+        "mods/StellarAIDirector/README.md",
+        "mods/StellarAIDirector/notes/load-order.md",
+        "mods/StellarAIDirector/notes/conflicts.md",
+        "mods/StellarAIDirector/notes/observer-test-log.md",
+        "mods/StellarAIDirector/notes/tuning-notes.md",
+    ),
+}
+
+PLAN_PHASE_OPEN_REASONS = {
+    "P0": "Munch preflight requires recorded active-thread guide calls and startup-script pass evidence.",
+    "P1": "Source corpus requires current snapshot manifests, object inventories, AI-surface inventories, and recorded Munch refresh evidence.",
+    "P2": "Dependency names and final load-order position require a passing Irony order proof.",
+    "P3": "ROI artifacts require broad parent-mod coverage, bottleneck preservation, and no failed quality rows.",
+    "P4": "Decision helpers require generated trigger mapping for emergency exits, prep/commit, and surplus sinks.",
+    "P5": "Generated surfaces require validated files, references, conflict ownership, and documentation.",
+    "P6": "Unlock priority policy requires generated research/unity mapping and validated tech/AP/tradition references.",
+    "P7": "Mega/giga build priority requires ready ROI rows, generated budget gates, and explicit deferral of unsafe per-object overrides.",
+    "P8": "Shipyard/fleet sink policy requires generated economy-plan mapping plus anti-death-spiral gates.",
+    "P9": "Starbase policy requires generated static-defense subplans plus explicit notes for unsafe direct starbase object control.",
+    "P10": "Planet/building capacity policy requires generated economy-plan coverage or an explicit no-direct-building-reference rationale.",
+    "P11": "NSC3/ESC direct design overrides require explicit preservation rationale and no failed audit rows.",
+    "P12": "Validator requires missing-reference, quality, dependency, load-order, and ownership gates to pass.",
+    "P13": "Irony conflict scan has not been recorded.",
+    "P14": "Irony playset launch proof, visible Director load-proof message, and expected-only Director launch deltas are required.",
+    "P15": "Longer observer tuning still needs a useful high-ROI AI behavior checkpoint beyond startup/load proof.",
+    "P16": "Docs require dependency, load-order, conflict, tuning, validation, and observer-test workflow coverage.",
+}
+
+TEXT_SUFFIXES = {".txt", ".mod", ".asset", ".gfx", ".gui", ".yml", ".yaml", ".csv", ".json"}
+
+
+class PDXParseError(ValueError):
+    """Raised when a PDXScript source cannot be tokenized or parsed."""
+
+
+@dataclass(slots=True)
+class MarketPrice:
+    resource: str
+    market_amount: float
+    market_price: float
+    tradable: bool
+
+    @property
+    def base_energy(self) -> float:
+        return self.market_price / self.market_amount
+
+    @property
+    def min_sell_energy(self) -> float:
+        return self.base_energy * (1.0 + MARKET_MIN_FLUCTUATION_FROM_BASE_PRICE / 100.0)
+
+    @property
+    def max_buy_energy(self) -> float:
+        return self.base_energy * (1.0 + MARKET_MAX_FLUCTUATION_FROM_BASE_PRICE / 100.0)
+
+    @property
+    def default_fee_base_buy_energy(self) -> float:
+        return self.base_energy * (1.0 + MARKET_TRADE_FEE_BASE)
+
+    @property
+    def default_fee_floor_sell_energy(self) -> float:
+        return self.min_sell_energy * (1.0 - MARKET_TRADE_FEE_BASE)
+
+    @property
+    def default_fee_ceiling_buy_energy(self) -> float:
+        return self.max_buy_energy * (1.0 + MARKET_TRADE_FEE_BASE)
+
+
+@dataclass(slots=True)
+class PDXAtom:
+    value: str
+
+
+@dataclass(slots=True)
+class PDXAssignment:
+    key: str
+    value: "PDXValue"
+
+
+@dataclass(slots=True)
+class PDXBlock:
+    items: list[PDXAssignment | PDXAtom] = field(default_factory=list)
+
+
+PDXValue = PDXAtom | PDXBlock
+
+
+TOKEN_RE = re.compile(
+    r"""
+    "(?:\\.|[^"\\])*"
+    |[{}=]
+    |[<>]=?
+    |[^\s{}=<>#]+
+    """,
+    re.VERBOSE,
+)
+
+
+def read_text(path: Path) -> str:
+    for encoding in ("utf-8-sig", "utf-8", "cp1252", "latin-1"):
+        try:
+            return path.read_text(encoding=encoding)
+        except UnicodeDecodeError:
+            continue
+    return ""  # pragma: no cover - latin-1 fallback decodes arbitrary bytes.
+
+
+def strip_comments(text: str) -> str:
+    lines: list[str] = []
+    for line in text.splitlines():
+        in_quote = False
+        escaped = False
+        out = []
+        for char in line:
+            if char == "\\" and in_quote and not escaped:
+                escaped = True
+                out.append(char)
+                continue
+            if char == '"' and not escaped:
+                in_quote = not in_quote
+            if char == "#" and not in_quote:
+                break
+            out.append(char)
+            escaped = False
+        lines.append("".join(out))
+    return "\n".join(lines)
+
+
+def tokenize(text: str) -> list[str]:
+    return TOKEN_RE.findall(strip_comments(text))
+
+
+def parse_pdx(text: str) -> PDXBlock:
+    tokens = tokenize(text)
+    index = 0
+
+    def parse_value() -> PDXValue:
+        nonlocal index
+        if index >= len(tokens):
+            raise PDXParseError("Unexpected end of file while parsing value")
+        token = tokens[index]
+        if token == "{":
+            index += 1
+            block = PDXBlock()
+            while index < len(tokens) and tokens[index] != "}":
+                if index + 1 < len(tokens) and tokens[index + 1] == "=":
+                    key = tokens[index]
+                    index += 2
+                    block.items.append(PDXAssignment(key, parse_value()))
+                else:
+                    block.items.append(PDXAtom(tokens[index]))
+                    index += 1
+            if index >= len(tokens) or tokens[index] != "}":
+                raise PDXParseError("Malformed PDXScript: missing closing brace")
+            index += 1
+            return block
+        if token == "}":
+            raise PDXParseError("Malformed PDXScript: unexpected closing brace")
+        index += 1
+        return PDXAtom(token)
+
+    root = PDXBlock()
+    while index < len(tokens):
+        if tokens[index] == "}":
+            raise PDXParseError("Malformed PDXScript: unexpected closing brace at top level")
+        if index + 1 < len(tokens) and tokens[index + 1] == "=":
+            key = tokens[index]
+            index += 2
+            root.items.append(PDXAssignment(key, parse_value()))
+        else:
+            root.items.append(PDXAtom(tokens[index]))
+            index += 1
+    return root
+
+
+def parse_file(path: Path) -> PDXBlock:
+    try:
+        return parse_pdx(read_text(path))
+    except PDXParseError as exc:
+        raise PDXParseError(f"{path}: {exc}") from exc
+
+
+def atom_value(value: PDXValue) -> str | None:
+    return value.value.strip('"') if isinstance(value, PDXAtom) else None
+
+
+def block_assignments(block: PDXBlock, key: str | None = None) -> list[PDXAssignment]:
+    rows = [item for item in block.items if isinstance(item, PDXAssignment)]
+    if key is not None:
+        rows = [item for item in rows if item.key == key]
+    return rows
+
+
+def iter_assignments(value: PDXValue) -> Iterable[PDXAssignment]:
+    if isinstance(value, PDXBlock):
+        for item in value.items:
+            if isinstance(item, PDXAssignment):
+                yield item
+                yield from iter_assignments(item.value)
+
+
+def block_atoms(block: PDXBlock) -> list[str]:
+    return [item.value.strip('"') for item in block.items if isinstance(item, PDXAtom)]
+
+
+def collect_variables(text: str) -> dict[str, float]:
+    variables: dict[str, float] = {}
+    for token, value in re.findall(r"(?m)^\s*(@[A-Za-z0-9_.~!:+-]+)\s*=\s*([0-9.]+)\s*$", strip_comments(text)):
+        variables[token] = float(value)
+    return variables
+
+
+def collect_global_variables(roots: Iterable[Path]) -> dict[str, float]:
+    variables: dict[str, float] = {}
+    for root in roots:
+        scripted_variables = root / "common" / "scripted_variables"
+        if not scripted_variables.exists():
+            continue
+        for path in iter_text_files(scripted_variables):
+            variables.update(collect_variables(read_text(path)))
+    return variables
+
+
+def collect_market_prices(roots: Iterable[Path], vanilla_common_root: Path = VANILLA_COMMON_ROOT) -> dict[str, MarketPrice]:
+    prices: dict[str, MarketPrice] = {}
+    candidate_roots = [vanilla_common_root.parent if vanilla_common_root.name == "common" else vanilla_common_root]
+    candidate_roots.extend(roots)
+    for root in candidate_roots:
+        strategic_resources = root / "common" / "strategic_resources"
+        if root.name == "common":
+            strategic_resources = root / "strategic_resources"
+        if not strategic_resources.exists():
+            continue
+        for path in iter_text_files(strategic_resources):
+            try:
+                parsed = parse_file(path)
+            except PDXParseError:
+                continue
+            for assignment in block_assignments(parsed):
+                if not isinstance(assignment.value, PDXBlock):
+                    continue
+                resource = assignment.key
+                tradable = inline_bool_value(assignment.value, "tradable")
+                amount = inline_float_value(assignment.value, "market_amount")
+                price = inline_float_value(assignment.value, "market_price")
+                if tradable is True and amount and price and amount > 0 and price > 0:
+                    prices[resource] = MarketPrice(resource, amount, price, tradable=True)
+    return prices
+
+
+def eval_macro_expression(value: str, variables: dict[str, float]) -> float | None:
+    value = value.strip().strip('"')
+    if not (value.startswith("@[") and value.endswith("]")):
+        return None
+    expr = value[2:-1].strip()
+    expr = re.sub(
+        r"\b[A-Za-z_][A-Za-z0-9_]*\b",
+        lambda match: str(variables.get(f"@{match.group(0)}", match.group(0))),
+        expr,
+    )
+    if not re.fullmatch(r"[0-9.\s+*/()-]+", expr):
+        return None
+    try:
+        result = eval(expr, {"__builtins__": {}}, {})
+    except Exception:
+        return None
+    return float(result) if isinstance(result, (int, float)) and math.isfinite(result) else None
+
+
+def normalize_macro_expressions(text: str, variables: dict[str, float]) -> str:
+    def replace(match: re.Match[str]) -> str:
+        parsed = eval_macro_expression(match.group(0), variables)
+        if parsed is None:
+            return match.group(0)
+        return f"{parsed:g}"
+
+    return re.sub(r"@\[[^\]]+\]", replace, text)
+
+
+def resource_block_to_dict(value: PDXValue, variables: dict[str, float] | None = None) -> dict[str, float | str]:
+    resources: dict[str, float | str] = {}
+    variables = variables or {}
+    if not isinstance(value, PDXBlock):
+        return resources
+    multiplier_resource = None
+    multiplier_amount: float | str | None = None
+    for assignment in block_assignments(value, "multiplier"):
+        multiplier = atom_value(assignment.value) or ""
+        match = re.search(r"RESOURCE\|([^|]+)\|AMOUNT\|([^|]+)\|", multiplier)
+        if match:
+            multiplier_resource = match.group(1)
+            multiplier_amount = parse_numeric(match.group(2), variables)
+    for assignment in block_assignments(value):
+        if assignment.key in {"multiplier", "trigger"}:
+            continue
+        parsed = parse_numeric(atom_value(assignment.value), variables)
+        if isinstance(parsed, (int, float)) and parsed < 0:
+            if assignment.key == multiplier_resource and multiplier_amount is not None:
+                resources[assignment.key] = multiplier_amount
+            continue
+        resources[assignment.key] = parsed
+    return resources
+
+
+def parse_numeric(value: str | None, variables: dict[str, float] | None = None) -> float | str:
+    if value is None:
+        return 0.0
+    value = value.strip('"')
+    variables = variables or {}
+    if value in variables:
+        return variables[value]
+    macro_value = eval_macro_expression(value, variables)
+    if macro_value is not None:
+        return macro_value
+    try:
+        return float(value)
+    except ValueError:
+        return value
+
+
+def numeric_or_zero(value: float | str) -> float:
+    return value if isinstance(value, (int, float)) and math.isfinite(value) else 0.0
+
+
+def inline_float_value(block: PDXBlock, key: str) -> float | None:
+    for assignment in block_assignments(block, key):
+        value = parse_numeric(atom_value(assignment.value))
+        if isinstance(value, (int, float)) and math.isfinite(value):
+            return float(value)
+    return None
+
+
+def inline_bool_value(block: PDXBlock, key: str) -> bool | None:
+    value = inline_script_value(block, key)
+    if value == "yes":
+        return True
+    if value == "no":
+        return False
+    return None
+
+
+def weighted_resource_value(resources: dict[str, float | str], monthly: bool = False) -> float:
+    total = 0.0
+    for resource, amount in resources.items():
+        mult = RESOURCE_VALUES.get(resource, 0.0)
+        total += numeric_or_zero(amount) * mult
+    return total * (12.0 if monthly else 1.0)
+
+
+def market_resource_value(
+    resources: dict[str, float | str],
+    market_prices: dict[str, MarketPrice],
+    price_mode: str,
+    monthly: bool = False,
+) -> tuple[float, dict[str, float | str]]:
+    total = 0.0
+    unpriced: dict[str, float | str] = {}
+    for resource, amount in resources.items():
+        numeric = numeric_or_zero(amount)
+        if numeric == 0:
+            continue
+        if resource == "energy":
+            total += numeric
+            continue
+        price = market_prices.get(resource)
+        if price is None:
+            unpriced[resource] = amount
+            continue
+        if price_mode == "base_buy":
+            total += numeric * price.base_energy
+        elif price_mode == "max_buy":
+            total += numeric * price.max_buy_energy
+        elif price_mode == "min_sell":
+            total += numeric * price.min_sell_energy
+        elif price_mode == "fee_base_buy":
+            total += numeric * price.default_fee_base_buy_energy
+        elif price_mode == "fee_max_buy":
+            total += numeric * price.default_fee_ceiling_buy_energy
+        elif price_mode == "fee_min_sell":
+            total += numeric * price.default_fee_floor_sell_energy
+        else:
+            raise ValueError(f"Unknown market price mode: {price_mode}")
+    return (total * (12.0 if monthly else 1.0), unpriced)
+
+
+def shipyard_strategic_values(
+    shipyard_capacity: float,
+    build_speed: float,
+    market_prices: dict[str, MarketPrice],
+) -> dict[str, float]:
+    if shipyard_capacity <= 0:
+        return {
+            "strategic_shipyard_effective_slots": 0.0,
+            "strategic_shipyard_annual_alloy_throughput": 0.0,
+            "strategic_shipyard_annual_fleet_value_energy": 0.0,
+        }
+    effective_slots = shipyard_capacity * (1.0 + max(build_speed, 0.0))
+    alloy_price = market_prices.get("alloys")
+    alloy_ceiling = alloy_price.max_buy_energy if alloy_price else 20.0
+    annual_throughput = effective_slots * SHIPYARD_SLOT_ANNUAL_ALLOY_THROUGHPUT
+    return {
+        "strategic_shipyard_effective_slots": effective_slots,
+        "strategic_shipyard_annual_alloy_throughput": annual_throughput,
+        "strategic_shipyard_annual_fleet_value_energy": annual_throughput * alloy_ceiling,
+    }
+
+
+def unresolved_symbols(resources: dict[str, float | str]) -> set[str]:
+    symbols: set[str] = set()
+    for value in resources.values():
+        if isinstance(value, str) and (value.startswith("@") or "$" in value or value.startswith("@[")):
+            symbols.add(value)
+    return symbols
+
+
+def merge_resource_maps(target: dict[str, float | str], source: dict[str, float | str]) -> None:
+    for resource, value in source.items():
+        existing = target.get(resource)
+        if isinstance(existing, (int, float)) and isinstance(value, (int, float)):
+            target[resource] = max(float(existing), float(value))
+        else:
+            target[resource] = value
+
+
+def block_contains_assignment(value: PDXValue, key: str, atom: str) -> bool:
+    if not isinstance(value, PDXBlock):
+        return False
+    for assignment in iter_assignments(value):
+        if assignment.key == key and atom_value(assignment.value) == atom:
+            return True
+    return False
+
+
+def safe_mod_id(value: Any) -> str:
+    if value is None:
+        return ""
+    return str(value)
+
+
+def read_snapshot_manifest(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, dict[str, str]]:
+    path = snapshot_root / "snapshot-manifest.csv"
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        return {row["id"]: row for row in csv.DictReader(handle)}
+
+
+def resolve_irony_database(database: Path | None = None) -> Path:
+    if database and database.exists():
+        return database
+    candidates = sorted(IRONY_DATA_ROOT.rglob("Database*.json"), key=lambda path: path.stat().st_mtime, reverse=True)
+    if candidates:
+        return candidates[0]
+    expected = IRONY_DATA_ROOT / "IronyModManager" / "Database_1.26.json"
+    raise FileNotFoundError(f"Irony database not found. Checked {expected} and Database*.json under {IRONY_DATA_ROOT}")
+
+
+def selected_irony_collection(database: Path | None = None) -> dict[str, Any]:
+    database = resolve_irony_database(database)
+    if not database.exists():
+        raise FileNotFoundError(f"Irony database not found: {database}")
+    data = json.loads(read_text(database))
+    for entry in data:
+        if entry.get("Name") != "ModCollection":
+            continue
+        for collection in entry.get("Value", []):
+            if collection.get("IsSelected"):
+                return collection
+    raise ValueError(f"No selected Irony collection found in {database}")
+
+
+def build_active_playset_snapshot() -> dict[str, Any]:
+    collection = selected_irony_collection()
+    mod_ids = [safe_mod_id(item.get("SteamId") or item.get("ParadoxId")) for item in collection.get("ModIds", [])]
+    names = collection.get("ModNames", [])
+    paths = collection.get("ModPaths", [])
+    mods = []
+    for index, mod_id in enumerate(mod_ids):
+        mods.append(
+            {
+                "position": index + 1,
+                "steam_id": mod_id,
+                "name": names[index] if index < len(names) else "",
+                "path": paths[index] if index < len(paths) else "",
+            }
+        )
+    present_ids = set(mod_ids)
+    present_names = {name.lower() for name in names}
+    return {
+        "collection_name": collection.get("Name", ""),
+        "patch_mod_enabled": bool(collection.get("PatchModEnabled")),
+        "mod_count": len(mods),
+        "mods": mods,
+        "required_mods": {
+            mod_id: {
+                "name": name,
+                "present": mod_id in present_ids,
+                "load_position": mod_ids.index(mod_id) + 1 if mod_id in present_ids else None,
+            }
+            for mod_id, name in REQUIRED_MODS.items()
+        },
+        "optional_integrations": {
+            label: any(marker.lower() in name for name in present_names)
+            for marker, label in OPTIONAL_MOD_NAME_MARKERS.items()
+        },
+    }
+
+
+def irony_mod_identity(mod: dict[str, Any]) -> str:
+    steam_id = safe_mod_id(mod.get("steam_id") or mod.get("SteamId") or mod.get("ParadoxId"))
+    if steam_id:
+        return f"id:{steam_id}"
+    path = str(mod.get("path") or mod.get("Path") or "").lower()
+    name = str(mod.get("name") or mod.get("Name") or "").lower()
+    return f"local:{name}|{path}"
+
+
+def compare_irony_order_with_director(before_mods: list[dict[str, Any]], after_mods: list[dict[str, Any]]) -> dict[str, Any]:
+    director_indexes = [
+        index
+        for index, mod in enumerate(after_mods)
+        if mod.get("name") == "Stellar AI Director" or "stellaraidirector" in str(mod.get("path", "")).lower()
+    ]
+    before_identities = [irony_mod_identity(mod) for mod in before_mods]
+    after_existing_identities = [
+        irony_mod_identity(mod)
+        for index, mod in enumerate(after_mods)
+        if index not in director_indexes
+    ]
+    return {
+        "director_count": len(director_indexes),
+        "director_position": director_indexes[0] + 1 if director_indexes else None,
+        "existing_mod_order_preserved": before_identities == after_existing_identities,
+        "expected_mod_count": len(before_mods) + 1,
+        "actual_mod_count": len(after_mods),
+        "status": "ok"
+        if len(director_indexes) == 1
+        and before_identities == after_existing_identities
+        and len(after_mods) == len(before_mods) + 1
+        else "fail",
+    }
+
+
+def selected_collection_mod_rows(collection: dict[str, Any]) -> list[dict[str, Any]]:
+    mod_ids = collection.get("ModIds", [])
+    names = collection.get("ModNames", [])
+    paths = collection.get("ModPaths", [])
+    mods = collection.get("Mods", [])
+    rows = []
+    for index in range(max(len(mod_ids), len(names), len(paths), len(mods))):
+        mod_id = mod_ids[index] if index < len(mod_ids) else {}
+        rows.append(
+            {
+                "position": index + 1,
+                "steam_id": safe_mod_id(mod_id.get("SteamId") if isinstance(mod_id, dict) else ""),
+                "paradox_id": safe_mod_id(mod_id.get("ParadoxId") if isinstance(mod_id, dict) else ""),
+                "name": names[index] if index < len(names) else "",
+                "path": paths[index] if index < len(paths) else "",
+                "descriptor": mods[index] if index < len(mods) else "",
+            }
+        )
+    return rows
+
+
+def append_director_to_selected_irony_collection(
+    database: Path | None = None,
+    mod_root: Path = MOD_ROOT,
+    research_root: Path = RESEARCH_ROOT,
+) -> dict[str, Any]:
+    database = resolve_irony_database(database)
+    data = json.loads(read_text(database))
+    selected: dict[str, Any] | None = None
+    for entry in data:
+        if entry.get("Name") != "ModCollection":
+            continue
+        for collection in entry.get("Value", []):
+            if collection.get("IsSelected"):
+                selected = collection
+                break
+    if selected is None:
+        raise ValueError(f"No selected Irony collection found in {database}")
+
+    before_rows = selected_collection_mod_rows(selected)
+    if any(row["name"] == "Stellar AI Director" or "stellaraidirector" in row["path"].lower() for row in before_rows):
+        return {
+            "status": "already_present",
+            "database": str(database),
+            "collection_name": selected.get("Name", ""),
+            "mod_count": len(before_rows),
+            "order_check": compare_irony_order_with_director(before_rows[:-1], before_rows),
+        }
+
+    snapshot = {
+        "database": str(database),
+        "collection_name": selected.get("Name", ""),
+        "mods": before_rows,
+    }
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    snapshot_path = research_root / f"irony-selected-collection-before-director-{stamp}.json"
+    write_json(snapshot_path, snapshot)
+
+    selected.setdefault("Mods", []).append("mod/StellarAIDirector.mod")
+    selected.setdefault("ModIds", []).append({"ParadoxId": None, "SteamId": None})
+    selected.setdefault("ModNames", []).append("Stellar AI Director")
+    selected.setdefault("ModPaths", []).append(str(mod_root).lower())
+    after_rows = selected_collection_mod_rows(selected)
+    order_check = compare_irony_order_with_director(before_rows, after_rows)
+    if order_check["status"] != "ok":
+        raise ValueError(f"Irony Director insertion would not preserve order: {order_check}")
+
+    database.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return {
+        "status": "updated",
+        "database": str(database),
+        "collection_name": selected.get("Name", ""),
+        "before_snapshot": str(snapshot_path),
+        "mod_count_before": len(before_rows),
+        "mod_count_after": len(after_rows),
+        "order_check": order_check,
+    }
+
+
+def latest_irony_before_snapshot(research_root: Path = RESEARCH_ROOT) -> Path | None:
+    snapshots = sorted(
+        research_root.glob("irony-selected-collection-before-director-*.json"),
+        key=lambda path: path.stat().st_mtime_ns,
+        reverse=True,
+    )
+    return snapshots[0] if snapshots else None
+
+
+def collect_irony_order_proof(
+    before_snapshot: Path | None = None,
+    playset: dict[str, Any] | None = None,
+    mod_root: Path = MOD_ROOT,
+    research_root: Path = RESEARCH_ROOT,
+) -> dict[str, Any]:
+    before_snapshot = before_snapshot or latest_irony_before_snapshot(research_root)
+    if before_snapshot is None or not before_snapshot.exists():
+        return {
+            "status": "missing_before_snapshot",
+            "before_snapshot": str(before_snapshot) if before_snapshot else "",
+            "errors": ["No pre-Director Irony collection snapshot was found."],
+        }
+
+    before_data = json.loads(read_text(before_snapshot))
+    before_mods = before_data.get("mods", [])
+    playset = build_active_playset_snapshot() if playset is None else playset
+    after_mods = playset.get("mods", [])
+    order_check = compare_irony_order_with_director(before_mods, after_mods)
+    dependency_rows = collect_dependency_audit_rows(mod_root, playset)
+    dependency_errors = [row for row in dependency_rows if row["status"] != "ok"]
+    director_position = order_check["director_position"]
+    required_positions = [
+        int(row["load_position"])
+        for row in dependency_rows
+        if row["status"] == "ok" and str(row["load_position"]).isdigit()
+    ]
+    latest_required_position = max(required_positions, default=0)
+    errors: list[str] = []
+    if order_check["status"] != "ok":
+        errors.append(f"Irony order check failed: {order_check}")
+    if dependency_errors:
+        errors.append(f"Dependency audit has non-ok rows: {dependency_errors}")
+    if director_position is None:
+        errors.append("Stellar AI Director is not present in the selected Irony collection.")
+    elif director_position <= latest_required_position:
+        errors.append(
+            f"Stellar AI Director position {director_position} is not after latest dependency position "
+            f"{latest_required_position}."
+        )
+    return {
+        "status": "ok" if not errors else "fail",
+        "errors": errors,
+        "before_snapshot": str(before_snapshot),
+        "collection_name": playset.get("collection_name", ""),
+        "mod_count_before": len(before_mods),
+        "mod_count_after": len(after_mods),
+        "latest_dependency_position": latest_required_position,
+        "director_position": director_position,
+        "order_check": order_check,
+        "dependency_status_counts": {
+            status: sum(1 for row in dependency_rows if row["status"] == status)
+            for status in sorted({row["status"] for row in dependency_rows})
+        },
+    }
+
+
+def irony_order_proof_report_text(proof: dict[str, Any]) -> str:
+    lines = [
+        "# Stellar AI Director Irony Order Proof",
+        "",
+        f"Status: {proof['status']}",
+        f"Collection: {proof.get('collection_name', '')}",
+        f"Before snapshot: `{proof.get('before_snapshot', '')}`",
+        f"Mod count before: {proof.get('mod_count_before', '')}",
+        f"Mod count after: {proof.get('mod_count_after', '')}",
+        f"Director position: {proof.get('director_position', '')}",
+        f"Latest dependency position: {proof.get('latest_dependency_position', '')}",
+        "",
+        "## Order Check",
+        "",
+    ]
+    order_check = proof.get("order_check", {})
+    for key in (
+        "status",
+        "director_count",
+        "director_position",
+        "existing_mod_order_preserved",
+        "expected_mod_count",
+        "actual_mod_count",
+    ):
+        lines.append(f"- {key}: {order_check.get(key, '')}")
+    lines.extend(["", "## Dependency Status Counts", ""])
+    for status, count in proof.get("dependency_status_counts", {}).items():
+        lines.append(f"- {status}: {count}")
+    if proof.get("errors"):
+        lines.extend(["", "## Errors", ""])
+        lines.extend(f"- {error}" for error in proof["errors"])
+    return "\n".join(lines) + "\n"
+
+
+def generate_irony_order_proof_artifacts() -> dict[str, Any]:
+    proof = collect_irony_order_proof()
+    write_json(RESEARCH_ROOT / "stellar-ai-director-irony-order-proof-2026-07-04.json", proof)
+    write_text_file(
+        RESEARCH_ROOT / "stellar-ai-director-irony-order-proof-2026-07-04.md",
+        irony_order_proof_report_text(proof),
+    )
+    return proof
+
+
+def irony_order_proof_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    proof_path = repo_root / "research/stellar-ai/stellar-ai-director-irony-order-proof-2026-07-04.json"
+    if not proof_path.exists():
+        return False
+    proof = json.loads(read_text(proof_path))
+    return proof.get("status") == "ok" and proof.get("order_check", {}).get("existing_mod_order_preserved") is True
+
+
+def iter_text_files(root: Path) -> Iterable[Path]:
+    for path in sorted(root.rglob("*")):
+        if path.is_file() and path.suffix.lower() in TEXT_SUFFIXES:
+            yield path
+
+
+def object_inventory_roots(snapshot_root: Path = SNAPSHOT_ROOT) -> list[Path]:
+    manifest = read_snapshot_manifest(snapshot_root)
+    return [Path(row["snapshot_path"]) for row in manifest.values() if Path(row["snapshot_path"]).exists()]
+
+
+def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[str]]:
+    buckets = {
+        "megastructure": set(),
+        "technology": set(),
+        "ascension_perk": set(),
+        "scripted_trigger": set(),
+        "scripted_value": set(),
+        "resource": set(),
+        "starbase_module": set(),
+        "starbase_building": set(),
+        "ai_budget": set(),
+        "economic_plan": set(),
+    }
+    folder_map = {
+        "megastructures": "megastructure",
+        "technology": "technology",
+        "ascension_perks": "ascension_perk",
+        "scripted_triggers": "scripted_trigger",
+        "script_values": "scripted_value",
+        "strategic_resources": "resource",
+        "starbase_modules": "starbase_module",
+        "starbase_buildings": "starbase_building",
+        "ai_budget": "ai_budget",
+        "economic_plans": "economic_plan",
+    }
+    for root in object_inventory_roots(snapshot_root):
+        common = root / "common"
+        if not common.exists():
+            continue
+        for folder, bucket in folder_map.items():
+            folder_path = common / folder
+            if not folder_path.exists():
+                continue
+            for file_path in iter_text_files(folder_path):
+                try:
+                    parsed = parse_file(file_path)
+                except PDXParseError:
+                    continue
+                for assignment in block_assignments(parsed):
+                    if not assignment.key.startswith("@"):
+                        buckets[bucket].add(assignment.key)
+    vanilla = Path(r"C:\Steam\steamapps\common\Stellaris\common")
+    if vanilla.exists():
+        for folder, bucket in folder_map.items():
+            folder_path = vanilla / folder
+            if not folder_path.exists():
+                continue
+            for file_path in iter_text_files(folder_path):
+                try:
+                    parsed = parse_file(file_path)
+                except PDXParseError:
+                    continue
+                for assignment in block_assignments(parsed):
+                    if not assignment.key.startswith("@"):
+                        buckets[bucket].add(assignment.key)
+    return buckets
+
+
+def block_has_assignment(value: PDXValue, key: str) -> bool:
+    return isinstance(value, PDXBlock) and any(assignment.key == key for assignment in iter_assignments(value))
+
+
+def integration_policy_recommendation(mod_id: str, object_type: str, name: str, has_ai_weight: bool) -> tuple[str, str]:
+    lowered = name.lower()
+    if object_type in {"component_template", "ship_size"}:
+        return ("preserve_parent_design_ai", "defer_direct_override_parent_ai_weight_present" if has_ai_weight else "audit_parent_gap")
+    if object_type == "megastructure":
+        if any(token in lowered for token in ROI_TARGETS):
+            return ("roi_driven_build_priority", "candidate_megastructure_weight_surface")
+        return ("observe_for_exotic_or_path_specific_gate", "defer_until_roi_candidate")
+    if object_type == "technology":
+        if mod_id == "2648658105":
+            return ("component_unlock_priority", "candidate_tech_weight_surface")
+        if mod_id == "683230077":
+            return ("shipyard_and_ship_size_unlock_priority", "candidate_tech_weight_surface")
+        if mod_id == "3250900527":
+            return ("defensive_starbase_unlock_priority", "candidate_tech_weight_surface")
+        if any(token in lowered for token in ("mega", "giga", "ehof", "sentient", "negative", "amb", "shipyard")):
+            return ("mega_giga_unlock_priority", "candidate_tech_weight_surface")
+        return ("audit_unlock_chain", "defer_unless_core_path")
+    if object_type in {"ascension_perk", "tradition"}:
+        return ("unlock_path_audit", "candidate_weight_surface" if has_ai_weight else "document_parent_or_engine_surface")
+    if object_type in {"starbase_module", "starbase_building"}:
+        return ("defensive_or_shipyard_starbase_policy", "candidate_starbase_weight_surface")
+    if object_type == "building":
+        return ("planetary_capacity_audit", "defer_broad_planet_automation_override")
+    return ("audit_only", "defer")
+
+
+def integration_policy_priority_band(row: dict[str, Any]) -> str:
+    recommendation = row.get("policy_recommendation", "")
+    object_type = row.get("object_type", "")
+    if recommendation == "component_unlock_priority":
+        return "advanced_military_component_unlocks"
+    if recommendation == "mega_giga_unlock_priority":
+        return "mega_giga_unlock_chain"
+    if recommendation == "shipyard_and_ship_size_unlock_priority":
+        return "shipyard_fleet_throughput_unlocks"
+    if recommendation == "defensive_starbase_unlock_priority":
+        return "defensive_starbase_unlocks"
+    if recommendation == "roi_driven_build_priority":
+        return "roi_driven_mega_giga_builds"
+    if recommendation == "defensive_or_shipyard_starbase_policy":
+        return "defensive_or_shipyard_starbase_policy"
+    if recommendation == "planetary_capacity_audit":
+        return "planetary_and_building_capacity"
+    if recommendation == "preserve_parent_design_ai":
+        return "nsc3_esc_parent_design_ai_preservation"
+    if object_type in {"ascension_perk", "tradition"}:
+        return "ap_tradition_unlock_path"
+    return "audit_only"
+
+
+def integration_policy_audit_status(
+    row: dict[str, Any],
+    manifest: dict[str, dict[str, str]],
+) -> tuple[str, str, bool]:
+    required = ("phase", "mod_id", "object_type", "object_name", "source_file", "validation_basis")
+    missing = [key for key in required if not row.get(key)]
+    if missing:
+        return "fail", f"missing required fields: {', '.join(missing)}", False
+    mod_row = manifest.get(str(row["mod_id"]))
+    if not mod_row:
+        return "fail", f"missing source snapshot for mod_id={row['mod_id']}", False
+    source_path = Path(mod_row["snapshot_path"]) / str(row["source_file"])
+    source_exists = source_path.exists()
+    if not source_exists:
+        return "fail", f"referenced source file does not exist: {row['source_file']}", False
+    if row.get("validation_basis") != "parsed_source_object_exists":
+        return "fail", f"unexpected validation basis: {row.get('validation_basis')}", True
+    intervention = str(row.get("minimum_v1_intervention", ""))
+    if intervention in {
+        "candidate_tech_weight_surface",
+        "candidate_weight_surface",
+        "candidate_megastructure_weight_surface",
+        "candidate_starbase_weight_surface",
+    }:
+        return "ready", "candidate source exists and is eligible for a later scoped generated policy", True
+    if intervention == "audit_parent_gap":
+        return "warning", "parent object lacks AI weight; audit before overriding parent design logic", True
+    if intervention in {
+        "defer_direct_override_parent_ai_weight_present",
+        "defer_until_roi_candidate",
+        "defer_unless_core_path",
+        "defer_broad_planet_automation_override",
+        "document_parent_or_engine_surface",
+    }:
+        return "deferred", f"minimum V1 intervention is {intervention}", True
+    return "warning", f"unrecognized intervention classification: {intervention}", True
+
+
+def collect_integration_policy_audit_rows(
+    rows: list[dict[str, Any]] | None = None,
+    snapshot_root: Path = SNAPSHOT_ROOT,
+) -> list[dict[str, Any]]:
+    rows = rows if rows is not None else collect_integration_surface_rows(snapshot_root)
+    manifest = read_snapshot_manifest(snapshot_root)
+    audit_rows: list[dict[str, Any]] = []
+    for row in rows:
+        status, reason, source_exists = integration_policy_audit_status(row, manifest)
+        audit_rows.append(
+            {
+                "phase": row.get("phase", ""),
+                "mod_id": row.get("mod_id", ""),
+                "mod_name": row.get("mod_name", ""),
+                "object_type": row.get("object_type", ""),
+                "object_name": row.get("object_name", ""),
+                "source_file": row.get("source_file", ""),
+                "source_exists": "yes" if source_exists else "no",
+                "source_has_ai_weight": row.get("source_has_ai_weight", ""),
+                "policy_recommendation": row.get("policy_recommendation", ""),
+                "priority_band": integration_policy_priority_band(row),
+                "minimum_v1_intervention": row.get("minimum_v1_intervention", ""),
+                "status": status,
+                "reason": reason,
+            }
+        )
+    audit_rows.sort(
+        key=lambda row: (
+            row["phase"],
+            row["status"],
+            row["object_type"],
+            row["priority_band"],
+            row["object_name"],
+        )
+    )
+    return audit_rows
+
+
+def integration_policy_audit_report_text(rows: list[dict[str, Any]]) -> str:
+    status_counts: dict[tuple[str, str], int] = {}
+    band_counts: dict[tuple[str, str, str], int] = {}
+    for row in rows:
+        status_counts[(row["phase"], row["status"])] = status_counts.get((row["phase"], row["status"]), 0) + 1
+        key = (row["phase"], row["priority_band"], row["status"])
+        band_counts[key] = band_counts.get(key, 0) + 1
+    lines = [
+        "# Stellar AI Director Integration Policy Audit",
+        "",
+        "Generated from parsed P6-P11 parent source objects. This is a readiness and reference-existence gate, not a broad override emitter.",
+        "",
+        "## Status Counts",
+        "",
+        "| phase | status | rows |",
+        "| --- | --- | ---: |",
+        *[f"| {phase} | {status} | {count} |" for (phase, status), count in sorted(status_counts.items())],
+        "",
+        "## Priority Bands",
+        "",
+        "| phase | priority band | status | rows |",
+        "| --- | --- | --- | ---: |",
+        *[
+            f"| {phase} | {band} | {status} | {count} |"
+            for (phase, band, status), count in sorted(band_counts.items())
+        ],
+        "",
+        "## Attention Rows",
+        "",
+        "| phase | object | type | status | priority band | reason |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    attention = [row for row in rows if row["status"] in {"fail", "warning"}]
+    if not attention:
+        lines.append("| summary |  |  | ok |  | No warnings or failures. |")
+    for row in attention[:120]:
+        lines.append(
+            f"| {row['phase']} | `{row['object_name']}` | {row['object_type']} | {row['status']} | "
+            f"{row['priority_band']} | {row['reason']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_integration_policy_audit_artifacts(
+    rows: list[dict[str, Any]] | None = None,
+    snapshot_root: Path = SNAPSHOT_ROOT,
+) -> list[dict[str, Any]]:
+    audit_rows = collect_integration_policy_audit_rows(rows, snapshot_root)
+    write_csv(INTEGRATION_POLICY_AUDIT_CSV, audit_rows)
+    write_text_file(INTEGRATION_POLICY_AUDIT_MD, integration_policy_audit_report_text(audit_rows))
+    return audit_rows
+
+
+def collect_integration_surface_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
+    manifest = read_snapshot_manifest(snapshot_root)
+    rows: list[dict[str, Any]] = []
+    for mod_id, expected_name in REQUIRED_MODS.items():
+        mod_row = manifest.get(mod_id)
+        if not mod_row:
+            continue
+        root = Path(mod_row["snapshot_path"])
+        common = root / "common"
+        if not common.exists():
+            continue
+        for folder, (object_type, phase) in INTEGRATION_SURFACE_FOLDERS.items():
+            folder_path = common / folder
+            if not folder_path.exists():
+                continue
+            for file_path in iter_text_files(folder_path):
+                try:
+                    parsed = parse_file(file_path)
+                except PDXParseError:
+                    continue
+                source_file = file_path.relative_to(root).as_posix()
+                for assignment in block_assignments(parsed):
+                    if assignment.key.startswith("@"):
+                        continue
+                    has_ai_weight = block_has_assignment(assignment.value, "ai_weight")
+                    recommendation, intervention = integration_policy_recommendation(
+                        mod_id, object_type, assignment.key, has_ai_weight
+                    )
+                    rows.append(
+                        {
+                            "phase": phase,
+                            "mod_id": mod_id,
+                            "mod_name": mod_row.get("name", expected_name),
+                            "object_type": object_type,
+                            "object_name": assignment.key,
+                            "source_file": source_file,
+                            "source_has_ai_weight": "yes" if has_ai_weight else "no",
+                            "policy_recommendation": recommendation,
+                            "minimum_v1_intervention": intervention,
+                            "validation_basis": "parsed_source_object_exists",
+                        }
+                    )
+    rows.sort(key=lambda row: (row["phase"], row["object_type"], row["mod_id"], row["object_name"]))
+    return rows
+
+
+def extract_megastructure_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
+    manifest = read_snapshot_manifest(snapshot_root)
+    rows: list[dict[str, Any]] = []
+    snapshot_paths = [Path(row["snapshot_path"]) for row in manifest.values()]
+    global_variables = collect_global_variables(snapshot_paths)
+    market_prices = collect_market_prices(snapshot_paths)
+    for mod_id in ("1121692237", "683230077"):
+        mod_row = manifest[mod_id]
+        mega_root = Path(mod_row["snapshot_path"]) / "common" / "megastructures"
+        for file_path in iter_text_files(mega_root):
+            if "dummy" in file_path.name.lower():
+                continue
+            text_path = file_path.relative_to(Path(mod_row["snapshot_path"])).as_posix()
+            file_text = read_text(file_path)
+            variables = {**global_variables, **collect_variables(file_text)}
+            inline_root = Path(mod_row["snapshot_path"]) / "common" / "inline_scripts"
+            try:
+                parsed = parse_pdx(file_text)
+            except PDXParseError:
+                continue
+            for object_block in block_assignments(parsed):
+                name = object_block.key
+                lowered = name.lower()
+                if not any(target in lowered or target in text_path.lower() for target in ROI_TARGETS):
+                    continue
+                if not isinstance(object_block.value, PDXBlock):
+                    continue
+                features = collect_megastructure_features(object_block.value, variables, inline_root)
+                cost = features["cost"]
+                upkeep = features["upkeep"]
+                produces = features["produces"]
+                modifiers = features["modifiers"]
+                prereqs = features["prereqs"]
+                upgrade_from = features["upgrade_from"]
+                inline_scripts = features["inline_scripts"]
+                has_ai_weight = features["has_ai_weight"]
+                build_cost_value = weighted_resource_value(cost)
+                upkeep_value = weighted_resource_value(upkeep, monthly=True)
+                annual_payoff_value = weighted_resource_value(produces, monthly=True)
+                market_base_cost, unpriced_cost = market_resource_value(cost, market_prices, "base_buy")
+                market_deficit_cost, unpriced_cost_deficit = market_resource_value(cost, market_prices, "max_buy")
+                market_deficit_upkeep, unpriced_upkeep = market_resource_value(upkeep, market_prices, "max_buy", monthly=True)
+                market_deficit_payoff, unpriced_produces = market_resource_value(
+                    produces, market_prices, "max_buy", monthly=True
+                )
+                market_surplus_payoff, _ = market_resource_value(produces, market_prices, "min_sell", monthly=True)
+                market_fee_deficit_cost, _ = market_resource_value(cost, market_prices, "fee_max_buy")
+                market_fee_deficit_payoff, _ = market_resource_value(produces, market_prices, "fee_max_buy", monthly=True)
+                unresolved = sorted(unresolved_symbols(cost) | unresolved_symbols(upkeep) | unresolved_symbols(produces))
+                shipyard_capacity = numeric_or_zero(modifiers.get("starbase_shipyard_capacity_add", 0.0))
+                naval_cap = numeric_or_zero(modifiers.get("country_naval_cap_add", 0.0))
+                build_speed = numeric_or_zero(modifiers.get("starbase_shipyard_build_speed_mult", 0.0))
+                shipyard_values = shipyard_strategic_values(shipyard_capacity, build_speed, market_prices)
+                annual_payoff_value += shipyard_capacity * 450.0
+                annual_payoff_value += build_speed * 2500.0
+                annual_payoff_value += naval_cap * 2.0
+                payback = (build_cost_value + upkeep_value) / annual_payoff_value if annual_payoff_value > 0 else ""
+                market_deficit_payback = (
+                    (market_deficit_cost + market_deficit_upkeep) / market_deficit_payoff
+                    if market_deficit_payoff > 0
+                    else ""
+                )
+                market_surplus_payback = (
+                    (market_base_cost + market_deficit_upkeep) / market_surplus_payoff
+                    if market_surplus_payoff > 0
+                    else ""
+                )
+                strategic_shipyard_payback = (
+                    (market_deficit_cost + market_deficit_upkeep)
+                    / shipyard_values["strategic_shipyard_annual_fleet_value_energy"]
+                    if shipyard_values["strategic_shipyard_annual_fleet_value_energy"] > 0
+                    else ""
+                )
+                data_quality = classify_data_quality(cost, upkeep, produces, inline_scripts, unresolved)
+                decision_eligible = is_decision_eligible(name, cost, annual_payoff_value, data_quality)
+                role = director_strategy_role(name, shipyard_capacity, annual_payoff_value, decision_eligible)
+                sink_role = director_surplus_sink_role(name, shipyard_capacity, produces, decision_eligible)
+                unpriced_resources = {
+                    **unpriced_cost,
+                    **unpriced_cost_deficit,
+                    **unpriced_upkeep,
+                    **unpriced_produces,
+                }
+                rows.append(
+                    {
+                        "mod_id": mod_id,
+                        "mod_name": mod_row["name"],
+                        "source_file": text_path,
+                        "object_name": name,
+                        "cost": compact_resource_map(cost),
+                        "upkeep": compact_resource_map(upkeep),
+                        "produces": compact_resource_map(produces),
+                        "shipyard_capacity": shipyard_capacity,
+                        "naval_cap": naval_cap,
+                        "build_speed": build_speed,
+                        "build_cost_value": round(build_cost_value, 2),
+                        "annual_upkeep_value": round(upkeep_value, 2),
+                        "annual_payoff_value": round(annual_payoff_value, 2),
+                        "payback_years": round(payback, 2) if isinstance(payback, float) else "",
+                        "market_base_cost_energy": round(market_base_cost, 2),
+                        "market_deficit_cost_energy": round(market_deficit_cost, 2),
+                        "market_deficit_annual_upkeep_energy": round(market_deficit_upkeep, 2),
+                        "market_deficit_annual_payoff_energy": round(market_deficit_payoff, 2),
+                        "market_deficit_payback_years": (
+                            round(market_deficit_payback, 2) if isinstance(market_deficit_payback, float) else ""
+                        ),
+                        "market_surplus_annual_payoff_energy": round(market_surplus_payoff, 2),
+                        "market_surplus_payback_years": (
+                            round(market_surplus_payback, 2) if isinstance(market_surplus_payback, float) else ""
+                        ),
+                        "market_fee_deficit_cost_energy": round(market_fee_deficit_cost, 2),
+                        "market_fee_deficit_annual_payoff_energy": round(market_fee_deficit_payoff, 2),
+                        "market_unpriced_resources": compact_resource_map(unpriced_resources),
+                        "strategic_shipyard_effective_slots": round(
+                            shipyard_values["strategic_shipyard_effective_slots"], 2
+                        ),
+                        "strategic_shipyard_annual_alloy_throughput": round(
+                            shipyard_values["strategic_shipyard_annual_alloy_throughput"], 2
+                        ),
+                        "strategic_shipyard_annual_fleet_value_energy": round(
+                            shipyard_values["strategic_shipyard_annual_fleet_value_energy"], 2
+                        ),
+                        "strategic_shipyard_payback_years": (
+                            round(strategic_shipyard_payback, 2)
+                            if isinstance(strategic_shipyard_payback, float)
+                            else ""
+                        ),
+                        "priority_tier": classify_priority(name, annual_payoff_value, payback, decision_eligible),
+                        "source_has_ai_weight": has_ai_weight,
+                        "director_strategy_role": role,
+                        "director_weight_basis": director_weight_basis(role),
+                        "director_build_gate": director_build_gate(role),
+                        "director_surplus_sink_role": sink_role,
+                        "director_surplus_sink_priority": director_surplus_sink_priority(sink_role),
+                        "decision_eligible": "yes" if decision_eligible else "no",
+                        "data_quality": data_quality,
+                        "unresolved_symbols": " ".join(unresolved),
+                        "inline_scripts": " ".join(inline_scripts),
+                        "prerequisites": " ".join(prereqs),
+                        "upgrade_from": " ".join(upgrade_from),
+                    }
+                )
+    rows.sort(
+        key=lambda row: (
+            priority_rank(row["priority_tier"]),
+            sortable_payback(row),
+            row["object_name"],
+        )
+    )
+    return rows
+
+
+def inline_script_value(block: PDXBlock, key: str) -> str | None:
+    for assignment in block_assignments(block, key):
+        return atom_value(assignment.value)
+    return None
+
+
+def inline_script_params(block: PDXBlock) -> dict[str, str]:
+    params: dict[str, str] = {}
+    for assignment in block_assignments(block):
+        if assignment.key == "script":
+            continue
+        value = atom_value(assignment.value)
+        if value is None:
+            value = serialize_pdx_value(assignment.value)
+        params[assignment.key] = value
+    return params
+
+
+def serialize_pdx_value(value: PDXValue) -> str:
+    if isinstance(value, PDXAtom):
+        return value.value
+    parts = ["{"]
+    for item in value.items:
+        if isinstance(item, PDXAssignment):
+            parts.append(f"{item.key} = {serialize_pdx_value(item.value)}")
+        else:
+            parts.append(item.value)
+    parts.append("}")
+    return " ".join(parts)
+
+
+def resolve_inline_script_path(inline_root: Path, script_name: str) -> Path | None:
+    script_path = inline_root / f"{script_name}.txt"
+    return script_path if script_path.exists() else None
+
+
+def substitute_inline_params(text: str, params: dict[str, str]) -> str:
+    def replace(match: re.Match[str]) -> str:
+        return params.get(match.group(1), "")
+
+    return re.sub(r"\$([A-Za-z0-9_.~!:+-]+)\$", replace, text)
+
+
+def expand_inline_script(
+    block: PDXBlock,
+    variables: dict[str, float],
+    inline_root: Path,
+    depth: int = 0,
+) -> PDXBlock | None:
+    if depth > 8:
+        return None
+    script_name = inline_script_value(block, "script")
+    if not script_name:
+        return None
+    script_path = resolve_inline_script_path(inline_root, script_name)
+    if script_path is None:
+        return None
+    expanded_text = substitute_inline_params(read_text(script_path), inline_script_params(block))
+    expanded_text = normalize_macro_expressions(expanded_text, variables)
+    try:
+        parsed = parse_pdx(expanded_text)
+    except PDXParseError:
+        return None
+    top_assignments = block_assignments(parsed)
+    if len(top_assignments) == 1 and top_assignments[0].key == "inline_script" and isinstance(top_assignments[0].value, PDXBlock):
+        return expand_inline_script(top_assignments[0].value, variables, inline_root, depth + 1)
+    return parsed
+
+
+def collect_megastructure_features(
+    value: PDXValue,
+    variables: dict[str, float],
+    inline_root: Path,
+    depth: int = 0,
+) -> dict[str, Any]:
+    features: dict[str, Any] = {
+        "cost": {},
+        "upkeep": {},
+        "produces": {},
+        "modifiers": {},
+        "prereqs": [],
+        "upgrade_from": [],
+        "inline_scripts": [],
+        "has_ai_weight": False,
+    }
+    if not isinstance(value, PDXBlock):
+        return features
+    for assignment in iter_assignments(value):
+        if assignment.key == "cost":
+            if block_contains_assignment(assignment.value, "country_uses_bio_ships", "yes"):
+                continue
+            merge_resource_maps(features["cost"], resource_block_to_dict(assignment.value, variables))
+        elif assignment.key == "upkeep":
+            merge_resource_maps(features["upkeep"], resource_block_to_dict(assignment.value, variables))
+        elif assignment.key == "produces":
+            merge_resource_maps(features["produces"], resource_block_to_dict(assignment.value, variables))
+        elif assignment.key in {"station_modifier", "country_modifier", "planet_modifier"} and isinstance(
+            assignment.value, PDXBlock
+        ):
+            merge_resource_maps(features["modifiers"], resource_block_to_dict(assignment.value, variables))
+        elif assignment.key == "prerequisites" and isinstance(assignment.value, PDXBlock):
+            features["prereqs"].extend(block_atoms(assignment.value))
+        elif assignment.key == "upgrade_from" and isinstance(assignment.value, PDXBlock):
+            features["upgrade_from"].extend(block_atoms(assignment.value))
+        elif assignment.key == "ai_weight":
+            features["has_ai_weight"] = True
+        elif assignment.key == "inline_script" and isinstance(assignment.value, PDXBlock):
+            script_name = inline_script_value(assignment.value, "script")
+            if script_name:
+                features["inline_scripts"].append(script_name)
+            expanded = expand_inline_script(assignment.value, variables, inline_root, depth)
+            if expanded is None:
+                continue
+            expanded_features = collect_megastructure_features(expanded, variables, inline_root, depth + 1)
+            for key in ("cost", "upkeep", "produces", "modifiers"):
+                merge_resource_maps(features[key], expanded_features[key])
+            for key in ("prereqs", "upgrade_from", "inline_scripts"):
+                features[key].extend(expanded_features[key])
+            features["has_ai_weight"] = bool(features["has_ai_weight"] or expanded_features["has_ai_weight"])
+    features["prereqs"] = sorted(set(features["prereqs"]))
+    features["upgrade_from"] = sorted(set(features["upgrade_from"]))
+    features["inline_scripts"] = sorted(set(features["inline_scripts"]))
+    return features
+
+
+def classify_data_quality(
+    cost: dict[str, float | str],
+    upkeep: dict[str, float | str],
+    produces: dict[str, float | str],
+    inline_scripts: list[str],
+    unresolved: list[str],
+) -> str:
+    if unresolved:
+        return "symbolic_unresolved"
+    if not cost and not upkeep and not produces and inline_scripts:
+        return "template_wrapper_no_direct_resources"
+    if not cost and not upkeep and not produces:
+        return "no_resource_effect"
+    return "resolved"
+
+
+def compact_resource_map(resources: dict[str, float | str]) -> str:
+    return ";".join(f"{key}={value:g}" if isinstance(value, float) else f"{key}={value}" for key, value in resources.items())
+
+
+def is_decision_eligible(
+    name: str,
+    cost: dict[str, float | str],
+    payoff: float,
+    data_quality: str,
+) -> bool:
+    lowered = name.lower()
+    if data_quality != "resolved":
+        return False
+    if any(token in lowered for token in ("ruined", "restored")):
+        return False
+    return bool(cost or payoff > 0)
+
+
+def director_strategy_role(name: str, shipyard_capacity: float, payoff: float, decision_eligible: bool) -> str:
+    if not decision_eligible:
+        return "audit_only"
+    lowered = name.lower()
+    if shipyard_capacity > 0 or "shipyard" in lowered:
+        return "fleet_production_sink"
+    if any(token in lowered for token in ("gigaforge", "nidavellir", "dyson", "hrae")) and payoff > 0:
+        return "economy_multiplier"
+    if "matrioshka" in lowered and payoff > 0:
+        return "research_multiplier"
+    if payoff > 0:
+        return "resource_or_modifier_project"
+    return "infrastructure_project"
+
+
+def director_build_gate(role: str) -> str:
+    return {
+        "fleet_production_sink": "after_research_sink_when_alloy_energy_surplus_needs_fleet_sink",
+        "economy_multiplier": "when_survival_clear_and_megastructure_reserve_safe",
+        "research_multiplier": "when_research_chain_unlocked_and_economy_can_absorb_upkeep",
+        "resource_or_modifier_project": "when_matching_resource_or_modifier_is_current_bottleneck",
+        "infrastructure_project": "requires_manual_policy_review",
+        "audit_only": "not_a_direct_build_candidate",
+    }.get(role, "requires_manual_policy_review")
+
+
+def director_weight_basis(role: str) -> str:
+    return {
+        "fleet_production_sink": "strategic_shipyard_throughput",
+        "economy_multiplier": "market_deficit_payback_and_resource_bottleneck",
+        "research_multiplier": "research_output_and_unlock_chain_value",
+        "resource_or_modifier_project": "resource_or_modifier_bottleneck_value",
+        "infrastructure_project": "unmodeled_infrastructure_value",
+        "audit_only": "not_weighted",
+    }.get(role, "unmodeled_infrastructure_value")
+
+
+def director_surplus_sink_role(
+    name: str,
+    shipyard_capacity: float,
+    produces: dict[str, float | str],
+    decision_eligible: bool,
+) -> str:
+    if not decision_eligible:
+        return "not_surplus_sink"
+    lowered = name.lower()
+    production_keys = set(produces)
+    if production_keys & {"physics_research", "society_research", "engineering_research"} or "matrioshka" in lowered:
+        return "research_sink"
+    if shipyard_capacity > 0 or "shipyard" in lowered:
+        return "fleet_sink"
+    if "unity" in production_keys:
+        return "unity_sink"
+    return "not_surplus_sink"
+
+
+def director_surplus_sink_priority(role: str) -> int | str:
+    return {
+        "research_sink": 1,
+        "fleet_sink": 2,
+        "unity_sink": 3,
+    }.get(role, "")
+
+
+def classify_priority(name: str, payoff: float, payback: float | str, decision_eligible: bool = True) -> str:
+    if not decision_eligible:
+        return "observe_only"
+    lowered = name.lower()
+    if "shipyard" in lowered and payoff > 10000:
+        return "shipyard_multiplier"
+    if any(token in lowered for token in ("gigaforge", "nidavellir", "dyson", "hrae")) and payoff > 0:
+        return "economy_multiplier"
+    if "matrioshka" in lowered and payoff > 0:
+        return "research_multiplier"
+    if isinstance(payback, float) and payback <= 10:
+        return "high_roi"
+    return "observe_only"
+
+
+def priority_rank(tier: str) -> int:
+    return {
+        "economy_multiplier": 1,
+        "shipyard_multiplier": 2,
+        "research_multiplier": 3,
+        "high_roi": 4,
+        "observe_only": 9,
+    }.get(tier, 99)
+
+
+def sortable_payback(row: dict[str, Any]) -> float:
+    if row.get("priority_tier") == "shipyard_multiplier" and isinstance(row.get("strategic_shipyard_payback_years"), (int, float)):
+        return float(row["strategic_shipyard_payback_years"])
+    for key in ("market_deficit_payback_years", "payback_years"):
+        value = row.get(key)
+        if isinstance(value, (int, float)):
+            return float(value)
+    return 9999.0
+
+
+def percentile(values: list[float], fraction: float) -> float:
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    index = min(len(ordered) - 1, max(0, round((len(ordered) - 1) * fraction)))
+    return ordered[index]
+
+
+def round_to(value: float, step: int) -> int:
+    if step <= 0:
+        return int(round(value))
+    return int(math.ceil(value / step) * step)
+
+
+def generated_thresholds(rows: list[dict[str, Any]]) -> dict[str, int]:
+    eligible = [
+        row
+        for row in rows
+        if row.get("decision_eligible") == "yes"
+        and row.get("data_quality") == "resolved"
+        and isinstance(row.get("build_cost_value"), (int, float))
+        and row["build_cost_value"] > 0
+    ]
+    economy_costs = [
+        float(row["build_cost_value"])
+        for row in eligible
+        if row.get("priority_tier") in {"economy_multiplier", "research_multiplier", "high_roi"}
+        and float(row["build_cost_value"]) <= 300000
+    ]
+    shipyard_costs = [
+        float(row["build_cost_value"])
+        for row in eligible
+        if row.get("priority_tier") == "shipyard_multiplier" and float(row["build_cost_value"]) <= 300000
+    ]
+    prep_stockpile = round_to(max(15000.0, percentile(economy_costs, 0.25)), 1000)
+    prep_income = round_to(max(120.0, prep_stockpile / 120.0), 10)
+    commit_reserve = round_to(max(prep_stockpile * 1.75, percentile(economy_costs, 0.50)), 1000)
+    desired_base = round_to(max(25000.0, percentile(economy_costs, 0.25)), 1000)
+    desired_mega = round_to(max(50000.0, percentile(economy_costs, 0.50)), 1000)
+    desired_prep = round_to(max(75000.0, percentile(economy_costs, 0.75)), 1000)
+    desired_commit = round_to(max(100000.0, percentile(economy_costs + shipyard_costs, 0.85)), 1000)
+    shipyard_stockpile = round_to(max(10000.0, percentile(shipyard_costs, 0.25)), 1000)
+    shipyard_income = round_to(max(150.0, shipyard_stockpile / 120.0), 10)
+    return {
+        "prep_stockpile_alloys": prep_stockpile,
+        "prep_income_alloys": prep_income,
+        "commit_stockpile_alloys": commit_reserve,
+        "desired_base_alloys": desired_base,
+        "desired_mega_engineering_add": desired_mega,
+        "desired_prep_add": desired_prep,
+        "desired_commit_add": desired_commit,
+        "shipyard_stockpile_alloys": shipyard_stockpile,
+        "shipyard_income_alloys": shipyard_income,
+        "eligible_roi_rows": len(eligible),
+    }
+
+
+def market_price_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
+    manifest = read_snapshot_manifest(snapshot_root)
+    prices = collect_market_prices(Path(row["snapshot_path"]) for row in manifest.values())
+    rows = []
+    for price in sorted(prices.values(), key=lambda item: item.resource):
+        rows.append(
+            {
+                "resource": price.resource,
+                "market_amount": price.market_amount,
+                "market_price": price.market_price,
+                "base_energy_per_unit": round(price.base_energy, 4),
+                "min_sell_energy_per_unit_no_fee": round(price.min_sell_energy, 4),
+                "max_buy_energy_per_unit_no_fee": round(price.max_buy_energy, 4),
+                "base_buy_energy_per_unit_default_fee": round(price.default_fee_base_buy_energy, 4),
+                "floor_sell_energy_per_unit_default_fee": round(price.default_fee_floor_sell_energy, 4),
+                "ceiling_buy_energy_per_unit_default_fee": round(price.default_fee_ceiling_buy_energy, 4),
+            }
+        )
+    return rows
+
+
+def roi_quality_status(row: dict[str, Any], check: str) -> tuple[str, str]:
+    eligible = row.get("decision_eligible") == "yes"
+    object_name = row.get("object_name", "<unknown>")
+    if check == "decision_eligible_data_quality":
+        quality = row.get("data_quality", "")
+        if eligible and quality != "resolved":
+            return "fail", f"{object_name} is decision-eligible with data_quality={quality!r}"
+        return "ok", "decision eligibility matches resolved data quality"
+    if check == "decision_eligible_cost":
+        cost = row.get("build_cost_value")
+        if eligible and (not isinstance(cost, (int, float)) or float(cost) <= 0):
+            return "fail", f"{object_name} is decision-eligible with non-positive build_cost_value={cost!r}"
+        return "ok", "decision-eligible rows have positive build cost or the row is audit-only"
+    if check == "decision_eligible_unresolved_symbols":
+        unresolved = str(row.get("unresolved_symbols", "") or "").strip()
+        if eligible and unresolved:
+            return "fail", f"{object_name} is decision-eligible with unresolved symbols: {unresolved}"
+        return "ok", "decision-eligible row has no unresolved symbols"
+    if check == "decision_eligible_market_unpriced_resources":
+        unpriced = str(row.get("market_unpriced_resources", "") or "").strip()
+        if eligible and unpriced:
+            return "warning", f"{object_name} keeps non-market resources as bottleneck notes: {unpriced}"
+        return "ok", "no unpriced market resources requiring audit note"
+    raise ValueError(f"Unknown ROI quality check: {check}")
+
+
+def collect_roi_quality_rows(rows: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    rows = rows if rows is not None else extract_megastructure_rows()
+    audit_rows: list[dict[str, Any]] = []
+    checks = (
+        "decision_eligible_data_quality",
+        "decision_eligible_cost",
+        "decision_eligible_unresolved_symbols",
+        "decision_eligible_market_unpriced_resources",
+    )
+    for row in rows:
+        for check in checks:
+            status, reason = roi_quality_status(row, check)
+            audit_rows.append(
+                {
+                    "scope": "row",
+                    "check": check,
+                    "status": status,
+                    "object_name": row.get("object_name", ""),
+                    "source_file": row.get("source_file", ""),
+                    "decision_eligible": row.get("decision_eligible", ""),
+                    "data_quality": row.get("data_quality", ""),
+                    "build_cost_value": row.get("build_cost_value", ""),
+                    "unresolved_symbols": row.get("unresolved_symbols", ""),
+                    "market_unpriced_resources": row.get("market_unpriced_resources", ""),
+                    "reason": reason,
+                }
+            )
+    thresholds = generated_thresholds(rows)
+    eligible_rows = [
+        row
+        for row in rows
+        if row.get("decision_eligible") == "yes"
+        and row.get("data_quality") == "resolved"
+        and isinstance(row.get("build_cost_value"), (int, float))
+        and row["build_cost_value"] > 0
+    ]
+    threshold_status = "ok" if thresholds["eligible_roi_rows"] == len(eligible_rows) else "fail"
+    audit_rows.append(
+        {
+            "scope": "summary",
+            "check": "threshold_eligible_count",
+            "status": threshold_status,
+            "object_name": "",
+            "source_file": "",
+            "decision_eligible": len(eligible_rows),
+            "data_quality": "",
+            "build_cost_value": "",
+            "unresolved_symbols": "",
+            "market_unpriced_resources": "",
+            "reason": (
+                f"generated thresholds use {thresholds['eligible_roi_rows']} eligible rows; "
+                f"audit counted {len(eligible_rows)}"
+            ),
+        }
+    )
+    return audit_rows
+
+
+def roi_quality_audit_report_text(audit_rows: list[dict[str, Any]]) -> str:
+    counts: dict[str, int] = {}
+    for row in audit_rows:
+        counts[row["status"]] = counts.get(row["status"], 0) + 1
+    lines = [
+        "# Stellar AI Director ROI Quality Audit",
+        "",
+        "Generated from the ROI matrix inputs. `fail` rows block validation; `warning` rows document non-market resources kept as bottleneck notes instead of invented prices.",
+        "",
+        "## Status Counts",
+        "",
+        "| status | rows |",
+        "| --- | ---: |",
+        *[f"| {status} | {count} |" for status, count in sorted(counts.items())],
+        "",
+        "## Non-OK Rows",
+        "",
+        "| scope | check | status | object | reason |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    non_ok_rows = [row for row in audit_rows if row["status"] != "ok"]
+    if not non_ok_rows:
+        lines.append("| summary | all_checks | ok |  | No warnings or failures. |")
+    for row in non_ok_rows[:80]:
+        lines.append(
+            f"| {row['scope']} | {row['check']} | {row['status']} | `{row['object_name']}` | {row['reason']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_roi_quality_audit_artifacts(rows: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    audit_rows = collect_roi_quality_rows(rows)
+    write_csv(ROI_QUALITY_AUDIT_CSV, audit_rows)
+    write_text_file(ROI_QUALITY_AUDIT_MD, roi_quality_audit_report_text(audit_rows))
+    return audit_rows
+
+
+@dataclass(slots=True)
+class EmpireState:
+    at_war: bool = False
+    recently_lost_war: bool = False
+    lost_economy_fraction: float = 0.0
+    used_naval_capacity_percent: float = 0.8
+    highest_threat: float = 0.0
+    incomes: dict[str, float] = field(default_factory=dict)
+    stockpiles: dict[str, float] = field(default_factory=dict)
+    has_megastructure_prereqs: bool = False
+    project_progress: float = 0.0
+    has_completed_shipyard_multiplier: bool = False
+    shipyard_capacity_bottleneck: bool = False
+    wants_fleet_buildup: bool = False
+    alloy_stockpile_near_cap: bool = False
+    research_sink_available: bool = False
+    unity_sink_available: bool = False
+    personality: str = "balanced"
+
+
+def stockpile_runway_months(state: EmpireState, resource: str) -> float:
+    income = state.incomes.get(resource, 0.0)
+    if income >= 0:
+        return math.inf
+    return state.stockpiles.get(resource, 0.0) / abs(income) if income < 0 else math.inf
+
+
+def core_deficit_with_short_runway(state: EmpireState) -> bool:
+    for resource in ("energy", "minerals", "consumer_goods", "food", "alloys"):
+        if state.incomes.get(resource, 0.0) < 0 and stockpile_runway_months(state, resource) < 24:
+            return True
+    return False
+
+
+def surplus_sink_pressure(state: EmpireState) -> bool:
+    if core_deficit_with_short_runway(state):
+        return False
+    if state.incomes.get("energy", 0.0) < 0 or state.incomes.get("alloys", 0.0) < 0:
+        return False
+    income_surplus = state.incomes.get("alloys", 0.0) >= 300 and state.incomes.get("energy", 0.0) >= 300
+    stockpile_surplus = state.stockpiles.get("alloys", 0.0) >= 20000 or state.alloy_stockpile_near_cap
+    return income_surplus and stockpile_surplus
+
+
+def choose_decision_state(state: EmpireState) -> str:
+    if core_deficit_with_short_runway(state) or state.lost_economy_fraction >= 0.35:
+        return "survival_mode"
+    if state.recently_lost_war or any(state.incomes.get(res, 0.0) < 0 for res in ("energy", "minerals", "alloys")):
+        return "recovery_mode"
+    if state.at_war and state.used_naval_capacity_percent < 0.85 and state.project_progress < 0.75:
+        return "recovery_mode"
+    if state.project_progress >= 0.75 and not core_deficit_with_short_runway(state):
+        return "investment_commit_mode"
+    if state.has_completed_shipyard_multiplier:
+        if state.incomes.get("alloys", 0.0) >= 150 and state.incomes.get("energy", 0.0) >= 100:
+            return "payoff_exploitation_mode"
+        return "recovery_mode"
+    if surplus_sink_pressure(state):
+        if state.research_sink_available:
+            return "research_expansion_mode"
+        if state.wants_fleet_buildup or state.alloy_stockpile_near_cap or state.incomes.get("alloys", 0.0) >= 500:
+            if not state.at_war or state.used_naval_capacity_percent >= 0.85:
+                return "shipyard_expansion_mode"
+        if state.unity_sink_available:
+            return "unity_expansion_mode"
+    if state.has_megastructure_prereqs and state.incomes.get("alloys", 0.0) >= 120 and state.stockpiles.get("alloys", 0.0) >= 15000:
+        if state.highest_threat < 45 or state.used_naval_capacity_percent >= 0.9:
+            return "investment_prep_mode"
+    return "normal_growth_mode"
+
+
+def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = list(rows[0].keys()) if rows else []
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def write_json(path: Path, data: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def write_text_file(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def load_stellaris_save_gamestate(save_path: Path) -> str:
+    with zipfile.ZipFile(save_path) as archive:
+        if "gamestate" not in archive.namelist():
+            raise ValueError(f"Stellaris save is missing gamestate entry: {save_path}")
+        return archive.read("gamestate").decode("utf-8", "replace")
+
+
+def latest_stellaris_save(save_root: Path = STELLARIS_SAVE_ROOT) -> Path:
+    saves = [path for path in save_root.rglob("*.sav") if path.is_file()]
+    if not saves:
+        raise FileNotFoundError(f"No Stellaris .sav files found under {save_root}")
+    return max(saves, key=lambda path: path.stat().st_mtime)
+
+
+def _find_assignment_value_start(text: str, key: str, start: int = 0) -> int:
+    match = re.search(rf"(^|\n)\s*{re.escape(key)}\s*=\s*", text[start:])
+    if not match:
+        return -1
+    return start + match.end()
+
+
+def _extract_balanced_block_at(text: str, brace_index: int) -> str:
+    if brace_index < 0 or brace_index >= len(text) or text[brace_index] != "{":
+        raise ValueError("balanced block extraction requires a starting brace")
+    depth = 0
+    in_quote = False
+    escaped = False
+    for index in range(brace_index, len(text)):
+        char = text[index]
+        if char == "\\" and in_quote and not escaped:
+            escaped = True
+            continue
+        if char == '"' and not escaped:
+            in_quote = not in_quote
+        elif not in_quote and char == "{":
+            depth += 1
+        elif not in_quote and char == "}":
+            depth -= 1
+            if depth == 0:
+                return text[brace_index : index + 1]
+        escaped = False
+    raise ValueError("Malformed Stellaris save block: missing closing brace")
+
+
+def extract_assignment_block(text: str, key: str, start: int = 0) -> str:
+    match = re.search(rf"(^|\n)\s*{re.escape(key)}\s*=\s*\{{", text[start:])
+    if not match:
+        return ""
+    brace_index = start + match.end() - 1
+    return _extract_balanced_block_at(text, brace_index)
+
+
+def iter_numbered_child_blocks(block_text: str) -> list[tuple[str, str]]:
+    if not block_text:
+        return []
+    first_brace = block_text.find("{")
+    if first_brace == -1:
+        return []
+    inner = _extract_balanced_block_at(block_text, first_brace)[1:-1]
+    rows: list[tuple[str, str]] = []
+    index = 0
+    while index < len(inner):
+        while index < len(inner) and inner[index].isspace():
+            index += 1
+        key_start = index
+        while index < len(inner) and inner[index].isdigit():
+            index += 1
+        if key_start == index:
+            index += 1
+            continue
+        child_id = inner[key_start:index]
+        while index < len(inner) and inner[index].isspace():
+            index += 1
+        if index >= len(inner) or inner[index] != "=":
+            index += 1
+            continue
+        index += 1
+        while index < len(inner) and inner[index].isspace():
+            index += 1
+        if index >= len(inner) or inner[index] != "{":
+            continue
+        child_block = _extract_balanced_block_at(inner, index)
+        rows.append((child_id, child_block))
+        index += len(child_block)
+    return rows
+
+
+def save_scalar(text: str, key: str) -> str:
+    value_start = _find_assignment_value_start(text, key)
+    if value_start == -1:
+        return ""
+    newline = text.find("\n", value_start)
+    end = newline if newline != -1 else len(text)
+    return text[value_start:end].strip().strip('"')
+
+
+def numeric_assignment(text: str, key: str) -> float | None:
+    match = re.search(rf"(^|\n)\s*{re.escape(key)}\s*=\s*(-?\d+(?:\.\d+)?)\b", text)
+    return float(match.group(2)) if match else None
+
+
+def sum_resource_assignments(block_text: str) -> dict[str, float]:
+    totals: dict[str, float] = {}
+    for match in re.finditer(r"\b([A-Za-z][A-Za-z0-9_]+)\s*=\s*(-?\d+(?:\.\d+)?)\b", block_text):
+        resource = match.group(1)
+        if resource in {"current_month", "income", "expenses", "budget"}:
+            continue
+        totals[resource] = totals.get(resource, 0.0) + float(match.group(2))
+    return {resource: round(value, 3) for resource, value in sorted(totals.items())}
+
+
+def collect_observer_save_summary(save_path: Path) -> dict[str, Any]:
+    gamestate = load_stellaris_save_gamestate(save_path)
+    mods = re.findall(r'"([^"]+)"', extract_assignment_block(gamestate, "mods"))
+    player_block = extract_assignment_block(gamestate, "player")
+    player_country_match = re.search(r"\bcountry\s*=\s*(\d+)", player_block)
+    player_country = player_country_match.group(1) if player_country_match else ""
+    country_blocks = dict(iter_numbered_child_blocks(extract_assignment_block(gamestate, "country")))
+    initialized_countries = {
+        country_id: block
+        for country_id, block in country_blocks.items()
+        if re.search(r"(^|\n)\s*initialized\s*=\s*yes\b", block)
+    }
+    player_block_text = country_blocks.get(player_country, "")
+    budget_block = extract_assignment_block(player_block_text, "budget")
+    current_month_block = extract_assignment_block(budget_block, "current_month")
+    income_block = extract_assignment_block(current_month_block, "income")
+    metric_keys = (
+        "economy_power",
+        "tech_power",
+        "fleet_size",
+        "used_naval_capacity",
+        "empire_size",
+        "num_sapient_pops",
+        "navy_coverage",
+    )
+    metrics = {key: numeric_assignment(player_block_text, key) for key in metric_keys}
+    metrics = {key: value for key, value in metrics.items() if value is not None}
+    required_mods_present = {
+        "Stellar AI Director": "Stellar AI Director" in mods,
+        "Gigastructural Engineering & More (4.4)": "Gigastructural Engineering & More (4.4)" in mods,
+        "NSC3": "NSC3" in mods,
+        "Extra Ship Components NEXT": "Extra Ship Components NEXT" in mods,
+    }
+    short_smoke_checks = {
+        "save_reaches_2202_01_01": save_scalar(gamestate, "date") >= "2202.01.01",
+        "director_mod_listed": required_mods_present["Stellar AI Director"],
+        "player_country_found": bool(player_country and player_block_text),
+        "initialized_country_count_positive": len(initialized_countries) > 0,
+        "player_metrics_found": bool(metrics),
+    }
+    return {
+        "save_path": str(save_path),
+        "save_mtime_utc": datetime.fromtimestamp(save_path.stat().st_mtime, timezone.utc).isoformat(),
+        "version": save_scalar(gamestate, "version"),
+        "name": save_scalar(gamestate, "name"),
+        "date": save_scalar(gamestate, "date"),
+        "mod_count": len(mods),
+        "required_mods_present": required_mods_present,
+        "player_country": player_country,
+        "country_count": len(country_blocks),
+        "initialized_country_count": len(initialized_countries),
+        "player_metrics": metrics,
+        "player_monthly_income": sum_resource_assignments(income_block),
+        "short_smoke_checks": short_smoke_checks,
+        "short_smoke_passes": all(short_smoke_checks.values()),
+        "high_roi_path_observed": False,
+        "p15_completion_note": "Short Irony-launched save evidence only; this does not satisfy the late-game high-ROI observer acceptance by itself.",
+    }
+
+
+def observer_save_summary_report_text(summary: dict[str, Any]) -> str:
+    lines = [
+        "# Stellar AI Director Observer Smoke Save Summary",
+        "",
+        f"Save: `{summary['save_path']}`",
+        f"Date: {summary['date']}",
+        f"Version: {summary['version']}",
+        f"Empire: {summary['name']}",
+        f"Short smoke passes: {summary['short_smoke_passes']}",
+        f"High-ROI path observed: {summary['high_roi_path_observed']}",
+        "",
+        "## Required Mods",
+        "",
+    ]
+    for name, present in summary["required_mods_present"].items():
+        lines.append(f"- {name}: {'present' if present else 'missing'}")
+    lines.extend(
+        [
+            "",
+            "## Save Metrics",
+            "",
+            f"- Mod count: {summary['mod_count']}",
+            f"- Player country: {summary['player_country'] or 'missing'}",
+            f"- Country count: {summary['country_count']}",
+            f"- Initialized countries: {summary['initialized_country_count']}",
+            f"- Player metrics: {json.dumps(summary['player_metrics'], sort_keys=True)}",
+            f"- Player monthly income: {json.dumps(summary['player_monthly_income'], sort_keys=True)}",
+            "",
+            "## Checks",
+            "",
+        ]
+    )
+    for check, passed in summary["short_smoke_checks"].items():
+        lines.append(f"- {check}: {'pass' if passed else 'fail'}")
+    lines.extend(["", summary["p15_completion_note"], ""])
+    return "\n".join(lines)
+
+
+def generate_observer_save_summary_artifacts(save_path: Path | None = None) -> dict[str, Any]:
+    summary = collect_observer_save_summary(save_path or latest_stellaris_save())
+    write_json(OBSERVER_SMOKE_SAVE_SUMMARY_JSON, summary)
+    write_text_file(OBSERVER_SMOKE_SAVE_SUMMARY_MD, observer_save_summary_report_text(summary))
+    return summary
+
+
+def integration_surface_report_text(rows: list[dict[str, Any]]) -> str:
+    counts: dict[tuple[str, str], int] = {}
+    for row in rows:
+        key = (row["phase"], row["object_type"])
+        counts[key] = counts.get(key, 0) + 1
+    lines = [
+        "# Stellar AI Director Integration Surface Inventory",
+        "",
+        "Generated from required parent source snapshots. Rows are evidence for P6-P11 policy work; direct PDX overrides are emitted only from separately validated generated files.",
+        "",
+        "## Surface Counts",
+        "",
+        "| phase | object type | count |",
+        "| --- | --- | ---: |",
+    ]
+    for (phase, object_type), count in sorted(counts.items()):
+        lines.append(f"| {phase} | {object_type} | {count} |")
+    lines.extend(
+        [
+            "",
+            "## Candidate Intervention Samples",
+            "",
+            "| phase | object | mod | recommendation | minimum V1 intervention | source has AI weight |",
+            "| --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for row in rows[:80]:
+        lines.append(
+            f"| {row['phase']} | `{row['object_name']}` | {row['mod_name']} | "
+            f"{row['policy_recommendation']} | {row['minimum_v1_intervention']} | {row['source_has_ai_weight']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_integration_surface_artifacts() -> list[dict[str, Any]]:
+    rows = collect_integration_surface_rows()
+    write_csv(RESEARCH_ROOT / "stellar-ai-director-integration-surfaces-2026-07-04.csv", rows)
+    generate_integration_policy_audit_artifacts(rows)
+    write_text_file(
+        RESEARCH_ROOT / "stellar-ai-director-integration-surfaces-2026-07-04.md",
+        integration_surface_report_text(rows),
+    )
+    return rows
+
+
+def generated_conflict_report_text(rows: list[dict[str, Any]]) -> str:
+    lines = [
+        "# Stellar AI Director Generated Conflict Classification",
+        "",
+        "Generated by parsing this mod's generated `common/` files and comparing top-level objects against parent and vanilla source inventories.",
+        "",
+        "| object type | object | file | classification | reason |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['object_type']} | `{row['object_name']}` | `{row['generated_file']}` | "
+            f"{row['classification']} | {row['reason']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def collect_generated_conflict_rows(
+    mod_root: Path = MOD_ROOT,
+    snapshot_root: Path = SNAPSHOT_ROOT,
+) -> list[dict[str, Any]]:
+    object_names = collect_object_names(snapshot_root)
+    rows: list[dict[str, Any]] = []
+    common = mod_root / "common"
+    if not common.exists():
+        return rows
+    for folder, object_type in GENERATED_SURFACE_FOLDERS.items():
+        folder_path = common / folder
+        if not folder_path.exists():
+            continue
+        for file_path in iter_text_files(folder_path):
+            text = read_text(file_path)
+            try:
+                parsed = parse_pdx(text)
+            except PDXParseError:
+                continue
+            generated_file = file_path.relative_to(mod_root).as_posix()
+            for assignment in block_assignments(parsed):
+                parent_has_object = assignment.key in object_names.get(object_type, set())
+                if parent_has_object and "Full-object override" in text:
+                    classification = "intentional_director_override"
+                    reason = "generated file declares full-object override ownership"
+                elif parent_has_object:
+                    classification = "unexpected_parent_object_collision"
+                    reason = "generated object matches known parent or vanilla object without override ownership note"
+                else:
+                    classification = "additive_director_object"
+                    reason = "generated object name is new in validated source inventory"
+                rows.append(
+                    {
+                        "object_type": object_type,
+                        "object_name": assignment.key,
+                        "generated_file": generated_file,
+                        "parent_has_object": "yes" if parent_has_object else "no",
+                        "classification": classification,
+                        "reason": reason,
+                    }
+                )
+    rows.sort(key=lambda row: (row["classification"], row["object_type"], row["object_name"]))
+    return rows
+
+
+def generate_conflict_classification_artifacts() -> list[dict[str, Any]]:
+    rows = collect_generated_conflict_rows()
+    write_csv(RESEARCH_ROOT / "stellar-ai-director-generated-conflicts-2026-07-04.csv", rows)
+    write_text_file(
+        RESEARCH_ROOT / "stellar-ai-director-generated-conflicts-2026-07-04.md",
+        generated_conflict_report_text(rows),
+    )
+    return rows
+
+
+def generated_top_level_objects(mod_root: Path = MOD_ROOT) -> dict[str, set[str]]:
+    objects: dict[str, set[str]] = {object_type: set() for object_type in GENERATED_SURFACE_FOLDERS.values()}
+    common = mod_root / "common"
+    if not common.exists():
+        return objects
+    for folder, object_type in GENERATED_SURFACE_FOLDERS.items():
+        folder_path = common / folder
+        if not folder_path.exists():
+            continue
+        for file_path in iter_text_files(folder_path):
+            try:
+                parsed = parse_file(file_path)
+            except PDXParseError:
+                continue
+            objects[object_type].update(assignment.key for assignment in block_assignments(parsed))
+    return objects
+
+
+def collect_generated_reference_rows(
+    mod_root: Path = MOD_ROOT,
+    snapshot_root: Path = SNAPSHOT_ROOT,
+) -> list[dict[str, Any]]:
+    object_names = collect_object_names(snapshot_root)
+    generated_objects = generated_top_level_objects(mod_root)
+    allowed = {
+        "technology": object_names.get("technology", set()),
+        "resource": object_names.get("resource", set()) | set(RESOURCE_VALUES) | {"food", "energy", "minerals", "alloys", "consumer_goods"},
+        "scripted_trigger": object_names.get("scripted_trigger", set()) | generated_objects["scripted_trigger"],
+        "scripted_value": object_names.get("scripted_value", set()) | generated_objects["scripted_value"],
+    }
+    rows: list[dict[str, Any]] = []
+
+    def add_row(file_path: Path, reference_type: str, reference_name: str, source_key: str) -> None:
+        exists = reference_name in allowed[reference_type]
+        rows.append(
+            {
+                "reference_type": reference_type,
+                "reference_name": reference_name,
+                "source_key": source_key,
+                "generated_file": file_path.relative_to(mod_root).as_posix(),
+                "status": "ok" if exists else "missing",
+                "reason": "reference exists in source or generated inventory" if exists else "reference missing from source and generated inventories",
+            }
+        )
+
+    common = mod_root / "common"
+    if not common.exists():
+        return rows
+    for file_path in iter_text_files(common):
+        try:
+            parsed = parse_file(file_path)
+        except PDXParseError:
+            continue
+        for assignment in iter_assignments(parsed):
+            value = atom_value(assignment.value)
+            if assignment.key == "has_technology" and value:
+                add_row(file_path, "technology", value, assignment.key)
+            elif assignment.key in {"resource", "has_deficit"} and value:
+                add_row(file_path, "resource", value, assignment.key)
+            elif value in {"yes", "no"} and assignment.key.startswith(("staid_", "stellarai_")):
+                add_row(file_path, "scripted_trigger", assignment.key, assignment.key)
+            elif value and value.startswith("staid_") and assignment.key in {"value", "add", "factor"}:
+                add_row(file_path, "scripted_value", value, assignment.key)
+    rows.sort(key=lambda row: (row["status"], row["reference_type"], row["reference_name"], row["generated_file"]))
+    return rows
+
+
+def generated_reference_report_text(rows: list[dict[str, Any]]) -> str:
+    counts: dict[tuple[str, str], int] = {}
+    for row in rows:
+        key = (row["reference_type"], row["status"])
+        counts[key] = counts.get(key, 0) + 1
+    lines = [
+        "# Stellar AI Director Generated Reference Audit",
+        "",
+        "Generated by parsing this mod's generated `common/` files and checking explicit technology, resource, scripted-trigger, and scripted-value references against source inventories.",
+        "",
+        "## Counts",
+        "",
+        "| reference type | status | count |",
+        "| --- | --- | ---: |",
+    ]
+    for (reference_type, status), count in sorted(counts.items()):
+        lines.append(f"| {reference_type} | {status} | {count} |")
+    lines.extend(
+        [
+            "",
+            "## References",
+            "",
+            "| type | reference | file | source key | status | reason |",
+            "| --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for row in rows:
+        lines.append(
+            f"| {row['reference_type']} | `{row['reference_name']}` | `{row['generated_file']}` | "
+            f"`{row['source_key']}` | {row['status']} | {row['reason']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_reference_audit_artifacts() -> list[dict[str, Any]]:
+    rows = collect_generated_reference_rows()
+    write_csv(REFERENCE_AUDIT_CSV, rows)
+    write_text_file(REFERENCE_AUDIT_MD, generated_reference_report_text(rows))
+    return rows
+
+
+def descriptor_dependencies(text: str) -> list[str]:
+    match = re.search(r"(?ms)^\s*dependencies\s*=\s*\{(?P<body>.*?)^\s*\}", text)
+    if not match:
+        return []
+    return re.findall(r'"([^"]+)"', match.group("body"))
+
+
+def playset_mod_by_id(playset: dict[str, Any], steam_id: str) -> dict[str, Any] | None:
+    for mod in playset.get("mods", []):
+        if safe_mod_id(mod.get("steam_id")) == steam_id:
+            return mod
+    return None
+
+
+def playset_mod_by_name(playset: dict[str, Any], name: str) -> dict[str, Any] | None:
+    for mod in playset.get("mods", []):
+        if mod.get("name") == name:
+            return mod
+    return None
+
+
+def dependency_status(descriptor_present: bool, playset_present: bool, name_matches: bool) -> str:
+    if not descriptor_present:
+        return "missing_descriptor_dependency"
+    if not playset_present:
+        return "missing_playset_dependency"
+    if not name_matches:
+        return "name_mismatch"
+    return "ok"
+
+
+def collect_dependency_audit_rows(
+    mod_root: Path = MOD_ROOT,
+    playset: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    playset = build_active_playset_snapshot() if playset is None else playset
+    descriptor_path = mod_root / "descriptor.mod"
+    descriptor_deps = set(descriptor_dependencies(read_text(descriptor_path)) if descriptor_path.exists() else [])
+    rows: list[dict[str, Any]] = []
+    for steam_id, expected_name in REQUIRED_MODS.items():
+        actual = playset_mod_by_id(playset, steam_id)
+        actual_name = actual.get("name", "") if actual else ""
+        descriptor_present = expected_name in descriptor_deps
+        playset_present = actual is not None
+        name_matches = actual_name == expected_name
+        rows.append(
+            {
+                "dependency_type": "required_parent",
+                "steam_id": steam_id,
+                "expected_name": expected_name,
+                "descriptor_present": "yes" if descriptor_present else "no",
+                "playset_present": "yes" if playset_present else "no",
+                "actual_playset_name": actual_name,
+                "load_position": actual.get("position", "") if actual else "",
+                "status": dependency_status(descriptor_present, playset_present, name_matches),
+            }
+        )
+    universal = playset_mod_by_name(playset, UNIVERSAL_RESOURCE_PATCH_NAME)
+    descriptor_present = UNIVERSAL_RESOURCE_PATCH_NAME in descriptor_deps
+    playset_present = universal is not None
+    rows.append(
+        {
+            "dependency_type": "compatibility_dependency",
+            "steam_id": safe_mod_id(universal.get("steam_id")) if universal else "",
+            "expected_name": UNIVERSAL_RESOURCE_PATCH_NAME,
+            "descriptor_present": "yes" if descriptor_present else "no",
+            "playset_present": "yes" if playset_present else "no",
+            "actual_playset_name": universal.get("name", "") if universal else "",
+            "load_position": universal.get("position", "") if universal else "",
+            "status": dependency_status(descriptor_present, playset_present, playset_present),
+        }
+    )
+    rows.sort(key=lambda row: (row["dependency_type"], row["expected_name"]))
+    return rows
+
+
+def dependency_audit_report_text(rows: list[dict[str, Any]]) -> str:
+    counts: dict[str, int] = {}
+    for row in rows:
+        counts[row["status"]] = counts.get(row["status"], 0) + 1
+    lines = [
+        "# Stellar AI Director Dependency Audit",
+        "",
+        "Generated by comparing `mods/StellarAIDirector/descriptor.mod` dependency names against the selected Irony playset snapshot.",
+        "",
+        "## Counts",
+        "",
+        "| status | count |",
+        "| --- | ---: |",
+    ]
+    for status, count in sorted(counts.items()):
+        lines.append(f"| {status} | {count} |")
+    lines.extend(
+        [
+            "",
+            "## Dependencies",
+            "",
+            "| type | expected name | descriptor | playset | actual playset name | load position | status |",
+            "| --- | --- | --- | --- | --- | ---: | --- |",
+        ]
+    )
+    for row in rows:
+        lines.append(
+            f"| {row['dependency_type']} | {row['expected_name']} | {row['descriptor_present']} | "
+            f"{row['playset_present']} | {row['actual_playset_name']} | {row['load_position']} | {row['status']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_dependency_audit_artifacts() -> list[dict[str, Any]]:
+    rows = collect_dependency_audit_rows()
+    write_csv(DEPENDENCY_AUDIT_CSV, rows)
+    write_text_file(DEPENDENCY_AUDIT_MD, dependency_audit_report_text(rows))
+    return rows
+
+
+def unresolved_template_placeholder_count(text: str) -> int:
+    patterns = [
+        r"\$[A-Za-z0-9_.:-]+\$",
+        r"__PLACEHOLDER_[A-Za-z0-9_]+__",
+        r"\bTODO\b",
+        r"\bPLACEHOLDER\b",
+    ]
+    return sum(len(re.findall(pattern, text)) for pattern in patterns)
+
+
+def generated_file_path_status(path: Path, mod_root: Path = MOD_ROOT) -> tuple[str, str]:
+    try:
+        relative = path.relative_to(mod_root)
+    except ValueError:
+        return ("outside_mod_root", "")
+    parts = relative.parts
+    if len(parts) < 3 or parts[0] != "common":
+        return ("outside_common", "")
+    folder = parts[1]
+    if folder not in GENERATED_SURFACE_FOLDERS and folder not in GENERATED_AUXILIARY_COMMON_FOLDERS:
+        return ("unsupported_common_folder", folder)
+    if path.suffix.lower() != ".txt":
+        return ("unsupported_suffix", folder)
+    return ("ok", folder)
+
+
+def collect_generated_file_audit_rows(mod_root: Path = MOD_ROOT) -> list[dict[str, Any]]:
+    common = mod_root / "common"
+    rows: list[dict[str, Any]] = []
+    if not common.exists():
+        return rows
+    for file_path in sorted(path for path in common.rglob("*") if path.is_file()):
+        path_status, folder = generated_file_path_status(file_path, mod_root)
+        object_type = GENERATED_SURFACE_FOLDERS.get(folder, "")
+        text = read_text(file_path)
+        placeholder_count = unresolved_template_placeholder_count(text)
+        parse_status = "not_checked"
+        top_level_object_count = 0
+        try:
+            parsed = parse_pdx(text)
+            parse_status = "ok"
+            top_level_object_count = len(block_assignments(parsed))
+        except PDXParseError as exc:
+            parse_status = f"parse_error: {exc}"
+        status = "ok"
+        reason = "valid generated PDXScript surface"
+        if path_status != "ok":
+            status = path_status
+            reason = "generated file is not in a supported Stellaris common surface"
+        elif parse_status != "ok":
+            status = "parse_error"
+            reason = "generated PDXScript failed parser validation"
+        elif top_level_object_count == 0:
+            status = "empty_generated_file"
+            reason = "generated PDXScript file has no top-level objects"
+        elif placeholder_count:
+            status = "unresolved_placeholder"
+            reason = "generated file contains unresolved template placeholders"
+        rows.append(
+            {
+                "generated_file": file_path.relative_to(mod_root).as_posix(),
+                "folder": folder,
+                "object_type": object_type,
+                "path_status": path_status,
+                "parse_status": parse_status,
+                "top_level_object_count": top_level_object_count,
+                "unresolved_placeholder_count": placeholder_count,
+                "status": status,
+                "reason": reason,
+            }
+        )
+    rows.sort(key=lambda row: (row["status"], row["generated_file"]))
+    return rows
+
+
+def generated_file_audit_report_text(rows: list[dict[str, Any]]) -> str:
+    counts: dict[str, int] = {}
+    for row in rows:
+        counts[row["status"]] = counts.get(row["status"], 0) + 1
+    lines = [
+        "# Stellar AI Director Generated File Audit",
+        "",
+        "Generated by scanning `mods/StellarAIDirector/common/` for generated files and checking Stellaris surface path, suffix, parser status, top-level object count, and unresolved placeholders.",
+        "",
+        "## Counts",
+        "",
+        "| status | count |",
+        "| --- | ---: |",
+    ]
+    for status, count in sorted(counts.items()):
+        lines.append(f"| {status} | {count} |")
+    lines.extend(
+        [
+            "",
+            "## Files",
+            "",
+            "| file | folder | object type | path | parse | objects | placeholders | status | reason |",
+            "| --- | --- | --- | --- | --- | ---: | ---: | --- | --- |",
+        ]
+    )
+    for row in rows:
+        lines.append(
+            f"| `{row['generated_file']}` | {row['folder']} | {row['object_type']} | {row['path_status']} | "
+            f"{row['parse_status']} | {row['top_level_object_count']} | {row['unresolved_placeholder_count']} | "
+            f"{row['status']} | {row['reason']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_file_audit_artifacts() -> list[dict[str, Any]]:
+    rows = collect_generated_file_audit_rows()
+    write_csv(FILE_AUDIT_CSV, rows)
+    write_text_file(FILE_AUDIT_MD, generated_file_audit_report_text(rows))
+    return rows
+
+
+def classify_director_log_line(line: str, intentional_overrides: set[tuple[str, str]]) -> str:
+    lowered = line.lower()
+    if "already exists" in lowered and "using the one at" in lowered:
+        for object_name, generated_file in intentional_overrides:
+            if object_name in line and Path(generated_file).name in line:
+                return "expected_intentional_override"
+    if any(token in lowered for token in ("error", "missing", "exception", "failed", "fatal")):
+        return "problem"
+    return "unclassified"
+
+
+def director_log_terms(runtime_files: list[Path]) -> set[str]:
+    terms = {path.name for path in runtime_files}
+    terms.update({"Stellar AI Director", "staid_", "zzz_staid", "zzzz_staid"})
+    return terms
+
+
+def collect_director_log_summary(
+    path: Path,
+    terms: set[str],
+    intentional_overrides: set[tuple[str, str]],
+    latest_runtime_mtime: int | None = None,
+) -> dict[str, Any]:
+    entry: dict[str, Any] = {
+        "name": path.name,
+        "path": str(path),
+        "exists": path.exists(),
+        "size_bytes": path.stat().st_size if path.exists() else 0,
+        "mtime_ns": path.stat().st_mtime_ns if path.exists() else None,
+        "newer_than_generated": bool(path.exists() and latest_runtime_mtime and path.stat().st_mtime_ns >= latest_runtime_mtime),
+        "director_line_count": 0,
+        "director_expected_line_count": 0,
+        "director_problem_line_count": 0,
+        "director_unclassified_line_count": 0,
+        "sample_director_lines": [],
+    }
+    if not path.exists():
+        return entry
+    director_lines = []
+    expected_lines = []
+    problem_lines = []
+    unclassified_lines = []
+    for line in read_text(path).splitlines():
+        if any(term in line for term in terms):
+            trimmed = line[:240]
+            director_lines.append(trimmed)
+            classification = classify_director_log_line(line, intentional_overrides)
+            if classification == "expected_intentional_override":
+                expected_lines.append(trimmed)
+            elif classification == "problem":
+                problem_lines.append(trimmed)
+            else:
+                unclassified_lines.append(trimmed)
+    entry["director_line_count"] = len(director_lines)
+    entry["director_expected_line_count"] = len(expected_lines)
+    entry["director_problem_line_count"] = len(problem_lines)
+    entry["director_unclassified_line_count"] = len(unclassified_lines)
+    entry["sample_director_lines"] = [
+        *[f"expected_intentional_override: {line}" for line in expected_lines[:10]],
+        *[f"problem: {line}" for line in problem_lines[:10]],
+        *[f"unclassified: {line}" for line in unclassified_lines[:10]],
+    ][:10]
+    return entry
+
+
+def file_sha256(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def current_main_menu_mode(dlc_load_path: Path = DLC_LOAD_PATH) -> str:
+    if not dlc_load_path.exists():
+        raise FileNotFoundError(f"dlc_load.json not found: {dlc_load_path}")
+    enabled_mods = json.loads(read_text(dlc_load_path)).get("enabled_mods", [])
+    return "with_director" if DIRECTOR_DLC_LOAD_ENTRY in enabled_mods else "baseline_without_director"
+
+
+def collect_launch_log_file_state(log_root: Path = STELLARIS_LOG_ROOT) -> list[dict[str, Any]]:
+    rows = []
+    for log_name in ("error.log", "game.log"):
+        path = log_root / log_name
+        rows.append(
+            {
+                "name": log_name,
+                "path": str(path),
+                "exists": path.exists(),
+                "size_bytes": path.stat().st_size if path.exists() else 0,
+                "mtime_ns": path.stat().st_mtime_ns if path.exists() else None,
+                "sha256": file_sha256(path),
+            }
+        )
+    return rows
+
+
+def collect_main_menu_proof_marker(
+    *,
+    log_root: Path = STELLARIS_LOG_ROOT,
+    mod_root: Path = MOD_ROOT,
+    launcher_mod_root: Path = PARADOX_MOD_ROOT,
+    dlc_load_path: Path = DLC_LOAD_PATH,
+    confirmation_env: str = MAIN_MENU_CONFIRMATION_ENV,
+    environment: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    environment = environment if environment is not None else os.environ
+    confirmation = environment.get(confirmation_env, "")
+    if confirmation.lower() != "yes":
+        raise PermissionError(
+            f"Set {confirmation_env}=yes only after visually confirming Stellaris reached the main menu."
+        )
+    mode = current_main_menu_mode(dlc_load_path)
+    return {
+        "confirmed": True,
+        "mode": mode,
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "confirmation_env": confirmation_env,
+        "confirmation_value": confirmation,
+        "launcher_installation": collect_launcher_installation_state(launcher_mod_root, mod_root, dlc_load_path),
+        "logs": collect_launch_log_file_state(log_root),
+    }
+
+
+def merge_main_menu_proof_marker(existing: dict[str, Any], marker: dict[str, Any]) -> dict[str, Any]:
+    markers = [row for row in existing.get("markers", []) if isinstance(row, dict)]
+    if marker:
+        markers.append(marker)
+    by_mode: dict[str, dict[str, Any]] = {}
+    for row in markers:
+        if row.get("confirmed") is True and row.get("mode") in MAIN_MENU_REQUIRED_MODES:
+            by_mode[row["mode"]] = row
+    missing_modes = [mode for mode in MAIN_MENU_REQUIRED_MODES if mode not in by_mode]
+    return {
+        "required_modes": list(MAIN_MENU_REQUIRED_MODES),
+        "main_menu_proven": not missing_modes,
+        "missing_modes": missing_modes,
+        "modes": by_mode,
+        "markers": markers,
+    }
+
+
+def read_main_menu_proof_status(proof_path: Path = MAIN_MENU_PROOF_PATH) -> dict[str, Any]:
+    if not proof_path.exists():
+        return {
+            "proof_path": str(proof_path),
+            "main_menu_proven": False,
+            "missing_modes": list(MAIN_MENU_REQUIRED_MODES),
+            "main_menu_evidence": "manual main-menu proof markers are missing for baseline_without_director and with_director",
+        }
+    data = json.loads(read_text(proof_path))
+    merged = merge_main_menu_proof_marker(data, {})
+    modes = sorted(merged["modes"])
+    if merged["main_menu_proven"]:
+        evidence = f"manual main-menu proof markers recorded for {', '.join(modes)}"
+    else:
+        evidence = f"manual main-menu proof markers missing for {', '.join(merged['missing_modes'])}"
+    return {
+        "proof_path": str(proof_path),
+        "main_menu_proven": merged["main_menu_proven"],
+        "missing_modes": merged["missing_modes"],
+        "main_menu_evidence": evidence,
+    }
+
+
+def record_main_menu_proof_marker(
+    *,
+    proof_path: Path = MAIN_MENU_PROOF_PATH,
+    log_root: Path = STELLARIS_LOG_ROOT,
+    mod_root: Path = MOD_ROOT,
+    launcher_mod_root: Path = PARADOX_MOD_ROOT,
+    dlc_load_path: Path = DLC_LOAD_PATH,
+    confirmation_env: str = MAIN_MENU_CONFIRMATION_ENV,
+    environment: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    marker = collect_main_menu_proof_marker(
+        log_root=log_root,
+        mod_root=mod_root,
+        launcher_mod_root=launcher_mod_root,
+        dlc_load_path=dlc_load_path,
+        confirmation_env=confirmation_env,
+        environment=environment,
+    )
+    existing = json.loads(read_text(proof_path)) if proof_path.exists() else {}
+    merged = merge_main_menu_proof_marker(existing, marker)
+    write_json(proof_path, merged)
+    return merged
+
+
+def collect_launch_validation_evidence(
+    install_root: Path = STELLARIS_INSTALL_ROOT,
+    log_root: Path = STELLARIS_LOG_ROOT,
+    mod_root: Path = MOD_ROOT,
+    main_menu_proof_path: Path = MAIN_MENU_PROOF_PATH,
+) -> dict[str, Any]:
+    runtime_files = sorted((mod_root / "common").rglob("*.txt")) if (mod_root / "common").exists() else []
+    latest_runtime_mtime = max((path.stat().st_mtime_ns for path in runtime_files), default=None)
+    generated_terms = director_log_terms(runtime_files)
+    intentional_overrides = {
+        (row["object_name"], row["generated_file"])
+        for row in collect_generated_conflict_rows(mod_root)
+        if row["classification"] == "intentional_director_override"
+    }
+    logs = []
+    for log_name in ("error.log", "game.log"):
+        path = log_root / log_name
+        logs.append(collect_director_log_summary(path, generated_terms, intentional_overrides, latest_runtime_mtime))
+    fresh_logs = bool(logs and all(log["exists"] and log["newer_than_generated"] for log in logs))
+    launcher_state = collect_launcher_installation_state(mod_root=mod_root)
+    main_menu_status = read_main_menu_proof_status(main_menu_proof_path)
+    return {
+        "game_executable": str(install_root / "stellaris.exe"),
+        "game_executable_exists": (install_root / "stellaris.exe").exists(),
+        "launcher_installation": launcher_state,
+        "runtime_file_count": len(runtime_files),
+        "latest_runtime_mtime_ns": latest_runtime_mtime,
+        "logs": logs,
+        "launch_evidence_status": "fresh_logs_present" if fresh_logs else "stale_or_missing_logs",
+        "main_menu_proven": main_menu_status["main_menu_proven"],
+        "main_menu_evidence": main_menu_status["main_menu_evidence"],
+        "main_menu_missing_modes": main_menu_status["missing_modes"],
+        "main_menu_proof_path": main_menu_status["proof_path"],
+    }
+
+
+def launch_validation_report_text(evidence: dict[str, Any]) -> str:
+    lines = [
+        "# Stellar AI Director Launch Validation Evidence",
+        "",
+        f"Game executable exists: {evidence['game_executable_exists']}",
+        f"Game executable: `{evidence['game_executable']}`",
+        f"Launcher descriptor exists: {evidence['launcher_installation']['descriptor_exists']}",
+        f"Launcher descriptor points to source: {evidence['launcher_installation']['descriptor_points_to_source']}",
+        f"Enabled in dlc_load.json: {evidence['launcher_installation']['enabled_in_dlc_load']}",
+        f"Generated runtime files: {evidence['runtime_file_count']}",
+        f"Launch evidence status: {evidence['launch_evidence_status']}",
+        f"Main menu proven: {evidence['main_menu_proven']}",
+        f"Main menu evidence: {evidence['main_menu_evidence']}",
+        "",
+        "## Log Review",
+        "",
+        "| log | exists | newer than generated files | bytes | Director lines | expected override lines | Director problem lines | unclassified lines |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for log in evidence["logs"]:
+        lines.append(
+            f"| {log['name']} | {log['exists']} | {log['newer_than_generated']} | {log['size_bytes']} | "
+            f"{log['director_line_count']} | {log['director_expected_line_count']} | "
+            f"{log['director_problem_line_count']} | {log['director_unclassified_line_count']} |"
+        )
+    lines.extend(["", "## Director Line Samples", ""])
+    for log in evidence["logs"]:
+        lines.append(f"### {log['name']}")
+        if not log["sample_director_lines"]:
+            lines.append("")
+            lines.append("No Director-specific lines found in this log.")
+            lines.append("")
+            continue
+        lines.append("")
+        for line in log["sample_director_lines"]:
+            lines.append(f"- `{line}`")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def generate_launch_validation_artifacts() -> dict[str, Any]:
+    evidence = collect_launch_validation_evidence()
+    write_json(RESEARCH_ROOT / "stellar-ai-director-launch-validation-2026-07-04.json", evidence)
+    write_text_file(
+        RESEARCH_ROOT / "stellar-ai-director-launch-validation-2026-07-04.md",
+        launch_validation_report_text(evidence),
+    )
+    return evidence
+
+
+def collect_launch_comparison_evidence(
+    baseline_error_log: Path = BASELINE_ERROR_LOG,
+    baseline_game_log: Path = BASELINE_GAME_LOG,
+    with_director_error_log: Path = WITH_DIRECTOR_ERROR_LOG,
+    with_director_game_log: Path = WITH_DIRECTOR_GAME_LOG,
+    mod_root: Path = MOD_ROOT,
+    main_menu_proof_path: Path = MAIN_MENU_PROOF_PATH,
+    launch_surface: str | None = None,
+) -> dict[str, Any]:
+    runtime_files = sorted((mod_root / "common").rglob("*.txt")) if (mod_root / "common").exists() else []
+    terms = director_log_terms(runtime_files)
+    intentional_overrides = {
+        (row["object_name"], row["generated_file"])
+        for row in collect_generated_conflict_rows(mod_root)
+        if row["classification"] == "intentional_director_override"
+    }
+    baseline_logs = [
+        collect_director_log_summary(baseline_error_log, terms, intentional_overrides),
+        collect_director_log_summary(baseline_game_log, terms, intentional_overrides),
+    ]
+    director_logs = [
+        collect_director_log_summary(with_director_error_log, terms, intentional_overrides),
+        collect_director_log_summary(with_director_game_log, terms, intentional_overrides),
+    ]
+    baseline_matches = sum(log["director_line_count"] for log in baseline_logs)
+    director_matches = sum(log["director_line_count"] for log in director_logs)
+    director_problem_lines = sum(log["director_problem_line_count"] for log in director_logs)
+    director_unclassified_lines = sum(log["director_unclassified_line_count"] for log in director_logs)
+    main_menu_status = read_main_menu_proof_status(main_menu_proof_path)
+    return {
+        "launch_surface": launch_surface or os.environ.get(LAUNCH_SURFACE_ENV, "direct_executable_probe"),
+        "baseline_logs": baseline_logs,
+        "with_director_logs": director_logs,
+        "baseline_director_match_count": baseline_matches,
+        "with_director_match_count": director_matches,
+        "with_director_problem_line_count": director_problem_lines,
+        "with_director_unclassified_line_count": director_unclassified_lines,
+        "with_director_expected_override_line_count": sum(log["director_expected_line_count"] for log in director_logs),
+        "director_delta_status": (
+            "expected_only"
+            if baseline_matches == 0 and director_matches > 0 and director_problem_lines == 0 and director_unclassified_lines == 0
+            else "needs_review"
+        ),
+        "main_menu_proven": main_menu_status["main_menu_proven"],
+        "main_menu_evidence": main_menu_status["main_menu_evidence"],
+        "main_menu_missing_modes": main_menu_status["missing_modes"],
+        "main_menu_proof_path": main_menu_status["proof_path"],
+    }
+
+
+def launch_comparison_report_text(evidence: dict[str, Any]) -> str:
+    launch_surface = evidence.get("launch_surface", "unknown")
+    real_playset_surface = launch_surface in {"irony_launcher", "paradox_launcher"}
+    if real_playset_surface and evidence["main_menu_proven"] and evidence["director_delta_status"] == "expected_only":
+        conclusion = (
+            "The comparison shows both required main-menu proof markers are present and the "
+            "Director-specific log delta is limited to expected intentional override lines for "
+            "the launcher-resolved playset."
+        )
+        next_step = (
+            "P14 launch validation is satisfied for the preserved baseline and Director-enabled "
+            "probes; continue with observer testing and longer-run tuning validation."
+        )
+    elif evidence["main_menu_proven"] and evidence["director_delta_status"] == "expected_only":
+        conclusion = (
+            "The comparison shows main-menu proof markers and an expected-only Director log "
+            f"delta, but the recorded launch surface is `{launch_surface}`, not an Irony or "
+            "launcher-resolved playset launch."
+        )
+        next_step = (
+            "Next validation must launch the actual parent playset through Irony or another "
+            "launcher-resolved playset surface before P14 can be marked complete."
+        )
+    else:
+        conclusion = (
+            "The comparison proves only that the Director-specific log delta is expected-only for "
+            "the preserved timed probes. It does not yet prove that both the parent playset and "
+            "the Director-enabled playset reached the main menu."
+        )
+        next_step = (
+            "Next validation must use a visible/manual or otherwise main-menu-detectable launch "
+            "method before P14 can be marked complete."
+        )
+    lines = [
+        "# Stellar AI Director Launch Comparison",
+        "",
+        "Generated from preserved baseline and Director-enabled launch logs.",
+        "",
+        f"Launch surface: {launch_surface}",
+        f"Director delta status: {evidence['director_delta_status']}",
+        f"Main menu proven: {evidence['main_menu_proven']}",
+        f"Main menu evidence: {evidence['main_menu_evidence']}",
+        "",
+        "## Summary",
+        "",
+        "| probe | Director matches | expected override lines | problem lines | unclassified lines |",
+        "| --- | ---: | ---: | ---: | ---: |",
+        (
+            f"| baseline without Director | {evidence['baseline_director_match_count']} | "
+            "0 | 0 | 0 |"
+        ),
+        (
+            f"| with Director | {evidence['with_director_match_count']} | "
+            f"{evidence['with_director_expected_override_line_count']} | "
+            f"{evidence['with_director_problem_line_count']} | "
+            f"{evidence['with_director_unclassified_line_count']} |"
+        ),
+        "",
+        "## Baseline Logs",
+        "",
+        "| log | exists | bytes | Director lines |",
+        "| --- | --- | ---: | ---: |",
+    ]
+    for log in evidence["baseline_logs"]:
+        lines.append(f"| `{log['path']}` | {log['exists']} | {log['size_bytes']} | {log['director_line_count']} |")
+    lines.extend(
+        [
+            "",
+            "## Director-Enabled Logs",
+            "",
+            "| log | exists | bytes | Director lines | expected override lines | problem lines | unclassified lines |",
+            "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+        ]
+    )
+    for log in evidence["with_director_logs"]:
+        lines.append(
+            f"| `{log['path']}` | {log['exists']} | {log['size_bytes']} | {log['director_line_count']} | "
+            f"{log['director_expected_line_count']} | {log['director_problem_line_count']} | "
+            f"{log['director_unclassified_line_count']} |"
+        )
+    lines.extend(["", "## Director Line Samples", ""])
+    for log in evidence["with_director_logs"]:
+        lines.append(f"### {Path(log['path']).name}")
+        lines.append("")
+        if not log["sample_director_lines"]:
+            lines.append("No Director-specific lines found in this log.")
+            lines.append("")
+            continue
+        for line in log["sample_director_lines"]:
+            lines.append(f"- `{line}`")
+        lines.append("")
+    lines.extend(["", "## Current Conclusion", "", conclusion, "", next_step])
+    return "\n".join(lines) + "\n"
+
+
+def generate_launch_comparison_artifacts() -> dict[str, Any]:
+    evidence = collect_launch_comparison_evidence()
+    write_json(RESEARCH_ROOT / "stellar-ai-director-launch-comparison-2026-07-04.json", evidence)
+    write_text_file(
+        RESEARCH_ROOT / "stellar-ai-director-launch-comparison-2026-07-04.md",
+        launch_comparison_report_text(evidence),
+    )
+    return evidence
+
+
+def extract_completion_checklist_items(plan_text: str) -> list[dict[str, str]]:
+    items = []
+    for match in re.finditer(r"(?m)^- \[ \] (P\d+) (.+?)\.$", plan_text):
+        items.append({"phase": match.group(1), "requirement": match.group(2)})
+    return items
+
+
+def plan_phase_artifact_rows(phase: str, repo_root: Path = REPO_ROOT) -> list[dict[str, Any]]:
+    rows = []
+    for relative in PLAN_PHASE_EVIDENCE.get(phase, ()):
+        path = repo_root / relative
+        rows.append(
+            {
+                "path": relative,
+                "exists": path.exists(),
+                "size_bytes": path.stat().st_size if path.exists() else 0,
+            }
+        )
+    return rows
+
+
+def launch_comparison_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    comparison_path = repo_root / "research/stellar-ai/stellar-ai-director-launch-comparison-2026-07-04.json"
+    if not comparison_path.exists():
+        return False
+    evidence = json.loads(read_text(comparison_path))
+    return (
+        evidence.get("launch_surface") in {"irony_launcher", "paradox_launcher"}
+        and evidence.get("director_delta_status") == "expected_only"
+        and evidence.get("main_menu_proven") is True
+        and evidence.get("with_director_problem_line_count") == 0
+        and evidence.get("with_director_unclassified_line_count") == 0
+    )
+
+
+def starbase_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
+    triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    required_economy_terms = {
+        "Stellar AI Director defensive starbase reserve",
+        "Stellar AI Director crisis starbase reserve",
+        "staid_static_defense_investment_ready = yes",
+        "staid_crisis_starbase_pressure = yes",
+    }
+    required_trigger_terms = {
+        "staid_defensive_starbase_strategy",
+        "staid_crisis_starbase_pressure",
+        "staid_aggressive_fleet_pressure",
+        "staid_static_defense_investment_ready",
+        "staid_recovery_mode = yes",
+    }
+    required_note_terms = {
+        "static-defense",
+        "direct starbase module/building weights remain deferred",
+    }
+    if not (economy_path.exists() and triggers_path.exists() and tuning_path.exists()):
+        return False
+    try:
+        parse_file(economy_path)
+        parse_file(triggers_path)
+    except PDXParseError:
+        return False
+    economy = read_text(economy_path)
+    triggers = read_text(triggers_path)
+    tuning = read_text(tuning_path).lower()
+    return (
+        all(term in economy for term in required_economy_terms)
+        and all(term in triggers for term in required_trigger_terms)
+        and all(term in tuning for term in required_note_terms)
+    )
+
+
+def shipyard_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
+    triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    required_economy_terms = {
+        "Stellar AI Director fleet throughput reserve",
+        "Stellar AI Director payoff exploitation alloys",
+        "staid_shipyard_expansion_ready = yes",
+        "staid_fleet_payoff_exploitation_ready = yes",
+        "naval_cap = 200",
+    }
+    required_trigger_terms = {
+        "staid_fleet_buildup_economy_safe",
+        "staid_shipyard_expansion_ready",
+        "staid_fleet_payoff_exploitation_ready",
+        "used_naval_capacity_percent < 1.05",
+        "staid_core_deficit_short_runway = yes",
+    }
+    required_note_terms = {
+        "fleet-throughput policy",
+        "over-naval-cap upkeep spirals",
+    }
+    if not (economy_path.exists() and triggers_path.exists() and tuning_path.exists()):
+        return False
+    try:
+        parse_file(economy_path)
+        parse_file(triggers_path)
+    except PDXParseError:
+        return False
+    economy = read_text(economy_path)
+    triggers = read_text(triggers_path)
+    tuning = read_text(tuning_path).lower()
+    return (
+        all(term in economy for term in required_economy_terms)
+        and all(term in triggers for term in required_trigger_terms)
+        and all(term in tuning for term in required_note_terms)
+    )
+
+
+def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
+    triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    required_economy_terms = {
+        "Stellar AI Director planetary capacity reserve",
+        "staid_planetary_capacity_growth_ready = yes",
+        "pops = 250000",
+    }
+    required_trigger_terms = {
+        "staid_planetary_capacity_growth_ready",
+        "staid_core_deficit_short_runway = yes",
+        "resource_stockpile_compare = { resource = minerals value > 5000 }",
+        "has_monthly_income = { resource = minerals value > 100 }",
+    }
+    required_note_terms = {
+        "planetary-capacity policy",
+        "no generated building/job references",
+    }
+    if not (economy_path.exists() and triggers_path.exists() and tuning_path.exists()):
+        return False
+    try:
+        parse_file(economy_path)
+        parse_file(triggers_path)
+    except PDXParseError:
+        return False
+    economy = read_text(economy_path)
+    triggers = read_text(triggers_path)
+    tuning = read_text(tuning_path).lower()
+    return (
+        all(term in economy for term in required_economy_terms)
+        and all(term in triggers for term in required_trigger_terms)
+        and all(term in tuning for term in required_note_terms)
+    )
+
+
+def nsc3_esc_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    audit_path = repo_root / "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    conflicts_path = repo_root / "mods/StellarAIDirector/notes/conflicts.md"
+    if not (audit_path.exists() and tuning_path.exists() and conflicts_path.exists()):
+        return False
+    with audit_path.open(encoding="utf-8", newline="") as handle:
+        p11_rows = [row for row in csv.DictReader(handle) if row.get("phase") == "P11"]
+    if not p11_rows or any(row.get("status") == "fail" for row in p11_rows):
+        return False
+    if not all(row.get("priority_band") == "nsc3_esc_parent_design_ai_preservation" for row in p11_rows):
+        return False
+    notes = (read_text(tuning_path) + "\n" + read_text(conflicts_path)).lower()
+    required_terms = {
+        "nsc3/esc design policy",
+        "direct nsc3/esc ship and component design overrides are deferred",
+        "observer evidence",
+    }
+    return all(term in notes for term in required_terms)
+
+
+def unlock_priority_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
+    triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    reference_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv"
+    if not (economy_path.exists() and triggers_path.exists() and tuning_path.exists() and reference_audit_path.exists()):
+        return False
+    try:
+        parse_file(economy_path)
+        parse_file(triggers_path)
+    except PDXParseError:
+        return False
+    with reference_audit_path.open(encoding="utf-8", newline="") as handle:
+        if any(row.get("status") == "missing" for row in csv.DictReader(handle)):
+            return False
+    economy = read_text(economy_path)
+    triggers = read_text(triggers_path)
+    tuning = read_text(tuning_path).lower()
+    return (
+        "Stellar AI Director modded unlock research reserve" in economy
+        and "staid_core_unlock_research_priority_ready = yes" in economy
+        and "staid_core_unlock_research_priority_ready" in triggers
+        and "has_technology = tech_mega_engineering" in triggers
+        and "has_technology = tech_mega_shipyard" in triggers
+        and "unlock-research policy" in tuning
+        and "direct technology/ap/tradition object overrides are deferred" in tuning
+    )
+
+
+def mega_giga_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    alloy_budget_path = repo_root / "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt"
+    gigas_budget_path = repo_root / "mods/StellarAIDirector/common/ai_budget/zzz_staid_gigas_resource_budgets.txt"
+    economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    policy_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv"
+    roi_quality_path = repo_root / "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv"
+    required_paths = [alloy_budget_path, gigas_budget_path, economy_path, tuning_path, policy_audit_path, roi_quality_path]
+    if not all(path.exists() for path in required_paths):
+        return False
+    try:
+        parse_file(alloy_budget_path)
+        parse_file(gigas_budget_path)
+        parse_file(economy_path)
+    except PDXParseError:
+        return False
+    with policy_audit_path.open(encoding="utf-8", newline="") as handle:
+        p7_rows = [row for row in csv.DictReader(handle) if row.get("phase") == "P7"]
+    if not p7_rows or any(row.get("status") == "fail" for row in p7_rows):
+        return False
+    if not any(row.get("status") == "ready" and row.get("priority_band") == "roi_driven_mega_giga_builds" for row in p7_rows):
+        return False
+    with roi_quality_path.open(encoding="utf-8", newline="") as handle:
+        if any(row.get("status") == "fail" for row in csv.DictReader(handle)):
+            return False
+    combined = "\n".join(read_text(path) for path in (alloy_budget_path, gigas_budget_path, economy_path, tuning_path)).lower()
+    required_terms = {
+        "staid_pause_new_megastructure",
+        "staid_megastructure_prep_ready",
+        "staid_megastructure_commit_safe",
+        "stellar ai director mega alloy reserve",
+        "stellar ai director giga special resource reserve",
+        "direct individual megastructure/gigastructure build-weight overrides are deferred",
+    }
+    return all(term in combined for term in required_terms)
+
+
+def _read_csv_rows(path: Path) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    with path.open(encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def munch_preflight_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    preflight_path = repo_root / "research/stellar-ai/stellar-ai-director-munch-preflight-2026-07-04.md"
+    if not preflight_path.exists():
+        return False
+    text = read_text(preflight_path).lower()
+    required_terms = {
+        "jdocmunch_guide` returned content",
+        "jcodemunch_guide` returned content",
+        "jdatamunch_guide` returned content",
+        "munch_preflight_pass",
+        "active-thread guide calls succeeded",
+    }
+    return all(term in text for term in required_terms)
+
+
+def source_corpus_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    snapshot_root = repo_root / "research/mod-source-snapshots/2026-07-04"
+    manifest_path = snapshot_root / "snapshot-manifest.csv"
+    descriptor_path = snapshot_root / "descriptor-inventory.csv"
+    object_inventory_path = snapshot_root / "pdx-object-inventory.csv"
+    ai_surface_path = snapshot_root / "ai-surface-inventory.csv"
+    corpus_note_path = repo_root / "research/stellar-ai/stellar-ai-director-corpus-status-2026-07-04.md"
+    if not all(path.exists() for path in (manifest_path, descriptor_path, object_inventory_path, ai_surface_path, corpus_note_path)):
+        return False
+    manifest_rows = _read_csv_rows(manifest_path)
+    descriptor_rows = _read_csv_rows(descriptor_path)
+    object_rows = _read_csv_rows(object_inventory_path)
+    ai_rows = _read_csv_rows(ai_surface_path)
+    required_parent_names = {
+        "Stellar AI",
+        "Gigastructural Engineering & More (4.4)",
+        "NSC3",
+        "Extra Ship Components NEXT",
+        "Starbase Extended 3.0",
+    }
+    manifest_names = {row.get("name", "") for row in manifest_rows}
+    descriptor_names = {row.get("name", "") for row in descriptor_rows}
+    required_object_dirs = {
+        "ai_budget",
+        "economic_plans",
+        "megastructures",
+        "technology",
+        "ascension_perks",
+        "traditions",
+        "starbase_modules",
+        "starbase_buildings",
+        "buildings",
+        "ship_sizes",
+        "component_templates",
+        "scripted_triggers",
+        "script_values",
+        "on_actions",
+    }
+    object_dirs = {row.get("second_dir", "") for row in object_rows}
+    ai_columns = set(ai_rows[0].keys()) if ai_rows else set()
+    required_ai_columns = {"ai_weight", "economic_plan", "megastructure", "technology", "ship_size", "component", "starbase"}
+    note = read_text(corpus_note_path).lower()
+    required_note_terms = {
+        "jdocmunch repo `local/stellarismods-docs-2026-07-04`",
+        "verify_index` reported 0 drift, 0 missing, and 0 errors",
+        "jcodemunch repo `local/stellarismods-223b92bc`",
+        "jdatamunch indexed and validated",
+        "pdx-object-inventory.csv`: 35991 rows",
+        "ai-surface-inventory.csv`: 1696 rows",
+    }
+    return (
+        len(manifest_rows) == 5
+        and len(descriptor_rows) == 5
+        and len(object_rows) >= 35000
+        and len(ai_rows) >= 1600
+        and required_parent_names.issubset(manifest_names)
+        and required_parent_names.issubset(descriptor_names)
+        and required_object_dirs.issubset(object_dirs)
+        and required_ai_columns.issubset(ai_columns)
+        and all(row.get("snapshot_path") for row in manifest_rows)
+        and all(term in note for term in required_note_terms)
+    )
+
+
+def roi_model_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    roi_path = repo_root / "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.csv"
+    market_path = repo_root / "research/stellar-ai/stellar-ai-director-market-values-2026-07-04.csv"
+    quality_path = repo_root / "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv"
+    report_path = repo_root / "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.md"
+    if not all(path.exists() for path in (roi_path, market_path, quality_path, report_path)):
+        return False
+    roi_rows = _read_csv_rows(roi_path)
+    market_rows = _read_csv_rows(market_path)
+    quality_rows = _read_csv_rows(quality_path)
+    eligible_rows = [row for row in roi_rows if row.get("decision_eligible") == "yes"]
+    required_objects = {
+        "mega_shipyard_2",
+        "mega_shipyard_3",
+        "mega_shipyard_restored",
+        "neutronium_gigaforge_3",
+        "nidavellir_forge_4",
+        "hrae_mc_4",
+    }
+    required_roles = {"economy_multiplier", "research_multiplier", "fleet_production_sink"}
+    required_market_resources = {"alloys", "energy", "minerals", "consumer_goods"}
+    object_names = {row.get("object_name", "") for row in roi_rows}
+    roles = {row.get("director_strategy_role", "") for row in roi_rows}
+    mod_names = {row.get("mod_name", "") for row in roi_rows}
+    market_resources = {row.get("resource", "") for row in market_rows}
+    eligible_bottlenecks = [row for row in eligible_rows if row.get("market_unpriced_resources")]
+    return (
+        len(eligible_rows) >= 140
+        and {"Gigastructural Engineering & More (4.4)", "NSC3"}.issubset(mod_names)
+        and required_objects.issubset(object_names)
+        and required_roles.issubset(roles)
+        and required_market_resources.issubset(market_resources)
+        and bool(eligible_bottlenecks)
+        and not any(row.get("status") == "fail" for row in quality_rows)
+        and all(row.get("data_quality") == "resolved" for row in eligible_rows)
+        and all(row.get("build_cost_value") not in {"", "0", "0.0"} for row in eligible_rows)
+        and "Rows marked `decision_eligible = no` are kept for auditability" in read_text(report_path)
+    )
+
+
+def decision_tree_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    if not (triggers_path.exists() and tuning_path.exists()):
+        return False
+    try:
+        parse_file(triggers_path)
+    except PDXParseError:
+        return False
+    triggers = read_text(triggers_path)
+    tuning = read_text(tuning_path).lower()
+    required_trigger_terms = {
+        "staid_survival_mode",
+        "staid_recovery_mode",
+        "staid_core_deficit_short_runway",
+        "staid_surplus_sink_pressure",
+        "staid_pause_new_megastructure",
+        "staid_megastructure_prep_ready",
+        "staid_megastructure_commit_safe",
+        "staid_research_sink_priority_ready",
+        "staid_unity_sink_priority_ready",
+        "staid_core_unlock_research_priority_ready",
+        "staid_shipyard_expansion_ready",
+        "staid_fleet_payoff_exploitation_ready",
+        "staid_static_defense_investment_ready",
+        "staid_planetary_capacity_growth_ready",
+        "has_deficit = energy",
+        "has_deficit = minerals",
+        "has_deficit = consumer_goods",
+        "used_naval_capacity_percent < 1.05",
+    }
+    required_note_terms = {
+        "safe tuning rules",
+        "do not lower prep or commit reserves below survival/recovery safety gates",
+        "keep research sink before fleet sink",
+    }
+    return all(term in triggers for term in required_trigger_terms) and all(term in tuning for term in required_note_terms)
+
+
+def generated_surface_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    file_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-generated-file-audit-2026-07-04.csv"
+    reference_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv"
+    conflict_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.csv"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    required_generated_files = {
+        "common/ai_budget/zzz_staid_alloys_budget.txt",
+        "common/ai_budget/zzz_staid_gigas_resource_budgets.txt",
+        "common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "common/on_actions/zzz_staid_load_proof_on_actions.txt",
+        "common/script_values/zzz_staid_roi_values.txt",
+        "common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+    }
+    file_rows = _read_csv_rows(file_audit_path)
+    reference_rows = _read_csv_rows(reference_audit_path)
+    conflict_rows = _read_csv_rows(conflict_audit_path)
+    if not (file_rows and reference_rows and conflict_rows and tuning_path.exists()):
+        return False
+    audited_files = {row.get("generated_file", "") for row in file_rows}
+    if not required_generated_files.issubset(audited_files):
+        return False
+    generated_common_root = repo_root / "mods/StellarAIDirector/common"
+    for relative in required_generated_files:
+        path = generated_common_root / relative.removeprefix("common/")
+        if not path.exists():
+            return False
+        try:
+            parse_file(path)
+        except PDXParseError:
+            return False
+    classifications = {row.get("classification", "") for row in conflict_rows}
+    tuning = read_text(tuning_path).lower()
+    return (
+        not any(row.get("status") != "ok" for row in file_rows)
+        and not any(row.get("status") == "missing" for row in reference_rows)
+        and not any(row.get("classification") == "unexpected_parent_object_collision" for row in conflict_rows)
+        and {"additive_director_object", "intentional_director_override"}.issubset(classifications)
+        and "direct individual megastructure/gigastructure build-weight overrides are deferred" in tuning
+        and "direct technology/ap/tradition object overrides are deferred" in tuning
+        and "direct starbase module/building weights remain deferred" in tuning
+    )
+
+
+def irony_conflict_scan_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    scan_path = repo_root / "research/stellar-ai/stellar-ai-director-irony-conflict-scan-2026-07-04.md"
+    conflict_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.csv"
+    order_proof_path = repo_root / "research/stellar-ai/stellar-ai-director-irony-order-proof-2026-07-04.md"
+    if not all(path.exists() for path in (scan_path, conflict_audit_path, order_proof_path)):
+        return False
+    scan_text = read_text(scan_path).lower()
+    order_text = read_text(order_proof_path).lower()
+    required_scan_terms = {
+        "irony conflict solver",
+        "analyze only",
+        "4.4 stellaris mod collection w/load order: nsc3, planetary diversity",
+        "common\\ai_budget",
+        "conflict count: 3000",
+        "!!!universal resource patch [2.4+]",
+        "stellar ai director",
+        "lios",
+        "intentional director win",
+        "no unexplained director gameplay conflicts",
+    }
+    required_order_terms = {
+        "status: ok",
+        "director position: 117",
+        "latest dependency position: 116",
+        "existing_mod_order_preserved: true",
+    }
+    if not all(term in scan_text for term in required_scan_terms):
+        return False
+    if not all(term in order_text for term in required_order_terms):
+        return False
+    if not all(object_name in scan_text for object_name in IRONY_REVIEWED_CONFLICT_OBJECTS):
+        return False
+    conflict_rows = _read_csv_rows(conflict_audit_path)
+    reviewed_rows = [
+        row
+        for row in conflict_rows
+        if row.get("object_name") in IRONY_REVIEWED_CONFLICT_OBJECTS
+        and row.get("classification") == "intentional_director_override"
+        and row.get("object_type") == "ai_budget"
+    ]
+    return (
+        len({row.get("object_name") for row in reviewed_rows}) == len(IRONY_REVIEWED_CONFLICT_OBJECTS)
+        and not any(row.get("classification") == "unexpected_parent_object_collision" for row in conflict_rows)
+    )
+
+
+def validator_artifact_passes(validation_errors: list[str], repo_root: Path = REPO_ROOT) -> bool:
+    if validation_errors:
+        return False
+    audit_paths = [
+        repo_root / "research/stellar-ai/stellar-ai-director-generated-file-audit-2026-07-04.csv",
+        repo_root / "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+        repo_root / "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.csv",
+        repo_root / "research/stellar-ai/stellar-ai-director-dependency-audit-2026-07-04.csv",
+        repo_root / "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+        repo_root / "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+        repo_root / "research/stellar-ai/stellar-ai-director-irony-order-proof-2026-07-04.json",
+    ]
+    if not all(path.exists() for path in audit_paths):
+        return False
+    file_rows = _read_csv_rows(audit_paths[0])
+    reference_rows = _read_csv_rows(audit_paths[1])
+    conflict_rows = _read_csv_rows(audit_paths[2])
+    dependency_rows = _read_csv_rows(audit_paths[3])
+    roi_quality_rows = _read_csv_rows(audit_paths[4])
+    integration_rows = _read_csv_rows(audit_paths[5])
+    return (
+        file_rows
+        and reference_rows
+        and conflict_rows
+        and dependency_rows
+        and roi_quality_rows
+        and integration_rows
+        and all(row.get("status") == "ok" for row in file_rows)
+        and not any(row.get("status") == "missing" for row in reference_rows)
+        and not any(row.get("classification") == "unexpected_parent_object_collision" for row in conflict_rows)
+        and all(row.get("status") == "ok" for row in dependency_rows)
+        and not any(row.get("status") == "fail" for row in roi_quality_rows)
+        and not any(row.get("status") == "fail" for row in integration_rows)
+        and irony_order_proof_artifact_passes(repo_root)
+    )
+
+
+def documentation_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
+    readme_path = repo_root / "mods/StellarAIDirector/README.md"
+    load_order_path = repo_root / "mods/StellarAIDirector/notes/load-order.md"
+    conflicts_path = repo_root / "mods/StellarAIDirector/notes/conflicts.md"
+    observer_path = repo_root / "mods/StellarAIDirector/notes/observer-test-log.md"
+    tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    if not all(path.exists() for path in (readme_path, load_order_path, conflicts_path, observer_path, tuning_path)):
+        return False
+    combined = "\n".join(read_text(path).lower() for path in (readme_path, load_order_path, conflicts_path, observer_path, tuning_path))
+    required_terms = {
+        "gigastructural engineering & more (4.4)",
+        "extra ship components next",
+        "nsc3",
+        "!!!universal resource patch [2.4+]",
+        "stellar ai director",
+        "validation",
+        "load order",
+        "intentional",
+        "tuning",
+        "observer",
+        "stellar ai director loaded",
+        "irony",
+    }
+    return all(term in combined for term in required_terms)
+
+
+def classify_plan_phase_status(
+    phase: str,
+    artifacts: list[dict[str, Any]],
+    validation_errors: list[str],
+    main_menu_status: dict[str, Any],
+    observer_log_text: str,
+    repo_root: Path = REPO_ROOT,
+) -> str:
+    if any(not artifact["exists"] for artifact in artifacts):
+        return "missing"
+    if phase == "P0" and munch_preflight_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P0":
+        return "external_gate"
+    if phase == "P2" and irony_order_proof_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P1" and source_corpus_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P3" and roi_model_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P4" and decision_tree_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P5" and generated_surface_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P12" and validation_errors:
+        return "failing"
+    if phase == "P12" and validator_artifact_passes(validation_errors, repo_root):
+        return "verified"
+    if phase == "P13" and irony_conflict_scan_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P14" and not main_menu_status["main_menu_proven"]:
+        return "external_gate"
+    if phase == "P14" and launch_comparison_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P14":
+        return "external_gate"
+    if phase == "P6" and unlock_priority_policy_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P7" and mega_giga_policy_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P8" and shipyard_policy_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P9" and starbase_policy_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P10" and planetary_capacity_policy_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P11" and nsc3_esc_policy_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P16" and documentation_artifact_passes(repo_root):
+        return "verified"
+    if phase == "P15" and "not run yet" in observer_log_text.lower():
+        return "external_gate"
+    if phase in PLAN_PHASE_OPEN_REASONS:
+        return "partial"
+    return "verified"
+
+
+def collect_plan_completion_status(
+    plan_path: Path = PLAN_PATH,
+    repo_root: Path = REPO_ROOT,
+    mod_root: Path = MOD_ROOT,
+    main_menu_proof_path: Path = MAIN_MENU_PROOF_PATH,
+    validation_errors: list[str] | None = None,
+) -> dict[str, Any]:
+    checklist = extract_completion_checklist_items(read_text(plan_path))
+    validation_errors = validate_generated_patch() if validation_errors is None else validation_errors
+    main_menu_status = read_main_menu_proof_status(main_menu_proof_path)
+    observer_log_path = mod_root / "notes" / "observer-test-log.md"
+    observer_text = read_text(observer_log_path) if observer_log_path.exists() else ""
+    phases = []
+    for item in checklist:
+        phase = item["phase"]
+        artifacts = plan_phase_artifact_rows(phase, repo_root)
+        status = classify_plan_phase_status(phase, artifacts, validation_errors, main_menu_status, observer_text, repo_root)
+        phases.append(
+            {
+                **item,
+                "status": status,
+                "open_reason": "" if status == "verified" else PLAN_PHASE_OPEN_REASONS.get(phase, ""),
+                "artifacts": artifacts,
+            }
+        )
+    counts: dict[str, int] = {}
+    for phase in phases:
+        counts[phase["status"]] = counts.get(phase["status"], 0) + 1
+    return {
+        "plan_path": str(plan_path),
+        "overall_status": "complete" if counts.get("verified", 0) == len(phases) else "not_complete",
+        "phase_count": len(phases),
+        "status_counts": counts,
+        "validation_error_count": len(validation_errors),
+        "main_menu_proven": main_menu_status["main_menu_proven"],
+        "main_menu_missing_modes": main_menu_status["missing_modes"],
+        "phases": phases,
+    }
+
+
+def plan_completion_report_text(status: dict[str, Any]) -> str:
+    lines = [
+        "# Stellar AI Director V1 Plan Status",
+        "",
+        f"Overall status: {status['overall_status']}",
+        f"Phase count: {status['phase_count']}",
+        f"Validation errors: {status['validation_error_count']}",
+        f"Main menu proven: {status['main_menu_proven']}",
+        f"Main menu missing modes: {', '.join(status['main_menu_missing_modes']) or 'none'}",
+        "",
+        "| phase | status | requirement | evidence | open reason |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for phase in status["phases"]:
+        evidence = "; ".join(
+            f"{artifact['path']}={'present' if artifact['exists'] else 'missing'}" for artifact in phase["artifacts"]
+        )
+        if not evidence:
+            evidence = "session/external evidence required"
+        lines.append(
+            f"| {phase['phase']} | {phase['status']} | {phase['requirement']} | {evidence} | {phase['open_reason']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_plan_status_artifacts() -> dict[str, Any]:
+    status = collect_plan_completion_status()
+    write_json(PLAN_STATUS_JSON, status)
+    write_text_file(PLAN_STATUS_MD, plan_completion_report_text(status))
+    return status
+
+
+def launcher_descriptor_text(mod_root: Path = MOD_ROOT) -> str:
+    path = mod_root.resolve().as_posix()
+    return descriptor_text() + f'path="{path}"\n'
+
+
+def launcher_descriptor_path(launcher_mod_root: Path = PARADOX_MOD_ROOT) -> Path:
+    return launcher_mod_root / "StellarAIDirector.mod"
+
+
+def collect_launcher_installation_state(
+    launcher_mod_root: Path = PARADOX_MOD_ROOT,
+    mod_root: Path = MOD_ROOT,
+    dlc_load_path: Path = DLC_LOAD_PATH,
+) -> dict[str, Any]:
+    descriptor = launcher_descriptor_path(launcher_mod_root)
+    expected_path = mod_root.resolve().as_posix()
+    enabled_mod_entry = DIRECTOR_DLC_LOAD_ENTRY
+    actual_path = ""
+    enabled_mods: list[str] = []
+    if dlc_load_path.exists():
+        enabled_mods = json.loads(read_text(dlc_load_path)).get("enabled_mods", [])
+    if descriptor.exists():
+        match = re.search(r'^\s*path\s*=\s*"([^"]+)"', read_text(descriptor), flags=re.MULTILINE)
+        if match:
+            actual_path = Path(match.group(1)).resolve().as_posix()
+    return {
+        "descriptor_path": str(descriptor),
+        "descriptor_exists": descriptor.exists(),
+        "source_mod_path": expected_path,
+        "source_descriptor_exists": (mod_root / "descriptor.mod").exists(),
+        "descriptor_points_to_source": actual_path == expected_path,
+        "descriptor_path_value": actual_path,
+        "dlc_load_path": str(dlc_load_path),
+        "dlc_load_exists": dlc_load_path.exists(),
+        "enabled_mod_entry": enabled_mod_entry,
+        "enabled_in_dlc_load": enabled_mod_entry in enabled_mods,
+    }
+
+
+def install_launcher_descriptor(
+    launcher_mod_root: Path = PARADOX_MOD_ROOT,
+    mod_root: Path = MOD_ROOT,
+) -> Path:
+    descriptor = launcher_descriptor_path(launcher_mod_root)
+    write_text_file(descriptor, launcher_descriptor_text(mod_root))
+    return descriptor
+
+
+def set_director_enabled_in_dlc_load(enabled: bool, dlc_load_path: Path = DLC_LOAD_PATH) -> Path:
+    data = {"disabled_dlcs": [], "enabled_mods": []}
+    if dlc_load_path.exists():
+        data = json.loads(read_text(dlc_load_path))
+    enabled_mods = data.setdefault("enabled_mods", [])
+    if enabled:
+        if DIRECTOR_DLC_LOAD_ENTRY not in enabled_mods:
+            enabled_mods.append(DIRECTOR_DLC_LOAD_ENTRY)
+    else:
+        data["enabled_mods"] = [entry for entry in enabled_mods if entry != DIRECTOR_DLC_LOAD_ENTRY]
+    data.setdefault("disabled_dlcs", [])
+    dlc_load_path.parent.mkdir(parents=True, exist_ok=True)
+    dlc_load_path.write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
+    return dlc_load_path
+
+
+def enable_director_in_dlc_load(dlc_load_path: Path = DLC_LOAD_PATH) -> Path:
+    return set_director_enabled_in_dlc_load(True, dlc_load_path)
+
+
+def disable_director_in_dlc_load(dlc_load_path: Path = DLC_LOAD_PATH) -> Path:
+    return set_director_enabled_in_dlc_load(False, dlc_load_path)
+
+
+def collect_load_proof_contract(mod_root: Path = MOD_ROOT) -> dict[str, Any]:
+    files = {
+        "on_action": mod_root / "common" / "on_actions" / "zzz_staid_load_proof_on_actions.txt",
+        "event": mod_root / "events" / "zzz_staid_load_proof_events.txt",
+        "localisation": mod_root / "localisation" / "english" / "staid_load_proof_l_english.yml",
+    }
+    errors: list[str] = []
+    for label, path in files.items():
+        if not path.exists():
+            errors.append(f"Load-proof {label} file is missing: {path}")
+
+    on_action = files["on_action"]
+    if on_action.exists():
+        text = read_text(on_action)
+        try:
+            parse_file(on_action)
+        except PDXParseError as exc:
+            errors.append(f"Load-proof on_action parse failed: {exc}")
+        if "on_game_start_country" not in text:
+            errors.append("Load-proof on_action does not hook on_game_start_country")
+        if LOAD_PROOF_EVENT_ID not in text:
+            errors.append(f"Load-proof on_action does not reference {LOAD_PROOF_EVENT_ID}")
+
+    event = files["event"]
+    if event.exists():
+        text = read_text(event)
+        try:
+            parse_file(event)
+        except PDXParseError as exc:
+            errors.append(f"Load-proof event parse failed: {exc}")
+        required_fragments = (
+            "namespace = staid_load_proof",
+            "country_event =",
+            f"id = {LOAD_PROOF_EVENT_ID}",
+            f"title = {LOAD_PROOF_EVENT_ID}.name",
+            f"desc = {LOAD_PROOF_EVENT_ID}.desc",
+            "picture = GFX_evt_grand_speech",
+            "show_sound = event_default",
+            "is_triggered_only = yes",
+            "fire_only_once = yes",
+            "is_ai = no",
+            LOAD_PROOF_LOG_MARKER,
+            f"name = {LOAD_PROOF_EVENT_ID}.a",
+        )
+        for fragment in required_fragments:
+            if fragment not in text:
+                errors.append(f"Load-proof event is missing expected fragment: {fragment}")
+
+    localisation = files["localisation"]
+    if localisation.exists():
+        raw = localisation.read_bytes()
+        text = read_text(localisation)
+        if not raw.startswith(b"\xef\xbb\xbf"):
+            errors.append(f"Load-proof localisation must be UTF-8 BOM encoded: {localisation}")
+        for key in (f"{LOAD_PROOF_EVENT_ID}.name", f"{LOAD_PROOF_EVENT_ID}.desc", f"{LOAD_PROOF_EVENT_ID}.a"):
+            if key not in text:
+                errors.append(f"Load-proof localisation is missing key: {key}")
+        if LOAD_PROOF_TITLE not in text:
+            errors.append(f"Load-proof localisation title is not {LOAD_PROOF_TITLE!r}")
+
+    return {
+        "status": "ok" if not errors else "fail",
+        "errors": errors,
+        "files": {label: str(path) for label, path in files.items()},
+    }
+
+
+def generate_roi_artifacts() -> list[dict[str, Any]]:
+    rows = extract_megastructure_rows()
+    write_csv(RESEARCH_ROOT / "stellar-ai-director-roi-matrix-2026-07-04.csv", rows)
+    write_csv(RESEARCH_ROOT / "stellar-ai-director-market-values-2026-07-04.csv", market_price_rows())
+    generate_roi_quality_audit_artifacts(rows)
+    generate_integration_surface_artifacts()
+    thresholds = generated_thresholds(rows)
+    top_rows = [row for row in rows if row["decision_eligible"] == "yes"][:40]
+    lines = [
+        "# Stellar AI Director ROI Matrix",
+        "",
+        "Generated from copied 2026-07-04 source snapshots. Values are alloy-equivalent planning heuristics, not game engine runtime values.",
+        "",
+        "Market-aware columns use `market_amount` / `market_price` from `common/strategic_resources` and market caps from vanilla `common/defines/00_defines.txt`.",
+        "Deficit values use the no-fee max-buy ceiling. Surplus values use the no-fee min-sell floor. Default-fee columns are included separately for stress testing.",
+        "Strategic shipyard columns are not income. They estimate fleet-construction throughput for empires with enough alloy/energy surplus to exploit added shipyard capacity.",
+        "",
+        "Rows marked `decision_eligible = no` are kept for auditability but are excluded from generated priority thresholds.",
+        "",
+        "## Generated Thresholds",
+        "",
+        "| threshold | value |",
+        "| --- | ---: |",
+        *[f"| {key} | {value} |" for key, value in thresholds.items()],
+        "",
+        "## Top Decision-Eligible Rows",
+        "",
+        "| priority | object | source | market deficit cost | market payoff/year | market payback | shipyard throughput alloys/year | shipyard payback | quality | notes |",
+        "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+    ]
+    for row in top_rows:
+        lines.append(
+            f"| {row['priority_tier']} | `{row['object_name']}` | {row['mod_name']} | "
+            f"{row['market_deficit_cost_energy']} | {row['market_deficit_annual_payoff_energy']} | "
+            f"{row['market_deficit_payback_years']} | {row['strategic_shipyard_annual_alloy_throughput']} | "
+            f"{row['strategic_shipyard_payback_years']} | {row['data_quality']} | "
+            f"role {row['director_strategy_role']}; gate {row['director_build_gate']}; "
+            f"surplus sink {row['director_surplus_sink_priority']}:{row['director_surplus_sink_role']}; "
+            f"shipyards {row['shipyard_capacity']}; build speed {row['build_speed']}; "
+            f"source ai weight {row['source_has_ai_weight']}; produces {row['produces']}; unpriced {row['market_unpriced_resources']} |"
+        )
+    write_text_file(RESEARCH_ROOT / "stellar-ai-director-roi-matrix-2026-07-04.md", "\n".join(lines) + "\n")
+    return rows
+
+
+def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
+    rows = rows or extract_megastructure_rows()
+    thresholds = generated_thresholds(rows)
+    playset = build_active_playset_snapshot()
+    write_json(RESEARCH_ROOT / "stellar-ai-director-active-playset-2026-07-04.json", playset)
+    write_text_file(MOD_ROOT / "descriptor.mod", descriptor_text())
+    write_text_file(MOD_ROOT / "README.md", readme_text(playset))
+    write_text_file(
+        MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt",
+        triggers_text(thresholds),
+    )
+    write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt", ai_budget_text(thresholds))
+    write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt", gigas_resource_budget_text())
+    write_text_file(MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt", economic_plan_text())
+    write_text_file(MOD_ROOT / "common" / "script_values" / "zzz_staid_roi_values.txt", script_values_text(thresholds))
+    write_text_file(
+        RESEARCH_ROOT / "stellar-ai-director-implementation-notes-2026-07-04.md",
+        implementation_notes_text(playset, thresholds),
+    )
+    notes_root = MOD_ROOT / "notes"
+    write_text_file(notes_root / "load-order.md", load_order_note_text(playset))
+    write_text_file(notes_root / "conflicts.md", conflicts_note_text())
+    write_text_file(notes_root / "observer-test-log.md", observer_test_log_text(playset))
+    write_text_file(notes_root / "tuning-notes.md", tuning_notes_text(thresholds))
+    generate_dependency_audit_artifacts()
+    generate_irony_order_proof_artifacts()
+    generate_file_audit_artifacts()
+    generate_conflict_classification_artifacts()
+    generate_reference_audit_artifacts()
+    generate_launch_validation_artifacts()
+
+
+def descriptor_text() -> str:
+    deps = "\n".join(f'\t"{name}"' for name in [*REQUIRED_MODS.values(), UNIVERSAL_RESOURCE_PATCH_NAME])
+    return f'''version="0.1.0"
+tags={{
+\t"Gameplay"
+\t"Balance"
+\t"AI"
+}}
+name="Stellar AI Director"
+supported_version="v4.4.*"
+dependencies={{
+{deps}
+}}
+'''
+
+
+def triggers_text(thresholds: dict[str, int]) -> str:
+    text = '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Deterministic state gates for late-game investment decisions.
+
+staid_core_deficit_short_runway = {
+\tOR = {
+\t\thas_deficit = energy
+\t\thas_deficit = minerals
+\t\thas_deficit = alloys
+\t\tAND = { country_uses_consumer_goods = yes has_deficit = consumer_goods }
+\t\tAND = { country_uses_food = yes has_deficit = food }
+\t\tAND = {
+\t\t\tNOT = { has_monthly_income = { resource = energy value > 0 } }
+\t\t\tresource_stockpile_compare = { resource = energy value < 2400 }
+\t\t}
+\t\tAND = {
+\t\t\tNOT = { has_monthly_income = { resource = minerals value > 0 } }
+\t\t\tresource_stockpile_compare = { resource = minerals value < 2400 }
+\t\t}
+\t\tAND = {
+\t\t\tNOT = { has_monthly_income = { resource = alloys value > 0 } }
+\t\t\tresource_stockpile_compare = { resource = alloys value < 2400 }
+\t\t}
+\t}
+}
+
+staid_survival_mode = {
+\tis_nomadic = no
+\tOR = {
+\t\tstaid_core_deficit_short_runway = yes
+\t\tAND = { recently_lost_war = yes used_naval_capacity_percent < 0.60 }
+\t\tAND = { is_at_war = yes highest_threat > 35 used_naval_capacity_percent < 0.75 }
+\t}
+}
+
+staid_recovery_mode = {
+\tis_nomadic = no
+\tOR = {
+\t\tstaid_survival_mode = yes
+\t\tstellarai_basic_econ_recovery_needed = yes
+\t\tAND = { recently_lost_war = yes used_naval_capacity_percent < 0.80 }
+\t}
+}
+
+staid_megastructure_prep_ready = {
+\tis_nomadic = no
+\tcan_build_megastructures = yes
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tresource_stockpile_compare = { resource = alloys value > 15000 }
+\thas_monthly_income = { resource = alloys value > 120 }
+\thas_monthly_income = { resource = energy value > 80 }
+\thas_monthly_income = { resource = minerals value > 60 }
+\tOR = {
+\t\tis_at_war = no
+\t\tused_naval_capacity_percent > 0.90
+\t}
+}
+
+staid_megastructure_commit_safe = {
+\tis_nomadic = no
+\tcan_build_megastructures = yes
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tOR = {
+\t\tis_at_war = no
+\t\tused_naval_capacity_percent > 0.85
+\t}
+}
+
+staid_pause_new_megastructure = {
+\tOR = {
+\t\tstaid_survival_mode = yes
+\t\tAND = { is_at_war = yes used_naval_capacity_percent < 0.85 }
+\t\tAND = { highest_threat > 45 used_naval_capacity_percent < 0.90 }
+\t}
+}
+
+staid_shipyard_payoff_ready = {
+\tNOT = { staid_recovery_mode = yes }
+\thas_monthly_income = { resource = alloys value > 150 }
+\thas_monthly_income = { resource = energy value > 100 }
+\tresource_stockpile_compare = { resource = alloys value > 10000 }
+}
+
+staid_fleet_buildup_economy_safe = {
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\thas_monthly_income = { resource = alloys value > 200 }
+\thas_monthly_income = { resource = energy value > 150 }
+\tresource_stockpile_compare = { resource = alloys value > 15000 }
+\tresource_stockpile_compare = { resource = energy value > 8000 }
+\tused_naval_capacity_percent < 1.05
+}
+
+staid_surplus_sink_pressure = {
+\tNOT = { staid_recovery_mode = yes }
+\thas_monthly_income = { resource = alloys value > 300 }
+\thas_monthly_income = { resource = energy value > 300 }
+\tresource_stockpile_compare = { resource = alloys value > 20000 }
+}
+
+staid_research_sink_priority_ready = {
+\tstaid_surplus_sink_pressure = yes
+}
+
+staid_core_unlock_research_priority_ready = {
+\tstaid_surplus_sink_pressure = yes
+\tOR = {
+\t\tNOT = { has_technology = tech_mega_engineering }
+\t\tNOT = { has_technology = tech_mega_shipyard }
+\t}
+}
+
+staid_shipyard_expansion_ready = {
+\tstaid_fleet_buildup_economy_safe = yes
+\thas_technology = tech_mega_shipyard
+\tOR = {
+\t\tstaid_surplus_sink_pressure = yes
+\t\tAND = { is_at_war = yes highest_threat > 35 used_naval_capacity_percent > 0.80 }
+\t}
+}
+
+staid_fleet_payoff_exploitation_ready = {
+\tstaid_shipyard_payoff_ready = yes
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tused_naval_capacity_percent < 1.05
+\tOR = {
+\t\tstaid_shipyard_expansion_ready = yes
+\t\tAND = { is_at_war = yes highest_threat > 35 }
+\t}
+}
+
+staid_planetary_capacity_growth_ready = {
+\tis_nomadic = no
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\thas_monthly_income = { resource = minerals value > 100 }
+\thas_monthly_income = { resource = energy value > 100 }
+\tresource_stockpile_compare = { resource = minerals value > 5000 }
+\tresource_stockpile_compare = { resource = energy value > 5000 }
+}
+
+staid_defensive_starbase_strategy = {
+\tis_nomadic = no
+\tOR = {
+\t\thas_ethic = ethic_pacifist
+\t\thas_ethic = ethic_fanatic_pacifist
+\t}
+}
+
+staid_crisis_starbase_pressure = {
+\tis_nomadic = no
+\tNOT = { staid_recovery_mode = yes }
+\thighest_threat > 50
+\thas_monthly_income = { resource = alloys value > 80 }
+\thas_monthly_income = { resource = energy value > 60 }
+\tresource_stockpile_compare = { resource = alloys value > 5000 }
+}
+
+staid_aggressive_fleet_pressure = {
+\tOR = {
+\t\thas_ethic = ethic_militarist
+\t\thas_ethic = ethic_fanatic_militarist
+\t}
+\tused_naval_capacity_percent < 0.95
+}
+
+staid_starbase_defense_economy_safe = {
+\tis_nomadic = no
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\thas_monthly_income = { resource = alloys value > 60 }
+\thas_monthly_income = { resource = energy value > 50 }
+\tresource_stockpile_compare = { resource = alloys value > 3000 }
+\tresource_stockpile_compare = { resource = energy value > 3000 }
+}
+
+staid_static_defense_investment_ready = {
+\tstaid_starbase_defense_economy_safe = yes
+\tOR = {
+\t\tAND = {
+\t\t\tstaid_defensive_starbase_strategy = yes
+\t\t\tNOT = { staid_aggressive_fleet_pressure = yes }
+\t\t}
+\t\tstaid_crisis_starbase_pressure = yes
+\t}
+}
+
+staid_unity_sink_priority_ready = {
+\tstaid_surplus_sink_pressure = yes
+}
+'''
+    return (
+        text.replace("resource_stockpile_compare = { resource = alloys value > 15000 }",
+                     f"resource_stockpile_compare = {{ resource = alloys value > {thresholds['prep_stockpile_alloys']} }}")
+        .replace("has_monthly_income = { resource = alloys value > 120 }",
+                 f"has_monthly_income = {{ resource = alloys value > {thresholds['prep_income_alloys']} }}")
+        .replace("has_monthly_income = { resource = alloys value > 150 }",
+                 f"has_monthly_income = {{ resource = alloys value > {thresholds['shipyard_income_alloys']} }}")
+        .replace("resource_stockpile_compare = { resource = alloys value > 10000 }",
+                 f"resource_stockpile_compare = {{ resource = alloys value > {thresholds['shipyard_stockpile_alloys']} }}")
+    )
+
+
+def ai_budget_text(thresholds: dict[str, int]) -> str:
+    text = '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Full-object override: intentionally replaces Stellar AI's alloys_expenditure_megastructures.
+# Ownership note: this centralizes only the megastructure alloy reserve gate.
+
+alloys_expenditure_megastructures = {
+\tresource = alloys
+\ttype = expenditure
+\tcategory = megastructures
+
+\tpotential = {
+\t\tis_country_type = default
+\t\tcan_build_megastructures = yes
+\t\tNOT = { staid_pause_new_megastructure = yes }
+\t}
+
+\tweight = {
+\t\tweight = 0.55
+
+\t\tmodifier = { factor = 0 staid_survival_mode = yes }
+\t\tmodifier = { factor = 0.25 staid_recovery_mode = yes }
+\t\tmodifier = { factor = 2.5 staid_megastructure_prep_ready = yes }
+\t\tmodifier = {
+\t\t\tfactor = 4
+\t\t\tstaid_megastructure_commit_safe = yes
+\t\t\tany_owned_megastructure = { can_be_upgraded = yes }
+\t\t}
+\t\tmodifier = {
+\t\t\tfactor = 1.5
+\t\t\thas_technology = tech_mega_engineering
+\t\t\tused_naval_capacity_percent > 0.80
+\t\t}
+\t\tmodifier = {
+\t\t\tfactor = 0.5
+\t\t\tis_at_war = yes
+\t\t\tused_naval_capacity_percent < 0.95
+\t\t}
+\t}
+
+\tdesired_min = {
+\t\tbase = 0
+\t\tmodifier = { add = 30000 staid_megastructure_prep_ready = yes }
+\t\tmodifier = {
+\t\t\tadd = 50000
+\t\t\tstaid_megastructure_commit_safe = yes
+\t\t\tany_owned_megastructure = { can_be_upgraded = yes }
+\t\t}
+\t}
+
+\tdesired_max = {
+\t\tbase = 25000
+\t\tmodifier = { add = 50000 has_technology = tech_mega_engineering }
+\t\tmodifier = { add = 75000 staid_megastructure_prep_ready = yes }
+\t\tmodifier = {
+\t\t\tadd = 100000
+\t\t\tstaid_megastructure_commit_safe = yes
+\t\t\tany_owned_megastructure = { can_be_upgraded = yes }
+\t\t}
+\t}
+}
+'''
+    return (
+        text.replace("modifier = { add = 30000 staid_megastructure_prep_ready = yes }",
+                     f"modifier = {{ add = {thresholds['prep_stockpile_alloys']} staid_megastructure_prep_ready = yes }}")
+        .replace("\t\t\tadd = 50000\n\t\t\tstaid_megastructure_commit_safe = yes",
+                 f"\t\t\tadd = {thresholds['commit_stockpile_alloys']}\n\t\t\tstaid_megastructure_commit_safe = yes")
+        .replace("\t\tbase = 25000", f"\t\tbase = {thresholds['desired_base_alloys']}")
+        .replace("modifier = { add = 50000 has_technology = tech_mega_engineering }",
+                 f"modifier = {{ add = {thresholds['desired_mega_engineering_add']} has_technology = tech_mega_engineering }}")
+        .replace("modifier = { add = 75000 staid_megastructure_prep_ready = yes }",
+                 f"modifier = {{ add = {thresholds['desired_prep_add']} staid_megastructure_prep_ready = yes }}")
+        .replace("\t\t\tadd = 100000\n\t\t\tstaid_megastructure_commit_safe = yes",
+                 f"\t\t\tadd = {thresholds['desired_commit_add']}\n\t\t\tstaid_megastructure_commit_safe = yes")
+    )
+
+
+def gigas_resource_budget_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Full-object overrides: intentionally replaces narrow Gigas special-resource
+# megastructure budget objects so the Director can pause exotic projects during
+# survival/recovery and reserve rare resources for safe commits.
+
+sentient_metal_expenditure_megastructures = {
+\tresource = giga_sr_sentient_metal
+\ttype = expenditure
+\tcategory = megastructures
+
+\tpotential = {
+\t\tis_country_type = default
+\t\tNOT = { staid_pause_new_megastructure = yes }
+\t}
+
+\tweight = {
+\t\tweight = 0.35
+\t\tmodifier = { factor = 0 staid_survival_mode = yes }
+\t\tmodifier = { factor = 0.25 staid_recovery_mode = yes }
+\t\tmodifier = { factor = 2 staid_megastructure_commit_safe = yes }
+\t}
+}
+
+negative_mass_expenditure_megastructures = {
+\tresource = giga_sr_negative_mass
+\ttype = expenditure
+\tcategory = megastructures
+
+\tpotential = {
+\t\tis_country_type = default
+\t\tNOT = { staid_pause_new_megastructure = yes }
+\t}
+
+\tweight = {
+\t\tweight = 0.30
+\t\tmodifier = { factor = 0 staid_survival_mode = yes }
+\t\tmodifier = { factor = 0.20 staid_recovery_mode = yes }
+\t\tmodifier = { factor = 2 staid_megastructure_commit_safe = yes }
+\t}
+}
+
+supertensiles_upkeep_megastructures = {
+\tresource = giga_sr_amb_megaconstruction
+\ttype = upkeep
+\tcategory = megastructures
+
+\tpotential = {
+\t\tis_country_type = default
+\t\tNOT = { staid_survival_mode = yes }
+\t}
+
+\tweight = {
+\t\tweight = 1
+\t\tmodifier = { factor = 0.25 staid_recovery_mode = yes }
+\t\tmodifier = { factor = 1.5 staid_megastructure_commit_safe = yes }
+\t}
+}
+'''
+
+
+def economic_plan_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Full-object override: intentionally replaces `basic_economy_plan` so the
+# Director can add narrow late-game alloy, research, fleet, and Gigas special
+# resource economy targets. Conflict review must treat this as a Director-owned
+# economic-plan override, not as a harmless additive object.
+
+basic_economy_plan = {
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director mega alloy reserve"
+\t\tpotential = {
+\t\t\tstaid_megastructure_prep_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 15
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director giga special resource reserve"
+\t\tpotential = {
+\t\t\tOR = {
+\t\t\t\thas_technology = tech_ehof_sentient_tier_1
+\t\t\t\thas_technology = tech_nm_utilization_1
+\t\t\t\thas_technology = giga_tech_amb_supertensiles
+\t\t\t}
+\t\t\tNOT = { staid_recovery_mode = yes }
+\t\t}
+\t\tincome = {
+\t\t\tgiga_sr_sentient_metal = 5
+\t\t\tgiga_sr_negative_mass = 3
+\t\t\tgiga_sr_amb_megaconstruction = 5
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director payoff exploitation alloys"
+\t\tpotential = {
+\t\t\tstaid_fleet_payoff_exploitation_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 20
+\t\t\tenergy = 20
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director modded unlock research reserve"
+\t\tpotential = {
+\t\t\tstaid_core_unlock_research_priority_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\tphysics_research = 120
+\t\t\tsociety_research = 80
+\t\t\tengineering_research = 160
+\t\t\tunity = 40
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director fleet throughput reserve"
+\t\tpotential = {
+\t\t\tstaid_shipyard_expansion_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 35
+\t\t\tenergy = 30
+\t\t}
+\t\tnaval_cap = 200
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director planetary capacity reserve"
+\t\tpotential = {
+\t\t\tstaid_planetary_capacity_growth_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\tminerals = 50
+\t\t\tenergy = 40
+\t\t}
+\t\tpops = 250000
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director defensive starbase reserve"
+\t\tpotential = {
+\t\t\tstaid_static_defense_investment_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 18
+\t\t\tenergy = 25
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director crisis starbase reserve"
+\t\tpotential = {
+\t\t\tstaid_crisis_starbase_pressure = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 30
+\t\t\tenergy = 40
+\t\t}
+\t}
+}
+'''
+
+
+def script_values_text(thresholds: dict[str, int]) -> str:
+    return f'''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Numeric anchors for documentation, debug events, and future generated gates.
+
+staid_alloy_equivalent_alloys = 1
+staid_alloy_equivalent_minerals = 0.35
+staid_alloy_equivalent_energy = 0.25
+staid_alloy_equivalent_consumer_goods = 0.75
+staid_alloy_equivalent_unity = 0.50
+staid_min_megastructure_prep_alloys = {thresholds["prep_stockpile_alloys"]}
+staid_min_megastructure_prep_income_alloys = {thresholds["prep_income_alloys"]}
+staid_shipyard_payoff_stockpile_alloys = {thresholds["shipyard_stockpile_alloys"]}
+staid_shipyard_payoff_income_alloys = {thresholds["shipyard_income_alloys"]}
+staid_roi_matrix_eligible_rows = {thresholds["eligible_roi_rows"]}
+staid_safe_deficit_runway_months = 24
+'''
+
+
+def readme_text(playset: dict[str, Any]) -> str:
+    missing = [info["name"] for info in playset["required_mods"].values() if not info["present"]]
+    return f'''# Stellar AI Director
+
+Late-loading deterministic AI policy patch for the active Irony playset.
+
+This mod does not add runtime self-adjusting behavior. It encodes explicit
+state gates, priorities, and emergency exits around Stellar AI and the major
+late-game mods in the current 4.4 playset.
+
+## Required Parents
+
+- Stellar AI
+- Gigastructural Engineering & More (4.4)
+- NSC3
+- Extra Ship Components NEXT
+- Starbase Extended 3.0
+- !!!Universal Resource Patch [2.4+]
+
+Detected selected collection: `{playset["collection_name"]}`.
+
+Missing required Steam parents during generation: {", ".join(missing) if missing else "none"}.
+
+## Scope
+
+- Adds scripted decision-state triggers for survival, recovery, megastructure
+  prep, safe commit, surplus-sink pressure, and shipyard payoff exploitation.
+- Overrides Stellar AI's megastructure alloy budget object with explicit
+  emergency exits and larger reserves for Gigas/NSC3-scale projects.
+- Adds economic-plan subplans for alloy reserves, Gigas special resources,
+  and static-defense/starbase pressure when defensive or threatened empires
+  have safe income and stockpiles.
+- Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
+  surplus can become fleet power without ignoring energy/alloy runway checks.
+- Adds a planetary-capacity economic subplan for safe mineral/energy-backed
+  pop and empire-size growth without direct building/job overrides.
+- Adds an unlock-research economic subplan so surplus empires keep pushing
+  engineering/research/unity until core Mega Engineering and Mega Shipyard
+  unlocks are present.
+- Leaves NSC3/ESC ship and component design weights untouched in v1 unless
+  observer evidence proves parent AI cannot use them.
+
+## Load Order
+
+Place Stellar AI Director after all required parents and after parent
+compatibility patches that the Director must supersede. In the current selected
+collection, the latest required parent is at load position
+{max((info["load_position"] or 0) for info in playset["required_mods"].values())}.
+The Director should be below Stellar AI so its megastructure alloy reserve
+override wins intentionally.
+
+## Load Proof
+
+When a player-controlled country starts, the mod fires a one-time popup titled
+`{LOAD_PROOF_TITLE}`. Seeing that popup proves Irony loaded the Director into
+the active playset and the game executed the Director event/on_action surface.
+
+## Surplus Sink Ordering
+
+After survival and recovery gates, the Director treats strong alloy/energy
+surplus plus a large alloy stockpile as a signal that the empire needs useful
+spending outlets. The v1 order is:
+
+1. research sink;
+2. fleet-production sink;
+3. unity sink.
+
+`source_has_ai_weight` in the ROI matrix only reports whether the parent mod
+defined an upstream AI weight. The Director's own policy is expressed in the
+separate `director_*` columns.
+
+## Validation
+
+Run:
+
+```powershell
+python tools/validate_stellar_ai_director_patch.py
+python -m unittest discover -s tools/tests
+```
+'''
+
+
+def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int]) -> str:
+    lines = [
+        "# Stellar AI Director Implementation Notes",
+        "",
+        "Generated 2026-07-04 from copied source snapshots and the selected Irony collection.",
+        "",
+        "## Decision Surfaces",
+        "",
+        "| surface | file | risk | reason |",
+        "| --- | --- | --- | --- |",
+        "| state gates | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt` | low | additive namespaced triggers |",
+        "| unlock-research policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan extends Stellar AI research pressure into validated modded unlock gates |",
+        "| alloy reserves | `common/ai_budget/zzz_staid_alloys_budget.txt` | medium | intentional full-object override of Stellar AI megastructure budget |",
+        "| Gigas special-resource reserves | `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` | medium | intentional full-object overrides of Gigas megastructure special-resource budgets |",
+        "| economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | intentional full-object override of `basic_economy_plan` with Director economy targets |",
+        "| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan maps shipyard ROI into alloy/energy/naval-cap targets after anti-collapse gates |",
+        "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |",
+        "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
+        "| ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |",
+        "| integration surface ledger | `research/stellar-ai-director-integration-surfaces-2026-07-04.csv` | low | parsed source-object evidence for P6-P11 minimum interventions |",
+        "",
+        "## Selected Playset",
+        "",
+        f"- Collection: {playset['collection_name']}",
+        f"- Mod count: {playset['mod_count']}",
+        f"- Irony patch mod enabled: {playset['patch_mod_enabled']}",
+        "",
+        "## Required Parent Detection",
+        "",
+        "| mod | present | load position |",
+        "| --- | --- | ---: |",
+    ]
+    for info in playset["required_mods"].values():
+        lines.append(f"| {info['name']} | {info['present']} | {info['load_position']} |")
+    lines.extend(
+        [
+            "",
+            "## Generated ROI Thresholds",
+            "",
+            "These values are generated from rows where `data_quality = resolved` and `decision_eligible = yes`.",
+            "",
+            "| threshold | value |",
+            "| --- | ---: |",
+        ]
+    )
+    for key, value in thresholds.items():
+        lines.append(f"| {key} | {value} |")
+    lines.extend(
+        [
+            "",
+            "## Surplus Sink Policy",
+            "",
+            "When survival and recovery gates are clear, surplus pressure is approximated from strong monthly alloy/energy income plus a large alloy stockpile. The v1 scripted ordering is research sink first, fleet-production sink second, and unity sink third. Fleet-throughput policy now maps shipyard readiness into alloy, energy, and naval-cap economic-plan targets while blocking over-naval-cap upkeep spirals.",
+            "",
+            "## Unlock-Research Policy",
+            "",
+            "Research-heavy Stellar AI behavior is preserved and extended with a country-level economic-plan subplan for core modded unlocks. Direct technology/AP/tradition object overrides are deferred in v1; every emitted technology reference is checked by the generated reference audit.",
+            "",
+            "## Static-Defense Policy",
+            "",
+            "Defensive starbase investment is expressed as additive `basic_economy_plan` subplans because vanilla economic plans explicitly merge subplans safely. The v1 policy requires no recovery mode, no short-runway core deficit, safe alloy/energy income and stockpiles, then either defensive ethics without an aggressive under-cap fleet push or high threat pressure. Direct starbase module/building weights remain deferred until a safe parent surface can be proven for each object.",
+            "",
+            "## Planetary-Capacity Policy",
+            "",
+            "Expanded planet and building capacity is covered in v1 through a safe country-level economic-plan subplan, not direct building or job references. The policy raises mineral/energy, pop, and empire-size targets only when recovery and short-runway deficit gates are clear.",
+            "",
+            "## NSC3/ESC Design Policy",
+            "",
+            "Direct NSC3/ESC ship and component design overrides are deferred until observer evidence shows parent AI weights cannot use the new hulls or components. The P11 integration audit must have no failed rows; warning rows are tracked as parent-design gaps rather than automatic override targets.",
+            "",
+            "`source_has_ai_weight` records whether the parent mod file had an upstream AI weight. It does not mean the Director has no policy. Director policy is recorded separately as `director_strategy_role`, `director_weight_basis`, `director_build_gate`, `director_surplus_sink_role`, and `director_surplus_sink_priority` in the ROI matrix.",
+            "",
+            "## v1 Boundaries",
+            "",
+            "- Direct technology/AP/tradition object overrides are deferred in v1. The unlock-research policy uses validated country-level economy-plan targets instead.",
+            "- Direct Mega Shipyard object weights remain deferred unless a safe parent object surface is proven; v1 maps the payoff through country-level economy-plan targets and source ROI evidence.",
+            "- Direct starbase module/building weights remain deferred; v1 uses a country-level static-defense economy target rather than overriding Starbase Extended objects.",
+            "- Direct planet building/job overrides are not emitted in v1; no generated building/job references are used.",
+            "- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.",
+            "- Exotic Gigas superprojects remain outside the main decision path until the core reserve/commit/payoff loop is observer-tested, but their special-resource budget objects are gated by Director survival/recovery state.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def load_order_note_text(playset: dict[str, Any]) -> str:
+    required = list(playset["required_mods"].values())
+    latest_parent = max((info["load_position"] or 0) for info in required)
+    lines = [
+        "# Stellar AI Director Load Order",
+        "",
+        f"Selected collection: {playset['collection_name']}",
+        f"Required parent maximum load position: {latest_parent}",
+        "",
+        "## Required Position",
+        "",
+        "- Load after Stellar AI.",
+        "- Load after Gigastructural Engineering & More (4.4).",
+        "- Load after NSC3.",
+        "- Load after Extra Ship Components NEXT.",
+        "- Load after Starbase Extended 3.0.",
+        "- Load after !!!Universal Resource Patch [2.4+].",
+        "- Load after parent compatibility patches whose AI/economy behavior the Director intentionally coordinates.",
+        "- Load before any future local patch that intentionally overrides the Director.",
+        "",
+        "## Required Parent Evidence",
+        "",
+        "| mod | present | load position |",
+        "| --- | --- | ---: |",
+    ]
+    for info in required:
+        lines.append(f"| {info['name']} | {info['present']} | {info['load_position']} |")
+    lines.extend(
+        [
+            "",
+        "## Current Intentional Supersession",
+            "",
+            "- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally overrides Stellar AI's `alloys_expenditure_megastructures` budget.",
+            "- `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally overrides Gigas `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures` budgets.",
+            "- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, fleet-throughput, static-defense, and planetary-capacity targets.",
+            "- Additive scripted triggers, script values, and economic-plan subplans use the `staid_` namespace and should not conflict with parent object IDs.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def conflicts_note_text() -> str:
+    return """# Stellar AI Director Conflict Notes
+
+## Intentional Conflicts
+
+- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally replaces the upstream `alloys_expenditure_megastructures` object so late-game megastructure reserves obey Director survival, recovery, prep, and commit gates.
+- `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally replaces upstream Gigas special-resource megastructure budget objects: `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
+- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, unlock-research, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
+
+## Expected Additive Surfaces
+
+- `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`
+- `common/script_values/zzz_staid_roi_values.txt`
+
+## NSC3/ESC Design Policy
+
+- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.
+- P8 fleet-throughput economy gates provide the v1 usage path without overwriting parent ship/component design logic.
+
+## Review Rules
+
+- Any new full-object override must include an ownership note naming the parent surface and reason.
+- Optional-mod references must be omitted or guarded unless the generator proves the referenced object exists.
+- Irony conflict results should be classified as intentional Director wins, parent wins required, harmless additive duplicates, unexpected gameplay conflicts, or false positives.
+
+## Irony Analyze Only Review
+
+- Reviewed in Irony Conflict Solver Analyze Only for collection `4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity`.
+- Existing collection order was preserved; `Stellar AI Director` is the only added local mod and is last after `!!!Universal Resource Patch [2.4+]`.
+- Reviewed `common\\ai_budget` conflicts: `alloys_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, `sentient_metal_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
+- Each reviewed object resolves to `Stellar AI Director ... (LIOS)` as an intentional Director win.
+- No unexplained Director gameplay conflicts were observed in the reviewed Director conflict set.
+"""
+
+
+def observer_test_log_text(playset: dict[str, Any]) -> str:
+    if OBSERVER_SMOKE_SAVE_SUMMARY_JSON.exists():
+        summary = json.loads(read_text(OBSERVER_SMOKE_SAVE_SUMMARY_JSON))
+        setup = f"""- Galaxy size: Tiny Irony-launched smoke save.
+- AI count: inferred from save country count ({summary['initialized_country_count']} initialized countries).
+- Difficulty: Cadet smoke setup from launch run notes.
+- Crisis settings: inherited selected playset defaults for the smoke save.
+- Mod order evidence: required parents are recorded in `notes/load-order.md`; save mod list contains {summary['mod_count']} mods."""
+        checkpoints = f"""- Early economy stability: short-smoke pass from `{OBSERVER_SMOKE_SAVE_SUMMARY_MD.name}`.
+- First mega-engineering unlock: pending.
+- First high-ROI megastructure start: pending.
+- First economy multiplier completion: pending.
+- Shipyard/fleet payoff behavior: pending.
+- Deficit spiral check: no early deficit collapse observed in parsed 2202.01.01 save metrics.
+- War interruption behavior: pending.
+- Starbase defense investment: pending."""
+        results = f"""Short Irony-launched save summary: `{OBSERVER_SMOKE_SAVE_SUMMARY_MD.name}`.
+
+- Save date: {summary['date']}.
+- Director listed in save mod list: {summary['required_mods_present'].get('Stellar AI Director')}.
+- Short smoke passes: {summary['short_smoke_passes']}.
+- Player metrics: `{json.dumps(summary['player_metrics'], sort_keys=True)}`.
+- Player monthly income: `{json.dumps(summary['player_monthly_income'], sort_keys=True)}`.
+- High-ROI path observed: {summary['high_roi_path_observed']}.
+
+This short-smoke evidence proves the Irony-launched playset saved with Stellar AI Director loaded and no immediate early economy collapse in the parsed player country. It does not complete P15 by itself because the plan still requires observer-mode evidence that at least one AI reaches a useful high-ROI path."""
+    else:
+        setup = """- Galaxy size: not run yet.
+- AI count: not run yet.
+- Difficulty: not run yet.
+- Crisis settings: not run yet.
+- Mod order evidence: required parents are recorded in `notes/load-order.md`."""
+        checkpoints = """- Early economy stability: pending.
+- First mega-engineering unlock: pending.
+- First high-ROI megastructure start: pending.
+- First economy multiplier completion: pending.
+- Shipyard/fleet payoff behavior: pending.
+- Deficit spiral check: pending.
+- War interruption behavior: pending.
+- Starbase defense investment: pending."""
+        results = "No observer run has been recorded yet in this file."
+    return f"""# Stellar AI Director Observer Test Log
+
+Selected collection: {playset['collection_name']}
+
+## Repeatable Setup
+
+{setup}
+
+## Checkpoints
+
+{checkpoints}
+
+## Results
+
+{results}
+"""
+
+
+def tuning_notes_text(thresholds: dict[str, int]) -> str:
+    lines = [
+        "# Stellar AI Director Tuning Notes",
+        "",
+        "Generated thresholds are derived from decision-eligible, resolved ROI rows.",
+        "",
+        "| knob | current value | intent |",
+        "| --- | ---: | --- |",
+        f"| prep stockpile alloys | {thresholds['prep_stockpile_alloys']} | minimum reserve before new megastructure prep |",
+        f"| prep income alloys | {thresholds['prep_income_alloys']} | minimum monthly alloy income for prep |",
+        f"| commit stockpile alloys | {thresholds['commit_stockpile_alloys']} | reserve for continuing safe projects |",
+        f"| shipyard stockpile alloys | {thresholds['shipyard_stockpile_alloys']} | reserve before shipyard payoff exploitation |",
+        f"| shipyard income alloys | {thresholds['shipyard_income_alloys']} | monthly alloy floor for fleet-production sink |",
+        "| fleet buildup stockpile energy | 8000 | energy runway before shipyard/fleet sink can add naval-cap pressure |",
+        "| fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |",
+        "| static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |",
+        "| static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |",
+        "| crisis starbase threat | 50 | threat floor that can activate crisis starbase reserve |",
+        "| planetary-capacity stockpile minerals | 5000 | mineral runway before expanded planet/building capacity target activates |",
+        "| planetary-capacity stockpile energy | 5000 | energy runway before expanded planet/building capacity target activates |",
+        "| planetary-capacity pops target | 250000 | pop target used by safe country-level capacity subplan |",
+        f"| eligible ROI rows | {thresholds['eligible_roi_rows']} | source sample used for threshold generation |",
+        "",
+        "## Static-Defense Policy",
+        "",
+        "- Defensive or high-threat empires get additive starbase reserve subplans only after recovery and short-runway deficit gates are clear.",
+        "- Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.",
+        "- Direct starbase module/building weights remain deferred until each parent surface can be proven safe to override.",
+        "",
+        "## Fleet-Throughput Policy",
+        "",
+        "- Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, alloy stockpile, and energy stockpile are all safe.",
+        "- Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).",
+        "- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.",
+        "",
+        "## Unlock-Research Policy",
+        "",
+        "- Surplus empires use the unlock-research policy to keep pressure on physics, society, engineering, and unity until core Mega Engineering and Mega Shipyard gates are present.",
+        "- Direct technology/AP/tradition object overrides are deferred in v1; generated references are limited to validator-checked technology gates.",
+        "",
+        "## Mega/Giga Build Priority Policy",
+        "",
+        "- ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.",
+        "- Direct individual megastructure/gigastructure build-weight overrides are deferred unless a parent object surface is proven safe for the specific candidate.",
+        "- Exotic or path-specific projects remain deferred until the core loop is observer-tested.",
+        "",
+        "## Planetary-Capacity Policy",
+        "",
+        "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral and energy runway are safe.",
+        "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.",
+        "- No generated building/job references are emitted in v1; direct planet automation rewrites remain deferred until a specific missing parent surface is proven.",
+        "",
+        "## NSC3/ESC Design Policy",
+        "",
+        "- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.",
+        "- Warning rows in the P11 integration audit are treated as parent-design gaps to observe, not automatic v1 override targets.",
+        "",
+        "## Safe Tuning Rules",
+        "",
+        "- Do not lower prep or commit reserves below survival/recovery safety gates.",
+        "- Keep research sink before fleet sink until core modded unlocks are available.",
+        "- Treat unpriced resources as bottlenecks, not fake scalar value.",
+        "- Re-run generator, validator, unit tests, and coverage after every tuning change.",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
+    errors: list[str] = []
+    load_proof = collect_load_proof_contract(MOD_ROOT)
+    errors.extend(load_proof["errors"])
+    playset = build_active_playset_snapshot()
+    for info in playset["required_mods"].values():
+        if not info["present"]:
+            errors.append(f"Required parent missing from selected Irony collection: {info['name']}")
+    for row in collect_dependency_audit_rows(MOD_ROOT, playset):
+        if row["status"] != "ok":
+            errors.append(
+                f"Dependency audit failed for {row['expected_name']}: {row['status']} "
+                f"(descriptor={row['descriptor_present']}, playset={row['playset_present']}, actual={row['actual_playset_name']})"
+            )
+    for row in collect_generated_file_audit_rows(MOD_ROOT):
+        if row["status"] != "ok":
+            errors.append(f"Generated file audit failed for {row['generated_file']}: {row['status']} ({row['reason']})")
+    object_names = collect_object_names(snapshot_root)
+    generated_files = list((MOD_ROOT / "common").rglob("*.txt"))
+    if not generated_files:
+        errors.append(f"No generated PDXScript files found under {MOD_ROOT / 'common'}")
+        return errors
+    for row in collect_roi_quality_rows():
+        if row["status"] == "fail":
+            errors.append(f"ROI quality audit failed for {row['check']} {row['object_name']}: {row['reason']}")
+    for row in collect_integration_policy_audit_rows():
+        if row["status"] == "fail":
+            errors.append(
+                f"Integration policy audit failed for {row['phase']} {row['object_type']} "
+                f"{row['object_name']}: {row['reason']}"
+            )
+    for row in collect_generated_conflict_rows(MOD_ROOT, snapshot_root):
+        if row["classification"] == "unexpected_parent_object_collision":
+            errors.append(
+                f"Generated object collision lacks ownership note: {row['object_type']} "
+                f"{row['object_name']} in {row['generated_file']}"
+            )
+    for row in collect_generated_reference_rows(MOD_ROOT, snapshot_root):
+        if row["status"] == "missing":
+            errors.append(
+                f"{MOD_ROOT / row['generated_file']}: missing {row['reference_type']} reference {row['reference_name']}"
+            )
+    for file_path in generated_files:
+        try:
+            parsed = parse_file(file_path)
+        except PDXParseError as exc:
+            errors.append(str(exc))
+            continue
+        top_keys = [assignment.key for assignment in block_assignments(parsed)]
+        if file_path.parts[-2] == "ai_budget" and "Full-object override" not in read_text(file_path):
+            errors.append(f"AI budget override lacks ownership note: {file_path}")
+        if file_path.parts[-2] == "ai_budget":
+            for key in top_keys:
+                if key not in object_names["ai_budget"]:
+                    errors.append(f"Generated ai_budget object does not override a known budget: {key}")
+    return errors
+
+
+def run_all() -> None:
+    rows = generate_roi_artifacts()
+    generate_mod_files(rows)
+    errors = validate_generated_patch()
+    if errors:
+        raise SystemExit("Validation failed:\n" + "\n".join(errors))

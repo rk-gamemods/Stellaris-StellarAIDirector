@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stellaris LLM Action Plan",
+  "type": "object",
+  "required": [
+    "game_version",
+    "date",
+    "empire_id",
+    "strategy",
+    "actions"
+  ],
+  "properties": {
+    "game_version": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string"
+    },
+    "empire_id": {
+      "type": "integer"
+    },
+    "strategy": {
+      "type": "string",
+      "enum": [
+        "FOCUS_TECH",
+        "FOCUS_ALLOYS",
+        "PREPARE_WAR",
+        "DEFEND",
+        "EXPAND",
+        "RECOVER_ECONOMY",
+        "DIPLOMACY",
+        "NO_ACTION"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "set_strategy_flag",
+              "apply_country_modifier",
+              "set_ai_personality_profile",
+              "recommend_to_player"
+            ]
+          },
+          "flag": {
+            "type": "string"
+          },
+          "modifier": {
+            "type": "string"
+          },
+          "duration_days": {
+            "type": "integer",
+            "minimum": 30,
+            "maximum": 3600
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rationale": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

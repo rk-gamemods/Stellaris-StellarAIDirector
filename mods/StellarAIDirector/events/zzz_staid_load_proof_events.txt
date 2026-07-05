@@ -1,0 +1,23 @@
+namespace = staid_load_proof
+
+country_event = {
+	id = staid_load_proof.1
+	title = staid_load_proof.1.name
+	desc = staid_load_proof.1.desc
+	picture = GFX_evt_grand_speech
+	show_sound = event_default
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		is_ai = no
+	}
+
+	immediate = {
+		log = "STELLAR_AI_DIRECTOR_LOAD_PROOF: Stellar AI Director v1 loaded for [Root.GetName]"
+	}
+
+	option = {
+		name = staid_load_proof.1.a
+	}
+}

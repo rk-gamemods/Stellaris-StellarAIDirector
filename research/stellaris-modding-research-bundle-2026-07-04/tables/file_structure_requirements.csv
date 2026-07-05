@@ -1,0 +1,11 @@
+requirement,exact_rule,source_ids
+outer descriptor,<mod>.mod in user mod directory and includes path,S007
+inner descriptor,descriptor.mod in mod root and excludes path,S007
+supported_version,Launcher visual indicator only; use v4.4.* for 4.4 stable,S007
+folder structure,Mirror install folder; do not edit install folder,S007
+localisation encoding,UTF-8 with BOM,S008
+localisation filename,Must end _l_<language>.yml,S008
+localisation header,First line l_<language>:,S008
+events,Use namespace and triggered-only unless justified,S007
+scopes,Use exists before optional scope switch,S009
+load conflicts,"Use Irony/element-level validation, not filename-only",S011;S012

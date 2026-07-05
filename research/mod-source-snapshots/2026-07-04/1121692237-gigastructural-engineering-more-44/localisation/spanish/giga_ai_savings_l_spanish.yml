@@ -1,0 +1,183 @@
+﻿l_spanish:
+  giga_ai_savings_info:0 "Información de Ahorros de Megaestructura de Gigas AI"
+  giga_ai_savings_info_desc:0 "§LUn ayudando en la planificación financiera.§!"
+  mod_giga_ai_savings_tooltips_minerals_produces_add:0 "Muestra cuánto ha reservado la IA para megaestructuras. Estos valores se deducen de los costos de construcción de megaestructuras compatibles y se decrementan cuando comienza la construcción.\n\n§EMegaestructuras Económicas Importantes:§!\n£alloys£ $alloys$: §Y[giga_ai_savings_important_alloys]§!\n£unity£ $unity$: §Y[giga_ai_savings_important_unity]§!\n\n§EMegaestructuras Económicas Secundarias:§!\n£alloys£ $alloys$: §Y[giga_ai_savings_resource_alloys]§!\n£unity£ $unity$: §Y[giga_ai_savings_resource_unity]§!\n\n§EMegaestructuras de Utilidad:§!\n£alloys£ $alloys$: §Y[giga_ai_savings_utility_alloys]§!\n£unity£ $unity$: §Y[giga_ai_savings_utility_unity]§!\n\n§EMegaestructuras Militares:§!\n£alloys£ $alloys$: §Y[giga_ai_savings_military_alloys]§!\n£unity£ $unity$: §Y[giga_ai_savings_military_unity]§!\n\nModificador ficticio para que los valores se muestren correctamente"
+  
+  r_giga_ai_savings:0 "Cuenta de Ahorros de IA"
+  r_giga_ai_savings_desc:0 "Este es un relicario solo para IA que proporciona los modificadores para la funcionalidad de ahorros de megaestructura de IA. No hace nada para un jugador humano, y se elimina si uno lo posee al inicio del año.\n\n§LHolla holla get dolla§!"
+  
+  giga_ai_savings_desc:0 "Ajuste de los costes de esta megaestructura gracias al ahorro."
+  
+  # megas
+  giga_ai_savings_attack_moon_alloys:0 "Aleaciones del Luna de Combate"
+  giga_ai_savings_attack_moon_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_attack_moon_alloys_cost_add:0 "Costo de Aleaciones para Luna de Combate"
+  
+  giga_ai_savings_crystal_megabore_alloys:0 "Aleaciones del Megataladro de Cristales"
+  giga_ai_savings_crystal_megabore_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_crystal_megabore_alloys_cost_add:0 "Costo de Aleaciones para Megataladro de Cristales"
+  
+  giga_ai_savings_dyson_sphere_alloys:0 "Aleaciones del Esfera de Dyson"
+  giga_ai_savings_dyson_sphere_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_dyson_sphere_alloys_cost_add:0 "Costo de Aleaciones para Esfera de Dyson"
+  
+  giga_ai_savings_equatorial_shipyard_alloys:0 "Aleaciones del Astillero Ecuatorial"
+  giga_ai_savings_equatorial_shipyard_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_equatorial_shipyard_alloys_cost_add:0 "Costo de Aleaciones para Astillero Ecuatorial"
+  
+  giga_ai_savings_maginot_world_alloys:0 "Aleaciones del Mundo Maginot"
+  giga_ai_savings_maginot_world_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_maginot_world_alloys_cost_add:0 "Costo de Aleaciones para Mundo Maginot"
+  
+  giga_ai_savings_matter_decompressor_alloys:0 "Aleaciones del Descompresor de Materia"
+  giga_ai_savings_matter_decompressor_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_matter_decompressor_alloys_cost_add:0 "Costo de Aleaciones para Descompresor de Materia"
+  
+  giga_ai_savings_mega_art_installation_alloys:0 "Aleaciones del Megainstalación de Arte"
+  giga_ai_savings_mega_art_installation_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_mega_art_installation_alloys_cost_add:0 "Costo de Aleaciones para Megainstalación de Arte"
+  
+  giga_ai_savings_mega_shipyard_alloys:0 "Aleaciones del Mega Astillero"
+  giga_ai_savings_mega_shipyard_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_mega_shipyard_alloys_cost_add:0 "Costo de Aleaciones para Mega Astillero"
+  
+  giga_ai_savings_neutronium_gigaforge_alloys:0 "Aleaciones del Gigaforja de Neutronio"
+  giga_ai_savings_neutronium_gigaforge_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_neutronium_gigaforge_alloys_cost_add:0 "Costo de Aleaciones para Gigaforja de Neutronio"
+  
+  giga_ai_savings_planetary_computer_alloys:0 "Aleaciones del Computadora Planetaria"
+  giga_ai_savings_planetary_computer_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_planetary_computer_alloys_cost_add:0 "Costo de Aleaciones para Computadora Planetaria"
+  
+  giga_ai_savings_science_nexus_alloys:0 "Aleaciones del Nexus de Ciencia"
+  giga_ai_savings_science_nexus_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_science_nexus_alloys_cost_add:0 "Costo de Aleaciones para Nexus de Ciencia"
+  
+  giga_ai_savings_sentry_array_alloys:0 "Aleaciones del Sistema de Vigilancia"
+  giga_ai_savings_sentry_array_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_sentry_array_alloys_cost_add:0 "Costo de Aleaciones para Sistema de Vigilancia"
+  
+  giga_ai_savings_star_lifter_alloys:0 "Aleaciones del Star Lifter"
+  giga_ai_savings_star_lifter_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_star_lifter_alloys_cost_add:0 "Costo de Aleaciones para Star Lifter"
+  
+  giga_ai_savings_strategic_coordination_alloys:0 "Aleaciones del Centro de Coordinación Estratégica"
+  giga_ai_savings_strategic_coordination_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_strategic_coordination_alloys_cost_add:0 "Costo de Aleaciones para Centro de Coordinación Estratégica"
+  
+  giga_ai_savings_succ_alloys:0 "Aleaciones del S.U.C.C."
+  giga_ai_savings_succ_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_succ_alloys_cost_add:0 "Costo de Aleaciones para S.U.C.C."
+  
+  giga_ai_savings_yggdrasil_orchid_alloys:0 "Aleaciones del Complejo Yggdrasil Orchid"
+  giga_ai_savings_yggdrasil_orchid_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_yggdrasil_orchid_alloys_cost_add:0 "Costo de Aleaciones para Complejo Yggdrasil Orchid"
+  
+  
+  giga_ai_savings_attack_moon_unity:0 "Unidad de Luna de Combate"
+  giga_ai_savings_attack_moon_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_attack_moon_unity_cost_add:0 "Costo en Unidad para Luna de Combate"
+  
+  giga_ai_savings_crystal_megabore_unity:0 "Unidad de Megataladro de Cristales"
+  giga_ai_savings_crystal_megabore_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_crystal_megabore_unity_cost_add:0 "Costo en Unidad para Megataladro de Cristales"
+  
+  giga_ai_savings_dyson_sphere_unity:0 "Unidad de Esfera de Dyson"
+  giga_ai_savings_dyson_sphere_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_dyson_sphere_unity_cost_add:0 "Costo en Unidad para Esfera de Dyson"
+  
+  giga_ai_savings_equatorial_shipyard_unity:0 "Unidad de Astillero Ecuatorial"
+  giga_ai_savings_equatorial_shipyard_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_equatorial_shipyard_unity_cost_add:0 "Costo en Unidad para Astillero Ecuatorial"
+  
+  giga_ai_savings_maginot_world_unity:0 "Unidad de Mundo Maginot"
+  giga_ai_savings_maginot_world_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_maginot_world_unity_cost_add:0 "Costo en Unidad para Mundo Maginot"
+  
+  giga_ai_savings_matter_decompressor_unity:0 "Unidad de Descompresor de Materia"
+  giga_ai_savings_matter_decompressor_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_matter_decompressor_unity_cost_add:0 "Costo en Unidad para Descompresor de Materia"
+  
+  giga_ai_savings_mega_art_installation_unity:0 "Unidad de Megainstalación de Arte"
+  giga_ai_savings_mega_art_installation_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_mega_art_installation_unity_cost_add:0 "Costo en Unidad para Megainstalación de Arte"
+  
+  giga_ai_savings_mega_shipyard_unity:0 "Unidad de Mega Astillero"
+  giga_ai_savings_mega_shipyard_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_mega_shipyard_unity_cost_add:0 "Costo en Unidad para Mega Astillero"
+  
+  giga_ai_savings_neutronium_gigaforge_unity:0 "Unidad de Gigaforja de Neutronio"
+  giga_ai_savings_neutronium_gigaforge_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_neutronium_gigaforge_unity_cost_add:0 "Costo en Unidad para Gigaforja de Neutronio"
+  
+  giga_ai_savings_planetary_computer_unity:0 "Unidad de Computadora Planetaria"
+  giga_ai_savings_planetary_computer_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_planetary_computer_unity_cost_add:0 "Costo en Unidad para Computadora Planetaria"
+  
+  giga_ai_savings_science_nexus_unity:0 "Unidad de Nexus de Ciencia"
+  giga_ai_savings_science_nexus_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_science_nexus_unity_cost_add:0 "Costo en Unidad para Nexus de Ciencia"
+  
+  giga_ai_savings_sentry_array_unity:0 "Unidad de Sistema de Vigilancia"
+  giga_ai_savings_sentry_array_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_sentry_array_unity_cost_add:0 "Costo en Unidad para Sistema de Vigilancia"
+  
+  giga_ai_savings_star_lifter_unity:0 "Unidad de Star Lifter"
+  giga_ai_savings_star_lifter_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_star_lifter_unity_cost_add:0 "Costo en Unidad para Star Lifter"
+  
+  giga_ai_savings_strategic_coordination_unity:0 "Unidad de Centro de Coordinación Estratégica"
+  giga_ai_savings_strategic_coordination_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_strategic_coordination_unity_cost_add:0 "Costo en Unidad para Centro de Coordinación Estratégica"
+  
+  giga_ai_savings_succ_unity:0 "Unidad de S.U.C.C."
+  giga_ai_savings_succ_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_succ_unity_cost_add:0 "Costo en Unidad para S.U.C.C."
+  
+  giga_ai_savings_yggdrasil_orchid_unity:0 "Unidad de Complejo Yggdrasil Orchid"
+  giga_ai_savings_yggdrasil_orchid_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_yggdrasil_orchid_unity_cost_add:0 "Costo en Unidad para Complejo Yggdrasil Orchid"
+  
+  
+  # gigas
+  giga_ai_savings_hrae_mc_alloys:0 "Aleaciones del HRAE-MC"
+  giga_ai_savings_hrae_mc_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_hrae_mc_alloys_cost_add:0 "Costo de Aleaciones para HRAE-MC"
+  
+  giga_ai_savings_hyperstructural_ass_alloys:0 "Aleaciones del Astillero de Ensamblaje Hiperestructural"
+  giga_ai_savings_hyperstructural_ass_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_hyperstructural_ass_alloys_cost_add:0 "Costo de Aleaciones para Astillero de Ensamblaje Hiperestructural"
+  
+  giga_ai_savings_lunar_macroreplicator_alloys:0 "Aleaciones del Macrofabricador Lunar"
+  giga_ai_savings_lunar_macroreplicator_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_lunar_macroreplicator_alloys_cost_add:0 "Costo de Aleaciones para Macrofabricador Lunar"
+  
+  giga_ai_savings_matrioshka_brain_alloys:0 "Aleaciones del Cerebro Matrioshka"
+  giga_ai_savings_matrioshka_brain_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_matrioshka_brain_alloys_cost_add:0 "Costo de Aleaciones para Cerebro Matrioshka"
+  
+  giga_ai_savings_nidavellir_forge_alloys:0 "Aleaciones del Hiperforja Nidavellir"
+  giga_ai_savings_nidavellir_forge_alloys_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_nidavellir_forge_alloys_cost_add:0 "Costo de Aleaciones para Hiperforja Nidavellir"
+  
+  
+  giga_ai_savings_hrae_mc_unity:0 "Unidad de HRAE-MC"
+  giga_ai_savings_hrae_mc_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_hrae_mc_unity_cost_add:0 "Costo en Unidad para HRAE-MC"
+  
+  giga_ai_savings_hyperstructural_ass_unity:0 "Unidad de Astillero de Ensamblaje Hiperestructural"
+  giga_ai_savings_hyperstructural_ass_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_hyperstructural_ass_unity_cost_add:0 "Costo en Unidad para Astillero de Ensamblaje Hiperestructural"
+  
+  giga_ai_savings_lunar_macroreplicator_unity:0 "Unidad de Macrofabricador Lunar"
+  giga_ai_savings_lunar_macroreplicator_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_lunar_macroreplicator_unity_cost_add:0 "Costo en Unidad para Macrofabricador Lunar"
+  
+  giga_ai_savings_matrioshka_brain_unity:0 "Unidad de Cerebro Matrioshka"
+  giga_ai_savings_matrioshka_brain_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_matrioshka_brain_unity_cost_add:0 "Costo en Unidad para Cerebro Matrioshka"
+  
+  giga_ai_savings_nidavellir_forge_unity:0 "Unidad de Hiperforja Nidavellir"
+  giga_ai_savings_nidavellir_forge_unity_desc:99 "$giga_ai_savings_desc$"
+  mod_giga_nidavellir_forge_unity_cost_add:0 "Costo en Unidad para Hiperforja Nidavellir"
+  

@@ -1,0 +1,114 @@
+giga_eawaf_sirens_toiler = {
+	category = worker
+
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_foundry_3
+		}
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_jobs
+	}
+
+	planet_modifier = {
+		planet_amenities_no_happiness_add = 200
+		planet_housing_add = 200
+	}
+
+	weight = {
+		weight = 10000
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+giga_eawaf_sirens_strifer = {
+	category = worker
+
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_foundry_3
+		}
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_jobs
+	}
+
+	planet_modifier = {
+		planet_amenities_no_happiness_add = 200
+		planet_housing_add = 200
+	}
+
+	weight = {
+		weight = 10000
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+giga_eawaf_sirens_naval = {
+	category = specialist
+
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_military_academy
+		}
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_soldiers
+	}
+
+	country_modifier = {
+		country_naval_cap_add = 10
+	}
+
+	weight = {
+		weight = 10000
+	}
+
+	inline_script = jobs/automodding_priority_trade
+}
+
+giga_eawaf_sirens_scientist = {
+	category = ruler
+
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_research_lab_1
+		}
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_researchers
+	}
+	
+	country_modifier = {
+		ship_fire_rate_mult = 0.01
+		ship_weapon_damage = 0.01
+		ship_hull_mult = 0.01
+		ship_armor_mult = 0.01
+		ship_shield_mult = 0.01
+		army_damage_mult = 0.01
+	}
+
+	weight = {
+		weight = 10000
+	}
+
+	inline_script = jobs/automodding_priority_research
+}

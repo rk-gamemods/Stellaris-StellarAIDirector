@@ -1,0 +1,98 @@
+is_aeternum = {
+	is_country_type = dormant_aeternum
+}
+
+is_regular_birch_empire = {
+	OR = {
+		is_regular_empire = yes
+		is_country_type = dormant_aeternum
+	}
+}
+
+is_psionic_or_aeternum = {
+	or = {
+		is_country_type = dormant_aeternum
+		has_adopted_psionic_tradition = yes
+	}
+}
+
+has_aeternum_scramble_comms_modifier = {
+	OR = {
+		has_modifier = aeternum_comms_scramble_1
+		has_modifier = aeternum_comms_scramble_2
+		has_modifier = aeternum_comms_scramble_3
+		has_modifier = aeternum_comms_scramble_4
+		has_modifier = aeternum_comms_scramble_5
+		has_modifier = aeternum_comms_scramble_6
+		has_modifier = aeternum_comms_scramble_7
+	}
+}
+
+has_aeternum_scramble_intel_modifier = {
+	OR = {
+		has_modifier = aeternum_intel_scramble_1
+		has_modifier = aeternum_intel_scramble_2
+		has_modifier = aeternum_intel_scramble_3
+		has_modifier = aeternum_intel_scramble_4
+		has_modifier = aeternum_intel_scramble_5
+		has_modifier = aeternum_intel_scramble_6
+		has_modifier = aeternum_intel_scramble_7
+	}
+}
+
+has_aeternum_infra_bomb_modifier = {
+	OR = {
+		has_modifier = aeternum_infra_bomb_1
+		has_modifier = aeternum_infra_bomb_2
+		has_modifier = aeternum_infra_bomb_3
+		has_modifier = aeternum_infra_bomb_4
+	}
+}
+
+can_destroy_planet_with_PLANET_KILLER_AETERNUM_SHROUD = {
+	AND = {
+		is_colony = yes
+		habitable_structure = no
+		owner = {
+			is_at_war_with = event_target:birch_aeternum
+			NOR = {
+				is_country_type = extradimensional
+				is_country_type = extradimensional_2
+				is_country_type = extradimensional_3
+				is_country_type = swarm
+				is_country_type = ai_empire
+			}
+		}
+	}
+}
+
+anti_aeternite_alliance_can_form = {
+	any_country = { is_country_type = dormant_aeternum }
+	has_country_flag = aeternite_agency_unlocked
+	OR = {
+		has_global_flag = aeternum_awakening_started
+		has_global_flag = aeternum_awakening_ongoing
+	}
+	NOT = { any_country = { is_galactic_emperor = yes } }
+	NOR = {
+		has_global_flag = galactic_hyperstate_formed
+		has_global_flag = galactic_pact_formed
+		has_global_flag = aeternum_vanquished
+	}
+	NOT = {
+		any_country = {
+			is_galactic_community_member = yes
+			is_crisis_faction = yes
+		}
+	}
+}
+
+anti_aeternite_alliance_must_fail_check = {
+	any_country = {
+		is_galactic_community_member = yes
+	}
+	any_country = {
+		is_galactic_community_member = yes
+		NOT = { is_same_empire = prev }
+	}
+}

@@ -1,0 +1,57 @@
+on_building_complete = {
+  events = { stellarai_commitment.1 }
+}
+
+on_building_upgraded = {
+  events = { stellarai_commitment.1 }
+}
+
+on_building_replaced = {
+  events = { stellarai_commitment.1 }
+}
+
+on_building_repaired = {
+  events = { stellarai_commitment.1 }
+}
+
+on_building_demolished = {
+  events = { stellarai_commitment.1 }
+}
+
+on_building_downgraded = {
+  events = { stellarai_commitment.1 }
+}
+
+on_building_ruined = {
+	events = { 
+    stellarai_commitment.1
+    stellarai_commitment.2 
+  }
+}
+
+on_district_complete = {
+	events = { stellarai_commitment.1 }
+}
+
+on_zone_complete = {
+	events = { 
+    stellarai_commitment.1 
+  }
+}
+
+on_district_demolished = {
+  events = { 
+    stellarai_commitment.1
+    stellarai_commitment.2 
+  }
+}
+
+on_game_start = { 
+events = { 
+  stellarai_commitment.899
+  stellarai_commitment.898 
+  } 
+}
+on_yearly_pulse = { events = { stellarai_commitment.899 } }
+on_monthly_pulse = { events = { stellarai_commitment.898 } }
+

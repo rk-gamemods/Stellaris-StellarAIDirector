@@ -1,0 +1,561 @@
+############################################################
+###              ESC NEXT : scripted variables           ###
+############################################################
+
+# - conventional weapons
+# - biological weapons
+# - crystalline weapons
+# - armor
+# - shields
+# - sensors
+# - auras
+# - combat computers
+# - thrusters
+# - jump drives
+# - advanced technology costs and weights
+# - global flags from other mods
+
+@has_esc_next									= 1
+@esc_modtag                                     = "esc"
+@esc_modtag_prefix                              = "esc_"
+@esc_modtag_suffix                              = "_esc"
+
+############################################################
+###                        Armor                         ###
+############################################################
+
+### tier 6
+@ESC_ARMOR_s_t6_str_primary_1 					= 325
+@ESC_ARMOR_s_t6_str_primary_2 					= 260
+@ESC_ARMOR_s_t6_str_primary_3 					= 205
+@ESC_ARMOR_s_t6_str_secondary 					= 160
+@ESC_ARMOR_s_t6_bio_hull_primary_1				= 32	# str_secondary * 0.2
+@ESC_ARMOR_s_t6_bio_low_armor_regen				= 3.2	# bio_hull_primary * 0.1
+@ESC_ARMOR_s_t6_regen_primary_1					= 3.2	# str_secondary * 0.02
+@ESC_ARMOR_s_t6_regen_primary_2					= 1.6	# str_secondary * 0.01
+@ESC_ARMOR_s_t6_regen_secondary_1				= 3.2	# str_secondary * 0.02
+@ESC_ARMOR_s_t6_regen_secondary_2				= 1.6	# str_secondary * 0.01
+
+@ESC_ARMOR_m_t6_str_primary_1 					= 975
+@ESC_ARMOR_m_t6_str_primary_2 					= 780
+@ESC_ARMOR_m_t6_str_primary_3 					= 615
+@ESC_ARMOR_m_t6_str_secondary 					= 480
+@ESC_ARMOR_m_t6_bio_hull_primary_1				= 96
+@ESC_ARMOR_m_t6_bio_low_armor_regen				= 9.6
+@ESC_ARMOR_m_t6_regen_primary_1					= 9.6
+@ESC_ARMOR_m_t6_regen_primary_2					= 4.8
+@ESC_ARMOR_m_t6_regen_secondary_1				= 9.6
+@ESC_ARMOR_m_t6_regen_secondary_2				= 4.8
+
+@ESC_ARMOR_l_t6_str_primary_1 					= 2925
+@ESC_ARMOR_l_t6_str_primary_2 					= 2340
+@ESC_ARMOR_l_t6_str_primary_3 					= 1845
+@ESC_ARMOR_l_t6_str_secondary 					= 1440
+@ESC_ARMOR_l_t6_bio_hull_primary_1				= 288
+@ESC_ARMOR_l_t6_bio_low_armor_regen				= 28.8
+@ESC_ARMOR_l_t6_regen_primary_1					= 28.8
+@ESC_ARMOR_l_t6_regen_primary_2					= 14.4
+@ESC_ARMOR_l_t6_regen_secondary_1				= 28.8
+@ESC_ARMOR_l_t6_regen_secondary_2				= 14.4
+
+@ESC_ARMOR_xl_t6_str_primary_1 					= 8775
+@ESC_ARMOR_xl_t6_str_primary_2 					= 7020
+@ESC_ARMOR_xl_t6_str_primary_3 					= 5535
+@ESC_ARMOR_xl_t6_str_secondary 					= 4320
+@ESC_ARMOR_xl_t6_bio_hull_primary_1				= 864
+@ESC_ARMOR_xl_t6_bio_low_armor_regen			= 86.4
+@ESC_ARMOR_xl_t6_regen_primary_1				= 86.4
+@ESC_ARMOR_xl_t6_regen_primary_2				= 43.2
+@ESC_ARMOR_xl_t6_regen_secondary_1				= 86.4
+@ESC_ARMOR_xl_t6_regen_secondary_2				= 43.2
+
+### tier 7
+@ESC_ARMOR_s_t7_str_primary_1 					= 400
+@ESC_ARMOR_s_t7_str_primary_2 					= 325
+@ESC_ARMOR_s_t7_str_primary_3 					= 260
+@ESC_ARMOR_s_t7_str_secondary 					= 205
+@ESC_ARMOR_s_t7_bio_hull_primary_1				= 41
+@ESC_ARMOR_s_t7_bio_low_armor_regen				= 4.1
+@ESC_ARMOR_s_t7_regen_primary_1					= 4.1
+@ESC_ARMOR_s_t7_regen_primary_2					= 2.05
+@ESC_ARMOR_s_t7_regen_secondary_1				= 4.1
+@ESC_ARMOR_s_t7_regen_secondary_2				= 2.05
+
+@ESC_ARMOR_m_t7_str_primary_1 					= 1200
+@ESC_ARMOR_m_t7_str_primary_2 					= 975
+@ESC_ARMOR_m_t7_str_primary_3 					= 780
+@ESC_ARMOR_m_t7_str_secondary 					= 615
+@ESC_ARMOR_m_t7_bio_hull_primary_1				= 123
+@ESC_ARMOR_m_t7_bio_low_armor_regen				= 12.3
+@ESC_ARMOR_m_t7_regen_primary_1					= 12.3
+@ESC_ARMOR_m_t7_regen_primary_2					= 6.15
+@ESC_ARMOR_m_t7_regen_secondary_1				= 12.3
+@ESC_ARMOR_m_t7_regen_secondary_2				= 6.15
+
+@ESC_ARMOR_l_t7_str_primary_1 					= 3600
+@ESC_ARMOR_l_t7_str_primary_2 					= 2925
+@ESC_ARMOR_l_t7_str_primary_3 					= 2340
+@ESC_ARMOR_l_t7_str_secondary 					= 1845
+@ESC_ARMOR_l_t7_bio_hull_primary_1				= 369
+@ESC_ARMOR_l_t7_bio_low_armor_regen				= 36.9
+@ESC_ARMOR_l_t7_regen_primary_1					= 36.9
+@ESC_ARMOR_l_t7_regen_primary_2					= 18.45
+@ESC_ARMOR_l_t7_regen_secondary_1				= 36.9
+@ESC_ARMOR_l_t7_regen_secondary_2				= 18.45
+
+@ESC_ARMOR_xl_t7_str_primary_1 					= 10800
+@ESC_ARMOR_xl_t7_str_primary_2 					= 8775
+@ESC_ARMOR_xl_t7_str_primary_3 					= 7020
+@ESC_ARMOR_xl_t7_str_secondary 					= 5535
+@ESC_ARMOR_xl_t7_bio_hull_primary_1				= 1170
+@ESC_ARMOR_xl_t7_bio_low_armor_regen			= 117
+@ESC_ARMOR_xl_t7_regen_primary_1				= 117
+@ESC_ARMOR_xl_t7_regen_primary_2				= 55.35
+@ESC_ARMOR_xl_t7_regen_secondary_1				= 117
+@ESC_ARMOR_xl_t7_regen_secondary_2				= 55.35
+
+### tier 8
+@ESC_ARMOR_s_t8_str_primary_1 					= 600
+@ESC_ARMOR_s_t8_str_primary_2 					= 450
+@ESC_ARMOR_s_t8_str_primary_3 					= 375
+@ESC_ARMOR_s_t8_str_secondary 					= 300
+@ESC_ARMOR_s_t8_bio_hull_primary_1				= 60
+@ESC_ARMOR_s_t8_bio_low_armor_regen				= 6
+@ESC_ARMOR_s_t8_regen_primary_1					= 6
+@ESC_ARMOR_s_t8_regen_primary_2					= 3
+@ESC_ARMOR_s_t8_regen_secondary_1				= 6
+@ESC_ARMOR_s_t8_regen_secondary_2				= 3
+
+@ESC_ARMOR_m_t8_str_primary_1 					= 1800
+@ESC_ARMOR_m_t8_str_primary_2 					= 1350
+@ESC_ARMOR_m_t8_str_primary_3 					= 1125
+@ESC_ARMOR_m_t8_str_secondary 					= 900
+@ESC_ARMOR_m_t8_bio_hull_primary_1				= 180
+@ESC_ARMOR_m_t8_bio_low_armor_regen				= 18
+@ESC_ARMOR_m_t8_regen_primary_1					= 18
+@ESC_ARMOR_m_t8_regen_primary_2					= 9
+@ESC_ARMOR_m_t8_regen_secondary_1				= 18
+@ESC_ARMOR_m_t8_regen_secondary_2				= 9
+
+@ESC_ARMOR_l_t8_str_primary_1 					= 5400
+@ESC_ARMOR_l_t8_str_primary_2 					= 4050
+@ESC_ARMOR_l_t8_str_primary_3 					= 3375
+@ESC_ARMOR_l_t8_str_secondary 					= 2700
+@ESC_ARMOR_l_t8_bio_hull_primary_1				= 540
+@ESC_ARMOR_l_t8_bio_low_armor_regen				= 54
+@ESC_ARMOR_l_t8_regen_primary_1					= 54
+@ESC_ARMOR_l_t8_regen_primary_2					= 27
+@ESC_ARMOR_l_t8_regen_secondary_1				= 54
+@ESC_ARMOR_l_t8_regen_secondary_2				= 27
+
+@ESC_ARMOR_xl_t8_str_primary_1 					= 16200
+@ESC_ARMOR_xl_t8_str_primary_2 					= 12150
+@ESC_ARMOR_xl_t8_str_primary_3 					= 10125
+@ESC_ARMOR_xl_t8_str_secondary 					= 8100
+@ESC_ARMOR_xl_t8_bio_hull_primary_1				= 810
+@ESC_ARMOR_xl_t8_bio_low_armor_regen			= 81
+@ESC_ARMOR_xl_t8_regen_primary_1				= 81
+@ESC_ARMOR_xl_t8_regen_primary_2				= 40.5
+@ESC_ARMOR_xl_t8_regen_secondary_1				= 81
+@ESC_ARMOR_xl_t8_regen_secondary_2				= 40.5
+
+@ESC_ARMOR_l_dreadnought_str 					= 20000
+
+############################################################
+###                        Shields                       ###
+############################################################
+
+### tier 6
+@ESC_SHIELD_s_t6_strength						= 325
+@ESC_SHIELD_s_t6_strength_cycl					= 260
+@ESC_SHIELD_s_t6_regen							= 1.625
+@ESC_SHIELD_s_t6_power							= -55
+@ESC_SHIELD_s_t6_cost_alloys					= 27
+@ESC_SHIELD_s_t6_cost_special					= 0.563
+@ESC_SHIELD_s_t6_upkeep_alloys					= 0.076
+@ESC_SHIELD_s_t6_upkeep_energy					= 0.26
+
+@ESC_SHIELD_m_t6_strength						= 975
+@ESC_SHIELD_m_t6_strength_cycl					= 780
+@ESC_SHIELD_m_t6_regen							= 4.875
+@ESC_SHIELD_m_t6_power							= -110
+@ESC_SHIELD_m_t6_cost_alloys					= 68
+@ESC_SHIELD_m_t6_cost_special					= 1.408
+@ESC_SHIELD_m_t6_upkeep_alloys					= 0.152
+@ESC_SHIELD_m_t6_upkeep_energy					= 0.51
+
+@ESC_SHIELD_l_t6_strength						= 2925
+@ESC_SHIELD_l_t6_strength_cycl					= 2340
+@ESC_SHIELD_l_t6_regen							= 14.625
+@ESC_SHIELD_l_t6_power							= -220
+@ESC_SHIELD_l_t6_cost_alloys					= 170
+@ESC_SHIELD_l_t6_cost_special					= 3.520
+@ESC_SHIELD_l_t6_upkeep_alloys					= 0.304
+@ESC_SHIELD_l_t6_upkeep_energy					= 1.02
+
+@ESC_SHIELD_xl_t6_strength						= 8775
+@ESC_SHIELD_xl_t6_strength_cycl					= 7020
+@ESC_SHIELD_xl_t6_regen							= 43.875
+@ESC_SHIELD_xl_t6_power							= -440
+@ESC_SHIELD_xl_t6_cost_alloys					= 425
+@ESC_SHIELD_xl_t6_cost_special					= 8.800
+@ESC_SHIELD_xl_t6_upkeep_alloys					= 0.608
+@ESC_SHIELD_xl_t6_upkeep_energy					= 2.04
+
+### tier 7
+@ESC_SHIELD_s_t7_strength						= 400
+@ESC_SHIELD_s_t7_strength_cycl					= 325
+@ESC_SHIELD_s_t7_regen							= 2.0
+@ESC_SHIELD_s_t7_power							= -65
+@ESC_SHIELD_s_t7_cost_alloys					= 41
+@ESC_SHIELD_s_t7_cost_special					= 0.845
+@ESC_SHIELD_s_t7_upkeep_alloys					= 0.114
+@ESC_SHIELD_s_t7_upkeep_energy					= 0.38
+
+@ESC_SHIELD_m_t7_strength						= 1200
+@ESC_SHIELD_m_t7_strength_cycl					= 975
+@ESC_SHIELD_m_t7_regen							= 6.0
+@ESC_SHIELD_m_t7_power							= -130
+@ESC_SHIELD_m_t7_cost_alloys					= 103
+@ESC_SHIELD_m_t7_cost_special					= 2.113
+@ESC_SHIELD_m_t7_upkeep_alloys					= 0.228
+@ESC_SHIELD_m_t7_upkeep_energy					= 0.76
+
+@ESC_SHIELD_l_t7_strength						= 3600
+@ESC_SHIELD_l_t7_strength_cycl					= 2925
+@ESC_SHIELD_l_t7_regen							= 18.00
+@ESC_SHIELD_l_t7_power							= -260
+@ESC_SHIELD_l_t7_cost_alloys					= 258
+@ESC_SHIELD_l_t7_cost_special					= 5.283
+@ESC_SHIELD_l_t7_upkeep_alloys					= 0.456
+@ESC_SHIELD_l_t7_upkeep_energy					= 1.52
+
+@ESC_SHIELD_xl_t7_strength						= 10800
+@ESC_SHIELD_xl_t7_strength_cycl					= 8775
+@ESC_SHIELD_xl_t7_regen							= 54.0
+@ESC_SHIELD_xl_t7_power							= -520
+@ESC_SHIELD_xl_t7_cost_alloys					= 645
+@ESC_SHIELD_xl_t7_cost_special					= 13.208
+@ESC_SHIELD_xl_t7_upkeep_alloys					= 0.912
+@ESC_SHIELD_xl_t7_upkeep_energy					= 3.04
+
+### tier 8
+@ESC_SHIELD_s_t8_strength 						= 550
+@ESC_SHIELD_s_t8_strength_cycl					= 400
+@ESC_SHIELD_s_t8_regen 							= 2.75
+@ESC_SHIELD_s_t8_power 							= -75
+@ESC_SHIELD_s_t8_cost_alloys 					= 61
+@ESC_SHIELD_s_t8_cost_special 					= 1.267
+@ESC_SHIELD_s_t8_upkeep_alloys 					= 0.171
+@ESC_SHIELD_s_t8_upkeep_energy 					= 0.56
+
+@ESC_SHIELD_m_t8_strength 						= 1650
+@ESC_SHIELD_m_t8_strength_cycl					= 1200
+@ESC_SHIELD_m_t8_regen 							= 8.25
+@ESC_SHIELD_m_t8_power 							= -150
+@ESC_SHIELD_m_t8_cost_alloys 					= 155
+@ESC_SHIELD_m_t8_cost_special 					= 3.17
+@ESC_SHIELD_m_t8_upkeep_alloys 					= 0.342
+@ESC_SHIELD_m_t8_upkeep_energy 					= 1.12
+
+@ESC_SHIELD_l_t8_strength 						= 4950
+@ESC_SHIELD_l_t8_strength_cycl					= 3600
+@ESC_SHIELD_l_t8_regen 							= 24.75
+@ESC_SHIELD_l_t8_power 							= -300
+@ESC_SHIELD_l_t8_cost_alloys 					= 387
+@ESC_SHIELD_l_t8_cost_special 					= 7.925
+@ESC_SHIELD_l_t8_upkeep_alloys 					= 0.684
+@ESC_SHIELD_l_t8_upkeep_energy 					= 2.242
+
+@ESC_SHIELD_xl_t8_strength 						= 14850
+@ESC_SHIELD_xl_t8_strength_cycl					= 10800
+@ESC_SHIELD_xl_t8_regen 						= 74.25
+@ESC_SHIELD_xl_t8_power 						= -600
+@ESC_SHIELD_xl_t8_cost_alloys 					= 819
+@ESC_SHIELD_xl_t8_cost_special 					= 19.812
+@ESC_SHIELD_xl_t8_upkeep_alloys 				= 1.368
+@ESC_SHIELD_xl_t8_upkeep_energy 				= 4.484
+
+### tier 9
+@ESC_SHIELD_s_t9_strength 						= 700
+@ESC_SHIELD_s_t9_regen 							= 3.50
+@ESC_SHIELD_s_t9_power 							= -85
+@ESC_SHIELD_s_t9_cost_alloys					= 91
+@ESC_SHIELD_s_t9_cost_special 					= 1.9
+@ESC_SHIELD_s_t9_upkeep_alloys 					= 0.256
+@ESC_SHIELD_s_t9_upkeep_energy 					= 0.825
+
+@ESC_SHIELD_m_t9_strength 						= 2100
+@ESC_SHIELD_m_t9_regen 							= 10.50
+@ESC_SHIELD_m_t9_power 							= -170
+@ESC_SHIELD_m_t9_cost_alloys 					= 228
+@ESC_SHIELD_m_t9_cost_special 					= 4.755
+@ESC_SHIELD_m_t9_upkeep_alloys 					= 0.513
+@ESC_SHIELD_m_t9_upkeep_energy 					= 1.653
+
+@ESC_SHIELD_l_t9_strength 						= 6300
+@ESC_SHIELD_l_t9_regen 							= 31.50
+@ESC_SHIELD_l_t9_power 							= -340
+@ESC_SHIELD_l_t9_cost_alloys 					= 570
+@ESC_SHIELD_l_t9_cost_special 					= 11.887
+@ESC_SHIELD_l_t9_upkeep_alloys 					= 1.026
+@ESC_SHIELD_l_t9_upkeep_energy 					= 3.305
+
+@ESC_SHIELD_xl_t9_strength 						= 18900
+@ESC_SHIELD_xl_t9_regen 						= 94.50
+@ESC_SHIELD_xl_t9_power 						= -680
+@ESC_SHIELD_xl_t9_cost_alloys 					= 1425
+@ESC_SHIELD_xl_t9_cost_special 					= 29.718
+@ESC_SHIELD_xl_t9_upkeep_alloys 				= 2.05
+@ESC_SHIELD_xl_t9_upkeep_energy 				= 6.613
+
+############################################################
+###                         Hull                         ###
+############################################################
+
+@ESC_HULL_s_t6_strength							= 280
+@ESC_HULL_m_t6_strength							= 730
+@ESC_HULL_l_t6_strength							= 1740
+@ESC_HULL_xl_t6_strength						= 3480
+
+############################################################
+###                    Sensor Parameters                 ###
+############################################################
+
+@ESC_SENSOR_t5_hit_chance						= 17.5
+@ESC_SENSOR_t6_hit_chance 						= 20
+@ESC_SENSOR_t7_hit_chance 						= 22.5
+@ESC_SENSOR_psionic_hit_chance					= 25
+
+@ESC_SENSOR_t5_power 							= -25
+@ESC_SENSOR_t6_power 							= -30
+@ESC_SENSOR_t7_power 							= -35
+
+@ESC_SENSOR_t5_sensor_range 					= 4
+@ESC_SENSOR_t6_sensor_range 					= 5
+@ESC_SENSOR_t7_sensor_range 					= 5
+
+@ESC_SENSOR_t5_hyperlane_sight 					= 6
+@ESC_SENSOR_t6_hyperlane_sight 					= 7
+@ESC_SENSOR_t7_hyperlane_sight 					= 8
+
+############################################################
+###                     Aura Parameters                  ###
+############################################################
+
+@ESC_AURA_mirageAuraRange 						= 350
+@ESC_AURA_normalAuraRange 						= 250
+
+############################################################
+###                    Combat Computers                  ###
+############################################################
+
+@ESC_COMPUTER_power_dreadnought					= -30
+@ESC_COMPUTER_power_nanite						= -25
+
+############################################################
+###                       Thrusters                      ###
+############################################################
+
+# tier 1 thrusters (NSC)
+@ESC_THRUSTER_t1_power_strikecruiser			= -60
+@ESC_THRUSTER_t1_power_battlecruiser 			= -70
+@ESC_THRUSTER_t1_power_carrier 					= -85
+@ESC_THRUSTER_t1_power_dreadnought 				= -120
+@ESC_THRUSTER_t1_power_flagship 				= -180
+
+@ESC_THRUSTER_t1_speed_multiplier				= 0.0
+
+@ESC_THRUSTER_t1_evasion_strikecruiser 			= 0
+@ESC_THRUSTER_t1_evasion_battlecruiser 			= 0
+@ESC_THRUSTER_t1_evasion_carrier 				= 0
+@ESC_THRUSTER_t1_evasion_dreadnought 			= 0
+@ESC_THRUSTER_t1_evasion_flagship 				= 0
+
+# tier 2 thrusters (NSC)
+@ESC_THRUSTER_t2_power_strikecruiser			= -80
+@ESC_THRUSTER_t2_power_battlecruiser 			= -100
+@ESC_THRUSTER_t2_power_carrier 					= -125
+@ESC_THRUSTER_t2_power_dreadnought 				= -140
+@ESC_THRUSTER_t2_power_flagship 				= -260
+
+@ESC_THRUSTER_t2_speed_multiplier				= 0.25
+
+@ESC_THRUSTER_t2_evasion_strikecruiser 			= 3
+@ESC_THRUSTER_t2_evasion_battlecruiser 			= 2
+@ESC_THRUSTER_t2_evasion_carrier 				= 1
+@ESC_THRUSTER_t2_evasion_dreadnought 			= 0
+@ESC_THRUSTER_t2_evasion_flagship 				= 0
+
+# tier 3 thrusters (NSC)
+@ESC_THRUSTER_t3_power_strikecruiser			= -100
+@ESC_THRUSTER_t3_power_battlecruiser 			= -130
+@ESC_THRUSTER_t3_power_carrier 					= -165
+@ESC_THRUSTER_t3_power_dreadnought 				= -180
+@ESC_THRUSTER_t3_power_flagship 				= -340
+
+@ESC_THRUSTER_t3_speed_multiplier				= 0.5
+
+@ESC_THRUSTER_t3_evasion_strikecruiser 			= 7
+@ESC_THRUSTER_t3_evasion_battlecruiser 			= 5
+@ESC_THRUSTER_t3_evasion_carrier 				= 2
+@ESC_THRUSTER_t3_evasion_dreadnought 			= 0
+@ESC_THRUSTER_t3_evasion_flagship 				= 0
+
+# tier 4 thrusters (NSC)
+@ESC_THRUSTER_t4_power_strikecruiser			= -120
+@ESC_THRUSTER_t4_power_battlecruiser 			= -160
+@ESC_THRUSTER_t4_power_carrier 					= -205
+@ESC_THRUSTER_t4_power_dreadnought 				= -220
+@ESC_THRUSTER_t4_power_flagship 				= -420
+
+@ESC_THRUSTER_t4_speed_multiplier				= 0.75
+
+@ESC_THRUSTER_t4_evasion_strikecruiser 			= 10
+@ESC_THRUSTER_t4_evasion_battlecruiser 			= 7
+@ESC_THRUSTER_t4_evasion_carrier 				= 3
+@ESC_THRUSTER_t4_evasion_dreadnought 			= 0
+@ESC_THRUSTER_t4_evasion_flagship 				= 0
+
+# tier 5 thrusters
+@ESC_THRUSTER_t5_power_corvette 				= -30
+@ESC_THRUSTER_t5_power_destroyer				= -60
+@ESC_THRUSTER_t5_power_cruiser 					= -120
+@ESC_THRUSTER_t5_power_battleship 				= -240
+@ESC_THRUSTER_t5_power_titan 					= -480
+@ESC_THRUSTER_t5_power_colossus 				= -600
+@ESC_THRUSTER_t5_power_juggernaut 				= -600
+@ESC_THRUSTER_t5_power_strikecruiser			= -140
+@ESC_THRUSTER_t5_power_battlecruiser 			= -190
+@ESC_THRUSTER_t5_power_carrier 					= -245
+@ESC_THRUSTER_t5_power_dreadnought 				= -260
+@ESC_THRUSTER_t5_power_flagship 				= -500
+
+@ESC_THRUSTER_t5_speed_multiplier				= 1.0
+
+@ESC_THRUSTER_t5_evasion_corvette 				= 20
+@ESC_THRUSTER_t5_evasion_destroyer 				= 16
+@ESC_THRUSTER_t5_evasion_cruiser 				= 12
+@ESC_THRUSTER_t5_evasion_battleship 			= 8
+@ESC_THRUSTER_t5_evasion_titan 					= 4
+@ESC_THRUSTER_t5_evasion_colossus 				= 0
+@ESC_THRUSTER_t5_evasion_juggernaut				= 0
+@ESC_THRUSTER_t5_evasion_strikecruiser 			= 14
+@ESC_THRUSTER_t5_evasion_battlecruiser 			= 10
+@ESC_THRUSTER_t5_evasion_carrier 				= 8
+@ESC_THRUSTER_t5_evasion_dreadnought 			= 6
+@ESC_THRUSTER_t5_evasion_flagship 				= 0
+
+# tier 6 thrusters
+@ESC_THRUSTER_t6_power_corvette 				= -35
+@ESC_THRUSTER_t6_power_destroyer 				= -72
+@ESC_THRUSTER_t6_power_cruiser 					= -144
+@ESC_THRUSTER_t6_power_battleship 				= -288
+@ESC_THRUSTER_t6_power_titan 					= -540
+@ESC_THRUSTER_t6_power_colossus 				= -700
+@ESC_THRUSTER_t6_power_juggernaut 				= -700
+@ESC_THRUSTER_t6_power_strikecruiser 			= -160
+@ESC_THRUSTER_t6_power_battlecruiser 			= -210
+@ESC_THRUSTER_t6_power_carrier 					= -275
+@ESC_THRUSTER_t6_power_dreadnought 				= -300
+@ESC_THRUSTER_t6_power_flagship					= -580
+
+@ESC_THRUSTER_t6_speed_multiplier				= 1.25
+
+@ESC_THRUSTER_t6_evasion_corvette 				= 25
+@ESC_THRUSTER_t6_evasion_destroyer 				= 20
+@ESC_THRUSTER_t6_evasion_cruiser 				= 15
+@ESC_THRUSTER_t6_evasion_battleship 			= 10
+@ESC_THRUSTER_t6_evasion_titan 					= 7
+@ESC_THRUSTER_t6_evasion_colossus 				= 3
+@ESC_THRUSTER_t6_evasion_juggernaut				= 3
+@ESC_THRUSTER_t6_evasion_strikecruiser 			= 17
+@ESC_THRUSTER_t6_evasion_battlecruiser 			= 13
+@ESC_THRUSTER_t6_evasion_carrier 				= 10
+@ESC_THRUSTER_t6_evasion_dreadnought 			= 8
+@ESC_THRUSTER_t6_evasion_flagship 				= 3
+
+############################################################
+###                      Jump Drives                     ###
+############################################################
+
+@ESC_JUMP_DRIVE_t2_power 						= -50
+@ESC_JUMP_DRIVE_t3_power 						= -75
+
+############################################################
+###           Advanced Tech Costs and Weights            ###
+############################################################
+
+@ESC_TECH_weight_core_tech						= 300
+
+@ESC_TECH_tier6_cost1 							= 64000
+@ESC_TECH_tier6_cost2 							= 80000
+@ESC_TECH_tier6_cost3 							= 96000
+
+@ESC_TECH_tier7_cost1 							= 128000
+@ESC_TECH_tier7_cost2 							= 160000
+@ESC_TECH_tier7_cost3 							= 192000
+
+@ESC_TECH_tier6_weight1							= 14
+@ESC_TECH_tier6_weight2							= 12
+@ESC_TECH_tier6_weight3							= 10
+
+@ESC_TECH_tier7_weight1							= 8
+@ESC_TECH_tier7_weight2							= 6
+@ESC_TECH_tier7_weight3							= 4
+
+@ESC_TECH_Technology_Ascendancy_weight_modifier	= 1.5
+
+############################################################
+###                   Energy Syphons                     ###
+############################################################
+
+@ESC_WEAPON_shield_add_s_t2 					= 100
+@ESC_WEAPON_shield_add_m_t2 					= 200
+@ESC_WEAPON_shield_add_l_t2 					= 300
+@ESC_WEAPON_shield_add_xl_t2 					= 400
+
+@ESC_WEAPON_shield_repair_s_t2 					= 20
+@ESC_WEAPON_shield_repair_m_t2 					= 40
+@ESC_WEAPON_shield_repair_l_t2 					= 60
+@ESC_WEAPON_shield_repair_xl_t2 				= 80
+
+@ESC_WEAPON_shield_add_s_t3 					= 150
+@ESC_WEAPON_shield_add_m_t3 					= 300
+@ESC_WEAPON_shield_add_l_t3 					= 450
+@ESC_WEAPON_shield_add_xl_t3 					= 600
+
+@ESC_WEAPON_shield_repair_s_t3 					= 30
+@ESC_WEAPON_shield_repair_m_t3 					= 60
+@ESC_WEAPON_shield_repair_l_t3 					= 90
+@ESC_WEAPON_shield_repair_xl_t3 				= 120
+
+############################################################
+###                   Collateral damage                  ###
+############################################################
+
+@ESC_COLLATERAL_MULTIPLIER						= 0.1
+@ESC_COLLATERAL_MULTIPLIER_BIG					= 0.4 # missiles
+
+############################################################
+###              Military Power Multipliers              ###
+############################################################
+
+@ESC_MILITARY_POWER_MULT_autocannon				= 0.35
+@ESC_MILITARY_POWER_MULT_autocannon_grand		= 0.75
+@ESC_MILITARY_POWER_MULT_asteroid_gun			= 0.5
+@ESC_MILITARY_POWER_MULT_point_defense			= 0.75
+@ESC_MILITARY_POWER_MULT_torpedo				= 1.25
+@ESC_MILITARY_POWER_MULT_swarmer_missiles		= 1.10
+@ESC_MILITARY_POWER_MULT_missiles_special		= 1.15
+@ESC_MILITARY_POWER_MULT_melee					= 0.35
+@ESC_MILITARY_POWER_MULT_enigmatic				= 1.10
+@ESC_MILITARY_POWER_MULT_omnidirectional		= 1.25
+@ESC_MILITARY_POWER_MULT_nanite_reconstructor	= 1.20
+
+############################################################
+###            Global flags from other mods              ###
+############################################################
+
+@NSC_active_flag 								= "has_nsc_active"
+@ACOT_active_flag								= "acot_activated"

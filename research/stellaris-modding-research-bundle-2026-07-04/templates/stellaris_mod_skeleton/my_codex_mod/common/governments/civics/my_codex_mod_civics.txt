@@ -1,0 +1,19 @@
+# Example additive civic file for Stellaris 4.4.x.
+# Replace/remove this example before release.
+# Keep object keys prefixed with my_codex_mod_ to avoid collisions.
+
+my_codex_mod_civic_observant_archivists = {
+    potential = {
+        ethics = { NOT = { value = ethic_gestalt_consciousness } }
+    }
+
+    possible = {
+        authority = { NOT = { value = auth_corporate } }
+    }
+
+    random_weight = { base = 0 }
+
+    modifier = {
+        country_unity_produces_mult = 0.01
+    }
+}

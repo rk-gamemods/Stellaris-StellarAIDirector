@@ -1,0 +1,24 @@
+stellarai_market_buy_cost = {
+	complex_trigger_modifier = {
+		trigger = market_resource_price
+		parameters = {
+			resource = $RESOURCE$
+			amount = $AMOUNT$
+			trade_type = market_buy
+		}
+		mode = add
+		mult = $MARKUP$
+	}
+}
+
+stellarai_market_sell_value = {
+	complex_trigger_modifier = {
+		trigger = market_resource_price
+		parameters = {
+			resource = $RESOURCE$
+			amount = $AMOUNT$
+			trade_type = market_sell
+		}
+		mode = add
+	}
+}

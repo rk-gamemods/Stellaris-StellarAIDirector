@@ -1,0 +1,9 @@
+modifier = {
+    num_districts = { type = $OWN_DISTRICT$ value > 0 }
+    add = $BASE_BONUS$
+}
+
+modifier = {
+    num_districts = { type = $OWN_DISTRICT$ value > $STEP_AT$ }
+    add = $STEP_BONUS$
+}

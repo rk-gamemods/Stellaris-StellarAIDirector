@@ -1,0 +1,48 @@
+# regular empires
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = miner
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = no
+            is_fallen_empire_spiritualist = no
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# spiritualist FE
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = fe_acolyte_mine
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_fallen_empire_spiritualist = yes
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# gestalt
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = mining_drone
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = yes
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}

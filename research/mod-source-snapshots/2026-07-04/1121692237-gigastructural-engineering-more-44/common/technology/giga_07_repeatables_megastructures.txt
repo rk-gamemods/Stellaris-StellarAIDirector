@@ -1,0 +1,688 @@
+# variables collected with other technology scripted variables in giga_technology_scripted_variables.txt
+
+### +1 Dyson Sphere
+giga_tech_repeatable_vanilla_dyson_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_dyson
+        area = physics
+        category = field_manipulation
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_dyson_sphere
+    }
+}
+
+### +1 Sentry Array
+giga_tech_repeatable_vanilla_array_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_array
+        area = physics
+        category = computing
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_sentry_array
+    }
+}
+
+### +1 Matter Decompressor
+giga_tech_repeatable_vanilla_matter_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_matter
+        area = physics
+        category = field_manipulation
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_matter_decompressor
+    }
+}
+
+### +1 Interstellar Assembly
+giga_tech_repeatable_vanilla_interstellar_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_interstellar
+        area = society
+        category = statecraft
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_interstellar_assembly
+    }
+}
+
+### +1 Mega Art Installation
+giga_tech_repeatable_vanilla_art_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_art
+        area = society
+        category = statecraft
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_mega_art
+    }
+}
+
+### +1 Mega Shipyard
+giga_tech_repeatable_vanilla_shipyard_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_shipyard
+        area = society
+        category = military_theory
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_mega_shipyard
+    }
+}
+
+### +1 Ringworld
+giga_tech_repeatable_vanilla_ringworld_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_ringworld
+        area = engineering
+        category = voidcraft
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_ring_world
+    }
+}
+
+### +1 Science Nexus
+giga_tech_repeatable_vanilla_nexus_cap = {
+    inline_script = {
+        script = technology/giga_mega_repeatable
+        name = vanilla_nexus
+        area = physics
+        category = computing
+        cost = @giga_grand_megastructure_base_tech_cost
+        cost_per_level = @giga_grand_megastructure_per_level_cost
+        prerequisites = tech_science_nexus
+    }
+}
+
+### +1 Strategic Coordination Center
+giga_tech_repeatable_vanilla_strategic_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = vanilla_strategic
+		area = society
+		category = military_theory
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = tech_strategic_coordination
+	}
+}
+
+################################################################################
+
+### +1 Alderson Disk
+giga_tech_repeatable_alderson_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = alderson
+		area = engineering
+		category = voidcraft
+		cost = @giga_hyperstructure_base_tech_cost
+		cost_per_level = @giga_hyperstructure_per_level_cost
+		prerequisites = giga_tech_alderson_disk
+	}
+}
+
+### +1 Atmospheric Purifier
+giga_tech_repeatable_terraform_toxic_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = terraform_toxic
+		area = society
+		category = new_worlds
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_terraform_toxic
+	}
+}
+
+### +1 Attack Moon
+giga_tech_repeatable_warmoon_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = warmoon
+		area = society
+		category = military_theory
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_war_moon_2
+	}
+}
+
+### +1 Automated Stripmine
+giga_tech_repeatable_drill_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = drill
+		area = engineering
+		category = industry
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_automated_stripmine_2
+	}
+}
+
+### +1 Behemoth Planetcraft
+giga_tech_repeatable_warplanet_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = warplanet
+		area = society
+		category = military_theory
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = giga_tech_war_planet
+	}
+}
+
+### +1 Crystal Megabore
+giga_tech_repeatable_crystal_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = crystal
+		area = engineering
+		category = industry
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_crystal_megabore
+	}
+}
+
+### +1 Dynamic Core Ignitor
+giga_tech_repeatable_terraform_barren_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = terraform_barren
+		area = society
+		category = new_worlds
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_terraform_barren
+	}
+}
+
+### +1 Equatorial Shipyard
+giga_tech_repeatable_shipyard_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = shipyard
+		area = engineering
+		category = industry
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_equatorial_shipyard
+	}
+}
+
+### +1 Fusion Suppressor
+giga_tech_repeatable_suppressor_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = suppressor
+		area = physics
+		category = particles
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = giga_tech_fusion_suppressor
+	}
+}
+
+### +1 Geothermal Stabilizer
+giga_tech_repeatable_geothermal_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = geothermal
+		area = society
+		category = new_worlds
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_terraform_molten
+	}
+}
+
+### +1 Glue
+giga_tech_repeatable_glue_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = glue
+		area = society
+		category = new_worlds
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_terraform_shattered
+	}
+}
+
+### +1 HRAE-MC
+giga_tech_repeatable_hraemc_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = hraemc
+		area = physics
+		category = field_manipulation
+		cost = @giga_hyperstructure_base_tech_cost
+		cost_per_level = @giga_hyperstructure_per_level_cost
+		prerequisites = giga_tech_hrae_mc
+	}
+}
+
+### +1 Hyperstructural Assembly Yard
+giga_tech_repeatable_hyperstructural_ass_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = hyperstructural_ass
+		area = engineering
+		category = industry
+		cost = @giga_hyperstructure_base_tech_cost
+		cost_per_level = @giga_hyperstructure_per_level_cost
+		prerequisites = giga_tech_hyperstructural_ass
+	}
+}
+
+### +1 Interstellar Habitat
+giga_tech_repeatable_stellarhabitat_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = stellarhabitat
+		area = engineering
+		category = voidcraft
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = giga_tech_interstellar_habitat
+	}
+}
+
+### +1 Kugelblitz Containment Silo
+giga_tech_repeatable_kugel_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = kugel
+		area = physics
+		category = particles
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_kugelblitz
+	}
+}
+
+### +1 Lunar Speculorefractor
+giga_tech_repeatable_disco_moon_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = disco_moon
+		area = physics
+		category = particles
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_disco_moon
+	}
+}
+
+### +1 Macroatmospheric Stabilizer
+giga_tech_repeatable_terraform_gasgiant_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = terraform_gasgiant
+		area = society
+		category = new_worlds
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_terraform_gas
+	}
+}
+
+### +1 Macroengineering Testing Station
+giga_tech_repeatable_megabase_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = megabase
+		area = engineering
+		category = voidcraft
+		cost = @giga_small_science_base_tech_cost
+		cost_per_level = @giga_small_science_per_level_cost
+		prerequisites = giga_tech_engineering_test_site
+	}
+}
+
+### +1 Matrioshka Brain
+giga_tech_repeatable_matrioshka_brain_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = matrioshka_brain
+		area = physics
+		category = field_manipulation
+		cost = @giga_hyperstructure_base_tech_cost
+		cost_per_level = @giga_hyperstructure_per_level_cost
+		prerequisites = giga_tech_matrioshka_brain_1
+	}
+}
+
+### +1 Neutronium Gigaforge
+giga_tech_repeatable_gigaforge_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = gigaforge
+		area = engineering
+		category = voidcraft
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_neutronium_gigaforge
+	}
+}
+
+### +1 Nidavellir Hyperforge
+giga_tech_repeatable_nidavellir_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = nidavellir
+		area = engineering
+		category = voidcraft
+		cost = @giga_hyperstructure_base_tech_cost
+		cost_per_level = @giga_hyperstructure_per_level_cost
+		prerequisites = giga_tech_nidavellir
+	}
+}
+
+### +1 Orbital Arcology
+giga_tech_repeatable_orbital_arcologies_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = orbital_arcologies
+		area = engineering
+		category = voidcraft
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_orbital_arcologies
+	}
+}
+
+### +1 Planetary Seeder Nexus
+giga_tech_repeatable_planetary_seeder_nexus_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = planetary_seeder_nexus
+		area = society
+		category = biology
+		cost = @giga_small_science_base_tech_cost
+		cost_per_level = @giga_small_science_per_level_cost
+		prerequisites = giga_tech_planetary_seeder_nexus
+	}
+}
+
+### +1 Orbital Artificial Ecosystem
+giga_tech_repeatable_orbital_artificial_eco_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = orbital_artificial_eco
+		area = society
+		category = biology
+		cost = @giga_small_science_base_tech_cost
+		cost_per_level = @giga_small_science_per_level_cost
+		prerequisites = giga_tech_orbital_artificial_eco
+	}
+}
+
+### +1 Orbital Naval Logistics Office
+giga_tech_repeatable_orbital_naval_logistics_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = orbital_naval_logistics
+		area = engineering
+		category = voidcraft
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_orbital_naval_logistics
+	}
+}
+
+### +1 Penrose Sphere
+giga_tech_repeatable_penrose_sphere_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = penrose_sphere
+		area = physics
+		category = particles
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = giga_tech_penrose_sphere_1
+	}
+}
+
+### +1 Planetary Computing Complex
+giga_tech_repeatable_planetary_computer_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = planetary_computer
+		area = physics
+		category = computing
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_planetary_computer
+	}
+}
+
+### +1 Psychic Hypersiphon
+giga_tech_repeatable_siphon_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = siphon
+		area = society
+		category = psionics
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = giga_tech_psychic_hypersiphon
+	}
+}
+
+### +1 Star Lifter
+giga_tech_repeatable_lifters_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = lifters
+		area = engineering
+		category = industry
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = giga_tech_star_lifter
+	}
+}
+
+# ### +1 Stellar Particle Accelerator
+# giga_tech_repeatable_accelerator_cap = {
+# 	inline_script = {
+# 		script = technology/giga_mega_repeatable
+# 		name = accelerator
+# 		area = physics
+# 		category = particles
+# 		cost = @giga_small_science_base_tech_cost
+# 		cost_per_level = @giga_small_science_per_level_cost
+# 		prerequisites = giga_tech_particle_accelerator
+# 	}
+# }
+
+### +1 Stellar Systemcraft
+giga_tech_repeatable_systemcraft_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = systemcraft
+		area = society
+		category = military_theory
+		cost = @giga_hyperstructure_base_tech_cost
+		cost_per_level = @giga_hyperstructure_per_level_cost
+		prerequisites = giga_tech_war_system_6
+	}
+}
+
+### +1 Substellar Compressor
+giga_tech_repeatable_compressor_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = compressor
+		area = physics
+		category = particles
+		cost = @giga_grand_megastructure_base_tech_cost
+		cost_per_level = @giga_grand_megastructure_per_level_cost
+		prerequisites = giga_tech_substellar_compressor
+	}
+}
+
+### +1 S.U.C.C.
+giga_tech_repeatable_succ_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = succ
+		area = engineering
+		category = voidcraft
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_succ
+	}
+}
+
+### +1 Yggdrasil Orchid Complex
+giga_tech_repeatable_orchid_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = orchid
+		area = society
+		category = biology
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_yggdrasil_orchid
+	}
+}
+
+### +1 The Vat
+giga_tech_repeatable_the_vat_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = the_vat
+		area = society
+		category = biology
+		cost = @giga_megastructure_base_tech_cost
+		cost_per_level = @giga_megastructure_per_level_cost
+		prerequisites = giga_tech_the_vat
+	}
+}
+
+### +1 Asteroid Manufactory
+giga_tech_repeatable_asteroid_manufactory_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = asteroid_manufactory
+		area = society
+		category = new_worlds
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_asteroid_manufactory
+	}
+}
+
+### +1 Asteroid Artillery
+giga_tech_repeatable_asteroid_artillery_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = asteroid_artillery
+		area = engineering
+		category = industry
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_asteroid_artillery
+	}
+}
+
+### +1 Planetary Dockyard
+giga_tech_repeatable_planetshipyard_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = planetshipyard
+		area = engineering
+		category = industry
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_planetary_drive_yard_shipyard
+	}
+}
+
+### +1 Maginot
+giga_tech_repeatable_maginot_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = maginot
+		area = society
+		category = military_theory
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = giga_tech_maginot_world
+	}
+}
+
+### +1 Macroengineering Testing Station
+giga_tech_repeatable_observatory_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = storm_observatory
+		area = physics
+		category = field_manipulation
+		cost = @giga_small_science_base_tech_cost
+		cost_per_level = @giga_small_science_per_level_cost
+		prerequisites = giga_tech_macro_scale_weather_manipulation
+	}
+}
+
+giga_tech_repeatable_furnace_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = vanilla_furnace
+		area = engineering
+		category = industry # mining tech
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = tech_orbital_arc_furnace
+	}
+	modifier = {
+		arc_furnace_limit_add = 1
+	}
+	weight_modifier = {
+        modifier = {
+            factor = 0
+			check_variable = {
+				which = arc_furnace_counter
+				value < value:arc_furnace_limit
+			}
+        }
+    }
+}
+
+giga_tech_repeatable_dyson_swarm_cap = {
+	inline_script = {
+		script = technology/giga_mega_repeatable
+		name = vanilla_dyson
+		area = physics
+		category = field_manipulation # energy grid
+		cost = @giga_lesser_megastructure_base_tech_cost
+		cost_per_level = @giga_lesser_megastructure_per_level_cost
+		prerequisites = tech_dyson_swarm
+	}
+	weight_modifier = {
+        modifier = {
+            factor = 0
+			check_variable = {
+				which = dyson_swarm_counter
+				value < value:dyson_swarm_limit
+			}
+        }
+    }
+	modifier = {
+		dyson_swarm_limit_add = 1
+	}
+}

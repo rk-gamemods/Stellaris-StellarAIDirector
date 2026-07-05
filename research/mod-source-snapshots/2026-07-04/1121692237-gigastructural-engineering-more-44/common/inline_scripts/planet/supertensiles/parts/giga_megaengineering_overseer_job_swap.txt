@@ -1,0 +1,49 @@
+
+# ST technicians
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = giga_megaengineering_overseer
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = no
+            is_fallen_empire_spiritualist = no
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# acolytes
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = giga_amb_fe_celestial_architect
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_fallen_empire_spiritualist = yes
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# ST drones
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = giga_megaengineering_overseer_drone
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = yes
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}

@@ -1,0 +1,125 @@
+ezic_resistance_not_max = {
+	event_target:flusion_primitives_country = {
+		check_variable = {
+			which = "ezic_resistance_value"
+			value < 5
+		}
+	}
+}
+
+ezic_resistance_not_min = {
+	event_target:flusion_primitives_country = {
+		check_variable = {
+			which = "ezic_resistance_value"
+			value > 0
+		}
+	}
+}
+
+helping_ezic_resistance = {
+	OR = {
+		has_modifier = contributing_ezic_1
+		has_modifier = contributing_ezic_2
+		has_modifier = contributing_ezic_3
+	}
+}
+has_active_kaiser_diplo = {
+	has_active_event = { 
+		giga_katzen.020 
+		giga_katzen.042
+		giga_katzen.050
+
+		giga_katzen.0211
+		giga_katzen.0201
+		giga_katzen.0202
+		giga_katzen.02011
+		giga_katzen.02021
+
+		giga_katzen.5000
+		giga_katzen.5001
+		giga_katzen.2004
+		giga_katzen.1030
+		giga_katzen.1031
+		giga_katzen.0033
+		giga_katzen.02020
+		giga_katzen.3000
+		giga_katzen.3010
+		giga_katzen.3011
+		giga_katzen.3012
+		giga_katzen.3013
+		giga_katzen.3014
+
+		giga_aeternum.4120
+		giga_aeternum.4121
+
+		# Avoid talking to him while rebels are open to stop certain oddities
+		giga_katrebels.2002
+
+		giga_katrebels.0011
+		giga_katrebels.0012
+		giga_katrebels.0013
+		giga_katrebels.0014
+		giga_katrebels.0015
+		giga_katrebels.0016
+		giga_katrebels.0017
+		giga_katrebels.0018
+
+	} 
+}
+
+can_storm_katown_pyramid = {
+	NOT = { has_global_flag = giga_storming_pyramid_cooldown }
+	has_global_flag = flusionians_mourned_loris
+	is_at_war_with = event_target:flusion_primitives_country
+	resource_stockpile_compare = {
+		resource = energy
+		value >= 25000
+	}
+	resource_stockpile_compare = {
+		resource = alloys
+		value >= 10000
+	}
+	capital_scope = {
+		count_planet_army = {
+			count >= 3
+			limit = { army_type = riesigerkatzenpanzer_assault }
+		}
+	}
+	event_target:flusion_primitives_country = {
+		check_variable = {
+			which = solak_resources
+			value >= 10
+		}
+		check_variable = { which = solak_res value >= 3 } 
+		check_variable = { which = zousa_res value >= 3 }
+		check_variable = { which = mercuria_res value >= 3 }
+		check_variable = { which = katzen_res value >= 3 }
+		check_variable = { which = katown_res value >= 3 }
+		check_variable = { which = lyuin_res value >= 3 }
+		check_variable = { which = puffy_res value >= 3 }
+		check_variable = { which = laurn_res value >= 3 }
+		check_variable = { which = symby_res value >= 3 }
+		check_variable = { which = ravka_res value >= 3 }
+		check_variable = { which = ezic_resistance_value value >= 5 }
+		event_target:gigaflusion = {
+			has_planet_flag = sonya_rescued
+			has_planet_flag = loris_dam_blown
+			has_planet_flag = solak_dam_blown
+			has_planet_flag = katzen_panzers_stolen
+			has_planet_flag = loris_removed
+		}
+	}
+}
+
+#Vanilla doesn't have a scripted trigger for checking for machine pops
+giga_is_machine_species = {
+	species = {
+		has_trait = trait_machine_unit
+	}
+}
+
+giga_is_robot_species = {
+	species = {
+		has_trait = trait_mechanical
+	}
+}

@@ -1,0 +1,267 @@
+namespace = esc_options
+
+############################################################
+###                Mod Menu Options v2.0                 ###
+############################################################
+
+### Main window
+country_event = {
+	id = esc_options.10000
+	title = ESC_NULL_STRING
+	desc = ESC_NULL_STRING
+	is_triggered_only = yes
+	diplomatic = yes
+
+	immediate = {
+		set_global_flag = ESC_GLOBAL_FLAG_MENU_ACTIVE
+		esc_mod_menu_clear_page_flags = yes
+		esc_mod_menu_clear_component_subpage_flags = yes
+		set_global_flag = ESC_MENU_presets_page_selected
+		set_global_flag = ESC_MENU_components_vanilla_selected
+	}
+
+	picture_event_data = { portrait = root.ruler } # needed to prevent '[portraitobject.cpp:493]: Failed to find portrait selector' error
+
+	custom_gui = esc_mod_menu_gui
+
+	option = { name = esc_option.exit }
+
+	after = {
+		remove_global_flag = ESC_GLOBAL_FLAG_MENU_ACTIVE
+	}
+}
+
+############################################################
+###              Cheat Menu Options Events               ###
+############################################################
+
+### Main window
+country_event = {
+	id = esc_options.20000
+	title = esc_cheats.title
+	desc = esc_cheats.desc
+	picture = GFX_evt_juggernaut
+	is_triggered_only = yes
+
+	# trigger = {
+	# 	NOT = { has_global_flag = ESC_GLOBAL_FLAG_CHEAT_MENU_ACTIVE }
+	# }
+
+	immediate = {
+		set_global_flag = ESC_GLOBAL_FLAG_CHEAT_MENU_ACTIVE
+	}
+
+	# leave menu
+	option = {
+		name = esc_option.exit
+	}
+
+	# Access to crystalline weapons
+	option = {
+		name = esc_cheats.20000.crystalline.enable
+		custom_tooltip = esc_cheats.20000.crystalline.enable.tooltip
+		trigger = {
+			NOT = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_crystalline_weapons
+			}
+		}
+		hidden_effect = {
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_crystalline_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	option = {
+		name = esc_cheats.20000.crystalline.disable
+		custom_tooltip = esc_cheats.20000.crystalline.disable.tooltip
+		trigger = {
+			has_country_flag = ESC_COUNTRY_FLAG_mod_allow_crystalline_weapons
+		}
+		hidden_effect = {
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_crystalline_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+
+	# Access to biological weapons
+	option = {
+		name = esc_cheats.20000.biological.enable
+		custom_tooltip = esc_cheats.20000.biological.enable.tooltip
+		trigger = {
+			NOR = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_biological_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_biological_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_biological_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_bioaugmented_amoeba
+			}
+		}
+		hidden_effect = {
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_biological_weapons
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_biological_weapons
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_biological_weapons
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_bioaugmented_amoeba
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	option = {
+		name = esc_cheats.20000.biological.disable
+		custom_tooltip = esc_cheats.20000.biological.disable.tooltip
+		trigger = {
+			OR = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_biological_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_biological_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_biological_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_bioaugmented_amoeba
+			}
+		}
+		hidden_effect = {
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_biological_weapons
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_biological_weapons
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_biological_weapons
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_bioaugmented_amoeba
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	# Access to cybernetic amoebas
+	option = {
+		name = esc_cheats.20000.cyber_amoeba.enable
+		custom_tooltip = esc_cheats.20000.cyber_amoeba.enable.tooltip
+		trigger = {
+			NOT = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_cybernetic_amoeba
+			}
+		}
+		hidden_effect = {
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_cybernetic_amoeba
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	option = {
+		name = esc_cheats.20000.cyber_amoeba.disable
+		custom_tooltip = esc_cheats.20000.cyber_amoeba.disable.tooltip
+		trigger = {
+			has_country_flag = ESC_COUNTRY_FLAG_mod_allow_cybernetic_amoeba
+		}
+		hidden_effect = {
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_cybernetic_amoeba
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+
+	# Access to nanite weapons
+	option = {
+		name = esc_cheats.20000.nanite.enable
+		custom_tooltip = esc_cheats.20000.nanite.enable.tooltip
+		trigger = {
+			NOT = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_nanite_weapons
+			}
+		}
+		hidden_effect = {
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_nanite_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	option = {
+		name = esc_cheats.20000.nanite.disable
+		custom_tooltip = esc_cheats.20000.nanite.disable.tooltip
+		trigger = {
+			has_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_nanite_weapons
+		}
+		hidden_effect = {
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_nanite_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+
+	# Access to psionic weapons
+	option = {
+		name = esc_cheats.20000.psionic.enable
+		custom_tooltip = esc_cheats.20000.psionic.enable.tooltip
+		trigger = {
+			NOR = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_psionic_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_psionic_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_psionic_weapons
+			}
+		}
+		hidden_effect = {
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_psionic_weapons
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_psionic_weapons
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_psionic_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	option = {
+		name = esc_cheats.20000.psionic.disable
+		custom_tooltip = esc_cheats.20000.psionic.disable.tooltip
+		trigger = {
+			OR = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_psionic_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_psionic_weapons
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_psionic_weapons
+			}
+		}
+		hidden_effect = {
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_basic_psionic_weapons
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_advanced_psionic_weapons
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_psionic_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+
+	# Access to tesla weapons
+	option = {
+		name = esc_cheats.20000.tesla.enable
+		custom_tooltip = esc_cheats.20000.tesla.enable.tooltip
+		trigger = {
+			NOT = {
+				has_country_flag = ESC_COUNTRY_FLAG_mod_allow_tesla_weapons
+			}
+		}
+		hidden_effect = {
+			set_country_flag = ESC_COUNTRY_FLAG_mod_allow_tesla_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	option = {
+		name = esc_cheats.20000.tesla.disable
+		custom_tooltip = esc_cheats.20000.tesla.disable.tooltip
+		trigger = {
+			has_country_flag = ESC_COUNTRY_FLAG_mod_allow_tesla_weapons
+		}
+		hidden_effect = {
+			remove_country_flag = ESC_COUNTRY_FLAG_mod_allow_tesla_weapons
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+
+	# Mantle miners get guaranteed 5 extra resource deposits
+	option = {
+		name = esc_cheats.20000.deposits.enable
+		custom_tooltip = esc_cheats.20000.deposits.enable.tooltip
+		trigger = {
+			NOT = {
+				has_country_flag = ESC_COUNTRY_FLAG_guaranteed_extra_mantle_miner_deposits
+			}
+		}
+		hidden_effect = {
+			set_country_flag = ESC_COUNTRY_FLAG_guaranteed_extra_mantle_miner_deposits
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+	option = {
+		name = esc_cheats.20000.deposits.disable
+		custom_tooltip = esc_cheats.20000.deposits.disable.tooltip
+		trigger = {
+			has_country_flag = ESC_COUNTRY_FLAG_guaranteed_extra_mantle_miner_deposits
+		}
+		hidden_effect = {
+			remove_country_flag = ESC_COUNTRY_FLAG_guaranteed_extra_mantle_miner_deposits
+			country_event = { id = esc_options.20000 days = 0 }
+		}
+	}
+
+	after = {
+		remove_global_flag = ESC_GLOBAL_FLAG_CHEAT_MENU_ACTIVE
+	}
+}

@@ -1,0 +1,13 @@
+Generate or modify a Stellaris mod targeting Stellaris 4.4.4 unless otherwise specified.
+
+Rules:
+- Use mod prefix: {{MOD_PREFIX}}.
+- Create files only under recognized Stellaris mod directories.
+- Use unique file names and object keys.
+- Do not override vanilla unless explicitly requested.
+- If overriding, document the exact vanilla key and source file.
+- Localisation files must be UTF-8 with BOM and start with l_english:.
+- Events should be namespaced and is_triggered_only unless justified.
+- Guard optional scopes with exists.
+- Account for Nomad/Arkship compatibility where colony/capital/planet assumptions appear.
+- Return changed files, added keys, overridden keys, scope assumptions, load-order assumptions, and test plan.

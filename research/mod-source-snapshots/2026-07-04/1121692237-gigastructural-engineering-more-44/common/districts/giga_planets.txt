@@ -1,0 +1,292 @@
+# for city districts, see 000_giga_city_districts.txt
+
+##################################
+### Geothermal Generator #########
+##################################
+district_giga_planet_geothermal = {
+    icon = district_generator
+	base_buildtime = @giga_planet_district_buildtime
+	is_uncapped = { always = yes }
+    gridbox = district_generator
+    district_background = district_generator
+    overlay_icon = GFX_district_energy
+    # ttft said theyd nuke this and rebuild
+
+	show_on_uncolonized = {
+		uses_district_set = giga_equatorial_shipyard
+	}
+
+	potential = {
+		uses_district_set = giga_equatorial_shipyard
+	}
+
+	zone_slots = {
+		slot_gigas_energy
+	}
+
+	resources = {
+		category = planet_districts
+		cost = { minerals = @giga_planet_cost }
+		upkeep = { energy = @giga_planet_maintenance }
+	}
+
+	# base stats
+	triggered_planet_modifier = {
+		modifier = {
+			planet_housing_add = 200
+		}
+	}
+
+	inline_script = {
+		script = jobs/technicians_add
+		AMOUNT = 300
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_tankbound_empire = yes }
+		}
+		modifier = {
+			job_technician_automated_workforce_mult = 1.0
+		}
+	}
+}
+
+##################################
+### Alloys #######################
+##################################
+district_giga_planet_alloys = {
+	base_buildtime = @giga_planet_urban_district_buildtime
+	is_uncapped = { always = yes }
+    icon = district_giga_squareworld_livingmetal
+    # ttft said theyd nuke this and rebuild
+    gridbox = district_arcology_arms_industry
+    district_background = district_arcology_arms_industry
+    overlay_icon = GFX_district_alloys
+
+	show_on_uncolonized = {
+		uses_district_set = giga_equatorial_shipyard
+	}
+
+	potential = {
+		uses_district_set = giga_equatorial_shipyard
+	}
+
+	zone_slots = {
+		slot_gigas_alloys
+	}
+	
+	resources = {
+		category = planet_districts
+		cost = { minerals = @giga_planet_urban_cost }
+		upkeep = { energy = @giga_planet_urban_maintenance }
+	}
+
+	# base stats
+	planet_modifier = { planet_housing_add = 300 }
+
+	inline_script = {
+		script = jobs/industrial_districts_foundry_add
+		AMOUNT = 300
+	}
+}
+
+
+
+#######################################################################################
+# UNUSED BELOW
+#######################################################################################
+
+
+##################################
+### Admin ########################
+##################################
+district_giga_planet_admin = {
+	base_buildtime = @giga_planet_district_buildtime
+	icon = district_arcology_administrative
+	is_uncapped = { always = yes }
+
+	show_on_uncolonized = {
+		giga_uses_admin_district = yes
+		from = {
+			nor = {
+				giga_country_uses_priests = yes
+				has_valid_civic = civic_machine_servitor
+			}
+		}
+	}
+
+	potential = {
+		giga_uses_admin_district = yes
+		exists = owner
+		owner = {
+			nor = {
+				giga_country_uses_priests = yes
+				has_valid_civic = civic_machine_servitor
+			}
+		}
+	}
+
+	resources = {
+		category = planet_districts
+		cost = { minerals = @giga_planet_cost }
+		upkeep = { energy = @giga_planet_maintenance }
+	}
+
+	conversion_ratio = 1
+	convert_to = {
+		district_giga_planet_admin_religious
+		district_giga_planet_sanctuary
+		district_giga_orbital_sanctuary
+	}
+
+	# base stats
+	planet_modifier = { planet_housing_add = 200 }
+
+	inline_script = {
+		script = planet/unity/giga_unity_job_swap
+		jobs = 2
+		district = @yes
+	}
+}
+
+### Spiritualist swap ###
+district_giga_planet_admin_religious = {
+	base_buildtime = @giga_planet_district_buildtime
+	icon = district_arcology_religious
+	is_uncapped = { always = yes }
+
+	show_on_uncolonized = {
+		giga_uses_admin_district = yes
+		from = { 
+			giga_country_uses_priests = yes 
+		}
+	}
+
+	potential = {
+		giga_uses_admin_district = yes
+		exists = owner
+		owner = {
+			giga_country_uses_priests = yes
+		}
+	}
+
+	resources = {
+		category = planet_districts
+		cost = { minerals = @giga_planet_cost }
+		upkeep = { energy = @giga_planet_maintenance }
+	}
+
+	conversion_ratio = 1
+	convert_to = {
+		district_giga_planet_admin
+		district_giga_planet_sanctuary
+		district_giga_orbital_sanctuary
+	}
+
+	# base stats
+	planet_modifier = { planet_housing_add = 200 }
+
+	inline_script = {
+		script = planet/unity/giga_unity_job_swap
+		jobs = 2
+		district = @yes
+	}
+}
+
+district_giga_planet_sanctuary = {
+	base_buildtime = @giga_planet_district_buildtime
+	icon = district_arcology_organic_housing
+	is_uncapped = { always = yes }
+
+	show_on_uncolonized = {
+		giga_uses_admin_district = yes
+		not = { uses_district_set = giga_orbital } # has its own better sanctuary
+		from = { 
+			has_valid_civic = civic_machine_servitor
+		}
+	}
+
+	potential = {
+		giga_uses_admin_district = yes
+		not = { uses_district_set = giga_orbital }
+		exists = owner
+		owner = {
+			has_valid_civic = civic_machine_servitor
+		}
+	}
+
+	resources = {
+		category = planet_districts
+		cost = { minerals = @giga_planet_cost }
+		upkeep = { energy = @giga_planet_maintenance }
+	}
+
+	conversion_ratio = 1
+	convert_to = {
+		district_giga_planet_admin
+		district_giga_planet_admin_religious
+		district_giga_orbital_sanctuary
+	}
+
+	planet_modifier = {
+		job_bio_trophy_add = 5
+	}
+
+	triggered_desc = {
+		text = job_bio_trophy_effect_desc
+	}
+	triggered_desc = {
+		text = job_maintenance_drone_effect_desc
+	}
+}
+
+##################################
+### Supertensiles ################
+##################################
+
+# 4.0 rework
+# district_giga_supertensiles = {
+# 	base_buildtime = @giga_planet_district_buildtime
+# 	icon = district_giga_supertensiles
+# 	is_capped_by_modifier = no
+	
+# 	show_on_uncolonized = {
+# 		has_global_flag = @giga_amb_flag
+# 		exists = from
+# 		uses_district_set = giga_equatorial_shipyard
+# 	}
+	
+# 	potential = {
+# 		has_global_flag = @giga_amb_flag
+# 		exists = owner
+# 		uses_district_set = giga_equatorial_shipyard
+# 	}
+	
+# 	resources = {
+# 		category = planet_districts_industrial
+# 		cost = {
+# 			minerals = @giga_planet_cost 
+# 		}
+# 		upkeep = { 
+# 			energy = @giga_planet_maintenance
+# 		}
+# 	}
+	
+# 	planet_modifier = {
+# 		planet_housing_add = 2
+# 	}
+	
+# 	inline_script = {
+# 		script = planet/supertensiles/giga_megaengineer_job_swap
+# 		jobs = 2
+# 	}
+	
+# 	ai_resource_production = {
+# 		giga_sr_amb_megaconstruction = 2
+# 		trigger = {
+# 			always = yes
+# 		}
+# 	}
+# }

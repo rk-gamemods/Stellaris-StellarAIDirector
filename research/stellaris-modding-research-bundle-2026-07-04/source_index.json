@@ -1,0 +1,202 @@
+[
+  {
+    "id": "S001",
+    "title": "Paradox Interactive Launches Major Expansion and Free Update for Stellaris",
+    "url": "https://www.paradoxinteractive.com/media/press-releases/press-release/paradox-interactive-launches-major-expansion-and-free-update-for-stellaris",
+    "type": "primary / publisher press release",
+    "retrieved": "2026-07-04",
+    "trust": "high",
+    "used_for": "4.4 Pegasus and Nomads launch date; Arkships, Waylines, Contracts, join/leave wars, job-system and Situation Log/UI changes",
+    "notes": "Lines observed: Jun 15 2026 launch, Nomads + free 4.4 Pegasus update; features include Nomadic Empires, Arkships, Wayline Networks, Contract System."
+  },
+  {
+    "id": "S002",
+    "title": "Steam Community: Stellaris 4.4.4 patch released (5505)",
+    "url": "https://steamcommunity.com/app/281990/allnews/",
+    "type": "primary / official Steam news",
+    "retrieved": "2026-07-04",
+    "trust": "high",
+    "used_for": "latest stable patch status; 4.4.4 download availability and checksum; 4.4.4 bugfix implications for Arkship/Waystation/Nomad compatibility",
+    "notes": "Steam all-news page showed title “Stellaris 4.4.4 patch released (5505)”, Jun 24, and says 4.4.4 ready for Steam, GOG, MS Store."
+  },
+  {
+    "id": "S003",
+    "title": "Steam Community: Stellaris 4.4.5 “Pegasus” Early Open Beta (c22e) now available",
+    "url": "https://steamcommunity.com/app/281990/allnews/",
+    "type": "primary / official Steam news",
+    "retrieved": "2026-07-04",
+    "trust": "high",
+    "used_for": "4.4.5 beta branch status; early beta caveats; Resource Abundance, Waystation Voidlure, Arkship Voidlure, automation changes",
+    "notes": "Steam all-news page showed Jun 25 early beta on stellaris_test with minimal QA warning and ongoing notes."
+  },
+  {
+    "id": "S004",
+    "title": "SteamDB mirror of Stellaris Dev Diary #427 - Second Open Beta",
+    "url": "https://steamdb.info/patchnotes/24002622/",
+    "type": "mirrored official Steam update notes",
+    "retrieved": "2026-07-04",
+    "trust": "medium-high",
+    "used_for": "updated 4.4.5 beta modding changes; 4.5 Cygnus open beta warnings and modding changes",
+    "notes": "SteamDB mirrors Steam Community notes. It showed 2 July 2026 update text: 4.4.5 beta on stellaris_test, situation/custom_tooltip/starbase/automation/home_colony additions, and 4.5 pop ethics/faction breaking change."
+  },
+  {
+    "id": "S005",
+    "title": "Paradox Interactive: Stellaris Update 4.0",
+    "url": "https://www.paradoxinteractive.com/games/stellaris/news/stellaris-update-4-0",
+    "type": "primary / publisher news",
+    "retrieved": "2026-07-04",
+    "trust": "high",
+    "used_for": "4.0 Phoenix structural break: pop groups, workforce, species modification, trade/logistics, planet UI, district specializations",
+    "notes": "Paradox explains pop grouping, workforce assigned to jobs, simultaneous growth, trade route removal, trade/logistics resource, and planet UI/jobs/district specializations."
+  },
+  {
+    "id": "S006",
+    "title": "Stellaris Wiki: Patch 4.0",
+    "url": "https://stellaris.paradoxwikis.com/Patch_4.0",
+    "type": "official community wiki / patch page",
+    "retrieved": "2026-07-04",
+    "trust": "medium-high",
+    "used_for": "Patch 4.0 feature inventory and modding impact matrix",
+    "notes": "Wiki says 4.0 Phoenix was released 2025-05-05 with checksum 1ae3, notes 4.0 was not public and 4.0.1 was first public 4.0.x branch; lists planetary economy rework, Pop Groups & Workforce, trade revamp, etc."
+  },
+  {
+    "id": "S007",
+    "title": "Stellaris Wiki: Modding tutorial",
+    "url": "https://stellaris.paradoxwikis.com/Modding_tutorial",
+    "type": "official community wiki / tutorial",
+    "retrieved": "2026-07-04",
+    "trust": "high for mod-structure basics",
+    "used_for": "descriptor files, Windows storage path, folder mirroring, common folders, naming, CWTools/tool recommendations, logs, launch parameters, debug workflow, event basics, Git recommendation",
+    "notes": "Important lines: two descriptors; outer .mod path in Documents/.../mod, inner descriptor.mod no path; supported_version is visual only; never edit install folder; mirror install structure; tools/logs/debug flags."
+  },
+  {
+    "id": "S008",
+    "title": "Stellaris Wiki: Localisation modding",
+    "url": "https://stellaris.paradoxwikis.com/Localisation_modding",
+    "type": "official community wiki",
+    "retrieved": "2026-07-04",
+    "trust": "high for localisation file rules",
+    "used_for": "localisation folder spelling, UTF-8 BOM, filename suffix, first-line language key, no fallback language, localisation/replace LIOS overwrite behavior",
+    "notes": "Page warns some sections older, but basics are stable and current in practice."
+  },
+  {
+    "id": "S009",
+    "title": "Stellaris Wiki: Scopes",
+    "url": "https://stellaris.paradoxwikis.com/Scopes",
+    "type": "official community wiki",
+    "retrieved": "2026-07-04",
+    "trust": "medium-high",
+    "used_for": "scope model, THIS/PREV/FROM/ROOT, exists checks, trigger/effect scope errors, any_/every_/random_ behavior, event targets",
+    "notes": "Page notes some sections older, so use trigger_docs/current vanilla script docs for final validation."
+  },
+  {
+    "id": "S010",
+    "title": "Stellaris Wiki: Console commands",
+    "url": "https://stellaris.paradoxwikis.com/Console_commands",
+    "type": "official community wiki",
+    "retrieved": "2026-07-04",
+    "trust": "medium",
+    "used_for": "console access, non-Ironman restriction, debugtooltip ID inspection, achievements disabled, help command",
+    "notes": "Page verified for PC 4.2; report flags command names as requiring in-console verification on 4.4.x."
+  },
+  {
+    "id": "S011",
+    "title": "Irony Mod Manager homepage",
+    "url": "https://bcssov.github.io/IronyModManager/",
+    "type": "tool documentation",
+    "retrieved": "2026-07-04",
+    "trust": "high for Irony capabilities",
+    "used_for": "Irony features, supported Stellaris, FIOS/LIOS understanding, deterministic load-order management, conflict awareness",
+    "notes": "Homepage says Irony originally built for Stellaris and understands game structures, FIOS/LIOS, deterministic load order."
+  },
+  {
+    "id": "S012",
+    "title": "Steam Community discussion: Irony Mod Manager advanced conflict solver",
+    "url": "https://steamcommunity.com/workshop/discussions/18446744073709551615/2574319296481107914/?appid=281990",
+    "type": "community tool author discussion",
+    "retrieved": "2026-07-04",
+    "trust": "medium",
+    "used_for": "FIOS/LIOS explanation; why filename-only conflict checking is inadequate; patch mod generation; not every conflict needs patching",
+    "notes": "Useful for practical load-order behavior, but not official Paradox docs."
+  },
+  {
+    "id": "S013",
+    "title": "CWTools: Get started",
+    "url": "https://cwtools.github.io/get-started.html",
+    "type": "tool documentation",
+    "retrieved": "2026-07-04",
+    "trust": "high for CWTools usage",
+    "used_for": "VS Code extension setup, open mod folder, select vanilla folder, scan errors, use Git, Windows/Linux mod-folder examples",
+    "notes": "CWTools page explicitly recommends backups/Git and shows Windows/Linux mod folders."
+  },
+  {
+    "id": "S014",
+    "title": "cwtools-action GitHub repository",
+    "url": "https://github.com/cwtools/cwtools-action",
+    "type": "tool source/documentation",
+    "retrieved": "2026-07-04",
+    "trust": "high for CI validation concept",
+    "used_for": "automated PDXScript validation in CI; dependency on validation rules and vanilla cache; full cache needed for accurate load-order/file-override validation",
+    "notes": "Good for professional mod maintenance workflows."
+  },
+  {
+    "id": "S015",
+    "title": "GitHub: 3v4d3/GalacticConclave",
+    "url": "https://github.com/3v4d3/GalacticConclave",
+    "type": "public repository",
+    "retrieved": "2026-07-04",
+    "trust": "medium",
+    "used_for": "LLM diplomacy companion architecture: save parser, LLM client, command file + run command bridge, local/cloud LLM support, Ironman restriction",
+    "notes": "Small/new repo; claims need verification by running code, but README is direct source for project architecture."
+  },
+  {
+    "id": "S016",
+    "title": "GitHub: Dfintz/Stellaris_Overmind",
+    "url": "https://github.com/Dfintz/Stellaris_Overmind",
+    "type": "public repository",
+    "retrieved": "2026-07-04",
+    "trust": "medium",
+    "used_for": "LLM strategic advisor and AI-empires macro-strategy steering; save polling; personality/stat overrides while native AI executes micro decisions",
+    "notes": "README reports version-locked knowledge examples and specific architecture. Treat as prototype until tested."
+  },
+  {
+    "id": "S017",
+    "title": "GitHub: gitmaan/stellaris-companion",
+    "url": "https://github.com/gitmaan/stellaris-companion",
+    "type": "public repository",
+    "retrieved": "2026-07-04",
+    "trust": "medium",
+    "used_for": "AI save analyzer / strategic advisor, MCP relay into Claude/Codex, local save privacy, Rust parser",
+    "notes": "External advisor rather than runtime empire controller."
+  },
+  {
+    "id": "S018",
+    "title": "Steam Workshop: Beachboys Fair AI 2",
+    "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3464924561",
+    "type": "Steam Workshop listing / community comments",
+    "retrieved": "2026-07-04",
+    "trust": "low-medium",
+    "used_for": "example of AI-assisted mod-development claims and community skepticism; not evidence of runtime LLM in-game",
+    "notes": "Listing claims designed with ChatGPT; comments allege syntax/structure issues. Useful as warning: AI assistance requires vanilla-schema validation."
+  },
+  {
+    "id": "S019",
+    "title": "Stellaris Wiki: Mods search result / mod-folder OS paths",
+    "url": "https://stellaris.paradoxwikis.com/Mods",
+    "type": "official community wiki search-result snippet; page challenge blocked full open",
+    "retrieved": "2026-07-04",
+    "trust": "medium",
+    "used_for": "Linux and macOS mod-folder paths when full page was blocked by client challenge",
+    "notes": "Search snippet showed Linux ~/.local/share/Paradox Interactive/Stellaris/mod/ and Mac OS ~/Documents/Paradox Interactive/Stellaris/mod/."
+  },
+  {
+    "id": "S020",
+    "title": "Stellaris Wiki: Save-game editing search result / save paths",
+    "url": "https://stellaris.paradoxwikis.com/Save-game_editing",
+    "type": "official community wiki search-result snippet",
+    "retrieved": "2026-07-04",
+    "trust": "medium",
+    "used_for": "save-game path background for external tools; not central to mod folder rules",
+    "notes": "Used only for save-path context and external AI tooling."
+  }
+]

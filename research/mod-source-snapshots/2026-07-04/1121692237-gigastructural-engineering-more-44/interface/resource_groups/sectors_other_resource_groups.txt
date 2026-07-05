@@ -1,0 +1,24 @@
+sectors_others_group = {
+	resources = {
+		volatile_motes
+		exotic_gases
+		rare_crystals
+		sr_living_metal
+		sr_zro
+		sr_dark_matter
+		nanites
+        trade
+		minor_artifacts
+		giga_sr_iodizium
+		giga_sr_bulk_matter
+		giga_sr_quasaric_energy
+		giga_sr_psionic_sublimate
+		giga_sr_negative_mass
+		giga_sr_sentient_metal
+		giga_sr_amb_megaconstruction
+	}
+	localization = {
+		"RESOURCE_GROUP_BALANCE_ONLY" = default
+		"RESOURCE_GROUP_BALANCE_ONLY_NEG" = { balance < 0 }
+	}
+}

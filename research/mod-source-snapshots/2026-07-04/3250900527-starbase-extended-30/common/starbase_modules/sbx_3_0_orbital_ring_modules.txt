@@ -1,0 +1,453 @@
+##### STARBASE EXTENDED 3.0 STARBASE MODULES #####
+
+
+# SHIELD ORBITAL RING MODULE
+orbital_ring_shield_module = {
+	section = "SHIELD_ORBITAL_RING_SECTION"
+	icon = "GFX_starbase_shield_module"
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+	
+	resources = {
+		category = starbase_modules
+		cost = { alloys = 75 }
+		upkeep = { energy = 1 }
+	}
+	station_modifier = { 
+		ship_shield_add = 8000
+		ship_shield_regen_add_static = 1.0
+	}
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = yes
+	
+	potential = {  
+		has_starbase_size >= orbital_ring_tier_1
+		count_starbase_modules = { type = orbital_ring_shield_module count < 4 }
+	}
+	ai_weight = {
+		weight = 100
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_shield_module count > 1 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_shield_module count > 2 } }
+		modifier = { factor = 0 count_starbase_modules = { type = orbital_ring_shield_module count >= 4 } }
+	}
+}
+
+# ARMOR ORBITAL RING MODULE
+orbital_ring_armor_module = {
+	section = "ARMOR_ORBITAL_RING_SECTION"
+	icon = "GFX_starbase_armor_module"
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+	
+	resources ={
+		category = starbase_modules
+		cost = { alloys = 75 }
+	}
+	station_modifier = { 
+		ship_armor_add = 8000 
+	}
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = yes
+	
+	potential = { 
+		has_starbase_size >= orbital_ring_tier_1
+		count_starbase_modules = { type = orbital_ring_armor_module count < 4 }
+	}
+	
+	ai_weight = {
+		weight = 100
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_armor_module count > 1 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_armor_module count > 2 } }
+		modifier = { factor = 0 count_starbase_modules = { type = orbital_ring_armor_module count >= 4 } }
+	}
+}
+
+# POINT DEFENSE BATTERY
+orbital_ring_pd_battery = {
+	section = "PD_ORBITAL_RING_SECTION"
+	icon = "GFX_starbase_pd_battery"
+	construction_days = 150
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+	
+	resources = {
+		category = starbase_modules
+		cost = { alloys = 50 }
+		upkeep = { energy = 1 }
+	}
+	station_modifier = { 
+		ship_hull_mult = 0.01 
+		ship_armor_mult = 0.01 
+	}
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = no
+	
+	potential = { 
+		exists = owner		
+		owner = { 
+			OR = {
+				has_technology = tech_pd_tracking_1 
+				has_technology = tech_pd_tracking_2
+				has_technology = tech_pd_tracking_3 
+				has_technology = tech_flak_batteries_1 
+				has_technology = tech_flak_batteries_2
+				has_technology = tech_flak_batteries_3
+			}
+		}
+		has_starbase_size >= orbital_ring_tier_1
+	}
+	potential = { 
+		count_starbase_modules = { type = orbital_ring_pd_battery count < 5 } 
+		has_starbase_size >= orbital_ring_tier_1
+	}
+	
+	ai_weight = {
+		weight = 20	
+		modifier = { factor = 2.5 OR = { has_starbase_module = orbital_ring_gun_battery has_starbase_module = orbital_ring_missile_battery has_starbase_module = orbital_ring_hangar_bay } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_pd_battery count > 1 } }
+	}	
+}
+
+# MEDIUM GUN BATTERY
+orbital_ring_gun_battery = {
+	section = "ORBITAL_RING_BATTERY_STARBASE_SECTION"
+	icon = GFX_spaceport_modules
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+
+	potential = {
+		is_normal_starbase = yes
+	}
+
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 50
+		}
+
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	station_modifier = {
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
+		starbase_defense_platform_capacity_add = 1
+	}
+
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = no
+	potential = { 
+		has_starbase_size >= orbital_ring_tier_1
+		count_starbase_modules = { type = orbital_ring_gun_battery count < 10 }
+	}
+
+	ai_weight = {
+		weight = 100 
+		modifier = {
+			factor = 2
+			exists = owner
+			owner = {
+				OR = {
+					is_preferred_weapons = weapon_type_energy
+					is_preferred_weapons = weapon_type_kinetic
+				}
+			}
+		}
+	}
+
+	show_in_tech = "tech_mass_drivers_1"
+}
+
+
+# ORBITAL RING LARGE GUN BATTERY MODULE
+orbital_ring_large_gun_battery = {
+	section = "LARGE_GUN_BATTERY_ORBITAL_RING_SECTION"
+	icon = GFX_orbital_ring_large_battery
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+
+	potential = {
+		is_orbital_ring = yes
+		has_starbase_size >= orbital_ring_tier_1
+		count_starbase_modules = { type = orbital_ring_large_gun_battery count < 5 }
+	}
+
+	ai_weight = {
+		weight = 100
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_large_gun_battery count > 1 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_large_gun_battery count > 2 } }
+		modifier = { factor = 0 count_starbase_modules = { type = orbital_ring_large_gun_battery count >= 6 } }
+	}
+
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 50
+		}
+
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	station_modifier = {
+		ship_hull_mult = 0.30
+		ship_armor_mult = 0.30
+		starbase_defense_platform_capacity_add = 2
+	}
+
+	triggered_station_modifier = {
+		potential = {
+			exists = planet
+			planet = {
+				exists = owner.overlord
+				has_holding = {
+					holding = holding_orbital_assembly_complex
+					owner = owner.overlord
+				}
+			}
+		}
+	}
+
+	show_in_tech = "tech_mass_drivers_1"
+}
+
+
+# ORBITAL RING XL GUN BATTERY MODULE
+orbital_ring_xl_gun_battery = {
+	section = "XL_GUN_BATTERY_ORBITAL_RING_SECTION"
+	icon = GFX_orbital_ring_xl_battery
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+
+	potential = {
+		is_orbital_ring = yes
+		has_starbase_size >= orbital_ring_tier_2
+		count_starbase_modules = { type = orbital_ring_xl_gun_battery count < 5 }		
+	}
+
+	ai_weight = {
+		weight = 100
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_xl_gun_battery count > 1 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_xl_gun_battery count > 2 } }
+		modifier = { factor = 0 count_starbase_modules = { type = orbital_ring_xl_gun_battery count >= 4 } }
+	}
+	
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 100
+		}
+
+		upkeep = {
+			energy = 10
+		}
+	}
+
+	station_modifier = {
+		ship_hull_mult = 0.40
+		ship_armor_mult = 0.50
+		starbase_defense_platform_capacity_add = 4
+	}
+
+	triggered_station_modifier = {
+		potential = {
+			exists = planet
+			planet = {
+				exists = owner.overlord
+				has_holding = {
+					holding = holding_orbital_assembly_complex
+					owner = owner.overlord
+				}
+			}
+		}
+	}
+
+	show_in_tech = "tech_starbase_5"
+}
+
+# ORBITAL RING TITANIC GUN BATTERY MODULE
+orbital_ring_titanic_gun_battery = {
+	section = "TITANIC_GUN_BATTERY_ORBITAL_RING_SECTION"
+	icon = GFX_orbital_ring_titanic_battery
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+
+	potential = {
+		is_orbital_ring = yes
+		has_starbase_size = orbital_ring_tier_3
+		count_starbase_modules = { type = orbital_ring_titanic_gun_battery count < 2 }
+	}
+
+	ai_weight = {
+		weight = 100
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_titanic_gun_battery count >= 0 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_xl_gun_battery count > 1 } }
+		modifier = { factor = 0 count_starbase_modules = { type = orbital_ring_xl_gun_battery count >= 2 } }
+	}
+
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 200
+		}
+
+		upkeep = {
+			energy = 20
+		}
+	}
+
+	station_modifier = {
+		ship_hull_mult = 0.50
+		ship_armor_mult = 0.50
+		starbase_defense_platform_capacity_add = 8
+	}
+
+	triggered_station_modifier = {
+		potential = {
+			exists = planet
+			planet = {
+				exists = owner.overlord
+				has_holding = {
+					holding = holding_orbital_assembly_complex
+					owner = owner.overlord
+				}
+			}
+		}
+	}
+
+	show_in_tech = "tech_titans"
+}
+
+# ORBITAL RING HANGAR SECTION MODULE
+orbital_ring_hangar_bay = {
+	icon = "GFX_starbase_hangar_bay"
+	section = "HANGAR_ORBITAL_RING_SECTION"
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+
+	potential = {
+		exists = owner
+		is_orbital_ring = yes
+		has_starbase_size >= orbital_ring_tier_1
+		owner = { has_technology = tech_strike_craft_1 }
+		count_starbase_modules = { type = orbital_ring_hangar_bay count < 5 }
+	}
+
+	ai_weight = {
+		weight = 100
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_hangar_bay count > 1 } }
+		modifier = { factor = 0.5 count_starbase_modules = { type = orbital_ring_hangar_bay count > 2 } }
+		modifier = { factor = 0 count_starbase_modules = { type = orbital_ring_hangar_bay count >= 4 } }
+	}
+
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 50
+		}
+
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	station_modifier = {
+		ship_hull_mult = 0.20
+		ship_armor_mult = 0.20
+		starbase_defense_platform_capacity_add = 2
+	}
+
+	triggered_station_modifier = {
+		potential = {
+			exists = planet
+			planet = {
+				exists = owner.overlord
+				has_holding = {
+					holding = holding_orbital_assembly_complex
+					owner = owner.overlord
+				}
+			}
+		}
+	}
+
+
+	ai_build_outside_chokepoint = yes
+	ai_weight = {
+		weight = 100
+		modifier = {
+			factor = 2
+			exists = owner
+			owner = { is_preferred_weapons = weapon_type_strike_craft }
+		}
+	}
+
+	show_in_tech = "tech_strike_craft_1"
+}
+
+
+# TORPEDO BATTERY / EX MISSILE BATTERY
+orbital_ring_missile_battery = {
+	section = "ORBITAL_RING_MISSILE_SECTION"
+	icon = "GFX_starbase_missile_battery"
+	construction_days = 180
+	starbase_type = orbital_ring
+	category = sm_defense_cat
+
+	potential = {
+		exists = owner
+		owner = { has_technology = tech_torpedoes_1 }
+		is_orbital_ring = yes
+		has_starbase_size >= orbital_ring_tier_1
+	}
+
+	resources = {
+		category = starbase_modules
+		cost = {
+			alloys = 50
+		}
+
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	station_modifier = {
+		ship_hull_mult = 0.10
+		ship_armor_mult = 0.10
+		starbase_defense_platform_capacity_add = 1
+	}
+
+	ai_build_at_chokepoint = yes
+	ai_build_outside_chokepoint = no
+	
+	potential = { 
+		has_starbase_size >= orbital_ring_tier_1
+		count_starbase_modules = { type = orbital_ring_missile_battery count < 5 }
+	}
+
+	ai_weight = {
+		weight = 100 #use same weight here - ai weighting is done in starbase_types.txt
+		modifier = {
+			factor = 2
+			exists = owner
+			owner = { is_preferred_weapons = weapon_type_explosive }
+		}
+	}
+
+	show_in_tech = "tech_torpedoes_1"
+}
+
+
+
+
+##### EOF

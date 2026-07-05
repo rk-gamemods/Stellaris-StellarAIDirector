@@ -1,0 +1,20 @@
+# factorio
+@alderson_auto_jobs = 1200
+@alderson_auto_jobs_split = 600
+@alderson_auto_jobs_split_neg = -600
+@alderson_auto_jobs_hive = 1800
+@alderson_auto_jobs_sanctuary = 3000
+@alderson_auto_housing = 1200
+@alderson_auto_housing_mach = 1800
+@alderson_auto_housing_ecu = 1800
+@alderson_auto_jobs_ecu = 1800
+@alderson_auto_jobs_ecu_split = 900
+@alderson_auto_jobs_ecu_split_3 = 600 # 9 + 6 + 6
+@alderson_auto_jobs_ecu_split_3_neg = -300 # 9 - 3 + 6 + 6
+@alderson_auto_jobs_ecu_sanctuary = 4500
+# ^ ecu jobs should equal 18
+@alderson_auto_jobs_refiners = 200 # x3 = 6
+
+@alderson_zone_cost = 8000
+
+# EOF

@@ -1,0 +1,7 @@
+OR = {
+	owner_or_space_owner? = { is_ai = no }
+	AND = {
+		owner_or_space_owner? = { is_ai = yes }
+		planet = { has_planet_flag = stellarai_research_plan_claimed }
+	}
+}

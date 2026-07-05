@@ -1,0 +1,1046 @@
+# Rebased on Stellaris 4.4.3 (Pegasus).
+
+alloys_expenditure_buffer = { # Buffer, will not be spent
+	resource = alloys
+	type = expenditure
+	category = buffer
+
+	potential = {
+		always = no
+	}
+
+	weight = {
+		weight = 0.0
+	}
+}
+
+alloys_expenditure_ships = {
+	resource = alloys
+	type = expenditure
+	category = ships
+
+	potential = {
+		always = yes
+	}
+
+	weight = {
+		weight = 1.0
+
+		modifier = {
+			factor = 4.0
+			stellarai_should_rebuild_fleet = yes
+		}
+
+		# Protect early peacetime colonization from the stronger navy/alloy budget.
+		# If the AI has colony plans and no real threat, expansion should win over fleet buildup.
+		modifier = {
+			factor = 0.12
+			AND = {
+				ai_colonize_plans > 0
+				is_at_war = no
+				highest_threat < 20
+				is_machine_empire = no
+				NOT = { stellarai_military_emergency = yes }
+			}
+		}
+
+		modifier = {
+			factor = 0.30
+			AND = {
+				ai_colonize_plans > 0
+				is_at_war = no
+				highest_threat < 20
+				is_machine_empire = yes
+				NOT = { has_valid_civic = civic_machine_terminator }
+				NOT = { stellarai_military_emergency = yes }
+			}
+		}
+
+		modifier = {
+			factor = 0.60
+			AND = {
+				ai_colonize_plans > 0
+				is_at_war = no
+				highest_threat < 20
+				has_valid_civic = civic_machine_terminator
+				NOT = { stellarai_military_emergency = yes }
+			}
+		}
+
+		# spend less alloys on ships if over capacity
+		modifier = {
+			factor = 0.45
+			is_at_war = no
+			stellarai_machine_energy_emergency = yes
+		}
+
+		modifier = {
+			factor = 0.85
+			is_at_war = no
+			stellarai_machine_minerals_emergency = yes
+		}
+
+		modifier = {
+			factor = 1.15
+			stellarai_machine_basic_econ_stable = yes
+			used_naval_capacity_percent < 1.0
+		}
+
+		modifier = {
+			factor = 0.60
+			is_at_war = no
+			stellarai_economic_crisis = yes
+		}
+
+		modifier = {
+			factor = 0.65
+			AND = {
+				used_naval_capacity_percent >= 1.0
+				is_at_war = no
+			}
+		}
+
+		modifier = {
+			factor = 0.82
+			AND = {
+				used_naval_capacity_percent >= 1.15
+				is_at_war = yes
+			}
+		}
+
+		# Biological Ships use less alloys
+		modifier = {
+			factor = 0.33
+			country_uses_bio_ships = yes
+		}
+
+		modifier = {
+			factor = 5
+			used_naval_capacity_percent < 1.5
+			OR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
+		}
+	
+	}
+
+	desired_min = {
+		base = 0
+
+		modifier = {
+			add = @ai_ship_budget_desired_min_per_year
+			country_uses_bio_ships = no
+		}
+
+		modifier = {
+			factor = trigger:years_passed
+		}
+	}
+}
+
+alloys_expenditure_ship_upgrades = {
+	resource = alloys
+	type = expenditure
+	category = ship_upgrades
+
+	potential = {
+		is_at_war = no
+		any_owned_fleet = {
+			controller = { is_same_value = root }
+			can_be_upgraded = yes
+		}
+	}
+
+	weight = {
+		weight = 0.2
+
+		modifier = {
+			factor = 0.25
+			stellarai_should_rebuild_fleet = yes
+		}
+
+		# spend more on ship upgrades if at capacity
+		modifier = {
+			factor = 2.5
+			used_naval_capacity_percent >= 1.0
+		}
+
+		# Convert a stable research lead into current military power.
+		modifier = {
+			factor = 1.50
+			stellarai_research_ready = yes
+			has_monthly_income = { resource = alloys value > 25 }
+			resource_stockpile_compare = { resource = alloys value > 1200 }
+		}
+
+		# Biological Ships use less alloys
+		modifier = {
+			factor = 0.33
+			country_uses_bio_ships = yes
+		}
+	}
+}
+
+alloys_expenditure_planets = {
+	resource = alloys
+	type = expenditure
+	category = planets
+
+	potential = {
+		always = yes
+	}
+
+	weight = {
+		weight = 0.1
+
+		# During wars, avoid letting planet alloy spending compete too much with shipbuilding
+		# while the navy is still below desired strength.
+		modifier = {
+			factor = 0.40
+			is_at_war = yes
+			used_naval_capacity_percent < 1.10
+		}
+
+		modifier = {
+			factor = 5
+			is_nomadic = yes
+		}
+}
+
+	desired_min = {
+		modifier = {
+			add = 250
+			any_owned_planet = {
+				is_planet_class = pc_habitat
+				free_district_slots > 0
+			}
+		}
+		modifier = {
+			add = 500
+			any_owned_planet = {
+				is_planet_class = pc_city
+				free_district_slots > 0
+			}
+		}
+		modifier = {
+			add = 250
+			is_void_dweller_empire = yes
+		}
+		modifier = {
+			add = @ai_nomad_alloys_planet_desired_min
+			is_nomadic = yes
+		}
+	}
+
+	desired_max = {
+		base = 5000
+	}
+}
+
+alloys_expenditure_starbases = {
+	resource = alloys
+	type = expenditure
+	category = starbases
+
+	potential = {
+		NOT = {
+			is_country_type = fallen_empire
+		}
+	}
+
+	weight = {
+		weight = 0.50
+
+		# spend more on starbase upgrades if at fleet cap
+		modifier = {
+			factor = 2
+			used_naval_capacity_percent >= 1.0
+		}
+
+		# Reduce spending on claiming new systems if we have unclaimed planets
+		modifier = {
+			is_machine_empire = yes
+			has_country_resource = { type = alloys amount < 450 }
+			factor = 0.5
+			ai_colonize_plans > 0
+		}
+		# Reduce spending on claiming new systems if we have unclaimed planets
+		modifier = {
+			is_machine_empire = no
+			has_country_resource = { type = alloys amount < 250 }
+			factor = 0.75
+			ai_colonize_plans > 0
+		}
+
+		modifier = {
+			factor = 1.20
+			is_machine_empire = yes
+		}
+
+		modifier = {
+			factor = 0.45
+			is_at_war = no
+			stellarai_machine_energy_emergency = yes
+		}
+
+		modifier = {
+			factor = 1.35
+			has_valid_civic = civic_machine_terminator
+		}
+
+		modifier = {
+			factor = 1.20
+			stellarai_machine_expand_ok = yes
+		}
+
+		modifier = {
+			factor = 1.75
+			used_naval_capacity_percent > 0.75
+			any_owned_starbase = {
+				can_be_upgraded = yes
+			}
+		}
+
+		modifier = {
+			factor = 1.25
+			highest_threat > 20
+			OR = {
+				any_owned_starbase = {
+					can_be_upgraded = yes
+				}
+				any_owned_nonprimary_starbase = {
+					can_be_upgraded = yes
+				}
+			}
+		}
+
+		modifier = {
+			factor = 1.5
+			OR = {
+				any_owned_starbase = {
+					NOT = { has_starbase_size = starbase_outpost }
+					can_be_upgraded = yes
+				}
+				any_owned_nonprimary_starbase = {
+					can_be_upgraded = yes
+				}
+			}
+		}
+
+		# Biological Starbases use less alloys
+		modifier = {
+			factor = 0.5
+			country_uses_bio_ships = yes
+		}
+
+		modifier = {
+			factor = 2
+			is_nomadic = yes
+		}
+}
+	desired_max = {
+		base = 500
+		modifier = {
+			# Allow saving enough for a Starhold (1000 alloys)
+			add = 500
+			country_uses_bio_ships = no
+			has_technology = tech_starbase_3
+			any_owned_starbase = {
+				has_starbase_size = starbase_starport
+				can_be_upgraded = yes
+			}
+		}
+		# Bioship Starhold costs 500 alloys - base 500 is sufficient, no add needed
+		modifier = {
+			# Allow saving enough for a Starfortress (2500 alloys)
+			add = 2000
+			country_uses_bio_ships = no
+			has_technology = tech_starbase_4
+			any_owned_starbase = {
+				has_starbase_size = starbase_starhold
+				can_be_upgraded = yes
+			}
+		}
+		modifier = {
+			# Allow saving enough for a Bioship Starfortress (1250 alloys)
+			add = 750
+			country_uses_bio_ships = yes
+			has_technology = tech_starbase_4
+			any_owned_starbase = {
+				has_starbase_size = starbase_starhold
+				can_be_upgraded = yes
+			}
+		}
+		modifier = {
+			# Allow saving enough for a Citadel (5000 alloys)
+			add = 4500
+			country_uses_bio_ships = no
+			has_technology = tech_starbase_5
+			any_owned_starbase = {
+				has_starbase_size = starbase_starfortress
+				can_be_upgraded = yes
+			}
+		}
+		modifier = {
+			# Allow saving enough for a Bioship Citadel (2500 alloys)
+			add = 2000
+			country_uses_bio_ships = yes
+			has_technology = tech_starbase_5
+			any_owned_starbase = {
+				has_starbase_size = starbase_starfortress
+				can_be_upgraded = yes
+			}
+		}
+		modifier = {
+			# Allow saving enough for an Arkship tier 2 upgrade (5000 alloys)
+			add = 5000
+			is_nomadic = yes
+			has_technology = tech_arkship_tier_2
+			any_owned_starbase = {
+				is_arkship_starbase = yes
+				can_be_upgraded = yes
+			}
+		}
+		modifier = {
+			# Allow saving enough for an Arkship tier 3 upgrade (5000 alloys)
+			add = 5000
+			is_nomadic = yes
+			has_technology = tech_arkship_tier_3
+			any_owned_starbase = {
+				is_arkship_starbase = yes
+				can_be_upgraded = yes
+			}
+		}
+		modifier = {
+			add = 5000
+			has_ascension_perk = ap_cosmogenesis
+		}
+	}
+}
+
+alloys_expenditure_starbases_fallen_empires = {
+	resource = alloys
+	type = expenditure
+	category = starbases
+
+	potential = {
+		is_country_type = fallen_empire
+	}
+
+	weight = {
+		weight = 0.2
+	}
+}
+
+alloys_expenditure_starbases_expand = {
+	resource = alloys
+	type = expenditure
+	category = starbases
+
+	potential = {
+		has_ai_expansion_plan = yes
+		highest_threat < 50
+		NOT = {
+			is_country_type = fallen_empire
+			is_country_type = awakened_fallen_empire
+			ai_colonize_plans > 0
+		}
+		has_resource = { type = influence amount > 75 }
+	}
+
+	weight = {
+		weight = 0.35
+
+		# In wartime, expansion starbase spending should not compete strongly with shipbuilding
+		# unless the AI is already filling its navy.
+		modifier = {
+			factor = 0.65
+			is_at_war = yes
+			used_naval_capacity_percent < 0.95
+		}
+
+		modifier = {
+			factor = 0.55
+			AND = {
+				ai_colonize_plans > 0
+				is_machine_empire = no
+				NOT = { stellarai_military_emergency = yes }
+			}
+		}
+
+		modifier = {
+			factor = 0.80
+			AND = {
+				ai_colonize_plans > 0
+				is_machine_empire = yes
+				NOT = { has_valid_civic = civic_machine_terminator }
+				NOT = { stellarai_military_emergency = yes }
+			}
+		}
+
+		modifier = {
+			factor = 0.95
+			AND = {
+				ai_colonize_plans > 0
+				has_valid_civic = civic_machine_terminator
+				NOT = { stellarai_military_emergency = yes }
+			}
+		}
+
+		modifier = {
+			factor = 1.25
+			stellarai_military_emergency = yes
+		}
+
+		modifier = {
+			factor = 1.20
+			stellarai_machine_expand_ok = yes
+		}
+
+		modifier = {
+			factor = 1.15
+			stellarai_exterminator_war_ramp = yes
+		}
+
+		modifier = {
+			factor = 1.35
+			has_resource = { type = influence amount > 200 }
+		}
+
+		modifier = {
+			factor = 0.65
+			AND = {
+				highest_threat > 40
+				NOT = { stellarai_military_emergency = yes }
+			}
+		}
+
+		# Biological Starbases use less alloys
+		modifier = {
+			factor = 0.5
+			country_uses_bio_ships = yes
+		}
+	}
+
+	desired_min = {
+		base = 150
+	}
+}
+
+alloys_expenditure_colonies_infernal_expand = {
+	resource = alloys
+	type = expenditure
+	category = colonies
+
+	potential = {
+		is_nomadic = no
+		is_infernal_empire = yes
+		NOT = {
+			has_origin = origin_synthetic_fertility
+		}
+		has_resource = { type = alloys amount > 400 }
+		has_monthly_income = {
+			resource = alloys
+			value > 0
+		}
+	}
+
+	weight = {
+		weight = 0.8
+	}
+
+	desired_min = {
+		base = @colony_cost_low # All infernal colony ships cost 100 alloys regardless of hive status
+	}
+
+	desired_max = {
+		base = @colony_cost_low_max
+	}
+}
+
+alloys_expenditure_colonies_expand = {
+	resource = alloys
+	type = expenditure
+	category = colonies
+
+	potential = {
+		is_nomadic = no
+		OR = {
+			is_at_war = no
+			mid_game_years_passed > 0
+		}
+		ai_colonize_plans > 0
+		OR = {
+			AND = {
+				is_lithoid_empire = no
+				is_infernal_empire = no
+				has_monthly_income = {
+					resource = food
+					value > 0
+				}
+				OR = {
+					AND = {
+						country_uses_bio_ships = no
+						has_resource = { type = food amount > 400 }
+					}
+					AND = {
+						country_uses_bio_ships = yes
+						has_resource = { type = food amount > 600 }
+					}
+				}
+			}
+			AND = {
+				is_lithoid_empire = yes
+				has_resource = { type = minerals amount > 400 }
+				has_monthly_income = {
+					resource = minerals
+					value > 0
+				}
+			}
+			AND = {
+				is_robot_empire = yes
+				has_resource = { type = energy amount > 400 }
+				has_monthly_income = {
+					resource = energy
+					value > 0
+				}
+			}
+			}
+	}
+
+	weight = {
+		weight = 0.5
+	}
+	desired_min = {
+		base = 0
+		modifier = {
+			add = @colony_cost_base
+			is_guided_sapience_empire = no
+			is_virtual_empire = no
+		}
+		modifier = {
+			add = @colony_cost_low
+			is_guided_sapience_empire = no
+			is_virtual_empire = yes
+		}
+		modifier = {
+			add = @colony_cost_mid
+			is_guided_sapience_empire = yes
+			is_virtual_empire = no
+		}
+		modifier = {
+			add = @colony_cost_base
+			is_guided_sapience_empire = yes
+			is_virtual_empire = yes
+		}
+		modifier = {
+			mult = 0.5
+			has_origin = origin_tree_of_life
+		}
+		modifier = {
+			mult = 0.5
+			country_uses_bio_ships = yes
+		}
+	}
+
+	desired_max = {
+		base = 0
+		modifier = {
+			add = @colony_cost_base_max
+			is_guided_sapience_empire = no
+			is_virtual_empire = no
+		}
+		modifier = {
+			add = @colony_cost_low_max
+			is_guided_sapience_empire = no
+			is_virtual_empire = yes
+		}
+		modifier = {
+			add = @colony_cost_mid_max
+			is_guided_sapience_empire = yes
+			is_virtual_empire = no
+		}
+		modifier = {
+			add = @colony_cost_base_max
+			is_guided_sapience_empire = yes
+			is_virtual_empire = yes
+		}
+		modifier = {
+			mult = 0.5
+			has_origin = origin_tree_of_life
+		}
+		modifier = {
+			mult = 0.5
+			country_uses_bio_ships = yes
+		}
+	}
+}
+
+alloys_expenditure_megastructures = {
+	resource = alloys
+	type = expenditure
+	category = megastructures
+
+	potential = {
+		is_country_type = default
+		OR = {
+			is_at_war = no
+			used_naval_capacity_percent > 0.90
+		}
+		can_build_megastructures = yes
+	}
+
+	weight = {
+		weight = 0.4
+
+		# increase budget if megastructures are unfinished
+		modifier = {
+			factor = 3
+			used_naval_capacity_percent > 0.8
+			any_owned_megastructure = {
+				can_be_upgraded = yes
+			}
+		}
+	}
+
+	desired_max = {
+		base = 20000 # current max alloy cost for a stage
+	}
+}
+
+alloys_expenditure_megastructures_waystations = {
+	resource = alloys
+	type = expenditure
+	category = megastructures_waystations
+
+	potential = {
+		is_nomadic = yes
+		highest_threat < 50
+		has_technology = tech_waystation_1
+	}
+
+	weight = {
+		weight = 0.4
+
+		# Waystations use starbase capacity. Reduce budget when over capacity.
+		modifier = {
+			factor = 0.5
+			used_starbase_capacity_percent >= 1
+		}
+		modifier = {
+			factor = 0.1
+			used_starbase_capacity_percent >= 1.25
+		}
+		modifier = {
+			factor = 0
+			used_starbase_capacity_percent >= 2.0
+		}
+	}
+
+	desired_min = {
+		base = @waystation_cost_alloys_250
+		modifier = {
+			mult = 0.5
+			country_uses_bio_ships = yes
+		}
+	}
+
+	desired_max = {
+		base = @waystation_cost_alloys_250
+		modifier = {
+			mult = 0.5
+			country_uses_bio_ships = yes
+		}
+	}
+}
+
+alloys_expenditure_megastructures_arkships = {
+	resource = alloys
+	type = expenditure
+	category = megastructures_arkships
+
+	potential = {
+		is_nomadic = yes
+		has_technology = tech_arkship_construction
+	}
+
+	weight = {
+		weight = 0.4
+	}
+
+	desired_min = {
+		base = @arkship_cost_alloys_10000
+	}
+
+	desired_max = {
+		base = @arkship_cost_alloys_10000
+	}
+}
+
+alloys_expenditure_habitats = {
+	resource = alloys
+	type = expenditure
+	category = megastructures_habitat
+
+	potential = { ai_should_build_habitats = yes }
+
+	weight = {
+		weight = 0.2
+		modifier = {
+			factor = 2
+			is_void_dweller_empire = yes
+		}
+		modifier = {
+			factor = 2
+			is_void_dweller_empire = yes
+			count_owned_planet = {
+				limit = { is_planet_class = pc_habitat }
+				count < 4
+			}
+		}
+		modifier = {
+			factor = 2
+			is_void_dweller_empire = yes
+			count_owned_planet = {
+				limit = { is_planet_class = pc_habitat }
+				count < 6
+			}
+		}
+		modifier = {
+			factor = 5
+			mid_game_years_passed > 0
+			num_owned_planets < 12
+		}
+		modifier = {
+			factor = 0.5
+			has_trait = trait_aquatic
+		}
+		modifier = { #Build fortress habitats
+			factor = 2
+			used_naval_capacity_percent > 0.95
+			used_starbase_capacity_percent >= 1
+		}
+		modifier = {
+			factor = 0.5
+			is_at_war = yes
+		}
+	}
+
+	desired_min = {
+		base = 1000
+	}
+	desired_max = {
+		base = 1500
+	}
+}
+
+alloys_expenditure_decisions = {
+	resource = alloys
+	type = expenditure
+	category = decisions
+	potential = {
+		OR = {
+			has_ascension_perk = ap_arcology_project
+			has_technology = tech_mega_engineering
+			has_technology = tech_housing_2
+		}
+		# only consider these kinds of decisions when "wealthy"
+		has_resource = {
+			type = alloys
+			amount > 5000
+		}
+		any_owned_planet = {
+			OR = {
+				AND = {
+					root = { has_ascension_perk = ap_arcology_project }
+					is_starting_planet_type = yes
+				}
+				AND = {
+					is_planet_class = pc_shattered_ring_habitable
+					root = { has_technology = tech_mega_engineering }
+					num_uncleared_blockers < 1
+				}
+				AND = {
+					is_planet_class = pc_relic
+					root = { has_technology = tech_housing_2 }
+					num_uncleared_blockers < 1
+				}
+			}
+		}
+	}
+	weight = {
+		weight = 0.20
+	}
+	# based on habitat / restore ring
+	desired_max = {
+		base = 2000
+		modifier = {
+			add = 8000
+			has_technology = tech_mega_engineering
+			any_owned_planet = {
+				is_planet_class = pc_shattered_ring_habitable
+				num_uncleared_blockers < 1
+			}
+		}
+		modifier = {
+			add = 8000
+			OR = {
+				has_ascension_perk = ap_arcology_project
+				AND = {
+					has_technology = tech_housing_2
+					any_owned_planet = {
+						is_planet_class = pc_relic
+						num_uncleared_blockers < 1
+					}
+				}
+			}
+		}
+	}
+}
+
+alloys_expenditure_deposit_blockers = {
+	resource = alloys
+	type = expenditure
+	category = deposit_blockers
+
+	potential = {
+		OR = {
+			any_owned_planet = {
+				is_planet_class = pc_shattered_ring_habitable
+				num_uncleared_blockers > 0
+			}
+			AND = {
+				OR = {
+					has_technology = tech_climate_restoration
+					has_ascension_perk = ap_machine_worlds
+				}
+				any_owned_planet = {
+					has_deposit = d_machine_prototype_pc_machine
+				}
+			}
+		}
+	}
+
+	weight = {
+		weight = 0.15
+	}
+
+	# base remove blocker cost
+	desired_min = {
+		base = 250
+	}
+
+	desired_max = {
+		base = 1250
+		modifier = {
+			mult = 2
+			OR = {
+				has_technology = tech_climate_restoration
+				has_ascension_perk = ap_machine_worlds
+			}
+			any_owned_planet = {
+				has_deposit = d_machine_prototype_pc_machine
+			}
+		}
+	}
+}
+
+alloys_upkeep_buffer = {	# Buffer, will not be spent
+	resource = alloys
+	type = upkeep
+	category = buffer
+
+	potential = {
+		always = yes
+	}
+
+	weight = {
+		weight = 0.3
+	}
+}
+
+alloys_upkeep_ships = {
+	resource = alloys
+	type = upkeep
+	category = ships
+
+	potential = {
+		always = yes
+	}
+
+	weight = {
+		weight = 0.5
+		modifier = {
+			factor = 1.5
+			OR = {
+				is_at_war = yes
+				resource_income_compare = {
+					resource = alloys
+					value > 800
+				}
+			}
+		}
+	}
+}
+
+alloys_upkeep_planets = {
+	resource = alloys
+	type = upkeep
+	category = planets
+
+	potential = {
+		always = yes
+	}
+
+	weight = {
+		weight = 0.2
+	}
+}
+
+alloys_expenditure_armies = {
+	resource = alloys
+	type = expenditure
+	category = armies
+
+	potential = {
+		country_uses_bio_ships = no
+		is_nomadic = yes
+	}
+
+	weight = {
+		weight = 0.1
+
+		modifier = {
+			factor = 2
+			OR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
+		}
+	}
+}
+
+alloys_expenditure_armies_threatened = {
+	resource = alloys
+	type = expenditure
+	category = armies
+
+	potential = {
+		country_uses_bio_ships = no
+		is_nomadic = yes
+		highest_threat > 20
+	}
+
+	weight = {
+		weight = 0.1
+	}
+}

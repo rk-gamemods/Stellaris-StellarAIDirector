@@ -1,0 +1,20 @@
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_factory }
+  mode = add
+  mult = @zone_industry_weight_per_zone
+}
+
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_foundry }
+  mode = add
+  mult = @zone_industry_weight_per_zone
+}
+
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_industrial }
+  mode = add
+  mult = @zone_industry_weight_per_zone
+}

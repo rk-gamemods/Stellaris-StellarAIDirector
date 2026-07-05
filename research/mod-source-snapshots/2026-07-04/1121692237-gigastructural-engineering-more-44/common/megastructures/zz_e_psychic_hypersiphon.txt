@@ -1,0 +1,263 @@
+psychic_hypersiphon_0 = {
+	entity = "giga_consite_7_7_entity"
+	construction_entity = "giga_consite_7_7_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { giga_tech_psychic_hypersiphon }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	
+	build_time = 1800
+	resources = {
+		category = giga_megastructures
+		cost = {
+			unity = @giga_small_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 2500
+		}
+		upkeep = {
+			energy = 5
+		}
+	}
+
+	potential = {
+		has_finished_psionic_tradition = yes
+		NOT = { has_global_flag = siphon_disabled }
+		OR = {
+			has_global_flag = siphon_capped_u
+			check_variable = {
+				which = giga_current_siphon
+				value < value:giga_siphon_limit
+			}
+		}
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_inside_border"						is_inside_border = from }
+		custom_tooltip = { fail_text = "requires_surveyed_system"					giga_system_is_surveyed = yes }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = siphon_capped_u
+					check_variable = {
+						which = giga_current_siphon
+						value < value:giga_siphon_limit
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_existing_megastructure"		planet_has_no_megastructure = yes }
+			custom_tooltip = { fail_text = "must_build_around_star"					is_star = yes }
+			custom_tooltip = { fail_text = "requires_no_anomaly"					has_anomaly = no }
+			custom_tooltip = { fail_text = "requires_standard_planet_class"			giga_is_standard_star = yes }
+		}
+	}
+
+	ai_weight = { 
+		weight = value:giga_ai_base_mega
+
+		mult = value:giga_ai_upkeep|RESOURCE|alloys|AMOUNT|30|
+		mult = value:giga_ai_output|RESOURCE|energy|AMOUNT|500|
+		mult = value:giga_ai_build_low_priority
+		mult = value:giga_ai_core_territory
+		mult = value:giga_ai_prevent_spam|MEGA|hypersiphon|
+
+		# curb enthusiasm for huge instability
+		modifier = {
+			from = {
+				check_modifier_value = {
+					modifier = giga_shroud_conduit_instability
+					value >= 5
+				}
+			}
+			multiply = 0
+		}
+	}
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_hypersiphon years = 20 }
+			country_event = { id = giga_dialog.1401 }	# Notification
+			change_variable = { which = giga_current_siphon value = 1 }
+		}
+		fromfrom.planet = {
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+		}
+	}
+}
+
+psychic_hypersiphon_1 = {
+	entity = "psychic_hypersiphon_1_entity"
+	construction_entity = "psychic_hypersiphon_1_entity"
+	portrait = "GFX_megastructure_construction_background"
+	upgrade_from = { psychic_hypersiphon_0 }
+	prerequisites = { giga_tech_psychic_hypersiphon }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	
+	build_time = 1800
+	resources = {
+		category = giga_megastructures
+		cost = {
+			unity = @giga_small_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 7500
+		}
+		upkeep = {
+			alloys = 5
+			energy = 5
+		}
+	}
+
+	potential = { NOT = { has_global_flag = siphon_disabled } }
+	possible = {
+		from = {
+			has_finished_psionic_tradition = yes
+		}
+	}
+
+	ai_weight = { weight = value:giga_ai_base_continue }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		from = { country_event = { id = giga_dialog.1402 } }	# Notification
+	}
+}
+
+psychic_hypersiphon_2 = {
+	entity = "psychic_hypersiphon_3_entity"
+	portrait = "GFX_megastructure_shroud_wormhole"
+	upgrade_from = { psychic_hypersiphon_1 }
+	prerequisites = { giga_tech_psychic_hypersiphon }
+	show_prereqs = yes
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	
+	build_time = 1500
+	resources = {
+		category = giga_megastructures
+		cost = {
+			energy = 20000
+			sr_zro = 500
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 7500
+		}
+		upkeep = {
+			alloys = 10
+			#sr_zro = 2
+		}
+		produces = {
+			energy = 500
+		}
+	}
+
+	country_modifier = {
+		giga_hypersiphon_network_size = 1
+	}
+
+	potential = { NOT = { has_global_flag = siphon_disabled } }
+	possible = {
+		from = {
+			NOT = { is_country_type = fallen_empire }
+			has_finished_psionic_tradition = yes
+		}
+	}
+
+	ai_weight = { weight = value:giga_ai_base_continue }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		from = {
+			country_event = { id = giga_dialog.1404 }				# Notification
+            set_country_flag = has_built_or_repaired_megastructure
+            set_country_flag = has_built_or_repaired_gigastructure	# Triggers Gigastructural Constructs
+			if = {
+				limit = {
+					NOR = {
+						has_global_flag = giga_achievements_disabled
+						has_country_flag = giga_achievement_75
+					}
+				}
+				set_country_flag = giga_achievement_75
+				set_timed_country_flag = { flag = giga_achievement_75_notification days = 30 }
+				giga_achievement_sound = yes
+			}
+		}
+		# start tracker situation
+		event_target:giga_global_situation_country = {
+			start_situation = {
+				type = giga_situation_hypersiphon_tracker
+				target = fromfrom
+			}
+		}
+	}
+}
+
+psychic_hypersiphon_3_aeternum = {
+	entity = psychic_hypersiphon_aeternum_entity
+	portrait = "GFX_megastructure_shroud_wormhole"
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	
+	build_time = 2700
+
+	possible = { always = no }
+	potential = { always = no }
+
+	resources = {
+		category = giga_megastructures
+		cost = {
+			energy = 20000
+			unity = @giga_big_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 10000
+		}
+		upkeep = {
+			alloys = 50
+			sr_zro = 2
+		}
+		produces = {
+			trigger = {
+				is_scope_type = megastructure
+				NOT = { has_megastructure_flag = siphon_disabled }
+			}
+			physics_research = 500
+			society_research = 500
+			energy = 2500
+		}
+	}
+
+	country_modifier = {
+		giga_hypersiphon_safe_network_size = 2
+	}
+}

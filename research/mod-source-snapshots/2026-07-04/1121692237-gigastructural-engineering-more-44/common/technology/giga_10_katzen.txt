@@ -1,0 +1,82 @@
+
+giga_tech_kaiser_moon = {
+	cost = @giga_tier7cost1
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	weight = 0
+	potential = {
+		has_country_flag = kaiser_moon_tech_possible
+	}
+	prereqfor_desc = {
+	 	custom = { title = "allow_kaiser_moon"	desc = "desc_kaiser_moon" }
+	}
+}
+
+giga_tech_stellarite_kaiser_moon = {
+	cost = @giga_375_000_cost
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	weight = 0
+	potential = {
+		has_country_flag = kaiser_moon_tech_possible
+	}
+	prereqfor_desc = {
+		custom = { title = "allow_stellarite_kaiser_moon"	desc = "desc_stellarite_kaiser_moon" }
+	}
+}
+
+giga_tech_repeatable_increased_katzen_damage = {
+	area = engineering
+	cost = @tier5cost1
+	cost_per_level = @giga_expensive_repeatable_techlevelcost
+	tier = 4
+	category = { voidcraft }
+	levels = 20
+	weight = @repeatableTechWeight
+	weight_groups = { repeatable }
+	mod_weight_if_group_picked = { repeatable = 0.01 }
+	modifier = { damage_vs_country_type_katzenartig_imperium_mult = 0.10 }
+
+	prereqfor_desc = {
+		custom = { title = "might_anger_kaiser_title"	desc = "might_anger_kaiser_desc" }
+	}
+	
+	weight_modifier = {
+		modifier = {
+			factor = 0
+			has_country_flag = katzen_vassal
+		}
+		modifier = {
+			factor = 0
+			NOT = { has_country_flag = studied_kaiser_moon }
+		}
+		modifier = {
+			factor = 0
+			no_scope = { has_global_flag = katzenartig_imperium_defeated }
+		}
+		inline_script = technology/tech_weight_boni/militarist_tech_weight_bonus
+	}
+
+	ai_weight = {
+		modifier = {
+			factor = 0
+			no_scope = { has_global_flag = katzenartig_imperium_defeated }
+		}
+	}
+}
+
+giga_tech_katzen_panzers = {
+	cost = @tier4cost2
+	area = society
+	tier = 4
+	category = { military_theory }
+	is_rare = yes
+	potential = {
+		has_country_flag = panzer_tech_possible
+	}
+	weight = 0
+}

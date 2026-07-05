@@ -1,0 +1,9 @@
+conflict_type,risk,likely_behavior,recommended_action,source_ids
+Unique files and unique object IDs,low,Both generally load,Use unique mod prefix,S007
+Duplicate object key,high,One definition wins or conflict/errors,Patch/merge; inspect with Irony,S011;S012
+Duplicate localisation key,medium,Last/replace key wins in LIOS-style localisation,Use unique keys or localisation/replace intentionally,S008
+Vanilla-like filename such as 00_civics.txt,high,May override/shadow vanilla file,Use mod-specific filename,S007
+Copied UI .gui file,very high,May replace stale UI surface,Manual diff/merge and runtime screen testing,S002;S007
+GFX/asset path collision,medium-high,One asset shadows another,Use unique asset paths,S007
+replace_path,very high,Folder path replacement,Avoid except total conversions; validate locally,
+FIOS/LIOS folder exception,high,First or last definition may win depending rule,Use Irony/full-cache validation,S011;S012;S014

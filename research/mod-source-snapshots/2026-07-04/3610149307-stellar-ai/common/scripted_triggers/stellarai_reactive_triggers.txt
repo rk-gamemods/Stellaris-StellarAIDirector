@@ -1,0 +1,329 @@
+stellarai_military_emergency = {
+	OR = {
+		AND = {
+			highest_threat > 30
+			used_naval_capacity_percent < 0.90
+		}
+		AND = {
+			is_at_war = yes
+			highest_threat > 20
+			used_naval_capacity_percent < 1.00
+		}
+		AND = {
+			OR = {
+				has_valid_civic = civic_machine_terminator
+				has_valid_civic = civic_fanatic_purifiers
+				has_valid_civic = civic_hive_devouring_swarm
+			}
+			highest_threat > 24
+			used_naval_capacity_percent < 1.05
+		}
+		highest_threat > 45
+	}
+}
+
+# Shared settled-empire economic states. These are the single source of truth
+# for economic plans, research construction, designations, and fleet spending.
+stellarai_economic_crisis = {
+	is_nomadic = no
+	OR = {
+		has_deficit = energy
+		has_deficit = minerals
+		resource_stockpile_compare = { resource = energy value < 500 }
+		resource_stockpile_compare = { resource = minerals value < 500 }
+		AND = {
+			country_uses_food = yes
+			OR = {
+				has_deficit = food
+				resource_stockpile_compare = { resource = food value < 500 }
+			}
+		}
+		AND = {
+			country_uses_consumer_goods = yes
+			OR = {
+				has_deficit = consumer_goods
+				resource_stockpile_compare = { resource = consumer_goods value < 300 }
+			}
+		}
+	}
+}
+
+stellarai_consumer_goods_pressure = {
+	is_nomadic = no
+	country_uses_consumer_goods = yes
+	OR = {
+		has_deficit = consumer_goods
+		NOT = { has_monthly_income = { resource = consumer_goods value > 8 } }
+		resource_stockpile_compare = { resource = consumer_goods value < 1200 }
+	}
+}
+
+stellarai_foundation_ready = {
+	is_nomadic = no
+	NOT = { stellarai_economic_crisis = yes }
+	NOT = { has_deficit = energy }
+	NOT = { has_deficit = minerals }
+	has_monthly_income = { resource = energy value > 15 }
+	has_monthly_income = { resource = minerals value > 12 }
+	resource_stockpile_compare = { resource = energy value > 1500 }
+	resource_stockpile_compare = { resource = minerals value > 1000 }
+	OR = {
+		country_uses_food = no
+		AND = {
+			NOT = { has_deficit = food }
+			has_monthly_income = { resource = food value > 5 }
+			resource_stockpile_compare = { resource = food value > 750 }
+		}
+	}
+	OR = {
+		country_uses_consumer_goods = no
+		AND = {
+			NOT = { has_deficit = consumer_goods }
+			has_monthly_income = { resource = consumer_goods value > 6 }
+			resource_stockpile_compare = { resource = consumer_goods value > 750 }
+		}
+	}
+}
+
+stellarai_research_ready = {
+	years_passed > 44
+	is_nomadic = no
+	NOT = { stellarai_economic_crisis = yes }
+	NOT = { has_deficit = energy }
+	NOT = { has_deficit = minerals }
+	has_monthly_income = { resource = energy value > 25 }
+	has_monthly_income = { resource = minerals value > 20 }
+	resource_stockpile_compare = { resource = energy value > 2500 }
+	resource_stockpile_compare = { resource = minerals value > 1500 }
+	OR = {
+		country_uses_food = no
+		AND = {
+			NOT = { has_deficit = food }
+			has_monthly_income = { resource = food value > 10 }
+			resource_stockpile_compare = { resource = food value > 1000 }
+		}
+	}
+	OR = {
+		country_uses_consumer_goods = no
+		AND = {
+			NOT = { has_deficit = consumer_goods }
+			has_monthly_income = { resource = consumer_goods value > 10 }
+			resource_stockpile_compare = { resource = consumer_goods value > 1200 }
+		}
+	}
+}
+
+stellarai_has_consumer_goods_world = {
+	OR = {
+		country_uses_consumer_goods = no
+		any_owned_planet = {
+			OR = {
+				has_designation = col_factory
+				has_designation = col_habitat_factory
+				has_designation = col_mac_factory
+				has_any_factory_zone = yes
+				has_building = building_factory_1
+				has_building = building_factory_2
+				has_building = building_factory_3
+			}
+		}
+	}
+}
+
+stellarai_settled_ai_has_unemployment = {
+	is_ai = yes
+	is_nomadic = no
+	any_owned_planet = {
+		num_unemployed > 0
+	}
+}
+
+stellarai_should_rebuild_fleet = {
+	is_nomadic = no
+	country_uses_bio_ships = no
+	OR = {
+		AND = {
+			is_at_war = yes
+			used_naval_capacity_percent < 0.85
+		}
+		AND = {
+			stellarai_military_emergency = yes
+			used_naval_capacity_percent < 0.85
+		}
+		AND = {
+			is_at_war = no
+			years_passed < 45
+			NOT = { stellarai_economic_crisis = yes }
+			used_naval_capacity_percent < 0.60
+		}
+		AND = {
+			is_at_war = no
+			years_passed > 44
+			stellarai_research_ready = yes
+			used_naval_capacity_percent < 0.85
+		}
+		AND = {
+			is_at_war = no
+			years_passed > 44
+			stellarai_foundation_ready = yes
+			used_naval_capacity_percent < 0.70
+		}
+		AND = {
+			recently_lost_war = yes
+			stellarai_foundation_ready = yes
+			used_naval_capacity_percent < 0.75
+		}
+	}
+}
+
+stellarai_energy_recovery_needed = {
+	is_nomadic = no
+	OR = {
+		has_deficit = energy
+		NOT = { has_monthly_income = { resource = energy value > 25 } }
+		resource_stockpile_compare = { resource = energy value < 4000 }
+	}
+}
+
+stellarai_minerals_recovery_needed = {
+	is_nomadic = no
+	OR = {
+		has_deficit = minerals
+		NOT = { has_monthly_income = { resource = minerals value > 20 } }
+		resource_stockpile_compare = { resource = minerals value < 2500 }
+	}
+}
+
+stellarai_food_recovery_needed = {
+	is_nomadic = no
+	country_uses_food = yes
+	OR = {
+		has_deficit = food
+		NOT = { has_monthly_income = { resource = food value > 15 } }
+		resource_stockpile_compare = { resource = food value < 2500 }
+	}
+}
+
+# Compatibility aliases retained for existing callers.
+stellarai_basic_econ_recovery_needed = {
+	OR = {
+		stellarai_energy_recovery_needed = yes
+		stellarai_minerals_recovery_needed = yes
+		stellarai_food_recovery_needed = yes
+		stellarai_consumer_goods_pressure = yes
+	}
+}
+
+stellarai_peacetime_economic_readiness = {
+	is_at_war = no
+	stellarai_foundation_ready = yes
+}
+
+stellarai_research_ramp_ready = {
+	stellarai_research_ready = yes
+}
+
+stellarai_country_unity_push = {
+	stellarai_foundation_ready = yes
+	OR = {
+		AND = {
+			years_passed < 80
+			num_ascension_perks < 2
+		}
+		AND = {
+			years_passed < 140
+			num_ascension_perks < 3
+		}
+	}
+}
+
+stellarai_planet_unity_push = {
+	exists = owner_or_space_owner
+	owner_or_space_owner = {
+		stellarai_country_unity_push = yes
+	}
+}
+
+stellarai_good_research_candidate = {
+	OR = {
+		check_modifier_value = { modifier = planet_researchers_produces_mult value > 0.09 }
+		check_modifier_value = { modifier = planet_researchers_physics_research_produces_mult value > 0.09 }
+		check_modifier_value = { modifier = planet_researchers_society_research_produces_mult value > 0.09 }
+		check_modifier_value = { modifier = planet_researchers_engineering_research_produces_mult value > 0.09 }
+		num_districts = { type = district_polytechnic value > 0 }
+		num_free_districts = { type = district_polytechnic value > 0 }
+		num_districts = { type = district_hab_science value > 0 }
+		num_districts = { type = district_rw_science value > 0 }
+		has_carrier_flag = stellarai_research_commitment_soft
+		has_carrier_flag = stellarai_research_commitment_hard
+		has_any_research_zone = yes
+		has_building = building_research_lab_1
+		has_building = building_research_lab_2
+		has_building = building_research_lab_3
+		has_building = building_physics_lab_1
+		has_building = building_engineering_facility_1
+		has_building = building_biolab_1
+	}
+}
+
+stellarai_research_claim_candidate = {
+	is_scope_type = planet
+	is_colony = yes
+	is_capital = no
+	is_special_colony_type = no
+	NOT = { is_planet_class = pc_nanotech }
+	NOT = { has_carrier_flag = stellarai_research_plan_claimed }
+	NOR = {
+		has_carrier_flag = stellarai_industry_commitment_hard
+		check_modifier_value = { modifier = planet_researchers_produces_mult value < -0.09 }
+		check_modifier_value = { modifier = planet_researchers_physics_research_produces_mult value < -0.09 }
+		check_modifier_value = { modifier = planet_researchers_society_research_produces_mult value < -0.09 }
+		check_modifier_value = { modifier = planet_researchers_engineering_research_produces_mult value < -0.09 }
+	}
+}
+
+# Machine empires use energy as their main economic safety rail.
+stellarai_machine_energy_emergency = {
+	is_machine_empire = yes
+	OR = {
+		NOT = { has_monthly_income = { resource = energy value > 30 } }
+		resource_stockpile_compare = { resource = energy value < 3500 }
+	}
+}
+
+stellarai_machine_minerals_emergency = {
+	is_machine_empire = yes
+	OR = {
+		NOT = { has_monthly_income = { resource = minerals value > 12 } }
+		resource_stockpile_compare = { resource = minerals value < 900 }
+	}
+}
+
+stellarai_machine_basic_econ_stable = {
+	is_machine_empire = yes
+	stellarai_foundation_ready = yes
+	has_monthly_income = { resource = alloys value > 6 }
+}
+
+stellarai_machine_expand_ok = {
+	is_machine_empire = yes
+	stellarai_foundation_ready = yes
+	has_monthly_income = { resource = alloys value > 6 }
+	is_at_war = no
+	has_resource = { type = influence amount > 100 }
+}
+
+stellarai_machine_research_ramp = {
+	is_machine_empire = yes
+	stellarai_research_ready = yes
+	num_owned_planets > 3
+}
+
+stellarai_exterminator_war_ramp = {
+	has_valid_civic = civic_machine_terminator
+	OR = {
+		is_at_war = yes
+		years_passed > 12
+		highest_threat > 20
+	}
+}

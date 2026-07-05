@@ -1,0 +1,900 @@
+namespace = stellarai_commitment
+
+
+carrier_event = {
+  id = stellarai_commitment.1
+  hide_window = yes
+  is_triggered_only = yes
+
+  pre_triggers = {
+		has_owner = yes
+	}
+
+  trigger = {
+       is_scope_type = planet
+       owner = {
+            is_ai = yes
+            is_nomadic = no
+            OR = {
+                is_regular_empire = yes
+                is_gestalt = yes
+                is_hive_empire = yes
+                is_virtual_empire = yes
+                is_galvanic_empire = yes
+            }
+	    }
+  }
+
+  immediate = {
+
+    if = {
+       limit = {
+          num_buildings = {type = building_bureaucratic_1 value = 0}
+          num_buildings = {type = building_bureaucratic_2 value = 0}
+          num_buildings = {type = building_bureaucratic_3 value = 0}
+          num_buildings = {type = building_fe_administration_1 value = 0}
+          num_buildings = {type = building_fe_administration_2 value = 0}
+          num_buildings = {type = building_league_offices value = 0}
+          num_zones = { type = zone_unity value = 0 }
+          num_districts = { type = district_arcology_administrative value = 0 }
+      }
+      set_planet_flag = stellarai_invalid_for_unity
+
+    } else = {
+      remove_planet_flag = stellarai_invalid_for_unity
+    }
+    
+    if = {
+      limit = {
+        num_districts = { type = district_mining value = 0 }
+        num_districts = { type = district_melting value = 0 }
+        num_zones = { type = zone_minerals value = 0 }
+        OR = {
+            num_districts = { type = district_generator value > 0 }
+            num_zones = { type = zone_energy value > 0 }
+            num_districts = { type = district_farming value > 0 }
+            num_zones = { type = zone_food value > 0 }
+        }
+        NOR = {
+            has_modifier = asteroid_belt
+            has_modifier = mineral_rich
+            has_modifier = ultra_rich
+            has_modifier = extensive_moon_system
+            has_modifier = asteroid_impacts
+            has_modifier = carbon_world
+            has_modifier = volcanic_mineral_rich
+            has_modifier = volcanic_ultra_rich
+            has_modifier = volcanic_subterranean
+            has_modifier = volcanic_asteroid_impacts
+            has_modifier = volcanic_hollow_planet
+            has_modifier = volcanic_lavafall
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_mining
+
+    } else = {
+      remove_planet_flag = stellarai_invalid_for_mining
+    }
+
+    if = {
+      limit = {
+          num_districts = { type = district_farming value = 0 }
+          num_zones = { type = zone_food value = 0 }
+          OR = {
+            num_districts = { type = district_generator value > 0 }
+            num_zones = { type = zone_energy value > 0 }
+            num_districts = { type = district_mining value > 0 }
+            num_districts = { type = district_melting value > 0 }
+            num_zones = { type = zone_minerals value > 0 }
+          }
+          NOR = {
+            check_modifier_value = { modifier = pop_farmer_bonus_workforce_mult value > 0.09 }
+          }
+      }
+      set_planet_flag = stellarai_invalid_for_farming
+
+    } else = {
+      remove_planet_flag = stellarai_invalid_for_farming
+    }
+
+    if = {
+      limit = {
+        num_districts = { type = district_generator value = 0 }
+        num_districts = { type = district_geothermal value = 0 }
+        num_zones = { type = zone_energy value = 0 }
+        OR = {
+            num_districts = { type = district_farming value > 0 }
+            num_zones = { type = zone_food value > 0 }
+            num_districts = { type = district_mining value > 0 }
+            num_districts = { type = district_melting value > 0 }
+            num_zones = { type = zone_minerals value > 0 }
+        }
+        NOR = {
+            has_modifier = hazardous_weather
+            has_modifier = wild_storms
+            has_modifier = abundant_geothermal_activity
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_generator
+
+    } else = {
+      remove_planet_flag = stellarai_invalid_for_generator
+    }
+
+    if = {
+      limit = {
+        NOR = {
+          num_zones = { type = zone_industrial value = 0 }
+          num_zones = { type = zone_factory value = 0 }
+          num_zones = { type = zone_foundry value = 0 }
+
+          num_buildings = { type = building_factory_1 value = 0 }
+          num_buildings = { type = building_factory_2 value = 0 }
+          num_buildings = { type = building_factory_3 value = 0 }
+
+          num_buildings = { type = building_foundry_1 value = 0 }
+          num_buildings = { type = building_foundry_2 value = 0 }
+          num_buildings = { type = building_foundry_3 value = 0 }
+        }
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+
+          AND = {
+            OR = {
+              check_modifier_value = { modifier = planet_metallurgists_produces_mult value < -0.09 }
+            }
+            OR = {
+              check_modifier_value = { modifier = planet_artisans_produces_mult value < -0.09 }
+            }
+          }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_industry
+    } else = {
+      remove_planet_flag = stellarai_invalid_for_industry
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_metallurgists_produces_mult value < -0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_foundry_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_foundry_to_build
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_artisans_produces_mult value < -0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_factory_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_factory_to_build
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+
+          AND = {
+            OR = {
+              has_planet_flag = stellarai_invalid_for_foundry_to_build
+            }
+            OR = {
+              has_planet_flag = stellarai_invalid_for_factory_to_build
+            }
+          }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_industry_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_industry_to_build
+    }
+
+    if = {
+      limit = {
+        NOR = {
+          num_zones = { type = zone_research value = 0 }
+          num_zones = { type = zone_research_physics value = 0  }
+          num_zones = { type = zone_research_physics_hive value = 0 }
+          num_zones = { type = zone_research_physics_nexus value = 0 }
+          num_zones = { type = zone_research_physics_ring_world value = 0 }
+          num_zones = { type = zone_research_engineering value = 0 }
+          num_zones = { type = zone_research_engineering_hive value = 0 }
+          num_zones = { type = zone_research_engineering_nexus value = 0 }
+          num_zones = { type = zone_research_engineering_ring_world value = 0 }
+          num_zones = { type = zone_research_society value = 0 }
+          num_zones = { type = zone_research_society_hive value = 0 }
+          num_zones = { type = zone_research_society_nexus value = 0 }
+          num_zones = { type = zone_research_society_ring_world value = 0 }
+          num_zones = { type = zone_research_unity value = 0 }
+
+          num_districts = { type = district_hab_science value = 0}
+          num_districts = { type = district_rw_science value = 0}
+
+          num_buildings = { type = building_research_lab_1 value = 0 }
+          num_buildings = { type = building_research_lab_2 value = 0 }
+          num_buildings = { type = building_research_lab_3 value = 0 }
+
+          num_buildings = { type = building_physics_lab_1 value = 0 }
+          num_buildings = { type = building_physics_lab_2 value = 0 }
+          num_buildings = { type = building_physics_lab_3 value = 0 }
+
+          num_buildings = { type = building_engineering_facility_1 value = 0 }
+          num_buildings = { type = building_engineering_facility_2 value = 0 }
+          num_buildings = { type = building_engineering_facility_3 value = 0 }
+
+          num_buildings = { type = building_biolab_1 value = 0 }
+          num_buildings = { type = building_biolab_2 value = 0 }
+          num_buildings = { type = building_biolab_3 value = 0 }
+
+          num_buildings = { type = building_archaeostudies_faculty value = 0}
+          num_buildings = { type = building_vultaum_reality_computer value = 0}
+          num_buildings = { type = building_institute value = 0}
+          num_buildings = { type = building_shroud_observatory_1 value = 0}
+          num_buildings = { type = building_shroud_observatory_2 value = 0}
+          num_buildings = { type = building_shroud_observatory_3 value = 0}
+          num_buildings = { type = building_ranger_lodge value = 0}
+        }
+        NOR = {
+            check_modifier_value = { modifier = planet_researchers_produces_mult value > 0.09 }
+            check_modifier_value = { modifier = planet_researchers_physics_research_produces_mult value > 0.09 }
+            check_modifier_value = { modifier = planet_researchers_society_research_produces_mult value > 0.09 }
+            check_modifier_value = { modifier = planet_researchers_engineering_research_produces_mult value > 0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_research
+
+    } else = {
+      remove_planet_flag = stellarai_invalid_for_research
+    }
+
+    if = {
+      limit = {
+          num_buildings = {type = building_stronghold value = 0}
+          num_buildings = {type = building_fortress value = 0}
+          num_buildings = {type = building_order_keep value = 0}
+          num_buildings = {type = building_order_castle value = 0}
+          num_zones = { type = zone_fortress value = 0 }
+      }
+      set_planet_flag = stellarai_invalid_for_military
+
+    } else = {
+      remove_planet_flag = stellarai_invalid_for_military
+    }
+
+    if = {
+      limit = {
+        OR = {
+          has_zone = {zone = zone_energy}
+          num_districts = { type = district_generator value > 0 }
+          num_districts = { type = district_farming value > 0 }
+          num_districts = { type = district_mining value > 0 }
+        }
+      }
+      set_planet_flag = stellarai_rural_commitment_soft
+
+    } else = {
+      remove_planet_flag = stellarai_rural_commitment_soft
+    }
+  
+
+    if = {
+      limit = {
+        OR = {
+          has_building = building_commercial_zone
+          has_building = building_commercial_megaplex
+          has_building = building_galactic_stock_exchange
+          has_building = building_maintenance_depot
+          num_zones = { type = zone_trade value > 0 }
+        }
+      }
+      set_planet_flag = stellarai_trade_commitment_soft
+
+    } else = {
+      remove_planet_flag = stellarai_trade_commitment_soft
+    }
+
+    if = {
+      limit = {
+        OR = {
+          num_zones = { type = zone_factory value > 0 }
+          num_zones = { type = zone_foundry value > 0 }
+          num_zones = { type = zone_industrial value > 0 }
+          has_building = building_factory_1
+          has_building = building_factory_2
+          has_building = building_factory_3
+          has_building = building_foundry_1
+          has_building = building_foundry_2
+          has_building = building_foundry_3
+        }
+      }
+      set_planet_flag = stellarai_industry_commitment_soft
+
+    } else = {
+      remove_planet_flag = stellarai_industry_commitment_soft
+    }
+
+    if = {
+      limit = {
+        OR = {
+          num_zones = { type = zone_industrial value > 0 }
+          AND = {
+            num_zones = { type = zone_factory value > 0 }
+            num_zones = { type = zone_foundry value > 0 }
+          }
+
+          num_buildings = { type = building_factory_2 value > 0 }
+          num_buildings = { type = building_factory_3 value > 0 }
+          num_buildings = { type = building_foundry_2 value > 0 }
+          num_buildings = { type = building_foundry_3 value > 0 }
+
+          num_buildings = { type = building_factory_1 value > 1 }
+          num_buildings = { type = building_foundry_1 value > 1 }
+
+          AND = {
+            num_buildings = { type = building_factory_1 value > 0 }
+            num_buildings = { type = building_foundry_1 value > 0 }
+          }
+        }
+      }
+      set_planet_flag = stellarai_industry_commitment_hard
+
+    }else = {
+      remove_planet_flag = stellarai_industry_commitment_hard
+    }
+
+    if = {
+      limit = {
+        OR = {
+          num_zones = { type = zone_research value > 0 }
+          num_zones = { type = zone_research_unity value > 0 }
+          num_zones = { type = zone_research_physics value > 0 }
+          num_zones = { type = zone_research_engineering value > 0 }
+          num_zones = { type = zone_research_society value > 0 }
+          num_districts = { type = district_hab_science value > 0}
+          num_districts = { type = district_rw_science value > 0}
+
+          has_building = building_research_lab_1
+          has_building = building_research_lab_2
+          has_building = building_research_lab_3
+
+          has_building = building_physics_lab_1
+          has_building = building_physics_lab_2
+          has_building = building_physics_lab_3
+
+          has_building = building_engineering_facility_1
+          has_building = building_engineering_facility_2
+          has_building = building_engineering_facility_3
+
+          has_building = building_biolab_1
+          has_building = building_biolab_2
+          has_building = building_biolab_3
+        }
+      }
+      set_planet_flag = stellarai_research_commitment_soft
+
+    } else = {
+      remove_planet_flag = stellarai_research_commitment_soft
+    }
+
+    if = {
+    limit = {
+        OR = {
+          calc_true_if = {
+            amount >= 2
+            num_zones = { type = zone_research value > 0 }
+            num_zones = { type = zone_research_unity value > 0 }
+            num_zones = { type = zone_research_engineering value > 0 }
+            num_zones = { type = zone_research_physics value > 0 }
+            num_zones = { type = zone_research_society value > 0 }
+            num_districts = { type = district_hab_science value > 0}
+            num_districts = { type = district_rw_science value > 0 }
+          }
+
+          num_zones = { type = zone_research value > 1 }
+          num_zones = { type = zone_research_unity value > 1 }
+          num_zones = { type = zone_research_engineering value > 1 }
+          num_zones = { type = zone_research_physics value > 1 }
+          num_zones = { type = zone_research_society value > 1 }
+          num_districts = { type = district_hab_science value > 1 }
+          num_districts = { type = district_rw_science value > 1 }
+
+          num_buildings = { type = building_research_lab_1 value > 2 }
+          num_buildings = { type = building_research_lab_2 value > 1 }
+          num_buildings = { type = building_research_lab_3 value > 0 }
+
+          num_buildings = { type = building_physics_lab_1 value > 1 }
+          num_buildings = { type = building_physics_lab_2 value > 0 }
+          num_buildings = { type = building_physics_lab_3 value > 0 }
+
+          num_buildings = { type = building_engineering_facility_1 value > 1 }
+          num_buildings = { type = building_engineering_facility_2 value > 0 }
+          num_buildings = { type = building_engineering_facility_3 value > 0 }
+
+          num_buildings = { type = building_biolab_1 value > 1 }
+          num_buildings = { type = building_biolab_2 value > 0 }
+          num_buildings = { type = building_biolab_3 value > 0 }
+        }
+      }
+      set_planet_flag = stellarai_research_commitment_hard
+
+    } else = {
+      remove_planet_flag = stellarai_research_commitment_hard
+    }
+
+  }
+}
+
+
+carrier_event = {
+  id = stellarai_commitment.2
+  hide_window = yes
+  is_triggered_only = yes
+
+  pre_triggers = {
+		has_owner = yes
+	}
+
+  trigger = {
+       is_scope_type = planet
+       owner = {
+            is_ai = yes
+            is_nomadic = no
+            OR = {
+                is_regular_empire = yes
+                is_gestalt = yes
+                is_hive_empire = yes
+                is_virtual_empire = yes
+                is_galvanic_empire = yes
+            }
+	    }
+  }
+
+  immediate = {
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_technician_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_technician_energy_produces_mult value < -0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_generator_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_generator_to_build
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_miners_produces_mult value < -0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_mining_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_mining_to_build
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_farmers_produces_mult value < -0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_farming_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_farming_to_build
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_researchers_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_researchers_physics_research_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_researchers_society_research_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_researchers_engineering_research_produces_mult value < -0.09 }
+          owner = { stellarai_economic_crisis = yes }
+          AND = {
+            is_capital = no
+            NOT = { has_planet_flag = stellarai_research_plan_claimed }
+          }
+          AND = {
+            is_capital = no
+            owner = { NOT = { stellarai_foundation_ready = yes } }
+          }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_research_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_research_to_build
+    }
+    
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_metallurgists_produces_mult value < -0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_foundry_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_foundry_to_build
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+          check_modifier_value = { modifier = planet_artisans_produces_mult value < -0.09 }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_factory_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_factory_to_build
+    }
+
+    if = {
+      limit = {
+        OR = {
+          check_modifier_value = { modifier = planet_jobs_produces_mult value < -0.09 }
+
+          AND = {
+            OR = {
+              has_planet_flag = stellarai_invalid_for_foundry_to_build
+            }
+            OR = {
+              has_planet_flag = stellarai_invalid_for_factory_to_build
+            }
+          }
+        }
+      }
+      set_planet_flag = stellarai_invalid_for_industry_to_build
+    }
+    else = {
+      remove_planet_flag = stellarai_invalid_for_industry_to_build
+    }
+
+  }
+}
+
+event = {
+  id = stellarai_commitment.898
+  hide_window = yes
+  is_triggered_only = yes
+
+  immediate = {
+    every_country = {
+      limit = {
+        OR = {
+          is_regular_empire = yes
+          is_gestalt = yes
+          is_hive_empire = yes
+          is_virtual_empire = yes
+          is_galvanic_empire = yes
+        }
+      }
+      country_event = { id = stellarai_commitment.901 }
+
+      # Stellar AI: simple monthly surplus sales followed by shortage purchases.
+      if = {
+        limit = { is_ai = yes is_nomadic = no }
+        set_variable = { which = stellarai_market_sale_count value = 0 }
+        set_variable = { which = stellarai_market_purchase_count value = 0 }
+
+        if = {
+          limit = { is_at_war = no }
+          if = {
+            limit = { NOT = { stellarai_settled_ai_has_unemployment = yes } }
+            inline_script = { script = stellarai/market_sell_surplus RESOURCE = minerals AMOUNT = 250 RESERVE = 2000 }
+          }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = food AMOUNT = 250 RESERVE = 1500 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = consumer_goods AMOUNT = 100 RESERVE = 1000 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = volatile_motes AMOUNT = 10 RESERVE = 100 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = exotic_gases AMOUNT = 10 RESERVE = 100 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = rare_crystals AMOUNT = 10 RESERVE = 100 }
+        }
+        else = {
+          if = {
+            limit = { NOT = { stellarai_settled_ai_has_unemployment = yes } }
+            inline_script = { script = stellarai/market_sell_surplus RESOURCE = minerals AMOUNT = 250 RESERVE = 1000 }
+          }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = food AMOUNT = 250 RESERVE = 750 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = consumer_goods AMOUNT = 100 RESERVE = 500 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = volatile_motes AMOUNT = 10 RESERVE = 50 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = exotic_gases AMOUNT = 10 RESERVE = 50 }
+          inline_script = { script = stellarai/market_sell_surplus RESOURCE = rare_crystals AMOUNT = 10 RESERVE = 50 }
+        }
+
+        # Deficits consume purchase slots before low-stock buffers.
+        if = {
+          limit = { country_uses_consumer_goods = yes has_deficit = consumer_goods }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = consumer_goods AMOUNT = 100 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = consumer_goods AMOUNT = 100 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { country_uses_food = yes has_deficit = food }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = food AMOUNT = 200 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = food AMOUNT = 200 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { has_deficit = minerals }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = minerals AMOUNT = 200 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = minerals AMOUNT = 200 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { is_at_war = yes has_deficit = alloys }
+          inline_script = { script = stellarai/market_buy_shortage RESOURCE = alloys AMOUNT = 100 MARKUP = 1.05 TRADE_FLOOR = 500 }
+        }
+        if = {
+          limit = { has_deficit = volatile_motes }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = volatile_motes AMOUNT = 10 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = volatile_motes AMOUNT = 10 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { has_deficit = exotic_gases }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = exotic_gases AMOUNT = 10 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = exotic_gases AMOUNT = 10 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { has_deficit = rare_crystals }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = rare_crystals AMOUNT = 10 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = rare_crystals AMOUNT = 10 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+
+        # If slots remain, refill only critical buffers.
+        if = {
+          limit = { country_uses_consumer_goods = yes NOT = { has_deficit = consumer_goods } resource_stockpile_compare = { resource = consumer_goods value < 300 } }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = consumer_goods AMOUNT = 100 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = consumer_goods AMOUNT = 100 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { country_uses_food = yes NOT = { has_deficit = food } resource_stockpile_compare = { resource = food value < 500 } }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = food AMOUNT = 200 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = food AMOUNT = 200 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { NOT = { has_deficit = minerals } resource_stockpile_compare = { resource = minerals value < 500 } }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = minerals AMOUNT = 200 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = minerals AMOUNT = 200 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { is_at_war = yes NOT = { has_deficit = alloys } resource_stockpile_compare = { resource = alloys value < 250 } }
+          inline_script = { script = stellarai/market_buy_shortage RESOURCE = alloys AMOUNT = 100 MARKUP = 1.05 TRADE_FLOOR = 500 }
+        }
+        if = {
+          limit = { NOT = { has_deficit = volatile_motes } resource_stockpile_compare = { resource = volatile_motes value < 20 } }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = volatile_motes AMOUNT = 10 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = volatile_motes AMOUNT = 10 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { NOT = { has_deficit = exotic_gases } resource_stockpile_compare = { resource = exotic_gases value < 20 } }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = exotic_gases AMOUNT = 10 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = exotic_gases AMOUNT = 10 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+        if = {
+          limit = { NOT = { has_deficit = rare_crystals } resource_stockpile_compare = { resource = rare_crystals value < 20 } }
+          if = { limit = { is_at_war = no } inline_script = { script = stellarai/market_buy_shortage RESOURCE = rare_crystals AMOUNT = 10 MARKUP = 1 TRADE_FLOOR = 1000 } }
+          else = { inline_script = { script = stellarai/market_buy_shortage RESOURCE = rare_crystals AMOUNT = 10 MARKUP = 1.05 TRADE_FLOOR = 500 } }
+        }
+
+        # Wealthy peacetime empires can turn spare market currency into jobs.
+        if = {
+          limit = {
+            is_at_war = no
+            stellarai_settled_ai_has_unemployment = yes
+            resource_stockpile_compare = { resource = minerals value < 1500 }
+          }
+          inline_script = { script = stellarai/market_buy_shortage RESOURCE = minerals AMOUNT = 500 MARKUP = 1 TRADE_FLOOR = 2500 }
+        }
+
+        clear_variable = stellarai_market_trade_value
+        clear_variable = stellarai_market_currency_stockpile
+        clear_variable = stellarai_market_sale_count
+        clear_variable = stellarai_market_purchase_count
+      }
+    }
+  }
+}
+
+event = {
+  id = stellarai_commitment.899
+  hide_window = yes
+  is_triggered_only = yes
+
+  immediate = {
+    every_country = {
+      limit = {
+        OR = {
+          is_regular_empire = yes
+          is_gestalt = yes
+          is_hive_empire = yes
+          is_virtual_empire = yes
+          is_galvanic_empire = yes
+        }
+      }
+      country_event = { id = stellarai_commitment.900 }
+    }
+  }
+}
+
+country_event = {
+  id = stellarai_commitment.900
+  hide_window = yes
+  is_triggered_only = yes
+
+  trigger = {
+    is_nomadic = no
+    OR = {
+      is_regular_empire = yes
+      is_gestalt = yes
+      is_hive_empire = yes
+      is_virtual_empire = yes
+      is_galvanic_empire = yes
+    }
+  }
+
+  immediate = {
+    every_owned_planet = {
+      limit = {
+        planet = { is_colony = yes }
+      }
+      planet = {
+        carrier_event = { id = stellarai_commitment.1 }
+      }
+    }
+  }
+}
+
+country_event = {
+  id = stellarai_commitment.901
+  hide_window = yes
+  is_triggered_only = yes
+
+  trigger = {
+    is_nomadic = no
+    OR = {
+      is_regular_empire = yes
+      is_gestalt = yes
+      is_hive_empire = yes
+      is_virtual_empire = yes
+      is_galvanic_empire = yes
+    }
+  }
+
+  immediate = {
+    if = {
+      limit = { is_ai = yes }
+
+      every_owned_planet = {
+        limit = {
+          planet = {
+            is_colony = yes
+            is_capital = no
+          }
+          OR = {
+            has_designation = col_research
+            has_designation = col_habitat_research
+            has_designation = col_ring_research
+          }
+        }
+        planet = { set_planet_flag = stellarai_research_plan_claimed }
+      }
+      every_owned_planet = {
+        limit = {
+          planet = {
+            is_capital = yes
+            has_planet_flag = stellarai_research_plan_claimed
+          }
+        }
+        planet = { remove_planet_flag = stellarai_research_plan_claimed }
+      }
+
+      # Guarantee the first role at three colonies. The iterator is colony
+      # scope in 4.4, so all planet-only tests and effects enter planet first.
+      if = {
+        limit = {
+          num_owned_planets > 2
+          count_owned_planet = {
+            limit = {
+              planet = { has_planet_flag = stellarai_research_plan_claimed }
+            }
+            count < 1
+          }
+        }
+        random_owned_planet = {
+          limit = {
+            planet = { stellarai_research_claim_candidate = yes }
+          }
+          weights = {
+            base = 10
+            modifier = {
+              factor = 20
+              planet = { stellarai_good_research_candidate = yes }
+            }
+            modifier = {
+              factor = 0.25
+              planet = { has_planet_flag = stellarai_rural_commitment_soft }
+            }
+            modifier = {
+              factor = 0.10
+              planet = { has_planet_flag = stellarai_industry_commitment_soft }
+            }
+          }
+          planet = { set_planet_flag = stellarai_research_plan_claimed }
+        }
+      }
+
+      # Before year 45, reserve at most one additional good candidate.
+      if = {
+        limit = {
+          years_passed < 45
+          num_owned_planets > 4
+          count_owned_planet = {
+            limit = {
+              planet = { has_planet_flag = stellarai_research_plan_claimed }
+            }
+            count < 2
+          }
+        }
+        random_owned_planet = {
+          limit = {
+            planet = {
+              stellarai_research_claim_candidate = yes
+              stellarai_good_research_candidate = yes
+            }
+          }
+          weights = {
+            base = 10
+            modifier = {
+              factor = 0.25
+              planet = { has_planet_flag = stellarai_rural_commitment_soft }
+            }
+            modifier = {
+              factor = 0.10
+              planet = { has_planet_flag = stellarai_industry_commitment_soft }
+            }
+          }
+          planet = { set_planet_flag = stellarai_research_plan_claimed }
+        }
+      }
+
+      # After year 45, good candidates follow the capped 3/6/10/14/18/22 curve.
+      inline_script = { script = stellarai/research_claim_good_slot PLANETS = 5 COUNT = 2 }
+      inline_script = { script = stellarai/research_claim_good_slot PLANETS = 9 COUNT = 3 }
+      inline_script = { script = stellarai/research_claim_good_slot PLANETS = 13 COUNT = 4 }
+      inline_script = { script = stellarai/research_claim_good_slot PLANETS = 17 COUNT = 5 }
+      inline_script = { script = stellarai/research_claim_good_slot PLANETS = 21 COUNT = 6 }
+    }
+
+    every_owned_planet = {
+      limit = {
+        planet = { is_colony = yes }
+      }
+      planet = {
+        carrier_event = { id = stellarai_commitment.2 }
+      }
+    }
+  }
+  
+}

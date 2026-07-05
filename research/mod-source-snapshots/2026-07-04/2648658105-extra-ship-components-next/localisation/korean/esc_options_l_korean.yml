@@ -1,0 +1,247 @@
+﻿l_korean:
+
+### KOREAN LOCALIZATION
+
+esc_option.exit: "메뉴 닫기"
+esc_option.back: "뒤로 돌아가기"
+esc_no_hide_disabled_components: "\n\n§H알림§!: 이미 연구된 부품은 해당 기술이 비활성화되더라도 계속 사용할 수 있습니다."
+esc_no_disable_buildings: "\n\n§H알림§!: 이미 건설된 건물은 비활성화되거나 철거되지 않습니다."
+esc_other_cat_dependants: "\n\n§R경고§!: 다른 카테고리의 일부 기술이 연구할 수 §R없게 될§! 수 있습니다."
+
+########################################
+###         Options Menu v2.0        ###
+########################################
+
+# main navigation pages
+esc_options_page_presets_selected: "§Y프리셋§!"
+esc_options_page_presets_unselected: "프리셋"
+esc_options_page_components_selected: "§Y장비§!"
+esc_options_page_components_unselected: "장비"
+esc_options_page_buildings_selected: "§Y건물§!"
+esc_options_page_buildings_unselected: "건물"
+esc_options_page_ai_options_selected: "§YAI 보너스§!"
+esc_options_page_ai_options_unselected: "AI 보너스"
+esc_options_page_invasion_selected: "§Y위기§!"
+esc_options_page_invasion_unselected: "위기"
+
+esc_options_page_presets_tooltip: "게임에 적용할 주어진 프리셋 중 하나를 선택하십시오."
+esc_options_page_components_tooltip: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 장비들 중 어떤 것을 연구하고 사용할 수 있는지 미세조정하십시오."
+esc_options_page_buildings_tooltip: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 건물들 중 어떤 것을 연구하고 건설할 수 있는지 설정하십시오."
+esc_options_page_ai_boost_tooltip: "AI가 플레이하는 제국이 얻는 경제 및 연구 버프를 설정하십시오.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드에서 제공하는 AI 버프만 제어하며 다른 곳에서 제공되는 AI 버프에는 영향을 미치지 않습니다."
+esc_options_page_crisis_tooltip: "특별 위기 설정을 구성하십시오.\n\n§R알림§!: 이러한 옵션은 은하를 생성할 때 선택한 위기 설정을 덮어쓰지 않으므로, 게임 시작 설정에서 위기 등장을 껐다면 여기에서 위기를 활성화해도 아무런 효과가 없습니다."
+
+# presets
+esc_options_preset_enable_everything: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 모든 함선 부품과 기술, 건물이 활성화됩니다."
+esc_options_preset_disable_everything: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 모든 함선 부품과 기술, 건물이 비활성화됩니다."
+esc_options_preset_everything_but_buildings: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 모든 것을 특수 건물을 제외하고 활성화합니다. £sr_dark_matter£ §Y$sr_dark_matter$§!, £sr_zro£ §Y$sr_zro$§!, £nanites£ §Y$nanites$§!의 생산에 필요한 건물은 활성화됩니다."
+esc_options_preset_leviathan_only: "레비아탄을 처치하거나 다른 방식으로 상호작용하여 얻는 함선 부품, 기술 및 건물만 제외하고 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 모든 것을 비활성화합니다."
+esc_options_preset_vanilla_only: "바닐라 함선 부품의 고급 버전만 활성화합니다."
+esc_options_preset_vanilla_leviathans: "바닐라 함선 부품의 고급 버전과, 레비아탄을 처치하거나 다른 방식으로 상호작용하여 얻는 함선 부품과 기술 및 건물만 활성화합니다. \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 새로운 무기 유형과 특수 건물은 비활성화됩니다."
+esc_options_preset_new_weapon_types: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 새로운 무기 유형만 활성화합니다."
+esc_options_preset_new_weapon_leviathan: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 새로운 무기 유형과 레비아탄을 처치하거나 상호작용하여 얻는 함선 부품, 기술 및 건물만 활성화합니다."
+
+# components navigation subpages
+esc_options_subpage_vanilla_weapons_selected: "§Y바닐라 무기§!"
+esc_options_subpage_vanilla_weapons_unselected: "바닐라 무기"
+esc_options_subpage_utility_components_selected: "§Y지원 부품§!"
+esc_options_subpage_utility_components_unselected: "지원 부품"
+esc_options_subpage_esc_weapons_selected: "§Y새로운 무기 유형§!"
+esc_options_subpage_esc_weapons_unselected: "새로운 무기 유형"
+esc_options_subpage_special_components_selected: "§Y레비아탄 보상§!"
+esc_options_subpage_special_components_unselected: "레비아탄 보상"
+
+esc_options_subpage_vanilla_weapons_tooltip: "바닐라 함선 부품의 고급 버전(실탄, 에너지 또는 미사일 등)의 커스터마이징."
+esc_options_subpage_utility_components_tooltip: "고급 지원 부품(반응로, 방어구 및 보호막 등)의 커스터마이징."
+esc_options_subpage_esc_weapons_tooltip: "\"Extra Ship Components §YNEXT§!\" 모드가 제공하는 새로운 무기 유형의 커스터마이징."
+esc_options_subpage_special_components_tooltip: "레비아탄 처치 또는 종반 위기 극복 보상으로 제공되는 부품의 커스터마이징."
+
+# vanilla weapons components
+esc_options_components_kinetic_small_enabled: "일반 크기의 바닐라 실탄 무기 - 매스 드라이버, 오토캐논, 실탄 가속포 - 의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_kinetic_small_disabled: "일반 크기의 바닐라 실탄 무기 - 매스 드라이버, 오토캐논, 실탄 가속포 - 의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_kinetic_xl_enabled: "XL 크기의 바닐라 실탄 무기의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_kinetic_xl_disabled: "XL 크기의 바닐라 실탄 무기의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_energy_small_enabled: "일반 크기의 바닐라 에너지 무기 - 레이저, 분열기, 플라즈마 포, 에너지 발사기 - 의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_energy_small_disabled: "일반 크기의 바닐라 에너지 무기 - 레이저, 분열기, 플라즈마 포, 에너지 발사기 - 의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_lances_enabled: "XL 크기의 바닐라 파티클 랜스의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_lances_disabled: "XL 크기의 바닐라 파티클 랜스의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_arc_enabled: "XL 크기의 바닐라 아크 방출기의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_arc_disabled: "XL 크기의 바닐라 아크 방출기의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_missile_enabled: "바닐라 미사일 무기 - 미사일, 군집 미사일, 어뢰 - 의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_missile_disabled: "바닐라 미사일 무기 - 미사일, 군집 미사일, 어뢰 - 의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_point_defense_enabled: "바닐라 거점 방어 무기 - 수호자 거점 방어와 대공 함포 - 의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_point_defense_disabled: "바닐라 거점 방어 무기 - 수호자 거점 방어와 대공 함포 - 의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_strikecrafts_enabled: "바닐라 함재기의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_strikecrafts_disabled: "바닐라 함재기의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_creature_enabled: "바닐라 우주 생물 기반 무기의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_creature_disabled: "바닐라 우주 생물 기반 무기의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_archaeotech_enabled: "바닐라 고대기술 무기의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_archaeotech_disabled: "바닐라 고대기술 무기의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+
+# utility components
+esc_options_components_reactors_enabled: "함선 반응로의 고급 버전이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오. §R알림§!: 고급 반응로를 비활성화하면 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 무기 부품 중 일부도 비활성화됩니다."
+esc_options_components_reactors_disabled: "함선 반응로의 고급 버전이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_armor_enabled: "고급 장갑 부품이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_armor_disabled: "고급 장갑 부품이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_shields_enabled: "고급 방어막 부품이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_shields_disabled: "고급 방어막 부품이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_sensors_enabled: "고급 센서 부품이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오. §R알림§!: 고급 센서를 비활성화하면 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 무기 부품 중 일부도 비활성화됩니다."
+esc_options_components_sensors_disabled: "고급 센서 부품이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_thrusters_enabled: "고급 추진기 부품이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오. §R알림§!: 고급 추진기를 비활성화하면 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 무기 부품 중 일부도 비활성화됩니다."
+esc_options_components_thrusters_disabled: "고급 추진기 부품이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_ftl_enabled: "고급 FTL 드라이브가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_ftl_disabled: "고급 FTL 드라이브가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_aux_enabled: "고급 보조 부품이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_aux_disabled: "고급 보조 부품이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+
+# esc components : kinetic / energy / missile
+esc_options_components_xl_autocannons_enabled: "XL 및 T 크기의 오토캐논이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_xl_autocannons_disabled: "XL 및 T 크기의 오토캐논이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_mhd_enabled: "자기유체역학 포가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_mhd_disabled: "자기유체역학 포가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_wmg_enabled: "파동역학 포가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오.\n\n§R알림§!: 파동역학 포는 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 고급 반응로 및 추진기 기술이 필요하며, 해당 기술이 비활성화되면 연구할 수 없습니다."
+esc_options_components_wmg_disabled: "파동역학 포가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_chrono_enabled2: "모든 크기의 시공간 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n초대형 시공간 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_chrono_enabled: "일반 크기의 시공간 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_chrono_disabled: "시공간 무기가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_plasma_missiles_enabled: "플라즈마 미사일이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_plasma_missiles_disabled: "플라즈마 미사일이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_xl_missiles_enabled: "초대형 미사일이 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_xl_missiles_disabled: "초대형 미사일이 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+
+# esc components : new types
+esc_options_components_biological_enabled2: "모든 크기의 생물학 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n초대형 생물학 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_biological_enabled: "일반 크기의 생물학 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_biological_disabled: "생물학 무기가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_crystal_enabled2: "모든 크기의 크리스탈 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n초대형 크리스탈 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_crystal_enabled: "일반 크기의 크리스탈 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_crystal_disabled: "크리스탈 무기가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_gravitic_enabled2: "모든 크기의 중력 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n초대형 중력 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_gravitic_enabled: "일반 크기의 중력 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_gravitic_disabled: "중력 무기가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_nanite_enabled2: "모든 크기의 나노머신 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n초대형 나노머신 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_nanite_enabled: "일반 크기의 나노머신 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_nanite_disabled: "나노머신 무기가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_psionic_enabled2: "모든 크기의 사이오닉 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n초대형 사이오닉 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_psionic_enabled: "일반 크기의 사이오닉 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_psionic_disabled: "사이오닉 무기가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_tesla_enabled2: "모든 크기의 테슬라 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n초대형 테슬라 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_tesla_enabled: "일반 크기의 테슬라 무기가 §G활성화§!되며, 얻고 나면 함선에 장착할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_tesla_disabled: "테슬라 무기가 §R비활성화§!되며, 연구하거나 함선에 장착할 수 없습니다. 이 무기를 사용하는 기존 설계는 무효화되지 않습니다.\n\n활성화하려면 클릭하십시오."
+
+# esc components : leviathan rewards
+esc_options_components_drake_enabled: "우주 태생 드래곤을 처치한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_drake_disabled: "우주 태생 드래곤을 처치한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_dreadnought_enabled: "자동화 드레드노트를 처치한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_dreadnought_disabled: "자동화 드레드노트를 처치한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_fortress_enabled2: "수수께끼 요새의 미스터리를 해결한 것에 대한 모든 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n초대형 수수께끼 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_fortress_enabled: "수수께끼 요새의 미스터리를 해결한 것에 대한 일반 크기의 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n모든 수수께끼 무기를 비활성화하려면 클릭하십시오."
+esc_options_components_fortress_disabled: "수수께끼 요새의 미스터리를 해결한 것에 대한 모든 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_wraith_enabled: "스펙트럼 망령을 처치한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_wraith_disabled: "스펙트럼 망령을 처치한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_stellarite_enabled: "항성 포식자를 처치한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_stellarite_disabled: "항성 포식자를 처치한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_technosphere_enabled: "무한 기계와 거래한, 또는 거래하지 않은 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_technosphere_disabled: "무한 기계와 거래한, 또는 거래하지 않은 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_horror_enabled: "차원의 공포를 처치한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_horror_disabled: "차원의 공포를 처치한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_matriarch_enabled: "티얀키 대모를 처치한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_matriarch_disabled: "티얀키 대모를 처치한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_scrapper_enabled: "청소부 로봇을 파괴한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_scrapper_disabled: "청소부 로봇을 파괴한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+esc_options_components_voidspawn_enabled: "공허 태생체를 처치한 것에 대한 보상이 §G활성화§!되며, 얻고 나면 사용할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_components_voidspawn_disabled: "공허 태생체를 처치한 것에 대한 보상이 §R비활성화§!됩니다.\n\n활성화하려면 클릭하십시오."
+
+# buildings
+esc_options_buildings_bureau_enabled: "중앙 연구 부서 건물이 §G활성화§!되며, 얻고 나면 건설할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_buildings_bureau_disabled: "중앙 연구 부서 건물이 §R비활성화§!되며, 건설할 수 없습니다. 이미 존재하는 건물은 파괴되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_buildings_institute_enabled: "기술 연구소 건물이 §G활성화§!되며, 얻고 나면 건설할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_buildings_institute_disabled: "기술 연구소 건물이 §R비활성화§!되며, 연구하거나 건설할 수 없습니다. 이미 존재하는 건물은 파괴되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_buildings_nexus_enabled: "문화 연결체 건물이 §G활성화§!되며, 얻고 나면 건설할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_buildings_nexus_disabled: "문화 연결체 건물이 §R비활성화§!되며, 연구하거나 건설할 수 없습니다. 이미 존재하는 건물은 파괴되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_buildings_laboratory_enabled: "고급 물질 연구소 건물이 §G활성화§!되며, 얻고 나면 건설할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_buildings_laboratory_disabled: "고급 물질 연구소 건물이 §R비활성화§!되며, 연구하거나 건설할 수 없습니다. 이미 존재하는 건물은 파괴되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_buildings_watcher_enabled: "영원의 감시자 건물이 §G활성화§!되며, 얻고 나면 건설할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_buildings_watcher_disabled: "영원의 감시자 건물이 §R비활성화§!되며, 연구하거나 건설할 수 없습니다. 이미 존재하는 건물은 파괴되지 않습니다.\n\n활성화하려면 클릭하십시오."
+esc_options_buildings_mantle_miner_enabled: "맨틀 채굴 시설 건물이 §G활성화§!되며, 얻고 나면 건설할 수 있습니다.\n\n비활성화하려면 클릭하십시오."
+esc_options_buildings_mantle_miner_disabled: "맨틀 채굴 시설 건물이 §R비활성화§!되며, 연구하거나 건설할 수 없습니다. 이미 존재하는 건물은 파괴되지 않습니다.\n\n활성화하려면 클릭하십시오."
+
+# ai research boost
+esc_options_page_ai_no_research_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 추가적인 연구 속도 버프를 받지 않습니다.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 AI 버프에만 영향을 미치며 다른 곳에서 제공되는 AI 연구 속도 버프에는 영향을 미치지 않습니다."
+esc_options_page_ai_easy_research_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 소규모 고정 연구 속도 버프를 받습니다.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 AI 버프에만 영향을 미치며 다른 곳에서 제공되는 AI 연구 속도 버프에는 영향을 미치지 않습니다."
+esc_options_page_ai_easy_scaling_research_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 게임 진행에 따라 증가하는 소규모 연구 속도 버프를 받습니다.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 AI 버프에만 영향을 미치며 다른 곳에서 제공되는 AI 연구 속도 버프에는 영향을 미치지 않습니다."
+esc_options_page_ai_moderate_research_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 보통 고정 연구 속도 버프를 받습니다.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 AI 버프에만 영향을 미치며 다른 곳에서 제공되는 AI 연구 속도 버프에는 영향을 미치지 않습니다."
+esc_options_page_ai_moderate_scaling_research_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 게임 진행에 따라 증가하는 보통 연구 속도 버프를 받습니다.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 AI 버프에만 영향을 미치며 다른 곳에서 제공되는 AI 연구 속도 버프에는 영향을 미치지 않습니다."
+esc_options_page_ai_hard_research_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 대규모 고정 연구 속도 버프를 받습니다.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 AI 버프에만 영향을 미치며 다른 곳에서 제공되는 AI 연구 속도 버프에는 영향을 미치지 않습니다."
+esc_options_page_ai_hard_scaling_research_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 게임 진행에 따라 증가하는 대규모 연구 속도 버프를 받습니다.\n\n§R알림§!: 이것은 \"Extra Ship Components §YNEXT§!\" 모드가 제공하는 AI 버프에만 영향을 미치며 다른 곳에서 제공되는 AI 연구 속도 버프에는 영향을 미치지 않습니다."
+
+# ai economic boost
+esc_options_page_ai_enable_eco_boost: "AI 제국들은 £sr_dark_matter£ §Y$sr_dark_matter$§!, £sr_zro£ §Y$sr_zro$§!, £nanites£ §Y$nanites$§!를 채굴하고 이용할 수 있는 기술이 있으면 이들 자원을 추가로 받게 됩니다."
+esc_options_page_ai_disable_eco_boost: "AI 제국들은 \"Extra Ship Components §YNEXT§!\" 모드에 의해서 추가적인 경제적 버프를 받지 않습니다."
+
+# crisis options descriptions :: no crisis
+esc_mod_menu_no_crisis_tooltip_1: "§G타 차원의 침공 없음§!"
+esc_mod_menu_no_crisis_tooltip_21: "\"Extra Ship Components §YNEXT§!\" 모드에서 제공하는"
+esc_mod_menu_no_crisis_tooltip_22: "§R위험§! 기술을 연구해도"
+esc_mod_menu_no_crisis_tooltip_23: "타 차원에서 언비든이 침공해오지 않습니다."
+esc_mod_menu_no_crisis_tooltip_31: "이 옵션을 활성화해도"
+esc_mod_menu_no_crisis_tooltip_32: "바닐라 언비든 침공 이벤트는 정상작동합니다."
+# crisis options descriptions :: crisis singular
+esc_mod_menu_crisis_tooltip_1: "§Y타 차원의 침공 있음§!"
+esc_mod_menu_crisis_tooltip_21: "\"Extra Ship Components §YNEXT§!\" 모드에서 제공하는"
+esc_mod_menu_crisis_tooltip_22: "§R위험§! 기술을 연구하고"
+esc_mod_menu_crisis_tooltip_23: "바닐라의 언비든 침공 이벤트가 발생하지 않았다면"
+esc_mod_menu_crisis_tooltip_24: "언비든이 침공할 수 있습니다."
+# crisis options descriptions :: crisis repeating
+esc_mod_menu_crisis_repeated_tooltip_1: "§R타 차원의 침공이 반복됨!"
+esc_mod_menu_crisis_repeated_tooltip_21: "\"Extra Ship Components §YNEXT§!\" 모드에서 제공하는"
+esc_mod_menu_crisis_repeated_tooltip_22: "§R위험§! 기술을 연구하고"
+esc_mod_menu_crisis_repeated_tooltip_23: "바닐라의 언비든 침공 이벤트가 발생하지 않았다면"
+esc_mod_menu_crisis_repeated_tooltip_24: "언비든이 계속해서 침공할 수 있습니다."
+
+########################################
+###            Cheats Menu           ###
+########################################
+
+esc_cheats_guaranteed_access_1: "§GEnables§! guaranteed accees to"
+esc_cheats_guaranteed_access_2: "technologies for the current empire."
+
+esc_cheats_revoked_access_1: "§RRevokes§! guaranteed accees to"
+esc_cheats_revoked_access_2: "weapon technologies for the current empire. The technologies can be researched if normal conditions to access are fulfilled."
+
+esc_cheats.title: "\"Extra Ship Components §YNEXT§!\" cheat menu"
+esc_cheats.desc: "This is a cheat menu for \"Extra Ship Components §YNEXT§!\" that allows one to give their empire access to technologies or abilities that would normally not be accessible to them."
+
+esc_cheats.20000.crystalline.enable: "§GEnable§! guaranteed access to crystalline weapon technologies"
+esc_cheats.20000.crystalline.enable.tooltip: "$esc_cheats_guaranteed_access_1$ §Ycrystalline§! weapon $esc_cheats_guaranteed_access_2$"
+esc_cheats.20000.crystalline.disable: "§RRevoke§! guaranteed access to crystalline weapon technologies"
+esc_cheats.20000.crystalline.disable.tooltip: "$esc_cheats_revoked_access_1$ §Ycrystalline§! weapon $esc_cheats_revoked_access_2$"
+
+esc_cheats.20000.biological.enable: "§GEnable§! guaranteed access to biological weapon technologies"
+esc_cheats.20000.biological.enable.tooltip: "$esc_cheats_guaranteed_access_1$ §Ybiological§! weapon $esc_cheats_guaranteed_access_2$"
+esc_cheats.20000.biological.disable: "§RRevoke§! guaranteed access to biological weapon technologies"
+esc_cheats.20000.biological.disable.tooltip: "$esc_cheats_revoked_access_1$ §Ybiological§! weapon $esc_cheats_revoked_access_2$"
+
+esc_cheats.20000.cyber_amoeba.enable: "§GEnable§! guaranteed access to cybernetic amoeba upgrade"
+esc_cheats.20000.cyber_amoeba.enable.tooltip: "$esc_cheats_guaranteed_access_1$ §Ycybernetic amoeba§! upgrade $esc_cheats_guaranteed_access_2$"
+esc_cheats.20000.cyber_amoeba.disable: "§RRevoke§! guaranteed access to cybernetic amoeba upgrade"
+esc_cheats.20000.cyber_amoeba.disable.tooltip: "$esc_cheats_revoked_access_1$ §Ycybernetic amoeba§! upgrade $esc_cheats_revoked_access_2$"
+
+esc_cheats.20000.nanite.enable: "§GEnable§! guaranteed access to nanite weapon technologies"
+esc_cheats.20000.nanite.enable.tooltip: "$esc_cheats_guaranteed_access_1$ §Ynanite§! weapon $esc_cheats_guaranteed_access_2$"
+esc_cheats.20000.nanite.disable: "§RRevoke§! guaranteed access to nanite weapon technologies"
+esc_cheats.20000.nanite.disable.tooltip: "$esc_cheats_revoked_access_1$ §Ynanite§! weapon $esc_cheats_revoked_access_2$"
+
+esc_cheats.20000.psionic.enable: "§GEnable§! guaranteed access to psionic weapon technologies"
+esc_cheats.20000.psionic.enable.tooltip: "$esc_cheats_guaranteed_access_1$ §Ypsionic§! weapon $esc_cheats_guaranteed_access_2$"
+esc_cheats.20000.psionic.disable: "§RRevoke§! guaranteed access to psionic weapon technologies"
+esc_cheats.20000.psionic.disable.tooltip: "$esc_cheats_revoked_access_1$ §Ypsionic§! weapon $esc_cheats_revoked_access_2$"
+
+esc_cheats.20000.tesla.enable: "§GEnable§! guaranteed access to tesla weapon technologies"
+esc_cheats.20000.tesla.enable.tooltip: "$esc_cheats_guaranteed_access_1$ §Ytesla§! weapon $esc_cheats_guaranteed_access_2$"
+esc_cheats.20000.tesla.disable: "§RRevoke§! guaranteed access to tesla weapon technologies"
+esc_cheats.20000.tesla.disable.tooltip: "$esc_cheats_revoked_access_1$ §Ytesla§! weapon $esc_cheats_revoked_access_2$"
+
+esc_cheats.20000.volcanic.enable: "§GAllow§! mantle mining facilities on volcanic worlds"
+esc_cheats.20000.volcanic.enable.tooltip: "§GEnables§! construction of mantle mining facilities on volcanic worlds."
+esc_cheats.20000.volcanic.disable: "§RDisable§! mantle mining facilities on volcanic worlds"
+esc_cheats.20000.volcanic.disable.tooltip: "§RDisables§! construction of mantle mining facilities on volcanic worlds. Already constructed mantle mining facilities will continue working."

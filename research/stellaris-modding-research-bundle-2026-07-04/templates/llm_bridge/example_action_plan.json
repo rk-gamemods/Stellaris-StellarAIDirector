@@ -1,0 +1,19 @@
+{
+  "game_version": "4.4.4",
+  "date": "2250.01.01",
+  "empire_id": 2,
+  "strategy": "FOCUS_TECH",
+  "confidence": 0.74,
+  "actions": [
+    {
+      "type": "set_strategy_flag",
+      "flag": "my_mod_focus_tech",
+      "duration_days": 1800
+    },
+    {
+      "type": "recommend_to_player",
+      "message": "Prioritize research labs and defensive posture until alloy income recovers."
+    }
+  ],
+  "rationale": "Empire has stable economy and weak neighbors, but underdeveloped research compared with nearby rivals."
+}

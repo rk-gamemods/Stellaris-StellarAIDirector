@@ -1,0 +1,252 @@
+##### STARBASE EXTENDED 3.0 CHANGE LOG #####
+
+# VERSION 1.0.0.
+
+- Intial upload
+
+- Various fixes and adjustments
+
+# VERSION 1.0.1.
+
+- Fixed wrong file in release version causing Zero Point Reactors availability from game start on.
+
+# VERSION 1.0.2.
+
+New:
+- Added support for Nemesis, Aquatic, Toxoid and Machine Age DLCs.
+- Enabled FEs to upgrade their starbases to Stronghold and HQ.
+
+Adjustment:
+- Removed obsolete T- and XL-cannon entities from all asset files.
+
+Data handling:
+- Changed file structure of starbase.asset file to allow better and faster maintainability.
+
+# VERSION 1.0.3.
+
+Fixed:
+
+- Vanishing Orbital Rings when NSC is active.
+
+# VERSION 1.0.4.
+
+New:
+
+- Added more module- and building-slots to orbitla ring.
+	- Tier 1	7 module-slots 7 building-slots
+	- Tier 2	14 module-slots 14 building-slots
+	- Tier 1	21 module-slots 21 building-slots
+	
+- Added new basic setion layouts for Orbital Rings Tier 1 to Tier 3
+
+- Added new Orbital Ring Sections:
+	- Shield Section
+	- Armor Section
+	- Large Gun Section
+	- Extra Large Gun Section
+	- Titanic Gun Section
+	
+- Modified Orbital Ring Sections:
+	- Hangar Bay Section houses 2 large strike craft wings now.
+	
+- Added: 
+	- New Braz-Por localisation. Credits go to Mutaco.
+	- Localisation for the new orbital ring modules.
+	- Additional loca texts for starbase modules that have a build limit.
+
+- Changed:
+	- Orbital Ring tier outliner icons. 
+
+Fixed:
+- Loca files not triggerd for non English localisation.
+- Various small glitches.
+
+Special thanks go to:
+
+	- Mutaco for his Braz-Por localisation.
+	- Alexander020304 and Aregmoth for their QA support and input.
+	
+# Version 1.0.5.
+
+New:
+	- Russian localisation. Credits go to Aregemoth and Volkodav.
+
+Fixes:
+	- Fixed PD Sections not created when building a PD battery.
+	- Overhauled outdated localisation files. Changes do not show when NSC is active.
+
+- Changes:
+	- Removed the PD slots from the section basic layouts. The upgrade AI is not able to fill the slots.
+
+- Balancing:
+	- Added new capacity limits for gun-, PD-batteries, hangar- and torpedo-bays (5 / 10 /5 /5).
+
+
+# Maintenance update of loca files. No changes to the version no.
+
+# Version 1.0.6.
+- New:
+	- Added Orbital Ring Point Defense Batteries.
+	- Added support for the new starbases introduced by the new DLC to starbase_levels.txt.
+	- Added gun-, PD-batteries, hangar- and torpedo-bays to the starbase and orbital ring modules and section templates.
+	- Added orbital ring_levels.txt.
+
+- Changes:
+	- Removed the PD slots from the orbital ring section basic layouts. The upgrade AI is not able to fill the slots.
+
+- Balancing:
+	- Added new capacity limits for Orbital Ring XL gun-, gun-, PD-batteries, hangar- and torpedo-bays (5 /5 /10 /5 /5).
+
+- Maintenance:
+	- Upateded Russian localisation.
+	- Rolled back the braz-por loca to English language. The native language loca is outdated and the creator of it not available to update it any more.
+	- Overhauled the loca files to match all changes introduced by SBX 3.0.
+	- Changed wording of the orbital ring military modules in loca files.
+
+- Test:
+	- Tried to improve the AI starbase and orbital ring upgrade behavior. TBD.
+	
+# Version 1.0.7.
+
+Fixes:
+	- Typos in the starbase and orbital-ring basic section layout.
+
+# Version 1.0.8.
+	- Doubled the amount of engery generation for the Dark Matter Starbase Reactor.
+	- Adjusted "supported_version" string to v3.1*.*.
+	
+Maintenance update. No change of version number.
+
+- Added loca support for:
+
+	- Japanese
+	- Korean
+	- Simp. Chinese
+	
+# Version 1.1.0.
+
+Fixes:
+	- Interface errors.
+	
+# Version 1.1.1.
+
+Fixes:
+	- Shipyard counter is working again.
+	
+# Version 1.1.2.
+
+- Changed:
+	- Removed Ion Cannon definition from the mod. Vanilla definitions are active now.
+	
+- Added:
+	- Void Worm starbase.
+
+# Version 1.1.3.
+
+New:
+	- Added support for Expanded Gestalts: Forgotten Queens
+
+# Version 1.1.4.
+
+New:
+	- Added support for Stellaris Evolved
+	
+# Version 1.1.5.
+
+New:
+	- Upateded to Stellaris 4.**.*
+	
+# Version 1.2.0.
+
+Fixes:
+	- Fixed Orbial Rings disappearing when using a bio-ship ship-set.
+
+New:
+
+	- Hardened the starbase GUI against overwrites.
+	- Some minor changes under the hood of the mod.
+	
+# Version 1.2.1.
+
+Fixes:
+	- General:
+		- Removed modifiers no longer existing in Stellaris 4.0.
+	
+	- Starbase Buildings:
+		- Stasis Chambers provide 20 % pop growth again.
+		
+		- Orbital Assembly provides 20 % pop assembly speed again.
+		
+
+Changes:
+	- Starbase Buildings:
+		- Financial Space Center: 
+			- Produces 15 trade.
+			- Market Fee Reduction Of 3 %.
+		
+		- Stellar Housings:
+			- Provides 1000 housing.
+		
+		- Starbase Optimal Systems:
+			- Added Production Of 2 Trade.
+			- Added Market Fee Reduction Of 1 %.
+	
+# Version 1.2.2.
+
+New:
+	- Hardened SBX 3.0 against overwrites from (-NSC2 Addon: Civilian Ships Weaponized 2-)
+	
+	Load order:
+	- (-NSC2 Addon: Civilian Ships Weaponized 2-)
+	- SBX 3.0
+	
+# Version 1.2.3.
+
+New:
+	- Added compatibility for "Compact Armadas"
+	
+	Load order:
+	- Compact Armadas
+	- SBX 3.0
+
+# Version 1.3.0.
+
+New:
+	- Added scripted triggers.
+	
+# Version 1.3.1.
+
+Adjustments:
+
+	- Adjusted ship-sizes file to latest version of the base game barring nomads from building outpost.
+	- Adjusted starbase- and orbital ring-level files to the latest version of the base game.
+	
+Fixes:
+
+	- Starbase counter.
+
+
+# Version 1.3.2.
+
+Fixes:
+
+	- Starbase Module Section CTD.
+	
+# Version 1.3.3.
+
+##### IMPORTANT
+
+- Make sure that no other mod that modifies starbase-modules and/or the starbase-UI is loaded after SBX in your load order.
+- The patch should be save-game friendly but no guarantee as this is depending on your individual mod-set.
+
+Fixes:
+
+	- CTD caused by a parameter overflow leading to a chain-error.
+	
+Adjustments:
+
+	- Adopted required changes caused by the Nomads DLC.
+	- Removed the obsolete SBX trade-hub starbase module.
+	
+Very special thanks to Aranov for his valuable input, QA support and time testing the patch. Very well done sir.
+

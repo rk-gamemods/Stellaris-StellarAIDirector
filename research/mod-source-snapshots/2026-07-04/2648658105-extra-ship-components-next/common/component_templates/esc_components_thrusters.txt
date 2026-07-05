@@ -1,0 +1,682 @@
+############################################################
+###               Antimatter Thrusters                   ###
+############################################################
+
+# corvettes & transports & civilian ships
+utility_component_template = {
+	key = ESC_THRUSTERS_5
+	upgrades_to = ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = corvette
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_THRUSTERS_5
+	upgrades_to = DESTROYER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = destroyer
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_THRUSTERS_5
+	upgrades_to = CRUISER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = cruiser
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_THRUSTERS_5
+	upgrades_to = BATTLESHIP_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = battleship
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_THRUSTERS_5
+	upgrades_to = TITAN_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = titan
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# colossi
+utility_component_template = {
+	key = COLOSSUS_ESC_THRUSTERS_5
+	upgrades_to = COLOSSUS_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = juggernaut
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# strike cruisers
+utility_component_template = {
+	key = STRIKECRUISER_ESC_THRUSTERS_5
+	upgrades_to = STRIKECRUISER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = strikecruiser
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# battlecruisers
+utility_component_template = {
+	key = BATTLECRUISER_ESC_THRUSTERS_5
+	upgrades_to = BATTLECRUISER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = battlecruiser
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# carriers
+utility_component_template = {
+	key = CARRIER_ESC_THRUSTERS_5
+	upgrades_to = CARRIER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = carrier
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# dreadnoughts
+utility_component_template = {
+	key = DREADNOUGHT_ESC_THRUSTERS_5
+	upgrades_to = DREADNOUGHT_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = dreadnought
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# flaships
+utility_component_template = {
+	key = FLAGSHIP_ESC_THRUSTERS_5
+	upgrades_to = FLAGSHIP_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = flagship
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+############################################################
+###          Antimatter Thrusters : Bioships             ###
+############################################################
+
+# corvettes & transports & civilian ships
+utility_component_template = {
+	key = ESC_BIO_THRUSTERS_5
+	upgrades_to = ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = corvette
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_BIO_THRUSTERS_5
+	upgrades_to = DESTROYER_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = destroyer
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_BIO_THRUSTERS_5
+	upgrades_to = CRUISER_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = cruiser
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_BIO_THRUSTERS_5
+	upgrades_to = BATTLESHIP_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = battleship
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_BIO_THRUSTERS_5
+	upgrades_to = TITAN_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = titan
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# colossi
+utility_component_template = {
+	key = COLOSSUS_ESC_BIO_THRUSTERS_5
+	upgrades_to = COLOSSUS_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = colossus
+		TIER = 5
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+############################################################
+###    Antimatter Thrusters : Domesticated Space Fauna   ###
+############################################################
+
+# corvettes & transports & civilian ships
+utility_component_template = {
+	key = ESC_BIOSHIP_THRUSTERS_5
+	upgrades_to = ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = corvette
+		TIER = 5
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_BIOSHIP_THRUSTERS_5
+	upgrades_to = DESTROYER_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = destroyer
+		TIER = 5
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_BIOSHIP_THRUSTERS_5
+	upgrades_to = CRUISER_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = cruiser
+		TIER = 5
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_BIOSHIP_THRUSTERS_5
+	upgrades_to = BATTLESHIP_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = battleship
+		TIER = 5
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_BIOSHIP_THRUSTERS_5
+	upgrades_to = TITAN_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_5
+		PREREQUISITES = "esc_tech_thrusters_5"
+		SHIP_SIZE_GROUP = titan
+		TIER = 5
+	}
+}
+
+############################################################
+###              Gravity Manipulation Engines            ###
+############################################################
+
+# corvettes & transports & civilian ships
+utility_component_template = {
+	key = ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = corvette
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = destroyer
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = cruiser
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = battleship
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = titan
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# colossi
+utility_component_template = {
+	key = COLOSSUS_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = juggernaut
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# strike cruisers
+utility_component_template = {
+	key = STRIKECRUISER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = strikecruiser
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# battlecruisers
+utility_component_template = {
+	key = BATTLECRUISER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = battlecruiser
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# carriers
+utility_component_template = {
+	key = CARRIER_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = carrier
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# dreadnoughts
+utility_component_template = {
+	key = DREADNOUGHT_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = dreadnought
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+# flaships
+utility_component_template = {
+	key = FLAGSHIP_ESC_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = flagship
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = no
+	}
+}
+
+############################################################
+###        Gravity Manipulation Engines : Bioships       ###
+############################################################
+
+# corvettes & transports & civilian ships
+utility_component_template = {
+	key = ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = corvette
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = destroyer
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = cruiser
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = battleship
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = titan
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+# colossi
+utility_component_template = {
+	key = COLOSSUS_ESC_BIO_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_thrusters
+		THRUSTER_ICON = GFX_esc_bio_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = colossus
+		TIER = 6
+		IS_BIOSHIP_THRUSTER = yes
+	}
+}
+
+############################################################
+###   Gravity Manipulation Engines : Domesticated Fauna  ###
+############################################################
+
+# corvettes & transports & civilian ships
+utility_component_template = {
+	key = ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = corvette
+		TIER = 6
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = destroyer
+		TIER = 6
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = cruiser
+		TIER = 6
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = battleship
+		TIER = 6
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_BIOSHIP_THRUSTERS_6
+
+	inline_script = {
+		script = thrusters/esc_inlines_fauna_thrusters
+		THRUSTER_ICON = GFX_esc_bioship_thrusters_6
+		PREREQUISITES = "esc_tech_thrusters_6"
+		SHIP_SIZE_GROUP = titan
+		TIER = 6
+	}
+}
+
+################################################
+##     Special engines for event entities     ##
+################################################
+
+### Mysterious Force
+utility_component_template = {
+	key = ESC_THRUSTER_AVATAR
+	size = small
+	icon = GFX_esc_shroud_avatar_thruster
+	icon_frame = 1
+	power = 0
+	hidden = yes
+
+	resources = {
+		category = ship_components
+		cost = {
+			energy = 10
+		}
+	}
+
+	modifier = {
+		ship_base_speed_mult = 1.25
+		ship_evasion_add = 5
+	}
+
+	component_set = "thruster_components"
+	class_restriction = { shipclass_military }
+
+	ai_weight = { weight = 6 }
+}

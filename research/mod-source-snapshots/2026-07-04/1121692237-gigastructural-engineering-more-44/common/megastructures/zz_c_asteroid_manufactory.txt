@@ -1,0 +1,211 @@
+########################################################################################################################
+# player gateway mega
+asteroid_manufactory_0 = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_construction
+		type = player
+		potential = "is_ai = no"
+		ai_weight = ""
+		on_build_complete = "
+			from = {
+				country_event = {
+					id = giga_asteroid_industry.001
+					scopes = {
+						from = this # might seem a bit odd but we use the same trigger in placement rules and this event so it is necessary
+						fromfrom = root.fromfrom # mega scope
+					}
+				}
+			}
+		"
+	}
+	show_prereqs = yes
+}
+
+########################################################################################################################
+# consumer goods
+asteroid_manufactory_ai_consumer_goods = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_construction
+		type = consumer_goods
+		potential = "
+			is_ai = yes
+			#country_uses_consumer_goods = yes
+		"
+		ai_weight = "
+			mult = value:giga_ai_output|RESOURCE|consumer_goods|AMOUNT|200|
+			mult = value:giga_ai_upkeep|RESOURCE|minerals|AMOUNT|200|
+			modifier = { factor = 0		from = { country_uses_consumer_goods = no } }
+			modifier = { factor = 0		from = { is_anglers_empire = yes } }
+		"
+		on_build_complete = "fromfrom = { upgrade_megastructure_to = asteroid_manufactory_platform_consumer_goods finish_upgrade = yes }"
+	}
+}
+asteroid_manufactory_platform_consumer_goods = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_platform
+		upgrade_from = asteroid_manufactory_ai_consumer_goods
+	}
+}
+asteroid_manufactory_consumer_goods = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry
+		upgrades_from = asteroid_manufactory_platform_consumer_goods
+		modifier = "building_giga_asteroid_factory_consumer_goods_country_max = 1"
+		building = "building_giga_asteroid_factory_consumer_goods"
+	}
+}
+
+########################################################################################################################
+# alloys
+asteroid_manufactory_ai_alloys = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_construction
+		type = alloys
+		potential = "is_ai = yes"
+		ai_weight = "
+			mult = value:giga_ai_output|RESOURCE|alloys|AMOUNT|1000|MIN|0.5|
+			mult = value:giga_ai_upkeep|RESOURCE|minerals|AMOUNT|200|
+		"
+		on_build_complete = "fromfrom = { upgrade_megastructure_to = asteroid_manufactory_platform_alloys finish_upgrade = yes }"
+	}
+}
+asteroid_manufactory_platform_alloys = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_platform
+		upgrade_from = asteroid_manufactory_ai_alloys
+	}
+}
+asteroid_manufactory_alloys = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry
+		upgrades_from = asteroid_manufactory_platform_alloys
+		modifier = "building_giga_asteroid_factory_alloys_country_max = 1"
+		building = "building_giga_asteroid_factory_alloys"
+	}
+}
+
+########################################################################################################################
+# food
+asteroid_manufactory_ai_food = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_construction
+		type = food
+		potential = "
+			is_ai = yes
+		"
+		ai_weight = "
+			modifier = {
+				from = { is_anglers_empire = no }
+				mult = value:giga_ai_output|RESOURCE|food|AMOUNT|200|
+			}
+			modifier = {
+				from = { is_anglers_empire = yes }
+				mult = value:giga_ai_output|RESOURCE|food|AMOUNT|2000|MIN|0.5|MULT|5|
+			}
+			modifier = { factor = 0		from = { country_uses_food = no } }
+		"
+		on_build_complete = "fromfrom = { upgrade_megastructure_to = asteroid_manufactory_platform_food finish_upgrade = yes }"
+	}
+}
+asteroid_manufactory_platform_food = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_platform
+		upgrade_from = asteroid_manufactory_ai_food
+	}
+}
+asteroid_manufactory_food = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry
+		upgrades_from = asteroid_manufactory_platform_food
+		modifier = "building_giga_asteroid_factory_food_country_max = 1"
+		building = "building_giga_asteroid_factory_food"
+	}
+}
+
+########################################################################################################################
+# energy
+asteroid_manufactory_ai_energy = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_construction
+		type = energy
+		potential = "is_ai = yes"
+		ai_weight = "
+			mult = value:giga_ai_output|RESOURCE|energy|AMOUNT|5000|MIN|0.5|
+		"
+		on_build_complete = "fromfrom = { upgrade_megastructure_to = asteroid_manufactory_platform_energy finish_upgrade = yes }"
+	}
+}
+asteroid_manufactory_platform_energy = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_platform
+		upgrade_from = asteroid_manufactory_ai_energy
+	}
+}
+asteroid_manufactory_energy = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry
+		upgrades_from = asteroid_manufactory_platform_energy
+		modifier = "building_giga_asteroid_factory_energy_country_max = 1"
+		building = "building_giga_asteroid_factory_energy"
+	}
+}
+
+########################################################################################################################
+# supertensiles
+asteroid_manufactory_ai_supertensiles = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_construction
+		type = supertensiles
+		potential = "
+			has_global_flag = @giga_amb_flag
+			is_ai = yes
+			has_technology = giga_tech_amb_supertensiles
+		"
+		ai_weight = "
+			mult = value:giga_ai_output|RESOURCE|giga_sr_amb_megaconstruction|AMOUNT|500|MIN|0.5|
+			mult = value:giga_ai_upkeep|RESOURCE|alloys|AMOUNT|200|
+			mult = value:giga_ai_upkeep|RESOURCE|unity|AMOUNT|500|
+		"
+		on_build_complete = "fromfrom = { upgrade_megastructure_to = asteroid_manufactory_platform_supertensiles finish_upgrade = yes }"
+	}
+}
+asteroid_manufactory_platform_supertensiles = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_platform
+		upgrade_from = asteroid_manufactory_ai_supertensiles
+	}
+}
+asteroid_manufactory_supertensiles = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry
+		upgrades_from = asteroid_manufactory_platform_supertensiles
+		modifier = "building_giga_asteroid_factory_supertensiles_country_max = 1"
+		building = "building_giga_asteroid_factory_supertensiles"
+	}
+}
+
+
+########################################################################################################################
+# Aeternite systems and old save compat
+
+asteroid_manufactory_2 = {
+	entity = "asteroid_cw_02_entity"
+	construction_entity = "asteroid_cw_02_entity"
+	portrait = "GFX_megastructure_asteroid_manufactory"
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	resources = {
+		category = giga_kilostructures
+		upkeep = {
+			energy = 125
+			alloys = 25
+		}
+		produces = { consumer_goods = 200 }
+	}
+
+	potential = { always = no }
+}

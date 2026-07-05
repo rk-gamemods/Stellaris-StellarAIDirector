@@ -1,0 +1,187 @@
+katzen_trait_elite = {
+	inline_script = {
+		script = trait/icon
+		CLASS = commander
+		ICON = "GFX_leader_trait_from_the_ranks"
+		RARITY = free_or_veteran
+		COUNCIL = no
+		TIER = 1
+	}
+	immortal_leaders = yes
+	self_modifier = {
+		species_leader_exp_gain = 0.10
+		leader_skill_levels = 3
+	}
+	triggered_fleet_modifier = {
+		potential = {
+			has_leader_flag = flusiondouclaw
+			leader_class = commander
+		}
+		command_limit_mult = 1.5
+	}
+	triggered_fleet_modifier = {
+		potential = {
+			leader_class = commander
+		}
+		ship_hull_regen_add_static = 2.5
+		ship_shield_regen_add_static = 5
+		ship_armor_regen_add_static = 2.5
+	}
+	leader_class = all
+	initial = no
+	randomized = no
+}
+
+katzen_trait_blitzkrieg = {
+	inline_script = {
+		script = trait/icon
+		CLASS = commander
+		ICON = "GFX_leader_trait_federal_joint_navy"
+		RARITY = common
+		COUNCIL = no
+		TIER = 1
+	}
+	fleet_modifier = {
+		ship_armor_mult = 0.1
+		ship_speed_mult = 0.15
+	}
+	leader_class = { commander }
+	#initial = no
+	#randomized = no
+
+	leader_potential_add = {
+		exists = owner
+		exists = event_target:flusion_primitives_country
+		owner = {
+			is_same_empire = event_target:flusion_primitives_country
+		}
+	}
+
+	selectable_weight = 1000 # very common deliberately
+}
+
+katzen_trait_nukelad = {
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_expertise_propulsion"
+		RARITY = common
+		COUNCIL = no
+		TIER = 1
+	}
+	army_modifier = {
+		army_collateral_damage_mult = 0.5
+		army_damage_mult = 0.5
+	}
+	fleet_modifier = {
+		weapon_type_explosive_weapon_damage_mult = 0.1
+		weapon_type_explosive_weapon_fire_rate_mult = 0.1
+	}
+	fleet_specialization_tag = explosive
+	leader_class = { commander }
+	#initial = no
+	#randomized = no
+
+	leader_potential_add = {
+		exists = owner
+		exists = event_target:flusion_primitives_country
+		owner = {
+			is_same_empire = event_target:flusion_primitives_country
+		}
+	}
+
+	selectable_weight = 1000 # very common deliberately
+}
+
+paluush_trait_grandbunny = {
+	inline_script = {
+		script = trait/icon_psionic
+		CLASS = commander
+		ICON = "GFX_leader_trait_psionic_chosen_one"
+		RARITY = free_or_veteran
+		COUNCIL = no
+		TIER = none
+	}
+	immortal_leaders = yes
+	self_modifier = {
+		leader_skill_levels = 10
+	}
+	modifier = {
+		army_morale = 2
+	}
+	leader_class = { commander }
+	initial = no
+	randomized = no
+}
+
+katzen_trait_martial = {
+	icon = "gfx/interface/icons/traits/leader_traits/leader_trait_fist.dds"
+	cost = 0
+	sorting_priority = 15
+	initial = no
+	randomized = no
+	species_possible_remove = {
+		can_remove_beneficial_genetic_traits = yes
+	}
+	modifier = {
+		pop_cat_slave_happiness = -0.5
+		species_empire_size_mult = -0.10
+		army_damage_mult = 0.15
+		army_health = 0.15
+		army_morale = 0.4
+	}
+}
+
+katzen_trait_survivalist = {
+	inline_script = {
+		script = trait/icon
+		CLASS = commander
+		ICON = "GFX_leader_trait_katzen_survivalist"
+		RARITY = free_or_veteran
+		COUNCIL = no
+		TIER = 1
+	}
+	modifier = {
+		ships_upkeep_mult = -0.10
+		ship_experience_gain_mult = 0.10
+	}
+	self_modifier = {
+		species_leader_exp_gain = 0.10
+	}
+	leader_class = { commander }
+	initial = no
+	randomized = no
+}
+
+katzen_trait_meopa_revived = {
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_erratic_morality_core"
+		RARITY = veteran
+		COUNCIL = no
+		TIER = 1
+	}
+	immortal_leaders = yes
+	self_modifier = {
+		leader_skill_levels = 5
+	}
+	army_modifier = {
+		armies_energy_upkeep_mult = 0.10
+		army_collateral_damage_mult = 1
+	}
+	planet_modifier = {
+		pop_environment_tolerance = -0.075
+		planet_stability_add = -5
+		planet_clear_blocker_time_mult = -0.40
+	}
+	fleet_modifier = {
+		ships_upkeep_mult = 0.10
+		weapon_type_explosive_weapon_damage_mult = 0.30
+	}
+	modifier = {
+	}
+	leader_class = all
+	initial = no
+	randomized = no
+}

@@ -1,0 +1,7 @@
+modifier = {
+	factor = 1.20
+	owner = {
+		is_at_war = no
+		stellarai_energy_recovery_needed = yes
+	}
+}

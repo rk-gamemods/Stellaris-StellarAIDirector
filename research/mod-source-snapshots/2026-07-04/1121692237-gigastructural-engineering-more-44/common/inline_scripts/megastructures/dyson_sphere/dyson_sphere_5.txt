@@ -1,0 +1,163 @@
+inline_script = {
+    script = megastructures/dyson_sphere/dyson_sphere_template
+    type = sphere
+    class = $class$
+    prev_stage = 4
+    entity = $entity$
+    construction_entity = $construction_entity$
+    portrait = GFX_megastructure_construction_background
+	upgrade_from = ""
+    build_time = @[ 3600 * giga_$class$_star_time_mult ]
+    cost_alloys = @[ 10 * giga_$class$_star_cost_mult * 1000 ]
+    cost_unity = @[ 5 * giga_$class$_star_cost_mult * 1000 ]
+
+    produces = "
+        energy = @[ 4 * giga_$class$_star_production_mult * 1000 ]
+    "
+
+    upkeep = ""
+
+    potential = ""
+    possible = ""
+
+    on_build_start = ""
+    on_build_cancel = ""
+
+    on_complete = "
+        remove_star_flag = dyson_sphere_construction
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		remove_system_terraforming_candidates = yes
+
+		fromfrom.planet = { set_planet_size = 25 }
+
+		set_variable = { which = giga_dyson_sphere_count value = 0 }
+
+		solar_system = {
+			every_system_megastructure = {
+				limit = {
+					OR = {
+						is_megastructure_type = dyson_sphere_5
+						is_megastructure_type = dyson_sphere_5_a_star
+						is_megastructure_type = dyson_sphere_5_b_star
+						is_megastructure_type = dyson_sphere_5_f_star
+						is_megastructure_type = dyson_sphere_5_g_star
+						is_megastructure_type = dyson_sphere_5_k_star
+						is_megastructure_type = dyson_sphere_5_m_star
+						is_megastructure_type = dyson_sphere_5_m_giant_star
+						is_megastructure_type = dyson_sphere_5_o_star
+					}
+				}
+				solar_system = {
+					change_variable = { which = giga_dyson_sphere_count value = 1 }
+				}
+			}
+		}
+
+		# if last star to freeze out of binary/trinary or single star system
+		if = {
+            limit = {
+                OR = {
+					count_system_planet = {
+						limit = { is_star = yes }
+						count = 1
+					}
+					count_system_planet = {
+						limit = { is_star = yes }
+						count = giga_dyson_sphere_count
+					}
+				}
+            }
+
+            every_system_planet = {
+				limit = {
+					is_star = yes
+				}
+				inline_script = {
+					script = megastructures/dyson_sphere/dyson_sphere_star_class
+					type = pre
+				}
+			}
+
+            if = {
+				limit = {
+					is_binary = yes
+				}
+				set_star_class = sc_binary_dyson_star
+			}
+			else_if = {
+				limit = {
+					is_trinary = yes
+				}
+				set_star_class = sc_trinary_dyson_star
+			}
+			else = {
+				set_star_class = sc_dyson_star
+			}
+
+			every_system_planet = {
+				limit = {
+					is_star = yes
+				}
+				inline_script = {
+					script = megastructures/dyson_sphere/dyson_sphere_star_class
+					type = post
+				}
+			}
+            every_system_ambient_object = {
+                limit = { has_ambient_object_flag = o_star_solar_wind }
+                destroy_ambient_object = THIS
+            }
+			every_system_planet = {
+				giga_dyson_freeze = yes
+			}
+        }
+		else = {
+			fromfrom.planet = {
+				# has moons means it is a separate planetary system
+				if = {
+					limit = {
+						has_moon = yes
+					}
+					every_moon = {
+						giga_dyson_freeze = yes
+						# normal moons, not moon's moons
+						every_moon = {
+							giga_dyson_freeze = yes
+						}
+					}
+				}
+				# if it doesnt have moons then it is the main star
+				else = {
+					solar_system = {
+						every_system_planet = {
+							limit = {
+								is_star = yes
+								is_primary_star = no
+							}
+
+							every_moon = {
+								set_planet_flag = giga_no_freeze
+								every_moon = {
+									set_planet_flag = giga_no_freeze
+								}
+							}
+						}
+						# should only be main star planets
+						every_system_planet = {
+							limit = {
+								NOT = { has_planet_flag = giga_no_freeze }
+							}
+							giga_dyson_freeze = yes
+							remove_planet_flag = giga_no_freeze
+						}
+					}
+				}
+			}
+		}
+        from = {
+            set_country_flag = has_built_or_repaired_megastructure
+            set_country_flag = has_built_or_repaired_gigastructure	# Triggers Gigastructural Constructs
+        }
+    "
+}

@@ -1,0 +1,255 @@
+########################
+### Physics ############
+########################
+giga_tech_war_system_1 = {
+	cost = @giga_50_000_cost
+	area = physics
+	tier = 5
+	category = { particles }
+	is_rare = yes
+	weight = 0
+	modifier = { ship_speed_mult = 0.05 }
+	prereqfor_desc = {
+		custom = {
+			title = "allow_systemcraft_p0"
+			desc = "desc_systemcraft_p0"
+		}
+	}
+
+	modifier = { command_limit_add = 250 }
+
+	potential = {
+		has_ascension_perk = ap_celestial_printing
+		NOR = {
+			has_global_flag = systemcraft_disabled
+			has_global_flag = warmoon_disabled
+			has_global_flag = warplanet_disabled
+		}
+	}
+}
+
+giga_tech_hrae_mc = {
+	cost = @tier5cost3
+	area = physics
+	tier = 5
+	category = { field_manipulation }
+	weight = 0
+	is_rare = yes
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = {
+			title = "header_01_gigac"
+			desc = "header_01_gigac_desc"
+		}
+		custom = {
+			title = "allow_hraemc"
+			desc = "desc_hraemc"
+		}
+	}
+	potential = {
+		has_gigastructural_constructs = yes
+		NOT = { has_global_flag = hraemc_disabled }
+	}
+}
+
+giga_tech_matrioshka_brain_1 = {
+	cost = @giga_tier7cost1
+	area = physics
+	tier = 5
+	category = { field_manipulation }
+	weight = 0
+	is_rare = yes
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = {
+			title = "header_01_gigac"
+			desc = "header_01_gigac_desc"
+		}
+		custom = {
+			title = "allow_matrioshka_brain"
+			desc = "desc_matrioshka_brain"
+		}
+	}
+	potential = {
+		has_gigastructural_constructs = yes
+		NOT = { has_global_flag = matrioshka_brain_disabled }
+	}
+}
+
+giga_tech_quasi_stellar_1 = {
+	cost = @giga_tier7cost1
+	area = physics
+	tier = 5
+	category = { field_manipulation }
+	is_rare = yes
+	weight = 0
+	modifier = { ship_shield_mult = 0.1 }
+
+	potential = {
+		has_ascension_perk = ap_qso
+		NOT = { has_global_flag = quasistellar_disabled }
+		is_nomadic = no
+	}
+
+	prereqfor_desc = {
+		custom = {
+			title = "allow_qso_p0"
+			desc = "desc_qso_p0"
+		}
+	}
+}
+
+########################
+### Society ############
+########################
+giga_tech_psychic_beacon = {
+	cost = @giga_tier6cost2
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+
+	prereqfor_desc = {
+		custom = {
+			title = "allow_psychic_beacon"
+			desc = "desc_psychic_beacon"
+		}
+	}
+	potential = {
+		has_country_flag = psychic_beacon_possible
+		NOT = { has_global_flag = psychic_beacon_disabled }
+	}
+	modifier = {
+		ship_ftl_jumpdrive_range_mult = 0.1
+		ship_jumpdrive_cooldown_mult = -0.05
+	}
+}
+
+# turns out we don't need this right now... because the bug I thought I was fixing *was an entirely different bug*
+# - TTFTCUTS
+#giga_tech_ai_scaling_evaluator = {
+#	area = society
+#	cost = 0
+#	tier = 0
+#	category = { computing }
+#	start_tech = yes
+#
+#	modifier = {
+#		giga_tooltips_ai_unobtainium_produces_mult = 1
+#	}
+#}
+
+########################
+### Engineering ########
+########################
+giga_tech_birch_world_1 = {
+	cost = @giga_tier8cost1
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	weight = 0
+	is_rare = yes
+	potential = {
+		or = {
+			AND = {
+				has_ascension_perk = ap_vast_expanses
+				NOT = { has_global_flag = birch_disabled }
+			}
+			any_owned_planet = {
+				or = {
+					uses_district_set = giga_birch
+					uses_district_set = acot_giga_void_sphere
+				}
+			}
+		}
+	}
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = {
+			title = "header_04_lud_insane"
+			desc = "header_04_lud_insane_desc"
+		}
+		custom = {
+			title = "allow_birch"
+			desc = "desc_birch"
+		}
+	}
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_insane # finish this if ai get it
+	}
+}
+
+giga_tech_ringworld_behemoth = {
+	cost = @giga_tier6cost1
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	weight = 0
+	prerequisites = { giga_tech_ringworld_titanic_2 }
+	potential = {
+		has_gigastructural_constructs = yes
+		# any ring behemoth or bigger enabled
+		OR = {
+			has_global_flag = giga_rings_beh
+			has_global_flag = giga_rings_gar
+		}
+	}
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = {
+			title = "header_01_gigac"
+			desc = "header_01_gigac_desc"
+		}
+		custom = {
+			title = "allow_ringworld_behemoth"
+			desc = "desc_ringworld_behemoth"
+		}
+	}
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_strong # probably useful ig
+	}
+}
+
+giga_tech_supermassive_ehof = {
+	cost = @giga_tier7cost1
+	area = physics
+	tier = 5
+	is_dangerous = yes
+	category = { field_manipulation }
+	weight = 0
+	is_rare = yes
+	potential = {
+		has_ascension_perk = ap_supermassive_ehof
+	}
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = {
+			title = "header_04_lud_insane"
+			desc = "header_04_lud_insane_desc"
+		}
+		custom = {
+			title = "allow_supermassive_ehof"
+			desc = "desc_supermassive_ehof"
+		}
+	}
+}

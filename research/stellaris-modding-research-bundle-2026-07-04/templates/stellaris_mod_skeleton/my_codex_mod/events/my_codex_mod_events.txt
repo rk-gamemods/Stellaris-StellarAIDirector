@@ -1,0 +1,15 @@
+namespace = my_codex_mod
+
+country_event = {
+    id = my_codex_mod.0001
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        my_codex_mod_is_regular_country = yes
+    }
+
+    immediate = {
+        log = "[my_codex_mod] startup event reached for a regular country"
+    }
+}

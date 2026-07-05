@@ -1,0 +1,20 @@
+# Planetcraft
+utility_component_template = {
+	key = "GIGA_PLANET_COMPUTER"
+	size = small
+	icon = "GFX_ship_part_computer_artillery_basic"
+	icon_frame = 1
+	power = -50
+	ai_weight = { weight = 2 }
+	class_restriction = { shipclass_military }
+	potential = { giga_ship_uses_war_planet_components = yes }
+	ai_tags = { artillery }
+	component_set = "combat_computers"
+	ship_behavior = "giga_planet"
+	resources = {
+		category = ship_components
+		cost = { alloys = 28 }
+	}
+}
+
+# Systemcraft

@@ -1,0 +1,1225 @@
+# job weights moved to scripted vars for inline usability
+
+########################
+### Non-Gestalt Jobs ###
+########################
+
+##################################################################################################
+# Structure operations
+
+giga_birch_structure_manager = {
+	category = ruler
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_colony_shelter
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	possible = {
+		owner = { is_fallen_empire = no }
+	}
+
+	planet_modifier = {
+		job_giga_birch_structure_engineer_add_fake = @giga_birch_structure_manager_jobs_provided
+	}
+
+	resources = {
+		category = planet_giga_birch_structure_managers
+		produces = {
+			unity = 3
+			engineering_research = 5
+		}
+		upkeep = {
+			alloys = 5
+			consumer_goods = 5
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_structure_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_structure_engineer = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_luxury_residence
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_specialist_job
+
+	possible = {
+		owner = { is_fallen_empire = no }
+	}
+
+	triggered_planet_modifier = {
+		planet_housing_add = @[ 1000 / (1 + giga_birch_job_size) ]
+	}
+
+	triggered_planet_modifier = {
+		potential = { always = yes }
+		planet_amenities_add = @[ 800 / (1 + giga_birch_job_size) ]
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	resources = {
+		category = planet_giga_birch_structure_engineers
+		produces = {
+			unity = 1
+			engineering_research = 1
+		}
+		upkeep = {
+			consumer_goods = 1
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_structure_engineer_weight"
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+##################################################################################################
+# orykta
+
+giga_birch_orykta_manager = {
+	category = ruler
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_class_4_singularity
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_orykta_manager_name_swaps
+			drone = @no
+			drone_affix = "" # no _drone affix
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		owner = { is_fallen_empire = no }
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	planet_modifier = {
+		giga_birch_orykta_jobs_bonus_workforce_mult_fake = @insula_manager_general_bonus
+	}
+
+	inline_script = jobs/birch/giga_birch_orykta_manager_effect_swaps
+
+	resources = {
+		category = planet_giga_birch_insula_managers
+		produces = { 
+			physics_research = 2.5
+		}
+		upkeep = {
+			consumer_goods = 2
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_orykta_manager_resource_swaps
+			drone = @no
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_orykta_worker = {
+	category = worker
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_bio_reactor
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_worker_job
+	possible = {
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_gestalt = no
+		}
+	}
+
+	resources = {
+		category = planet_giga_birch_insula_workers
+		produces = {
+			energy = 2
+			minerals = 2
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_robot_empire = yes
+				}
+			}
+			energy = 1
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_worker_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_worker_weight"
+	}
+
+	inline_script = jobs/automodding_priority_minerals
+}
+
+giga_dark_matter_weaver = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_giga_iodizium_plant
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_specialist_job
+
+	possible = {
+		owner = { is_fallen_empire = no }
+	}
+
+	resources = {
+		category = planet_giga_dark_matter_weavers
+		produces = { 
+			sr_dark_matter = 2 
+		}
+		produces = {
+			trigger = {
+				has_global_flag = acot_activated
+			}
+			sr_dark_matter = 6
+			acot_sr_dark_energy = 8
+		}
+		upkeep = { 
+			energy = 4 
+			minerals = 4 
+		}
+		upkeep = { 
+			trigger = {
+				has_global_flag = acot_activated
+			}
+			energy = 4 
+			minerals = 4 
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+##################################################################################################
+# Ktisma
+
+giga_birch_ktisma_manager = {
+	category = ruler
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_nano_forge
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_ktisma_manager_name_swaps
+			drone = @no
+			drone_affix = "" # no _drone affix
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		owner = { is_fallen_empire = no }
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	planet_modifier = {
+		giga_birch_ktisma_jobs_bonus_workforce_mult_fake = @insula_manager_general_bonus
+	}
+
+	inline_script = jobs/birch/giga_birch_ktisma_manager_effect_swaps
+
+	resources = {
+		category = planet_giga_birch_insula_managers
+		produces = { 
+			engineering_research = 2.5
+		}
+		upkeep = {
+			consumer_goods = 2
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_ktisma_manager_resource_swaps
+			drone = @no
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_ktisma_worker = {
+	category = worker
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_resource_silo
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_worker_job
+
+	resources = {
+		category = planet_giga_birch_insula_workers
+		produces = {
+			consumer_goods = 1
+			alloys = 0.5
+		}
+		upkeep = {
+			minerals = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_catalytic_empire = no }
+			}
+			minerals = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { is_catalytic_empire = yes }
+			}
+			food = 1.5
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_worker_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_worker_weight"
+	}
+
+	inline_script = jobs/automodding_priority_alloys
+}
+
+##################################################################################################
+# Physma
+
+giga_birch_physma_manager = {
+	category = ruler
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_institute
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_physma_manager_name_swaps
+			drone = @no
+			drone_affix = "" # no _drone affix
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		owner = { is_fallen_empire = no }
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	planet_modifier = {
+		giga_birch_physma_jobs_bonus_workforce_mult_fake = @insula_manager_general_bonus
+	}
+
+	inline_script = jobs/birch/giga_birch_physma_manager_effect_swaps
+
+	resources = {
+		category = planet_giga_birch_insula_managers
+		produces = { 
+			society_research = 2.5
+		}
+		upkeep = {
+			consumer_goods = 2
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_physma_manager_resource_swaps
+			drone = @no
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_physma_worker = {
+	category = worker
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = holding_park_ranger_lodge
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_worker_job
+
+	resources = {
+		category = planet_giga_birch_insula_workers
+		produces = {
+			unity = 1
+		}
+
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_robot_empire = no
+					is_lithoid_empire = no
+				}
+			}
+			food = 1
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_robot_empire = no
+					is_lithoid_empire = yes
+				}
+			}
+			minerals = 1
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_robot_empire = yes
+				}
+			}
+			energy = 1
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_worker_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_worker_weight"
+	}
+
+	inline_script = jobs/automodding_priority_unity
+}
+
+##################################################################################################
+# Other
+
+giga_birch_origin_trader = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_luxury_residence
+			icon = clerk
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_specialist_job
+
+	# pop_modifier = {
+	# 	pop_housing_usage_add = -1
+	# }
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+			trigger = {
+				event_target:giga_birch_expedition_2_country_@planet = {
+					is_lithoid_empire = no
+				}
+			}
+			food = 2
+		}
+		upkeep = {
+			trigger = {
+				event_target:giga_birch_expedition_2_country_@planet = {
+					is_lithoid_empire = yes
+				}
+			}
+			minerals = 2
+		}
+		produces = {
+			trade = 10
+		}
+	}
+
+	weight = {
+		weight = @specialist_job_weight
+		modifier = {
+			factor = 0.2
+			has_citizenship_rights = no
+			NOT = { has_trait = trait_mechanical }
+		}
+		modifier = {
+			factor = 0.1
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 0.8
+			is_enslaved = yes
+			has_slavery_type = { type = slavery_indentured }
+		}
+	}
+
+	inline_script = jobs/automodding_priority_trade
+}
+
+########################
+### Gestalt Jobs #######
+########################
+
+##################################################################################################
+# Structure operations
+
+giga_birch_structure_manager_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_colony_shelter
+			icon = giga_birch_structure_manager
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = {
+		can_think = yes
+		owner = { is_fallen_empire = no }
+	}
+
+	planet_modifier = {
+		job_giga_birch_structure_engineer_drone_add_fake = @giga_birch_structure_manager_jobs_provided
+	}
+
+	resources = {
+		category = planet_giga_birch_structure_managers
+		produces = {
+			unity = 3
+			engineering_research = 2.5
+		}
+		upkeep = {
+			alloys = 5
+			energy = 5
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_structure_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_structure_engineer_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_luxury_residence
+			icon = giga_birch_structure_engineer
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = {
+		can_think = yes
+		owner = { is_fallen_empire = no }
+	}
+
+	triggered_planet_modifier = {
+		planet_housing_add = @[ 1000 / (1 + giga_birch_job_size) ]
+	}
+
+	triggered_planet_modifier = {
+		potential = { always = yes }
+		planet_amenities_add = @[ 800 / (1 + giga_birch_job_size) ]
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	resources = {
+		category = planet_giga_birch_structure_engineers
+		produces = {
+			unity = 1
+			engineering_research = 1
+		}
+		upkeep = {
+			minerals = 2
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_structure_engineer_weight"
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+##################################################################################################
+# orykta
+
+giga_birch_orykta_manager_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_class_4_singularity
+			icon = giga_birch_orykta_manager
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_orykta_manager_name_swaps
+			drone = @yes
+			drone_affix = "_drone" # gestalt version
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		can_think = yes
+		owner = { is_fallen_empire = no }
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	planet_modifier = {
+		giga_birch_orykta_jobs_bonus_workforce_mult = @insula_manager_general_bonus
+	}
+
+	inline_script = jobs/birch/giga_birch_orykta_manager_effect_swaps
+
+	resources = {
+		category = planet_giga_birch_insula_managers
+		produces = { 
+			physics_research = 2.5
+		}
+		upkeep = {
+			energy = 4
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_orykta_manager_resource_swaps
+			drone = @yes
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_orykta_worker_drone = {
+	category = simple_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_bio_reactor
+			icon = giga_birch_orykta_worker
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_giga_birch_insula_workers
+		produces = {
+			energy = 2
+			minerals = 2
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_machine_empire = yes
+				}
+			}
+			energy = 1
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_simple_drone_weight
+		EXTRA_WEIGHT_MOD = "mult = @insula_worker_weight"
+	}
+
+	inline_script = jobs/automodding_priority_minerals
+}
+
+giga_dark_matter_weaver_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_giga_iodizium_plant
+			icon = giga_dark_matter_weaver
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = {
+		can_think = yes
+	}
+
+	resources = {
+		category = planet_giga_dark_matter_weavers
+		produces = {
+			sr_dark_matter = 2
+		}
+		produces = {
+			trigger = {
+				has_global_flag = acot_activated
+			}
+			sr_dark_matter = 6
+			acot_sr_dark_energy = 8
+		}
+		upkeep = {
+			energy = 4
+			minerals = 4
+		}
+		upkeep = {
+			trigger = {
+				has_global_flag = acot_activated
+			}
+			energy = 4
+			minerals = 4
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+##################################################################################################
+# Ktisma
+
+giga_birch_ktisma_manager_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_nano_forge
+			icon = giga_birch_ktisma_manager
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_ktisma_manager_name_swaps
+			drone = @yes
+			drone_affix = "_drone" # gestalt version
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		can_think = yes
+		owner = { is_fallen_empire = no }
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	planet_modifier = {
+		giga_birch_ktisma_jobs_bonus_workforce_mult = @insula_manager_general_bonus
+	}
+
+	inline_script = jobs/birch/giga_birch_ktisma_manager_effect_swaps
+
+	resources = {
+		category = planet_giga_birch_insula_managers
+		produces = { 
+			engineering_research = 2.5
+		}
+		upkeep = {
+			minerals = 6
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_ktisma_manager_resource_swaps
+			drone = @yes
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_ktisma_worker_drone = {
+	category = simple_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_resource_silo
+			icon = giga_birch_ktisma_worker
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_giga_birch_insula_workers
+		produces = {
+			alloys = 0.5
+		}
+		upkeep = {
+			trigger = {
+				industrial_jobs_are_catalytic_trigger = no
+			}
+			minerals = 1
+		}
+		upkeep = {
+			trigger = {
+				industrial_jobs_are_catalytic_trigger = yes
+			}
+			food = 1.5
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { country_uses_consumer_goods = no }
+			}
+			alloys = 0.5
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { country_uses_consumer_goods = no }
+				industrial_jobs_are_catalytic_trigger = no
+			}
+			minerals = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { country_uses_consumer_goods = no }
+				industrial_jobs_are_catalytic_trigger = yes
+			}
+			food = 1.5
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = { country_uses_consumer_goods = yes }
+			}
+			consumer_goods = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { country_uses_consumer_goods = yes }
+				industrial_jobs_are_catalytic_trigger = no
+			}
+			minerals = 1
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { country_uses_consumer_goods = yes }
+				industrial_jobs_are_catalytic_trigger = yes
+			}
+			food = 1.5
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_simple_drone_weight
+		EXTRA_WEIGHT_MOD = "mult = @insula_worker_weight"
+	}
+
+	inline_script = jobs/automodding_priority_alloys
+}
+
+##################################################################################################
+# Physma
+
+giga_birch_physma_manager_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_institute
+			icon = giga_birch_physma_manager
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_physma_manager_name_swaps
+			drone = @yes
+			drone_affix = "_drone" # gestalt version
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		can_think = yes
+		owner = { is_fallen_empire = no }
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	planet_modifier = {
+		giga_birch_physma_jobs_bonus_workforce_mult = @insula_manager_general_bonus
+	}
+
+	inline_script = jobs/birch/giga_birch_physma_manager_effect_swaps
+
+	resources = {
+		category = planet_giga_birch_insula_managers
+		produces = { 
+			society_research = 2.5
+		}
+		upkeep = {
+			trigger = { 
+				exists = owner 
+				owner = {
+					is_hive_empire = yes
+					is_lithoid_empire = no
+				}
+			}
+
+			food = 6
+		}
+		upkeep = {
+			trigger = { 
+				exists = owner 
+				owner = {
+					is_hive_empire = yes
+					is_lithoid_empire = yes
+				}
+			}
+
+			minerals = 6
+		}
+		upkeep = {
+			trigger = { 
+				exists = owner 
+				owner = { is_machine_empire = yes } 
+			}
+
+			energy = 6
+		}
+		inline_script = {
+			script = jobs/birch/giga_birch_physma_manager_resource_swaps
+			drone = @yes
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = @insula_manager_weight"
+	}
+
+	inline_script = jobs/automodding_priority_research
+}
+
+giga_birch_physma_worker_drone = {
+	category = simple_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = holding_park_ranger_lodge
+			icon = giga_birch_physma_worker
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_giga_birch_insula_workers
+		produces = {
+			unity = 1
+		}
+
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_robot_empire = no
+					is_lithoid_empire = no
+				}
+			}
+			food = 1
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_robot_empire = no
+					is_lithoid_empire = yes
+				}
+			}
+			minerals = 1
+		}
+		produces = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_robot_empire = yes
+				}
+			}
+			energy = 1
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_simple_drone_weight
+		EXTRA_WEIGHT_MOD = "mult = @insula_worker_weight"
+	}
+
+	inline_script = jobs/automodding_priority_unity
+}
+
+##################################################################################################
+# Other
+
+giga_birch_origin_trader_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_luxury_residence
+			icon = clerk
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = {
+		can_think = yes
+	}
+
+	# pop_modifier = {
+	# 	pop_housing_usage_add = -1
+	# }
+
+	resources = {
+		category = planet_jobs_productive
+		produces = {
+			trade = 10
+		}
+		upkeep = {
+			trigger = {
+				event_target:giga_birch_expedition_2_country_@planet = {
+					is_lithoid_empire = no
+				}
+			}
+			food = 2
+		}
+		upkeep = {
+			trigger = {
+				event_target:giga_birch_expedition_2_country_@planet = {
+					is_lithoid_empire = yes
+				}
+			}
+			minerals = 2
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+
+	inline_script = jobs/automodding_priority_trade
+}

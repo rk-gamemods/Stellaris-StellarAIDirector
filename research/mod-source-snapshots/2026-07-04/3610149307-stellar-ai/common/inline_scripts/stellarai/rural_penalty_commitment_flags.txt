@@ -1,0 +1,5 @@
+#modifier = { has_planet_flag = stellarai_industry_commitment_soft add = -250 }
+modifier = { planet = { has_planet_flag = stellarai_industry_commitment_hard } factor = 0.1 }
+
+#modifier = { has_planet_flag = stellarai_research_commitment_soft add = -250 }
+modifier = { planet = { has_planet_flag = stellarai_research_commitment_hard } factor = 0.1 }

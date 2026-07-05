@@ -1,0 +1,479 @@
+@void_birch_cost = 1000000
+@void_birch_maintenance = 1000
+@void_birch_cost_sr = 100000
+@void_birch_maintenance_sr = 0
+@void_birch_build_time = 3600
+@void_birch_insula_virtual_size = 0.5
+
+district_giga_birch_void_structure = {
+	base_buildtime = @void_birch_build_time
+	is_capped_by_modifier = yes
+	icon = district_void_birch_structure
+
+	show_on_uncolonized = { uses_district_set = acot_giga_void_sphere }
+
+	potential = { uses_district_set = acot_giga_void_sphere }
+
+	resources = {
+		category = planet_districts
+		cost = {
+			alloys = @void_birch_cost
+			sr_dark_matter = @void_birch_cost_sr
+			acot_sr_dark_energy = @void_birch_cost_sr
+		}
+		upkeep = {
+			sr_dark_matter = @void_birch_maintenance
+			acot_sr_dark_energy = @void_birch_maintenance
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = { always = yes }
+		giga_birch_district_insula_max = 1
+		giga_birch_district_insula_per_pop = 0.01
+	}
+	triggered_desc = {
+		trigger = { always = yes }
+		text = giga_birch_district_insula_tooltip
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		job_giga_birch_structure_manager_add = 1
+		job_giga_birch_structure_manager_per_pop = 0.01
+
+		job_acot_enforcer_per_pop = 0.06
+	}
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_gestalt = no } }
+	# 	text = job_giga_birch_structure_manager_effect_desc
+	# }
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_gestalt = no } }
+	# 	text = job_acot_enforcer_effect_desc
+	# }
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		job_giga_birch_structure_manager_drone_add = 1
+		job_giga_birch_structure_manager_drone_per_pop = 0.01
+
+		job_acot_enforcer_drone_per_pop = 0.06
+	}
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_gestalt = yes } }
+	# 	text = job_giga_birch_structure_manager_drone_effect_desc
+	# }
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_gestalt = yes } }
+	# 	text = job_acot_enforcer_drone_effect_desc
+	# }
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_acot_overlord_add = 1
+			job_acot_overseer_per_pop = 0.03
+		}
+	}
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_gestalt = no } }
+	# 	text = job_acot_overlord_effect_desc
+	# }
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_gestalt = no } }
+	# 	text = job_acot_overseer_effect_desc
+	# }
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+		modifier = {
+			job_acot_overlord_drone_add = 1
+			job_acot_overseer_drone_per_pop = 0.03
+		}
+	}
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_hive_empire = yes } }
+	# 	text = job_acot_overlord_drone_effect_desc
+	# }
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_hive_empire = yes } }
+	# 	text = job_acot_overseer_drone_effect_desc
+	# }
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+		modifier = {
+			job_acot_overlord_droid_add = 1
+			job_acot_overseer_droid_per_pop = 0.03
+		}
+	}
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_machine_empire = yes } }
+	# 	text = job_acot_overlord_drone_effect_desc
+	# }
+	# triggered_desc = {
+	# 	trigger = { exists = owner owner = { is_machine_empire = yes } }
+	# 	text = job_acot_overseer_droid_effect_desc
+	# }
+}
+
+district_giga_birch_void_orykta = {
+	base_buildtime = @void_birch_build_time
+	is_capped_by_modifier = yes
+	icon = district_void_birch_extraction
+
+	show_on_uncolonized = {
+		uses_district_set = acot_giga_void_sphere
+		has_district = district_giga_birch_void_structure
+	}
+
+	potential = {
+		uses_district_set = acot_giga_void_sphere
+		has_district = district_giga_birch_void_structure
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			alloys = @void_birch_cost
+			sr_dark_matter = @void_birch_cost_sr
+			acot_sr_dark_energy = @void_birch_cost_sr
+		}
+		produces = {
+			sr_dark_matter = 1000
+			acot_sr_dark_energy = 1000
+			acot_sr_stellarite = 1000
+		}
+	}
+
+	planet_modifier = {
+		giga_birch_district_insula_tag = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = { exists = owner owner = { is_virtual_empire = yes } }
+		giga_virtual_colony_size = @void_birch_insula_virtual_size
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+
+		job_acot_giga_fortress_operator_add = 1
+		job_acot_overseer_add = 2
+		job_acot_enforcer_add = 2
+
+		job_acot_voidsphere_forgeman_add = 50
+		job_acot_stellariteman_add = 25
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+
+		job_acot_giga_fortress_operator_drone_add = 1
+		job_acot_overseer_drone_add = 2
+		job_acot_enforcer_drone_add = 2
+
+		job_acot_voidsphere_forgedrone_add = 50
+		job_acot_stellaritedrone_add = 25
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+
+		job_acot_giga_fortress_operator_drone_add = 1
+		job_acot_overseer_droid_add = 2
+		job_acot_enforcer_drone_add = 2
+
+		job_acot_voidsphere_forgedrone_add = 75
+	}
+
+	on_queued 	= { giga_birch_district_queued   = { category = insula type = void_orykta } }
+	on_unqueued = { giga_birch_district_unqueued = { category = insula type = void_orykta } }
+	on_built 	= { giga_birch_district_built 	 = { category = insula type = void_orykta } }
+	on_destroy 	= { giga_birch_district_destroy  = { category = insula type = void_orykta } }
+}
+
+district_giga_birch_void_ktisma = {
+	base_buildtime = @void_birch_build_time
+	is_capped_by_modifier = yes
+	icon = district_void_birch_nidavellir
+
+	show_on_uncolonized = {
+		uses_district_set = acot_giga_void_sphere
+		has_district = district_giga_birch_void_structure
+	}
+
+	potential = {
+		uses_district_set = acot_giga_void_sphere
+		has_district = district_giga_birch_void_structure
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			alloys = @void_birch_cost
+			sr_dark_matter = @void_birch_cost_sr
+			acot_sr_dark_energy = @void_birch_cost_sr
+		}
+		upkeep = {
+			sr_dark_matter = @void_birch_maintenance
+			acot_sr_dark_energy = @void_birch_maintenance
+		}
+		produces = {
+			energy = 10000
+			minerals = 10000
+			alloys = 5000
+		}
+		produces = {
+			trigger = { owner = { country_uses_food = yes } }
+			food = 10000
+		}
+		produces = {
+			trigger = { owner = { country_uses_consumer_goods = yes } }
+			consumer_goods = 5000
+		}
+	}
+
+	planet_modifier = {
+		giga_birch_district_insula_tag = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = { exists = owner owner = { is_virtual_empire = yes } }
+		giga_virtual_colony_size = @void_birch_insula_virtual_size
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+
+		job_acot_giga_fortress_operator_add = 1
+		job_acot_overseer_add = 2
+		job_acot_enforcer_add = 2
+
+		job_acot_transmute_man_add = 5
+
+		job_acot_voidsphere_siloman_alloys_add = 30
+		job_acot_voidsphere_siloman_energy_add = 20
+		job_acot_voidsphere_siloman_minerals_add = 20
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				country_uses_food = yes
+			}
+		}
+		job_acot_voidsphere_siloman_energy_add = -5
+		job_acot_voidsphere_siloman_minerals_add = -5
+		job_acot_voidsphere_siloman_food_add = 10
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				country_uses_consumer_goods = yes
+			}
+		}
+		job_acot_voidsphere_siloman_alloys_add = -10
+		job_acot_voidsphere_siloman_goods_add = 10
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+
+		job_acot_giga_fortress_operator_drone_add = 1
+		job_acot_overseer_drone_add = 2
+		job_acot_enforcer_drone_add = 2
+
+		job_acot_transmute_drone_add = 5
+
+		job_acot_voidsphere_silodrone_alloys_add = 30
+		job_acot_voidsphere_silodrone_energy_add = 20
+		job_acot_voidsphere_silodrone_minerals_add = 20
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+
+		job_acot_giga_fortress_operator_drone_add = 1
+		job_acot_overseer_droid_add = 2
+		job_acot_enforcer_drone_add = 2
+
+		job_acot_transmute_drone_add = 5
+
+		job_acot_voidsphere_silodrone_alloys_add = 30
+		job_acot_voidsphere_silodrone_energy_add = 20
+		job_acot_voidsphere_silodrone_minerals_add = 20
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				country_uses_food = yes
+			}
+		}
+		job_acot_voidsphere_silodrone_energy_add = -5
+		job_acot_voidsphere_silodrone_minerals_add = -5
+		job_acot_voidsphere_silodrone_food_add = 10
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				country_uses_consumer_goods = yes
+			}
+		}
+		job_acot_voidsphere_silodrone_alloys_add = -10
+		job_acot_voidsphere_silodrone_goods_add = 10
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			has_global_flag = @giga_amb_flag
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		job_acot_voidsphere_siloman_alloys_add = -5
+		job_giga_megaengineering_overseer_acot_alpha_add = 5
+	}
+	triggered_planet_modifier = {
+		potential = {
+			has_global_flag = @giga_amb_flag
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		job_acot_voidsphere_silodrone_alloys_add = -5
+		job_giga_megaengineering_overseer_drone_acot_alpha_add = 5
+	}
+
+	on_queued 	= { giga_birch_district_queued   = { category = insula type = void_ktisma } }
+	on_unqueued = { giga_birch_district_unqueued = { category = insula type = void_ktisma } }
+	on_built 	= { giga_birch_district_built 	 = { category = insula type = void_ktisma } }
+	on_destroy 	= { giga_birch_district_destroy  = { category = insula type = void_ktisma } }
+}
+
+district_giga_birch_void_physma = {
+	base_buildtime = @void_birch_build_time
+	is_capped_by_modifier = yes
+	icon = district_void_birch_matrioshka
+
+	show_on_uncolonized = {
+		uses_district_set = acot_giga_void_sphere
+		has_district = district_giga_birch_void_structure
+	}
+
+	potential = {
+		uses_district_set = acot_giga_void_sphere
+		has_district = district_giga_birch_void_structure
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			alloys = @void_birch_cost
+			sr_dark_matter = @void_birch_cost_sr
+			acot_sr_dark_energy = @void_birch_cost_sr
+		}
+		upkeep = {
+			sr_dark_matter = @void_birch_maintenance
+			acot_sr_dark_energy = @void_birch_maintenance
+		}
+		produces = {
+			physics_research = 2500
+			society_research = 2500
+			engineering_research = 2500
+		}
+	}
+
+	planet_modifier = {
+		giga_birch_district_insula_tag = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = { exists = owner owner = { is_virtual_empire = yes } }
+		giga_virtual_colony_size = @void_birch_insula_virtual_size
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+
+		job_acot_giga_fortress_operator_add = 1
+		job_acot_overseer_add = 2
+		job_acot_enforcer_add = 2
+
+		job_acot_voidsphere_labman_add = 75
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_hive_empire = yes }
+		}
+
+		job_acot_giga_fortress_operator_drone_add = 1
+		job_acot_overseer_drone_add = 2
+		job_acot_enforcer_drone_add = 2
+
+		job_acot_voidsphere_labdrone_add = 75
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_machine_empire = yes }
+		}
+
+		job_acot_giga_fortress_operator_drone_add = 1
+		job_acot_overseer_droid_add = 2
+		job_acot_enforcer_drone_add = 2
+
+		job_acot_voidsphere_labdrone_add = 75
+	}
+
+	on_queued 	= { giga_birch_district_queued   = { category = insula type = void_physma } }
+	on_unqueued = { giga_birch_district_unqueued = { category = insula type = void_physma } }
+	on_built 	= { giga_birch_district_built 	 = { category = insula type = void_physma } }
+	on_destroy 	= { giga_birch_district_destroy  = { category = insula type = void_physma } }
+}

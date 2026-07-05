@@ -1,0 +1,68 @@
+# Rebased on Stellaris 4.4.3 (Pegasus).
+
+building_stronghold = {
+	base_buildtime = 240
+	position_priority = 100
+	can_be_ruined = no
+	exempt_from_ai_planet_specialization = no
+
+	category = army
+
+	building_sets = {
+		government
+		fortress
+	}
+
+	potential = {
+		exists = owner
+		NOT = { has_modifier = resort_colony }
+		owner = { is_wilderness_empire = no } # see 'building_planetary_carapace'
+	}
+
+	allow = {
+		exists = owner
+		OR = {
+			has_carrier_flag = ignore_ai_building_limitations
+			owner = {
+				is_ai = no
+			}
+
+			# AI is allowed to build up to two of these unless they have a fortress zone. (This can result in three under certain upgrade sequences.)
+			has_any_fortress_zone = yes
+			AND = {
+				num_buildings = { type = building_stronghold value < 2 }
+				num_buildings = { type = building_fortress value < 2 }
+			}
+		}
+	}
+
+	resources = {
+		category = planet_buildings_strongholds
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = volatile_motes
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	prerequisites = {
+		"tech_planetary_defenses"
+	}
+	show_tech_unlock_if = {
+		is_wilderness_empire = no
+	}
+
+	inline_script = {
+		script = jobs/soldiers_add
+		AMOUNT = @building_static_jobs
+	}
+
+	upgrades = {
+		building_fortress
+	}
+}

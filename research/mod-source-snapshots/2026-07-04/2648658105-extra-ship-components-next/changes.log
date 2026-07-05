@@ -1,0 +1,493 @@
+>>> 22.11.2021
+- Initial public release.
+
+>>> 23.11.2021
+- Changed scripted trigger that determines which machine empires can learn basic psionic techs.
+    - Now it's any that has 'psionic' pops that aren't purged or enslaved.
+    - In theory, this will let modded non-Servitor, non-Assimilator machine empires research psionic techs.
+- Reduce rare crystal upkeep costs of crystalline weapons by 50%.
+- Nanite-Augmented Dragonscale Armor no longer requires the empire to be able to research advanced nanite technologies.
+
+>>> 23.11.2021
+- Fix missing OR in triggering conditions of event that registers space dragon kills.
+
+>>> 24.11.2021
+- Move strikecraft-related variables into a separate file for easier overwriting.
+- Move weapon ranges into variables for easier overwriting.
+- Move missile speed into variables for easier overwriting.
+- Fix issue with X-slot turrets for explosive, biological and nanite weapons.
+
+>>> 26.11.2021
+- Moved rare resource upkeep from zro distiller jobs to the zro distillery building. Rare resource cost of the zro distillery building has been increased.
+- Improved Crystal Farm no longer has rare crystals upkeep since that makes no sense anymore.
+- Empires that do not meet requirements for advanced biological/nanite/psionic research are now allowed to research up to 5 levels of repeatables for those weapon types.
+    - For empires that do meet those requirements, the repeatables are uncapped.
+- Fix Psionic Reinforcement icon.
+
+>>> 27.11.2021
+- Add basic support for "Machine & Robot Expansion".
+- Empires with 'Here Be Dragon' origin and empire that kill the Sky Dragon can now create sky dragon hatchling via the Dragon Hatchery.
+- Adjust cost of cloned dragons to be closer to vanilla.
+
+>>> 04.12.2021
+- Killing The Elder One dimensional horror summoned by 'The Broken Gates' archaeological site now also grants access to the Horror Armor and the Extradimensional Spike.
+- Fix wrong tech cost for tier 2 jump drive.
+- Fix typo in mod menu crisis tooltip.
+
+>>> 05.12.2021
+- Fix some localisation issues.
+
+>>> 31.01.2022
+- Fix tesla bombers icon.
+
+>>> 23.02.2022
+- Update for Stellaris 3.3
+- Update economic plans for AI. ESC economic plan no longer overwrites vanilla but complements it instead.
+- Give repair drones component a boost to bring it more in-line with vanilla's new regenerative tissue.
+- Integrate Chinese localisation by FlantingCort.
+
+>>> 06.03.2022
+- Add additional country flags that other mods can set in order to give player access to special component types:
+    - ESC_COUNTRY_FLAG_mod_allow_cybernetic_amoeba
+    - ESC_COUNTRY_FLAG_mod_allow_bioaugmented_amoeba
+    - ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_biological_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_basic_biological_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_advanced_biological_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_crystalline_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_reverse_engineer_psionic_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_basic_psionic_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_advanced_psionic_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_advanced_nanite_weapons
+    - ESC_COUNTRY_FLAG_mod_allow_tesla_weapons
+
+>>> 09.03.2022
+- Allow construction of the mantle mining facility on Planetary Stations' Molten Station colonies.
+- Revert logic change to AI economic plans: apparently complementing plans do not work.
+
+>>> 30.03.2022
+- Fix gray goo torpedoes being the same as their precurors nanite torpedoes stat-wise.
+
+>>> 13.05.2022
+- Update for Stellaris 3.4
+- Add support for ACoT defines.
+
+>>> 20.05.2022
+- Fix Iron Curtain Point Defense icon.
+- Update armies' code.
+- Add files for Japanese and Korean localisation. All text strings are in English, though...
+
+>>> 24.05.2022
+- Fix armies.
+
+>>> 18.06.2022
+- Corporate Dominion empires can now use Mercenary strikecraft as was intended.
+
+>>> 20.07.2022
+- Update description of the Mantle Mining Facility.
+- Add support for Wiirlak Additional Civics & Origins
+
+>>> 20.08.2022
+- Fix Matter Annihilator tech cost
+
+>>> 21.09.2022
+- Update for Stellaris 3.5
+- Updated economic plans
+- Add custom armor and shield components for the Automated Dreadnought (needs global ship designs overwrites to show up)
+
+>>> 30.10.2022
+- Typo fix in localisation.
+
+>>> 29.11.2022
+- Update for Stellaris 3.6
+- Rebalance weapons and utility components for the new environment.
+- Advanced nanite components are now accessible to synthetically-ascended regular empires and machine-interfaced hive minds.
+- Crystal Shard Thrower is now a tier 2 tech.
+- Revamped crystalline X-slot weapon progression. Added new 'basic' crystalline X-slot weapon that can be researched as soon as spinal-mount battleship sections are unlocked.
+- 'Orbital Power Station' technology now also increases power production of starbase facilities.
+- Crystal farmers are now a bit less overproductive.
+
+>>> 30.11.2022
+- Fix tech reverse-engineering scripted effect being unaware of changes to the crystalline weapons' subtree.
+
+>>> 04.12.2022
+- Fix missing damage-to-hull modifier for laser weapons.
+- Further adjustments to repair drones.
+- Fix cyclonic shields' regeneration being a bit more powerful than intended.
+
+>>> 05.12.2022
+- Update torpedoes' balance.
+- Update strikecraft and missiles' hp/armor/shield values.
+
+>>> 05.01.2023
+- Adjust plasma cannons' damage.
+
+>>> 15.01.2023
+- Adjust replacement matter disintegrators' ranges.
+- Advanced nanite technology gate for machine empires updated.
+- Fix missiles' accuracies.
+
+>>> 28.01.2023
+- Fix Improved Flak Battery icons.
+
+>>> 14.03.2023
+- Update for Stellaris game version 3.7
+- Quantum Computation Node now also increases output of all researchers on the planet.
+- Advanced String Sensors, Psionic Sensors and Precursor Sensor Arrays now have minor stealth detection ability.
+- Fix Nanite Thought Matrix torpedo behavior.
+- Fix Typhoon and Hurricane missile ranges.
+- Finally add in support for Realistic Ships Toxoid shipset.
+
+>>> 14.03.2023
+- Update Chinese localisation.
+
+>>> 02.04.2023
+- Add strategic resources trickle for mercenary enclaves to allow them construction of ships with advanced components.
+
+>>> 09.05.2023
+- Update for Stellaris game version 3.8
+- Add additional tags to weapons.
+- Fix possible bug with NSC titan auras due to scripted variables issues.
+- Fix possible bug Wiirlak ship classes' components due to scripted variables issues.
+
+>>> 13.05.2023
+- Update NSC reactors for the new mod version
+
+>>> 24.06.2023
+- Reality Eraser now uses intended set of damage modifiers instead of copying those from lower-tier matter disintegrators.
+- Reality Eraser is now tagged as weapon_type_space_fauna since it's secondary "predecessor" Null-Void Beam has it as well.
+- Add artillery-role Nanite Thought Matrix computer for frigates to match vanilla.
+- Fix localisation error for Small Shredder Autocannon.
+
+>>> 01.07.2023
+- Add advanced archeotech weapon components.
+- Add advanced archeotech utility components.
+
+>>> 03.07.2023
+- Buff Shroud Strike and Shroud Wrath weapons.
+- Update Chinese localisation.
+
+>>> 16.07.2023
+- Add support for Great Khan Expanded mod
+
+>>> 03.08.2023
+- Auxiliary maneuver thrusters are now limited to 1 per ship.
+- Fix advanced archaeotech missiles not having armor penetration.
+
+>>> 07.09.2023
+- Update for Stellaris version 3.9
+
+>>> 03.10.2023
+- Update cruiser reactors for NSC3
+- Update some other reactor values for NSC3
+
+>>> 16.11.2023
+- Update for Stellaris version 3.10
+- Advanced archaeotech armor and shields now gain extra shield regen speed in addition to extra shields when archaeotech Ascension Perk is taken.
+- Update ESC-Unbidden crisis to follow same spawn rules as the vanilla one (no pulsar / binary system spawning).
+- Move code to check whether ESC shield is psionic or not into a separate scripted trigger.
+
+>>> 21.11.2023
+- Add support for Defense Fortress mod
+
+>>> 27.11.2023
+- Update for better NSC3 support
+
+>>> 27.02.2024
+- Update for Stellaris version 3.11
+- Grand Research Initiative now has Colonial Centralization, Multidimensional Studies and Self-Evolving Logic techs as prerequisites due to changes in vanilla techs.
+- Culture Nexus (or its equivalents), Advanced Materials Laboratory and Technology Institute now have only Grand Research Initiative as their tech prerequisite.
+- Gravity Manipulation Techniques now requires Tachion Sensors tech as a prerequisite due to changes in vanilla techs.
+- Dragon hatchery no longer requires Secrets of Life tech as a prerequisite due to changes in vanilla techs.
+- Advanced Materials now has only Grand Research Initiative as its tech prerequisite.
+- Add support for Payback Warship.
+- Other minor updates and fixes.
+
+>>> 03.04.2024
+- Fix missing weapon tags
+
+>>> 20.04.2024
+- Fix localisation error for Temporal Displacer.
+- Fix issues with Machines & Robot Expansion empires not always getting access to psionic components when they should.
+
+>>> 22.04.2024
+- Experimental fix to lag on pirate spawning.
+
+>>> 07.05.2024
+- Update for Stellaris 3.12
+- Add support for new shipsets with Realistic Ships.
+- Add support for cosmogenesis crisis and synth queen country_type.
+- Mod menu v2.0
+
+>>> 18.05.2024
+- Adjust strikecraft engagement ranges.
+- Buff Structural Reinforcement and Psionic Reinforcement auxiliary components.
+
+>>> 20.05.2024
+- Add archaeotech control option to the mod menu.
+
+>>> 13.07.2024
+- Fix missing Nanite Interdictor support.
+
+>>> 11.08.2024
+- Add cosmo_crisis_titan as valid ship_size for titan auras.
+- Dreadnought PLR support.
+
+>>> 12.09.2024
+- Updated for Cosmic Storms
+- Fix a bug that caused trigger event for Machine empires' psionics special project to fire more than once.
+- Update Chinese localisation.
+
+>>> 29.10.2024
+- Updated for Stellaris 3.14
+
+>>> 17.11.2024
+- Rearrange computers in the file to at least reduce the number of fake rows produced in the new UI.
+
+>>> 05.12.2024
+- Add biological components for all domesticated space fauna.
+- Add crystalline weapons for crystalline domesticated space fauna.
+- Add cloud lightning weapon for all domesticated space fauna.
+- Tweak ESC economic plan so that - hopefully - AI empires have enough food production to hatch space creatures.
+- Fix wrong upgrades_to for Juggernaut point defense.
+- Fix description of bio-material armor.
+
+>>> 05.01.2025
+- Add 'Dead Hand Switch: Kill Command' and 'Dead Hand Switch: Annihilate Command' aux components that mimic effects of Catalytic Bladded (damage enemy on death) for normal ships.
+- Add 'Dead Hand Switch: Repair Ally Command' and 'Dead Hand Switch: Support Ally Command' aux components that mimic effects of Restorative Enzymes (heal allied ship on death) for normal ships.
+- Add 'Nanite Reconstruction Beam' aux component that allows ships to repair themselves by damaging enemies.
+
+>>> 11.01.2025
+- Add scripted variables to indicate that the mod is present.
+- Add Vengeance Sections Expanded and Kurosections Expanded support.
+- Update Chinese localisation.
+- Housekeeping for reactor and thruster components.
+
+>>> 05.04.2025
+- Updated for Stellaris 3.99.7 beta
+- Technology Institute, Advanced Materials Laboratory and Culture Nexus (or substitutes) have had their influence production reduced to 0.25 per month.
+- Central Research Bureau now produces 0.25 infulence per month.
+- Adjusted job count for gestals in several research buildings.
+- Strategic resource jobs have been deprecated. Buildings that previously hosted them now make standard jobs produce strategic resources and increase their upkeep accordingly.
+- Adjust economic plan. It is now fully implemented as subplans for basic economic plan (vanilla).
+- Futher code clean up for reactors and their inlines.
+
+>>> 06.05.2025
+- Updated for Stellaris 4.0.*
+- Add building_sets for all ESC buildings.
+- Nanite reconstructor is now a weapon rather than auxiliary component. And provides ship repairs using on-hit mechanic.
+- Psionic weapons now have versions for spaceborn creatures.
+- Weapons of special types now have additional effects:
+--- biological weapons apply armor hardening and small movement speed debuff
+--- crystalline weapons have a chance to deal additional damage
+--- gravitic weapons apply movement speed penalty
+--- nanite weapons cause DoT damage to armor
+--- psionic weapons apply accuracy debuff
+--- tesla weapons apply fire rate debuff
+- Use even more PDX code magic.
+
+>>> 07.05.2025
+- Fix bug with starbase and deep space citadel components (typo in trigger).
+- Fix voidspawn missile being unavailable for bioships
+- Fix armor dehardening effect being more powerful than intended.
+
+>>> 09.05.2025
+- Add ESC-tier sensors for domesticated space fauna and bioships.
+- Add ESC-tier FTL-drives for domesticated space fauna and bioships.
+- Add ESC-tier thrusters for domesticated space fauna and bioships.
+- Add ESC-tier reactors for bioships.
+
+>>> 09.05.2025
+- Fix issues with jobs created by Central Research Bureau, Watcher of Eternity and Culture Nexus.
+
+>>> 11.05.2025
+- Enable advanced matter disintegrators, tiyanki beam cannons and voidspawn missiles for bioships.
+- Add vanilla and vanilla-adjacent ESC-tier energy weapons for domesticated space fauna and bioships.
+- Psionic weapons are now fully usable on bioships.
+- Add alternate graphics for psionic torpedoes and strikecraft for bioships.
+- Update component costs for bioship versions of biological, crystalline and psionic weapons.
+- Fix a bug with certain torpedo-sized weapons being available in the mauler G slot.
+- Enable most armors for domesticated space fauna and bioships.
+
+>>> 13.05.2025
+- Fix strategic resources jobs. Again.
+- Update XL armors for bioships.
+- Change ai-weight code to generalized inline for armors.
+- Add shield components for domesticated space fauna and bioships.
+- Update list of shields that (don't) work with stealth to include domesticated space fauna and bioships versions.
+- Empires using bioships are (temporarily) allowed to research tier 4 and 5 reactor boosters even with NSC enabled.
+- Fix duplicated reactors for NSC strikecruisers, carriers and exploration ships.
+
+>>> 17.05.2025
+- Add shielding armor components for domesticated space fauna and bioships.
+- Add archaeo components for domesticated space fauna and bioships.
+- Fix issues with some juggernaut reactors' cost.
+
+>>> 21.05.2025
+- Add missile weapons for domesticated space fauna and bioships.
+- Add amoeba strikecraft and scourge strikecraft for domesticated space fauna.
+- Adjust prerequisites for plasma missile technologies to account for the fact that bioship empires do not have access to regular missiles.
+- Adjust potentials of some missile and strikecraft technologies to ensure bioship empires have access only to technologies they can actually use.
+- Adjust reactor power outputs and re-do their inline_script (again).
+- Fix issues with some archaeotech component costs.
+- Fix pop count triggers.
+
+>>> 25.05.2025
+- Add point-defense weapons for domesticated space fauna and bioships.
+- Add tooltip to standard bioship armor componentss to show that they do possess some armor regeneration.
+- Update resource costs for archaeotech components.
+- Update resource costs for armors components.
+- Update resource costs for biological components.
+- Fix missions weapon_type_space_fauna tag for biological weapons for domesticated space fauna.
+- Fix a bug that caused archaeo PD weapons to be available for weaver bioships.
+- Fix a bug with L and XL nanite-augmented dragonscale armor for domesticated space fauna being allowed only for countries using bioships.
+
+>>> 29.05.2025
+- Add Wave-Motion Guns, Chrono-Vortex Cannons and Arc-en-Ciel Cannon for domesticated space fauna and bioship.
+- Add kinetic weapons for domesticated space fauna and bioship.
+- Add psionic torpedoes and strikecraft for domesticated space fauna, update resource costs for psionic components.
+- Update resource costs for sensors, thrusters, ftl dirves and combat computers.
+- Update resource costs for crystalline components.
+- Update resource costs for energy weapons.
+- Fix Stinger tier 4 swarmer missiles being assigned to wrong component set.
+- Housekeeping.
+
+>>> 01.06.2025
+- Add tier 2 and 3 Extradimensional weapons for domesticated space fauna.
+- Add leviathan components for domesticated space fauna and bioships.
+- Add advanced Energy Syphons.
+- Allow construction of Stellar Energy Towers in generator zones.
+- Fix a bug with nanite weapon on-hit effects.
+- Update resource costs for missile weapons.
+- Update resource costs for strikecrafts.
+
+>>> 05.06.2025
+- Add Tesla weapons for domesticated space fauna and bioships.
+- Add Nanite Thought Matrix computers for bioships.
+- Add Gigapredator Instincts Neural Implant 'computer' for bioships (Automated Dreadnought Protocols computer equivalent).
+- Fix AI having a wrong conditions on Reprocessing Plant technology weights.
+- Update resource costs for gravitic weapons.
+- Update resource costs for nanite weapons.
+- Fix some errors in localisation.
+
+>>> 08.06.2025
+- Add bioship versions of tier 3 afterburners, repair drones, advanced auxiliary fire control and standardtized warheads.
+- Adjust technology prerequisites to allow empires using bioships access to repair drones technology.
+- Add bioship versions for vanilla tier 1 and tier 2 afterburners and auxiliary fire control.
+- Allow ESC titan auras for bioships.
+- Fix missing weapon tags.
+
+>>> 13.06.2025
+- Add advanced mandibles.
+- Add nanite weapons for domesticated space fauna and bioships.
+- Adjust technology prerequisites for nanite torpedoes to allow bioship empires access to nanite bio-torpedoes.
+
+>>> 16.06.2025
+- Add gravitic weapons for domesticated space fauna and bioships.
+- Buff gravitic torpeodoes slightly as they were a little weaker than other special-weapon-type torpedoes.
+- Adjust technology prerequisites for gravitic torpedoes to allow bioship empires access to them.
+
+>>> 12.07.2025
+- Add certain auxiliary components that were previously missing for the bioship empires.
+- Update buildings.
+- Implement alternative technology icons, titles and descriptions for bioship-using empires.
+- Add overwrites for certain vanilla technology icons.
+- Add global ship designs overwrites for the hive FE overwrites. (submod)
+- Some localisation fixes.
+
+>>> 19.08.2025
+- Update for the new version of the base game.
+- Update aux reactors to give percentage-based boost rather than flat amount of power.
+- Housekeeping with technologies.
+- Remove dummy ship_sizes since they are no longer needed.
+- Replace remaining size_restriction blocks with potential blocks.
+- Fixed a bug that prevented hive FE starbases from equipping their modded combat computers.
+
+>>> 31.08.2025
+- Update cruiser/battleship/titan reactors to allow different output depending on presence of active NSC3 mod.
+- Retire dedicated NSC3 cruiser/battleship/titan reactors (legacy support).
+- Allow more freedom with M-slot bioship swarmer missiles.
+- Fix a bug with a few thruster costs being missing.
+- Fix certain bug with FE-specific starbase combat computers and adjust their modifiers.
+
+>>> 01.09.2025
+- Cosmogenesis battlecruiser nanite thought matrix fix.
+- Add Korean localisation by @The Engineer Pop.
+
+>>> 08.09.2025
+- Try-fix a bug that caused bioship empires to not build fleets properly.
+
+>>> 22.09.2025
+- Update for the new version of Stellaris.
+- Update building icons.
+
+>>> 04.10.2025
+- Try-fix advanced psionic weapons research-permission trigger.
+
+>>> 26.11.2025
+- Update for Stellaris 4.2
+- Update scripted triggers that determine access to biological, psionic and nanite weapon technologies and amoeba upgrades.
+- Add global cost and upkeep multiplier scripted variables for easier component cost overwrites.
+- Some buffs to Reinforced Crystalline Plating.
+- Update vanilla component overweites (submod).
+
+>>> 07.12.2025
+- Add advanced versions of the Lens Flare Paralyzer, Reshaping Projectile Accelerators and Infernal armors.
+- Adjust technology prerequisites for unlocking some of the special weapons tech paths.
+- Add cheat menu for singleplayer. Cheat menu can be accessed via decision on the captial world (only in singleplayer).
+- Mantle Mining Facility can now be constructed on volcanic worlds if such an option is enabled in cheat menu.
+- Update Realistic Ships support.
+
+>>> 19.03.2026
+- Update for Stellaris 4.3
+- Implement armor hardening for armor components. Implement shield hardening for shield components.
+- Implement damage reduction for advanced crystalline armor.
+- Implement collateral damage for titanic weapons and select XL weapons.
+- Implement several Shockwave weapons (T slot, short range but hit all enemies within).
+- Implement advanced psionic disruptors and psionic lightning weapons. Update icons for vanilla base versions of psionic disruptors and psionic lightning weapons.
+- Update size_damage_factor for ESC weapons.
+- Add military_power_multiplier for ESC weapons that need it.
+- Add bonus damage against starbases and orbital bombardment bonus to relevant ESC combat computers.
+- Rework Mantle Mining Facility:
+--- Now can be built on any natural planet.
+--- Lower production bonuses to compensate for the above.
+--- Now provides some physics and engineering researcher jobs.
+--- Building Mantle Mining Facility now always 'costs' 1 district.
+--- Mantle Mining Facility now adds additional production-bonus deposits instead of just giving lumps of random resources.
+- Quantum Computation Node now provides research jobs automation.
+- Update crisis events to avoid breaks in the re-invasion loop.
+
+>>> 05.04.2026
+- Update torpedoes' range.
+- Buff effects of Phase-Shifted Ammunition technology.
+- Update English localisation based on @Swassie's suggestions.
+
+>>> 12.04.2026
+- Fix windup for Tech-Synthetic Ruinator and Advanced Tech-Synthetic Ruinator.
+- Enforce limit of 1 on enemy-damaging kill-switch aux components.
+- Enforce limit of 1 on ally-healing kill-switch aux components.
+
+>>> 03.05.2026
+- Update disruptors' damage multiplier vs shields.
+- Hardlight armor now also provides damage reduction.
+- Added crystal-core armors. These armors are intermediates between standard armors and crystalline armors with weaker bonuses from both branches.
+
+>>> 09.05.2026
+- Update reactors.
+
+>>> 17.06.2026
+- Update for Stellaris 4.4
+    - Arkship versions of titanic components.
+    - Update triggers for Arkships.
+- Restore retargeting range for torpedoes.
+- Add debuff effect to disruptors.
+
+>>> 20.06.2026
+- Update localisation.
+- Fix certain arkship modules not actually adding weapons.
+
+>>> 04.07.2026
+- Buff amenities from Culture Nexus and its equivalents.
+- Add Automated Dreadnought and Nanite Thought Matrix combat computers for Arkships.
+- Fix typo in component cost inline_script for nanite (creature) weapons.
+- Fix issues with arkship module costs.
+- Fix a localisation issue for advanced archaeo mass driver arkship module.

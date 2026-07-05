@@ -1,0 +1,5 @@
+NAND = {
+	exists = owner
+	owner = { is_ai = yes }
+	has_carrier_flag = stellarai_invalid_for_research_to_build
+}

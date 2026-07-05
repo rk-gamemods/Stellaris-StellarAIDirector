@@ -1,0 +1,23 @@
+### fix megastructures modifiers
+
+megastructures = {
+	use_for_ai_budget = yes
+	ai_use_parent_for_resources_upkeep = {
+		energy
+		consumer_goods
+	}
+	parent = country
+	modifier_category = megastructure
+
+    generate_mult_modifiers = {
+		cost
+        produces
+        upkeep
+	}
+	### apparently in 3.99.0-5 this no longer works and causes game to crash
+    # generate_add_modifiers = {
+	# 	cost
+	# 	produces
+	# 	upkeep
+	# }
+}

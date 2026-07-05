@@ -1,0 +1,508 @@
+﻿l_russian:
+
+### RUSSIAN LOCALIZATION
+# currently copies English localization
+
+############################################################
+###                    Dynamic Mod Menu                  ###
+############################################################
+
+esc_next_name_id: "Extra Ship Components §YNEXT§!"
+
+############################################################
+###                      Weapon Tags                     ###
+############################################################
+
+weapon_type_psionic: "§YPsionic§!"
+weapon_type_nanite: "§YNanite§!"
+weapon_type_biological: "§YBiological§!"
+
+esc_small: "Small"
+esc_medium: "Medium"
+esc_large: "Large"
+esc_extra_large: "Extra-large"
+
+############################################################
+###                        Deposits                      ###
+############################################################
+
+d_esc_large_borehole_1: "Abyssal Borehole"
+d_esc_large_borehole_1_desc: "A giant borehole in the planet's crust, plunging deep enough to tap precious resources from the mantle and core."
+
+d_esc_mantle_mineral_cluster: "Minerals Cluster"
+d_esc_mantle_mineral_cluster_desc: "A dense vein of high-grade minerals located deep within the planet's mantle, ripe for extraction by the Mantle Mining Facility."
+
+d_esc_mantle_alloy_plume: "Alloys Plume"
+d_esc_mantle_alloy_plume_desc: "A plume of molten alloys surging up from the planet's core into the upper mantle, ready to be siphoned by the Mantle Mining Facility."
+
+d_esc_mantle_exotic_gases_pocket: "Exotic Gases Pocket"
+d_esc_mantle_exotic_gases_pocket_desc: "A pressurized pocket of exotic gases trapped within the planet's upper mantle, accessible through the Mantle Mining Facility."
+
+d_esc_mantle_rare_crystal_cluster: "Rare Crystals Cluster"
+d_esc_mantle_rare_crystal_cluster_desc: "A sprawling cluster of rare crystals nestled within the planet's mantle, waiting to be claimed by the Mantle Mining Facility."
+
+d_esc_mantle_volatile_motes_cluster: "Molten Motes"
+d_esc_mantle_volatile_motes_cluster_desc: "Volatile motes suspended in a pocket of molten rock within the planet's upper mantle, extractable by the Mantle Mining Facility."
+
+d_esc_mantle_trade_value: "Pretty Crystals"
+d_esc_mantle_trade_value_desc: "Crystals of no industrial worth, yet prized by the wealthy for their radiance. The Mantle Mining Facility can extract them to meet the ever-growing demand for luxury goods."
+
+d_esc_mantle_living_metal: "Plume of Living Metal"
+d_esc_mantle_living_metal_desc: "A strange plume of molten metal that exhibits the behaviors of simple living organisms, hinting at applications for entirely new classes of self-mending materials."
+
+d_esc_mantle_immanis_colosseus: "Dead Colossus"
+d_esc_mantle_immanis_colosseus_desc: "The preserved corpse of a creature of staggering proportions, adrift in the planet's upper mantle, whose study promises to redefine our understanding of life itself."
+
+############################################################
+###                         Edicts                       ###
+############################################################
+
+edict_esc_mod_control_edict: "ESC NEXT Control Panel"
+edict_esc_mod_control_edict_desc: "Open ESC NEXT options menu"
+
+############################################################
+###                       Decisions                      ###
+############################################################
+
+decision_esc_mod_menu: "$edict_esc_mod_control_edict$"
+decision_esc_mod_menu_desc: "$edict_esc_mod_control_edict_desc$"
+
+decision_esc_mod_cheat_menu: "ESC NEXT Cheat Menu"
+decision_esc_mod_cheat_menu_desc: "Opens ESC NEXT cheat menu"
+
+decision_esc_clone_dragon: "Clone Ether Drake Hatchling"
+decision_esc_clone_dragon_desc: "Our scientists will attempt to clone the Ether Drake, producing a young hatchling pliable enough to bend to our will."
+
+decision_esc_clone_sky_dragon: "Clone Sky Dragon Hatchling"
+decision_esc_clone_sky_dragon_desc: "Our scientists will attempt to clone the Sky Dragon, producing a young drake bred for obedience and war."
+
+############################################################
+###                       Modifiers                      ###
+############################################################
+
+mod_weapon_type_psionic_weapon_damage_mult: "Psionic Weapon Damage"
+mod_weapon_type_psionic_weapon_fire_rate_mult: "Psionic Weapon Attack Speed"
+mod_weapon_type_nanite_weapon_damage_mult: "Nanite Weapon Damage"
+mod_weapon_type_nanite_weapon_fire_rate_mult: "Nanite Weapon Attack Speed"
+mod_weapon_type_biological_weapon_damage_mult: "Biological Weapon Damage"
+mod_weapon_type_biological_weapon_fire_rate_mult: "Biological Weapon Attack Speed"
+
+mod_planet_farmers_rare_crystals_produces_add: "£rare_crystals£ $rare_crystals$ from £job_farmer£ $job_farmer_plural$"
+mod_planet_farmers_minerals_upkeep_add: "£minerals£ $minerals$ Upkeep of £job_farmer£ $job_farmer_plural$"
+mod_planet_metallurgists_nanites_produces_add: "£nanites£ $nanites$ from £job_foundry£ $job_foundry_plural$"
+mod_planet_metallurgists_consumer_goods_upkeep_add: "£consumer_goods£ $consumer_goods$ Upkeep of £job_foundry£ $job_foundry_plural$"
+mod_planet_researchers_sr_zro_produces_add: "£sr_zro£ $sr_zro$ from £job_researcher£ $job_researcher_plural$"
+mod_planet_biologists_sr_zro_produces_add: "£sr_zro£ $sr_zro$ from £job_biologist£ $job_biologist_plural$"
+mod_planet_physicsts_sr_dark_matter_produces_add: "£sr_dark_matter£ $sr_dark_matter$ from £job_physicist£ $job_physicist_plural$"
+mod_planet_miners_alloys_upkeep_add: "£alloys£ $alloys$ Upkeep of £job_miner£ $job_miner_plural$"
+
+mod_esc_weapon_effect_healing: "Repairs some $HITPOINTS$ or $ARMOR$ when dealing damage to the targets"
+mod_esc_weapon_effect_critical_damage: "This weapon can sometimes deal critical hits that do increased damage to the target"
+
+############################################################
+###                         Armies                       ###
+############################################################
+
+esc_psionic_avatar_army: "§MPsionic Avatar§!"
+esc_psionic_avatar_army_desc: "A psionic entity of terrifying power, summoned from the §MShroud§! to wage war on behalf of those still bound to the material plane."
+
+esc_erasure_squad_army: "Erasure Squad"
+esc_erasure_squad_army_desc: "Elite operatives armed with weapons that unmake their targets at the subatomic level, leaving nothing behind."
+
+esc_eradicator_droids_army: "Eradicator Droid Army"
+esc_eradicator_droids_army_desc: "Mechanical warriors of terrible precision, equipped with weapons that erase their targets from the fabric of reality."
+
+esc_tesla_droids_army: "Tesla Droids"
+esc_tesla_droids_army_desc: "A machine army wreathed in arcing electricity, its tesla weapons cooking organic foes alive within their own armor."
+
+esc_tesla_troopers_army: "Tesla Troopers"
+esc_tesla_troopers_army_desc: "Shock infantry clad in heavy insulated armor, wielding tesla weapons that turn battlefields into killing floors of arcing current."
+
+esc_biohorror_army: "Bio-Horror Horde"
+esc_biohorror_army_desc: "Packs of genetically-engineered nightmares, guided remotely into battle where their savage instincts do the rest."
+
+############################################################
+###              Starbase Buildings & Modules            ###
+############################################################
+
+sm_esc_starbase_reactor: "Starbase Reactor"
+sm_esc_starbase_reactor_desc: "A colossal zero-point reactor whose output can sustain even the most power-hungry space installations."
+
+sm_esc_starbase_dm_orbital_plant: "Dark Matter Orbital Plant"
+sm_esc_starbase_dm_orbital_plant_desc: "A sprawling starbase facility devoted to £sr_dark_matter£ §Y$sr_dark_matter$§! production, its yields greatly amplified by proximity to a natural source such as a black hole."
+sm_esc_starbase_zro_orbital_plant: "Zro Orbital Plant"
+sm_esc_starbase_zro_orbital_plant_desc: "A specialized orbital facility that synthesizes £sr_zro£ §Y$sr_zro$§!, its output boosted considerably when a natural source lies nearby."
+sm_esc_starbase_nanite_factory: "Nanite Orbital Plant"
+sm_esc_starbase_nanite_factory_desc: "An orbital installation that breeds £nanites£ §Y$nanites$§! on an industrial scale, with productivity further increased by proximity to a natural nanite source."
+
+# Arkship defensive components : vanilla upgrades
+
+sm_esc_arkship_advanced_armor: "Improved Neutronium Armor Plating"
+sm_esc_arkship_advanced_armor_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With this new generation of armor plating, we can rest assured that only the fiercest assault has any chance to even damage them.\n"
+sm_esc_arkship_advanced_lm_armor: "Improved Regenerative Neutronium Armor Plating"
+sm_esc_arkship_advanced_lm_armor_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With this new generation of regenerative armor plating, we can rest assured that only the fiercest assault has any chance to even damage them.\n"
+sm_esc_arkship_advanced_crystal_armor: "Reinforced Crystalline Armor Plating"
+sm_esc_arkship_advanced_crystal_armor_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With this new generation of crystalline armor plating, we can rest assured that only the fiercest assault has any chance to even damage them.\n"
+
+sm_esc_arkship_advanced_shields: "Improved Hyper-Shield Arrays"
+sm_esc_arkship_advanced_shields_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure their continued survival. With this new generation of hyper-shield generators, our Arkships will be well-protected from any threats we may encounter on our journey through the dark void of space.\n"
+sm_esc_arkship_advanced_psi_shields: "Improved Psionic Shield Generators"
+sm_esc_arkship_advanced_psi_shields_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure their continued survival. With this new generation of psionic shield generators, our Arkships will be well-protected from any threats we may encounter on our journey through the dark void of space.\n"
+
+# Arkship defensive components : ESC components
+
+sm_esc_arkship_crystal_core_armor: "Crystal-Core Armor Plating"
+sm_esc_arkship_crystal_core_armor_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. By installing this new crystal-core armor plating, we will significantly increase the defensive capabilities of our Arkships, ensuring it can survive even the most hostile encounters in the interstellar void.\n"
+sm_esc_arkship_bio_armor: "Bio-Material Armor Plating"
+sm_esc_arkship_bio_armor_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. By installing this new bio-material armor plating, we will significantly increase the defensive capabilities of our Arkships, ensuring it can survive even the most hostile encounters in the interstellar void.\n"
+sm_esc_arkship_nanite_armor: "Nano-Material Armor Plating"
+sm_esc_arkship_nanite_armor_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. By installing this new nano-material armor plating, we will significantly increase the defensive capabilities of our Arkships, ensuring it can survive even the most hostile encounters in the interstellar void.\n"
+sm_esc_arkship_shielding_armor: "Shielding Armor Plating"
+sm_esc_arkship_shielding_armor_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. By installing this new shield-generating armor plating, we will significantly increase the defensive capabilities of our Arkships, ensuring it can survive even the most hostile encounters in the interstellar void.\n"
+sm_esc_arkship_hardlight_armor: "Hardlight Armor Plating"
+sm_esc_arkship_hardlight_armor_desc: "Having defeated the mightly Spectral Wraith, we gained insights into creation of hard light. An armor plating crafted from this new 'material' will grant our Arkships defensive capabilities beyond anything this galaxy has seen ever before.\n"
+sm_esc_arkship_horror_armor: "Dimensional Horror Armor Plating"
+sm_esc_arkship_horror_armor_desc: "Having defeated the mightly Dimensional Horror that once tried to invade this galaxy, we now possess the knowledge of materials that are out of this world. And by installing armor plating based on the incredibly-tough hide of the now-dead spaceborn leviathan, we will ensure that our Arkships will be to survive even the most hostile encounters in the interstellar void.\n"
+
+sm_esc_arkship_cyclonic_shields: "Cyclonic Shields Generator Arrays"
+sm_esc_arkship_cyclonic_shields_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure their continued survival. With the cyclonic shield generators, our Arkships will be well-protected from any threats we may encounter on our journey through the dark void of space.\n"
+sm_esc_arkship_dark_matter_shields: "Dark Matter Shield Generator Arrays"
+sm_esc_arkship_dark_matter_shields_desc: "Having studied precursor technologies, we have developed our own shields that utilize dark matter to create nigh-impenetrable barriers around our ships. And by installing these dark matter shields on our Arkships, we will ensure that they will be to survive even the most hostile encounters in the interstellar void.\n"
+
+# Arkship offensive components : vanilla upgrades
+
+sm_esc_arkship_hangar_bay_advanced: "Advanced Strikecraft Hangar Bays"
+sm_esc_arkship_hangar_bay_advanced_desc: "As the new generations of fighter crafts enter service, we best and most capable ones must be assigned the most important task of protecting our Arkships.\n"
+sm_esc_arkship_archaeo_hangar_bay_advanced: "Tech-Synthetic Strikecraft Hangar Bays"
+sm_esc_arkship_archaeo_hangar_bay_advanced_desc: "As the new generations of fighter crafts enter service, we best and most capable ones must be assigned the most important task of protecting our Arkships.\n"
+sm_esc_arkship_amoeba_hangar_bay_advanced: "Genetically-Engineered Amoeba Bays"
+sm_esc_arkship_amoeba_hangar_bay_advanced_desc: "Genetic manipulation has produced amoeba specimens whose combat capabilities are categorically beyond what any naturally occurring member of the species could achieve. The most powerful and loyal packs of these amoebas should be assigned to protect our Arkships.\n"
+sm_esc_arkship_laser_battery_advanced: "Advanced Laser Batteries"
+sm_esc_arkship_laser_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the latest generation of combat lasers, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_archaeo_laser_battery_advanced: "Tech-Syntheic Laser Batteries"
+sm_esc_arkship_archaeo_laser_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of tech-synthetic lasers, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_lance_battery_advanced: "Advanced Tachyon Lance Batteries"
+sm_esc_arkship_lance_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the latest generation of turret-based tachyon lances, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_particle_launcher_advanced: "Advanced Energy Launchers"
+sm_esc_arkship_particle_launcher_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the latest generation of energy launcher weapons, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_arc_emitter_battery_advanced: "Advanced Arc Cannon Batteries"
+sm_esc_arkship_arc_emitter_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the latest generation of turret-based arc emitters, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_mass_driver_battery_advanced: "Advanced Gauss Cannon Batteries"
+sm_esc_arkship_mass_driver_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of gauss cannons, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_kinetic_artillery_battery_advanced: "Advanced Kinetic Artillery Batteries"
+sm_esc_arkship_kinetic_artillery_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of kinetic artillery, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_mass_accelerator_advanced: "Advanced Giga-Cannon Batteries"
+sm_esc_arkship_mass_accelerator_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of large-scale mass accelerators, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_archaeo_mass_driver_battery_advanced: "Tech-Synthetic Mass Driver Batteries"
+sm_esc_arkship_archaeo_mass_driver_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of tech-synthetic mass drivers, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_archaeo_mass_accelerator_advanced: "Tech-Synthetic Artillery Batteries"
+sm_esc_arkship_archaeo_mass_accelerator_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of tech-synthetic artillery cannons, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_missile_battery_advanced: "Advanced Missile Batteries"
+sm_esc_arkship_missile_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of missiles, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_archaeo_missile_battery_advanced: "Tech-Synthetic Nano-Missile Batteries"
+sm_esc_arkship_archaeo_missile_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of tech-synthetic nano-missiles, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_swamer_missile_battery_advanced: "Advanced Swarmer Missile Batteries"
+sm_esc_arkship_swamer_missile_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of swarmer missiles, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_flak_battery_advanced: "Advanced Flak Batteries"
+sm_esc_arkship_flak_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of flak cannons, we can be assured that our Arkships are well-protected against enemy missiles and strike-crafts.\n"
+sm_esc_arkship_pd_battery_advanced: "Advanced Point-Defense Cannon Batteries"
+sm_esc_arkship_pd_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the new generation of point-defense cannons, we can be assured that our Arkships are well-protected against enemy missiles and strike-crafts.\n"
+sm_esc_arkship_archaeo_pd_battery_advanced: "Tech-Synthetic CIWS Batteries"
+sm_esc_arkship_archaeo_pd_battery_advanced_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the tech-synthetic CIWS, we can be assured that our Arkships are well-protected against enemy missiles and strike-crafts.\n"
+
+# Arkship offensive components : ESC components : standard
+
+sm_esc_arkship_amoeba_hangar_bay_cybernetic: "Cybernetically-Augmented Amoeba Bays"
+sm_esc_arkship_amoeba_hangar_bay_cybernetic_desc: "By utilizing extensive cybernetic augmentation, our researchers have managed to create specialized amoebas with incredible combat capabilities and unquestionable loyalty to their handlers. The most powerful and loyal packs of these amoebas should be assigned to protect our Arkships.\n"
+sm_esc_arkship_hangar_bay_mercenary: "Mercenary Squadron Hangar Bays"
+sm_esc_arkship_hangar_bay_mercenary_desc: "These elite mercenaries have proven their loyalty to more than the next paycheck. They have shown themselves to be loyal to our very people. And for that, we feel they can be assigned the most important job of protecting our Arkships.\n"
+sm_esc_arkship_chrono_cannons: "Chrono-Spatial Cannon Batteries"
+sm_esc_arkship_chrono_cannons_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the deadly chrono-spatial cannons, we provide our Arkship with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_voidspawn_missile_battery: "Voidspawn Missile Batteries"
+sm_esc_arkship_voidspawn_missile_battery_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. After an extensive study of the Voidspawn, we have created a weapon that can mimic its deadly power. A weapon that is perfect for our Arkships.\n"
+sm_esc_arkship_plasma_missile_battery: "Plasma Missile Batteries"
+sm_esc_arkship_plasma_missile_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the deadly plasma missiles, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_bio_missile_battery: "Acid Blob Bomb Batteries"
+sm_esc_arkship_bio_missile_battery_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And the symbiotic creatures capable of launching deadly acid blobs on our command are definitely the weapon we can use to arm our Arkships.\n"
+sm_esc_arkship_crystal_cannon_battery: "Crystal Shard Cannon Batteries"
+sm_esc_arkship_crystal_cannon_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the batteries of crystal shard cannons, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_gravitic_cannon_battery: "Microsingularity Cannon Batteries"
+sm_esc_arkship_gravitic_cannon_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the batteries of gravitational anomaly projectors, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_hangar_bay_gravitic: "Singularity Bomber Hangars"
+sm_esc_arkship_hangar_bay_gravitic_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With several wings of deadly singularity bomber strike-crafts, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_matter_annihilator_battery: "Matter Annihilator Batteries"
+sm_esc_arkship_matter_annihilator_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. Having defeated extradimensional invaders and captured their arcane technologies, we can now create weapons that will definitely keep anyone wishing harm upon our Arkships far away.\n"
+sm_esc_arkship_nanite_missile_battery: "Nanite Torpedo Batteries"
+sm_esc_arkship_nanite_missile_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the batteries of nanite torpedo launchers, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_nanite_reconstructor_battery: "Nanite Reconstructor Batteries"
+sm_esc_arkship_nanite_reconstructor_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the batteries of nanite reconstructors, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_hangar_bay_nanite: "Nanite Bomber Hangars"
+sm_esc_arkship_hangar_bay_nanite_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With several wings of deadly nanite bomber strike-crafts, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_enigmatic_cannon_battery: "Enigmatic Energy Discharger Batteries"
+sm_esc_arkship_enigmatic_cannon_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. We have solved the eternal riddle of the Enigmatic Fortress and gained access to its incredible technologies. And with those technologies, we've built cannons that will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_tiyanki_cannon_battery: "Energy Syphon Batteries"
+sm_esc_arkship_tiyanki_cannon_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. We have studies tiyanki extensively and managed to develop a weapon that mimics the power of their energy syphons. With these weapons, our Arkships will have a deterrent to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_psionic_cannon_battery: "Psionic Energy Projector Batteries"
+sm_esc_arkship_psionic_cannon_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the batteries of powerful psionic energy projectors, we will provide our Arkships with a deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_hangar_bay_psionic: "Psionic Interceptor Hangars"
+sm_esc_arkship_hangar_bay_psionic_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With several wings of deadly psionic interceptors, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_tesla_cannon_battery: "Tesla Coil Arrays"
+sm_esc_arkship_tesla_cannon_battery_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With the batteries of powerful Tesla coils, we will provide our Arkships with a deterrent weapon to keep those who wish harm upon them far away.\n"
+sm_esc_arkship_hangar_bay_tesla: "Tesla Interdictor Hangards"
+sm_esc_arkship_hangar_bay_tesla_desc: "The importance of Arkships for our civilization can't be overstated. And we must do everything in our power to ensure the continued survival of our Arkships. With several wings of deadly Tesla interdictors, we will provide our Arkships with a powerful deterrent weapon to keep those who wish harm upon them far away.\n"
+
+# Arkship offensive components : ESC components : spinal
+
+sm_esc_arkship_spinal_bio_missile_mount: "Acid Blob Storm Arkship Launchers"
+sm_esc_arkship_spinal_bio_missile_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And the massive symbiotic creatures capable of launching veritable storm of deadly acid blobs on our command are definitely the weapon grand enough to be the main armament of our Arkships.\n"
+sm_esc_arkship_spinal_crystalline_mount: "Arkship Crystalline Impaler"
+sm_esc_arkship_spinal_crystalline_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And the massive crystalline impaler is definitely the weapon grand enough to be the main armament of our Arkships.\n"
+sm_esc_arkship_spinal_particle_lance_mount: "Arkship Light of Destruction"
+sm_esc_arkship_spinal_particle_lance_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And the 'Light of Destruction' particle lance is definitely the weapon grand enough to be the main armament of our Arkships.\n"
+sm_esc_arkship_spinal_arc_cannon_mount: "Arkship Divine Thunder"
+sm_esc_arkship_spinal_arc_cannon_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And the 'Divine Thunder' arc cannon is definitely the weapon grand enough to be the main armament of our Arkships.\n"
+sm_esc_arkship_spinal_wave_motion_gun_mount: "Arkship Dimensional Wave Cannon"
+sm_esc_arkship_spinal_wave_motion_gun_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And the massive Dimensional Wave Cannon is definitely the weapon grand enough to be the main armament of our Arkships.\n"
+sm_esc_arkship_spinal_arc_en_ciel_mount: "Arkship Arc-en-Ciel Cannon"
+sm_esc_arkship_spinal_arc_en_ciel_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And the Arc-en-Ciel cannon is definitely the weapon grand enough to be the main armament of our Arkships.\n"
+sm_esc_arkship_spinal_arc_shockwave_mount: "Arkship Arc Shockwave Emitter"
+sm_esc_arkship_spinal_arc_shockwave_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. The Arc Shockwave emitters are an extremely potent weapon that will surely keep ill-wishers well away from our Arkships.\n"
+sm_esc_arkship_spinal_dark_matter_shockwave_mount: "Arkship Dark Matter Halo Blast Emitter"
+sm_esc_arkship_spinal_dark_matter_shockwave_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. And having developed the Dark Matter Halo Blast cannon based the technologies we've studied from the precursor civilization, we have the weapon to ensure no one is foolish enough to approach our Arkships with ill intent.\n"
+sm_esc_arkship_spinal_extradimensional_mount: "Arkship Matter Annihilators"
+sm_esc_arkship_spinal_extradimensional_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. We have defeated invaders from parallel dimension, and now possess the mighty matter annihilators to ensure the safety of our Arkships, at gunpoint.\n"
+sm_esc_arkship_spinal_gravitic_cannon_mount: "Arkship Super-Graviton Cannon"
+sm_esc_arkship_spinal_gravitic_cannon_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. The massive Super-Graviton Cannon an extremely potent weapon that will surely keep ill-wishers well away from our Arkships.\n"
+sm_esc_arkship_spinal_mass_accelerator_mount: "Arkship-based Relativistic Kinetic Kill Vehicles"
+sm_esc_arkship_spinal_mass_accelerator_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. Thus, we should give our Arkships the biggest, meanest gun in our arsenal.\n"
+sm_esc_arkship_spinal_autocannon_mount: "Arkship Tempset Autocannon"
+sm_esc_arkship_spinal_autocannon_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. Thus, we should give our Arkships the biggest, meanest gun in our arsenal.\n"
+sm_esc_arkship_spinal_asteroid_thrower_mount: "Arkship Asteroid Thrower"
+sm_esc_arkship_spinal_asteroid_thrower_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. Asteroid throwers are not an overly-complicated weapon, but they are still capable of being devastatingly-powerful. Enough to make anyone think twice before approaching our Arkships with ill intentions.\n"
+sm_esc_arkship_spinal_mhd_cannon_mount: "Arkship MagnetoHydroDynamic Cannon"
+sm_esc_arkship_spinal_mhd_cannon_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. Thus, we should give our Arkships the biggest, meanest gun in our arsenal.\n"
+sm_esc_arkship_spinal_enigmatic_mount: "Arkship Enigmatic Energy Lance"
+sm_esc_arkship_spinal_enigmatic_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. We have solved the eternal riddle of the Enigmatic Fortress and gained access to its incredible technologies. And with those technologies, we've built an energy lance unlike anything this galaxy has seen before.\n"
+sm_esc_arkship_spinal_tiyanki_gun_mount: "Arkship Tiyanki Beam Cannon"
+sm_esc_arkship_spinal_tiyanki_gun_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. After an extensive study of Tiyanki and their mighty Matriarch, we have created a weapon that can mimic their power. A weapon that is perfect for our Arkships.\n"
+sm_esc_arkship_spinal_missile_mount: "Arkship Reflext Missile Launchers"
+sm_esc_arkship_spinal_missile_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. So we shall put the most powerful missile batteries on our Arkship and drive away those who wish harm upon then.\n"
+sm_esc_arkship_spinal_nanite_missile_mount: "Arkship Nanite Warhead Missile Launchers"
+sm_esc_arkship_spinal_nanite_missile_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. So we shall put the most powerful nanite missile batteries on our Arkship and drive away those who wish harm upon then.\n"
+sm_esc_arkship_spinal_psi_lance_mount: "Arkship Void Ray"
+sm_esc_arkship_spinal_psi_lance_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. With our deep understanding of Psionics and the power of our minds, we shall protect our Arkships with the most powerful psionic energy lances this galaxy has seen.\n"
+sm_esc_arkship_spinal_psi_shockwave_mount: "Arkship Psionic Shockwave Emitters"
+sm_esc_arkship_spinal_psi_shockwave_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. With our deep understanding of Psionics and the power of our minds, we shall protect our Arkships with the most powerful psionic weapons this galaxy has seen.\n"
+sm_esc_arkship_spinal_tesla_cannon_mount: "Arkship Tesla Cannons"
+sm_esc_arkship_spinal_tesla_cannon_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. We shall utilize our mastery of Tesla weapons to create a weapon of suitable might to be used on our Arkships.\n"
+sm_esc_arkship_spinal_tesla_shockwave_mount: "Arkship Tesla Shockwave Emitters"
+sm_esc_arkship_spinal_tesla_shockwave_mount_desc: "Our Arkship is our home between the stars and the fortress that protects our people from the horrors of the galaxy. It is only natural that we would arm it with the best weapons devised by our scientists. We shall utilize our mastery of Tesla weapons to create a weapon of suitable might to be used on our Arkships.\n"
+
+############################################################
+###                   Special Projects                   ###
+############################################################
+
+### Machines learn about psionics
+esc_special_projects.1001.name: "Organics Display Strange Abilities"
+esc_special_projects.1001.desc: "Several organics within our sphere of influence have begun displaying anomalous abilities, collectively designated §MPsionics§!: a form of thought-driven energy manipulation that defies our current physical models. Our $job_calculator$ drones believe these abilities can be weaponized for fleet use. Shall we authorize this research?"
+esc_special_projects.1001.a: "We must learn all that we can about this!"
+esc_special_projects.1001.b: "We have better things to research"
+
+ESC_MACHINE_EMPIRE_PSIONICS: "What is §MPsionics§!?"
+ESC_MACHINE_EMPIRE_PSIONICS_DESC: "Organics within our sphere display anomalous abilities they call §MPsionics§!: thought-driven energy manipulation that appears to violate known physical laws. The Guiding Intelligence has concluded that these abilities can be refined into fleet-grade weapons, granting us a considerable advantage over our foes."
+
+esc_special_projects.1002.name: "§MPsionics§! Research Complete!"
+esc_special_projects.1002.desc: "Our $job_calculator$ drones have found a way to control and amplify the §MPsionic§! abilities of organics, enabling us to forge ship weapons capable of piercing through seemingly any number of armor layers. These §MPsionic§! weapons require organic crew to operate, and the substance known as £sr_zro£ §Y$sr_zro$§! to reach their full potency."
+
+### Automated Dreadnought computers
+esc_special_projects.2002.name: "Automated Dreadnought Observation: Suggestion"
+esc_special_projects.2002.desc: "The Automated Dreadnought refuses to yield its secrets through direct study, but its eternal patrol of this system offers another path. By carefully observing its movements and combat patterns, we may be able to replicate the logic behind its remarkably advanced combat computers for our own fleets."
+esc_special_projects.2002.option.a: "We will learn what we can"
+esc_special_projects.2002.option.b: "We don't need to copy from this piece of junk!"
+
+ESC_DREADNOUGHT_OBSERVATION: "Automated Dreadnought Observation"
+ESC_DREADNOUGHT_OBSERVATION_DESC: "The Automated Dreadnought's combat systems exhibit no true intelligence, yet operate with a sophistication that puts our own to shame. Replicating even a fraction of their logic would greatly bolster our fleets."
+
+esc_special_projects.2003.name: "Automated Dreadnought Observation: Report"
+esc_special_projects.2003.desc: "Our observation team has gathered enough data on the Automated Dreadnought's combat behavior for our science department to begin replicating the logic behind its computers, adapted for our own ship designs."
+
+### Nanite Thought Matrix computers
+esc_special_projects.3002.name: "Nanite Thought Matrix Development"
+esc_special_projects.3002.desc: "Our advances in nanotechnology and artificial intelligence have led some researchers to propose an entirely new class of AI built on a nanite substrate, capable of mimicking organic cognition with extraordinary fidelity. The navy has already expressed interest in sponsoring the research for fleet command applications."
+esc_special_projects.3002.option.a: "Give researchers a go ahead"
+esc_special_projects.3002.option.b: "We have no need of such technology!"
+
+ESC_NANITE_THOUGHT_MATRIX_DEVELOP: "Nanite Thought Matrix Development"
+ESC_NANITE_THOUGHT_MATRIX_DEVELOP_DESC: "Theoretical models suggest that an AI built on a nanite substrate could perfectly replicate organic thought processes while retaining the speed and precision of a machine. The admiralty sees tremendous potential for space warfare, convinced it would grant our ships a decisive edge over fleets still relying on conventional AI."
+
+esc_special_projects.3003.name: "Intact Tempest Ship Recovered"
+esc_special_projects.3003.desc: "A mostly-intact Gray Tempest vessel has been recovered from a recent engagement. Preliminary analysis reveals its controlling AI runs on a nanite substrate, configured to emulate the mind of some long-extinct species. Our scientists believe this technology can be reverse-engineered and adapted to dramatically improve our own ships' combat capabilities."
+esc_special_projects.3003.option.a: "Give researchers a go ahead"
+esc_special_projects.3003.option.b: "We have no need of such technology!"
+
+ESC_NANITE_THOUGHT_MATRIX_RENGINEER: "Nanite Thought Matrix Reverse Engineering"
+ESC_NANITE_THOUGHT_MATRIX_RENGINEER_DESC: "The recovered Tempest vessel houses an advanced AI built on a nanite substrate, emulating the cognition of a long-extinct species. Having seen these ships in action, we mean to claim this technology for ourselves."
+
+esc_special_projects.3004.name: "Nanite Thought Matrix"
+esc_special_projects.3004.desc: "Our researchers have succeeded in creating a nanite-based AI that perfectly replicates organic cognition. An entirely new frontier of technological development now lies open before us."
+
+### Gigapredator Instincts computers
+esc_special_projects.4002.name: "Gigapredator Study: Suggestion"
+esc_special_projects.4002.desc: "We have encountered spaceborne lifeforms of staggering size and ferocity, creatures that must rely on extraordinary physiological adaptations to survive in the void. If we can study and replicate those adaptations, far more powerful phenotypes of our own warbeasts may become possible."
+esc_special_projects.4002.option.a: "We will learn what we can"
+esc_special_projects.4002.option.b: "We don't want our warbeasts to turn on us!"
+
+ESC_GIGAPREDATOR_STUDY: "Gigapredator Study"
+ESC_GIGAPREDATOR_STUDY_DESC: "Spaceborne leviathans thrive in regions where no creature of their mass should survive, sustained by biological adaptations we barely understand. Studying these adaptations could teach us to forge far more powerful warbeasts of our own."
+
+esc_special_projects.4003.name: "Gigapredator Study: Report"
+esc_special_projects.4003.desc: "Our researchers have uncovered key secrets behind the leviathans' survival in the void, and are confident this knowledge can be applied to our own warbeasts, producing stronger and smarter phenotypes that will greatly increase the power of our fleets."
+
+############################################################
+###                     Event Messages                   ###
+############################################################
+
+ESC_NULL_STRING: ""
+
+esc_events.2000.title: "Ether Drake Takes Flight!"
+esc_events.2000.desc: "The cloning was a success. A young Ether Drake hatchling has emerged, surprisingly docile in the presence of our scientists, and already possessing considerable power that can be directed toward our cause."
+
+esc_events.2002.title: "Sky Dragon Takes Flight!"
+esc_events.2002.desc: "The cloning was a success. A young Sky Dragon hatchling has emerged, surprisingly docile around our scientists, and already formidable enough to serve our cause."
+
+esc_events.3011.name: "Mineral Riches"
+esc_events.3011.desc: "Miners on §Y[Root.GetName]§! have struck an exceptionally rich vein of £minerals£ §Y$minerals$§! deep within the planet's mantle, promising a substantial boost to local resource output."
+
+esc_events.3012.name: "Molten Alloys"
+esc_events.3012.desc: "Mantle mining operations on §Y[Root.GetName]§! have uncovered a plume of molten £alloys£ §Y$alloys$§! surging up from the planet's core. With minor adjustments to the extraction process, the Mantle Mining Facility can tap this bounty."
+
+esc_events.3013.name: "Exotic Gases Pocket"
+esc_events.3013.desc: "Miners on §Y[Root.GetName]§! have discovered a pressurized pocket of £exotic_gases£ §Y$exotic_gases$§! trapped within the mantle, ripe for extraction by the Mantle Mining Facility."
+
+esc_events.3014.name: "Crystalline Gift"
+esc_events.3014.desc: "Miners on §Y[Root.GetName]§! have found sprawling clusters of £rare_crystals£ §Y$rare_crystals$§! embedded within the planet's mantle, a discovery that promises to enrich the local economy considerably."
+
+esc_events.3015.name: "Molten Motes"
+esc_events.3015.desc: "Miners on §Y[Root.GetName]§! have found significant quantities of £volatile_motes£ §Y$volatile_motes$§! dissolved within the mantle's molten rock, a valuable find the Mantle Mining Facility can now exploit."
+
+esc_events.3016.name: "Crystalline Pretties"
+esc_events.3016.desc: "Miners on §Y[Root.GetName]§! have discovered crystalline clusters of no industrial worth within the planet's mantle, but the luxury market craves them. Extracting these crystals with the Mantle Mining Facility should yield handsome £trade_value£ §Y$trade$§!."
+
+esc_events.3017.name: "Living Metals"
+esc_events.3017.desc: "Miners on §Y[Root.GetName]§! report a strange discovery in the planet's mantle, a formation of molten metal that behaves like a simple living organism. With modifications to the Mantle Mining Facility's equipment, this £sr_living_metal£ §Y$sr_living_metal$§! can be studied and small quantities extracted for industrial use."
+
+esc_events.3051.name: "Immanis Colosseus"
+esc_events.3051.desc: "The Mantle Mining Facility on §Y[Root.GetName]§! has unearthed something extraordinary. A corpse of a lifeform of almost incomprehensible scale, suspended within the planet's mantle and somehow preserved despite the crushing pressure and searing heat.\n\nInitial surveys place the creature at roughly 250 kilometers across and at least 20 kilometers thick. How such a being sustained itself remains unknown, though the leading theory suggests it metabolized fossil fuels from the planet's crust.\n\nThe creature appears to have perished approximately 150,000 years ago, sinking slowly into the mantle ever since. An expedition into its interior revealed a fading but still-living internal biosphere, populated by organisms that bear no resemblance to surface life, their lineages seemingly separated millions of years ago.\n\nFurther study is imperative."
+
+############################################################
+###                    Static Modifiers                  ###
+############################################################
+
+# ai research speed boost: easy
+esc_ai_early_game_science_boost_easy: "Extra Ship Components AI research boost (Easy Scaling)"
+esc_ai_early_game_science_boost_easy_desc: "AI empires are granted scaling bonus to research speed:\n+§G10§!% in the early game\n+§G25§!% during the mid-game\n+§G50§!% during the late game"
+esc_ai_mid_game_science_boost_easy: "$esc_ai_early_game_science_boost_easy$"
+esc_ai_mid_game_science_boost_easy_desc: "$esc_ai_early_game_science_boost_easy_desc$"
+esc_ai_end_game_science_boost_easy: "$esc_ai_early_game_science_boost_easy$"
+esc_ai_end_game_science_boost_easy_desc: "$esc_ai_early_game_science_boost_easy_desc$"
+esc_ai_science_boost_easy_static: "Extra Ship Components AI research boost (Easy Static)"
+esc_ai_science_boost_easy_static_desc: "AI empires are granted +§G25§!% research speed bonus throughout the whole game."
+
+# ai research speed boost: moderate
+esc_ai_early_game_science_boost_moderate: "Extra Ship Components AI research boost (Moderate Scaling)"
+esc_ai_early_game_science_boost_moderate_desc: "AI empires are granted scaling bonus to research speed:\n+§G25§!% in the early game\n+§G50§!% during the mid-game\n+§G100§!% during the late game"
+esc_ai_mid_game_science_boost_moderate: "$esc_ai_early_game_science_boost_moderate$"
+esc_ai_mid_game_science_boost_moderate_desc: "$esc_ai_early_game_science_boost_moderate_desc$"
+esc_ai_end_game_science_boost_moderate: "$esc_ai_early_game_science_boost_moderate$"
+esc_ai_end_game_science_boost_moderate_desc: "$esc_ai_early_game_science_boost_moderate_desc$"
+esc_ai_science_boost_moderate_static: "Extra Ship Components AI research boost (Moderate Static)"
+esc_ai_science_boost_moderate_static_desc: "AI empires are granted +§G50§!% research speed bonus throughout the whole game."
+
+# ai research speed boost: challenging
+esc_ai_early_game_science_boost_challenging: "Extra Ship Components AI research boost (Challenging Scaling)"
+esc_ai_early_game_science_boost_challenging_desc: "AI empires are granted scaling bonus to research speed:\n+§G50§!% in the early game\n+§G100§!% during the mid-game\n+§G150§!% during the late game"
+esc_ai_mid_game_science_boost_challenging: "$esc_ai_early_game_science_boost_challenging$"
+esc_ai_mid_game_science_boost_challenging_desc: "$esc_ai_early_game_science_boost_challenging_desc$"
+esc_ai_end_game_science_boost_challenging: "$esc_ai_early_game_science_boost_challenging$"
+esc_ai_end_game_science_boost_challenging_desc: "$esc_ai_early_game_science_boost_challenging_desc$"
+esc_ai_science_boost_challenging_static: "Extra Ship Components AI research boost (Challenging Static)"
+esc_ai_science_boost_challenging_static_desc: "AI empires are granted +§G100§!% research speed bonus throughout the whole game."
+
+# ai resource boost
+esc_economy_plan: "ESC NEXT economic plan"
+
+esc_ai_nanites_boost: "AI Nanites boost"
+esc_ai_nanites_boost_desc: "Monthly £nanites£ §Y$nanites$§!."
+
+esc_ai_zro_boost: "AI Zro boost"
+esc_ai_zro_boost_desc: "Monthly £sr_zro£ §Y$sr_zro$§!."
+
+esc_ai_dark_matter_boost: "AI Dark Matter boost"
+esc_ai_dark_matter_boost_desc: "Monthly £sr_dark_matter£ §Y$sr_dark_matter$§!."
+
+esc_mercenary_boost: "Mercenary Enclave boost"
+esc_mercenary_boost_desc: "Monthly strategic resources for the mercenary enclave"
+
+# on-hit weapon effects
+esc_biological_weapon_armor_hardening_debuff_1: "Corrosive substances"
+esc_biological_weapon_armor_hardening_debuff_1_desc: "Corrosive bile from weaponized space creatures clings to ship hulls, eating through outer armor layers and weakening structural integrity."
+esc_biological_weapon_armor_hardening_debuff_2: "$esc_biological_weapon_armor_hardening_debuff_1$"
+esc_biological_weapon_armor_hardening_debuff_2_desc: "$esc_biological_weapon_armor_hardening_debuff_1_desc$"
+
+esc_gravitic_weapon_movement_speed_debuff_1: "Lingering Gravitic Anomaly"
+esc_gravitic_weapon_movement_speed_debuff_1_desc: "The violent evaporation of a microsingularity leaves behind a lingering gravitic anomaly that drags at nearby ships, sapping their speed and maneuverability."
+esc_gravitic_weapon_movement_speed_debuff_2: "$esc_gravitic_weapon_movement_speed_debuff_1$"
+esc_gravitic_weapon_movement_speed_debuff_2_desc: "$esc_gravitic_weapon_movement_speed_debuff_1_desc$"
+
+esc_nanite_weapons_armor_damage_debuff_1: "Aggressive Disassembly Nanobots"
+esc_nanite_weapons_armor_damage_debuff_1_desc: "Nanites programmed for relentless disassembly latch onto hull surfaces and gnaw through them without pause, inflicting continuous structural damage."
+esc_nanite_weapons_armor_damage_debuff_2: "$esc_nanite_weapons_armor_damage_debuff_1$"
+esc_nanite_weapons_armor_damage_debuff_2_desc: "$esc_nanite_weapons_armor_damage_debuff_1_desc$"
+
+esc_psionic_weapons_accuracy_debuff_1: "Thought Disruption"
+esc_psionic_weapons_accuracy_debuff_1_desc: "Residual psionic interference clouds the minds of affected crew, scattering their focus and degrading combat performance."
+esc_psionic_weapons_accuracy_debuff_2: "$esc_psionic_weapons_accuracy_debuff_1$"
+esc_psionic_weapons_accuracy_debuff_2_desc: "$esc_psionic_weapons_accuracy_debuff_1_desc$"
+
+esc_tesla_weapons_fire_rate_debuff_1: "Power Surges"
+esc_tesla_weapons_fire_rate_debuff_1_desc: "The sheer violence of Tesla strikes sends cascading power surges through a target's energy grid, crippling weapon cycling rates."
+esc_tesla_weapons_fire_rate_debuff_2: "$esc_tesla_weapons_fire_rate_debuff_1$"
+esc_tesla_weapons_fire_rate_debuff_2_desc: "$esc_tesla_weapons_fire_rate_debuff_1_desc$"
+
+############################################################
+###                         Flags                        ###
+############################################################
+
+ESC_COUNTRY_FLAG_drake_clone_requested: "Ether Drake Hatchling Cloning in Progress"
+
+############################################################
+###                      Tooltips                        ###
+############################################################
+
+esc_tooltip_bioship_armor: "This component regenerates §G1§!% of its max armor strength daily while ship's total armor is under §G50§!% of its max value."
+
+esc_tooltip_energy_syphon_shields_add_s_t2: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+100§!"
+esc_tooltip_energy_syphon_shields_add_m_t2: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+200§!"
+esc_tooltip_energy_syphon_shields_add_l_t2: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+300§!"
+esc_tooltip_energy_syphon_shields_add_xl_t2: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+400§!"
+
+esc_tooltip_energy_syphon_shields_repair_s_t2: "- Restores §Y20§! Shields to attacking ship"
+esc_tooltip_energy_syphon_shields_repair_m_t2: "- Restores §Y40§! Shields to attacking ship"
+esc_tooltip_energy_syphon_shields_repair_l_t2: "- Restores §Y60§! Shields to attacking ship"
+esc_tooltip_energy_syphon_shields_repair_xl_t2: "- Restores §Y80§! Shields to attacking ship"
+
+esc_tooltip_energy_syphon_shields_add_s_t3: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+150§!"
+esc_tooltip_energy_syphon_shields_add_m_t3: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+300§!"
+esc_tooltip_energy_syphon_shields_add_l_t3: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+450§!"
+esc_tooltip_energy_syphon_shields_add_xl_t3: "- $MOD_SHIP_SHIELD_HP_ADD$: §G+600§!"
+
+esc_tooltip_energy_syphon_shields_repair_s_t3: "- Restores §Y30§! Shields to attacking ship"
+esc_tooltip_energy_syphon_shields_repair_m_t3: "- Restores §Y60§! Shields to attacking ship"
+esc_tooltip_energy_syphon_shields_repair_l_t3: "- Restores §Y90§! Shields to attacking ship"
+esc_tooltip_energy_syphon_shields_repair_xl_t3: "- Restores §Y120§! Shields to attacking ship"
+
+esc_collateral_damage_tooltip: "§YCollateral Damage§!: Deals additional damage to all hostile ships around the primary target."
+esc_shockwave_damage_tooltip: "§YOmnidirectional Shockwave§!: Deals damage to all hostile ships within attack range."
+esc_dark_matter_shockwave_tooltip: "Reduces target ships' movement speed and evasion by §G25§!%. Effect duration: §Y10§! days."
+esc_psionic_shockwave_tooltip: "Reduces target ships' accuracy and tracking by §G25§!%. Effect duration: §Y10§! days."
+esc_tesla_shockwave_tooltip: "Reduces target ships' rate of fire and weapons range by §G20§!%. Effect duration: §Y10§! days."

@@ -1,0 +1,1300 @@
+############################################################
+##                ESC : Biological Weapons                ##
+############################################################
+
+# - Bile Spitter						S/M/L
+# - Vile Bile Spitter					S/M/L
+# - Acid Spitter						S/M/L
+# - Acid Erucator						S/M/L
+# - Acid Blob Bomb						G
+# - Vile Acid Blob Bomb					G
+# - Devouring Acid Blob Bomb			G
+# - Acid Blob Barrage					X
+# - Devouring Acid Blob Barrage			X
+# - Acid Blob Storm						Titanic
+
+############################################################
+##                       Bile Spitter                     ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_BIO_CANNON_1
+	size = small
+	icon = GFX_esc_bio_cannon_1
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 14 max = 42 }
+	windup = { min = 4 max = 14 }
+	total_fire_time = 20
+	range = @ESC_WEAPON_RANGE_S_3
+	accuracy = 0.85
+	power = -11
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 4
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.5
+
+	prerequisites = { "esc_tech_bio_cannon_1" }
+	component_set = ESC_BIO_CANNON_1
+	projectile_gfx = "esc_bio_projectile_small"
+	tags = { weapon_type_kinetic weapon_type_biological s_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+	upgrades_to = SMALL_ESC_BIO_CANNON_2
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_CANNON_1
+	size = medium
+	icon = GFX_esc_bio_cannon_1
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 36 max = 98 }
+	windup = { min = 5 max = 17 }
+	total_fire_time = 25
+	range = @ESC_WEAPON_RANGE_M_3
+	accuracy = 0.85
+	power = -20
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 4
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_bio_cannon_1" }
+	component_set = ESC_BIO_CANNON_1
+	projectile_gfx = "esc_bio_projectile_medium"
+	tags = { weapon_type_kinetic weapon_type_biological m_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+	upgrades_to = MEDIUM_ESC_BIO_CANNON_2
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_BIO_CANNON_1
+	size = large
+	icon = GFX_esc_bio_cannon_1
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 92 max = 198 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_3
+	min_range = @ESC_WEAPON_MIN_RANGE_4
+	accuracy = 0.85
+	power = -40
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 4
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_bio_cannon_1" }
+	component_set = ESC_BIO_CANNON_1
+	projectile_gfx = "esc_bio_projectile_large"
+	tags = { weapon_type_kinetic weapon_type_biological l_slot }
+	ai_tags = { weapon_role_anti_hull artillery artillery_stealth }
+	upgrades_to = LARGE_ESC_BIO_CANNON_2
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                    Vile Bile Spitter                   ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_BIO_CANNON_2
+	size = small
+	icon = GFX_esc_bio_cannon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 18 max = 56 }
+	windup = { min = 4 max = 14 }
+	total_fire_time = 20
+	range = @ESC_WEAPON_RANGE_S_3
+	accuracy = 0.85
+	power = -11
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 5
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.5
+
+	prerequisites = { "esc_tech_bio_cannon_2" }
+	component_set = ESC_BIO_CANNON_2
+	projectile_gfx = "esc_bio_projectile_small"
+	tags = { weapon_type_kinetic weapon_type_biological s_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+	upgrades_to = SMALL_ESC_BIO_CANNON_3
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_CANNON_2
+	size = medium
+	icon = GFX_esc_bio_cannon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 50 max = 112 }
+	windup = { min = 5 max = 17 }
+	total_fire_time = 25
+	range = @ESC_WEAPON_RANGE_M_3
+	accuracy = 0.85
+	power = -20
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 5
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_bio_cannon_2" }
+	component_set = ESC_BIO_CANNON_2
+	projectile_gfx = "esc_bio_projectile_medium"
+	tags = { weapon_type_kinetic weapon_type_biological m_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+	upgrades_to = MEDIUM_ESC_BIO_CANNON_3
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_BIO_CANNON_2
+	size = large
+	icon = GFX_esc_bio_cannon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 114 max = 238 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_3
+	min_range = @ESC_WEAPON_MIN_RANGE_4
+	accuracy = 0.85
+	power = -40
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 5
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_bio_cannon_2" }
+	component_set = ESC_BIO_CANNON_2
+	projectile_gfx = "esc_bio_projectile_large"
+	tags = { weapon_type_kinetic weapon_type_biological l_slot }
+	ai_tags = { weapon_role_anti_hull artillery artillery_stealth }
+	upgrades_to = LARGE_ESC_BIO_CANNON_3
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                       Acid Spitter                     ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_BIO_CANNON_3
+	size = small
+	icon = GFX_esc_bio_cannon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 28 max = 76 }
+	windup = { min = 4 max = 14 }
+	total_fire_time = 20
+	range = @ESC_WEAPON_RANGE_S_3
+	accuracy = 0.85
+	power = -11
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 6
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.5
+
+	prerequisites = { "esc_tech_bio_cannon_3" }
+	component_set = ESC_BIO_CANNON_3
+	projectile_gfx = "esc_bio_projectile_small"
+	tags = { weapon_type_kinetic weapon_type_biological s_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+	upgrades_to = SMALL_ESC_BIO_CANNON_4
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_CANNON_3
+	size = medium
+	icon = GFX_esc_bio_cannon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 74 max = 162 }
+	windup = { min = 5 max = 17 }
+	total_fire_time = 25
+	range = @ESC_WEAPON_RANGE_M_3
+	accuracy = 0.85
+	power = -20
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_bio_cannon_3" }
+	component_set = ESC_BIO_CANNON_3
+	projectile_gfx = "esc_bio_projectile_medium"
+	tags = { weapon_type_kinetic weapon_type_biological m_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+	upgrades_to = MEDIUM_ESC_BIO_CANNON_4
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_BIO_CANNON_3
+	size = large
+	icon = GFX_esc_bio_cannon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 168 max = 334 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_3
+	min_range = @ESC_WEAPON_MIN_RANGE_4
+	accuracy = 0.85
+	power = -40
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 6
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_bio_cannon_3" }
+	component_set = ESC_BIO_CANNON_3
+	projectile_gfx = "esc_bio_projectile_large"
+	tags = { weapon_type_kinetic weapon_type_biological l_slot }
+	ai_tags = { weapon_role_anti_hull artillery artillery_stealth }
+	upgrades_to = LARGE_ESC_BIO_CANNON_4
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                      Acid Erucator                     ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_BIO_CANNON_4
+	size = small
+	icon = GFX_esc_bio_cannon_4
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 36 max = 106 }
+	windup = { min = 4 max = 14 }
+	total_fire_time = 20
+	range = @ESC_WEAPON_RANGE_S_3
+	accuracy = 0.85
+	power = -11
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 7
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.5
+
+	prerequisites = { "esc_tech_bio_cannon_4" }
+	component_set = ESC_BIO_CANNON_4
+	projectile_gfx = "esc_bio_projectile_small"
+	tags = { weapon_type_kinetic weapon_type_biological s_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_CANNON_4
+	size = medium
+	icon = GFX_esc_bio_cannon_4
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 102 max = 268 }
+	windup = { min = 5 max = 17 }
+	total_fire_time = 25
+	range = @ESC_WEAPON_RANGE_M_3
+	accuracy = 0.85
+	power = -20
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 7
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_bio_cannon_4" }
+	component_set = ESC_BIO_CANNON_4
+	projectile_gfx = "esc_bio_projectile_medium"
+	tags = { weapon_type_kinetic weapon_type_biological m_slot }
+	ai_tags = { weapon_role_anti_hull brawler brawler_stealth gunship }
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_BIO_CANNON_4
+	size = large
+	icon = GFX_esc_bio_cannon_4
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 254 max = 452 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_3
+	min_range = @ESC_WEAPON_MIN_RANGE_4
+	accuracy = 0.85
+	power = -40
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 7
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_shield_damage
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_bio_cannon_4" }
+	component_set = ESC_BIO_CANNON_4
+	projectile_gfx = "esc_bio_projectile_large"
+	tags = { weapon_type_kinetic weapon_type_biological l_slot }
+	ai_tags = { weapon_role_anti_hull artillery artillery_stealth }
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                      Acid Blob Bomb                    ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_BIO_MISSILE_1
+	size = torpedo
+	icon = GFX_esc_bio_missile_1
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 60 max = 110 }
+	size_damage_factor = 0.2
+	windup = { min = 5 max = 10 }
+	total_fire_time = 100
+	range = @ESC_WEAPON_RANGE_S_2
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 45
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -30
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 5
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_1" }
+	component_set = ESC_BIO_MISSILE_1
+	projectile_gfx = "esc_bio_missile"
+	upgrades_to = ESC_BIO_MISSILE_2
+	tags = { weapon_type_explosive weapon_type_biological g_slot }
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_conditional_potential
+		CONDITION = "ship_uses_mauler_components"
+		CONDITION_VALUE = no
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                   Vile Acid Blob Bomb                  ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_BIO_MISSILE_2
+	size = torpedo
+	icon = GFX_esc_bio_missile_2
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 75 max = 120 }
+	size_damage_factor = 0.2
+	windup = { min = 5 max = 10 }
+	total_fire_time = 100
+	range = @ESC_WEAPON_RANGE_S_2
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 50
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -60
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 6
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_2" }
+	component_set = ESC_BIO_MISSILE_2
+	projectile_gfx = "esc_bio_missile"
+	upgrades_to = ESC_BIO_MISSILE_3
+	tags = { weapon_type_explosive weapon_type_biological g_slot }
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_conditional_potential
+		CONDITION = "ship_uses_mauler_components"
+		CONDITION_VALUE = no
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                Devouring  Acid Blob Bomb               ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_BIO_MISSILE_3
+	size = torpedo
+	icon = GFX_esc_bio_missile_3
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 90 max = 155 }
+	size_damage_factor = 0.2
+	windup = { min = 5 max = 10 }
+	total_fire_time = 100
+	range = @ESC_WEAPON_RANGE_S_2
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 55
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -70
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 7
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_3" }
+	component_set = ESC_BIO_MISSILE_3
+	projectile_gfx = "esc_bio_missile"
+	tags = { weapon_type_explosive weapon_type_biological g_slot }
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_conditional_potential
+		CONDITION = "ship_uses_mauler_components"
+		CONDITION_VALUE = no
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                   Acid Blob Barrage                   ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_BIO_X_MISSILE_1
+	size = extra_large
+	icon = GFX_esc_bio_x_weapon_1
+	icon_frame = 1
+	type = missile
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 150
+		MAX_DAMAGE = 300
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 10 max = 35 }
+	total_fire_time = 80
+	range = @ESC_WEAPON_RANGE_X_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 75
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	power = -275
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 7
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_x_1" }
+	component_set = ESC_BIO_X_MISSILE_1
+	projectile_gfx = "esc_bio_missile"
+	tags = { weapon_type_kinetic weapon_type_biological x_slot weapon_role_artillery } # no explosive x-slot turrets
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery explosive artillery }
+	upgrades_to = ESC_BIO_X_MISSILE_2
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 2
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##              Devouring Acid Blob Barrage               ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_BIO_X_MISSILE_2
+	size = extra_large
+	icon = GFX_esc_bio_x_weapon_2
+	icon_frame = 1
+	type = missile
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 175
+		MAX_DAMAGE = 325
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 10 max = 35 }
+	total_fire_time = 80
+	range = @ESC_WEAPON_RANGE_X_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 85
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	power = -325
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 8
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_x_2" }
+	component_set = ESC_BIO_X_MISSILE_2
+	projectile_gfx = "esc_bio_missile"
+	tags = { weapon_type_kinetic weapon_type_biological x_slot weapon_role_artillery } # no explosive x-slot turrets
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery explosive artillery }
+	upgrades_to = ESC_BIO_X_MISSILE_3_JUGGERNAUT
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 2
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+############################################################
+##                    Acid Blob Storm                     ##
+############################################################
+
+# titan
+weapon_component_template = {
+	key = ESC_BIO_X_MISSILE_3_TITAN
+	size = titanic
+	icon = GFX_esc_bio_x_weapon_3
+	icon_frame = 1
+	type = missile
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 250
+		MAX_DAMAGE = 500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 15 max = 45 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_T_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 100
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 8
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_titanic" }
+	component_set = ESC_BIO_X_MISSILE_3_TITAN
+	projectile_gfx = "esc_bio_missile"
+	tags = { weapon_type_explosive weapon_type_biological t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery explosive artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	# arkship T-slot weapons use different damage values
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard
+		ARKSHIP_WEAPON = no
+	}
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 2
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# juggernaut
+weapon_component_template = {
+	key = ESC_BIO_X_MISSILE_3_JUGGERNAUT
+	size = extra_large
+	icon = GFX_esc_bio_x_weapon_3
+	icon_frame = 1
+	type = missile
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 250
+		MAX_DAMAGE = 500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 15 max = 45 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_J_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 100
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_biological_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 8
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_titanic" }
+	component_set = ESC_BIO_X_MISSILE_3_JUGGERNAUT
+	projectile_gfx = "esc_bio_missile"
+	tags = { weapon_type_kinetic weapon_type_biological x_slot weapon_role_artillery } # no explosive x-slot turrets
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery explosive artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	potential = {
+		ESC_ship_uses_juggernaut_components = yes
+	}
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 2
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = food }
+		}
+	}
+}
+
+# arkship
+weapon_component_template = {
+	key = ESC_BIO_X_MISSILE_3_ARKSHIP
+	size = titanic
+	icon = GFX_esc_bio_x_weapon_3
+	icon_frame = 1
+	type = missile
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 750
+		MAX_DAMAGE = 2750
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 15 max = 45 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_ARKSHIP_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 100
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	power = 0
+
+	resources = {
+		category = ship_components
+		upkeep = {
+			alloys = @titanic_t7_upkeep_alloys
+			energy = @titanic_t7_upkeep_energy
+		}
+	}
+
+	hull_damage = @ESC_WEAPON_biological_hull_damage
+	armor_penetration = @ESC_WEAPON_biological_armor_penetration
+	armor_damage = @ESC_WEAPON_biological_armor_damage
+	shield_penetration = @ESC_WEAPON_biological_missile_shield_penetration
+	shield_damage = @ESC_WEAPON_biological_missile_shield_damage
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_bio_missile_titanic" }
+	component_set = ESC_BIO_X_MISSILE_3_ARKSHIP
+	projectile_gfx = "esc_bio_missile"
+	tags = { weapon_type_explosive weapon_type_biological t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_anti_hull weapon_role_artillery explosive artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	# arkship T-slot weapons use different damage valuess
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard
+		ARKSHIP_WEAPON = yes
+	}
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 2
+	}
+
+	# only regular empires and xenophile FE may use biological components
+	valid_for_country = {
+		ESC_TRIGGER_is_normal_empire_or_xenophile_fe = yes
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}

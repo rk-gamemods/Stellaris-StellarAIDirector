@@ -1,0 +1,364 @@
+##### STARBASE EXTENDED 3.0 CYBERNATIC STARBASE ASSETS #####
+
+
+# HEADQUARTERS
+# FRAME
+	entity = {
+		name = "cybernetics_01_starbase_stronghold_entity"
+		pdxmesh = "cybernetics_01_citadel_frame_mesh"
+		cull_radius = 22
+
+		game_data = {
+			emissive_recolor_crunch = 1.0
+		}
+	}
+
+# SECTION
+	entity = {
+		name = "cybernetics_01_starbase_stronghold_section_entity"
+		pdxmesh = "cybernetics_01_citadel_mesh"
+		
+		locator = { name = "medium_gun_01"    position = { 0 0 0 } rotation = { 0 0 0 } }
+
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			 event = { time = 0 node = "light_locator_01" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_02" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_03" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+		}		
+		game_data = {
+			uv_animation_speed 		= 0.07
+			uv_animation_direction 	= { 1.4 0.0 }
+		}
+	}
+
+
+# STRONGHOLD
+# FRAME
+	entity = {
+		name = "cybernetics_01_starbase_stronghold_entity"
+		pdxmesh = "cybernetics_01_citadel_frame_mesh"
+		cull_radius = 22
+
+		game_data = {
+			emissive_recolor_crunch = 1.0
+		}
+	}
+
+# SECTION
+	entity = {
+		name = "cybernetics_01_starbase_stronghold_section_entity"
+		pdxmesh = "cybernetics_01_citadel_mesh"
+		
+		locator = { name = "medium_gun_01"    position = { 0 0 0 } rotation = { 0 0 0 } }
+
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			 event = { time = 0 node = "light_locator_01" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_02" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_03" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+		}		
+		game_data = {
+			uv_animation_speed 		= 0.07
+			uv_animation_direction 	= { 1.4 0.0 }
+		}
+	}
+
+# CITADEL
+# FRAME
+	entity = {
+		name = "cybernetics_01_starbase_citadel_entity"
+		pdxmesh = "cybernetics_01_citadel_frame_mesh"
+		cull_radius = 22
+
+		game_data = {
+			emissive_recolor_crunch = 1.0
+		}
+	}
+
+# SECTION
+	entity = {
+		name = "cybernetics_01_starbase_citadel_section_entity"
+		pdxmesh = "cybernetics_01_citadel_mesh"
+		
+		locator = { name = "medium_gun_01"    position = { 0 0 0 } rotation = { 0 0 0 } }
+
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			 event = { time = 0 node = "light_locator_01" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_02" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_03" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+		}		
+		game_data = {
+			uv_animation_speed 		= 0.07
+			uv_animation_direction 	= { 1.4 0.0 }
+		}
+	}
+
+# OUTPOST
+# FRAME
+	entity = {
+		name = "cybernetics_01_starbase_outpost_entity"
+		pdxmesh = "cybernetics_01_outpost_frame_mesh"
+		cull_radius = 12
+
+		game_data = {
+			emissive_recolor_crunch = 1.0
+		}
+	}
+
+# SECTION
+	entity = {
+		name = "cybernetics_01_starbase_outpost_section_entity"
+		pdxmesh = "cybernetics_01_outpost_mesh"
+		
+		locator = { name = "medium_gun_01"    position = { 0 0 0 } rotation = { 0 0 0 } }
+
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			 event = { time = 0 node = "light_locator_01" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_02" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_03" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+		}	
+		game_data = {
+			uv_animation_speed 		= 0.07
+			uv_animation_direction 	= { 1.4 0.0 }
+		}
+	}
+
+# STARFORTRESS
+# FRAME
+	entity = {
+		name = "cybernetics_01_starbase_starfortress_entity"
+		pdxmesh = "cybernetics_01_starfort_frame_mesh"
+		cull_radius = 17
+
+		game_data = {
+			emissive_recolor_crunch = 1.0
+		}
+	}
+
+# SECTION
+	entity = {
+		name = "cybernetics_01_starbase_starfortress_section_entity"
+		pdxmesh = "cybernetics_01_starfort_mesh"
+		
+		locator = { name = "medium_gun_01"    position = { 0 0 0 } rotation = { 0 0 0 } }
+
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			 event = { time = 0 node = "light_locator_01" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_02" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_03" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+		}	
+		game_data = {
+			uv_animation_speed 		= 0.07
+			uv_animation_direction 	= { 1.4 0.0 }
+		}
+	}
+
+# STARHOLD
+# FRAME
+entity = {
+	name = "cybernetics_01_starbase_starhold_entity"
+	pdxmesh = "cybernetics_01_starhold_frame_mesh"
+	cull_radius = 17
+
+	game_data = {
+		emissive_recolor_crunch = 1.0
+	}
+}
+
+# SECTION
+entity = {
+	name = "cybernetics_01_starbase_starhold_section_entity"
+	pdxmesh = "cybernetics_01_starhold_mesh"
+	
+	locator = { name = "medium_gun_01"    position = { 0 0 0 } rotation = { 0 0 0 } }
+	
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			 event = { time = 0 node = "light_locator_01" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_02" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+			 event = { time = 0 node = "light_locator_03" particle = "cybernetics_01_ship_light_effect" keep_particle = yes trigger_once = yes }
+		}	
+	game_data = {
+		uv_animation_speed 		= 0.07
+		uv_animation_direction 	= { 1.4 0.0 }
+	}
+}
+
+# STARPORT
+# FRAME
+entity = {
+	name = "cybernetics_01_starbase_starport_entity"
+	pdxmesh = "cybernetics_01_starport_frame_mesh"
+	cull_radius = 17
+
+	game_data = {
+		emissive_recolor_crunch = 1.0
+	}
+	
+}
+
+# SECTION
+entity = {
+	name = "cybernetics_01_starbase_starport_section_entity"
+	pdxmesh = "cybernetics_01_starport_mesh"
+	
+	locator = { name = "medium_gun_01"    position = { 0 0 0 } rotation = { 0 0 0 } }
+
+	game_data = {
+		uv_animation_speed 		= 0.07
+		uv_animation_direction 	= { 1.4 0.0 }
+	}
+}
+
+entity = {
+	name = "cybernetics_01_starbase_outpost_phase_01_entity"
+	locator = { name = "slot1"				position = { 0	0  0 } }
+
+	attach = { "slot1" = "cybernetics_01_starbase_outpost_section_entity" }
+
+	cull_radius = 500
+	
+}
+
+entity = {
+	name = "cybernetics_01_starbase_starport_phase_02_entity"
+	locator = { name = "slot1"				position = { 0	0  0 } }
+
+	attach = { "slot1" = "cybernetics_01_starbase_starport_section_entity" }
+	cull_radius = 500
+}
+
+entity = {
+	name = "cybernetics_01_starbase_starhold_phase_03_entity"
+	locator = { name = "slot1"				position = { 0	0  0 } }
+
+	attach = { "slot1" = "cybernetics_01_starbase_starhold_section_entity" }
+	cull_radius = 500
+}
+
+entity = {
+	name = "cybernetics_01_starbase_starfortress_phase_04_entity"
+	locator = { name = "slot1"				position = { 0	0  0 } }
+
+	attach = { "slot1" = "cybernetics_01_starbase_starfortress_section_entity" }
+	cull_radius = 500
+}
+
+entity = {
+	name = "cybernetics_01_starbase_citadel_phase_05_entity"
+	locator = { name = "slot1"				position = { 0	0  0 } }
+
+	attach = { "slot1" = "cybernetics_01_starbase_citadel_section_entity" }
+	cull_radius = 500
+}
+
+entity = {
+	name = "cybernetics_01_starbases_entity"
+	locator = { name = "slot1"				position = { 0	0  0 } }
+	locator = { name = "slot2"				position = { 50	0  0 } }
+	locator = { name = "slot3"				position = { 100	0  0 } }
+	locator = { name = "slot4"				position = { 175	0  0 } }
+	locator = { name = "slot5"				position = { 250	0  0 } }
+
+
+
+	attach = { "slot1" = "cybernetics_01_starbase_outpost_phase_01_entity" }
+	attach = { "slot2" = "cybernetics_01_starbase_starport_phase_02_entity" }
+	attach = { "slot3" = "cybernetics_01_starbase_starhold_phase_03_entity" }
+	attach = { "slot4" = "cybernetics_01_starbase_starfortress_phase_04_entity" }
+	attach = { "slot5" = "cybernetics_01_starbase_citadel_phase_05_entity" }
+
+	cull_radius = 500
+}
+
+entity = {
+	name = "cybernetics_01_starbase_outpost_construction_entity"
+	pdxmesh = "cybernetics_01_outpost_mesh"
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			event = { trigger_once = yes sound = { soundeffect = "place_construction" } }
+		}
+
+	scale = 1.0
+}
+
+entity = {
+	name = "cybernetics_01_starbase_starport_construction_entity"
+	pdxmesh = "cybernetics_01_starport_mesh"
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			event = { trigger_once = yes sound = { soundeffect = "place_construction" } }
+		}
+
+	scale = 1.0
+}
+
+entity = {
+	name = "cybernetics_01_starbase_starhold_construction_entity"
+	pdxmesh = "cybernetics_01_starhold_mesh"
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			event = { trigger_once = yes sound = { soundeffect = "place_construction" } }
+		}
+
+	scale = 1.0
+}
+
+entity = {
+	name = "cybernetics_01_starbase_starfortress_construction_entity"
+	pdxmesh = "cybernetics_01_starfort_mesh"
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			event = { trigger_once = yes sound = { soundeffect = "place_construction" } }
+		}
+
+	scale = 1.0
+}
+
+entity = {
+	name = "cybernetics_01_starbase_citadel_construction_entity"
+	pdxmesh = "cybernetics_01_citadel_mesh"
+		default_state = "idle"
+		state = { name = "idle" state_time = 5
+			event = { trigger_once = yes sound = { soundeffect = "place_construction" } }
+		}
+
+	scale = 1.0
+}
+
+entity = {
+	name = "cybernetics_01_starbase_turret_section_entity"
+	pdxmesh = "cybernetics_01_starbase_turret_section_mesh"
+}
+
+###### Ion Cannon ######
+
+entity = {
+	name = "cybernetics_01_ion_cannon_entity"
+	locator = { name = "part1" position = { 0 0 0 } }
+}
+
+entity = {
+	name = "cybernetics_01_ion_cannon_section_entity"
+	pdxmesh = "cybernetics_01_ion_cannon_mesh"
+	scale = 1
+	locator = { name = "root" position = { 0 0 0 } }
+
+	default_state = "idle"
+	state = { name = "idle" state_time = 8
+		start_event = { trigger_once = yes sound = { soundeffect = "amb_nemesis_starbase_ion_cannon_hum_01" } }
+	}
+	game_data = {
+		uv_animation_speed 		= 0.2
+		uv_animation_direction 	= { 1.4 0.0 }
+	}
+}
+
+
+
+
+# EOF

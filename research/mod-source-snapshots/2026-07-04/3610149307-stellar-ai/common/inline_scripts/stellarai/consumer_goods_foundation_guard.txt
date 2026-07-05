@@ -1,0 +1,6 @@
+OR = {
+	owner_or_space_owner? = { is_ai = no }
+	owner_or_space_owner? = { country_uses_consumer_goods = no }
+	owner_or_space_owner? = { NOT = { stellarai_consumer_goods_pressure = yes } }
+	owner_or_space_owner? = { stellarai_has_consumer_goods_world = yes }
+}

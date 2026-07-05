@@ -1,0 +1,132 @@
+d_giga_job_size_ringworld = {
+	is_for_colonizable = yes
+	icon = d_city
+	category = deposit_cat_energy
+
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	planet_modifier = {
+		giga_planet_job_size = 0.5
+	}
+}
+
+#####################################################################################################################
+#####################################################################################################################
+#####################################################################################################################
+
+# job size - defunct, now applied directly via a static modifier, usually via planet class modifier
+
+d_giga_job_size = {
+	is_for_colonizable = yes
+	icon = unused/d_strategic_resources
+	category = deposit_cat_energy
+
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+}
+
+#####################################################################################################################
+#####################################################################################################################
+#####################################################################################################################
+
+d_giga_job_upkeep = {
+	is_for_colonizable = yes
+	icon = unused/d_synth_sabotage
+	category = deposit_cat_energy
+	
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	custom_tooltip = d_giga_job_upkeep_tooltip
+	custom_tooltip_short = d_giga_job_upkeep_tooltip_short
+
+    # main indicator
+    # triggered_planet_modifier = {
+    #     giga_high_density_scaling_mult = 1
+    #     multiplier = value:giga_planet_density_by_pops
+    # }
+
+    # triggered_planet_modifier = {
+    #     planet_stability_add = 1
+    #     multiplier = value:giga_planet_density_offset|modifier|planet_stability_add|base|yes|
+    # }
+    #
+    # triggered_planet_modifier = {
+    #     planet_amenities_add = 1
+    #     multiplier = value:giga_job_workforce
+    # }
+}
+
+d_giga_job_upkeep_neg = {
+	is_for_colonizable = yes
+	icon = unused/d_strategic_resources
+	category = deposit_cat_energy
+	
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	planet_modifier = {
+		planet_jobs_upkeep_mult = -0.1
+	}
+}
+d_giga_job_upkeep_pos = {
+	is_for_colonizable = yes
+	icon = unused/d_strategic_resources
+	category = deposit_cat_energy
+	
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	planet_modifier = {
+		planet_jobs_upkeep_mult = 0.1
+	}
+}
+d_giga_job_productive_upkeep_neg = {
+	is_for_colonizable = yes
+	icon = unused/d_strategic_resources
+	category = deposit_cat_energy
+	
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	planet_modifier = {
+		planet_jobs_productive_upkeep_mult = -0.1
+	}
+}
+d_giga_job_productive_upkeep_pos = {
+	is_for_colonizable = yes
+	icon = unused/d_strategic_resources
+	category = deposit_cat_energy
+	
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	planet_modifier = {
+		planet_jobs_productive_upkeep_mult = 0.1
+	}
+}
+d_giga_job_upkeep_researchers_neg = {
+	is_for_colonizable = yes
+	icon = unused/d_strategic_resources
+	category = deposit_cat_energy
+	
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	planet_modifier = {
+		planet_researchers_upkeep_mult = -0.1
+	}
+}
+d_giga_job_upkeep_researchers_pos = {
+	is_for_colonizable = yes
+	icon = unused/d_strategic_resources
+	category = deposit_cat_energy
+	
+	drop_weight = { weight = 0 }
+	potential = { always = no }
+
+	planet_modifier = {
+		planet_researchers_upkeep_mult = 0.1
+	}
+}

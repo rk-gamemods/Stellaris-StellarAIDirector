@@ -1,0 +1,34 @@
+megastructures_frameworld = {
+	use_for_ai_budget = yes
+	parent = megastructures
+	generate_mult_modifiers = {
+		cost
+	}
+}
+
+deposit_blockers_frameworld = {
+	use_for_ai_budget = yes
+	parent = deposit_blockers
+	modifier_category = megastructure
+	generate_mult_modifiers = {
+		cost
+	}
+}
+
+# for the mega stage only, to get stuff from ship cost
+frameworld_outpost_build = {
+	parent = ships
+	modifier_category = megastructure
+	generate_mult_modifiers = {
+		cost
+	}
+}
+
+# and for the production, so we can put it in the top bar, among other things
+frameworld_outposts = {
+	parent = country
+	modifier_category = ship
+	generate_mult_modifiers = {
+		produces
+	}
+}

@@ -1,0 +1,1430 @@
+############################################################
+##              Improved Zero-Point Reactor               ##
+############################################################
+
+# corvettes & transposts & civilian ships
+utility_component_template = {
+	key = CORVETTE_ESC_BIO_REACTOR_6
+	upgrades_to = CORVETTE_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = corvette
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = corvette
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_BIO_REACTOR_6
+	upgrades_to = DESTROYER_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = destroyer
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = destroyer
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_BIO_REACTOR_6
+	upgrades_to = CRUISER_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = cruiser
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = cruiser
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_BIO_REACTOR_6
+	upgrades_to = BATTLESHIP_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = battleship
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = battleship
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_BIO_REACTOR_6
+	upgrades_to = TITAN_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = titan
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = titan
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# colossi & juggernauts
+utility_component_template = {
+	key = COLOSSUS_ESC_BIO_REACTOR_6
+	upgrades_to = COLOSSUS_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = juggernaut
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = juggernaut
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+
+	inline_script = {
+		script = reactors/esc_inlines_juggernaut_aura
+	}
+}
+
+# small defense platforms
+utility_component_template = {
+	key = PLATFORM_ESC_BIO_REACTOR_6
+	upgrades_to = PLATFORM_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = platform
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# medium defense platforms
+utility_component_template = {
+	key = PLATFORM2_ESC_BIO_REACTOR_6
+	upgrades_to = PLATFORM2_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = platform2
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform2
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# large defense platforms
+utility_component_template = {
+	key = PLATFORM3_ESC_BIO_REACTOR_6
+	upgrades_to = PLATFORM3_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = platform3
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform3
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# ion cannons
+utility_component_template = {
+	key = ION_CANNON_ESC_BIO_REACTOR_6
+	upgrades_to = ION_CANNON_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = ion_cannon
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = ion_cannon
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# starbases
+utility_component_template = {
+	key = STARBASE_ESC_BIO_REACTOR_6
+	upgrades_to = STARBASE_ESC_BIO_REACTOR_7
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_6
+		REACTOR_TIER = 6
+		PREREQUISITES = "esc_tech_reactor_6"
+		SHIP_SIZE_GROUP = starbase
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6000
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = starbase
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+############################################################
+##                   Singularity Reactor                  ##
+############################################################
+
+# corvettes & transposts & civilian ships
+utility_component_template = {
+	key = CORVETTE_ESC_BIO_REACTOR_7
+	upgrades_to = CORVETTE_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = corvette
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = corvette
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_BIO_REACTOR_7
+	upgrades_to = DESTROYER_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = destroyer
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = destroyer
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_BIO_REACTOR_7
+	upgrades_to = CRUISER_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = cruiser
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = cruiser
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_BIO_REACTOR_7
+	upgrades_to = BATTLESHIP_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = battleship
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = battleship
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_BIO_REACTOR_7
+	upgrades_to = TITAN_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = titan
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = titan
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# colossi & juggernauts
+utility_component_template = {
+	key = COLOSSUS_ESC_BIO_REACTOR_7
+	upgrades_to = COLOSSUS_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = juggernaut
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = juggernaut
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+
+	inline_script = {
+		script = reactors/esc_inlines_juggernaut_aura
+	}
+}
+
+# small defense platforms
+utility_component_template = {
+	key = PLATFORM_ESC_BIO_REACTOR_7
+	upgrades_to = PLATFORM_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = platform
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# medium defense platforms
+utility_component_template = {
+	key = PLATFORM2_ESC_BIO_REACTOR_7
+	upgrades_to = PLATFORM2_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = platform2
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform2
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# large defense platforms
+utility_component_template = {
+	key = PLATFORM3_ESC_BIO_REACTOR_7
+	upgrades_to = PLATFORM3_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = platform3
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform3
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# ion cannons
+utility_component_template = {
+	key = ION_CANNON_ESC_BIO_REACTOR_7
+	upgrades_to = ION_CANNON_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = ion_cannon
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 7
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = ion_cannon
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# starbases
+utility_component_template = {
+	key = STARBASE_ESC_BIO_REACTOR_7
+	upgrades_to = STARBASE_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_7
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_reactor_7"
+		SHIP_SIZE_GROUP = starbase
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6000
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = starbase
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+############################################################
+##              Improved Singularity Reactor              ##
+############################################################
+
+# corvettes & transposts & civilian ships
+utility_component_template = {
+	key = CORVETTE_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = corvette
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = corvette
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = destroyer
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = destroyer
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = cruiser
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = cruiser
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = battleship
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = battleship
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = titan
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = titan
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# colossi & juggernauts
+utility_component_template = {
+	key = COLOSSUS_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = juggernaut
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = juggernaut
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+
+	inline_script = {
+		script = reactors/esc_inlines_juggernaut_aura
+	}
+}
+
+# small defense platforms
+utility_component_template = {
+	key = PLATFORM_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = platform
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# medium defense platforms
+utility_component_template = {
+	key = PLATFORM2_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = platform2
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform2
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# large defense platforms
+utility_component_template = {
+	key = PLATFORM3_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = platform3
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = platform3
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# ion cannons
+utility_component_template = {
+	key = ION_CANNON_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = ion_cannon
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 8
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = ion_cannon
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# starbases
+utility_component_template = {
+	key = STARBASE_ESC_BIO_REACTOR_8
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_bio_reactor_8
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_8"
+		SHIP_SIZE_GROUP = starbase
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 6000
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		POWER_MOD_CATEGORY = starbase
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+############################################################
+##              Improved Dark Matter Reactor              ##
+############################################################
+
+# corvettes & transposts & civilian ships
+utility_component_template = {
+	key = CORVETTE_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = CORVETTE_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = corvette
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = corvette
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = DESTROYER_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = destroyer
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = destroyer
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = CRUISER_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = cruiser
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = cruiser
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = BATTLESHIP_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = battleship
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = battleship
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = TITAN_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = titan
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = titan
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# colossi & juggernauts
+utility_component_template = {
+	key = COLOSSUS_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = COLOSSUS_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = juggernaut
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = juggernaut
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+
+	inline_script = {
+		script = reactors/esc_inlines_juggernaut_aura
+	}
+}
+
+# small defense platforms
+utility_component_template = {
+	key = PLATFORM_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = PLATFORM_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = platform
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = platform
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# medium defense platforms
+utility_component_template = {
+	key = PLATFORM2_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = PLATFORM2_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = platform2
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = platform2
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# large defense platforms
+utility_component_template = {
+	key = PLATFORM3_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = PLATFORM3_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = platform3
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = platform3
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# ion cannons
+utility_component_template = {
+	key = ION_CANNON_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = ION_CANNON_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = ion_cannon
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 10
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = ion_cannon
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# starbases
+utility_component_template = {
+	key = STARBASE_ESC_DARK_MATTER_BIO_CORE_2
+	upgrades_to = STARBASE_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_2
+		REACTOR_TIER = 7
+		PREREQUISITES = "esc_tech_dark_matter_power_core_2"
+		SHIP_SIZE_GROUP = starbase
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 10000
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_1
+		POWER_MOD_CATEGORY = starbase
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+############################################################
+##             Perfected Dark Matter Reactor              ##
+############################################################
+
+# corvettes & transposts & civilian ships
+utility_component_template = {
+	key = CORVETTE_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = corvette
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = corvette
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = destroyer
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = destroyer
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = cruiser
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = cruiser
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = battleship
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = battleship
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = titan
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = titan
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# colossi & juggernauts
+utility_component_template = {
+	key = COLOSSUS_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = juggernaut
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = juggernaut
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+
+	inline_script = {
+		script = reactors/esc_inlines_juggernaut_aura
+	}
+}
+
+# small defense platforms
+utility_component_template = {
+	key = PLATFORM_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = platform
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = platform
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# medium defense platforms
+utility_component_template = {
+	key = PLATFORM2_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = platform2
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = platform2
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# large defense platforms
+utility_component_template = {
+	key = PLATFORM3_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = platform3
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = platform3
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# ion cannons
+utility_component_template = {
+	key = ION_CANNON_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = ion_cannon
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = ion_cannon
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# starbases
+utility_component_template = {
+	key = STARBASE_ESC_DARK_MATTER_BIO_CORE_3
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_dark_matter_bio_reactor_3
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_dark_matter_power_core_3"
+		SHIP_SIZE_GROUP = starbase
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 12000
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = ships_upkeep_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_dark_matter_upkeep_2
+		POWER_MOD_CATEGORY = starbase
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+############################################################
+##                       Shroud Well                      ##
+############################################################
+
+# corvettes & transposts & civilian ships
+utility_component_template = {
+	key = CORVETTE_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = corvette
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = corvette
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# destroyers
+utility_component_template = {
+	key = DESTROYER_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = destroyer
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = destroyer
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# cruisers
+utility_component_template = {
+	key = CRUISER_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = cruiser
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = cruiser
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# battleships
+utility_component_template = {
+	key = BATTLESHIP_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = battleship
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = battleship
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# titans
+utility_component_template = {
+	key = TITAN_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = titan
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = titan
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# colossi & juggernauts
+utility_component_template = {
+	key = COLOSSUS_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = juggernaut
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = juggernaut
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+
+	inline_script = {
+		script = reactors/esc_inlines_juggernaut_aura
+	}
+}
+
+# small defense platforms
+utility_component_template = {
+	key = PLATFORM_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = platform
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = platform
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# medium defense platforms
+utility_component_template = {
+	key = PLATFORM2_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = platform2
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = platform2
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# large defense platforms
+utility_component_template = {
+	key = PLATFORM3_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = platform3
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = platform3
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# ion cannons
+utility_component_template = {
+	key = ION_CANNON_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general_sr
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = ion_cannon
+		IS_BIOSHIP_REACTOR = yes
+		STRATEGIC_RESOURCE_TYPE = sr_zro
+		COMPONENT_WEIGHT = 12
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = ion_cannon
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}
+
+# starbases
+utility_component_template = {
+	key = STARBASE_ESC_REACTOR_BIO_PSIONIC
+
+	inline_script = {
+		script = reactors/esc_inlines_reactors_general
+		REACTOR_ICON = GFX_esc_psionic_reactor
+		REACTOR_TIER = 8
+		PREREQUISITES = "esc_tech_reactor_psionic"
+		SHIP_SIZE_GROUP = starbase
+		IS_BIOSHIP_REACTOR = yes
+		COMPONENT_WEIGHT = 12000
+		WEIGHT_MULT_ACOT = 0.75
+		# ship modifier
+		BASELINE_MODIFIER_TYPE = weapon_type_psionic_weapon_damage_mult
+		BASELINE_MODIFIER_VALUE = @ESC_REACTOR_MOD_psionic_damage_mult
+		POWER_MOD_CATEGORY = starbase
+		POWER_MOD_SUFFIX = @nsc_modtag_suffix
+	}
+}

@@ -1,0 +1,584 @@
+﻿l_spanish:
+  
+  ###############
+  ### Maginot ###
+  ###############
+  name_maginot:0 "Mundo Maginot"
+  is_giga_maginot_world:0 "$TRIGGER_FAIL$§RDebe ser un Mundo Maginot.§!"
+  giga_tech_repeatable_maginot_cap:0 "Protocolos de Gestión del Mundo Maginot"
+  giga_tech_repeatable_maginot_cap_desc:0 "Protocolos de construcción y mantenimiento avanzados para permitir la construcción y gestión de adicionales §YMundos Maginot§! dentro de las fronteras de nuestro imperio."
+  giga_maginot_capacity_increase_title:0 "Capacidad de §YMundo Maginot§!: §G+1§!"
+  giga_maginot_capacity_increase_desc:0 "La capacidad del imperio para §YMundo Maginot§! se incrementa en §G+1§!"
+  
+  d_maginot_subspace_disruptor:0 "Sistema de Disrupción de Subespacio Maginot"
+  d_maginot_subspace_disruptor_desc:0 "Este $name_maginot_world$ está generando un poderoso campo de disrupción que se propaga a través del subespacio, impidiendo la operación de agujeros de gusano en este sistema. Además, los propulsores de salto quedan inoperables en este y en sistemas cercanos."
+  
+  ##############
+  ### Armies ###
+  ##############
+  heavy_defender:0 "Defensor Pesado"
+  heavy_defender_desc:0 "Una fuerza especial dedicada a la defensa planetaria."
+  heavy_defender_plural:0 "Defensores Pesados"
+  
+  robot_heavy_defender:0 "Defensor Pesado Robótico"
+  robot_heavy_defender_desc:0 "Una fuerza especial robótica dedicada a la defensa planetaria."
+  robot_heavy_defender_plural:0 "Defensores Pesados Robóticos"
+  
+  machine_heavy_defender:0 "Defensor Pesado de Máquinas"
+  machine_heavy_defender_desc:0 "Unidades de batalla pesadas especializadas en defensa planetaria."
+  machine_heavy_defender_plural:0 "Defensores de Máquinas"
+  
+  maginot_artillery_army:0 "Artillería Planetaria"
+  maginot_artillery_army_desc:0 "Enormes cañones de artillería que pueden desgarrar a las fuerzas invasoras, pero son relativamente frágiles."
+  maginot_artillery_army_plural:0 "Artillerías Planetarias"
+  
+  maginot_shield_army:0 "Batería de Escudos"
+  maginot_shield_army_desc:0 "Generadores de escudos gigantescos diseñados para absorber el daño de las fuerzas enemigas."
+  maginot_shield_army_plural:0 "Baterías de Escudos"
+  
+  maginot_bunker_army:0 "Red de Fortificaciones"
+  maginot_bunker_army_desc:0 "Vastas redes de búnkeres, trincheras y cañones ocultos destinados a obstaculizar los avances enemigos tanto como sea posible."
+  maginot_bunker_army_plural:0 "Redes de Fortificaciones"
+  
+  maginot_assault_unit:0 "Unidad de Asalto Maginot"
+  maginot_assault_unit_desc:0 "Una unidad especial entrenada en las instalaciones de un $name_maginot$ para operaciones ofensivas e invasiones planetarias."
+  
+  maginot_machine_assault_unit:99 "$maginot_assault_unit$"
+  maginot_machine_assault_unit_desc:99 "$maginot_assault_unit_desc$"
+  
+  # names given when spawning
+  NAME_planetary_artillery:0 "Artillería Planetaria"
+  NAME_shield_battery:0 "Batería de Escudos"
+  NAME_fortification_network:0 "Red de Fortificaciones"
+  NAME_heavy_defender:0 "Unidad de Defensa Pesada"
+  
+  #################
+  ### Buildings ###
+  #################
+  building_giga_maginot_stronghold:0 "Complejo Fuerte Maginot"
+  building_giga_maginot_stronghold_desc:0 "Nuevas técnicas en el campo de la fortificación excesiva permiten la construcción de complejos como este. Construir un $name_maginot_world$ aquí extenderá estas defensas para cubrir todo el planeta."
+  
+  building_giga_maginot_global_bunker:0 "Sistema Global de Búnkeres Maginot"
+  building_giga_maginot_global_bunker_desc:0 "Un sistema de búnkeres profundos que abarca todo el mundo da a nuestros ejércitos un poder de ataque sin precedentes mientras están en este mundo."
+  
+  #################
+  ### Decisions ###
+  #################
+  # subspace disruptor
+  decision_maginot_anti_jump_on:0 "£maginot_bunker_01£ Maginot Activar Campo de Disrupción de Subespacio"
+  decision_maginot_anti_jump_on_desc:0 "El $name_maginot_world$ comienza a generar un campo de disrupción de subespacio, que interfiere con el uso del subespacio en este y en sistemas cercanos. El efecto es más débil en otros sistemas, sin embargo."
+  # TODO: the value here could be dynamic based on a country value for subspace disruptor range
+  decision_maginot_anti_jump_on_effect:0 "Tanto este sistema solar como todos los sistemas solares §Ya 1 salto de distancia§! que son §Ypropiedad de tu imperio (o un vasallo)§! reciben un modificador especial que detiene el §Yuso de la unidad de salto§! y el §Yviaje por subespacio§!. El propio sistema solar del $name_maginot_world$ §Yno puede ser objetivo del NDB o QSO§!. La verificación se realiza cuando se activa la decisión, así que actívala y desactívala para proteger los sistemas recién aparecidos/conquistados."
+  decision_maginot_anti_jump_on_must_not_already_be_active:0 "£trigger_no£ Otro $name_maginot_world$ en este sistema o en un sistema cercano ya está generando un campo de disrupción de subespacio."
+  
+  decision_maginot_anti_jump_off:0 "£maginot_bunker_01£ Maginot Desactivar Campo de Disrupción de Subespacio"
+  decision_maginot_anti_jump_off_desc:0 "El campo se apaga para ahorrar en mantenimiento o actualizar los parámetros de orientación."
+  decision_maginot_anti_jump_off_effect:0 "Tanto este sistema como todos los sistemas §Ya 1 salto de distancia§! que son §Ypropiedad de tu imperio (o un vasallo)§! tienen su protección de unidad de salto desactivada. Desactiva y activa el campo para cubrir los sistemas recién aparecidos/conquistados."
+  
+  # garrison
+  decision_maginot_basic_garrison_check:0 "£maginot_bunker_08£ Refresco de la guarnición de Maginot"
+  decision_maginot_basic_garrison_check_desc:0 "Hacer un recuento, asegurarse de que la guarnición está alerta y preparada."
+  decision_maginot_basic_garrison_check_effect:0 "Elimina y vuelve a añadir la guarnición básica de §Y5 ejércitos§! que debería estar presente, proporcionando una defensa terrestre básica para el $name_maginot_world$.\nRefresca los ejércitos otorgados por las §YRedes de Defensa Orbital§!, los §YArrays de Generadores de Escudos§! y los §YComplejos de Búnkeres§!."
+  maginot_wait_for_army_refresh:0 "£trigger_no£ Despausa el juego para que el efecto se actualice antes de intentarlo de nuevo."
+  
+  # orbital defenses
+  decision_maginot_repair_strategic_defence_command:0 "£maginot_bunker_02£ Maginot Reparar Comando de Defensa Estratégica"
+  decision_maginot_repair_strategic_defence_command_effect:0 "Reparar los sistemas de defensa orbital. Habilita de nuevo la gestión de la defensa orbital."
+  decision_maginot_repair_strategic_defence_command_desc:0 "Este mundo todavía se está recuperando de una batalla reciente."
+  decision_maginot_repair_strategic_defence_command_no_bombardment:99 "£trigger_no£ The $strategic_defence_command_platform$ cannot be repaired while the planet is being bombarded."
+  
+  decision_maginot_basic_point_check:0 "£maginot_bunker_03£ §GValores de Puntos Maginot§!"
+  decision_maginot_basic_point_check_effect:0 "§YValores de Puntos Actuales:§! \n§E[this.giga_maginot_current_SD_platform_count] Plataformas SD§! \n§E[this.maginot_offensive_upgrade_points_current] $offensive_upgrade_point_plural$ Disponibles§! | [this.maginot_offensive_upgrade_points_max] Máximo de Trabajos \n§E[this.maginot_defensive_upgrade_points_current] $defensive_upgrade_point_plural$ Disponibles§! | [this.maginot_defensive_upgrade_points_max] Máximo de Trabajos \n§YModificadores Maginot Actuales:§! \n§S[this.maginot_orbital_defence_hp_upgrades] Mejoras de HP§! \n§G+[this.maginot_orbital_defence_hp_display]%§! $MOD_SHIP_HULL_MULT$ \n§G+[this.maginot_orbital_defence_hp_display]%§! $MOD_SHIP_ARMOR_MULT$ \n§G+[this.maginot_orbital_defence_hp_display]%§! $MOD_SHIP_SHIELD_MULT$ \n§G+[this.maginot_orbital_defence_hp_regen_display]§! $MOD_SHIP_HULL_REGEN_ADD_STATIC$ \n§G+[this.maginot_orbital_defence_hp_regen_display]§! $MOD_SHIP_ARMOR_REGEN_ADD_STATIC$ \n§G+[this.maginot_orbital_defence_hp_regen_display]§! $MOD_SHIP_SHIELD_REGEN_ADD_STATIC$ \n§S[this.maginot_orbital_defence_atk_upgrades] Mejoras de ATK§! \n§G+[this.maginot_orbital_defence_atk_display]%§! $MOD_SHIP_WEAPON_DAMAGE$ \n§G+[this.maginot_orbital_defence_atk_display]%§! $MOD_SHIP_FIRE_RATE_MULT$ \n§S[this.maginot_orbital_defence_trg_upgrades] Mejoras de TRG§! \n§G+[this.maginot_orbital_defence_range_display]%§! $MOD_SHIP_WEAPON_RANGE_MULT$ \n§G+[this.maginot_orbital_defence_tracking_display]§! $MOD_SHIP_TRACKING_ADD$"
+  decision_maginot_basic_point_check_desc:0 "Hacer clic en esta decisión actualizará valores como los Puntos de Mejora y el Recuento de Plataformas SD para su uso en otras decisiones."
+  
+  decision_maginot_construct_secondary_SD_platform:0 "£maginot_bunker_04£ §SConstruir Plataforma SD Secundaria Maginot§!"
+  decision_maginot_construct_secondary_SD_platform_effect:0 "Gasta §Y2§! $offensive_upgrade_point_plural$ para crear un nuevo $name_asteroid_artillery$ para su uso como Plataforma de Defensa Estratégica de apoyo \n§YPlataformas Actuales:§! [this.giga_maginot_current_SD_platform_count] \n§E[this.maginot_offensive_upgrade_points_current] $offensive_upgrade_point_plural$ Disponibles§!"
+  decision_maginot_construct_secondary_SD_platform_desc:0 "Lanzar asteroides a la órbita para la minería es antiguo, vaciarlos para su uso como plataformas de defensa es mucho más interesante."
+  
+  decision_maginot_orbital_defence_hp_upgrade:0 "£maginot_bunker_05£ §BMejorar Sistemas de Protección Orbital Maginot§!"
+  decision_maginot_orbital_defence_hp_upgrade_effect:0 "§RCoste: [this.maginot_orbital_defence_hp_cost] £alloys£ $alloys$§! \nGasta §Y1§! $defensive_upgrade_point$ para \n+25% $MOD_SHIP_HULL_MULT$ | Actual §G+[this.maginot_orbital_defence_hp_display]%§! \n+25% $MOD_SHIP_ARMOR_MULT$ | Actual §G+[this.maginot_orbital_defence_hp_display]%§! \n+25% $MOD_SHIP_SHIELD_MULT$ | Actual §G+[this.maginot_orbital_defence_hp_display]%§! \n+500 $MOD_SHIP_HULL_REGEN_ADD_STATIC$ | Actual §G+[this.maginot_orbital_defence_hp_regen_display]§! \n+500 $MOD_SHIP_ARMOR_REGEN_ADD_STATIC$ | Actual §G+[this.maginot_orbital_defence_hp_regen_display]§! \n+500 $MOD_SHIP_SHIELD_REGEN_ADD_STATIC$ | Actual §G+[this.maginot_orbital_defence_hp_regen_display]§! \n§YNivel Actual:§! [this.maginot_orbital_defence_hp_upgrades] \n§E[this.maginot_defensive_upgrade_points_current] $defensive_upgrade_point_plural$ Disponibles§!"
+  decision_maginot_orbital_defence_hp_upgrade_desc:0 "No sólo los generadores de escudos pueden contribuir con sus escudos a las plataformas orbitales, también pueden ser convertidos en generadores de unión molecular para aumentar la integridad del casco."
+  
+  decision_maginot_orbital_defence_atk_upgrade:0 "£maginot_bunker_06£ §RMejorar Fuego Orbital Maginot§!"
+  decision_maginot_orbital_defence_atk_upgrade_effect:0 "§RCoste: [this.maginot_orbital_defence_atk_cost] £alloys£ $alloys$§! \nGasta §Y1§! $offensive_upgrade_point$ para \n+10% $MOD_SHIP_WEAPON_DAMAGE$ | Actual §G+[this.maginot_orbital_defence_atk_display]%§! \n+10% $MOD_SHIP_FIRE_RATE_MULT$ | Actual §G+[this.maginot_orbital_defence_atk_display]%§! \n§YNivel Actual:§! [this.maginot_orbital_defence_atk_upgrades] \n§E[this.maginot_offensive_upgrade_points_current] $offensive_upgrade_point_plural$ Disponibles§!"
+  decision_maginot_orbital_defence_atk_upgrade_desc:0 "Más cañones siempre es mejor. Expandir las instalaciones de enlace para una coordinación cada vez mejor de vastas multitudes de defensa orbital nunca duele."
+  
+  decision_maginot_orbital_defence_trg_upgrade:0 "£maginot_bunker_07£ §MSistemas de Objetivo Orbital Maginot§!"
+  decision_maginot_orbital_defence_trg_upgrade_effect:0 "§RCoste: [this.maginot_orbital_defence_trg_cost] £alloys£ $alloys$§! \nGasta §Y1§! $defensive_upgrade_point$ para \n+20% $MOD_SHIP_WEAPON_RANGE_MULT$ | Actual §G+[this.maginot_orbital_defence_range_display]%§! \n+5 $MOD_SHIP_TRACKING_ADD$ | Actual §G+[this.maginot_orbital_defence_tracking_display]§! \n§YNivel Actual:§! [this.maginot_orbital_defence_trg_upgrades] \n§E[this.maginot_defensive_upgrade_points_current] $defensive_upgrade_point_plural$ Disponibles§!"
+  decision_maginot_orbital_defence_trg_upgrade_desc:0 "Las estaciones de sensores planetarios pueden reemplazar a los generadores de escudos para proporcionar información de orientación mejorada y monitorear todo el sistema solar."
+  
+  # upgrade points
+  defensive_upgrade_point:0 "£job_maginot_shield_generator_operator£ Punto de Mejora Defensiva"
+  defensive_upgrade_point_plural:99 "$defensive_upgrade_point$s"
+  offensive_upgrade_point:0 "£job_maginot_planetary_cannon_operator£ Punto de Mejora Ofensiva"
+  offensive_upgrade_point_plural:99 "$offensive_upgrade_point$s"
+  # upgrade points triggers
+  maginot_no_offensive_upgrade_points_available:0 "£trigger_no£ No hay $offensive_upgrade_point_plural$ disponibles"
+  maginot_no_defensive_upgrade_points_available:0 "£trigger_no£ No hay $defensive_upgrade_point_plural$ disponibles"
+  maginot_targetting_upgrade_hard_cap:0 "£trigger_no£ Los sistemas de orientación sólo pueden ser mejorados §Y5 veces§! en total."
+  
+  # Mass recruitment decision
+  decision_maginot_mass_recruitment:0 "£maginot_bunker_09£ Reclutamiento Masivo Maginot"
+  decision_maginot_mass_recruitment_desc:0 "Las instalaciones de Maginot permiten la formación simultánea de un gran número de ejércitos especializados, apoyando las conquistas ofensivas de nuestro imperio."
+  decision_maginot_mass_recruitment_effect:0 "Recluta §Y[this.maginot_bunker_count]§! ejércitos de asalto especiales de Maginot simultáneamente. \n\nEl recuento de ejércitos se basa en el número de distritos de §Y[maginot_world_bunker_name]§! en el planeta, con un mínimo de §Y1§!."
+  
+  decision_maginot_mass_recruitment_katzenpanzer:0 "£maginot_bunker_10£ Reclutamiento Masivo de Katzenpanzer Maginot "
+  decision_maginot_mass_recruitment_katzenpanzer_desc:0 "Un $name_maginot$ es el lugar perfecto para construir grandes cantidades del $riesigerkatzenpanzer_assault$ de Katzen."
+  decision_maginot_mass_recruitment_katzenpanzer_effect:0 "Recluta §Y[this.maginot_bunker_count]§! ejércitos $riesigerkatzenpanzer_assault$ simultáneamente. \n\nEl recuento de ejércitos se basa en el número de distritos de §Y[maginot_world_bunker_name]§! en el planeta, con un mínimo de §Y1§!."
+  
+  #################
+  ### Districts ###
+  #################
+  # housing district
+  district_maginot_world_barracks:0 "Distrito de Cuarteles"
+  district_maginot_world_barracks_desc:0 "Amplias instalaciones de apoyo para alojar tropas en y debajo de la superficie, incluyendo diversas áreas de ocio y recreación."
+  district_maginot_world_barracks_plural:0 "Distritos de Cuarteles"
+  district_maginot_world_barracks_wilderness:99 "Bone City"
+  district_maginot_world_barracks_wilderness_desc:99 "A bustling hub of common symbionts undertaking common tasks - but signs of the martial focus here are never out of sight."
+  district_maginot_world_barracks_wilderness_plural:99 "Bone Cities"
+  
+  # shield district
+  district_maginot_world_shield_generators:0 "Array de Generadores de Escudos"
+  district_maginot_world_shield_generators_desc:0 "Emisores de escalas inauditas para cualquier nave individual generan campos de fuerza que rivalizan con las armadas enteras. La artillería de defensa puntual adicional y los silos de misiles antimisiles evitan que la mayoría de las municiones lleguen tan lejos. Las instalaciones de apoyo especializadas pueden ser utilizadas para complementar los escudos de las plataformas orbitales."
+  district_maginot_world_shield_generators_plural:0 "Arrays de Generadores de Escudos"
+  district_maginot_world_shield_generators_wilderness:99 "Shield Canopy Copse"
+  district_maginot_world_shield_generators_wilderness_desc:99 "Harmonising the shield-producing organs of a whole ecosystem allows for force fields beyond what any one organism could ever create. Additional point-defense adaptations prevent most ordnance from even getting that far. A mutualistic relationship with orbital protectors keeps the entire planet safer."
+  district_maginot_world_shield_generators_wilderness_plural:99 "Shield Canopy Copses"
+  
+  job_maginot_planetary_shield_effect_desc:0 "\nProporciona 1 ejército de §YBatería de Escudos§! capaz de absorber grandes cantidades de fuego enemigo."
+  
+  # cannon/orbital uplink district
+  district_maginot_world_planetary_cannons:0 "Red de Defensa Orbital"
+  district_maginot_world_planetary_cannons_desc:0 "Los imponentes cañones planetarios son bastante capaces de destrozar cualquier nave en órbita baja, asegurando que los capitanes de las naves estelares se mantengan bien fuera de sus sobres de disparo. Como tal, los cañones están principalmente preparados para tareas de intercepción contra municiones enemigas y naves de desembarco. Vastos complejos de mando y control se interfazan con los sistemas de defensa estratégica orbital, permitiendo el despliegue de un mayor número de plataformas, así como el fortalecimiento de las existentes."
+  district_maginot_world_planetary_cannons_plural:0 "Redes de Defensa Orbital"
+  district_maginot_world_planetary_cannons_wilderness:99 "Aeroterritorial Defense Grid"
+  district_maginot_world_planetary_cannons_wilderness_desc:99 "Vast plains pockmarked with pressurised cysts can propel a forest of corrosive bone-harpoons at anything in low orbit - deterring enemy ships from getting within range to begin with. As such, the launchers are mostly adapted for intercepting long-range ordnance or dropships. Encrypted bioelectric emitters boost the carrying capacity of the orbital strategic defense ecosystem, and strengthen existing platforms."
+  district_maginot_world_planetary_cannons_wilderness_plural:99 "Aeroterritorial Defense Grids"
+  
+  job_maginot_planetary_artillery_effect_desc:0 "\nProporciona 1 ejército de §YArtillería Planetaria§! que inflige daño extremo pero es relativamente frágil."
+  
+  # bunker district
+  district_maginot_world_bunkers:0 "Complejo de Búnkeres"
+  district_maginot_world_bunkers_desc:0 "Búnkeres y pesada artillería anti-terrestre hasta donde alcanza la vista. El suelo está cruzado por interminables trincheras, trampas para tanques y pesadas barreras que aseguran que nada se mueva nunca en líneas rectas en este mundo. Emplazamientos de armas camufladas están listos para llover infierno sobre las fuerzas enemigas, sus campos de fuego superpuestos cubren cada metro cuadrado en el planeta. Amplias instalaciones de entrenamiento aseguran que nuestras tropas están preparadas para cualquier contingencia, y se realizan constantemente ejercicios en todo tipo de terreno."
+  district_maginot_world_bunkers_plural:0 "Complejos de Búnkeres"
+  district_maginot_world_bunkers_wilderness:99 "Fortified Warren"
+  district_maginot_world_bunkers_wilderness_desc:99 "Carapaced crevices and heavy anti-ground adaptations as far as the eye can see. The ground is criss-crossed with muscle-lined chasms, bone spikes, and lithic spurs that ensure nothing ever moves in straight lines on this world. Camouflaged chemical-spitters are ready to rain hell on enemy forces, their overlapping fields of fire covering every square metre on the planet. Territorial skirmishes ensure all symbionts train relentlessly, until the right pheromones unite them all outside threats."
+  district_maginot_world_bunkers_wilderness_plural:99 "Fortified Warrens"
+  
+  job_maginot_planetary_bunker_effect_desc:0 "\nProporciona 1 ejército de §YRed de Fortificaciones§! que debilita la moral de las tropas enemigas mientras inflige daño constante."
+  
+  ### Ringworld versions ###
+  # housing district
+  district_maginot_ringworld_barracks:0 "Segmento de Cuarteles"
+  district_maginot_ringworld_barracks_desc:0 "Amplias instalaciones de apoyo para alojar tropas en y dentro de este mundo anillo, incluyendo diversas áreas de ocio y recreación."
+  district_maginot_ringworld_barracks_plural:0 "Segmentos de Cuarteles"
+  
+  # shield district
+  district_maginot_ringworld_shield_generators:0 "Segmento de Generador de Escudos"
+  district_maginot_ringworld_shield_generators_desc:0 "Emisores de escalas inauditas para cualquier nave individual generan campos de fuerza que rivalizan con las armadas enteras. La artillería de defensa puntual adicional y los silos de misiles antimisiles evitan que la mayoría de las municiones lleguen tan lejos. Las instalaciones de apoyo especializadas pueden ser utilizadas para complementar los escudos de las plataformas de espacio cercano."
+  district_maginot_ringworld_shield_generators_plural:0 "Segmentos de Generador de Escudos"
+  
+  # cannon/orbital uplink district
+  district_maginot_ringworld_planetary_cannons:0 "Segmento de Defensa Orbital"
+  district_maginot_ringworld_planetary_cannons_desc:0 "Equipar nuestro mundo anillo con baterías de armas masivas lo hace bastante capaz de destrozar cualquier nave en órbita baja, asegurando que los capitanes de las naves estelares se mantengan bien fuera de cualquier sobre de disparo. Como tal, los cañones están principalmente preparados para tareas de intercepción contra municiones enemigas y naves de desembarco. Vastos complejos de mando y control se interfazan con los sistemas de defensa estratégica de espacio cercano, permitiendo el despliegue de un mayor número de plataformas, así como el fortalecimiento de las existentes."
+  district_maginot_ringworld_planetary_cannons_plural:0 "Segmentos de Defensa Orbital"
+  
+  # bunker district
+  district_maginot_ringworld_bunkers:0 "Segmento de Búnker"
+  district_maginot_ringworld_bunkers_desc:0 "Búnkeres y pesada artillería anti-terrestre hasta donde alcanza la vista, extendiéndose incluso hasta las tierras curvas por encima. Esta sección del mundo anillo no está equipada con una superficie convencional, lo que da lugar a un paisaje roto con muchas caídas verticales aparentemente hacia el espacio profundo. Emplazamientos de armas camufladas están listos para llover infierno sobre las fuerzas enemigas, sus campos de fuego superpuestos cubren cada metro cúbico de volumen. Amplias instalaciones de entrenamiento aseguran que nuestras tropas están preparadas para cualquier contingencia, y se realizan constantemente ejercicios en todo tipo de terreno, incluyendo operaciones de espacio cercano y de abordaje."
+  district_maginot_ringworld_bunkers_plural:0 "Segmentos de Búnker"
+  
+  ######################################
+  ### District Triggered Names/Descs ###
+  ######################################
+  #housing district
+  
+  #shield district
+  zone_maginot_shield_generators_global_shield_network:99 "Global Shield Network" #this only exists because the original zone name is too long to fit :clueless:
+  
+  #cannon/orbital uplink district
+  
+  # bunker district
+  
+  #############
+  ### Zones ### #TODO actual Wilderness alts
+  #############
+  zone_maginot_housing:99 "Barracks Expansion"
+  zone_maginot_housing_desc:99 "A sprawling complex of barracks housing military personnel of all ranks and specializations, stretching beyond the horizon."
+  # zone_maginot_ringworld_housing:0 "$zone_maginot_housing$"
+  # zone_maginot_ringworld_housing_desc:0 "$zone_maginot_housing_desc$"
+  
+  zone_maginot_entertainment:99 "Soldier Leisure Zones"
+  zone_maginot_entertainment_desc:99 "Rows of vast domes housing almost any of the civilian luxuries that soldiers may wish to experience between deployments."
+  zone_maginot_ringworld_entertainment:99 "$zone_maginot_entertainment$"
+  zone_maginot_ringworld_entertainment_desc:99 "$zone_maginot_entertainment_desc$"
+  
+  zone_maginot_logistics:99 "Naval Provision Hubs"
+  zone_maginot_logistics_desc:99 "Civilian trade centers focused on sourcing and delivering provisions for active fleets."
+  zone_maginot_ringworld_logistics:99 "$zone_maginot_logistics$"
+  zone_maginot_ringworld_logistics_desc:99 "$zone_maginot_logistics_desc$"
+  
+  zone_maginot_shield_generators:99 "Supplementary Shield Batteries"
+  zone_maginot_shield_generators_desc:99 "Massive antimatter reactors bolster the already immensely powerful planetary shields, preparing them for the possibility of hostile munitions breaching our point defenses."
+  zone_maginot_ringworld_shield_generators:99 "$zone_maginot_shield_generators$"
+  zone_maginot_ringworld_shield_generators_desc:99 "$zone_maginot_shield_generators_desc$"
+  
+  zone_maginot_orbital_defense_grids:99 "Planetary Defense Cannons"
+  zone_maginot_orbital_defense_grids_desc:99 "Giant magnetic accelerator cannons watch the skies for enemies foolish enough to approach the planet."
+  zone_maginot_ringworld_orbital_defense_grids:99 "$zone_maginot_orbital_defense_grids$"
+  zone_maginot_ringworld_orbital_defense_grids_desc:99 "$zone_maginot_orbital_defense_grids_desc$"
+  
+  zone_maginot_specialized_training_facilities:99 "Specialized Training Facilities"
+  zone_maginot_specialized_training_facilities_desc:99 "Massive facilities dedicated to training soldiers in all forms of the art of war."
+  zone_maginot_ringworld_specialized_training_facilities:99 "$zone_maginot_specialized_training_facilities$"
+  zone_maginot_ringworld_specialized_training_facilities_desc:99 "$zone_maginot_specialized_training_facilities_desc$"
+  
+  zone_maginot_recovery_zones:99 "Recovery Zones"
+  zone_maginot_recovery_zones_desc:99 "Heavily fortified sectors dedicated to treating soldiers and repairing combat drones in the midst of combat, providing medical care, repair services and a morale boost to soldiers who know that help is always close-by, even at the worst of times."
+  zone_maginot_ringworld_recovery_zones:99 "$zone_maginot_recovery_zones$"
+  zone_maginot_ringworld_recovery_zones_desc:99 "$zone_maginot_recovery_zones_desc$"
+  
+  zone_maginot_killing_fields:99 "Flattened Killing Fields"
+  zone_maginot_killing_fields_desc:99 "Vast fields of flattened earth and twisted metal provide would-be invaders with no cover nor hope of survival in the face of heavy artillery bombardment."
+  zone_maginot_ringworld_killing_fields:99 "$zone_maginot_killing_fields$"
+  zone_maginot_ringworld_killing_fields_desc:99 "$zone_maginot_killing_fields_desc$"
+  
+  zone_maginot_fortified_trenches:99 "Fortified Trenches"
+  zone_maginot_fortified_trenches_desc:99 "Centuries old tactics prove effective even now when paired with modern construction methods and materials."
+  zone_maginot_ringworld_fortified_trenches:99 "$zone_maginot_fortified_trenches$"
+  zone_maginot_ringworld_fortified_trenches_desc:99 "$zone_maginot_fortified_trenches_desc$"
+  
+  ##############
+  ### Events ###
+  ##############
+  ### Dead Hand Failsafe ###
+  # capture, explosive disarmed
+  maginot_destruction.2000.name:0 "$name_maginot_world$ Capturado"
+  maginot_destruction.2000.desc:0 "Nuestras fuerzas informan de la captura exitosa del $name_maginot_world$ [From.GetName] en el sistema [From.GetStarName]. Los combates se extendieron profundamente en la corteza del planeta a través de un vasto laberinto de búnkeres y defensas, pero al final nuestras fuerzas demostraron ser superiores. El insidioso sistema de seguridad Dead Hand fue impedido de disparar, a pesar de que los comandantes enemigos que lo manejaban lucharon hasta el amargo final. La destrucción planetaria fue evitada con éxito, y ahora podemos tomar el control total de todas las funciones del $name_maginot_world$. §YNota que el sistema de disrupción de subespacio tendrá que ser reactivado manualmente.§!"
+  maginot_destruction.2000.a:0 "Excelente."
+  # owner informed of capture
+  maginot_destruction.2010.name:0 "$name_maginot_world$ Capturado"
+  maginot_destruction.2010.desc:0 "Hemos perdido el $name_maginot_world$ [From.GetName] en el sistema [From.GetStarName]. A pesar del vasto laberinto de búnkeres y defensas que se extiende profundamente en la corteza del planeta, las fuerzas enemigas aún penetraron nuestros perímetros y capturaron nuestros centros de mando. Han desactivado con éxito el sistema de seguridad Dead Hand, lo que significa que se evitó la destrucción planetaria. El enemigo ahora controla una potente estructura defensiva y clave para nuestras líneas de protección. \nSi nuestro personal de mando actual no estuviera ya muerto, habría un ajuste de cuentas infernal por este fracaso."
+  maginot_destruction.2010.a:0 "En efecto."
+  # defender popup about fleet destruction
+  maginot_destruction.2001.name:0 "Activación Exitosa de Dead Hand en [From.GetStarName]!"
+  maginot_destruction.2001.desc:0 "Lo peor ha sucedido. El $name_maginot_world$ [From.GetName] en el sistema [From.GetStarName] ha sido perdido con todas las manos.\n\nDespués de que nuestro enemigo desplegó armamento lo suficientemente poderoso como para destruir el mundo, el sistema de confinamiento de antimateria Dead Hand falló como estaba previsto y resultó en la liberación de vastas cantidades de energía. Con una colocación inteligente y una geoingeniería a gran escala, la explosión fue redirigida como estaba previsto y efectivamente convirtió un trozo de corteza del tamaño de un continente en una única carga conformada superpotente.\n\nPodemos estar contentos de que el sacrificio de [From.GetName] no fue en vano, ya que cualquier nave que quedara en órbita debería haber sido obliterada por esta arma. Sólo una nave mucho más grande que el propio planeta sería capaz de resistir nuestra ira.\n\n§YNota: El sistema de disrupción de subespacio fue desactivado violentamente, y la retroalimentación habrá forzado un apagado de cualquier dispositivo similar en sistemas cercanos. Cualquier $name_maginot_world_plural$ restante deberá tener sus sistemas reactivados manualmente.§!"
+  maginot_destruction.2001.a:0 "Eso debería enseñarles a volar nuestros mundos."
+  # attacker popup about fleet destruction
+  maginot_destruction.2002.name:0 "Desastre en [From.GetStarName]!"
+  maginot_destruction.2002.desc:0 "§R¡Ha ocurrido un desastre en nuestra flota encargada de obliterar el $name_maginot_world$ [From.GetName] en el sistema [From.GetStarName]!§!\n\nEl despliegue de armas estaba procediendo según lo planeado, hasta que el mundo de repente se abrió en canal y un trozo de masa del tamaño de un continente fue disparado a velocidades cercanas a las relativistas, creando una lanza inmensamente grande de plasma sobrecalentado. Todas las naves en órbita tuvieron sus escudos instantáneamente sobrecargados por la masiva ráfaga de radiación de espectro completo y el implacable asalto de energía cinética, y como resultado han sufrido daños estructurales masivos, potencialmente fatales. Las naves más pequeñas fueron destruidas instantáneamente con todas las manos perdidas.\n\nParece que el enemigo acumuló cantidades ridículas de antimateria como medida de seguridad en caso de que alguien intentara destruir su mundo. Esperamos encontrar medidas de seguridad similares en cualquier otro $name_maginot_world_plural$ que encontremos. Si no usamos equipos terrestres para desactivar cuidadosamente dicha maquinaria, podemos esperar más pérdidas de naves ya que el propio planeta se usa como arma final."
+  maginot_destruction.2002.a:0 "Vergonzoso."
+  # attacker popup about colossal failure
+  maginot_destruction.2003.name:0 "Fracaso colosal en [From.GetStarName]!"
+  maginot_destruction.2003.desc:0 "§R¡Ha ocurrido un desastre en nuestro coloso encargado de obliterar el $name_maginot_world$ [From.GetName] en el sistema [From.GetStarName]!§!\n\nEl planeta fue aparentemente destruido como se ordenó, pero justo cuando las últimas fortificaciones debían estar fallando, un trozo de masa del tamaño de un continente fue lanzado a velocidades cercanas a las relativistas, creando una lanza inmensamente grande de plasma sobrecalentado. Nuestro coloso y sus sistemas fueron instantáneamente sobrecargados por la masiva ráfaga de radiación de espectro completo y el implacable asalto de energía cinética, sufriendo daños estructurales directos masivos. Todavía estamos tratando de establecer si incluso sobrevivió. Como si eso no fuera suficiente, cualquier nave que quedara en órbita fue afectada de manera similar, borrando instantáneamente cualquier nave más pequeña.\n\nParece que el enemigo acumuló cantidades ridículas de antimateria como medida de seguridad en caso de que alguien intentara destruir su mundo. Esperamos encontrar medidas de seguridad similares en cualquier otro $name_maginot_world_plural$ que encontremos. Si no usamos equipos terrestres para desactivar cuidadosamente dicha maquinaria, podemos esperar más pérdidas ya que el propio planeta se usa como arma final."
+  maginot_destruction.2003.a:0 "Esa cosa costó mucho!"
+  # cosmogenesis horizon needle popup
+  maginot_destruction.2004.name:0 "$name_maginot_world$ Embarcado en [From.GetStarName]"
+  maginot_destruction.2004.desc:0 "El $name_maginot_world$ [From.GetName] en el sistema [From.GetStarName] ha sido embarcado en la Aguja del Horizonte.\n\nSe permitió que el sistema de confinamiento de antimateria Dead Hand fallara como estaba previsto después de embarcar a los últimos oficiales, ya que ciertamente no deseamos dejar sistemas defensivos tan potentes desatendidos y fácilmente disponibles para otras naciones.\nLa explosión en forma de plasma del tamaño de un continente fue dirigida al espacio vacío, evitando una pérdida muy costosa de nuestras colonias ya embarcadas y los sistemas de la Aguja del Horizonte. Aunque la propia Aguja está bien protegida contra el retroceso espacial y los efectos secundarios, otras plataformas y sistemas basados en el espacio pertenecientes al $name_maginot_world$ no lo están, y cualquier cosa que orbite alrededor de él ha sido reducida a polvo espacial. Esperamos que no se hayan dejado naves militares o civiles en órbita.\n\n¡Adelante a nuestra próxima colonia!"
+  maginot_destruction.2004.a:0 "Todo según el plan."
+  
+  ### Orbital Defense Events ###
+  # destroyed
+  maginot_orbital_defence.1004.name:0 "Comando de Defensa Estratégica Maginot Destruido!"
+  maginot_orbital_defence.1004.desc:0 "Las estaciones de comando orbital protectoras que orbitan el $name_maginot_world$ §Y[maginot_world_location.GetName]§! han sido destruidas tras un feroz combate con el §Y[maginot_orbital_defence_destroyer.GetName]§!.\n\nNuestras defensas orbitales han sido reducidas a escombros aleatorios, pero la estación de defensa central puede ser reconstruida con el tiempo. El propio Mundo Maginot permanece intacto y aún resistirá la invasión terrestre. Si se habían aplicado mejoras, la reparación de nuestras defensas conservará las mejoras que pudieran haber tenido. Las Plataformas SD Secundarias no serán restauradas, y tendrán que ser construidas desde cero."
+  maginot_orbital_defence.1004.a:0 "¡Maldición!"
+  # repaired
+  maginot_orbital_defence.1006.name:0 "Comando de Defensa Estratégica Maginot Reparado!"
+  maginot_orbital_defence.1006.desc:0 "Hemos reparado con éxito nuestra estación de comando que orbita el $name_maginot_world$ §Y[maginot_world_location.GetName]§!. La estructura ha sido devuelta a su estado de funcionamiento, y ahora está lista para defender nuestro territorio.\n\nCualquier mejora previamente aplicada a la estructura ha sido conservada, pero las Plataformas SD Secundarias no lo han sido."
+  maginot_orbital_defence.1006.a:0 "¡Excelente!"
+  
+  ############
+  ### Jobs ###
+  ############
+  ## main job
+  job_maginot_central_command:0 "Personal de Comando Central Maginot"
+  job_maginot_central_command_plural:0 "Personal de Comando Central Maginot"
+  job_maginot_central_command_desc:0 "El personal general que supervisa el $name_maginot_world$, compuesto por los mejores oficiales que el imperio tiene para ofrecer. Comandan la vasta gama de defensas planetarias desde los complejos de comando más profundos, dispuestos a dar sus vidas por nuestra nación."
+  job_maginot_central_command_effect_desc:0 "£job_maginot_central_command£ $job_maginot_central_command_plural$ disminuyen £crime£ §Y$PLANET_CRIME_TITLE$§!, aumentan £mod_planet_stability_add£ §Y$PLANET_STABILITY_TITLE$§!, generan £defense_army£ §YDefensa de Ejércitos§!, aumentan £mod_country_naval_cap_add£ §Y$MOD_COUNTRY_NAVAL_CAP_ADD$§!, y producen £unity£ §Y$unity$§! y £influence£ §YInfluencia§!"
+  mod_job_maginot_central_command_add:99 "$job_maginot_central_command$"
+  # gestalt version
+  job_maginot_central_command_gestalt:0 "Drones de Comando Central Maginot"
+  job_maginot_central_command_gestalt_plural:0 "Drones de Comando Central Maginot"
+  job_maginot_central_command_gestalt_desc:0 "Drones especialmente seleccionados aptos para el deber de comando, encargados de supervisar el $name_maginot_world$. Comandan la vasta gama de defensas planetarias desde los complejos de comando más profundos."
+  job_maginot_central_command_gestalt_effect_desc:0 "£job_maginot_central_command_gestalt£ $job_maginot_central_command_gestalt_plural$ disminuye £crime£ §Y$TÍTULO_DEL_CRIMEN_DEL_PLANETA$§!, aumenta £mod_planet_stability_add£ §Y$TÍTULO_DE_ESTABILIDAD_DEL_PLANETA$§!, genera £defense_army£ §YEjércitos de Defensa§!, aumenta £mod_country_naval_cap_add£ §Y$MOD_COUNTRY_NAVAL_CAP_ADD$§!, y produce £unity£ §Y$unidad$§! y £influence£ §YInfluencia§!"
+  mod_job_maginot_central_command_gestalt_add:99 "$job_maginot_central_command_gestalt$"
+  maginot_central_command_gestalt_wilderness:99 "Stratosymbiont"
+  job_maginot_central_command_gestalt_wilderness:99 "$maginot_central_command_gestalt_wilderness$"
+  maginot_central_command_gestalt_wilderness_plural:99 "Stratosymbionts"
+  job_maginot_central_command_gestalt_wilderness_plural:99 "$maginot_central_command_gestalt_wilderness_plural$"
+  maginot_central_command_gestalt_wilderness_desc:99 "Specially selected symbionts especially fit for command duty, set to overseeing the $name_maginot_world$. They cultivate the vast array of planetary defenses from the deepest command complexes."
+  job_maginot_central_command_gestalt_wilderness_desc:99 "$maginot_central_command_gestalt_wilderness_desc$"
+  
+  ## shield district
+  job_maginot_shield_generator_operator:0 "Operador de Generador de Escudos"
+  job_maginot_shield_generator_operator_plural:0 "Operadores de Generador de Escudos"
+  job_maginot_shield_generator_operator_desc:0 "Entrenados para operar matrices de generadores del tamaño de una manzana de ciudad, y de otra manera aseguran que el $name_maginot_world$ permanezca bastante seguro de cualquier amenaza de que los proyectiles enemigos golpeen."
+  job_maginot_shield_generator_operator_effect_desc:0 "£job_maginot_shield_generator_operator£ $job_maginot_shield_generator_operator_plural$ convierten £energy£ §Y$energy$§! y £alloys£ §Y$alloys$§! en £unity£ §YUnity§! y habilitan §Ydefensive upgrades§! para el $name_maginot_world$. 1 §Y$defensive_upgrade_point$§! por trabajo."
+  mod_job_maginot_shield_generator_operator_add:99 "$job_maginot_shield_generator_operator$"
+  # gestalt version
+  job_maginot_shield_generator_operator_gestalt:0 "Drone Operador de Generador de Escudos"
+  job_maginot_shield_generator_operator_gestalt_plural:0 "Drones Operadores de Generador de Escudos"
+  job_maginot_shield_generator_operator_gestalt_desc:0 "Entrenados para operar matrices de generadores del tamaño de una manzana de ciudad, y de otra manera aseguran que el $name_maginot_world$ permanezca bastante seguro de cualquier amenaza de que los proyectiles enemigos golpeen."
+  job_maginot_shield_generator_operator_gestalt_effect_desc:0 "£job_maginot_shield_generator_operator_gestalt£ $job_maginot_shield_generator_operator_gestalt_plural$ convierten £energy£ §Y$energy$§! y £alloys£ §Y$alloys$§! en £unity£ §YUnity§! y habilitan §Ydefensive upgrades§! para el $name_maginot_world$. 1 §Y$defensive_upgrade_point$§! por trabajo."
+  mod_job_maginot_shield_generator_operator_gestalt_add:99 "$job_maginot_shield_generator_operator_gestalt$"
+  maginot_shield_generator_operator_gestalt_wilderness:99 "Aegisymbiont"
+  job_maginot_shield_generator_operator_gestalt_wilderness:99 "$maginot_shield_generator_operator_gestalt_wilderness$"
+  maginot_shield_generator_operator_gestalt_wilderness_plural:99 "Aegisymbionts"
+  job_maginot_shield_generator_operator_gestalt_wilderness_plural:99 "$maginot_shield_generator_operator_gestalt_wilderness_plural$"
+  maginot_shield_generator_operator_gestalt_wilderness_desc:99 "Trained to tend to field-sized shield canopy growths, and otherwise ensure the $name_maginot_world$ remains quite safe from any threat of ballistic predation."
+  job_maginot_shield_generator_operator_gestalt_wilderness_desc:99 "$maginot_shield_generator_operator_gestalt_wilderness_desc$"
+  
+  ## cannon/orbital uplink district
+  job_maginot_planetary_cannon_operator:0 "Operador de la Red de Defensa"
+  job_maginot_planetary_cannon_operator_plural:0 "Operadores de la Red de Defensa"
+  job_maginot_planetary_cannon_operator_desc:0 "Una horda de ingenieros entrenados mantienen tanto los cañones planetarios como los enlaces orbitales. El personal entrenado está estacionado tanto en las armas de tierra como en las plataformas SD orbitales para enfrentarse a cualquier hostil lo suficientemente imprudente como para compartir un sistema con un $name_maginot_world$."
+  job_maginot_planetary_cannon_operator_effect_desc:0 "£job_maginot_planetary_cannon_operator£ $job_maginot_planetary_cannon_operator_plural$ convierten £energy£ §Y$energy$§! y £alloys£ §Y$alloys$§! en £unity£ §YUnidad§! y habilitan §Ymejoras ofensivas§! para el $name_maginot_world$. 1 §Y$offensive_upgrade_point$§! por trabajo."
+  mod_job_maginot_planetary_cannon_operator_add:99 "$job_maginot_planetary_cannon_operator$"
+  # gestalt version
+  job_maginot_planetary_cannon_operator_gestalt:0 "Drone Operador de la Red de Defensa"
+  job_maginot_planetary_cannon_operator_gestalt_plural:0 "Drones Operadores de la Red de Defensa"
+  job_maginot_planetary_cannon_operator_gestalt_desc:0 "Una horda de drones ingenieros entrenados mantienen tanto los cañones planetarios como los enlaces orbitales. Los drones de combate están estacionados tanto en las armas de tierra como en las plataformas SD orbitales para enfrentarse a cualquier hostil lo suficientemente imprudente como para compartir un sistema con un $name_maginot_world$."
+  job_maginot_planetary_cannon_operator_gestalt_effect_desc:0 "£job_maginot_planetary_cannon_operator_gestalt£ $job_maginot_planetary_cannon_operator_gestalt_plural$ convierten £energy£ §Y$energy$§! y £alloys£ §Y$alloys$§! en £unity£ §YUnidad§! y habilitan §Ymejoras ofensivas§! para el $name_maginot_world$. 1 §Y$offensive_upgrade_point$§! por trabajo."
+  mod_job_maginot_planetary_cannon_operator_gestalt_add:99 "$job_maginot_planetary_cannon_operator_gestalt$"
+  maginot_planetary_cannon_operator_gestalt_wilderness:99 "Sentinelsymbiont"
+  job_maginot_planetary_cannon_operator_gestalt_wilderness:99 "$Sentinelsymbiont$"
+  maginot_planetary_cannon_operator_gestalt_wilderness_plural:99 "Sentinelsymbionts"
+  job_maginot_planetary_cannon_operator_gestalt_wilderness_plural:99 "$maginot_planetary_cannon_operator_gestalt_wilderness_plural$"
+  maginot_planetary_cannon_operator_gestalt_wilderness_desc:99 "Engineering and combat symbionts with a primal urge to protect the herd from danger. They oversee both an orbital canopy of SD platforms, and a planetside understory of ballistic projectors."
+  job_maginot_planetary_cannon_operator_gestalt_wilderness_desc:99 "$maginot_planetary_cannon_operator_gestalt_wilderness_desc$"
+  
+  ## bunker district
+  job_maginot_bunker_officer:0 "Comandante de Defensa Maginot"
+  job_maginot_bunker_officer_plural:0 "Comandantes de Defensa Maginot"
+  job_maginot_bunker_officer_desc:0 "Oficiales encargados de organizar la defensa de todo un sector de búnkeres."
+  job_maginot_bunker_officer_effect_desc:0 "£job_maginot_bunker_officer£ $job_maginot_bunker_officer_plural$ convierten £energy£ §Y$energy$§! y £alloys£ §Y$alloys$§! en £unity£ §Y$unity$§!, aumentan £mod_country_naval_cap_add£ §Y$MOD_COUNTRY_NAVAL_CAP_ADD$§! y generan £defense_army£ §YEjércitos de Defensa§!"
+  mod_job_maginot_bunker_officer_add:99 "$job_maginot_bunker_officer$"
+  # gestalt version
+  job_maginot_bunker_officer_gestalt:0 "Drone Comandante de Defensa Maginot"
+  job_maginot_bunker_officer_gestalt_plural:0 "Drones Comandantes de Defensa Maginot"
+  job_maginot_bunker_officer_gestalt_desc:0 "Drones especialmente creados para organizar la defensa de todo un sector de búnkeres."
+  job_maginot_bunker_officer_gestalt_effect_desc:0 "£job_maginot_bunker_officer_gestalt£ $job_maginot_bunker_officer_gestalt_plural$ convierten £energy£ §Y$energy$§! y £alloys£ §Y$alloys$§! en £unity£ §Y$unity$§!, aumentan £mod_country_naval_cap_add£ §Y$MOD_COUNTRY_NAVAL_CAP_ADD$§! y generan £defense_army£ §YEjércitos de Defensa§!"
+  mod_job_maginot_bunker_officer_gestalt_add:99 "$job_maginot_bunker_officer_gestalt$"
+  maginot_bunker_officer_gestalt_wilderness:99 "Warrensymbiont"
+  job_maginot_bunker_officer_gestalt_wilderness:99 "$maginot_bunker_officer_gestalt_wilderness$"
+  maginot_bunker_officer_gestalt_wilderness_plural:99 "Warrensymbionts"
+  job_maginot_bunker_officer_gestalt_wilderness_plural:99 "$maginot_bunker_officer_gestalt_wilderness_plural$"
+  maginot_bunker_officer_gestalt_wilderness_desc:99 "Symbionts specially adapted to maintain deep refuges for the planet's population."
+  job_maginot_bunker_officer_gestalt_wilderness_desc:99 "$maginot_bunker_officer_gestalt_wilderness_desc$"
+  
+  ## housing district military police (non-gestalts only)
+  job_maginot_military_police:0 "Policía Militar Maginot"
+  job_maginot_military_police_plural:0 "Policía Militar Maginot"
+  job_maginot_military_police_desc:0 "Encargados de mantener la paz y las funciones de aplicación de la ley, están especialmente entrenados para lidiar con personal militar armado a diario, una constante de la vida en un $name_maginot_world$."
+  job_maginot_military_police_effect_desc:0 "£job_maginot_military_police£ $job_maginot_military_police_plural$ disminuyen £crime£ §Y$PLANET_CRIME_TITLE$§!, aumentan £mod_planet_stability_add£ §Y$PLANET_STABILITY_TITLE$§!, y generan £defense_army£ §YEjércitos de Defensa§!"
+  mod_job_maginot_military_police_add:99 "$job_maginot_military_police$"
+  
+  ######################
+  ### Megastructures ###
+  ######################
+  # megastructure object
+  maginot_world_0:0 "$gc_mega$$name_maginot_world$ Emplazamiento"
+  maginot_world_0_DESC:0 "El Emplazamiento para un futuro $name_maginot_world$ que se construirá en el planeta de abajo. Esta fortaleza masiva se extenderá un día tanto en el manto del planeta como más allá de la atmósfera hacia el espacio profundo, presentando un obstáculo casi inexpugnable para los enemigos. Todos los distritos del planeta serán reemplazados por únicos defensivos, y se habilitará la gestión de plataformas de defensa planetaria. $orbital_ring_tier_1_plural$ será incorporado y eliminado."
+  maginot_world_0_MEGASTRUCTURE_DETAILS:0 "£gigastructural£ $giga_list_category_megastructure$ - $giga_list_category_defensive$ \nProporciona grandes cantidades de §YEjércitos de Defensa§!, §YInhibidores UL§! y bloquea §YJump Drives§! - §BREQUIRES WORLD WITH MAGINOT FORT COMPLEX BUILDING§!\n§LUn vasto complejo fortaleza que abarca todo un planeta, proporcionando la defensa planetaria definitiva.§!"
+  # against any enemy in any theatre.§!"
+  # F to pay respects to full description, line space needed for steam commenter instructions
+  
+  # gigalistentry MAGINOT WORLD
+  maginot_world_1:0 "$name_maginot_world$ Andamio"
+  maginot_world_1_DESC:0 "Geoformación inicial, excavación y construcción del ascensor espacial, junto con los comienzos del anillo de defensa adjunto. Se han excavado los búnkeres más profundos, y puede comenzar la instalación del sistema Dead Hand."
+  maginot_world_2:99 "$name_maginot_world$"
+  maginot_world_2_DESC:0 "Una fortaleza que abarca todo el planeta y busca ser absolutamente inexpugnable para cualquier fuerza enemiga."
+  # ringworld version
+  maginot_world_ringworld_0:0 "$name_maginot_ringworld$ Emplazamiento"
+  maginot_world_ringworld_0_DESC:0 "El Emplazamiento para un futuro $name_maginot_ringworld$ que se construirá en la sección del anillo mundial de abajo. Esta fortaleza masiva transformará un día la superestructura del anillo, presentando un obstáculo casi inexpugnable para los enemigos. Todos los distritos en el anillo mundial serán reemplazados por únicos defensivos, y se habilitará la gestión de plataformas de defensa planetaria."
+  maginot_world_ringworld_0_MEGASTRUCTURE_DETAILS:0 "Esto no debería ser visible."
+  maginot_world_ringworld_1:0 "$name_maginot_ringworld$ Superestructura"
+  maginot_world_ringworld_1_DESC:0 "Transformación inicial del anillo mundial, incluyendo grandes cambios en la superestructura general. Se han emplazado los búnkeres más profundos, y puede comenzar la instalación del sistema Dead Hand."
+  maginot_world_ringworld_2:99 "$name_maginot_ringworld$"
+  maginot_world_ringworld_2_DESC:0 "Una fortaleza que abarca todo el anillo y busca ser absolutamente inexpugnable para cualquier fuerza enemiga."
+  
+  # tooltip fail messages
+  requires_maginotable_planet_type:0 "$TRIGGER_FAIL$Los Mundos Maginot solo pueden construirse en planetas normales, hábitats de gigantes de gas o segmentos de anillo mundial."
+  requires_not_maginot_world:0 "$TRIGGER_FAIL$No se puede construir un Mundo Maginot en un Mundo Maginot. Obvio."
+  requires_maginot_stronghold_built:0 "$TRIGGER_FAIL$Debemos preparar el espacio de construcción para los búnkeres planetarios construyendo un $building_giga_maginot_stronghold$ primero."
+  
+  # event popups for stages
+  giga_dialog.5001.name:0 "$name_maginot_world$ Emplazamiento Completo"
+  giga_dialog.5001.desc:0 "El Emplazamiento para un futuro $name_maginot_world$ ha sido completado en el sistema [giga_system.GetName]. Pronto el planeta se convertirá en un complejo fortaleza masivo, y tendremos la defensa definitiva. \n\n§STodos los distritos del planeta serán reemplazados por únicos defensivos, y se habilitará la gestión de la defensa planetaria. $orbital_ring_tier_1_plural$ será incorporado y eliminado.§! \n\n§RADVERTENCIA: El $name_maginot_world$ cuenta con un sistema de seguridad que detona el planeta y aniquila cualquier nave en órbita en caso de destrucción de la colonia!"
+  giga_dialog.5001.a:0 "Excelente."
+  
+  giga_dialog.5002.name:0 "$name_maginot_world$ Internos Completos"
+  giga_dialog.5002.desc:0 "Estamos un paso más cerca de completar un $name_maginot_world$ en el sistema [giga_system.GetName]. La geoformación y la construcción espacial están bien encaminadas, y hemos excavado los espacios para los búnkeres y centros de comando más profundos. Ahora estamos listos para instalar el sistema de seguridad basado en antimateria, y finalizar las defensas planetarias iniciales."
+  giga_dialog.5002.a:0 "Excelente."
+  
+  giga_dialog.5003.name:0 "$name_maginot_world$ Completo!"
+  giga_dialog.5003.desc:0 "¡Noticias fantásticas! En el sistema [giga_system.GetName], hemos completado nuestra fortaleza definitiva, que se extiende desde el espacio exterior hasta el manto del planeta. Esta construcción verdaderamente impresionante es casi inexpugnable para cualquier fuerza, con defensas orbitales integradas, cañones planetarios, vastos búnkeres superficiales, complejos de comando subterráneos profundos, y generadores de escudos que superan con creces las capacidades de generación de flotas navales enteras. \nAdemás, el sistema final Dead Hand protege contra incluso la destrucción total del planeta, utilizando todo el planeta como una vasta carga conformada alimentada por antimateria en caso de activación de la seguridad - §Raniquilando completamente cualquier fuerza hostil en órbita.§! \n\nLos diversos sistemas de defensa pueden gestionarse a través de §Ydecisiones§!. Construye §Ydistritos§! y ocupa los §Ytrabajos§! para obtener §E$defensive_upgrade_point_plural$§! y §E$offensive_upgrade_point_plural$§! para usar con estas decisiones."
+  giga_dialog.5003.a:0 "Por fin, estamos seguros."
+  
+  # ringworld versions
+  giga_dialog.5004.name:0 "$name_maginot_ringworld$ Emplazamiento Completo"
+  giga_dialog.5004.desc:0 "El Emplazamiento para un futuro $name_maginot_ringworld$ ha sido completado en el sistema [giga_system.GetName]. Pronto esta parte del anillo se convertirá en un complejo fortaleza masivo, y tendremos la defensa definitiva. \n\n§STodos los distritos del planeta serán reemplazados por únicos defensivos, y se habilitará la gestión de plataformas de defensa cercanas al espacio.§! \n\n§RADVERTENCIA: El $name_maginot_ringworld$ cuenta con un sistema de seguridad que detona el mundo y aniquila cualquier nave en órbita en caso de destrucción de la colonia!"
+  giga_dialog.5004.a:0 "Excelente."
+  
+  giga_dialog.5005.name:0 "$name_maginot_ringworld$ Externos Completos"
+  giga_dialog.5005.desc:0 "Estamos un paso más cerca de completar un $name_maginot_ringworld$ en el sistema [giga_system.GetName]. La construcción espacial y la remodelación de la superficie están bien encaminadas, y hemos seleccionado espacios para los búnkeres y centros de comando más profundos. Ahora estamos listos para instalar el sistema de seguridad basado en antimateria, y finalizar las defensas iniciales del anillo."
+  giga_dialog.5005.a:0 "Excelente."
+  
+  giga_dialog.5006.name:0 "$name_maginot_ringworld$ Completo!"
+  giga_dialog.5006.desc:0 "¡Noticias fantásticas! En el sistema [giga_system.GetName], hemos completado nuestra fortaleza definitiva, que parcialmente rodea una estrella entera. Esta construcción verdaderamente impresionante es casi inexpugnable para cualquier fuerza, con defensas cercanas al espacio integradas, baterías superestructurales, vastos segmentos de búnkeres, complejos de comando profundamente enterrados, y generadores de escudos que superan con creces las capacidades de generación de flotas navales enteras. \nAdemás, el sistema final Dead Hand protege contra incluso la destrucción total del segmento, utilizando toda la superestructura como una vasta carga conformada alimentada por antimateria en caso de activación de la seguridad - §Raniquilando completamente cualquier fuerza hostil en órbita.§! \n\nLos diversos sistemas de defensa pueden gestionarse a través de §Ydecisiones§!. Construye §Ydistritos§! y ocupa los §Ytrabajos§! para obtener §E$defensive_upgrade_point_plural$§! y §E$offensive_upgrade_point_plural$§! para usar con estas decisiones."
+  giga_dialog.5006.a:0 "Por fin, estamos seguros."
+  
+  #####################
+  ### Miscellaneous ###
+  #####################
+  NAME_maginot_orbital_defence_fleet:0 "Comando de Defensa Planetaria"
+  NAME_maginot_strategic_defence_command_platform:0 "Comando de Defensa Estratégica"
+  NAME_maginot_secondary_platform:0 "Plataforma SD Secundaria"
+  
+  #################
+  ### Modifiers ###
+  #################
+  # subspace disruption system
+  maginot_anti_jump_on:0 "Sistema de Disrupción de Subespacio Activado"
+  maginot_anti_jump_on_desc:0 "El $name_maginot_world$ está generando un poderoso campo de disrupción que se propaga a través del subespacio, impidiendo la operación de agujeros de gusano en este sistema. Además, las unidades de salto quedan inoperables en este y sistemas cercanos."
+  maginot_anti_jump_star_modifier:0 "Campo de Disrupción de Subespacio Activo"
+  maginot_anti_jump_star_modifier_desc:0 "Este sistema está siendo afectado por un poderoso campo de disrupción, haciendo imposible el viaje por subespacio y el uso de unidades de salto."
+  
+  # orbital SD platform buffs
+  giga_maginot_orbital_defence_hp:0 "Mejora Defensiva de la Plataforma SD Maginot"
+  giga_maginot_orbital_defence_atk:0 "Mejorapara Armas dela Plataforma SD Maginot"
+  giga_maginot_orbital_defence_trg:0 "Mejora de Objetivo de la Plataforma SD Maginot"
+  # tech buffs
+  giga_maginot_firepower_1:0 "Tecnología Mejorada de Fuego Maginot"
+  giga_maginot_planetcraft_upgrade:0 "Tecnología de Mejora de Planeta de Combate Maginot"
+  giga_maginot_systemcraft_upgrade:0 "Tecnología de Mejora de Sistema Solar de Combate Maginot"
+  
+  ###############
+  ### Planets ###
+  ###############
+  # basics
+  name_maginot_world:0 "Mundo Maginot"
+  name_maginot_world_plural:0 "Mundos Maginot"
+  # gas giant version
+  name_maginot_gas_giant:0 "Gigante Gaseoso Maginot"
+  name_maginot_gas_giant_plural:0 "Gigantes de Gas Maginot"
+  # ringworld version
+  name_maginot_ringworld:0 "Mundo Anillo Maginot"
+  name_maginot_ringworld_plural:0 "Mundos Anillo Maginot"
+  
+  # planet object
+  pc_giga_maginot_world:99 "$name_maginot_world$"
+  pc_giga_maginot_world_desc:0 "Una fortaleza que abarca todo el planeta y busca ser absolutamente inexpugnable para cualquier fuerza enemiga."
+  pc_giga_maginot_world_adj:99 "$name_maginot_world$"
+  # gas giant version
+  pc_giga_maginot_gas_giant:99 "$name_maginot_gas_giant$"
+  pc_giga_maginot_gas_giant_desc:0 "Una fortaleza que abarca todo un Gigante Gaseoso y busca ser absolutamente inexpugnable para cualquier fuerza enemiga."
+  pc_giga_maginot_gas_giant_adj:99 "$name_maginot_gas_giant$"
+  # ringworld version
+  pc_giga_maginot_ringworld:99 "$name_maginot_ringworld$"
+  pc_giga_maginot_ringworld_desc:0 "Una fortaleza inmensa que rodea el sol del sistema y busca ser absolutamente inexpugnable para cualquier fuerza enemiga."
+  pc_giga_maginot_ringworld_adj:99 "$name_maginot_ringworld$"
+  
+  # obligatory habitability trait (which you're not supposed to get...)
+  mod_pc_giga_maginot_world_habitability:0 "Habitabilidad de $name_maginot_world$"
+  trait_pc_giga_maginot_world_preference:0 "Preferencia de $name_maginot_world$"
+  trait_pc_giga_maginot_world_preference_desc:0 "Esta especie ha evolucionado para preferir la seguridad de los complejos de búnkeres masivos."
+  # gas giant version
+  mod_pc_giga_maginot_gas_giant_habitability:0 "Habitabilidad de $name_maginot_gas_giant$"
+  trait_pc_giga_maginot_gas_giant_preference:0 "Preferencia de $name_maginot_gas_giant$"
+  trait_pc_giga_maginot_gas_giant_preference_desc:0 "Esta especie ha evolucionado para preferir la seguridad de los complejos de búnkeres basados en nubes masivas."
+  # ringworld version
+  mod_pc_giga_maginot_ringworld_habitability:0 "Habitabilidad de $name_maginot_ringworld$"
+  trait_pc_giga_maginot_ringworld_preference:0 "Preferencia de $name_maginot_ringworld$"
+  trait_pc_giga_maginot_ringworld_preference_desc:0 "Esta especie ha evolucionado para preferir la seguridad de los complejos de búnkeres de mundos anillo masivos."
+  
+  # attached deposit
+  d_maginot_command:0 "Complejo de Comando Central Maginot"
+  d_maginot_command_desc:0 "Los búnkeres de comando y control más profundos y mejor defendidos del planeta. También alberga el sistema Dead Hand basado en antimateria en caso de destrucción del planeta."
+  # construction deposit
+  d_maginot_construction_blocker:0 "Emplazamiento Maginot en Curso"
+  d_maginot_construction_blocker_desc:0 "Estamos fortificando esta posición."
+  
+  # planet designation
+  col_mw_maginot:99 "$name_maginot_world$"
+  col_mw_maginot_desc:0 "Esta fortaleza planetaria es la estructura defensiva definitiva, haciendo casi imposible la invasión extranjera."
+  col_mw_maginot_tt:99 "$col_mw_maginot_desc$"
+  
+  #############
+  ### Ships ###
+  #############
+  strategic_defence_command_platform:0 "Plataforma de Comando de Defensa Estratégica Maginot"
+  strategic_defence_command_platform_plural:0 "Plataforma de Comando de Defensa Estratégica Maginot"
+  strategic_defence_command_platform_cap:"$strategic_defence_command_platform$"
+  # used in tech
+  allow_maginot_strategic_defence_command_platform:0 "§HDesbloquea Tipo de Plataforma:§! $strategic_defence_command_platform$"
+  maginot_strategic_defence_command_platform_desc:0 "Una plataforma central para la coordinación de la defensa orbital de nuestros Mundos Maginot."
+  
+  # sections
+  strategic_defence_command_platform_bow_01_key:99 "Orbital Lance Projector"
+  strategic_defence_command_platform_bow2_01_key:0 "Comando Central"
+  strategic_defence_command_platform_mid1_01_key:0 "Armas Pesadas Orbitales"
+  strategic_defence_command_platform_mid2_01_key:0 "Nave de Ataque Orbital"
+  strategic_defence_command_platform_stern_01_key:0 "Plataformas de Soporte Orbital"
+  
+  # planet upgrade
+  planet_strategic_defence_command_platform_bow_01_key:0 "Proyector de Lanza Orbital Mejorado"
+  planet_strategic_defence_command_platform_bow2_01_key:0 "Comando Central Mejorado"
+  planet_strategic_defence_command_platform_mid1_01_key:0 "Armas Pesadas Orbitales Mejoradas"
+  planet_strategic_defence_command_platform_mid2_01_key:0 "Nave de Ataque Orbital Mejorada"
+  planet_strategic_defence_command_platform_stern_01_key:0 "Plataformas de Soporte Orbital Mejoradas"
+  
+  # system upgrade
+  system_strategic_defence_command_platform_bow_01_key:0 "Red de Lanza Orbital"
+  system_strategic_defence_command_platform_bow2_01_key:0 "Red de Comando"
+  system_strategic_defence_command_platform_mid1_01_key:0 "Baterías Pesadas Suplementarias"
+  system_strategic_defence_command_platform_mid2_01_key:0 "Red de Hangares Orbitales"
+  system_strategic_defence_command_platform_stern_01_key:0 "Red de Plataformas de Soporte Orbital"
+  
+  # integral components
+  GIGA_MAGINOT_REACTOR:0 "Sistema de Energía Maginot"
+  GIGA_MAGINOT_REACTOR_DESC:0 "Múltiples conexiones redundantes con el $name_maginot_world$ anfitrión y sus sistemas de energía enterrados proporcionan energía para todas las operaciones orbitales."
+  
+  GIGA_MAGINOT_PLANET_REACTOR:0 "Sistema de Energía Maginot Mejorado"
+  GIGA_MAGINOT_PLANET_REACTOR_DESC:0 "La tecnología Planeta de Combate ha permitido varias mejoras en las instalaciones de energía planetarias."
+  
+  GIGA_MAGINOT_STAR_REACTOR:0 "Red de Captación Coronaria"
+  GIGA_MAGINOT_STAR_REACTOR_DESC:0 "La ingeniería de dimensiones superiores y el dominio del control estelar permiten tomas de estrellas no locales para alimentar todos los sistemas Maginot."
+  
+  GIGA_MAGINOT_OMEGA_LANCE:0 "Lanza de Aniquilación Omega"
+  GIGA_MAGINOT_OMEGA_LANCE_DESC:0 "Un arma literal del tamaño de una luna, nada menos servirá para proteger nuestro $name_maginot_world$. Alimentada por un reactor masivo instalado en el núcleo del planeta anfitrión, y regulada por una plétora de sistemas bajo la corteza, esta lanza de energía puede, y desgarrará cualquier cosa en su camino."
+  
+  GIGA_MAGINOT_KINETIC_BATTERY:0 "Baterías Planetarias Pesadas"
+  GIGA_MAGINOT_KINETIC_BATTERY_DESC:0 "Masivas baterías cinéticas construidas en la superficie del $name_maginot_world$, capaces de una devastación inmensa cuando se interconectan con sistemas orbitales."
+  
+  GIGA_MAGINOT_DEFENCE_DRONE_SWARM:0 "Enjambre de Drones de Defensa Orbital"
+  GIGA_MAGINOT_DEFENCE_DRONE_SWARM_DESC:0 "Un enjambre de drones vinculados a su $name_maginot_world$ anfitrión, no requieren tripulación, generadores de escudo a bordo, o núcleos de comando independientes, y por lo tanto pueden operar más eficazmente en combate que las naves de ataque de tamaño similar que vuelan libremente."
+  
+  ##################
+  ### Technology ###
+  ##################
+  giga_tech_maginot_world:0 "Teoría de la Defensa del Punto Fuerte Definitivo"
+  giga_tech_maginot_world_desc:0 "Para defender nuestro imperio debemos construir el punto fuerte defensivo definitivo, y transformar un planeta entero en un complejo fortaleza masivo - el $name_maginot_world$. \n\nEste mundo estará equipado con defensas orbitales, cañones planetarios, innumerables búnkeres, complejos de comando subterráneos profundos, y generadores de escudos del tamaño de un continente. Además, se desarrollará un sistema Dead Hand para disuadir a las naves de guerra de clase Colossus enemigas.\n\n§YEl edificio planetario es necesario para comenzar la construcción de $name_maginot_world$§!, pero el edificio también puede ser construido en otros lugares no aptos para el desarrollo completo."
+  maginot_desc:0 "Una fortaleza que abarca todo el planeta y busca ser absolutamente inexpugnable para cualquier fuerza enemiga."
+  allow_maginot:0 "§HDesbloquea Megaestructura:§! $name_maginot_world$"
+  giga_tech_maginot_world_wilderness_swap:99 "Ultimate Strongpoint Defense Adaptations"
+  giga_tech_maginot_world_wilderness_swap_desc:99 "To defend our habitats we must evolve the ultimate defensive strongpoint, and transform an entire planet into a massive fortress biome - the $name_maginot_world$. \n\nThis world shall be equipped with orbital defenses, planetary cannons, countless bunkers, deep underground command-hormone organs, and continent-sized shield generators. In addition, a Dead Hand organ will be developed to deter enemy Colossus-class warships.\n\n§YThe planetary building is necessary to begin $name_maginot_world$ construction§!, but the building can also be built in other locations not suitable for full development."
+  
+  giga_tech_maginot_firepower_1:0 "Potencia de Fuego Mejorada de Maginot"
+  giga_tech_maginot_firepower_1_desc:0 "Con los desarrollos prácticos completos, ahora podemos centrarnos en seguir empujando los límites con respecto a varias optimizaciones para los sistemas de $name_maginot_world$. En particular, una potencia de fuego cada vez mayor."
+  allow_giga_maginot_firepower_1:0 "Daño para Armas de Maginot: §G+25%§! \nCadencia de Fuego para Armas de Maginot: §G+10%§! \nAlcancepara Armas deMaginot: §G+20%§!"
+  # display upgrade in decisions tooltip
+  maginot_display_firepower_1:0 "\n§B$giga_tech_maginot_firepower_1$ Tecnología§!: \n§G+25%§! $MOD_SHIP_WEAPON_DAMAGE$ \n§G+10%§! $MOD_SHIP_FIRE_RATE_MULT$ \n§G+20%§! $MOD_SHIP_WEAPON_RANGE_MULT$"
+  
+  giga_tech_maginot_planetcraft_upgrade:0 "Técnicas de Refuerzo de Maginot Actualizadas"
+  giga_tech_maginot_planetcraft_upgrade_desc:0 "La nueva generación de naves de guerra celestiales ha revelado varias posibles mejoras en el refuerzo de Maginot, lo que nos permite hacer estas estructuras cada vez más duraderas frente a mayores amenazas. Además, algunas mejoras de armas y reactores pueden ser reacondicionadas."
+  allow_giga_maginot_planetcraft_upgrade:0 "§HDesbloquea Sección de Plataforma:§! Plataforma de Defensa Estratégica Maginot Mejorada \nDaño para Armas de Maginot: §G+50%§! \nCasco de Maginot: §G+500 000§! \nBlindaje de Maginot: §G+200 000§! \nEscudos de Maginot: §G+200 000§!"
+  # display upgrade in decisions tooltip
+  maginot_display_planetcraft_upgrade:0 "§B$giga_tech_maginot_planetcraft_upgrade$ Tecnología§!: \n§G+50%§! $MOD_SHIP_WEAPON_DAMAGE$ \n§G+500 000§! $MOD_SHIP_HULL_ADD$ \n§G+200 000§! $MOD_SHIP_ARMOR_ADD$ \n§G+200 000§! $MOD_SHIP_SHIELD_ADD$"
+  
+  giga_tech_maginot_systemcraft_upgrade:0 "Reacondicionamiento Estelar"
+  giga_tech_maginot_systemcraft_upgrade_desc:0 "Incluso cuando las mismas estrellas ahora se mueven a nuestro comando, no debemos descuidar nuestras defensas. Nuestras innovaciones más recientes permiten varias mejoras fundamentales en las medidas de protección de Maginot."
+  allow_giga_maginot_systemcraft_upgrade:0 "§HDesbloquea Sección de Plataforma:§! Plataforma de Defensa Estratégica Maginot a nivel de Sistema Solar de Combate \nDaño para Armas de Maginot: §G+250%§! \nCadencia de Fuego para Armas de Maginot: §G+100%§! \nPrecisión de Maginot: §G+20§! \nSeguimiento de Maginot: §G+10§! \nCasco de Maginot: §G+5 000 000§! \nBlindaje de Maginot: §G+2 000 000§! \nEscudos de Maginot: §G+2 000 000§!"
+  # display upgrade in decisions tooltip
+  maginot_display_systemcraft_upgrade:0 "§B$giga_tech_maginot_systemcraft_upgrade$ Tecnología§!: \n§G+250%§! $MOD_SHIP_WEAPON_DAMAGE$ \n§G+100%§! $MOD_SHIP_FIRE_RATE_MULT$ \n§G+20§! $MOD_SHIP_ACCURACY_ADD$ \n§G+10§! $MOD_SHIP_TRACKING_ADD$ \n§G+5 000 000§! $MOD_SHIP_HULL_ADD$ \n§G+2 000 000§! $MOD_SHIP_ARMOR_ADD$ \n§G+2 000 000§! $MOD_SHIP_SHIELD_ADD$"
+  

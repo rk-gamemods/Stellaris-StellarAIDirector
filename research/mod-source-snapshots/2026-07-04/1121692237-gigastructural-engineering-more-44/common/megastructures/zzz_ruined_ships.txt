@@ -1,0 +1,385 @@
+## Tags: @ruined @megaproject
+giga_battleship_ruined = {
+	entity = "giga_ruined_battleship_entity"
+	construction_entity = "giga_ruined_battleship_entity"
+	show_galactic_map_icon = no
+	place_entity_on_planet_plane = no
+	portrait = "GFX_megastructure_construction_background"
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 4
+		}
+	}
+
+	potential = {
+		always = no
+	}
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_cost = {
+		category = megastructures
+		cost = {
+			energy = 2000
+		}
+	}
+
+	dismantle_time = 360
+
+	on_dismantle_complete = {
+		from = {
+			country_event = { id = giga_wrecked_ships.1032 }	# Notification
+		}
+	}
+}
+
+## Tags: @restored @megaproject
+giga_battleship_restored = {
+	entity = ""
+	construction_entity = ""
+	show_galactic_map_icon = no
+	portrait = "GFX_megastructure_construction_background"
+
+	construction_blocks_and_blocked_by = none
+	upgrade_from = {
+		giga_battleship_ruined
+	}
+
+	build_time = 360
+
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 5000
+		}
+	}
+
+	possible = {
+		from = { has_technology = tech_battleships }
+	}
+
+	ai_weight = {
+		weight = 10000
+	}
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		from = {
+			country_event = { id = giga_wrecked_ships.1031 }	# Notification
+			create_fleet = {
+				name = "Restored Battleships"
+				effect = {
+					set_owner = prev
+					while = {
+						count = 3
+						create_ship = {
+							name = random
+							random_existing_design = battleship
+							graphical_culture = ROOT.fromfrom
+						}
+					}
+				}
+			}
+		}
+		last_created_fleet = { set_location = fromfrom }
+		remove_megastructure = fromfrom
+	}
+}
+
+## Tags: @ruined @megaproject
+giga_titan_ruined = {
+	entity = "giga_ruined_titan_entity"
+	construction_entity = "giga_ruined_titan_entity"
+	show_galactic_map_icon = no
+	place_entity_on_planet_plane = no
+	portrait = "GFX_megastructure_construction_background"
+	
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 5
+		}
+	}
+
+	potential = {
+		always = no
+	}
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_cost = {
+		category = megastructures
+		cost = {
+			energy = 2500
+		}
+	}
+
+	dismantle_time = 720
+
+	on_dismantle_complete = {
+		from = {
+			country_event = { id = giga_wrecked_ships.1012 }	# Notification
+		}
+	}
+}
+
+## Tags: @restored @megaproject
+giga_titan_restored = {
+	entity = ""
+	construction_entity = ""
+	show_galactic_map_icon = no
+	portrait = "GFX_megastructure_construction_background"
+	
+	construction_blocks_and_blocked_by = none
+	
+	upgrade_from = {
+		giga_titan_ruined
+	}
+
+	build_time = 600
+
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 4500
+		}
+	}
+
+	possible = {
+		from = { has_technology = tech_titans }	
+	}
+
+	ai_weight = {
+		weight = 10000
+	}
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		from = {
+			country_event = { id = giga_wrecked_ships.1011 }	# Notification
+			create_fleet = {
+				name = "Restored Titan"
+				effect = {
+					set_owner = prev
+					create_ship = {
+						name = random
+						random_existing_design = titan
+						graphical_culture = ROOT.fromfrom
+					}
+				}
+			}
+		}
+		last_created_fleet = { set_location = fromfrom }
+		remove_megastructure = fromfrom
+	}
+}
+
+## Tags: @ruined @megaproject
+giga_juggernaut_ruined = {
+	entity = "giga_ruined_juggernaut_entity"
+	construction_entity = "giga_ruined_juggernaut_entity"
+	show_galactic_map_icon = no
+	place_entity_on_planet_plane = no
+	portrait = "GFX_megastructure_construction_background"
+	
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 9
+		}
+	}
+
+	potential = {
+		always = no
+	}
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_cost = {
+		category = megastructures
+		cost = {
+			energy = 5000
+		}
+	}
+
+	dismantle_time = 900
+
+	on_dismantle_complete = {
+		from = {
+			country_event = { id = giga_wrecked_ships.1022 }	# Notification
+		}
+	}
+}
+
+## Tags: @restored @megaproject
+giga_juggernaut_restored = {
+	entity = ""
+	construction_entity = ""
+	show_galactic_map_icon = no
+	portrait = "GFX_megastructure_construction_background"
+		
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	
+	construction_blocks_and_blocked_by = none
+	upgrade_from = {
+		giga_juggernaut_ruined
+	}
+
+	build_time = 1800
+
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 5000
+		}
+	}
+
+	possible = {
+		from = { has_technology = tech_juggernaut }	
+	}
+
+	ai_weight = {
+		weight = 10000
+	}
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		from = {
+			country_event = { id = giga_wrecked_ships.1021 }	# Notification
+			create_fleet = {
+				name = "Restored Juggernaut"
+				effect = {
+					set_owner = prev
+					create_ship = {
+						name = random
+						random_existing_design = juggernaut
+						graphical_culture = ROOT.fromfrom
+					}
+				}
+			}
+		}
+		last_created_fleet = { set_location = fromfrom }
+		remove_megastructure = fromfrom
+	}
+}
+
+## Tags: @ruined @megaproject
+giga_colossus_ruined = {
+	entity = "giga_ruined_colossus_entity"
+	construction_entity = "giga_ruined_colossus_entity"
+	show_galactic_map_icon = no
+	place_entity_on_planet_plane = no
+	portrait = "GFX_megastructure_construction_background"
+	
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	
+	resources = {
+		category = megastructures
+		produces = {
+			engineering_research = 13
+		}
+	}
+
+	potential = {
+		always = no
+	}
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_cost = {
+		category = megastructures
+		cost = {
+			energy = 4000
+		}
+	}
+
+	dismantle_time = 1400
+
+	on_dismantle_complete = {
+		from = {
+			country_event = { id = giga_wrecked_ships.1042 }	# Notification
+		}
+	}
+}
+
+## Tags: @restored @megaproject
+giga_colossus_restored = {
+	entity = ""
+	construction_entity = ""
+	show_galactic_map_icon = no
+	portrait = "GFX_megastructure_construction_background"
+	
+	construction_blocks_and_blocked_by = none
+
+	upgrade_from = {
+		giga_colossus_ruined
+	}
+
+	build_time = 3000
+
+	resources = {
+		category = megastructures
+		cost = {
+			alloys = 7500
+		}
+	}
+
+	possible = {
+		from = { has_technology = tech_colossus }	
+	}
+
+	ai_weight = {
+		weight = 10000
+	}
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		from = {
+			country_event = { id = giga_wrecked_ships.1041 }	# Notification
+			create_fleet = {
+				name = "Restored Colossus"
+				effect = {
+					set_owner = prev
+					create_ship = {
+						name = random
+						random_existing_design = colossus
+						graphical_culture = ROOT.fromfrom
+					}
+				}
+			}
+		}
+		last_created_fleet = { set_location = fromfrom }
+		remove_megastructure = fromfrom
+	}
+}

@@ -1,0 +1,272 @@
+# Stellar AI advanced plan, rebased on Pegasus 4.4.3.
+
+advanced_economy_plan = {
+		ai_weight = { weight = 250 }
+
+		income = {
+			physics_research = @stellarai_midgame_economic_plan_advanced_research_target
+			society_research = @stellarai_midgame_economic_plan_advanced_research_target
+			engineering_research = @stellarai_midgame_economic_plan_advanced_research_target
+			unity = @economic_plan_advanced_unity_target
+			trade = @economic_plan_advanced_trade_target
+		}
+
+		focus = {
+			physics_research = @stellarai_midgame_economic_plan_advanced_research_focus_target
+			society_research = @stellarai_midgame_economic_plan_advanced_research_focus_target
+			engineering_research = @stellarai_midgame_economic_plan_advanced_research_focus_target
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Advanced Physics Stellar AI midgame"
+			potential = {
+				stellarai_foundation_ready = yes
+				has_monthly_income = { resource = physics_research value < @stellarai_midgame_economic_plan_advanced_scaling_research_limit }
+			}
+	
+			income = {
+				physics_research = @stellarai_midgame_economic_plan_advanced_scaling_research_target
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Advanced Society Stellar AI midgame"
+			potential = {
+				stellarai_foundation_ready = yes
+				has_monthly_income = { resource = society_research value < @stellarai_midgame_economic_plan_advanced_scaling_research_limit }
+			}
+	
+			income = {
+				society_research = @stellarai_midgame_economic_plan_advanced_scaling_research_target
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Advanced Engineering Stellar AI midgame"
+			potential = {
+				stellarai_foundation_ready = yes
+				has_monthly_income = { resource = engineering_research value < @stellarai_midgame_economic_plan_advanced_scaling_research_limit }
+			}
+			
+			income = {
+				engineering_research = @stellarai_midgame_economic_plan_advanced_scaling_research_target
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Machine Stellar AI advanced energy support"
+			potential = {
+				is_machine_empire = yes
+				OR = {
+					has_monthly_income = { resource = energy value < 65 }
+					resource_stockpile_compare = { resource = energy value < 8000 }
+				}
+			}
+	
+			income = {
+				energy = 75
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Machine Stellar AI advanced severe energy support"
+			potential = {
+				is_machine_empire = yes
+				has_monthly_income = { resource = energy value < 0 }
+				resource_stockpile_compare = { resource = energy value < 4000 }
+			}
+	
+			income = {
+				energy = 130
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Determined Exterminator advanced energy support"
+			potential = {
+				has_valid_civic = civic_machine_terminator
+				OR = {
+					has_monthly_income = { resource = energy value < 85 }
+					resource_stockpile_compare = { resource = energy value < 9000 }
+				}
+			}
+	
+			income = {
+				energy = 55
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Machine Stellar AI advanced energy safety buffer"
+			potential = {
+				is_machine_empire = yes
+				OR = {
+					NOT = { has_monthly_income = { resource = energy value > 85 } }
+					resource_stockpile_compare = { resource = energy value < 11000 }
+				}
+			}
+	
+			income = {
+				energy = 40
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Second tier Stellar AI consumer goods recovery"
+			potential = {
+				stellarai_consumer_goods_pressure = yes
+			}
+
+			income = {
+				consumer_goods = 24
+			}
+		}
+
+	subplan = {
+			scaling = yes
+			set_name = "Stellar AI unity support"
+			potential = {
+				stellarai_country_unity_push = yes
+			}
+
+			income = {
+				unity = 20
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Stellar AI energy recovery"
+			potential = {
+				stellarai_energy_recovery_needed = yes
+			}
+
+			income = {
+				energy = 40
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Stellar AI minerals recovery"
+			potential = {
+				stellarai_minerals_recovery_needed = yes
+			}
+
+			income = {
+				minerals = 30
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Stellar AI food recovery"
+			potential = {
+				stellarai_food_recovery_needed = yes
+			}
+
+			income = {
+				food = 20
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI fleet rebuild"
+			potential = {
+				stellarai_should_rebuild_fleet = yes
+			}
+
+			income = {
+				alloys = 52
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Advanced BioShip Alloys & Food"
+			potential = {
+				country_uses_bio_ships = yes
+				has_monthly_income = { resource = food value < @economic_plan_advanced_scaling_food_bioship_limit }
+			}
+	
+			income = {
+				food = @economic_plan_advanced_scaling_food_bioship_target
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI strategic resource recovery - volatile motes"
+			potential = {
+				OR = {
+					has_technology = tech_mine_volatile_motes
+					has_technology = tech_volatile_motes
+					resource_stockpile_compare = { resource = volatile_motes value > 0 }
+				}
+				OR = {
+					has_deficit = volatile_motes
+					NOT = { has_monthly_income = { resource = volatile_motes value > 2 } }
+					resource_stockpile_compare = { resource = volatile_motes value < 90 }
+				}
+			}
+	
+			income = {
+				volatile_motes = 6
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI strategic resource recovery - exotic gases"
+			potential = {
+				OR = {
+					has_technology = tech_mine_exotic_gases
+					has_technology = tech_exotic_gases
+					resource_stockpile_compare = { resource = exotic_gases value > 0 }
+				}
+				OR = {
+					has_deficit = exotic_gases
+					NOT = { has_monthly_income = { resource = exotic_gases value > 4 } }
+					resource_stockpile_compare = { resource = exotic_gases value < 140 }
+				}
+			}
+	
+			income = {
+				exotic_gases = 8
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI strategic resource recovery - rare crystals"
+			potential = {
+				OR = {
+					has_technology = tech_mine_rare_crystals
+					has_technology = tech_rare_crystals
+					resource_stockpile_compare = { resource = rare_crystals value > 0 }
+				}
+				OR = {
+					has_deficit = rare_crystals
+					NOT = { has_monthly_income = { resource = rare_crystals value > 2 } }
+					resource_stockpile_compare = { resource = rare_crystals value < 90 }
+				}
+			}
+	
+			income = {
+				rare_crystals = 6
+			}
+		}
+}

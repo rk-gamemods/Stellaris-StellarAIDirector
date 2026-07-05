@@ -1,0 +1,83 @@
+redtoxin = {
+	trigger = {
+		owner = {
+			has_technology = tech_scourge_deployment
+			ehof_default_country = yes
+		}
+	}
+	default = no
+
+	stop_when_armies_dead = no
+	abduct_pops = no
+	planet_damage = 1.0
+	army_damage = 1.5
+
+	kill_pop_chance = {
+		base = 1.5 # Same as pox, not limited to organics
+	}
+	kill_pop_amount = { min = 0 max = 200 }
+	min_pops_to_kill_pop = 0
+
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0.01
+			exists = from
+			from = { owner = { NOT = { is_hostile = root.owner } } }
+		}
+	}
+}
+
+compound = {
+	trigger = { owner = { is_country_type = compound_empire } }
+	default = yes
+	kill_pop_chance = {
+		base = 2 # I think these guys are down for murder
+	}
+
+	stop_when_armies_dead = no
+	abduct_pops = no
+	planet_damage = 1.0
+	army_damage = 1.5
+	kill_pop_amount = { min = 0 max = 200 }
+	min_pops_to_kill_pop = 0
+
+	ai_weight = { weight = 0 }
+}
+
+katzen = {
+	trigger = {
+		owner = {
+			has_technology = tech_katzen_atomic_munitions
+		}
+	}
+
+	default = no
+
+	stop_when_armies_dead = no
+	abduct_pops = no
+
+	planet_damage = 5.0
+	army_damage = 3.0
+	kill_pop_chance = {
+		base = 3 # Yeah this seems like a bombardment stance that will kill
+	}
+
+	kill_pop_amount = { min = 250 max = 1000 }
+	min_pops_to_kill_pop = 0
+
+	# root = fleet
+	# from = planet
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0.01
+			exists = from
+			from = {
+				owner = { NOT = { is_hostile = root.owner } }
+			}
+		}
+	}
+}

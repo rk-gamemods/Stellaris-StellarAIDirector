@@ -1,0 +1,147 @@
+#####################################################################
+### Gigas categories
+
+# massive hack for modifiers, list uses here
+# influence_produces_add -> virtual diplomat opinion boost
+giga_tooltips = {
+	modifier_category = country
+	generate_add_modifiers = {
+		cost produces
+	}
+	generate_mult_modifiers = {
+		cost produces
+	}
+}
+
+# planet_giga_virtual_diplomats = {
+# 	parent = planet_jobs
+# 	modifier_category = pop
+# 	generate_add_modifiers = {
+# 		upkeep
+# 	}
+# }
+#
+# planet_giga_virtual_trainers = {
+# 	parent = planet_jobs
+# 	modifier_category = pop
+# 	generate_add_modifiers = {
+# 		upkeep
+# 	}
+# }
+
+planet_cultivators = {
+	icon = job_ehof_cultivator
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+	generate_mult_modifiers = {
+		produces
+	}
+	generate_add_modifiers = {
+		produces
+		upkeep
+	}
+}
+
+planet_energy_converters = {
+	icon = job_ehof_energy_converter
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+	generate_mult_modifiers = {
+		produces
+	}
+	generate_add_modifiers = {
+		produces
+		upkeep
+	}
+}
+
+# old birch stuff
+planet_infrastructure = {
+	icon = "job_structure_manager"
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+}
+
+planet_bore = {
+	icon = "job_bore_manager"
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+}
+
+planet_penrose = {
+	icon = "job_penrose_manager"
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+}
+
+# birch
+planet_giga_birch_structure_managers = {
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+}
+planet_giga_birch_structure_engineers = {
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+}
+planet_giga_birch_insula_managers = {
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+}
+planet_giga_birch_insula_workers = {
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+}
+
+planet_giga_dark_matter_weavers = {
+	parent = planet_jobs_productive
+	modifier_category = pop_job
+	generate_add_modifiers = {
+		produces
+		upkeep
+	}
+	generate_mult_modifiers = {
+		produces
+	}
+}
+
+giga_terraforming_by_megas = {
+	parent = terraforming
+	modifier_category = megastructure
+
+	generate_mult_modifiers = {
+		cost
+	}
+}
+
+giga_ai_savings_tooltips = {
+	modifier_category = country
+	generate_add_modifiers = {
+		produces
+	}
+}
+
+planet_giga_matrioshka_brain_uplinks = {
+	parent = planet_buildings
+	modifier_category = planet
+	generate_mult_modifiers = {
+		upkeep
+	}
+}
+
+#####################################################################
+### top bar
+
+# special category for modifiers appearing in the top bar breakdown
+country_modifiers = {
+	parent = country_container
+	modifier_category = country
+	generate_add_modifiers = {
+		produces
+		upkeep
+	}
+	generate_mult_modifiers = {
+		produces
+		upkeep
+	}
+}
+

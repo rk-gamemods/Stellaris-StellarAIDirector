@@ -1,0 +1,5 @@
+project,type,capability,direct_control_level,source_ids,assessment
+Galactic Conclave,External LLM diplomacy companion,Save parsing; LLM empire diplomacy; command file + run bridge,"Partial, user-approved actions",S015,Real LLM-in-loop diplomacy; not native empire AI replacement
+Stellaris Overmind,External LLM strategy and AI steering,Autosave watcher; macro strategy; personality/stat modifiers; native AI micro,Macro steering,S016,Closest public project to LLM-controlled AI empires
+Stellaris LLM Companion,External save analyzer/advisor,Save parsing; strategic advice; MCP relay to Claude/Codex,Advisory only,S017,Useful for Codex workflows
+Beachboys Fair AI 2,Workshop AI-assisted mod claim,Claims ChatGPT-designed AI rework; community disputes functionality,No runtime LLM evidence,S018,Cautionary example for AI hallucinated PDXScript

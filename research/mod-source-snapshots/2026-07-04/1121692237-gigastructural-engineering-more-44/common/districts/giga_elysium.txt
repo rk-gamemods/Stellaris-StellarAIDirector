@@ -1,0 +1,378 @@
+@elysium_cost = 500
+@elysium_maintenance = 5
+
+###############################################################################################################
+###############################################################################################################
+#          HABITATION
+###############################################################################################################
+###############################################################################################################
+
+district_giga_elysium_housing = {
+	base_buildtime = 240
+	is_uncapped = { always = yes }
+	exempt_from_ai_planet_specialization = yes
+	icon = district_hab_housing
+
+	show_on_uncolonized = {
+		uses_district_set = giga_elysium
+	}
+
+	potential = {
+		uses_district_set = giga_elysium
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = @elysium_cost
+		}
+		upkeep = {
+			energy = @elysium_maintenance
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 800
+	}
+
+	#######################################################
+	# Normal empires
+
+	inline_script = {
+		script = planet/rulers/giga_ruler_job_swap
+		jobs = 1
+		district = @yes
+		condition = "owner = { is_gestalt = no }"
+	}
+
+	#######################################################
+	# Gestalts
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_maintenance_drone_add = 2
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_maintenance_drone_effect_desc
+	}
+}
+
+###############################################################################################################
+###############################################################################################################
+#          CONTROL
+###############################################################################################################
+###############################################################################################################
+
+district_giga_elysium_control = {
+	base_buildtime = 240
+	is_uncapped = { always = yes }
+
+	show_on_uncolonized = {
+		uses_district_set = giga_elysium
+	}
+
+	potential = {
+		uses_district_set = giga_elysium
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = @elysium_cost
+		}
+		upkeep = {
+			energy = @elysium_maintenance
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 200
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_giga_elysium_controller_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_gestalt = no 
+				has_ascension_perk = ap_mind_over_matter
+			}
+		}
+		modifier = {
+			job_telepath_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { 
+				is_gestalt = no 
+				not = { has_ascension_perk = ap_mind_over_matter }
+			}
+		}
+		modifier = {
+			job_enforcer_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_giga_elysium_controller_drone_add = 2
+			job_patrol_drone_add = 1
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_giga_elysium_controller_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { 
+				is_gestalt = no 
+				has_ascension_perk = ap_mind_over_matter
+			}
+		}
+		text = job_telepath_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { 
+				is_gestalt = no 
+				not = { has_ascension_perk = ap_mind_over_matter }
+			}
+		}
+		text = job_enforcer_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_giga_elysium_controller_drone_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_patrol_drone_effect_desc
+	}
+}
+
+###############################################################################################################
+###############################################################################################################
+#          ADMIN
+###############################################################################################################
+###############################################################################################################
+
+district_giga_elysium_admin = {
+	base_buildtime = 240
+	is_uncapped = { always = yes }
+	icon = district_arcology_administrative
+
+	show_on_uncolonized = {
+		uses_district_set = giga_elysium
+	}
+
+	potential = {
+		uses_district_set = giga_elysium
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = @elysium_cost
+		}
+		upkeep = {
+			energy = @elysium_maintenance
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 200
+	}
+
+	inline_script = {
+		script = planet/unity/giga_unity_job_swap
+		jobs = 3
+		district = @yes
+	}
+}
+
+###############################################################################################################
+###############################################################################################################
+#          RESEARCH
+###############################################################################################################
+###############################################################################################################
+
+district_giga_elysium_science = {
+	base_buildtime = 240
+	is_uncapped = { always = yes }
+	icon = district_hab_science
+
+	show_on_uncolonized = {
+		uses_district_set = giga_elysium
+	}
+
+	potential = {
+		uses_district_set = giga_elysium
+	}
+
+	prerequisites = { tech_basic_science_lab_1 }
+	show_tech_unlock_if = { always = no }
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = @elysium_cost
+		}
+		upkeep = {
+			energy = @elysium_maintenance
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 200
+	}
+
+	inline_script = {
+		script = planet/research/giga_researcher_job_swap
+		jobs = 3
+		district = @yes
+	}
+}
+
+###############################################################################################################
+###############################################################################################################
+#          AMENITIES
+###############################################################################################################
+###############################################################################################################
+
+district_giga_elysium_entertainment = {
+	base_buildtime = 240
+	is_uncapped = { always = yes }
+	exempt_from_ai_planet_specialization = yes
+	icon = district_hab_cultural
+
+	show_on_uncolonized = {
+		uses_district_set = giga_elysium
+
+		exists = from
+		from = {
+			is_gestalt = no
+			NOT = { has_valid_civic = civic_dystopian_society }
+		}
+	}
+
+	potential = {
+		uses_district_set = giga_elysium
+
+		exists = owner
+		owner = {
+			is_gestalt = no
+			NOT = { has_valid_civic = civic_dystopian_society }
+		}
+	}
+
+	conversion_ratio = 0.5
+	convert_to = {
+		district_giga_elysium_admin
+	}
+
+	resources = {
+		category = planet_districts
+		cost = {
+			minerals = @elysium_cost
+		}
+		upkeep = {
+			energy = @elysium_maintenance
+		}
+	}
+
+	planet_modifier = {
+		planet_housing_add = 200
+		job_giga_media_coordinator_add = 1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				NOT = { has_valid_civic = civic_warrior_culture }
+			}
+		}
+		modifier = {
+			job_entertainer_add = 2
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_warrior_culture
+			}
+		}
+		modifier = {
+			job_duelist_add = 2
+		}
+	}
+
+	triggered_desc = {
+		text = job_giga_media_coordinator_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_warrior_culture
+			}
+		}
+		text = job_duelist_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				NOT = { has_valid_civic = civic_warrior_culture }
+			}
+		}
+		text = job_entertainer_effect_desc
+	}
+}

@@ -1,0 +1,6 @@
+mod_id,slug,name,version,supported_version,remote_file_id,snapshot_path
+3610149307,stellar-ai,Stellar AI,0.10,v4.4.4,3610149307,C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\3610149307-stellar-ai
+1121692237,gigastructural-engineering-more-44,Gigastructural Engineering & More (4.4),3.38.4,v4.4.*,1121692237,C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\1121692237-gigastructural-engineering-more-44
+683230077,nsc3,NSC3,,v4.4.*,683230077,C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\683230077-nsc3
+2648658105,extra-ship-components-next,Extra Ship Components NEXT,4.7.0,v4.4.*,2648658105,C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\2648658105-extra-ship-components-next
+3250900527,starbase-extended-30,Starbase Extended 3.0,1.3.3.,v4.**.*,3250900527,C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\3250900527-starbase-extended-30

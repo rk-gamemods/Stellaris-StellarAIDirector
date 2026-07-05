@@ -1,0 +1,934 @@
+{
+  "collection_name": "4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity",
+  "database": "C:\\Users\\Admin\\AppData\\Roaming\\Mario\\IronyModManager\\Database_1.26.json",
+  "mods": [
+    {
+      "descriptor": "mod/ugc_1353547443.mod",
+      "name": "Battle Debris - Starship Graveyards",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1353547443",
+      "position": 1,
+      "steam_id": "1353547443"
+    },
+    {
+      "descriptor": "mod/ugc_1880071041.mod",
+      "name": "ASB Ironman",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1880071041",
+      "position": 2,
+      "steam_id": "1880071041"
+    },
+    {
+      "descriptor": "mod/ugc_1468105710.mod",
+      "name": "ASB Addon: More Particles",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1468105710",
+      "position": 3,
+      "steam_id": "1468105710"
+    },
+    {
+      "descriptor": "mod/ugc_3153706012.mod",
+      "name": "! Immersive Energy Shield",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3153706012",
+      "position": 4,
+      "steam_id": "3153706012"
+    },
+    {
+      "descriptor": "mod/ugc_2603749338.mod",
+      "name": "Immersive Camera",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2603749338",
+      "position": 5,
+      "steam_id": "2603749338"
+    },
+    {
+      "descriptor": "mod/ugc_3597087138.mod",
+      "name": "Cityscapes Revived",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3597087138",
+      "position": 6,
+      "steam_id": "3597087138"
+    },
+    {
+      "descriptor": "mod/ugc_3691866974.mod",
+      "name": "RustyVanillaRooms",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3691866974",
+      "position": 7,
+      "steam_id": "3691866974"
+    },
+    {
+      "descriptor": "mod/ugc_1591647610.mod",
+      "name": "*Remastered Human Portraits",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1591647610",
+      "position": 8,
+      "steam_id": "1591647610"
+    },
+    {
+      "descriptor": "mod/ugc_3273853969.mod",
+      "name": "CyberneticHumansExpanded",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3273853969",
+      "position": 9,
+      "steam_id": "3273853969"
+    },
+    {
+      "descriptor": "mod/ugc_2831641558.mod",
+      "name": "Human Union",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2831641558",
+      "position": 10,
+      "steam_id": "2831641558"
+    },
+    {
+      "descriptor": "mod/ugc_2807625132.mod",
+      "name": "More Human Clothes nach 3.4",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2807625132",
+      "position": 11,
+      "steam_id": "2807625132"
+    },
+    {
+      "descriptor": "mod/ugc_2037107797.mod",
+      "name": "Stellerotica - Human Hair v2",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2037107797",
+      "position": 12,
+      "steam_id": "2037107797"
+    },
+    {
+      "descriptor": "mod/ugc_2980443402.mod",
+      "name": "Animated Cat Portraits",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2980443402",
+      "position": 13,
+      "steam_id": "2980443402"
+    },
+    {
+      "descriptor": "mod/ugc_3664761724.mod",
+      "name": "Cuter Evil Cats",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3664761724",
+      "position": 14,
+      "steam_id": "3664761724"
+    },
+    {
+      "descriptor": "mod/ugc_3087170862.mod",
+      "name": "MEM Portraits Standalone",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3087170862",
+      "position": 15,
+      "steam_id": "3087170862"
+    },
+    {
+      "descriptor": "mod/ugc_3270323945.mod",
+      "name": "Cyber",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3270323945",
+      "position": 16,
+      "steam_id": "3270323945"
+    },
+    {
+      "descriptor": "mod/ugc_3248358945.mod",
+      "name": "Steampunk Badger Portraits",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3248358945",
+      "position": 17,
+      "steam_id": "3248358945"
+    },
+    {
+      "descriptor": "mod/ugc_689601294.mod",
+      "name": "Alien Suns (Updated for 3.5)",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\689601294",
+      "position": 18,
+      "steam_id": "689601294"
+    },
+    {
+      "descriptor": "mod/ugc_3403640910.mod",
+      "name": "Alien Suns Rediscovered",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3403640910",
+      "position": 19,
+      "steam_id": "3403640910"
+    },
+    {
+      "descriptor": "mod/ugc_3406499352.mod",
+      "name": "Cosmic Chronicles: A Portrait Pack",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3406499352",
+      "position": 20,
+      "steam_id": "3406499352"
+    },
+    {
+      "descriptor": "mod/ugc_3425072893.mod",
+      "name": "Necrats Portraits Updated to v3.14.15",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3425072893",
+      "position": 21,
+      "steam_id": "3425072893"
+    },
+    {
+      "descriptor": "mod/ugc_3425057306.mod",
+      "name": "Vampire Beast Portraits Updated to v3.14.15",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3425057306",
+      "position": 22,
+      "steam_id": "3425057306"
+    },
+    {
+      "descriptor": "mod/ugc_3441138115.mod",
+      "name": "Animated Brontosaur",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3441138115",
+      "position": 23,
+      "steam_id": "3441138115"
+    },
+    {
+      "descriptor": "mod/ugc_3455445703.mod",
+      "name": "Animated Amphiboids",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3455445703",
+      "position": 24,
+      "steam_id": "3455445703"
+    },
+    {
+      "descriptor": "mod/ugc_3657310962.mod",
+      "name": "Animated Portraits - Seelikor Portraits",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3657310962",
+      "position": 25,
+      "steam_id": "3657310962"
+    },
+    {
+      "descriptor": "mod/ugc_3658957565.mod",
+      "name": "Dimorphism+ - Fox Portraits",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3658957565",
+      "position": 26,
+      "steam_id": "3658957565"
+    },
+    {
+      "descriptor": "mod/ugc_3665532588.mod",
+      "name": "Animated Portraits Redone - Astroraptor Portraits",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3665532588",
+      "position": 27,
+      "steam_id": "3665532588"
+    },
+    {
+      "descriptor": "mod/ugc_3721963320.mod",
+      "name": "Animated Zeriphen Portraits Redone",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3721963320",
+      "position": 28,
+      "steam_id": "3721963320"
+    },
+    {
+      "descriptor": "mod/ugc_3484023963.mod",
+      "name": "Species Traits Expansion: Galactic Diversity",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3484023963",
+      "position": 29,
+      "steam_id": "3484023963"
+    },
+    {
+      "descriptor": "mod/ugc_2936596940.mod",
+      "name": "Osiris's Namelists for Stellaris",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2936596940",
+      "position": 30,
+      "steam_id": "2936596940"
+    },
+    {
+      "descriptor": "mod/ugc_682691478.mod",
+      "name": "Cybrxkhan's Assortment of Namelists for Stellaris",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\682691478",
+      "position": 31,
+      "steam_id": "682691478"
+    },
+    {
+      "descriptor": "mod/ugc_2811907627.mod",
+      "name": "Flags, Emblems and Backgrounds Merged",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2811907627",
+      "position": 32,
+      "steam_id": "2811907627"
+    },
+    {
+      "descriptor": "mod/ugc_3245080043.mod",
+      "name": "Kurogane 2.0",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3245080043",
+      "position": 33,
+      "steam_id": "3245080043"
+    },
+    {
+      "descriptor": "mod/ugc_3294143768.mod",
+      "name": "Kurogane 2.0: No KGX Sections",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3294143768",
+      "position": 34,
+      "steam_id": "3294143768"
+    },
+    {
+      "descriptor": "mod/ugc_3285153766.mod",
+      "name": "Kurogane 2.0: Titan-Juggernaut and Frigate Swap",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3285153766",
+      "position": 35,
+      "steam_id": "3285153766"
+    },
+    {
+      "descriptor": "mod/ugc_2040763291.mod",
+      "name": "Universe at War: Novus Ships",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2040763291",
+      "position": 36,
+      "steam_id": "2040763291"
+    },
+    {
+      "descriptor": "mod/ugc_2028165747.mod",
+      "name": "Universe at War: Hierarchy Ships",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2028165747",
+      "position": 37,
+      "steam_id": "2028165747"
+    },
+    {
+      "descriptor": "mod/ugc_2824886393.mod",
+      "name": "B5 Shadows Ship Set",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2824886393",
+      "position": 38,
+      "steam_id": "2824886393"
+    },
+    {
+      "descriptor": "mod/ugc_2831178263.mod",
+      "name": "Star Wars Separatist Ships 4.4 NSC3 Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2831178263",
+      "position": 39,
+      "steam_id": "2831178263"
+    },
+    {
+      "descriptor": "mod/ugc_2829069669.mod",
+      "name": "Star Wars Empire Ships 4.4 NSC3 Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2829069669",
+      "position": 40,
+      "steam_id": "2829069669"
+    },
+    {
+      "descriptor": "mod/ugc_2871981062.mod",
+      "name": "Star Wars Sith Empire Ships 4.4 NSC3 Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2871981062",
+      "position": 41,
+      "steam_id": "2871981062"
+    },
+    {
+      "descriptor": "mod/ugc_2822984175.mod",
+      "name": "Star Wars Rebel Ships 4.4 NSC3 Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2822984175",
+      "position": 42,
+      "steam_id": "2822984175"
+    },
+    {
+      "descriptor": "mod/ugc_3315764351.mod",
+      "name": "Star Wars Zann Consortium Ships 4.4 NSC3 Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3315764351",
+      "position": 43,
+      "steam_id": "3315764351"
+    },
+    {
+      "descriptor": "mod/ugc_2825986399.mod",
+      "name": "Star Wars Republic Ships 4.4 NSC3 Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2825986399",
+      "position": 44,
+      "steam_id": "2825986399"
+    },
+    {
+      "descriptor": "mod/ugc_3432698915.mod",
+      "name": "Star Wars Yuusan Vong Ships 4.4 NSC3 Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3432698915",
+      "position": 45,
+      "steam_id": "3432698915"
+    },
+    {
+      "descriptor": "mod/ugc_2960574667.mod",
+      "name": "Vengeance Shipset",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2960574667",
+      "position": 46,
+      "steam_id": "2960574667"
+    },
+    {
+      "descriptor": "mod/ugc_2864630469.mod",
+      "name": "[JP_EN]Bioparasitic Shipset",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2864630469",
+      "position": 47,
+      "steam_id": "2864630469"
+    },
+    {
+      "descriptor": "mod/ugc_2151652085.mod",
+      "name": "Apocalypse Molluscoid Ships: 2.7",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2151652085",
+      "position": 48,
+      "steam_id": "2151652085"
+    },
+    {
+      "descriptor": "mod/ugc_2148259818.mod",
+      "name": "Fairy Empire Shipset",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2148259818",
+      "position": 49,
+      "steam_id": "2148259818"
+    },
+    {
+      "descriptor": "mod/ugc_2972849902.mod",
+      "name": "Tall White Reborn",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2972849902",
+      "position": 50,
+      "steam_id": "2972849902"
+    },
+    {
+      "descriptor": "mod/ugc_3250584386.mod",
+      "name": "Synthetic Queen Ship Set",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3250584386",
+      "position": 51,
+      "steam_id": "3250584386"
+    },
+    {
+      "descriptor": "mod/ugc_3071707483.mod",
+      "name": "Neo-Enigmatic Shipset",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3071707483",
+      "position": 52,
+      "steam_id": "3071707483"
+    },
+    {
+      "descriptor": "mod/ugc_3524998443.mod",
+      "name": "Dawn of Andromeda: Higharth Shipset",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3524998443",
+      "position": 53,
+      "steam_id": "3524998443"
+    },
+    {
+      "descriptor": "mod/ugc_3502102519.mod",
+      "name": "Dawn of Andromeda: Drekkos Shipset",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3502102519",
+      "position": 54,
+      "steam_id": "3502102519"
+    },
+    {
+      "descriptor": "mod/ugc_1436141067.mod",
+      "name": "AI Ship Set - LS Edition",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1436141067",
+      "position": 55,
+      "steam_id": "1436141067"
+    },
+    {
+      "descriptor": "mod/ugc_2160610678.mod",
+      "name": "C&C: Scrin Ships",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2160610678",
+      "position": 56,
+      "steam_id": "2160610678"
+    },
+    {
+      "descriptor": "mod/ugc_687226658.mod",
+      "name": "No Clustered Starts",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\687226658",
+      "position": 57,
+      "steam_id": "687226658"
+    },
+    {
+      "descriptor": "mod/ugc_2878075116.mod",
+      "name": "More Primitives",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2878075116",
+      "position": 58,
+      "steam_id": "2878075116"
+    },
+    {
+      "descriptor": "mod/ugc_1121692237.mod",
+      "name": "Gigastructural Engineering & More (4.4)",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1121692237",
+      "position": 59,
+      "steam_id": "1121692237"
+    },
+    {
+      "descriptor": "mod/ugc_865040033.mod",
+      "name": "Guilli's Planet Modifiers and Features",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\865040033",
+      "position": 60,
+      "steam_id": "865040033"
+    },
+    {
+      "descriptor": "mod/ugc_819148835.mod",
+      "name": "Planetary Diversity",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\819148835",
+      "position": 61,
+      "steam_id": "819148835"
+    },
+    {
+      "descriptor": "mod/ugc_3173239930.mod",
+      "name": "Planetary Diversity - Vanilla Replacements",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3173239930",
+      "position": 62,
+      "steam_id": "3173239930"
+    },
+    {
+      "descriptor": "mod/ugc_1732447147.mod",
+      "name": "Planetary Diversity - More Arcologies",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1732447147",
+      "position": 63,
+      "steam_id": "1732447147"
+    },
+    {
+      "descriptor": "mod/ugc_2284514368.mod",
+      "name": "Planetary Diversity - Gaia Worlds",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2284514368",
+      "position": 64,
+      "steam_id": "2284514368"
+    },
+    {
+      "descriptor": "mod/ugc_3266531829.mod",
+      "name": "Immersive Galaxy Reborn",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3266531829",
+      "position": 65,
+      "steam_id": "3266531829"
+    },
+    {
+      "descriptor": "mod/ugc_2638108246.mod",
+      "name": "Ancient Systems",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2638108246",
+      "position": 66,
+      "steam_id": "2638108246"
+    },
+    {
+      "descriptor": "mod/ugc_2648658105.mod",
+      "name": "Extra Ship Components NEXT",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2648658105",
+      "position": 67,
+      "steam_id": "2648658105"
+    },
+    {
+      "descriptor": "mod/ugc_683230077.mod",
+      "name": "NSC3",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\683230077",
+      "position": 68,
+      "steam_id": "683230077"
+    },
+    {
+      "descriptor": "mod/ugc_3250900527.mod",
+      "name": "Starbase Extended 3.0",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3250900527",
+      "position": 69,
+      "steam_id": "3250900527"
+    },
+    {
+      "descriptor": "mod/ugc_2653789292.mod",
+      "name": "ESC NEXT: Overwrites: Component Progression",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2653789292",
+      "position": 70,
+      "steam_id": "2653789292"
+    },
+    {
+      "descriptor": "mod/ugc_2653699311.mod",
+      "name": "ESC NEXT: Overwrites: Global Ship Designs",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2653699311",
+      "position": 71,
+      "steam_id": "2653699311"
+    },
+    {
+      "descriptor": "mod/ugc_2663957444.mod",
+      "name": "ESC NEXT: Overwrites: Special Weapon Types Patch",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2663957444",
+      "position": 72,
+      "steam_id": "2663957444"
+    },
+    {
+      "descriptor": "mod/ugc_2769917594.mod",
+      "name": "ASB Addon: ESC NEXT",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2769917594",
+      "position": 73,
+      "steam_id": "2769917594"
+    },
+    {
+      "descriptor": "mod/ugc_3494095006.mod",
+      "name": "Synthetic Queen Shipset - NSC3 Patch",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3494095006",
+      "position": 74,
+      "steam_id": "3494095006"
+    },
+    {
+      "descriptor": "mod/ugc_3488219526.mod",
+      "name": "Neo-Enigmatic Shipset  - NSC3 Patch",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3488219526",
+      "position": 75,
+      "steam_id": "3488219526"
+    },
+    {
+      "descriptor": "mod/ugc_3526218540.mod",
+      "name": "Dawn of Andromeda - Higharth Shipset - NSC3 Patch",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3526218540",
+      "position": 76,
+      "steam_id": "3526218540"
+    },
+    {
+      "descriptor": "mod/ugc_3503278878.mod",
+      "name": "Dawn of Andromeda - Drekkos Shipset - NSC3 Patch",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3503278878",
+      "position": 77,
+      "steam_id": "3503278878"
+    },
+    {
+      "descriptor": "mod/ugc_2936292863.mod",
+      "name": "[Salvaged+]Marauders & Menacing Remodeled",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2936292863",
+      "position": 78,
+      "steam_id": "2936292863"
+    },
+    {
+      "descriptor": "mod/ugc_727000451.mod",
+      "name": "More Events Mod",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\727000451",
+      "position": 79,
+      "steam_id": "727000451"
+    },
+    {
+      "descriptor": "mod/ugc_3723865830.mod",
+      "name": "Archaeology Story Pack 4.4.1",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3723865830",
+      "position": 80,
+      "steam_id": "3723865830"
+    },
+    {
+      "descriptor": "mod/ugc_3728581560.mod",
+      "name": "Forgotten Empires 4.4.1",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3728581560",
+      "position": 81,
+      "steam_id": "3728581560"
+    },
+    {
+      "descriptor": "mod/ugc_3706385523.mod",
+      "name": "Extra Events 4.3 Continued",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3706385523",
+      "position": 82,
+      "steam_id": "3706385523"
+    },
+    {
+      "descriptor": "mod/ugc_2273568769.mod",
+      "name": "AI-Player Exclusive Archaeology & Astral Rifts",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2273568769",
+      "position": 83,
+      "steam_id": "2273568769"
+    },
+    {
+      "descriptor": "mod/ugc_3354855440.mod",
+      "name": "Unique Systems Guaranteed",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3354855440",
+      "position": 84,
+      "steam_id": "3354855440"
+    },
+    {
+      "descriptor": "mod/ugc_1286356239.mod",
+      "name": "Planet Raider",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1286356239",
+      "position": 85,
+      "steam_id": "1286356239"
+    },
+    {
+      "descriptor": "mod/ugc_3270451562.mod",
+      "name": "Fleet Formation Mod - No Trails",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3270451562",
+      "position": 86,
+      "steam_id": "3270451562"
+    },
+    {
+      "descriptor": "mod/ugc_3072726361.mod",
+      "name": "Kleom's Colorful Ships",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3072726361",
+      "position": 87,
+      "steam_id": "3072726361"
+    },
+    {
+      "descriptor": "mod/ugc_2816035124.mod",
+      "name": "Wormhole Jump Gates",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2816035124",
+      "position": 88,
+      "steam_id": "2816035124"
+    },
+    {
+      "descriptor": "mod/ugc_3674156622.mod",
+      "name": "4x Reduced MIA",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3674156622",
+      "position": 89,
+      "steam_id": "3674156622"
+    },
+    {
+      "descriptor": "mod/ugc_2592505015.mod",
+      "name": "Reduce Truce To Only 3 Year 3.12",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2592505015",
+      "position": 90,
+      "steam_id": "2592505015"
+    },
+    {
+      "descriptor": "mod/ugc_2815767345.mod",
+      "name": "Smarter Hyper Relays: Improved AI (shrimpAI)",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2815767345",
+      "position": 91,
+      "steam_id": "2815767345"
+    },
+    {
+      "descriptor": "mod/ugc_3496531985.mod",
+      "name": "Faster City Growth",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3496531985",
+      "position": 92,
+      "steam_id": "3496531985"
+    },
+    {
+      "descriptor": "mod/ugc_2907769573.mod",
+      "name": "Just Star Names (Continued)",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2907769573",
+      "position": 93,
+      "steam_id": "2907769573"
+    },
+    {
+      "descriptor": "mod/ugc_3243319558.mod",
+      "name": "Ideal System Locator (formerly Arc Furnace System Locator +)",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3243319558",
+      "position": 94,
+      "steam_id": "3243319558"
+    },
+    {
+      "descriptor": "mod/ugc_2762664736.mod",
+      "name": "Ancient Systems Difficulty MOD",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2762664736",
+      "position": 95,
+      "steam_id": "2762664736"
+    },
+    {
+      "descriptor": "mod/ugc_3464267804.mod",
+      "name": "\u4e3b\u5bb0\u53ef\u7f16\u961f",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3464267804",
+      "position": 96,
+      "steam_id": "3464267804"
+    },
+    {
+      "descriptor": "mod/ugc_2939375682.mod",
+      "name": "More Mercenary Shipgraphics",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2939375682",
+      "position": 97,
+      "steam_id": "2939375682"
+    },
+    {
+      "descriptor": "mod/ugc_3496262792.mod",
+      "name": "Chris\u2019 Covert Operations",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3496262792",
+      "position": 98,
+      "steam_id": "3496262792"
+    },
+    {
+      "descriptor": "mod/ugc_3657108661.mod",
+      "name": "Empire-Scaled Leader Capacity (4.*)",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3657108661",
+      "position": 99,
+      "steam_id": "3657108661"
+    },
+    {
+      "descriptor": "mod/ugc_1623423360.mod",
+      "name": "UI Overhaul Dynamic",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1623423360",
+      "position": 100,
+      "steam_id": "1623423360"
+    },
+    {
+      "descriptor": "mod/ugc_2976235256.mod",
+      "name": "Improved Leaders View (UI)",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2976235256",
+      "position": 101,
+      "steam_id": "2976235256"
+    },
+    {
+      "descriptor": "mod/ugc_2978032655.mod",
+      "name": "UI Overhaul Dynamic + Improved Leaders View",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2978032655",
+      "position": 102,
+      "steam_id": "2978032655"
+    },
+    {
+      "descriptor": "mod/ugc_3002188516.mod",
+      "name": "UI Overhaul Dynamic + Gigastructural Engineering",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3002188516",
+      "position": 103,
+      "steam_id": "3002188516"
+    },
+    {
+      "descriptor": "mod/ugc_1623423504.mod",
+      "name": "UI Overhaul Dynamic + Planetary Diversity",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1623423504",
+      "position": 104,
+      "steam_id": "1623423504"
+    },
+    {
+      "descriptor": "mod/ugc_3339549399.mod",
+      "name": "UI Overhaul Dynamic - Tiny Options",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3339549399",
+      "position": 105,
+      "steam_id": "3339549399"
+    },
+    {
+      "descriptor": "mod/ugc_1628912584.mod",
+      "name": "UI Overhaul Dynamic - Tiny Outliner",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1628912584",
+      "position": 106,
+      "steam_id": "1628912584"
+    },
+    {
+      "descriptor": "mod/ugc_3090328185.mod",
+      "name": "UI Overhaul Dynamic - Extended Topbar for DLCs",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3090328185",
+      "position": 107,
+      "steam_id": "3090328185"
+    },
+    {
+      "descriptor": "mod/ugc_3647490194.mod",
+      "name": "RustyMonthlyLimits",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3647490194",
+      "position": 108,
+      "steam_id": "3647490194"
+    },
+    {
+      "descriptor": "mod/ugc_3724178181.mod",
+      "name": "Post Survey Discoveries",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3724178181",
+      "position": 109,
+      "steam_id": "3724178181"
+    },
+    {
+      "descriptor": "mod/ugc_3536044971.mod",
+      "name": "RSA - Feature Preserver - Deposit Fixer",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3536044971",
+      "position": 110,
+      "steam_id": "3536044971"
+    },
+    {
+      "descriptor": "mod/ugc_3657869155.mod",
+      "name": "Feature Preserver Dependency",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3657869155",
+      "position": 111,
+      "steam_id": "3657869155"
+    },
+    {
+      "descriptor": "mod/ugc_3610149307.mod",
+      "name": "Stellar AI",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3610149307",
+      "position": 112,
+      "steam_id": "3610149307"
+    },
+    {
+      "descriptor": "mod/ugc_3696204283.mod",
+      "name": "Spacefleet Tactica",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3696204283",
+      "position": 113,
+      "steam_id": "3696204283"
+    },
+    {
+      "descriptor": "mod/ugc_3703611846.mod",
+      "name": "SFT ADD-ON : Disable New Ship Sections",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3703611846",
+      "position": 114,
+      "steam_id": "3703611846"
+    },
+    {
+      "descriptor": "mod/ugc_3726506420.mod",
+      "name": "SFT ADD-ON : Combat Computer Restriction Removal",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3726506420",
+      "position": 115,
+      "steam_id": "3726506420"
+    },
+    {
+      "descriptor": "mod/ugc_1595876588.mod",
+      "name": "!!!Universal Resource Patch [2.4+]",
+      "paradox_id": "",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1595876588",
+      "position": 116,
+      "steam_id": "1595876588"
+    }
+  ]
+}

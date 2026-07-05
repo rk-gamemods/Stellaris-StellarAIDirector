@@ -1,0 +1,1665 @@
+##### STARBASE EXTENDED 3.0 STARBASE SECTION TEMPLATES #####
+
+# OUTPOST
+ship_section_template = {
+	key = "OUTPOST_STARBASE_SECTION"
+	ship_size = starbase_outpost
+
+	fits_on_slot = "core"
+	entity = "starbase_outpost_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_01"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+	
+	component_slot = {
+		name = "SMALL_GUN_02"
+		template = "invisible_point_defence_turret"
+		locatorname = "medium_gun_01"
+	}
+	
+	large_utility_slots = 6
+	aux_utility_slots = 1
+}
+
+# STARPORT
+ship_section_template = {
+	key = "STARPORT_STARBASE_SECTION"
+	ship_size = starbase_starport
+
+	fits_on_slot = "core"
+	should_draw_components = yes
+	entity = "starbase_starport_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_02"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_03"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_04"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_01"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_02"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_03"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_04"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	large_utility_slots = 12
+	aux_utility_slots = 2
+}
+
+# STARHOLD
+ship_section_template = {
+	key = "STARHOLD_STARBASE_SECTION"
+	ship_size = starbase_starhold
+
+	fits_on_slot = "core"
+	should_draw_components = yes
+	entity = "starbase_starhold_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	component_slot = {
+		name = "LARGE_GUN_01"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_02"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_02"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_03"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_04"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_05"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_06"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_01"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_02"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_03"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_04"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	large_utility_slots = 20
+	aux_utility_slots = 3
+}
+
+# STARFORTRESS
+ship_section_template = {
+	key = "STARFORTRESS_STARBASE_SECTION"
+	ship_size = starbase_starfortress
+
+	fits_on_slot = "core"
+	should_draw_components = yes
+	entity = "starbase_starfortress_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	component_slot = {
+		name = "LARGE_GUN_01"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_02"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_03"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_04"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_02"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_03"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_04"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_05"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_06"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_07"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_08"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_01"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_02"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_03"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_04"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	large_utility_slots = 28
+	aux_utility_slots = 4
+}
+
+# CITADEL
+ship_section_template = {
+	key = "CITADEL_STARBASE_SECTION"
+	ship_size = starbase_citadel
+
+	fits_on_slot = "core"
+	should_draw_components = yes
+	entity = "starbase_citadel_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	component_slot = {
+		name = "LARGE_GUN_01"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_02"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_03"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_04"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_05"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_06"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_02"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_03"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_04"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_05"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_06"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_07"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_08"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_09"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_10"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_11"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_12"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_01"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_02"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_03"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_04"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_05"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_06"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_07"
+		template = "invisible_point_defence_turret"
+		locatorname = "medium_gun_01" 
+	}	
+
+	large_utility_slots = 36
+	aux_utility_slots = 5
+}
+
+# STRONGHOLD
+ship_section_template = {
+	key = "STRONGHOLD_STARBASE_SECTION_XL"
+	ship_size = starbase_stronghold
+
+	ai_weight = {
+		modifier = {
+			factor = 100
+		}
+	}
+
+	fits_on_slot = "core"
+	should_draw_components = yes
+	entity = "starbase_citadel_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	component_slot = {
+		name = "LARGE_GUN_01"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_02"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_03"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_04"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_05"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_06"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_07"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_08"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_09"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_10"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_11"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_12"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_02"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_03"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_04"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_05"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_06"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_07"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_08"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_09"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_10"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_11"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_12"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_13"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_14"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_15"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_16"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_01"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_02"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_03"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_04"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_05"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_06"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+	
+	large_utility_slots = 42
+	aux_utility_slots = 5
+}
+
+# HEADQUARTERS
+ship_section_template = {
+	key = "HEADQUARTERS_STARBASE_SECTION_XL"
+	ship_size = starbase_headquarters
+
+	ai_weight = {
+		modifier = {
+			factor = 100
+		}
+	}
+
+	fits_on_slot = "core"
+	should_draw_components = yes
+	entity = "starbase_citadel_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	component_slot = {
+		name = "LARGE_GUN_01"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_02"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_03"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_04"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_05"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_06"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_07"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_08"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_09"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_10"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_11"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_12"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_13"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_14"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_15"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_16"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_17"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "LARGE_GUN_18"
+		template = "invisible_large_turret"
+		locatorname = "medium_gun_01"
+	}
+	
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_02"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_03"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_04"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_05"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_06"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_07"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_08"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_09"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_10"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_11"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_12"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_13"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_14"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_15"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_16"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+	
+	component_slot = {
+		name = "MEDIUM_GUN_17"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_18"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_19"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_20"
+		template = "invisible_medium_turret"
+		locatorname = "medium_gun_01"
+	}
+	
+	component_slot = {
+		name = "SMALL_GUN_01"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_02"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_03"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_04"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_05"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_06"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_07"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "SMALL_GUN_08"
+		template = "invisible_small_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	large_utility_slots = 50
+	aux_utility_slots = 5
+}
+
+# MEDIUM BATTERY SECTION
+ship_section_template = {
+	key = "BATTERY_STARBASE_SECTION"
+	entity = "starbase_turret_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"	
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"	
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+
+	should_draw_components = yes
+
+	component_slot = {
+		name = "MEDIUM_GUN_01"
+		template = "medium_turret"
+		locatorname = "medium_gun_01"
+	}
+
+	component_slot = {
+		name = "MEDIUM_GUN_02"
+		template = "medium_turret"
+		locatorname = "medium_gun_02"
+	}
+}
+
+# TORPEDO BATTERY
+ship_section_template = {
+	key = "MISSILE_STARBASE_SECTION"
+	entity = "starbase_turret_section_entity"
+	icon = "GFX_ship_part_core_mid"
+	
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"	
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"	
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+	
+	should_draw_components = yes		
+	
+	component_slot = {
+		name = "TORPEDO_01"
+		template = "medium_missile_turret"
+		locatorname = "medium_gun_01"
+	}
+	component_slot = {
+		name = "TORPEDO_02"
+		template = "medium_missile_turret"
+		locatorname = "medium_gun_02"
+	}
+}
+
+# HANGAR
+ship_section_template = {
+	key = "HANGAR_STARBASE_SECTION"
+	entity = "orbital_station_hangarbay_section_entity"
+	icon = "GFX_ship_part_core_mid"
+	
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold	
+	ship_size = starbase_headquarters
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"	
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"	
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+	
+	should_draw_components = yes		
+	
+	component_slot = {
+		name = "STRIKE_CRAFT_01"
+		template = "large_strike_craft"
+		rotation = 90
+		locatorname = "strike_craft_locator_01"
+	}
+
+	component_slot = {
+		name = "STRIKE_CRAFT_02"
+		template = "large_strike_craft"
+		rotation = 90
+		locatorname = "strike_craft_locator_01"
+	}
+}
+
+# POINT DEFENSE
+ship_section_template = {
+	key = "PD_STARBASE_SECTION"
+	entity = "starbase_turret_section_entity"
+	icon = "GFX_starbase_pd_battery"	
+	
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"	
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+	
+	should_draw_components = yes		
+	
+	component_slot = {
+		name = "PD_01"
+		template = "point_defence_turret"
+		locatorname = "medium_gun_01"
+	}
+	component_slot = {
+		name = "PD_02"
+		template = "point_defence_turret"
+		locatorname = "medium_gun_02"
+	}
+}
+
+# LARGE BATTERY
+ship_section_template = {
+	key = "LARGE_STARBASE_SECTION"
+	entity = "starbase_turret_section_entity"
+	icon = "GFX_starbase_large_battery"
+	
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"	
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"	
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+	
+	should_draw_components = yes	
+	
+	component_slot = {
+		name = "LARGE_GUN_01"
+		template = "large_turret"
+		locatorname = "medium_gun_01"
+	}
+}
+
+# XL BATTERY
+ship_section_template = {
+	key = "EXTRA_LARGE_STARBASE_SECTION"
+	entity = "starbase_turret_section_entity"
+	icon = "GFX_starbase_xl_battery"
+	
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"	
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+	
+	should_draw_components = yes	
+
+	component_slot = {
+		name = "EXTRA_LARGE_GUN_01"
+		template = "invisible_extra_large_fixed"
+		locatorname = "medium_gun_01"
+	}
+}
+
+# TITANIC BATTERY
+ship_section_template = {
+	key = "TITANIC_STARBASE_SECTION"
+	entity = "starbase_turret_section_entity"
+	icon = "GFX_starbase_xl_battery"
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+	
+	should_draw_components = yes
+
+	component_slot = {
+		name = "TITANIC_GUN_01"
+		template = "invisible_titanic_fixed"
+		locatorname = "medium_gun_01"
+	}
+}
+
+ship_section_template = {
+	key = "ASSEMBLYYARD_STARBASE_SECTION"
+
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+
+	ship_size = starbase_waystation_1
+	ship_size = starbase_waystation_2
+	ship_size = starbase_waystation_3
+
+	entity = "orbital_station_assemblyyard_section_entity"
+	icon = "GFX_ship_part_core_mid"
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+
+	should_draw_components = yes
+}
+
+ship_section_template = {
+	key = "REFINERY_STARBASE_SECTION"
+
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+
+	ship_size = starbase_waystation_1
+	ship_size = starbase_waystation_2
+	ship_size = starbase_waystation_3
+
+	entity = "orbital_station_refinery_section_entity"
+	icon = "GFX_ship_part_core_mid"
+
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+
+	should_draw_components = yes
+}
+
+ship_section_template = {
+	key = "SCIENCE_STARBASE_SECTION"
+
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+
+	ship_size = starbase_waystation_1
+	ship_size = starbase_waystation_2
+	ship_size = starbase_waystation_3
+
+	entity = "orbital_station_science_section_entity"
+	icon = "GFX_ship_part_core_mid"
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+
+	should_draw_components = yes
+}
+
+ship_section_template = {
+	key = "CLOAKING_WAYSTATION_SECTION"
+
+	ship_size = starbase_waystation_1
+	ship_size = starbase_waystation_2
+	ship_size = starbase_waystation_3
+
+	entity = "orbital_station_science_section_entity"
+	icon = "GFX_ship_part_core_mid"
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+
+	aux_utility_slots = 1
+
+	should_draw_components = yes
+}
+
+ship_section_template = {
+	key = "ANCHORAGE_STARBASE_SECTION"
+
+	ship_size = starbase_outpost
+	ship_size = starbase_starport
+	ship_size = starbase_starhold
+	ship_size = starbase_starfortress
+	ship_size = starbase_citadel
+	ship_size = starbase_stronghold
+	ship_size = starbase_headquarters
+
+	ship_size = starbase_waystation_1
+	ship_size = starbase_waystation_2
+	ship_size = starbase_waystation_3
+
+	entity = "orbital_station_hangarbay_section_entity"
+	icon = "GFX_ship_part_core_mid"
+	
+	fits_on_slot = "1"
+	fits_on_slot = "2"
+	fits_on_slot = "3"
+	fits_on_slot = "4"
+	fits_on_slot = "5"
+	fits_on_slot = "6"
+	fits_on_slot = "7"
+	fits_on_slot = "8"
+	fits_on_slot = "9"
+	fits_on_slot = "10"
+	fits_on_slot = "11"
+	fits_on_slot = "12"
+	fits_on_slot = "13"
+	fits_on_slot = "14"
+	fits_on_slot = "15"
+	fits_on_slot = "16"
+	fits_on_slot = "17"
+	fits_on_slot = "18"
+	fits_on_slot = "19"
+	fits_on_slot = "20"
+	fits_on_slot = "21"
+	fits_on_slot = "22"
+	fits_on_slot = "23"
+	fits_on_slot = "24"
+	fits_on_slot = "25"
+	fits_on_slot = "26"
+	fits_on_slot = "27"
+	fits_on_slot = "28"
+	fits_on_slot = "29"
+	fits_on_slot = "30"
+	fits_on_slot = "31"
+	fits_on_slot = "32"
+	fits_on_slot = "33"
+	fits_on_slot = "34"	
+	fits_on_slot = "35"	
+
+	should_draw_components = yes
+}
+
+
+
+
+##### EOF

@@ -1,0 +1,8 @@
+﻿### The Stellar Annihilator
+creators = {
+	selectable = { always = no }
+	randomized = no
+	ship_names = { generic = { NAME_Stellar_Annihilator } }
+	fleet_names = { sequential_name = creator_cat }
+	character_names = { default = { full_names = { NAME_Stellar_Annihilator_Country } } }
+}

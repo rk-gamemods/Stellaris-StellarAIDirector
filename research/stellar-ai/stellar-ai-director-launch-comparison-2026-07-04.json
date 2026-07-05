@@ -1,0 +1,74 @@
+{
+  "baseline_director_match_count": 0,
+  "baseline_logs": [
+    {
+      "director_expected_line_count": 0,
+      "director_line_count": 0,
+      "director_problem_line_count": 0,
+      "director_unclassified_line_count": 0,
+      "exists": true,
+      "mtime_ns": 1783209166069135600,
+      "name": "baseline-without-director-error-2026-07-04.log",
+      "newer_than_generated": false,
+      "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\research\\stellar-ai\\baseline-without-director-error-2026-07-04.log",
+      "sample_director_lines": [],
+      "size_bytes": 41973687
+    },
+    {
+      "director_expected_line_count": 0,
+      "director_line_count": 0,
+      "director_problem_line_count": 0,
+      "director_unclassified_line_count": 0,
+      "exists": true,
+      "mtime_ns": 1783209042100828400,
+      "name": "baseline-without-director-game-2026-07-04.log",
+      "newer_than_generated": false,
+      "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\research\\stellar-ai\\baseline-without-director-game-2026-07-04.log",
+      "sample_director_lines": [],
+      "size_bytes": 177
+    }
+  ],
+  "director_delta_status": "expected_only",
+  "launch_surface": "irony_launcher",
+  "main_menu_evidence": "manual main-menu proof markers recorded for baseline_without_director, with_director",
+  "main_menu_missing_modes": [],
+  "main_menu_proof_path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\research\\stellar-ai\\stellar-ai-director-main-menu-proof-2026-07-04.json",
+  "main_menu_proven": true,
+  "with_director_expected_override_line_count": 4,
+  "with_director_logs": [
+    {
+      "director_expected_line_count": 4,
+      "director_line_count": 4,
+      "director_problem_line_count": 0,
+      "director_unclassified_line_count": 0,
+      "exists": true,
+      "mtime_ns": 1783211558452624000,
+      "name": "with-director-error-2026-07-04.log",
+      "newer_than_generated": false,
+      "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\research\\stellar-ai\\with-director-error-2026-07-04.log",
+      "sample_director_lines": [
+        "expected_intentional_override: [20:31:28][game_singleobjectdatabase.h:170]: Object with key: alloys_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_alloys_budget.txt line: 5",
+        "expected_intentional_override: [20:31:28][game_singleobjectdatabase.h:170]: Object with key: sentient_metal_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 6",
+        "expected_intentional_override: [20:31:28][game_singleobjectdatabase.h:170]: Object with key: negative_mass_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 24",
+        "expected_intentional_override: [20:31:28][game_singleobjectdatabase.h:170]: Object with key: supertensiles_upkeep_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 42"
+      ],
+      "size_bytes": 41971038
+    },
+    {
+      "director_expected_line_count": 0,
+      "director_line_count": 0,
+      "director_problem_line_count": 0,
+      "director_unclassified_line_count": 0,
+      "exists": true,
+      "mtime_ns": 1783211439473975900,
+      "name": "with-director-game-2026-07-04.log",
+      "newer_than_generated": false,
+      "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\research\\stellar-ai\\with-director-game-2026-07-04.log",
+      "sample_director_lines": [],
+      "size_bytes": 177
+    }
+  ],
+  "with_director_match_count": 4,
+  "with_director_problem_line_count": 0,
+  "with_director_unclassified_line_count": 0
+}

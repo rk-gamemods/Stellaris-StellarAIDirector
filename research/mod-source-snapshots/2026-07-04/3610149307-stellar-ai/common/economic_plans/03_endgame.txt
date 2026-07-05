@@ -1,0 +1,134 @@
+# Stellar AI endgame plan, rebased on Pegasus 4.4.3.
+
+endgame_economy_plan = {
+		ai_weight = { weight = 50 }
+
+		income = {
+			energy = 200
+			minerals = 300
+			alloys = 300
+			physics_research = 10000
+			society_research = 10000
+			engineering_research = 10000
+			unity = 500
+			trade = 100
+		}
+
+		subplan = {
+			set_name = "Endgame Alloys"
+			potential = {
+				country_uses_bio_ships = no
+			}
+	
+			income = {
+				alloys = 1000
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI fleet rebuild"
+			potential = {
+				stellarai_should_rebuild_fleet = yes
+			}
+
+			income = {
+				alloys = 2200
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI strategic resource recovery - volatile motes"
+			potential = {
+				OR = {
+					has_technology = tech_mine_volatile_motes
+					has_technology = tech_volatile_motes
+					resource_stockpile_compare = { resource = volatile_motes value > 0 }
+				}
+				OR = {
+					has_deficit = volatile_motes
+					NOT = { has_monthly_income = { resource = volatile_motes value > 4 } }
+					resource_stockpile_compare = { resource = volatile_motes value < 180 }
+				}
+			}
+	
+			income = {
+				volatile_motes = 12
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI strategic resource recovery - exotic gases"
+			potential = {
+				OR = {
+					has_technology = tech_mine_exotic_gases
+					has_technology = tech_exotic_gases
+					resource_stockpile_compare = { resource = exotic_gases value > 0 }
+				}
+				OR = {
+					has_deficit = exotic_gases
+					NOT = { has_monthly_income = { resource = exotic_gases value > 8 } }
+					resource_stockpile_compare = { resource = exotic_gases value < 280 }
+				}
+			}
+	
+			income = {
+				exotic_gases = 16
+			}
+		}
+
+		subplan = {
+			optional = yes
+			scaling = yes
+			set_name = "Stellar AI strategic resource recovery - rare crystals"
+			potential = {
+				OR = {
+					has_technology = tech_mine_rare_crystals
+					has_technology = tech_rare_crystals
+					resource_stockpile_compare = { resource = rare_crystals value > 0 }
+				}
+				OR = {
+					has_deficit = rare_crystals
+					NOT = { has_monthly_income = { resource = rare_crystals value > 4 } }
+					resource_stockpile_compare = { resource = rare_crystals value < 180 }
+				}
+			}
+	
+			income = {
+				rare_crystals = 12
+			}
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Machine Stellar AI endgame energy safety buffer"
+			potential = {
+				is_machine_empire = yes
+				OR = {
+					NOT = { has_monthly_income = { resource = energy value > 150 } }
+					resource_stockpile_compare = { resource = energy value < 18000 }
+				}
+			}
+			income = { energy = 90 }
+		}
+
+		subplan = {
+			scaling = yes
+			set_name = "Stellar AI endgame consumer goods recovery"
+			potential = {
+				country_uses_consumer_goods = yes
+				OR = {
+					has_deficit = consumer_goods
+					NOT = { has_monthly_income = { resource = consumer_goods value > 18 } }
+					resource_stockpile_compare = { resource = consumer_goods value < 3600 }
+				}
+			}
+	
+			income = { consumer_goods = 90 }
+		}
+}

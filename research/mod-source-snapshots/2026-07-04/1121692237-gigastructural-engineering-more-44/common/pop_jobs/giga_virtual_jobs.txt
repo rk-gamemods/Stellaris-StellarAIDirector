@@ -1,0 +1,739 @@
+# livestock ethics bonuses
+@livestock_unity = 0.5
+@livestock_society = 0.25
+@livestock_research = 0.1
+@livestock_energy = 0.5
+@livestock_food = 1.0
+@livestock_minerals = 0.5
+@livestock_experience = 2
+@livestock_trade = 1
+
+# hell intern ethics bonuses
+@hell_unity = 2
+@hell_society = 1
+@hell_engineering = 1
+@hell_morale = 0.005
+@hell_ethics = 0.02
+@hell_minus_crime = -0.5
+@hell_plus_crime = 1
+@hell_trade = 4
+
+# training effects
+@training_default_exp = 0.02
+@training_remove_exp = -0.005
+
+@training_military_army_exp = 10
+@training_military_army_exp_gain = 0.02
+@training_military_ship_exp = 10
+@training_military_ship_exp_gain = 0.02
+
+@training_government_pop_demotion = -0.02
+@training_government_build_speed = 0.02
+@training_government_decision_enact = 0.02
+
+@training_science_survey_speed = 0.04
+@training_science_anomaly_discovery = 0.04
+@training_science_disengage = 0.05
+@training_science_archaeology = 0.02
+
+@training_leaders_skills = 0.04
+@training_leaders_exp = 0.02
+@training_leaders_cost = -0.02
+
+giga_media_coordinator = {
+	category = ruler
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_hyper_entertainment_forum
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	resources = {
+		category = planet_entertainers
+		produces = {
+			unity = 3
+			trade = 5
+		}
+		upkeep = {
+			consumer_goods = 4
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = { always = yes }
+
+		planet_amenities_add = 500
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	country_modifier = {
+		planet_amenities_mult = 0.025
+	}
+
+	triggered_country_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_pleasure_seeker_empire = yes }
+		}
+		modifier = {
+			logistic_growth_mult = 0.01
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = "multiply = value:scripted_modifier_job_weight_mult|MODIFIER|pop_job_amenities_mult|"
+		EXTRA_WEIGHT_MOD = "multiply = value:giga_amenities_dynamic_weight|JOB|giga_media_coordinator|"
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+giga_media_coordination_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_maintenance_depot
+			icon = giga_media_coordinator
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	resources = {
+		category = planet_jobs
+		produces = {
+			unity = 3
+		}
+
+		upkeep = {
+			consumer_goods = 4
+		}
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	triggered_planet_modifier = {
+		potential = { always = yes }
+
+		planet_amenities_no_happiness_add = 800
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	country_modifier = {
+		planet_amenities_no_happiness_mult = 0.025
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = "multiply = value:scripted_modifier_job_weight_mult|MODIFIER|pop_job_amenities_mult|"
+		EXTRA_WEIGHT_MOD = "multiply = value:giga_amenities_dynamic_weight|JOB|giga_media_coordination_drone|"
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+# giga_virtual_livestock = {
+# 	category = worker
+#
+# 	pop_group_modifier = {
+# 		pop_housing_usage_add = -1
+# 		pop_political_power = -0.1
+# 		pop_happiness = 0.2
+# 	}
+#
+# 	possible_pre_triggers = {
+# 		is_enslaved = yes
+# 		is_sapient = yes
+# 		is_robotic = no
+# 	}
+#
+# 	possible = {
+# 		has_citizenship_type = { type = citizenship_slavery country = owner }
+# 		has_slavery_type = { type = slavery_livestock }
+# 	}
+#
+# 	planet_modifier = {
+# 		planet_pops_energy_upkeep_mult = -0.005
+# 		planet_jobs_energy_upkeep_mult = -0.005
+# 	}
+#
+# 	resources = {
+# 		category = planet_livestock # this makes me :(
+# 		produces = {
+# 			trigger = {
+# 				is_lithoid = no
+# 			}
+# 			food = 6
+# 		}
+# 		produces = {
+# 			trigger = {
+# 				is_lithoid = yes
+# 			}
+# 			minerals = 3
+# 		}
+#
+# 		produces = {
+# 			unity = 0.5
+# 		}
+#
+# 		#Bug Branch
+# 		inline_script = {
+# 			script = generic_parts/giga_toggled_code
+# 			code = "
+# 			produces = {
+# 				trigger = {
+# 					exists = owner
+# 					owner = { has_valid_civic = civic_bugged_organs_corpo }
+# 				}
+# 				minerals = 3
+# 				mult = value:scripted_modifier_mult|MODIFIER|planet_jobs_trade_produces_mult|
+# 			}
+#
+# 			inline_script = {
+# 				script = jobs/bugged_trade_job_effects
+# 				REQ = \"
+# 						exists = owner
+# 						owner = {
+# 							has_valid_civic = civic_bugged_organs_corpo
+# 						}
+# 					\"
+# 			}
+# 		"
+# 			toggle = @has_bug_branch
+# 		}
+# 	}
+#
+# 	weight = {
+# 		weight = value:giga_worker_weight|JOB|giga_virtual_livestock|RESOURCE|food|
+# 	}
+# }
+
+# giga_virtual_organic_battery = {
+# 	category = worker
+#
+# 	pop_group_modifier = {
+# 		pop_housing_usage_add = -1
+# 		pop_happiness = 0.35
+# 	}
+#
+# 	possible_pre_triggers = {
+# 		is_enslaved = yes
+# 		is_sapient = yes
+# 		is_robotic = no
+# 	}
+#
+# 	possible = {
+# 		has_citizenship_type = { type = citizenship_slavery country = owner }
+# 		has_slavery_type = { type = slavery_matrix }
+# 	}
+#
+# 	planet_modifier = {
+# 		planet_pops_energy_upkeep_mult = -0.005
+# 		planet_jobs_energy_upkeep_mult = -0.005
+# 	}
+#
+# 	resources = {
+# 		category = planet_organic_batteries
+# 		produces = {
+# 			energy = 6
+# 			unity = 0.5
+# 		}
+# 	}
+#
+# 	weight = {
+# 		weight = value:giga_worker_weight|JOB|giga_virtual_organic_battery|RESOURCE|energy|
+# 	}
+# }
+
+giga_virtual_hell_inmate = {
+	category = criminal
+    auto_generate_description = no
+
+	swappable_data = {
+		default = {
+			building_icon = building_crude_huts
+		}
+	}
+
+	is_capped_by_modifier = yes
+	contributes_to_diplo_weight = no
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_sapient = yes
+	}
+
+	possible = {
+		# check that this is not a robot in servitude
+		NOT = {
+			has_citizenship_type = {
+				country = owner
+				type = citizenship_robot_servitude
+			}
+		}
+		owner = {
+			is_gestalt = no
+		}
+	}
+
+	resources = {
+		category = planet_jobs
+
+		upkeep = {
+			energy = 2
+		}
+        # experimenting on the damned costs more
+        upkeep = {
+            trigger = {
+                exists = owner
+                owner = {
+                    is_twisted_experimenters_empire = yes
+                }
+            }
+            energy = 3
+        }
+	}
+
+	pop_group_modifier = {
+		pop_housing_usage_add = -1
+		pop_happiness = -2
+	}
+
+	planet_modifier = {
+		planet_crime_add = 8
+	}
+
+	country_modifier = {
+		planet_crime_add = -4
+        pop_government_ethic_attraction = 0.025
+        pop_cat_ruler_political_power = 0.05
+	}
+
+    # experiment on the damned
+    triggered_planet_modifier = {
+        potential = {
+            exists = owner
+            owner = {
+                is_twisted_experimenters_empire = yes
+            }
+        }
+        planet_experiment_engineer_produces_mult = 0.05
+        planet_test_subjects_produces_mult = 0.05
+    }
+
+	weight = {
+		weight = @criminal_job_weight
+
+		modifier = {
+			factor = 0.1
+			exists = owner
+			owner = { is_xenophobe = yes }
+			has_citizenship_rights = yes
+		}
+
+		modifier = {
+			factor = 5.0
+			exists = owner
+			owner = { is_xenophobe = yes }
+			has_citizenship_rights = no
+		}
+	}
+}
+
+giga_virtual_diplomat = {
+	category = specialist
+	swappable_data = {
+		default = {
+			building_icon = building_grand_embassy
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+		is_enslaved = no
+	}
+
+	possible_precalc = can_fill_specialist_job
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+			consumer_goods = 2
+		}
+	}
+
+	country_modifier = {
+		giga_jobs_opinion_add = 1
+		country_trust_cap_add = 1
+		diplo_action_acceptance_add = 0.5
+		country_subject_acceptance_add = 0.5
+		spy_network_daily_value_mult = 0.01
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_virtual_diplomat_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_grand_embassy
+			icon = giga_virtual_diplomat
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+            energy = 4
+        }
+	}
+
+	country_modifier = {
+		giga_jobs_opinion_add = 1
+		country_trust_cap_add = 1
+		diplo_action_acceptance_add = 0.5
+		country_subject_acceptance_add = 0.5
+		spy_network_daily_value_mult = 0.01
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_virtual_diplomat_servitor = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_grand_embassy
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+			consumer_goods = 2 # this is a servitor only job, so it's fine
+		}
+	}
+
+	country_modifier = {
+		giga_jobs_opinion_add = 2
+		country_trust_cap_add = 2
+		diplo_action_acceptance_add = 0.5
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_virtual_training_coordinator = {
+	category = specialist
+	swappable_data = {
+		default = {
+			building_icon = building_military_academy
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+		is_enslaved = no
+	}
+
+	possible_precalc = can_fill_specialist_job
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+			consumer_goods = 2
+		}
+	}
+
+	# default
+	country_modifier = {
+		species_leader_exp_gain = @training_default_exp
+		army_starting_experience_add = @training_military_army_exp
+		army_experience_gain_mult = @training_military_army_exp_gain
+		ship_starting_experience_add = @training_military_ship_exp
+		ship_experience_gain_mult = @training_military_ship_exp_gain
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_virtual_training_coordination_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_military_academy
+			icon = evaluator
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+			trigger = {
+				owner? = {
+					is_organic_species = yes
+					is_lithoid = no
+				}
+			}
+			food = 2
+			energy = 2
+		}
+		upkeep = {
+			trigger = {
+				owner? = { is_lithoid = yes }
+			}
+			minerals = 2
+			energy = 2
+		}
+		upkeep = {
+			trigger = {
+				owner? = { is_robotic_species = yes }
+			}
+			energy = 4
+		}
+	}
+
+	country_modifier = {
+		species_leader_exp_gain = @training_default_exp
+		army_starting_experience_add = @training_military_army_exp
+		army_experience_gain_mult = @training_military_army_exp_gain
+		ship_starting_experience_add = @training_military_ship_exp
+		ship_experience_gain_mult = @training_military_ship_exp_gain
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_gamer_fe_game_master = {
+	category = precursor
+	swappable_data = {
+		default = {
+			building_icon = building_grand_embassy
+			icon = giga_amb_fe_celestial_architect
+		}
+	}
+	
+	possible_pre_triggers = {
+		has_owner = yes
+		is_sapient = yes
+	}
+
+	possible = {
+		owner = { is_fallen_empire = yes }
+		is_same_species = owner
+	}
+
+	planet_modifier = {
+		planet_stability_add = 5
+	}
+
+	country_modifier = {
+		species_leader_exp_gain = 0.05
+	}
+
+	weight = {
+		weight = 30000
+
+		# crisis purge
+		modifier = {
+			factor = 0.01
+			exists = planet
+			exists = planet.controller
+			planet.controller = {
+				OR = {
+					is_country_type = swarm
+					is_country_type = ai_empire
+				}
+			}
+		}
+	}
+}
+
+giga_gamer_fe_npc = {
+	category = worker
+	swappable_data = {
+		default = {
+			building_icon = building_luxury_residence
+			icon = brain_drone
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_sapient = yes
+	}
+
+	possible = {
+		owner = { is_fallen_empire = yes }
+		is_robot_pop = yes
+	}
+
+	resources = {
+		category = planet_jobs
+		produces = {
+			unity = 0.5
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			always = yes
+		}
+		planet_amenities_add = 200
+		mult = value:scripted_modifier_job_weight_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	planet_modifier = {
+		army_starting_experience_add = 10
+	}
+
+	weight = {
+		weight = 15000
+
+		# crisis purge
+		modifier = {
+			factor = 0.01
+			exists = planet
+			exists = planet.controller
+			planet.controller = {
+				OR = {
+					is_country_type = swarm
+					is_country_type = ai_empire
+				}
+			}
+		}
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+# virtual_rare_resource = {
+# 	category = specialist
+# 	condition_string = SPECIALIST_JOB_TRIGGER
+# 	building_icon = building_power_plant
+# 	clothes_texture_index = 3
+# 	possible_precalc = can_fill_specialist_job
+#
+# 	resources = {
+# 		category = planet_refiners
+# 		produces = {
+# 			volatile_motes = 4
+# 			rare_crystals = 4
+# 			exotic_gases = 4
+# 		}
+# 		upkeep = { minerals = 25 }
+# 	}
+#
+# 	weight = {
+# 		weight = value:giga_specialist_triple_weight|JOB|virtual_rare_resource|RESOURCE1|volatile_motes|WEIGHT1|0.33|RESOURCE2|rare_crystals|WEIGHT2|0.33|RESOURCE3|exotic_gases|WEIGHT3|0.34|INDENTURED|1.2|STICKY|7|
+# 	}
+# }
+#
+# virtual_rare_resource_gestalt = {
+# 	category = complex_drone
+# 	condition_string = DRONE_JOB_TRIGGER
+# 	building_icon = building_power_plant
+# 	clothes_texture_index = 3
+# 	possible_precalc = can_fill_drone_job
+#
+# 	resources = {
+# 		category = planet_refiners
+# 		produces = {
+# 			volatile_motes = 4
+# 			rare_crystals = 4
+# 			exotic_gases = 4
+# 		}
+# 		upkeep = { minerals = 25 }
+# 	}
+#
+# 	weight = {
+# 		weight = value:giga_complex_drone_triple_weight|JOB|virtual_rare_resource|RESOURCE1|volatile_motes|WEIGHT1|0.33|RESOURCE2|rare_crystals|WEIGHT2|0.33|RESOURCE3|exotic_gases|WEIGHT3|0.34|STICKY|7|
+# 	}
+# }

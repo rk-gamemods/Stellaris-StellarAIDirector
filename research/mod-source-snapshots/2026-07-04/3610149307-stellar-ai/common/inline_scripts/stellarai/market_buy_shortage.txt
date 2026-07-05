@@ -1,0 +1,26 @@
+if = {
+	limit = { check_variable = { which = stellarai_market_purchase_count value < 2 } }
+	set_variable = {
+		which = stellarai_market_trade_value
+		value = value:stellarai_market_buy_cost|RESOURCE|$RESOURCE$|AMOUNT|$AMOUNT$|MARKUP|$MARKUP$|
+	}
+	export_resource_stockpile_to_variable = {
+		resource = trade
+		variable = stellarai_market_currency_stockpile
+	}
+	if = {
+		limit = {
+			check_variable = { which = stellarai_market_trade_value value > 0 }
+			check_variable_arithmetic = {
+				which = stellarai_market_currency_stockpile
+				subtract = stellarai_market_trade_value
+				value >= $TRADE_FLOOR$
+			}
+		}
+		add_resource = { trade = -1 mult = stellarai_market_trade_value }
+		add_resource = { $RESOURCE$ = $AMOUNT$ }
+		change_variable = { which = stellarai_market_purchase_count value = 1 }
+	}
+	clear_variable = stellarai_market_trade_value
+	clear_variable = stellarai_market_currency_stockpile
+}

@@ -1,0 +1,174 @@
+namespace = giga_equatorial_shipyard_origin
+
+### Game Start
+country_event = {
+	id = giga_equatorial_shipyard_origin.001
+	hide_window = yes
+	is_triggered_only = yes
+	
+	trigger = {
+		has_origin = origin_equatorial_shipyard
+	}
+	
+	immediate = {
+		if = {
+			limit = { country_uses_food = yes }
+			give_technology = { tech = tech_hydroponics message = no }
+		}
+
+		capital_scope = {
+			solar_system = {
+				spawn_megastructure = { type = eq_shipyard_2 coords_from = prev }
+				every_system_planet = {
+					limit = { has_planet_flag = equatorial_shipyard_home_mining_target }
+					create_mining_station = { owner = root }
+				}
+				every_system_planet = {
+					limit = {
+						is_planet_class = pc_equatorial_shipyard
+						is_colony = no
+					}
+					remove_planet = yes
+				}
+			}
+			# Clears the standard districts/deposits
+			clear_deposits = yes
+			remove_all_districts = yes
+
+			add_deposit = d_predictable_solar_flares
+
+            # Mineral Building
+            add_building = building_giga_matter_synthesizer
+
+            #exotic gas deposit for exotic metabolism empires
+            generate_home_planet_final_pass = yes
+
+            if = { #Galvanic civic game start compat due to deposits being wiped
+                limit = { is_galvanic_empire = yes }
+                if = {
+                    limit = { NOT = { has_deposit = d_galvanic_living_metal } }
+                    add_deposit = d_galvanic_living_metal
+                }
+            }
+
+			# very similar to gas giant, but does not make any sort of alloys in the city districts
+            #   this is because we literally have a bigass alloys district right there
+            #   instead of industrial, you get factory. If you dont need CG then you get another archive
+            if = {
+                limit = {
+                    root = { is_gestalt = no }
+                }
+                while = {
+                    count = 3
+                    add_district = district_giga_planet_city
+                }
+                add_zone = {
+                    district = district_giga_planet_city
+                    zone = zone_factory
+                    zone_slot = 1
+                    replace = no
+                }
+                add_zone = {
+                    district = district_giga_planet_city
+                    zone = zone_research_unity
+                    zone_slot = 2
+                    replace = no
+                }
+                add_building = { building = building_factory_1 zone = zone_factory }
+            }
+            else_if = {
+                limit = { root = { is_hive_empire = yes } }
+                while = {
+                    count = 3
+                    add_district = district_giga_planet_hive
+                }
+                if = {
+                    limit = { owner = { giga_has_consumer_goods_civic_or_individualist = yes } }
+                    add_zone = {
+                        district = district_giga_planet_hive
+                        zone = zone_factory
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                else = {
+                    add_zone = {
+                        district = district_giga_planet_hive
+                        zone = zone_research_unity
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                # yeah two archives cause idk what to put if you dont need cg
+                add_zone = {
+                    district = district_giga_planet_hive
+                    zone = zone_research_unity
+                    zone_slot = 2
+                    replace = no
+                }
+            }
+            else_if = {
+                limit = { root = { is_machine_empire = yes } }
+                while = {
+                    count = 3
+                    add_district = district_giga_planet_nexus
+                }
+                if = {
+                    limit = { owner = { giga_has_consumer_goods_civic_or_individualist = yes } }
+                    add_zone = {
+                        district = district_giga_planet_nexus
+                        zone = zone_factory
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                else = {
+                    add_zone = {
+                        district = district_giga_planet_nexus
+                        zone = zone_research_unity
+                        zone_slot = 1
+                        replace = no
+                    }
+                }
+                # yeah two archives cause idk what to put if you dont need cg
+                add_zone = {
+                    district = district_giga_planet_nexus
+                    zone = zone_research_unity
+                    zone_slot = 2
+                    replace = no
+                }
+            }
+
+			# Hydroponics for food users
+			if = {
+				limit = { 
+					root = { 
+						or = {
+							has_country_flag = non_lithoid_subspecies
+							and = {
+								is_machine_empire = no
+								is_lithoid_empire = no
+							}
+						}
+					} 
+				}
+				add_building = building_giga_interstellar_hydroponic_farm
+			}
+
+            # forge Districts
+            while = {
+                count = 1
+                add_district = district_giga_planet_alloys
+            }
+	
+			# Energy Districts
+			while = {
+				count = 2
+				add_district = district_giga_planet_geothermal
+			}
+
+			# Force Demotes the unemployed specialist pops
+			every_owned_pop_group = { clear_pop_category = yes }
+		}
+	}
+}

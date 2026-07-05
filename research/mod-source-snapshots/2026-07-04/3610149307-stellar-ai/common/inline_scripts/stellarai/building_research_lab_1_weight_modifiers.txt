@@ -1,0 +1,89 @@
+modifier = {
+	factor = @research_building_capital_planet_factor
+	is_capital = yes
+	owner = {
+		has_monthly_income = {
+			resource = consumer_goods
+			value > 3
+		}
+	}
+}
+modifier = {
+	factor = @research_building_research_planet_factor
+	has_research_designation = yes
+	owner = {
+		has_monthly_income = {
+			resource = consumer_goods
+			value > 3
+		}
+	}
+}
+
+modifier = {
+	factor = @research_building_not_research_planet_factor
+	is_capital = no
+	has_research_designation = no
+	owner = {
+			has_monthly_income = {
+				resource = consumer_goods
+				value > 3
+			}
+			}
+			
+}
+modifier = {
+	factor = 2
+	AND = {
+		is_capital = yes
+		years_passed < 41
+		free_jobs > 0
+		owner = {
+			has_monthly_income = {
+					resource = consumer_goods
+					value > 5
+				}
+			}
+		}
+}
+
+
+	modifier = {
+		factor = 0.60
+		owner = { stellarai_machine_energy_emergency = yes }
+	}
+
+	modifier = {
+		factor = 0.75
+		owner = { stellarai_machine_minerals_emergency = yes }
+	}
+
+	modifier = {
+		factor = 1.15
+		owner = { stellarai_machine_research_ramp = yes }
+	}
+
+	modifier = {
+		factor = 0.85
+		owner = { stellarai_exterminator_war_ramp = yes }
+	}
+
+
+	modifier = {
+		factor = 0.10
+		owner = {
+			is_at_war = no
+			stellarai_economic_crisis = yes
+		}
+	}
+
+	modifier = {
+		factor = 1.25
+		has_carrier_flag = stellarai_research_plan_claimed
+		owner = { stellarai_research_ready = yes }
+	}
+
+
+inline_script = {
+	script = stellarai/invalid_planet_type_guard
+	PLANET_FLAG = stellarai_invalid_for_research_to_build
+}

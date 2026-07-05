@@ -1,0 +1,18 @@
+modifier = {
+	factor = 0.25
+	AND = {
+		years_passed < 16
+		is_at_war = no
+	}
+}
+
+
+modifier = {
+	factor = 0.8
+	AND = {
+		years_passed > 15
+		years_passed < 41
+		is_at_war = no
+		highest_threat < 13
+	}
+}

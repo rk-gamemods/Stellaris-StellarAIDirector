@@ -1,0 +1,206 @@
+@small_planet_threshold = 18
+@free_districts_verylow_threshold = 3
+@free_districts_low_threshold = 5
+@free_districts_medium_threshold = 10
+@free_districts_high_threshold = 15
+@built_districts_low_threshold = 3
+@built_districts_medium_threshold = 4
+@built_districts_high_threshold = 8
+@built_buildings_low_threshold = 1
+@built_buildings_medium_threshold = 2
+@built_buildings_high_threshold = 4
+
+@stickiness = 10
+@stickiness_low = 5
+@zone_urban = 100
+@zone_rural = 10
+@rural_max_size = 13
+@rural_over_max_size = -20
+
+# Megalogistics Center
+col_giga_supertensiles_foundry = {
+	icon = GFX_giga_colony_type_supertensiles_foundry
+
+	potential = {
+		has_global_flag = @giga_amb_flag
+		NOR = {
+			uses_district_set = city_world
+			planet_is_ring_world_equivalent = yes
+			planet_is_habitat_equivalent = yes
+			uses_district_set = cosmogenesis_world
+		}
+		is_special_colony_type = no
+		is_capital = no
+		NOT = { is_planet_class = pc_nanotech }
+	}
+
+	inline_script = {
+		script = colony_types/colony_type_planet_modifier
+		MODIFIER = giga_megaconstruction_jobs_bonus_workforce_mult
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner? = {
+				is_galactic_community_member = yes
+			}
+			OR = {
+				is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+				is_active_resolution = "resolution_industry_project_cornucopia"
+			}
+		}
+		modifier = {
+			giga_megaconstruction_jobs_bonus_workforce_mult = 0.025
+		}
+	}
+
+	weight_modifier = {
+		modifier = {
+			add = 5
+			OR = {
+				check_variable = {
+					which = giga_amb_building_megas
+					value > 0
+				}
+				AND = {
+					owner = {
+						has_monthly_income = { resource = giga_sr_amb_megaconstruction value < 10 }
+						years_passed <= 50
+					}
+				}
+				AND = {
+					owner = {
+						has_monthly_income = { resource = giga_sr_amb_megaconstruction value < 20 }
+						years_passed > 50
+						years_passed < 100
+					}
+				}
+				AND = {
+					owner = {
+						has_monthly_income = { resource = giga_sr_amb_megaconstruction value < 40 }
+						years_passed > 100
+						years_passed < 150
+					}
+				}
+				AND = {
+					owner = {
+						has_monthly_income = { resource = giga_sr_amb_megaconstruction value < 60 }
+						years_passed > 150
+					}
+				}
+			}
+		}
+		modifier = {
+			add = @stickiness
+			has_designation = col_giga_supertensiles_foundry
+		}
+		modifier = {
+			# the AI should want to use equatorial shipyards for their foundry districts
+			add = 1000
+			is_planet_class = pc_equatorial_shipyard
+			is_capital = no
+			owner? = {
+				is_ai = yes
+			}
+		}
+
+		complex_trigger_modifier = {
+			trigger = num_buildings
+			parameters = {
+				type = building_giga_megaworkshop
+			}
+			mode = add
+			mult = 2
+		}
+
+		complex_trigger_modifier = {
+			trigger = num_buildings
+			parameters = {
+				type = building_giga_megaworkshop_hub
+			}
+			mode = add
+			mult = 4
+		}
+
+		modifier = {
+			add = 10
+			has_building = building_giga_living_metal_infusion_plant
+		}
+
+		modifier = {
+			factor = 0
+			num_buildings = { type = building_giga_megaworkshop value = 0 }
+			num_buildings = { type = building_giga_megaworkshop_hub value = 0 }
+		}
+	}
+}
+
+# Habitat Megalogistics Center
+col_giga_habitat_supertensiles_foundry = {
+	icon = GFX_giga_colony_type_habitat_supertensiles_foundry
+
+	potential = {
+		has_global_flag = @giga_amb_flag
+		planet_is_habitat_equivalent = yes
+		is_capital = no
+	}
+
+	inline_script = {
+		script = colony_types/colony_type_planet_modifier
+		MODIFIER = giga_megaconstruction_jobs_bonus_workforce_mult
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner? = {
+				is_galactic_community_member = yes
+			}
+			OR = {
+				is_active_resolution = "resolution_industry_environmental_ordinance_waivers"
+				is_active_resolution = "resolution_industry_project_cornucopia"
+			}
+		}
+		modifier = {
+			giga_megaconstruction_jobs_bonus_workforce_mult = 0.025
+		}
+	}
+
+	weight_modifier = {
+		base = 300
+		modifier = {
+			factor = 2
+			owner = { has_monthly_income = { resource = giga_sr_amb_megaconstruction value < 10 } }
+		}
+		modifier = {
+			factor = @stickiness
+			has_designation = col_giga_habitat_supertensiles_foundry
+		}
+		complex_trigger_modifier = {
+			trigger = num_buildings
+			parameters = {
+				type = building_giga_megaworkshop
+			}
+			mode = add
+			mult = 2
+		}
+
+		complex_trigger_modifier = {
+			trigger = num_buildings
+			parameters = {
+				type = building_giga_megaworkshop_hub
+			}
+			mode = add
+			mult = 4
+		}
+
+		modifier = {
+			add = 10
+			has_building = building_giga_living_metal_infusion_plant
+		}
+		modifier = {
+			factor = 0
+			num_buildings = { type = building_giga_megaworkshop value = 0 }
+			num_buildings = { type = building_giga_megaworkshop_hub value = 0 }
+		}
+	}
+}

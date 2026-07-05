@@ -1,0 +1,15 @@
+version="1.3.3."
+tags={
+	"!-Starbase - Extended-!"
+	"!-Starbase - Extended-! 2.0"
+	"NSC"
+	"Starbase"
+	"Starbases"
+	"Total Conversion"
+	"Overhaul"
+	"Military"
+}
+picture="thumbnail.png"
+name="Starbase Extended 3.0"
+supported_version="v4.**.*"
+remote_file_id="3250900527"

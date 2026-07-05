@@ -1,0 +1,27 @@
+inline_script = {
+    script = planet/research/parts/giga_physicist_job_swap
+
+    jobs = @[ $jobs$ / 3 ]
+    add = "$add$"
+    type = "$type$"
+    condition = "$condition$"
+    multiplier = "$multiplier$"
+}
+inline_script = {
+    script = planet/research/parts/giga_biologist_job_swap
+
+    jobs = @[ $jobs$ / 3 ]
+    add = "$add$"
+    type = "$type$"
+    condition = "$condition$"
+    multiplier = "$multiplier$"
+}
+inline_script = {
+    script = planet/research/parts/giga_engineer_job_swap
+
+    jobs = @[ $jobs$ / 3 ]
+    add = "$add$"
+    type = "$type$"
+    condition = "$condition$"
+    multiplier = "$multiplier$"
+}

@@ -1,0 +1,9 @@
+# Example on_action hook file.
+# Do not override vanilla on_actions wholesale unless necessary.
+# Validate exact on_action keys against current vanilla files.
+
+on_game_start_country = {
+    events = {
+        my_codex_mod.0001
+    }
+}

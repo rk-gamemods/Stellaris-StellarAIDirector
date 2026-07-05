@@ -4,3 +4,11 @@ Use this folder for repeatable helper scripts, validators, packaging commands, o
 
 Prefer small, documented tools with clear inputs and outputs.
 
+## Local Validation Surfaces
+
+- Irony Mod Manager is the project-local tool for playset dependency, conflict, and load-order investigation.
+- CWTools diagnostics should be used for PDXScript syntax/schema feedback when editing gameplay scripts.
+- Runtime validation should inspect `error.log` first, then `game.log`.
+- Use generated script docs, current vanilla files, and source references before trusting an unfamiliar trigger, effect, modifier, scope, or folder path.
+
+Reusable templates and matrices from the attached research bundle are under `research/stellaris-modding-research-bundle-2026-07-04/`.

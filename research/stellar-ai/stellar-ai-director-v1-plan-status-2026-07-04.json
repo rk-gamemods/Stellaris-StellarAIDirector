@@ -1,0 +1,535 @@
+{
+  "main_menu_missing_modes": [],
+  "main_menu_proven": true,
+  "overall_status": "not_complete",
+  "phase_count": 17,
+  "phases": [
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-munch-preflight-2026-07-04.md",
+          "size_bytes": 1020
+        }
+      ],
+      "open_reason": "",
+      "phase": "P0",
+      "requirement": "Munch gate passes",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "research/mod-source-snapshots/2026-07-04/snapshot-manifest.csv",
+          "size_bytes": 1520
+        },
+        {
+          "exists": true,
+          "path": "research/mod-source-snapshots/2026-07-04/descriptor-inventory.csv",
+          "size_bytes": 1070
+        },
+        {
+          "exists": true,
+          "path": "research/mod-source-snapshots/2026-07-04/pdx-object-inventory.csv",
+          "size_bytes": 5478524
+        },
+        {
+          "exists": true,
+          "path": "research/mod-source-snapshots/2026-07-04/ai-surface-inventory.csv",
+          "size_bytes": 264901
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-corpus-status-2026-07-04.md",
+          "size_bytes": 2690
+        }
+      ],
+      "open_reason": "",
+      "phase": "P1",
+      "requirement": "source corpus/index status is current",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-active-playset-2026-07-04.json",
+          "size_bytes": 24019
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/load-order.md",
+          "size_bytes": 1638
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-dependency-audit-2026-07-04.csv",
+          "size_bytes": 658
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-irony-order-proof-2026-07-04.json",
+          "size_bytes": 687
+        }
+      ],
+      "open_reason": "",
+      "phase": "P2",
+      "requirement": "dependency names and load order are verified",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.csv",
+          "size_bytes": 109208
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-market-values-2026-07-04.csv",
+          "size_bytes": 857
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+          "size_bytes": 179771
+        }
+      ],
+      "open_reason": "",
+      "phase": "P3",
+      "requirement": "ROI matrix covers required parent surfaces",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+          "size_bytes": 5511
+        }
+      ],
+      "open_reason": "",
+      "phase": "P4",
+      "requirement": "decision tree tests cover emergency exits and surplus sinks",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
+          "size_bytes": 1544
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/ai_budget/zzz_staid_gigas_resource_budgets.txt",
+          "size_bytes": 1516
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+          "size_bytes": 2325
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/script_values/zzz_staid_roi_values.txt",
+          "size_bytes": 588
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+          "size_bytes": 5511
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/on_actions/zzz_staid_load_proof_on_actions.txt",
+          "size_bytes": 64
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        }
+      ],
+      "open_reason": "",
+      "phase": "P5",
+      "requirement": "generated PDX surfaces are expanded and documented",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+          "size_bytes": 2325
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+          "size_bytes": 5511
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+          "size_bytes": 1013804
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+          "size_bytes": 17454
+        }
+      ],
+      "open_reason": "",
+      "phase": "P6",
+      "requirement": "tech/AP/tradition unlocks are prioritized or explicitly deferred",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
+          "size_bytes": 1544
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/ai_budget/zzz_staid_gigas_resource_budgets.txt",
+          "size_bytes": 1516
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+          "size_bytes": 2325
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.md",
+          "size_bytes": 15762
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+          "size_bytes": 179771
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+          "size_bytes": 1383683
+        }
+      ],
+      "open_reason": "",
+      "phase": "P7",
+      "requirement": "megastructure/gigastructure weights are generated and validated",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+          "size_bytes": 2325
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+          "size_bytes": 5511
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-roi-matrix-2026-07-04.csv",
+          "size_bytes": 109208
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+          "size_bytes": 1383683
+        }
+      ],
+      "open_reason": "",
+      "phase": "P8",
+      "requirement": "shipyard/fleet throughput logic is generated and validated",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+          "size_bytes": 2325
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+          "size_bytes": 5511
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+          "size_bytes": 1013804
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+          "size_bytes": 1383683
+        }
+      ],
+      "open_reason": "",
+      "phase": "P9",
+      "requirement": "starbase defense logic is generated or explicitly deferred with reason",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+          "size_bytes": 2325
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
+          "size_bytes": 5511
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+          "size_bytes": 1013804
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+          "size_bytes": 1383683
+        }
+      ],
+      "open_reason": "",
+      "phase": "P10",
+      "requirement": "planet/building expansion logic is covered or ruled out",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/conflicts.md",
+          "size_bytes": 2481
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-surfaces-2026-07-04.csv",
+          "size_bytes": 1013804
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+          "size_bytes": 1383683
+        }
+      ],
+      "open_reason": "",
+      "phase": "P11",
+      "requirement": "NSC3/ESC integration is audited and minimally patched if needed",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-generated-file-audit-2026-07-04.csv",
+          "size_bytes": 883
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.csv",
+          "size_bytes": 7040
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+          "size_bytes": 17454
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-dependency-audit-2026-07-04.csv",
+          "size_bytes": 658
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+          "size_bytes": 179771
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+          "size_bytes": 1383683
+        }
+      ],
+      "open_reason": "",
+      "phase": "P12",
+      "requirement": "validator catches missing references and unsafe overrides",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-generated-conflicts-2026-07-04.md",
+          "size_bytes": 7672
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-irony-conflict-scan-2026-07-04.md",
+          "size_bytes": 2004
+        }
+      ],
+      "open_reason": "",
+      "phase": "P13",
+      "requirement": "Irony conflict scan is reviewed and documented",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/common/on_actions/zzz_staid_load_proof_on_actions.txt",
+          "size_bytes": 64
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/events/zzz_staid_load_proof_events.txt",
+          "size_bytes": 433
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/localisation/english/staid_load_proof_l_english.yml",
+          "size_bytes": 330
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-launch-comparison-2026-07-04.json",
+          "size_bytes": 3841
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-main-menu-proof-2026-07-04.json",
+          "size_bytes": 8719
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/baseline-without-director-screenshot-2026-07-04.png",
+          "size_bytes": 5570381
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/with-director-screenshot-2026-07-04.png",
+          "size_bytes": 5557713
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/baseline-without-director-error-2026-07-04.log",
+          "size_bytes": 41973687
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/with-director-error-2026-07-04.log",
+          "size_bytes": 41971038
+        }
+      ],
+      "open_reason": "",
+      "phase": "P14",
+      "requirement": "Stellaris reaches main menu with the patch enabled",
+      "status": "verified"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/observer-test-log.md",
+          "size_bytes": 2016
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-observer-smoke-save-summary-2026-07-04.json",
+          "size_bytes": 1598
+        },
+        {
+          "exists": true,
+          "path": "research/stellar-ai/stellar-ai-director-observer-smoke-save-summary-2026-07-04.md",
+          "size_bytes": 1316
+        }
+      ],
+      "open_reason": "Longer observer tuning still needs a useful high-ROI AI behavior checkpoint beyond startup/load proof.",
+      "phase": "P15",
+      "requirement": "observer smoke test confirms at least one useful high-ROI AI path",
+      "status": "partial"
+    },
+    {
+      "artifacts": [
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/README.md",
+          "size_bytes": 2913
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/load-order.md",
+          "size_bytes": 1638
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/conflicts.md",
+          "size_bytes": 2481
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/observer-test-log.md",
+          "size_bytes": 2016
+        },
+        {
+          "exists": true,
+          "path": "mods/StellarAIDirector/notes/tuning-notes.md",
+          "size_bytes": 4189
+        }
+      ],
+      "open_reason": "",
+      "phase": "P16",
+      "requirement": "README/notes/tuning docs are current",
+      "status": "verified"
+    }
+  ],
+  "plan_path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\plans\\stellar-ai-director-v1-remaining-plan.md",
+  "status_counts": {
+    "partial": 1,
+    "verified": 16
+  },
+  "validation_error_count": 0
+}

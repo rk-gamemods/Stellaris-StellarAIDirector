@@ -1,0 +1,49 @@
+# regular empires
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = farmer
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = no
+            is_fallen_empire_spiritualist = no
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# spiritualist FE
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = fe_acolyte_farm
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_fallen_empire_spiritualist = yes
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# gestalts
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = agri_drone
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = yes
+            # is_wilderness_empire = no
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}

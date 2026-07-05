@@ -1,0 +1,1855 @@
+namespace = ehof_systems
+@resource_rare_cost = 10# Cost per 1. 10 = 10 x standard resource worth.
+@resource_strategic_cost = 3# Cost per 1. 3 = 3 x standard resource worth.
+@deposit_multiplier = 9# The total amount of materials a system should have. Lower = more materials per system.
+@strategic_fraction = 4# The amount of total resources that should be strategic resources. 4 = 1/4, 5 = 1/5, etc.
+@rare_system_multiplier = 4
+@urmazin_system_multiplier = 3
+@quest_system_multiplier = 2
+@standard_system_multiplier = 1
+country_event = {
+	id = ehof_systems.1234
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		has_country_flag = should_spawn_covesive_@root
+	}
+	immediate = {
+		remove_country_flag = should_spawn_covesive_@root
+		random_list = {
+			25 = {
+				modifier = {
+					factor = 0
+					NOT = {
+						has_global_flag = annihilator_system_spawned
+					}
+				}
+				modifier = {
+					factor = 0.2
+					any_system = {
+						annihilator_system = yes
+						empire_has_visited = yes
+					}
+				}
+				random_system = {
+					limit = {
+						annihilator_system = yes
+					}
+					ehof_start_lifecycle = yes
+				}
+			}
+			10 = {
+				# Trader hub
+				modifier = {
+					factor = 0
+					OR = {
+						any_owned_fleet = {
+							exists = solar_system
+							solar_system = {
+								urmazin_system = yes
+							}
+						}
+						has_country_flag = ehof_recently_visited_trader
+						has_global_flag = compound_invasion_ongoing
+						check_variable = {
+							which = ehof_phase
+							value < 3
+						}
+						NOT = {
+							has_global_flag = ehof_traders_spawned
+						}
+					}
+				}
+				set_timed_country_flag = {
+					flag = ehof_recently_visited_trader
+					days = @ehof_trader_visiting_days
+				}
+				random_system = {
+					limit = {
+						urmazin_capital = yes
+					}
+					ehof_start_lifecycle = yes
+				}
+			}
+			65 = {
+				country_event = {
+					id = ehof_systems.000 #generate other system
+				}
+			}
+		}
+
+		# save ehof home system
+		ehof_mega_system = yes
+
+		country_event = {
+			id = ehof_megastructure.501
+		}
+	}
+}
+
+# Generate System
+country_event = {
+	id = ehof_systems.000
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		# # If has Phase 3, can roll rare system
+		# set_spawn_system_batch = begin
+		# if = {
+		# 	limit = {
+		# 		check_variable = {
+		# 			which = ehof_phase
+		# 			value >= 3
+		# 		}
+		# 	}
+		# 	set_global_flag = ehof_can_roll_advanced
+		# }
+		# Set current system creator
+		if = {
+			limit = {
+				exists = event_target:current_system_creator
+			}
+			clear_global_event_target = current_system_creator
+		}
+		save_global_event_target_as = current_system_creator
+		# Bought Bountiful system
+		# if = {
+		# 	limit = {
+		# 		has_country_flag = ehof_next_system_rare
+		# 	}
+		# 	set_global_flag = ehof_r_rare_system
+		# }
+		if = {
+			limit = {
+				NOT = {
+					has_country_flag = has_ehof_cluster
+				}
+			}
+			set_country_flag = has_ehof_cluster
+			random_list = {
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_10_taken
+					}
+					set_global_flag = ehof_10_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_10_taken_min_angle
+							ehof_init_max_angle = @ehof_10_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_10_taken_min_angle
+							ehof_init_max_angle = @ehof_10_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_30_taken
+					}
+					set_global_flag = ehof_30_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_30_taken_min_angle
+							ehof_init_max_angle = @ehof_30_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_30_taken_min_angle
+							ehof_init_max_angle = @ehof_30_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_50_taken
+					}
+					set_global_flag = ehof_50_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_50_taken_min_angle
+							ehof_init_max_angle = @ehof_50_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_50_taken_min_angle
+							ehof_init_max_angle = @ehof_50_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				#1 = {
+				#	modifier = { factor = 0 has_global_flag = ehof_70_taken }
+				#	set_global_flag = ehof_70_taken
+				# ehof_giga_new_create_new_system = {
+				# 	ehof_init_min_angle = @ehof_70_taken_min_angle
+				# 	ehof_init_max_angle = @ehof_70_taken_max_angle
+				# 	hyperlane = no
+				# 	initializer = "basic_init_01"
+				# }
+				#}
+				#1 = {
+				#	modifier = { factor = 0 has_global_flag = ehof_90_taken }
+				#	set_global_flag = ehof_90_taken
+				# ehof_giga_new_create_new_system = {
+				# 	ehof_init_min_angle = @ehof_90_taken_min_angle
+				# 	ehof_init_max_angle = @ehof_90_taken_max_angle
+				# 	hyperlane = no
+				# 	initializer = "basic_init_01"
+				# }
+				#}
+				#1 = {
+				#	modifier = { factor = 0 has_global_flag = ehof_110_taken }
+				#	set_global_flag = ehof_110_taken
+				# ehof_giga_new_create_new_system = {
+				# 	ehof_init_min_angle = @ehof_110_taken_min_angle
+				# 	ehof_init_max_angle = @ehof_110_taken_max_angle
+				# 	hyperlane = no
+				# 	initializer = "basic_init_01"
+				# }
+				#}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_130_taken
+					}
+					set_global_flag = ehof_130_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_130_taken_min_angle
+							ehof_init_max_angle = @ehof_130_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_130_taken_min_angle
+							ehof_init_max_angle = @ehof_130_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_150_taken
+					}
+					set_global_flag = ehof_150_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_150_taken_min_angle
+							ehof_init_max_angle = @ehof_150_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_150_taken_min_angle
+							ehof_init_max_angle = @ehof_150_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_170_taken
+					}
+					set_global_flag = ehof_170_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_170_taken_min_angle
+							ehof_init_max_angle = @ehof_170_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_170_taken_min_angle
+							ehof_init_max_angle = @ehof_170_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_190_taken
+					}
+					set_global_flag = ehof_190_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_190_taken_min_angle
+							ehof_init_max_angle = @ehof_190_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_190_taken_min_angle
+							ehof_init_max_angle = @ehof_190_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_210_taken
+					}
+					set_global_flag = ehof_210_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_210_taken_min_angle
+							ehof_init_max_angle = @ehof_210_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_210_taken_min_angle
+							ehof_init_max_angle = @ehof_210_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_230_taken
+					}
+					set_global_flag = ehof_230_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_230_taken_min_angle
+							ehof_init_max_angle = @ehof_230_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_230_taken_min_angle
+							ehof_init_max_angle = @ehof_230_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				#1 = {
+				#	modifier = { factor = 0 has_global_flag = ehof_250_taken }
+				#	set_global_flag = ehof_250_taken
+				# ehof_giga_new_create_new_system = {
+				# 	ehof_init_min_angle = @ehof_250_taken_min_angle
+				# 	ehof_init_max_angle = @ehof_250_taken_max_angle
+				# 	hyperlane = no
+				# 	initializer = "basic_init_01"
+				# }
+				#}
+				#1 = {
+				#	modifier = { factor = 0 has_global_flag = ehof_270_taken }
+				#	set_global_flag = ehof_270_taken
+				# ehof_giga_new_create_new_system = {
+				# 	ehof_init_min_angle = @ehof_270_taken_min_angle
+				# 	ehof_init_max_angle = @ehof_270_taken_max_angle
+				# 	hyperlane = no
+				# 	initializer = "basic_init_01"
+				# }
+				#}
+				#1 = {
+				#	modifier = { factor = 0 has_global_flag = ehof_290_taken }
+				#	set_global_flag = ehof_290_taken
+				# ehof_giga_new_create_new_system = {
+				# 	ehof_init_min_angle = @ehof_290_taken_min_angle
+				# 	ehof_init_max_angle = @ehof_290_taken_max_angle
+				# 	hyperlane = no
+				# 	initializer = "basic_init_01"
+				# }
+				#}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_310_taken
+					}
+					set_global_flag = ehof_310_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_310_taken_min_angle
+							ehof_init_max_angle = @ehof_310_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_310_taken_min_angle
+							ehof_init_max_angle = @ehof_310_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_330_taken
+					}
+					set_global_flag = ehof_330_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_330_taken_min_angle
+							ehof_init_max_angle = @ehof_330_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_330_taken_min_angle
+							ehof_init_max_angle = @ehof_330_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+				1 = {
+					modifier = {
+						factor = 0
+						has_global_flag = ehof_350_taken
+					}
+					set_global_flag = ehof_350_taken
+					if = {
+						limit = {
+							is_nomadic = no
+						}
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_350_taken_min_angle
+							ehof_init_max_angle = @ehof_350_taken_max_angle
+							hyperlane = no
+							initializer = "basic_init_01"
+						}
+					}
+					else = {
+						#nomads should get a black hole system first to ensure they can return if they go with one arkship
+						ehof_giga_new_create_new_system = {
+							ehof_init_min_angle = @ehof_350_taken_min_angle
+							ehof_init_max_angle = @ehof_350_taken_max_angle
+							hyperlane = no
+							initializer = "special_init_01"
+						}
+					}
+				}
+			}
+		}
+		else = {
+			log = "Going to search for source system"
+			# Select system to use a source for spawn_system
+			if = {
+				limit = {
+					any_system = {
+						has_star_flag = ehof_system_created_by_@root
+						NOT = {
+							any_system = {
+								cohesive_system = no
+								distance = {
+									source = prev
+									type = euclidean
+									max_distance <= 35
+								}
+							}
+						}
+						any_system = {
+							cohesive_system = no
+							distance = {
+								source = prev
+								type = euclidean
+								max_distance <= 100
+							}
+						}
+						count_system = {
+							limit = {
+								cohesive_system = yes
+								distance = {
+									source = prev
+									type = euclidean
+									max_distance <= 25
+								}
+							}
+							count <= 6
+						}
+					}
+				}
+				random_system = {
+					limit = {
+						has_star_flag = ehof_system_created_by_@root
+						NOT = {
+							any_system = {
+								cohesive_system = no
+								distance = {
+									source = prev
+									type = euclidean
+									max_distance <= 35
+								}
+							}
+						}
+						any_system = {
+							cohesive_system = no
+							distance = {
+								source = prev
+								type = euclidean
+								max_distance <= 100
+							}
+						}
+						count_system = {
+							limit = {
+								cohesive_system = yes
+								distance = {
+									source = prev
+									type = euclidean
+									max_distance <= 25
+								}
+							}
+							count <= 6
+						}
+					}
+					save_event_target_as = cohesive_source
+					log = "Found source system (Not too far, not too close, less than 6 around it)"
+				}
+			}
+			else_if = {
+				limit = {
+					any_system = {
+						has_star_flag = ehof_system_created_by_@root
+						NOT = {
+							any_system = {
+								cohesive_system = no
+								distance = {
+									source = prev
+									type = euclidean
+									max_distance <= 35
+								}
+							}
+						}
+						any_system = {
+							cohesive_system = no
+							distance = {
+								source = prev
+								type = euclidean
+								max_distance <= 100
+							}
+						}
+					}
+				}
+				random_system = {
+					limit = {
+						has_star_flag = ehof_system_created_by_@root
+						NOT = {
+							any_system = {
+								cohesive_system = no
+								distance = {
+									source = prev
+									type = euclidean
+									max_distance <= 35
+								}
+							}
+						}
+						any_system = {
+							cohesive_system = no
+							distance = {
+								source = prev
+								type = euclidean
+								max_distance <= 100
+							}
+						}
+					}
+					save_event_target_as = cohesive_source
+					log = "Found source system (Not too far, not too close)"
+				}
+			}
+			else = {
+				random_system = {
+					limit = {
+						has_star_flag = ehof_system_created_by_@root
+					}
+					save_event_target_as = cohesive_source
+					log = "Found source system (No requirements)"
+				}
+			}
+			event_target:cohesive_source = {
+				root = {
+					fire_on_action = {
+						on_action = ehof_custom_chosen_spawn
+						scopes = {
+							from = prev
+						}
+					}
+					switch = {
+						trigger = has_country_flag
+						ehof_create_sc_birch = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "giga_black_hole_core_initializer"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_birch
+								}
+							}
+						}
+						ehof_create_sc_quasar = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "giga_black_hole_quasar_initializer"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_quasar
+								}
+							}
+						}
+						ehof_create_sc_f = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = f
+								}
+							}
+						}
+						ehof_create_sc_g = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = g
+								}
+							}
+						}
+						ehof_create_sc_k = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = k
+								}
+							}
+						}
+						ehof_create_sc_m = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = m
+								}
+							}
+						}
+						ehof_create_sc_d = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = d
+								}
+							}
+						}
+						ehof_create_sc_t = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = t
+								}
+							}
+						}
+						ehof_create_sc_b = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = b
+								}
+							}
+						}
+						ehof_create_sc_a = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = a
+								}
+							}
+						}
+						ehof_create_sc_o = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = o
+								}
+							}
+						}
+						ehof_create_sc_m_giant = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = m_giant
+								}
+							}
+						}
+						ehof_create_sc_k_giant = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = k_giant
+								}
+							}
+						}
+						ehof_create_sc_g_giant = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = g_giant
+								}
+							}
+						}
+						ehof_create_sc_o_super = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = o_super
+								}
+							}
+						}
+						ehof_create_sc_b_super = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = b_super
+								}
+							}
+						}
+						ehof_create_sc_a_super = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = a_super
+								}
+							}
+						}
+						ehof_create_sc_f_super = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = f_super
+								}
+							}
+						}
+						ehof_create_sc_g_super = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = g_super
+								}
+							}
+						}
+						ehof_create_sc_k_super = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = k_super
+								}
+							}
+						}
+						ehof_create_sc_m_super = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = b_super
+								}
+							}
+						}
+						ehof_create_sc_s_giant = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = s_giant
+								}
+							}
+						}
+						ehof_create_sc_c_giant = {
+							prev = {
+								ehof_giga_new_create_sc_x = {
+									star = c_giant
+								}
+							}
+						}
+						ehof_create_sc_p_purple = {
+							prev = {
+								random_list = {
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_p_purple"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_p_green"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_p_red"
+										}
+									}
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_p_purple
+								}
+							}
+						}
+						ehof_create_sc_lbv_blue = {
+							prev = {
+								random_list = {
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_lbv_blue"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_lbv_red"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_lbv_green"
+										}
+									}
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_lbv_blue
+								}
+							}
+						}
+						ehof_create_sc_tt_red = {
+							prev = {
+								random_list = {
+									3 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_tt_orange"
+										}
+									}
+									3 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_tt_red"
+										}
+									}
+									3 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_tt_white"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_tt_orange_2"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_tt_red_2"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_tt_white_2"
+										}
+									}
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_tt_red
+								}
+							}
+						}
+						ehof_create_sc_w_azure = {
+							prev = {
+								random_list = {
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_w_azure"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_w_green"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_w_purple"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_w_red"
+										}
+									}
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_w_azure
+								}
+							}
+						}
+						ehof_create_sc_o_hyper = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "rs_sc_o_hyper"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_o_hyper
+								}
+							}
+						}
+						ehof_create_sc_m_hyper = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "rs_sc_m_hyper"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_m_hyper
+								}
+							}
+						}
+						ehof_create_sc_neutron = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "special_init_08"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_neutron
+								}
+							}
+						}
+						ehof_create_sc_pulsar = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "special_init_09"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_pulsar
+								}
+							}
+						}
+						ehof_create_sc_blackhole = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "special_init_01"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_blackhole
+								}
+							}
+						}
+						ehof_create_sc_microquasar_1 = {
+							prev = {
+								random_list = {
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_microquasar_1"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_microquasar_2"
+										}
+									}
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_microquasar_1
+								}
+							}
+						}
+						ehof_create_sc_collapsar = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "rs_sc_collapsar"
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_collapsar
+								}
+							}
+						}
+						ehof_create_sc_magnetar = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "rs_sc_magnetar"
+								}
+							}
+							root = {
+								remove_country_flag = ehof_create_sc_magnetar
+							}
+						}
+						ehof_create_sc_protostar = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "rs_sc_protostar"
+								}
+							}
+							root = {
+								remove_country_flag = ehof_create_sc_protostar
+							}
+						}
+						ehof_create_sc_ae = {
+							prev = {
+								ehof_giga_new_create_new_continuous_system = {
+									initializer = "rs_sc_ae"
+								}
+							}
+							root = {
+								remove_country_flag = ehof_create_sc_ae
+							}
+						}
+						ehof_create_sc_nova_1 = {
+							prev = {
+								random_list = {
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_nova_1"
+										}
+									}
+									1 = {
+										ehof_giga_new_create_new_continuous_system = {
+											initializer = "rs_sc_nova_2"
+										}
+									}
+								}
+								root = {
+									remove_country_flag = ehof_create_sc_nova_1
+								}
+							}
+						}
+						default = {
+							fire_on_action = {
+								on_action = ehof_custom_random_spawn
+								scopes = {
+									from = prev
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		country_event = { # Generate flags
+			id = ehof_systems.001
+		}
+		country_event = { # Generate Weather
+			id = ehof_systems.002
+		}
+		# country_event = { # Generate Leviathans 
+		# 	id = ehof_systems.003
+		# }
+		country_event = { # Generate Megastructures
+			id = ehof_systems.004
+		}
+		# country_event = { # Generate Deposits
+		# 	id = ehof_systems.006
+		# }
+		# country_event = { # Generate Hostiles
+		# 	id = ehof_systems.007
+		# }
+		last_created_system = {
+			log = "Scoping to last_created_system"
+			#Red Toxic
+			if = { 
+				limit = {
+					root = {
+						has_country_flag = first_ehof_system_spawned
+					}
+				}
+				# Red Toxic World
+				random_list = {
+					90 = {
+						modifier = {
+							add = -20
+							solar_system = {
+								rare_system = yes
+							}
+						}
+					}
+					10 = {
+						modifier = {
+							add = 20
+							solar_system = {
+								rare_system = yes
+							}
+						}
+						modifier = {
+							factor = 0
+							solar_system = {
+								ehof_giga_new_cannot_spawn_red_toxic = yes
+							}
+						}
+						ehof_giga_new_create_red_toxic = yes
+					}
+				}
+			}
+			
+			# Create PGate
+			if = {
+				limit = {
+					NOT = {
+						root = {
+							has_country_flag = first_ehof_system_spawned
+						}
+					}
+				}
+				set_star_flag = first_ehof_system_of_@root
+				root = {
+					set_country_flag = first_ehof_system_spawned
+					set_timed_country_flag = {
+						flag = ehof_recently_spawned_guardian
+						years = 5
+					}
+					# delay leviathans
+				}
+				if = {
+					limit = {
+						root = {
+							is_nomadic = no
+						}
+					}
+					create_starbase = {
+						size = starbase_outpost
+						owner = root
+					}
+				}
+				if = {
+					limit = {
+						any_megastructure = {
+							is_megastructure_type = ehof_pgate_gateway
+						}
+					}
+					spawn_megastructure = {
+						type = "ehof_pgate_gateway"
+						orbit_angle = 110
+						orbit_distance = 35
+						owner = root
+					}
+				}
+				else = {
+					spawn_megastructure = {
+						type = "ehof_pgate_unknown"
+						orbit_angle = 110
+						orbit_distance = 35
+						owner = root
+					}
+				}
+			}
+			if = {
+				limit = {
+					root = {
+						has_country_flag = first_ehof_system_spawned
+					}
+				}
+				# set_star_flag = ehof_hyper_source
+				save_event_target_as = giga_new_hyper_source
+				# Generate Hyperlane
+				ehof_giga_new_generate_hyperlane = yes
+				# Reality Code
+				set_star_flag = ehof_system_created_by_@root #shorting this flag to here, so the site generates properly
+				system_event = {
+					id = ehof_giga_new_rc.0					# Checks for reality code flags and spawns system if applicable with correct arch
+				}
+			}
+		}
+		# Have been given the bought bountiful system
+		# if = {
+		# 	limit = {
+		# 		has_country_flag = ehof_next_system_rare
+		# 	}
+		# 	remove_country_flag = ehof_next_system_rare
+		# 	remove_global_flag = ehof_r_rare_system
+		# }
+		country_event = {
+			id = ehof_systems.005 #Generate system colour
+		}
+		# Generate System Color
+		last_created_system = {
+			save_event_target_as = ehof_destination_system
+			# Reset flags and variables
+			every_system = {
+				limit = {
+					has_star_flag = ehof_destination_system@root
+				}
+				remove_star_flag = ehof_destination_system@root
+			}
+			set_star_flag = ehof_destination_system@root
+		}
+		ehof_giga_new_cleanup_country_flags = yes
+		set_spawn_system_batch = end
+	}
+}
+
+# Generate Flags
+country_event = {
+	id = ehof_systems.001
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		last_created_system = {
+			if = { limit = { has_planetary_diversity = yes } set_star_flag = pd_system_spawned_from_event } # PD planets will spawn
+			# Cannot use QSO/NDB on ehof cluster
+			every_system_planet = {
+				set_planet_flag = cant_build_here
+				set_planet_flag = cant_target_this_planet
+				if = { # GPM will spawn planet modifiers with this flag
+					limit = { has_global_flag = has_guillis_planet_modifiers_mod }
+					if = {
+						limit = {
+							NOR = {
+								has_deposit = d_dark_matter_deposit_1
+								has_deposit = d_dark_matter_deposit_2
+								has_deposit = d_dark_matter_deposit_3
+								has_deposit = d_dark_matter_deposit_4
+								has_deposit = d_dark_matter_deposit_5
+								#has_deposit = d_negative_mass_deposit_1
+								#has_deposit = d_negative_mass_deposit_2
+								#has_deposit = d_negative_mass_deposit_3
+								#has_deposit = d_negative_mass_deposit_4
+								#has_deposit = d_negative_mass_deposit_5
+							}
+						}
+						set_planet_flag = is_event_spawned_planet
+					}
+				}
+			}
+			# Everchanging
+			if = {
+				limit = {
+					has_star_flag = everchanging_system
+				}
+				set_star_flag = ehof_system_created_by_@root
+				random_system_planet = {
+					limit = {
+						is_planet_class = pc_ehof_cplanet
+					}
+					set_planet_flag = code_world7@root
+					root = {
+						set_country_flag = code_world7@prev
+					}
+				}
+			}
+			# Cohesive Systems
+			else = {
+				set_star_flag = cohesive_system
+				set_star_flag = ehof_system_created_by_@root
+				if = {
+					limit = {
+						has_global_flag = ehof_r_rare_system
+					}
+					set_star_flag = rare_system
+				}
+				if = {
+					limit = {
+						has_global_flag = ehof_can_roll_advanced
+					}
+					remove_global_flag = ehof_can_roll_advanced
+					random_list = {
+						92 = {
+						}
+						8 = {
+							modifier = {
+								factor = 3
+								root = {
+									is_ai = yes
+								}
+							}
+							set_star_flag = rare_system
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_global_flag = has_real_space_mod
+				}
+				ehof_giga_new_set_star_flags_rs = yes
+			}
+			else = {
+				ehof_giga_new_set_star_flags = yes
+			}
+		}
+	}
+}
+
+# Generate Weather
+country_event = {
+	id = ehof_systems.002
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		has_country_flag = first_ehof_system_spawned
+	}
+	immediate = {
+		last_created_system = {
+			if = {
+				limit = {
+					everchanging_system = no
+					annihilator_system = no
+					compound_cluster = no
+				}
+				random_list = {
+					180 = {
+					}
+					3 = {
+						create_nebula_1 = yes
+					}
+					3 = {
+						create_nebula_2 = yes
+					}
+					3 = {
+						create_nebula_3 = yes
+					}
+					3 = {
+						create_nebula_4 = yes
+					}
+					2 = {
+						create_rare_nebula_1 = yes
+					}
+					2 = {
+						create_rare_nebula_2 = yes
+					}
+					2 = {
+						create_turbulent_nebula_1 = yes
+					}
+					2 = {
+						create_turbulent_nebula_2 = yes
+					}
+					1 = {
+						set_star_flag = storm_system
+						star = {
+							create_ambient_object = {
+								type = "space_storm_1"
+								location = this
+							}
+							last_created_ambient_object = {
+								set_ambient_object_flag = space_storm_object
+								set_location = {
+									target = prev
+									distance = 0
+									angle = random
+								}
+							}
+						}
+						add_modifier = {
+							modifier = space_storm
+						}
+					}
+					1 = {
+						set_star_flag = storm_system
+						star = {
+							create_ambient_object = {
+								type = "space_storm_2"
+								location = this
+							}
+							last_created_ambient_object = {
+								set_location = {
+									target = prev
+									distance = 0
+									angle = random
+								}
+							}
+						}
+						add_modifier = {
+							modifier = space_storm
+						}
+					}
+					1 = {
+						set_star_flag = storm_system
+						star = {
+							create_ambient_object = {
+								type = "psi_storm_1"
+								location = this
+							}
+							last_created_ambient_object = {
+								set_location = {
+									target = prev
+									distance = 0
+									angle = random
+								}
+							}
+						}
+						add_modifier = {
+							modifier = space_storm
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# on_fleet_destroyed_victim (check if leviathan has been defeated)
+# This = owner of fleet 1 (destroyed)
+# From = owner of fleet 2 (combatant)
+# FromFrom = fleet 1
+# FromFromFrom = fleet 2
+country_event = {
+	id = ehof_systems.008
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			is_country_type = guardian_sphere
+			is_country_type = guardian_horror
+			is_country_type = guardian_fortress
+			is_country_type = guardian_dreadnought
+			# Also for Vat
+			is_country_type = guardian_toxic_god
+			is_country_type = guardian_dragon
+			is_country_type = guardian_wraith
+			is_country_type = guardian_elderly_tiyanki
+			is_country_type = guardian_stellarite
+			is_country_type = guardian_hatchling
+		}
+	}
+	immediate = {
+		switch = {
+			trigger = is_country_type
+			guardian_dragon = {
+				if = {
+					limit = {
+						NOR = {
+							has_country_flag = rubricator_dragon_country
+							has_country_flag = here_be_the_dragon
+						}
+					}
+					set_global_flag = leviathan_slain_ether_dragon
+				}
+				from = {
+					set_country_flag = giga_vat_can_clone_ether_drake
+				}
+			}
+			guardian_wraith = {
+				set_global_flag = leviathan_slain_wraith
+				from = {
+					set_country_flag = giga_vat_can_clone_wraith
+				}
+			}
+			guardian_toxic_god = {
+				from = {
+					set_country_flag = giga_vat_can_clone_toxic_god
+				}
+			}
+			guardian_stellarite = {
+				set_global_flag = leviathan_slain_stellarite
+				from = {
+					set_country_flag = giga_vat_can_clone_stellarite
+				}
+			}
+			guardian_elderly_tiyanki = {
+				set_global_flag = leviathan_slain_tiyanki
+				from = {
+					set_country_flag = giga_vat_can_clone_tiyanki_matriarch
+				}
+			}
+			guardian_hatchling = {
+				set_global_flag = leviathan_slain_voidspawn
+				from = {
+					set_country_flag = giga_vat_can_clone_voidspawn
+				}
+			}
+			guardian_sphere = {
+				set_global_flag = leviathan_slain_sphere
+			}
+			guardian_horror = {
+				set_global_flag = leviathan_slain_horror
+			}
+			guardian_fortress = {
+				set_global_flag = leviathan_slain_fortress
+			}
+			guardian_dreadnought = {
+				set_global_flag = leviathan_slain_dreadnought
+			}
+		}
+		# if = {
+		# 	limit = {
+		# 		is_country_type = guardian_dragon
+		# 	}
+		# 	set_global_flag = leviathan_slain_ether_dragon
+		# 	from = { set_country_flag = giga_vat_can_clone_dragon }
+		# }
+		# else_if = { limit = { is_country_type = guardian_wraith }			set_global_flag = leviathan_slain_wraith		from = { set_country_flag = giga_vat_can_clone_wraith } }
+		# else_if = { limit = { is_country_type = guardian_stellarite }		set_global_flag = leviathan_slain_stellarite	from = { set_country_flag = giga_vat_can_clone_stellarite } }
+		# else_if = { limit = { is_country_type = guardian_elderly_tiyanki }	set_global_flag = leviathan_slain_tiyanki 		from = { set_country_flag = giga_vat_can_clone_tiyanki } }
+		# else_if = { limit = { is_country_type = guardian_hatchling }		set_global_flag = leviathan_slain_voidspawn		from = { set_country_flag = giga_vat_can_clone_voidspawn } }
+		# else_if = { limit = { is_country_type = guardian_sphere }			set_global_flag = leviathan_slain_sphere }
+		# else_if = { limit = { is_country_type = guardian_horror }			set_global_flag = leviathan_slain_horror }
+		# else_if = { limit = { is_country_type = guardian_fortress }			set_global_flag = leviathan_slain_fortress }
+		# else_if = { limit = { is_country_type = guardian_dreadnought }		set_global_flag = leviathan_slain_dreadnought }
+	}
+}
+# This event is no longer necessary to generate leviathans
+# # Generate Leviathans 
+# country_event = {
+# 	id = ehof_systems.003
+# 	is_triggered_only = yes
+# 	hide_window = yes
+# 	trigger = {
+# 		NOT = {
+# 			has_country_flag = ehof_spawn_reality_code
+# 		}
+# 		has_country_flag = first_ehof_system_spawned
+# 		has_leviathans = yes
+# 		is_ai = no
+# 		NOT = {
+# 			has_country_flag = ehof_recently_spawned_guardian
+# 		}
+# 	}
+# 	immediate = {
+# 		random_list = {
+# 			80 = {
+# 				modifier = {
+# 					OR = {
+# 						has_country_flag = force_leviathan_spawn
+# 						has_global_flag = force_leviathan_spawn
+# 					}
+# 					weight = 0.000001
+# 				}
+# 			}
+# 			20 = {
+# 				modifier = {
+# 					OR = {
+# 						has_country_flag = forbid_leviathan_spawn
+# 						has_global_flag = forbid_leviathan_spawn
+# 					}
+# 					weight = 0
+# 				}
+# 				last_created_system = {
+# 					if = {
+# 						limit = {
+# 							everchanging_system = no
+# 							annihilator_system = no
+# 							compound_cluster = no
+# 						}
+# 						# Guardians
+# 						fire_on_action = {
+# 							on_action = ehof_custom_spawn_leviathan
+# 							scopes = {
+# 								from = root
+# 							}
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		remove_country_flag = force_leviathan_spawn
+# 	}
+# }
+
+# Generate Megastructures
+country_event = {
+	id = ehof_systems.004
+	is_triggered_only = yes
+	hide_window = yes
+	trigger = {
+		NOT = {
+			has_country_flag = ehof_spawn_reality_code
+		}
+	}
+	immediate = {
+		last_created_system = {
+			random_list = {
+				97 = {
+					modifier = {
+						root = {
+							OR = {
+								has_country_flag = force_megastructure_spawn
+								has_global_flag = force_megastructure_spawn
+							}
+						}
+						weight = 0.00001
+					}
+				}
+				3 = {
+					modifier = {
+						root = {
+							or = {
+								has_country_flag = forbid_megastructure_spawn
+								has_global_flag = forbid_megastructure_spawn
+							}
+						}
+						weight = 0
+					}
+					# modifier = {
+					# 	factor = 8
+					# 	rare_system = yes
+					# }
+					modifier = {
+						factor = 0
+						urmazin_system = yes
+					}
+					modifier = {
+						factor = 0
+						quest_system = yes
+					}
+					modifier = {
+						factor = 0
+						compound_cluster = yes
+					}
+					fire_on_action = {
+						on_action = ehof_custom_spawn_megastructure
+						scopes = {
+							from = root
+						}
+					}
+					root = {
+						remove_country_flag = force_megastructure_spawn
+						remove_country_flag = forbid_megastructure_spawn
+					}
+				}
+			}
+		}
+	}
+}
+
+# Generate System Color
+country_event = {
+	id = ehof_systems.005
+	is_triggered_only = yes
+	hide_window = yes
+	immediate = {
+		last_created_system = {
+			save_event_target_as = ehof_color_system_name
+			if = {
+				limit = {
+					OR = {
+						has_star_flag = quest_system
+						urmazin_system = yes
+					}
+					compound_cluster = no
+				}
+				set_name = {
+					key = "ehof_quest_name"
+					variable_string = "[ehof_color_system_name.GetName]"
+				}
+				every_system_planet = {
+					limit = {
+						is_primary_star = yes
+					}
+					save_event_target_as = ehof_color_star_name
+					set_name = {
+						key = "ehof_quest_star_name"
+						variable_string = "[ehof_color_star_name.GetName]"
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						is_star_class = sc_birch
+						is_star_class = sc_quasar
+						compound_cluster = yes
+					}
+				}
+				set_name = {
+					key = "ehof_core_name"
+					variable_string = "[ehof_color_system_name.GetName]"
+				}
+				every_system_planet = {
+					limit = {
+						is_primary_star = yes
+					}
+					save_event_target_as = ehof_color_star_name
+					if = {
+						limit = {
+							is_planet_class = pc_birch
+						}
+						random_list = {
+							1 = {
+								set_name = "Corey's Gut"
+							}
+							1 = {
+								set_name = "Time's Agony"
+							}
+							1 = {
+								set_name = "Undying Fury"
+							}
+							1 = {
+								set_name = "Eternal Horizon"
+							}
+							1 = {
+								set_name = "Sagittrevorius A"
+							}
+							1 = {
+								set_name = "Pouchkinn's Vortex"
+							}
+							1 = {
+								set_name = "The End"
+							}
+							1 = {
+								set_name = "Voluptia"
+							}
+							1 = {
+								set_name = "Powehi"
+							}
+							1 = {
+								set_name = "Centaurus A"
+							}
+							1 = {
+								set_name = "Cygnus X-1"
+							}
+							1 = {
+								set_name = "Sagittarius A*"
+							}
+							1 = {
+								set_name = "TON 618"
+							}
+							1 = {
+								set_name = "Steve"
+							}
+							1 = {
+								set_name = "Steeve"
+							}
+							1 = {
+								set_name = "Sbeve"
+							}
+							1 = {
+								set_name = "Twissell"
+							}
+							1 = {
+								set_name = "Anulus"
+							}
+							1 = {
+								set_name = "Aria"
+							}
+							1 = {
+								set_name = "Nero"
+							}
+							1 = {
+								set_name = "Temporal Itch"
+							}
+							1 = {
+								set_name = "Stellar Beholder"
+							}
+							1 = {
+								set_name = "Grim Reaper"
+							}
+							1 = {
+								set_name = "dQw4w9WgXcQ"
+							}
+							1 = {
+								set_name = "Shatterer of Behemoths"
+							}
+							1 = {
+								set_name = "Grand Gargantua"
+							}
+							1 = {
+								set_name = "111001"
+							}
+							1 = {
+								set_name = "Great Mother"
+							}
+							1 = {
+								set_name = "Placeholder black hole, real one is being renovated, apologies for the inconvenience"
+							}
+							1 = {
+								set_name = "Despacito"
+							}
+							1 = {
+								set_name = "siggatarius A*"
+							}
+						}
+					}
+					else = {
+						set_name = {
+							key = "ehof_core_star_name"
+							variable_string = "[ehof_color_star_name.GetName]"
+						}
+					}
+				}
+			}
+			# else_if = {
+			# 	limit = {
+			# 		rare_system = yes
+			# 	}
+			# 	set_name = {
+			# 		key = "ehof_rare_name"
+			# 		variable_string = "[ehof_color_system_name.GetName]"
+			# 	}
+			# 	every_system_planet = {
+			# 		limit = {
+			# 			is_primary_star = yes
+			# 		}
+			# 		save_event_target_as = ehof_color_star_name
+			# 		set_name = {
+			# 			key = "ehof_rare_star_name"
+			# 			variable_string = "[ehof_color_star_name.GetName]"
+			# 		}
+			# 	}
+			# }
+			else = {
+				set_name = {
+					key = "ehof_standard_name"
+					variable_string = "[ehof_color_system_name.GetName]"
+				}
+				every_system_planet = {
+					limit = {
+						is_primary_star = yes
+					}
+					save_event_target_as = ehof_color_star_name
+					set_name = {
+						key = "ehof_standard_star_name"
+						variable_string = "[ehof_color_star_name.GetName]"
+					}
+				}
+			}
+		}
+	}
+}
+
+# empty event space
+# ehof systems 003 (previously leviathans)
+# ehof systems 006 (previously deposits)
+# ehof systems 007 (previously hostiles)

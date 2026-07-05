@@ -1,0 +1,86 @@
+d_exp_civ_primitive_preserve = {
+	is_for_colonizable = yes
+	icon = d_alien_pets_deposit
+
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.05
+	}
+
+	resources = {
+		category = planet_deposits
+		produces = {
+			society_research = 150
+		}
+	}
+
+
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_exp_civ_space_preserve = {
+	is_for_colonizable = yes
+	icon = d_building_complex
+
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.1
+	}
+
+	resources = {
+		category = planet_deposits
+		produces = {
+			society_research = 300
+		}
+	}
+
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_exp_civ_fe_preserve = {
+	is_for_colonizable = yes
+	icon = d_city
+
+	planet_modifier = {
+		planet_jobs_society_research_produces_mult = 0.15
+	}
+
+	resources = {
+		category = planet_deposits
+		produces = {
+			society_research = 450
+		}
+		produces = {
+			trigger = {
+				has_ancrel = yes
+			}
+			minor_artifacts = 1
+		}
+	}
+
+	drop_weight = {
+		weight = 0
+	}
+}
+
+d_aeternum_gigantic_fission_reactor = {
+	is_for_colonizable = yes
+	icon = d_station_reactor
+
+	planet_modifier = {
+		planet_jobs_energy_produces_mult = 0.10
+	}
+
+	resources = {
+		category = planet_deposits
+		produces = {
+			energy = 400
+		}
+	}
+
+	drop_weight = {
+		weight = 0
+	}
+}

@@ -1,0 +1,83 @@
+namespace = giga_tradition
+
+#Electromagnetic Accelerators for settled empires
+country_event = {
+    id = giga_tradition.1
+    is_triggered_only = yes
+    hide_window = yes
+
+    trigger = {
+        has_tradition = tr_macroengineering_space_rails
+        is_nomadic = no
+    }
+
+    immediate = {
+        every_system_within_border = {
+            limit = {
+                any_system_planet = {
+                    exists = owner
+                    owner = {
+                        is_same_value = root
+                    }
+                    is_colony = yes
+                }
+                any_ship_in_system = {
+                    exists = owner
+                    owner = { is_same_value = root }
+                    is_ship_class = shipclass_mining_station
+                }
+            }
+            every_system_planet_colony = {
+                limit = {
+                    exists = owner
+                    owner = {
+                        is_same_value = root
+                    }
+                }
+                remove_modifier = giga_macroengineering_alloy
+                add_modifier = {
+                    modifier = giga_macroengineering_alloy
+                    multiplier = prev.value:mining_stations_value
+                    clear_on_owner_change = yes
+                }
+            }
+        }
+    }
+}
+
+#Electromagnetic Accelerators for nomadic empires
+#triggers upon on_entering_system_fleet
+fleet_event = {
+    id = giga_tradition.2
+    is_triggered_only = yes
+    hide_window = yes
+
+    trigger = {
+        owner? = {
+            has_tradition = tr_macroengineering_space_rails
+            is_nomadic = yes
+        }
+        is_arkship_fleet = yes
+    }
+
+    immediate = {
+        every_owned_ship = {
+            colony? = {
+                if = {
+                    limit = {
+                        check_variable_arithmetic = {
+                            which = solar_system.value:mining_stations_value_nomads
+                            value > 0
+                        }
+                    }
+                    remove_modifier = giga_macroengineering_alloy_nomad
+                    add_modifier = {
+                        modifier = giga_macroengineering_alloy_nomad
+                        multiplier = solar_system.value:mining_stations_value_nomads #counts all planets with mining deposits regardless of whether they have a station
+                        clear_on_owner_change = yes
+                    }
+                }
+            }
+        }
+    }
+}

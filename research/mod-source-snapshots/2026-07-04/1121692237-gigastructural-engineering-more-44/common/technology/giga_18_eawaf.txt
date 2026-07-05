@@ -1,0 +1,204 @@
+giga_tech_thaumaturgic_weaponry = {
+	cost = @tier4cost2
+	area = physics
+	tier = 4
+	category = { particles }
+	is_rare = yes
+	weight = 0
+
+	potential = {
+		has_country_flag = giga_faust_weaponry_possible
+	}
+}
+
+giga_tech_eawaf_psifusion = {
+	cost = @tier4cost3
+	area = society
+	tier = 4
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+
+	modifier = {
+		country_energy_produces_mult = 0.05
+	}
+}
+
+giga_tech_eawaf_sirens_secret = {
+	cost = @tier4cost3
+	area = society
+	tier = 4
+	category = { psionics }
+	is_rare = yes
+
+	weight = 0
+	potential = {
+		has_country_flag = giga_tech_eawaf_sirens_secret_possible
+	}
+}
+
+giga_tech_eawaf_disenchanter_1 = {
+	cost = @tier4cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = no
+	potential = {
+		has_country_flag = giga_tech_eawaf_disenchanter_1_possible
+	}
+	modifier = {
+		planet_biologists_produces_mult = 0.025
+		planet_biologists_upkeep_mult = 0.025
+	}
+}
+
+giga_tech_eawaf_disenchanter_2 = {
+	cost = @tier5cost2
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = no
+	potential = {
+		has_country_flag = giga_tech_eawaf_disenchanter_2_possible
+	}
+	modifier = {
+		planet_biologists_produces_mult = 0.025
+		planet_biologists_upkeep_mult = 0.025
+	}
+}
+
+giga_tech_eawaf_disenchanter_3 = {
+	cost = @giga_tier6cost1
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = no
+	potential = {
+		has_country_flag = giga_tech_eawaf_disenchanter_3_possible
+	}
+	modifier = {
+		planet_biologists_produces_mult = 0.025
+		planet_biologists_upkeep_mult = 0.025
+	}
+	prereqfor_desc = {
+		custom = { title = "giga_tech_eawaf_disenchanter_3_effects"	desc = "giga_tech_eawaf_disenchanter_3_effects" }
+	}
+}
+
+giga_tech_eawaf_disenchanter_4 = {
+	cost = @giga_tier6cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = no
+	potential = {
+		has_country_flag = giga_tech_eawaf_disenchanter_4_possible
+	}
+	modifier = {
+		planet_biologists_produces_mult = 0.025
+		planet_biologists_upkeep_mult = 0.025
+	}
+	prereqfor_desc = {
+		custom = { title = "allow_anti_sirens_shield"	desc = "anti_sirens_shield_DESC" }
+	}
+}
+
+#Components
+giga_tech_eawaf_sirens_strike_craft = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = yes
+	#potential = { has_country_flag = giga_tech_eawaf_sirens_strike_craft_possible }
+}
+
+giga_tech_eawaf_sirens_autocannon = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = yes
+	#potential = { has_country_flag = giga_tech_eawaf_sirens_autocannon_possible }
+}
+
+giga_tech_eawaf_sirens_artillery = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = yes
+	#potential = { has_country_flag = giga_tech_eawaf_sirens_artillery_possible }
+}
+
+giga_tech_eawaf_sirens_missile = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = yes
+	#potential = { has_country_flag = giga_tech_eawaf_sirens_missile_possible }
+}
+
+giga_tech_eawaf_sirens_impactor = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = yes
+	#potential = { has_country_flag = giga_tech_eawaf_sirens_impactor_possible }
+}
+
+giga_tech_eawaf_sirens_voidbeam = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	category = { psionics }
+	is_rare = yes
+	weight = 0
+	is_reverse_engineerable = yes
+	#potential = { has_country_flag = giga_tech_eawaf_sirens_voidbeam_possible }
+}
+
+#Repeatable for weapons
+giga_tech_eawaf_weapons_repeatable = {
+	cost = @repeatableTechBaseCost
+	cost_per_level = @repeatableTechLevelCost
+	area = society
+	tier = @repeatableTechTier
+	category = { psionics }
+	is_rare = yes
+
+	weight = @repeatableTechWeight
+	weight_modifier = {
+		factor = @repatableTechFactor
+	}
+
+	weight_groups = { repeatable }
+	mod_weight_if_group_picked = { repeatable = 0.01 }
+
+	levels = -1
+	potential = { has_country_flag = giga_tech_eawaf_weapons_repeatable_possible }
+
+	prereqfor_desc = {
+		custom = { title = "giga_tech_eawaf_weapons_repeatable_title"	desc = "giga_tech_eawaf_weapons_repeatable_desc" }
+	}
+}

@@ -1,0 +1,15 @@
+not = {
+	has_building = building_giga_matrioshka_brain_uplink_sanctuary
+}
+or = {
+	has_unity_designation = yes
+	and = {
+		pop_amount >= 8000
+		num_assigned_jobs = {
+			job = bio_trophy
+			value >= 2000
+		}
+	}
+}
+
+# eof

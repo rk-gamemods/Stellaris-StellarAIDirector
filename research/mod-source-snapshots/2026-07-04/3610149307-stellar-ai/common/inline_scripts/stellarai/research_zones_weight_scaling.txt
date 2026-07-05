@@ -1,0 +1,34 @@
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_research }
+  mode = add
+  mult = @zone_research_weight_per_zone
+}
+
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_research_unity }
+  mode = add
+  mult = @zone_research_weight_per_zone
+}
+
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_research_engineering }
+  mode = add
+  mult = @zone_research_weight_per_zone
+}
+
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_research_physics }
+  mode = add
+  mult = @zone_research_weight_per_zone
+}
+
+complex_trigger_modifier = {
+  trigger = num_zones
+  parameters = { type = zone_research_society }
+  mode = add
+  mult = @zone_research_weight_per_zone
+}

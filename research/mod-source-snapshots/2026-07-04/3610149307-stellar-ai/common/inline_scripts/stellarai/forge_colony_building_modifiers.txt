@@ -1,0 +1,20 @@
+complex_trigger_modifier = {
+  trigger = num_buildings
+  parameters = { type = building_foundry_1 }
+  mode = add
+  mult = @forge_building_weight_per_building 
+}
+
+complex_trigger_modifier = {
+  trigger = num_buildings
+  parameters = { type = building_foundry_2 }
+  mode = add
+  mult = @forge_building_weight_per_building 
+}
+
+complex_trigger_modifier = {
+  trigger = num_buildings
+  parameters = { type = building_foundry_3 }
+  mode = add
+  mult = @forge_building_weight_per_building 
+}

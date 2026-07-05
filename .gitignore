@@ -10,6 +10,8 @@ Desktop.ini
 .codex/
 tmp/
 temp/
+__pycache__/
+*.py[cod]
 
 # Stellaris/generated packaging outputs
 *.zip
@@ -23,4 +25,3 @@ exports/
 vanilla-dumps/
 local/
 *.local.*
-

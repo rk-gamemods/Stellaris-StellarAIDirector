@@ -1,0 +1,242 @@
+### Rework Notes
+#	Too many AP's without also increasing AP cap. AP Cap not a giga focus. Merge.
+#	Two sounds acceptable. We've got the original constructs, systemcraft ship, alderson disk, and galcore switch.
+#	Since all but original require giga_tech_tetradimensional_engineering anyway, easiest seems to be merge them all.
+###
+ap_gigastructural_constructs = {
+	ai_weight = { factor = 1000 }
+	on_enabled = {
+		custom_tooltip = "ap_gigastructural_constructs_add_research"
+		hidden_effect = {
+			if = { limit = { NOT = { has_technology = giga_tech_hrae_mc } }				add_research_option = giga_tech_hrae_mc }
+			if = { limit = { NOT = { has_technology = giga_tech_ringworld_behemoth } }	add_research_option = giga_tech_ringworld_behemoth }
+			if = { limit = { NOT = { has_technology = giga_tech_matrioshka_brain_1 } }	add_research_option = giga_tech_matrioshka_brain_1 }
+		}
+	}
+
+	modifier = {
+		country_megastructure_build_cap_add = 1
+	}
+
+	possible = {
+		custom_tooltip = { 
+			fail_text = "requires_built_or_repaired_gigastructure"	
+			or = {
+				has_country_flag = has_built_or_repaired_gigastructure 
+				and = {
+					is_ai = yes
+					or = {
+						num_ascension_perks > 6
+						any_country = {
+							is_ai = no
+							has_galactic_wonders = yes
+						}
+					}
+				}
+			}
+		}
+		custom_tooltip = { fail_text = "requires_ap_galactic_wonders"				has_galactic_wonders = yes }
+		custom_tooltip = { fail_text = "requires_ascension_perks_3"					num_ascension_perks > 2 }
+		custom_tooltip = { fail_text = "requires_mega_engineering"					has_technology = tech_mega_engineering }
+		custom_tooltip = { fail_text = "requires_sentient_ai"						has_technology = tech_self_aware_logic }
+		custom_tooltip = { fail_text = "requires_dark_matter"						has_technology = tech_mine_dark_matter }
+		custom_tooltip = { fail_text = "requires_titanic_ringworld"				has_technology = giga_tech_ringworld_titanic_1 }
+	}
+
+	potential = {
+		NOT = { has_ascension_perk = ap_gigastructural_constructs has_global_flag = giga_gigastructural_perk_disabled }
+		is_nomadic = no
+	}
+}
+
+ap_qso = {
+	ai_weight = { factor = 0 }
+	on_enabled = {
+		if = { limit = { NOT = { has_technology = giga_tech_quasi_stellar_1 } }			add_research_option = giga_tech_quasi_stellar_1 }
+		hidden_effect = { set_country_flag = can_spawn_quasar }
+	}
+
+	modifier = {
+		country_megastructure_build_cap_add = 1
+		megastructure_build_speed_mult = 0.20
+		country_resource_max_add = 25000
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_ap_gigastructural_constructs"	has_gigastructural_constructs = yes }
+		custom_tooltip = { fail_text = "requires_ndb"							has_technology = giga_tech_ndb_4 }
+		custom_tooltip = { fail_text = "requires_planetcraft"					has_technology = giga_tech_war_planet }
+		custom_tooltip = { fail_text = "requires_tetraengineering"				has_technology = giga_tech_tetradimensional_engineering }
+		custom_tooltip = {
+			fail_text = "requires_found_giga_black_hole_quasar"
+			OR = {
+				has_country_flag = found_qso_candidate
+				AND = {
+					any_system = { is_star_class = sc_birch }
+					NOT = { any_system = { is_star_class = sc_quasar } }
+					has_megastructure = ehof_megastructure_phase4
+					any_system_within_border = { cohesive_system = yes }
+				}
+			}
+		}
+	}
+
+	potential = {
+		NOR = {
+			has_ascension_perk = ap_qso
+			has_global_flag = giga_core_disabled
+			has_global_flag = quasistellar_disabled
+			AND = {
+				has_global_flag = giga_core_birch
+				has_global_flag = ehof_disabled
+			}
+			AND = {
+				has_global_flag = giga_core_inactive
+				has_global_flag = ehof_disabled
+			}
+		}
+		is_nomadic = no
+	}
+}
+
+ap_vast_expanses = {
+	ai_weight = { factor = 0 }
+	on_enabled = {
+		if = { limit = { NOT = { has_technology = giga_tech_birch_world_1 } }			add_research_option = giga_tech_birch_world_1 }
+		hidden_effect = { set_country_flag = can_spawn_smbh }
+	}
+
+	modifier = {
+		country_megastructure_build_cap_add = 1
+		megastructure_build_speed_mult = 0.20
+		country_resource_max_add = 25000
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_ap_gigastructural_constructs"	has_gigastructural_constructs = yes }
+		custom_tooltip = { fail_text = "requires_tetraengineering"				has_technology = giga_tech_tetradimensional_engineering }
+		custom_tooltip = { fail_text = "requires_titanic_ringworld"				has_technology = giga_tech_ringworld_titanic_1 }
+		#custom_tooltip = { fail_text = "requires_ap_master_builders"			has_ascension_perk = ap_master_builders }
+		custom_tooltip = {
+			fail_text = "requires_found_giga_black_hole"
+			OR = {
+				has_country_flag = found_birch_candidate
+				AND = {
+					any_system = { is_star_class = sc_quasar }
+					NOT = { any_system = { is_star_class = sc_birch } }
+					has_megastructure = ehof_megastructure_phase4
+					any_system_within_border = { cohesive_system = yes }
+				}
+			}
+		}
+	}
+
+	potential = {
+		NOR = {
+			has_ascension_perk = ap_vast_expanses
+			has_global_flag = giga_core_disabled
+			has_global_flag = birch_disabled
+			AND = {
+				has_global_flag = giga_core_qso
+				has_global_flag = ehof_disabled
+			}
+			AND = {
+				has_global_flag = giga_core_active
+				has_global_flag = ehof_disabled
+			}
+		}
+		is_nomadic = no
+	}
+}
+
+ap_celestial_printing = {
+	ai_weight = { factor = 0 }
+	on_enabled = {
+		custom_tooltip = "ap_celestial_printing_effects"
+		hidden_effect = {
+			# if = { limit = { NOT = { has_technology = giga_tech_planetary_matter_harvesting } }		add_research_option = giga_tech_planetary_matter_harvesting } Removed tech?
+			if = { limit = { NOT = { has_technology = giga_tech_lunar_assembly } }					add_research_option = giga_tech_lunar_assembly }
+			if = { limit = { NOT = { has_technology = giga_tech_war_system_1 } } 					add_research_option = giga_tech_war_system_1 }
+			if = {
+				limit = { has_global_flag = giga_bulk_matter_cost_disabled }
+				country_event = { id = giga_printer.1015 }
+			}
+		}
+	}
+
+	modifier = {
+		country_megastructure_build_cap_add = 1
+		megastructure_build_speed_mult = 0.20
+		country_resource_max_add = 25000
+		command_limit_mult = 0.3
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_ap_gigastructural_constructs"		has_gigastructural_constructs = yes }
+		custom_tooltip = { fail_text = "requires_ascension_perks_3"					num_ascension_perks > 2 }
+		custom_tooltip = { fail_text = "requires_war_planets"						has_technology = giga_tech_war_planet }
+		custom_tooltip = { fail_text = "requires_tetraengineering"					has_technology = giga_tech_tetradimensional_engineering }
+	}
+
+	potential = {
+		NOR = { 
+			has_ascension_perk = ap_celestial_printing
+			AND = {
+				has_global_flag = giga_celestial_printing_moon_disabled
+				has_global_flag = giga_celestial_printing_planet_disabled
+				has_global_flag = systemcraft_disabled
+			} 
+		}
+		is_nomadic = no
+	}
+}
+
+ap_supermassive_ehof = {
+	ai_weight = { factor = 0 }
+	on_enabled = {
+		if = { limit = { NOT = { has_technology = giga_tech_supermassive_ehof } }	add_research_option = giga_tech_supermassive_ehof }
+		hidden_effect = { set_country_flag = can_spawn_smbh }
+	}
+
+	modifier = {
+		country_megastructure_build_cap_add = 1
+		megastructure_build_speed_mult = 0.20
+		country_resource_max_add = 25000
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_ap_gigastructural_constructs"	has_gigastructural_constructs = yes }
+		custom_tooltip = { fail_text = "requires_tetraengineering"				has_technology = giga_tech_tetradimensional_engineering }
+		custom_tooltip = { fail_text = "requires_ehof_phase_04"					has_technology = tech_ehof_phase_04 }
+		#custom_tooltip = { fail_text = "requires_ap_master_builders"			has_ascension_perk = ap_master_builders }
+		custom_tooltip = {
+			fail_text = "requires_found_giga_black_hole"
+			OR = {
+				has_country_flag = found_birch_candidate
+				AND = {
+					any_system = { is_star_class = sc_quasar }
+					NOT = { any_system = { is_star_class = sc_birch } }
+					has_megastructure = ehof_megastructure_phase4
+					any_system_within_border = { cohesive_system = yes }
+				}
+			}
+		}
+	}
+
+	potential = {
+		NOR = {
+			has_ascension_perk = ap_supermassive_ehof
+			has_global_flag = giga_core_disabled
+			has_global_flag = supermassive_ehof_disabled
+			AND = {
+				has_global_flag = giga_core_qso
+				has_global_flag = ehof_disabled
+			}
+			AND = {
+				has_global_flag = giga_core_active
+				has_global_flag = ehof_disabled
+			}
+		}
+		is_nomadic = no
+	}
+}

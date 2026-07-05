@@ -1,0 +1,36 @@
+giga_ezic_hunter = {
+	swappable_data = {
+		default = {
+			building_icon = building_hive_primitive_farm
+		}
+	}
+	category = worker
+	is_capped_by_modifier = no
+
+	possible_pre_triggers = {
+		has_owner = yes
+	}
+
+	possible = {
+		owner = { 
+			has_country_flag = ezic_age 
+		}
+	}
+
+	planet_modifier = {
+		planet_amenities_add = 200
+		job_giga_ezic_hunter_add = 100
+	}
+
+	resources = {
+		category = planet_farmers
+		produces = {
+			food = 2
+			unity = 2
+		}
+	}
+
+	weight = {
+		weight = 999
+	}
+}

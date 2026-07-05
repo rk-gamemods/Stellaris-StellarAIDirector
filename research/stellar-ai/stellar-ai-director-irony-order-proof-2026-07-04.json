@@ -1,0 +1,21 @@
+{
+  "before_snapshot": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\research\\stellar-ai\\irony-selected-collection-before-director-20260705T002858Z.json",
+  "collection_name": "4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity",
+  "dependency_status_counts": {
+    "ok": 6
+  },
+  "director_position": 117,
+  "errors": [],
+  "latest_dependency_position": 116,
+  "mod_count_after": 117,
+  "mod_count_before": 116,
+  "order_check": {
+    "actual_mod_count": 117,
+    "director_count": 1,
+    "director_position": 117,
+    "existing_mod_order_preserved": true,
+    "expected_mod_count": 117,
+    "status": "ok"
+  },
+  "status": "ok"
+}

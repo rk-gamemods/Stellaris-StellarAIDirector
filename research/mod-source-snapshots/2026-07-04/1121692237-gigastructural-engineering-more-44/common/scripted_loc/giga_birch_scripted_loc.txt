@@ -1,0 +1,347 @@
+defined_text = {
+	name = BirchNegativeMass
+
+	text = {
+		trigger = {
+			not = { has_global_flag = ehof_disabled }
+		}
+		localization_key = giga_r_negative_mass
+	}
+
+	default = frameworld_blank
+}
+
+defined_text = {
+	name = BirchSentientMetal
+
+	text = {
+		trigger = {
+			not = { has_global_flag = ehof_disabled }
+		}
+		localization_key = giga_r_sentient_metal
+	}
+
+	default = frameworld_blank
+}
+
+defined_text = {
+	name = BirchSupertensiles
+
+	text = {
+		trigger = {
+			has_global_flag = @giga_amb_flag
+		}
+		localization_key = giga_r_supertensiles
+	}
+
+	default = frameworld_blank
+}
+
+defined_text = {
+	name = BirchCGs
+
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			exists = owner
+			owner = {
+				country_uses_consumer_goods = yes
+			}
+		}
+		localization_key = giga_r_cgs
+	}
+
+	default = frameworld_blank
+}
+
+defined_text = {
+	name = GetGigaBirchInsulae
+	value = value:giga_birch_district_display|type|insula|
+}
+defined_text = {
+	name = GetGigaBirchInsulaeFree
+	value = value:giga_birch_district_display_free|type|insula|
+}
+defined_text = {
+	name = GetGigaBirchFinalInsulae
+	value = value:giga_birch_insula_final
+}
+defined_text = {
+	name = GetGigaBirchMaxInsulae
+	value = value:giga_birch_insula_max
+}
+defined_text = {
+	name = GetGigaBirchMaxInsulaeBase
+	value = modifier:giga_birch_district_insula_base
+}
+defined_text = {
+	name = GetGigaBirchMinInsulaeModifier
+	value = modifier:giga_birch_district_insula_min
+}
+defined_text = {
+	name = GetGigaBirchInsulaeFromPopsValue
+	value = value:giga_per_pop_modifier|modifier|giga_birch_district_insula_per_pop|
+}
+defined_text = {
+	name = GetGigaBirchNextInsulaFromPopsValue
+	value = value:giga_birch_insula_from_pops_next
+}
+defined_text = {
+	name = GetGigaBirchMinInsulaePart1
+
+	text = {
+		trigger = {
+			check_modifier_value = {
+				modifier = giga_birch_district_insula_min
+				value > 0
+			}
+		}
+		localization_key = district_giga_birch_structure_info_tooltip_max_title
+	}
+
+	default = EMPTY_STRING
+}
+defined_text = {
+	name = GetGigaBirchMinInsulaePart2
+
+	text = {
+		trigger = {
+			check_modifier_value = {
+				modifier = giga_birch_district_insula_min
+				value > 0
+			}
+		}
+		localization_key = district_giga_birch_structure_info_tooltip_min
+	}
+
+	default = EMPTY_STRING
+}
+defined_text = {
+	name = GetGigaBirchInsulaeFromPops
+
+	text = {
+		trigger = {
+			check_modifier_value = {
+				modifier = giga_birch_district_insula_per_pop
+				value > 0
+			}
+		}
+		localization_key = district_giga_birch_structure_info_tooltip_per_pops
+	}
+
+	default = EMPTY_STRING
+}
+defined_text = {
+	name = GetGigaBirchNextInsulaFromPops
+
+	text = {
+		trigger = {
+			check_modifier_value = {
+				modifier = giga_birch_district_insula_per_pop
+				value > 0
+			}
+		}
+		localization_key = district_giga_birch_structure_info_tooltip_per_pops_next
+	}
+
+	default = EMPTY_STRING
+}
+
+
+defined_text = {
+	name = GetGigaBirchOryktaSectors
+	value = value:giga_birch_district_display|type|orykta|
+}
+defined_text = {
+	name = GetGigaBirchOryktaSectorsFree
+	value = value:giga_birch_district_display_free|type|orykta|
+}
+defined_text = {
+	name = GetGigaBirchMaxOryktaSectors
+	value = modifier:giga_birch_district_orykta_max
+}
+defined_text = {
+	name = GetGigaBirchKtismaSectors
+	value = value:giga_birch_district_display|type|ktisma|
+}
+defined_text = {
+	name = GetGigaBirchKtismaSectorsFree
+	value = value:giga_birch_district_display_free|type|ktisma|
+}
+defined_text = {
+	name = GetGigaBirchMaxKtismaSectors
+	value = modifier:giga_birch_district_ktisma_max
+}
+defined_text = {
+	name = GetGigaBirchPhysmaSectors
+	value = value:giga_birch_district_display|type|physma|
+}
+defined_text = {
+	name = GetGigaBirchPhysmaSectorsFree
+	value = value:giga_birch_district_display_free|type|physma|
+}
+defined_text = {
+	name = GetGigaBirchMaxPhysmaSectors
+	value = modifier:giga_birch_district_physma_max
+}
+
+###############################################
+# Origin
+
+defined_text = {
+	name = giga_birch_2005_part1
+
+	text = {
+		trigger = {
+			is_democracy = yes
+		}
+		localization_key = giga_birch.2005.desc.1.democracy
+	}
+
+	text = {
+		trigger = {
+			is_oligarchy = yes
+		}
+		localization_key = giga_birch.2005.desc.1.oligarchy
+	}
+
+	text = {
+		trigger = {
+			is_autocracy = yes
+		}
+		localization_key = giga_birch.2005.desc.1.autocracy
+	}
+
+	default = giga_birch.2005.desc.1
+}
+
+defined_text = {
+	name = giga_birch_2005_part2
+
+	text = {
+		trigger = {
+			is_militarist = yes
+		}
+		localization_key = giga_birch.2005.desc.2.militarist
+	}
+	text = {
+		trigger = {
+			is_spiritualist = yes
+		}
+		localization_key = giga_birch.2005.desc.2.spiritualist
+	}
+
+	default = giga_birch.2005.desc.2
+}
+
+defined_text = {
+	name = giga_birch_2005_part3
+
+	text = {
+		trigger = {
+			is_hive_empire = yes
+		}
+		localization_key = giga_birch.2005.desc.3.hive
+	}
+	text = {
+		trigger = {
+			is_machine_empire = yes
+			not = { has_civic = civic_machine_assimilator }
+		}
+		localization_key = giga_birch.2005.desc.3.machine
+	}
+	text = {
+		trigger = {
+			is_machine_empire = yes
+			has_civic = civic_machine_assimilator
+		}
+		localization_key = giga_birch.2005.desc.3.assimilator
+	}
+
+	default = giga_birch.2005.desc.3
+}
+
+defined_text = {
+	name = GigaGetExplorer
+	text = {
+		trigger = {
+			owner = { is_gestalt = no }
+		}
+		localization_key = giga_explorer_1
+	}
+	text = {
+		trigger = {
+			owner = { is_machine_empire = yes }
+		}
+		localization_key = giga_explorer_2
+	}
+	text = {
+		trigger = {
+			owner = { is_hive_empire = yes }
+		}
+		localization_key = giga_explorer_3
+	}
+}
+
+defined_text = {
+	name = GigaGetExplorerPlural
+	text = {
+		trigger = {
+			owner = { is_gestalt = no }
+		}
+		localization_key = giga_explorers_1
+	}
+	text = {
+		trigger = {
+			owner = { is_machine_empire = yes }
+		}
+		localization_key = giga_explorers_2
+	}
+	text = {
+		trigger = {
+			owner = { is_hive_empire = yes }
+		}
+		localization_key = giga_explorers_3
+	}
+}
+
+defined_text = {
+	name = GigaGetBirchManagerFarmPlural
+	text = {
+		trigger = {
+			farmer_is_angler_trigger = yes
+		}
+		localization_key = job_giga_birch_physma_manager_farm_angler_plural
+	}
+	default = job_giga_birch_physma_manager_farm_plural
+}
+defined_text = {
+	name = GigaGetBirchManagerFarmEffect
+	text = {
+		trigger = {
+			farmer_is_angler_trigger = yes
+		}
+		localization_key = job_giga_birch_physma_manager_farm_angler_effect_desc
+	}
+	default = job_giga_birch_physma_manager_farm_effect_desc
+}
+defined_text = {
+	name = GigaGetBirchManagerAdministrationPlural
+	text = {
+		trigger = {
+			bureaucrat_is_spiritualist = yes
+		}
+		localization_key = job_giga_birch_physma_manager_administration_priest_plural
+	}
+	default = job_giga_birch_physma_manager_administration_plural
+}
+defined_text = {
+	name = GigaGetBirchManagerAdministrationEffect
+	text = {
+		trigger = {
+			bureaucrat_is_spiritualist = yes
+		}
+		localization_key = job_giga_birch_physma_manager_administration_priest_effect_desc
+	}
+	default = job_giga_birch_physma_manager_administration_effect_desc
+}

@@ -1,0 +1,218 @@
+# Rebased on Stellaris 4.4.3 (Pegasus).
+
+building_mote_harvesters = {
+	base_buildtime = @b1_time
+	icon = building_mote_harvesting_traps
+	planet_limit = 1
+
+	category = resource
+
+	building_sets = {
+		generator
+	}
+
+	potential = {
+		owner = {
+			is_wilderness_empire = no
+			is_nomadic = no
+		}
+		has_volatile_motes_deposit = yes
+	}
+
+	prerequisites = {
+		"tech_mine_volatile_motes"
+	}
+
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
+	planet_modifier = {
+		planet_technician_volatile_motes_produces_add = 0.15
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = exotic_gases
+			COST = 200
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	ai_weight = {
+		factor = @strategic_resource_building_mine_tier1_factor
+		inline_script = {
+			script = stellarai/rare_resource_producer_recovery_modifiers
+			STRATEGIC_RESOURCE = volatile_motes
+		}
+	}
+}
+
+building_gas_extractors = {
+	base_buildtime = @b1_time
+	icon = building_gas_extractors
+	planet_limit = 1
+
+	category = resource
+
+	building_sets = {
+		farming
+	}
+
+	potential = {
+		owner = {
+			is_wilderness_empire = no
+			is_nomadic = no
+		}
+		has_exotic_gases_deposit = yes
+	}
+
+	prerequisites = {
+		"tech_mine_exotic_gases"
+	}
+
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
+	planet_modifier = {
+		planet_farmers_exotic_gases_produces_add = 0.15
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = 200
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	ai_weight = {
+		factor = @strategic_resource_building_mine_tier1_factor
+		inline_script = {
+			script = stellarai/rare_resource_producer_recovery_modifiers
+			STRATEGIC_RESOURCE = exotic_gases
+		}
+	}
+}
+
+building_crystal_mines = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+
+	category = resource
+
+	building_sets = {
+		mining
+	}
+
+	potential = {
+		owner = {
+			is_wilderness_empire = no
+			is_nomadic = no
+		}
+		has_rare_crystals_deposit = yes
+	}
+
+	prerequisites = {
+		"tech_mine_rare_crystals"
+	}
+
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
+	planet_modifier = {
+		planet_miners_rare_crystals_produces_add = 0.15
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = volatile_motes
+			COST = 200
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	ai_weight = {
+		factor = @strategic_resource_building_mine_tier1_factor
+		inline_script = {
+			script = stellarai/rare_resource_producer_recovery_modifiers
+			STRATEGIC_RESOURCE = rare_crystals
+		}
+	}
+}
+
+building_betharian_power_plant = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+
+	category = resource
+
+	building_sets = {
+		betharian
+	}
+
+	potential = {
+		NOT = { has_modifier = resort_colony }
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = 200
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		cost = {
+			trigger = {
+				owner = { is_wilderness_empire = yes }
+			}
+			biomass = @b2_biomass
+		}
+		produces = {
+			energy = 10
+		}
+	}
+
+	inline_script = {
+		script = buildings/on_all_wilderness_buildings_districts
+	}
+
+	planet_modifier = {
+		planet_miners_energy_produces_add = 2
+	}
+
+	inline_script = {
+		script = jobs/miners_add
+		AMOUNT = 400
+	}
+
+	prerequisites = {
+		"tech_mine_betharian"
+	}
+
+	ai_weight = {
+		factor = @strategic_resource_building_mine_tier2_factor
+	}
+}

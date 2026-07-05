@@ -1,0 +1,401 @@
+giga_birch_district_max = {
+	weight = modifier:giga_birch_district_$category$_max
+
+	subtract = value:giga_var|var|giga_birch_district_$category$_built|
+	add = value:giga_var|var|giga_birch_district_$category$_$type$_queued|
+	
+	complex_trigger_modifier = {
+		trigger = num_districts
+		parameters = {
+			type = district_giga_birch_$type$
+		}
+		mode = add
+	}
+
+	min = 0
+}
+
+giga_birch_district_available = {
+	weight = modifier:giga_birch_district_$category$_max
+	subtract = value:giga_var|var|giga_birch_district_$category$_built|
+
+	min = 0
+}
+
+giga_birch_total_district_slots = {
+	base = 0
+	
+	min = value:giga_birch_district_available|category|insula|
+	min = value:giga_birch_district_available|category|orykta|
+	min = value:giga_birch_district_available|category|ktisma|
+	min = value:giga_birch_district_available|category|physma|
+
+	add = value:giga_var|var|giga_birch_queued_districts|
+
+	complex_trigger_modifier = {
+		trigger = num_districts
+		parameters = { type = any }
+		mode = add
+	}
+}
+
+# the final max number of insula slots
+giga_birch_insula_final = {
+	weight = value:giga_birch_insula_max
+	min = modifier:giga_birch_district_insula_min
+}
+giga_birch_insula_max = {
+	weight = modifier:giga_birch_district_insula_base
+	add = value:giga_birch_insulae_from_pops
+}
+# filled insula slots
+giga_birch_district_display = {
+	weight = value:giga_var|var|giga_birch_district_$type$_built|
+}
+# free insula slots
+giga_birch_district_display_free = {
+	weight = modifier:giga_birch_district_$type$_max
+	subtract = value:giga_var|var|giga_birch_district_$type$_built|
+}
+# number of insulae we get from pops
+giga_birch_insulae_from_pops = {
+	weight = value:giga_per_pop_modifier|modifier|giga_birch_district_insula_per_pop|
+}
+# pop value at which the next insula will be given, accounting for minimum
+giga_birch_insula_from_pops_next = {
+	weight = modifier:giga_birch_district_insula_base
+	add = value:giga_birch_insulae_from_pops
+	min = modifier:giga_birch_district_insula_min
+	subtract = modifier:giga_birch_district_insula_base
+	add = 1
+	modifier = {
+		check_modifier_value = {
+			modifier = giga_birch_district_insula_per_pop
+			value > 0
+		}
+		divide = modifier:giga_birch_district_insula_per_pop
+	}
+}
+
+giga_birch_insulae_fully_built = {
+	base = 0
+	add = value:count_districts|TYPE|giga_birch_orykta|
+	add = value:count_districts|TYPE|giga_birch_ktisma|
+	add = value:count_districts|TYPE|giga_birch_physma|
+}
+
+# sector type counts for spacing districts
+giga_birch_orykta_sector_count = {
+	[[WHO]]
+	base = 3 # energy, minerals, and refinery have no special conditions
+	modifier = {
+		show_district_giga_birch_orykta_dark_matter = { WHO = $WHO$ }
+		add = 1
+	}
+	modifier = {
+		show_district_giga_birch_orykta_negative_mass = { WHO = $WHO$ }
+		add = 1
+	}
+}
+giga_birch_ktisma_sector_count = {
+	[[WHO]]
+	base = 2 # foundry and trade have no special conditions
+	modifier = {
+		show_district_giga_birch_ktisma_factory = { WHO = $WHO$ }
+		add = 1
+	}
+	modifier = {
+		show_district_giga_birch_ktisma_supertensiles = { WHO = $WHO$ }
+		add = 1
+	}
+	modifier = {
+		show_district_giga_birch_ktisma_sentient_metal = { WHO = $WHO$ }
+		add = 1
+	}
+}
+giga_birch_physma_sector_count = {
+	[[WHO]]
+	base = 4 # no special conditions at all!
+}
+
+giga_birch_sector_rows = {
+	weight = value:giga_birch_$TYPE$_sector_count|WHO|$WHO$|
+	divide = 3 # district list width
+	ceiling = yes
+}
+
+giga_birch_sector_padding_inner = {
+	weight = value:giga_birch_$TYPE$_sector_count|WHO|$WHO$|
+	modulo = 3 # district list width
+}
+giga_birch_sector_padding = {
+	base = 3
+	subtract = value:giga_birch_sector_padding_inner|TYPE|$TYPE$|WHO|$WHO$|
+	modulo = 3
+}
+
+giga_birch_bio_trophy_jobs = {
+	base = 0
+
+	complex_trigger_modifier = {
+		trigger = num_assigned_jobs
+		parameters = {
+			job = bio_trophy
+		}
+		mode = weight
+	}
+
+	complex_trigger_modifier = {
+		trigger = count_owned_pop_amount
+		parameters = {
+			limit = {
+				is_unemployed = yes
+				can_work_specific_job = bio_trophy
+			}
+		}
+		mode = add
+	}
+
+	min = 0
+}
+
+giga_birch_expedition_3_progress = {
+	weight = trigger:situation_progress
+	multiply = 0.15
+	min = 0
+}
+
+########################################################################################
+# restoration district counts
+
+# orkyta
+giga_birch_restoration_orykta_generator = {
+	base = 0
+
+	add = birch_districts_generator # 2 jobs per, lol
+	add = birch_districts_generator
+
+	modifier = {
+		has_planet_flag = birch_expedition_1_technicians
+		add = 5
+	}
+
+	modifier = {
+		has_planet_flag = birch_expedition_9_energy
+		add = 10
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_orykta_mining = {
+	base = 0
+
+	add = birch_districts_mining
+	add = birch_districts_mining
+
+	modifier = {
+		has_planet_flag = birch_expedition_1_miners
+		add = 5
+	}
+
+	modifier = {
+		has_planet_flag = birch_expedition_9_minerals
+		add = 10
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_orykta_dark_matter = {
+	base = 0
+
+	modifier = {
+		has_planet_flag = birch_expedition_9_dark_matter
+		add = 5
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_orykta_negative_mass = {
+	base = 0
+
+	divide = 7
+	ceiling = yes
+}
+
+# ktisma
+giga_birch_restoration_ktisma_factory = {
+	base = 0
+
+	modifier = {
+		owner = { is_gestalt = no }
+		add = birch_districts_industrial
+	}
+
+	modifier = {
+		has_planet_flag = birch_expedition_1_factory
+		add = 4
+	}
+
+	modifier = {
+		has_planet_flag = birch_expedition_4_goods
+		add = 8
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_ktisma_foundry = {
+	base = 0
+
+	add = birch_districts_industrial
+	modifier = {
+		owner = { is_gestalt = yes }
+		add = birch_districts_industrial
+	}
+
+	modifier = {
+		has_planet_flag = birch_expedition_4_alloys
+		add = 8
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_ktisma_refinery = {
+	base = 0
+
+	add = 1 # might as well always have 1 of these, they're handy
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_ktisma_sentient_metal = {
+	base = 0
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_ktisma_supertensiles = {
+	base = 0
+
+	modifier = {
+		has_planet_flag = birch_expedition_4_supertensiles
+		add = 8
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+# physma
+giga_birch_restoration_physma_unity = {
+	# bureaucratic, temple, relay - sanctuary has its own
+	base = 0
+
+	modifier = {
+		has_planet_flag = birch_expedition_2_exterminate
+		add = value:giga_var|var|birch_districts_research|mult|0.75|
+	}
+	modifier = {
+		has_planet_flag = birch_expedition_2_trade
+		add = value:giga_var|var|birch_districts_research|mult|0.75|
+	}
+	modifier = {
+		has_planet_flag = birch_expedition_7_unity
+		add = value:giga_var|var|birch_districts_research|mult|0.75|
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_physma_sanctuary = {
+	base = 0
+
+	modifier = {
+		has_planet_flag = birch_expedition_2_sanctuary
+		add = 50
+	}
+
+	divide = 30
+	ceiling = yes
+}
+
+giga_birch_restoration_physma_laboratory = {
+	base = 0
+
+	add = birch_districts_research
+	add = birch_districts_research
+
+	modifier = {
+		has_planet_flag = birch_expedition_2_exterminate
+		add = birch_districts_research
+	}
+	modifier = {
+		has_planet_flag = birch_expedition_2_trade
+		add = value:giga_var|var|birch_districts_research|mult|0.5|
+	}
+	modifier = {
+		has_planet_flag = birch_expedition_3_engineering
+		add = value:giga_var|var|birch_districts_research|mult|0.25|
+	}
+	modifier = {
+		has_planet_flag = birch_expedition_3_physics
+		add = value:giga_var|var|birch_districts_research|mult|0.25|
+	}
+	modifier = {
+		has_planet_flag = birch_expedition_7_science
+		add = value:giga_var|var|birch_districts_research|mult|0.5|
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_physma_farming = {
+	base = 0
+
+	add = birch_districts_farming
+	add = birch_districts_farming
+
+	modifier = {
+		has_planet_flag = birch_expedition_1_farmers
+		add = 5
+	}
+
+	divide = 7
+	ceiling = yes
+}
+
+giga_birch_restoration_physma_trade = {
+	base = 0
+
+	modifier = {
+		owner = { is_gestalt = no }
+		has_planet_flag = birch_expedition_2_trade
+		add = 2
+	}
+	modifier = {
+		owner = { is_gestalt = no }
+		has_planet_flag = birch_expedition_7_trade
+		add = value:giga_var|var|birch_districts_research|mult|0.5|
+	}
+	modifier = {
+		owner = { is_gestalt = no }
+		add = birch_districts_city
+	}
+
+	divide = 7
+	ceiling = yes
+}
+

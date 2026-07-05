@@ -1,0 +1,1157 @@
+matter_synthesizer = {
+	category = worker
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_storm_attraction_center
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	possible = {
+		hidden_trigger = { exists = owner }
+		owner = {
+			is_gestalt = no
+			is_fallen_empire_spiritualist = no
+		}
+	}
+
+	possible_precalc = can_fill_worker_job
+
+	resources = {
+		category = planet_miners
+		produces = { minerals = 4 }
+		upkeep = {
+			energy = 2 
+		}
+
+		produces = {
+			trigger = {
+				planet = {
+					has_planet_flag = has_material_requisitorium
+				}
+			}
+			minerals = @requisitorium_minerals_reduction
+		}
+	}
+
+	overlord_resources = {
+		category = planet_requisitioned_minerals
+		produces = {
+			trigger = {
+				planet = {
+					has_planet_flag = has_material_requisitorium
+				}
+			}
+			minerals = @requisitorium_minerals_overlord
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_worker_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+
+	inline_script = jobs/automodding_priority_minerals
+}
+matter_synthesizer_drone = {
+	category = simple_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_storm_attraction_center
+		}
+	}
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_miners
+		produces = {	minerals = 4 }
+		upkeep = {
+			energy = 2 
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_mineral_purification_plant }
+			}
+			minerals = 1
+		}
+		produces = {
+			trigger = {
+				planet = { has_active_building = building_mineral_purification_hub }
+			}
+			minerals = 2
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_simple_drone_weight
+		EXTRA_WEIGHT_MOD = ""
+	}
+
+	inline_script = jobs/automodding_priority_minerals
+}
+
+compound_purge = {
+	swappable_data = {
+		default = {
+			icon = purge
+		}
+	}
+	category = compound_purge
+	purge = purge_normal
+	is_capped_by_modifier = no
+	weight = { weight = 999999 }
+
+	possible = {
+		exists = planet
+		planet = {
+			exists = controller
+			controller = { is_country_type = compound_empire }
+		}
+	}
+}
+
+purge_psionic_sublimation = {
+	category = purge
+	purge = purge_normal
+	swappable_data = {
+		default = {
+			building_icon = building_giga_shroud_conduit
+		}
+	}
+	is_capped_by_modifier = no
+	ignores_sapience = yes
+	weight = { weight = 999999 }
+
+	possible_pre_triggers = {
+		is_being_purged = yes
+	}
+
+	possible = {
+		has_purge_type = { type = purge_normal }
+		has_citizenship_type = { type = citizenship_purge country = planet.owner }
+		exists = planet
+		exists = planet.controller
+		planet.controller = {
+			ehof_default_country = yes
+			has_technology = giga_tech_psychic_beacon
+			OR = {
+				has_megastructure = psychic_beacon_3
+				has_megastructure = psychic_beacon_4
+			}
+		}
+	}
+}
+
+giga_shroud_conduit_worker = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_giga_shroud_conduit
+		}
+		swap_type = {
+			trigger = {
+				owner? = { giga_country_uses_priests = yes }
+			}
+			name = giga_shroud_conduit_priest
+			desc = giga_shroud_conduit_priest_desc
+			building_icon = building_giga_shroud_conduit
+			icon = giga_shroud_conduit_priest
+			condition_string = SPECIALIST_JOB_TRIGGER
+			weight = 100
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+		complex_specialist_job_check_trigger = yes
+		has_psionic_species_trait = yes
+	}
+
+	inline_script = {
+		script = jobs/giga_shroud_conduit_job_resources_effects
+		category = planet_bureaucrats
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { giga_country_uses_priests = yes }
+		}
+		planet_amenities_add = 200
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_valid_civic = civic_byzantine_bureaucracy }
+		}
+		modifier = {
+			planet_stability_add = 1
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			planet = {
+				has_active_building = building_league_offices
+			}
+		}
+		planet_amenities_add = 100
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	triggered_country_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_valid_civic = civic_efficient_bureaucracy }
+		}
+		country_edict_fund_add = 2
+		mult = value:job_total_output_modifier|JOB|bureaucrat|RESOURCE|unity|
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+
+	inline_script = jobs/automodding_priority_unity
+}
+#maybe this is necessary for job swaps idk but it's left here for now
+giga_shroud_conduit_priest = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_giga_shroud_conduit
+		}
+	}
+
+	possible = {
+		always = no
+	}
+}
+giga_shroud_conduit_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			icon = giga_shroud_conduit_worker
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_giga_shroud_conduit
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = {
+		can_think = yes
+		has_psionic_species_trait = yes
+	}
+
+	inline_script = {
+		script = jobs/giga_shroud_conduit_job_resources_effects
+		category = planet_administrators
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			planet = {
+				or = {
+					has_modifier = planet_artifact_relays_hivemind
+					has_modifier = planet_artifact_relays_machine
+				}
+			}
+		}
+		modifier = {
+			planet_stability_add = 2
+			pop_cat_simple_drone_bonus_workforce_mult = 0.01
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			planet = {
+				has_active_building = building_league_offices
+			}
+		}
+		planet_amenities_no_happiness_add = 100
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_synchronicity_instinctive_synchronization }
+		}
+		planet_amenities_no_happiness_add = 200
+		mult = value:scripted_modifier_mult|MODIFIER|pop_job_amenities_mult|
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+
+	inline_script = jobs/automodding_priority_unity
+}
+
+####################################################################
+# SPECIAL RESOURCES
+####################################################################
+ehof_cultivator = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_ehof_sm_forge_1
+		}
+	}
+
+	possible_precalc = can_fill_specialist_job
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	resources = {
+		category = planet_cultivators
+		produces = { 
+			giga_sr_sentient_metal = 4
+		}
+		upkeep = { 
+			alloys = 4 
+			energy = 4 
+		}
+	}
+
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "
+			modifier = {
+				factor = 1.2
+				is_enslaved = yes
+				has_slavery_type = { type = slavery_indentured }
+			}
+		"
+	}
+}
+ehof_cultivation_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_ehof_sm_forge_1
+			icon = ehof_cultivator
+		}
+		swap_type = {
+			trigger = {
+				owner? = { is_wilderness_empire = yes }
+			}
+			name = ehof_cultivation_drone_wilderness
+			desc = ehof_cultivation_drone_wilderness_desc
+			building_icon = building_ehof_sm_forge_1
+			icon = ehof_cultivator
+			condition_string = DRONE_JOB_TRIGGER
+			weight = 100
+		}
+	}
+	
+	possible_precalc = can_fill_drone_job
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	resources = {
+		category = planet_cultivators
+		produces = { 
+			giga_sr_sentient_metal = 4
+		}
+		upkeep = { 
+			alloys = 4 
+			energy = 4 
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+ehof_energy_converter = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_negative_mass_factory_1
+		}
+	}
+	possible_precalc = can_fill_specialist_job
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	resources = {
+		category = planet_energy_converters
+		produces = { 
+			giga_sr_negative_mass = 1
+		}
+		upkeep = { 
+			energy = 8
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "
+			modifier = {
+				factor = 1.2
+				is_enslaved = yes
+				has_slavery_type = { type = slavery_indentured }
+			}
+		"
+	}
+}
+ehof_energy_converter_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_negative_mass_factory_1
+			icon = ehof_energy_converter
+		}
+		swap_type = {
+			trigger = {
+				owner? = { is_wilderness_empire = yes }
+			}
+			name = ehof_energy_converter_drone_wilderness
+			desc = ehof_energy_converter_drone_wilderness_desc
+			building_icon = building_negative_mass_factory_1
+			icon = ehof_energy_converter
+			condition_string = DRONE_JOB_TRIGGER
+			weight = 100
+		}
+	}
+	possible_precalc = can_fill_drone_job
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+	}
+
+	resources = {
+		category = planet_energy_converters
+		produces = { 
+			giga_sr_negative_mass = 1
+		}
+		upkeep = { 
+			energy = 8 
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_iodizium_miner = {
+	category = worker
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_giga_iodizium_mines
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_worker_job
+	possible = {
+		hidden_trigger = { exists = owner }
+		owner = { is_gestalt = no }
+	}
+
+	resources = {
+		category = planet_sr_miners
+		produces = {
+			giga_sr_iodizium = 1
+		}
+		upkeep = {
+			consumer_goods = 2
+		}
+	}
+
+	# different weight not using scripts
+	weight = {
+		base = @specialist_job_weight
+		modifier = {
+			factor = 10
+			is_enslaved = yes
+			can_take_servant_job = no
+			NOT = { has_slavery_type = { type = slavery_indentured } }
+		}
+		modifier = {
+			factor = 3
+			OR = {
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { has_technology = tech_droid_workers }
+		}
+		modifier = {
+			factor = 200
+			OR = {
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { NOT = { has_technology = tech_droid_workers } }
+		}
+		modifier = {
+			factor = 0.25
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 5
+			has_trait = trait_cyborg_creed_of_labor
+		}
+	}
+}
+giga_iodizium_mining_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_giga_iodizium_mines
+			icon = giga_iodizium_miner
+		}
+		swap_type = {
+			trigger = {
+				owner? = { is_wilderness_empire = yes }
+			}
+			name = giga_iodizium_mining_drone_wilderness
+			desc = giga_iodizium_mining_drone_wilderness_desc
+			building_icon = building_giga_iodizium_mines
+			icon = giga_iodizium_miner
+			condition_string = DRONE_JOB_TRIGGER
+			weight = 100
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	resources = {
+		category = planet_sr_miners
+		produces = {
+			giga_sr_iodizium = 1
+		}
+		upkeep = {
+			energy = 4
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+####################################################################
+# PLANET UNIQUE
+####################################################################
+giga_elysium_controller = {
+	category = ruler
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_palace
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+			consumer_goods = 2
+		}
+	}
+
+	planet_modifier = {
+		giga_elysium_host_stability_add = 3
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_origin = origin_elysium
+			}
+		}
+		giga_elysium_host_jobs_produces_mult = 0.05
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = 3"
+	}
+}
+giga_elysium_controller_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_palace
+			icon = giga_elysium_controller
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { can_think = yes }
+
+	resources = {
+		category = planet_jobs
+		upkeep = {
+			energy = 4
+		}
+	}
+
+	planet_modifier = {
+		giga_elysium_host_stability_add = 3
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_origin = origin_elysium
+			}
+		}
+		giga_elysium_host_jobs_produces_mult = 0.05
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = 3"
+	}
+}
+
+giga_zro_extractor = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_giga_habitat_zro_harvester
+		}
+	}
+	possible_precalc = can_fill_specialist_job
+
+	resources = {
+		category = planet_refiners
+		produces = { sr_zro = 1 }
+		upkeep = { energy = 5 }
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "
+			modifier = {
+				factor = 1.2
+				is_enslaved = yes
+				has_slavery_type = { type = slavery_indentured }
+			}
+		"
+	}
+}
+giga_zro_extractor_drone = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_giga_habitat_zro_harvester
+		}
+	}
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_refiners
+		produces = { sr_zro = 1 }
+		upkeep = { energy = 5 }
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_gas_harvester = {
+	category = worker
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_gas_extractors
+		}
+	}
+	possible_precalc = can_fill_worker_job
+
+	resources = {
+		category = planet_refiners
+		produces = { exotic_gases = 2 }
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_worker_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+giga_gas_harvesting_drone = {
+	category = simple_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			icon = giga_gas_harvester
+			building_icon = building_gas_extractors
+		}
+	}
+	possible_precalc = can_fill_drone_job
+
+	resources = {
+		category = planet_refiners
+		produces = { exotic_gases = 2 }
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_simple_drone_weight
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_gas_extraction_manager = {
+	category = ruler
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_gas_extractors
+			icon = giga_gas_extraction_manager
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible = {
+		owner = { is_fallen_empire = no }
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	planet_modifier = {
+		planet_technician_exotic_gases_produces_add = 0.015
+	}
+
+	resources = {
+		category = planet_refiners
+		produces = {
+			exotic_gases = 1
+			society_research = 1
+		}
+		upkeep = {
+			consumer_goods = 5
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = 2"
+	}
+}
+giga_gas_extraction_manager_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_gas_extractors
+			icon = giga_gas_extraction_manager
+		}
+		swap_type = {
+			trigger = {
+				owner? = { is_wilderness_empire = yes }
+			}
+			name = giga_gas_extraction_manager_drone_wilderness
+			desc = giga_gas_extraction_manager_drone_wilderness_desc
+			building_icon = building_gas_extractors
+			icon = giga_gas_extraction_manager
+			condition_string = DRONE_JOB_TRIGGER
+			weight = 100
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = {
+		can_think = yes
+		owner = { is_fallen_empire = no }
+	}
+
+	planet_modifier = {
+		planet_technician_exotic_gases_produces_add = 0.015
+	}
+
+	resources = {
+		category = planet_refiners
+		produces = {
+			exotic_gases = 1
+			society_research = 1.5
+		}
+		upkeep = {
+			trigger = {
+				owner? = { is_machine_empire = yes }
+			}
+			energy = 3
+		}
+		upkeep = {
+			trigger = {
+				owner? = { is_hive_empire = yes }
+			}
+			minerals = 2
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "mult = 2"
+	}
+}
+
+####################################################################
+# UNUSED UNFIXED
+####################################################################
+giga_preserver = {
+	category = specialist
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			icon = ranger
+			building_icon = building_xeno_zoo
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+
+	resources = {
+		category = planet_culture_workers
+		produces = {
+			society_research = 0.5
+			unity = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_amenities_add = 1000
+		giga_system_habitat_amenities_add = 1000
+	}
+
+	# pop_modifier = {
+	# 	pop_housing_usage_add = -0.75
+	# }
+
+	weight = {
+		weight = value:giga_specialist_weight|JOB|giga_preserver|RESOURCE|society_research|WEIGHT|0.5|RESOURCE2|unity|WEIGHT2|0.5|INDENTURED|0.8|
+		multiply = value:giga_amenities_dynamic_weight|JOB|giga_preserver|
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+giga_preserver_drone = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			icon = ranger
+			building_icon = building_xeno_zoo
+		}
+	}
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+	possible = { can_think = yes }
+
+	resources = {
+		category = planet_culture_workers
+		produces = {
+			society_research = 0.5
+			unity = 1
+		}
+	}
+
+	planet_modifier = {
+		planet_amenities_no_happiness_add = 1000
+		giga_system_habitat_amenities_no_happiness_add = 1000
+	}
+
+	# pop_modifier = {
+	# 	pop_housing_usage_add = -0.75
+	# }
+
+	weight = {
+		weight = value:giga_complex_drone_weight|JOB|giga_preserver_drone|RESOURCE|society_research|WEIGHT|0.5|RESOURCE2|unity|WEIGHT2|0.5|
+		multiply = value:giga_amenities_dynamic_weight|JOB|giga_preserver_drone|
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+
+
+
+# giga_interstellar_researcher = {
+# 	category = specialist
+#
+# 	swappable_data = {
+# 		default = {
+# 			condition_string = SPECIALIST_JOB_TRIGGER
+# 			building_icon = building_research_lab_3
+# 		}
+# 	}
+# 	tags = { research }
+#
+# 	resources = {
+# 		category = planet_researchers
+# 		produces = { physics_research = 2.5 }
+# 		produces = { society_research = 1.5 }
+# 		produces = { engineering_research = 2.5 }
+# 		upkeep = { energy = 3 }
+# 	}
+#
+# 	possible_precalc = can_fill_specialist_job
+#
+# 	weight = {
+# 		weight = value:giga_researcher_weight|JOB|giga_interstellar_researcher|
+# 	}
+#
+# 	inline_script = jobs/automodding_priority_research
+#
+# 	inline_script = jobs/promotion/giga_job_promotion_specialist
+# }
+#
+# giga_interstellar_researcher_drone = {
+# 	category = complex_drone
+#
+# 	swappable_data = {
+# 		default = {
+# 			condition_string = DRONE_JOB_TRIGGER
+# 			building_icon = building_research_lab_3
+# 		}
+# 	}
+# 	tags = { research }
+#
+# 	resources = {
+# 		category = planet_researchers
+# 		produces = { physics_research = 2.5 }
+# 		produces = { society_research = 1.5 }
+# 		produces = { engineering_research = 2.5 }
+# 		upkeep = { energy = 3 }
+# 	}
+#
+# 	possible_precalc = can_fill_drone_job
+#
+# 	weight = {
+# 		weight = value:giga_researcher_drone_weight|JOB|giga_interstellar_researcher_drone|
+# 	}
+#
+# 	inline_script = jobs/automodding_priority_research
+#
+# 	inline_script = jobs/promotion/giga_job_promotion_complex_drone
+# }
+# giga_interstellar_scavenger = {
+# 	category = specialist
+#
+# 	swappable_data = {
+# 		default = {
+# 			condition_string = SPECIALIST_JOB_TRIGGER
+# 			building_icon = building_foundry_3
+# 		}
+# 	}
+# 	tags = { minerals research alloys }
+#
+# 	possible_precalc = can_fill_specialist_job
+#
+# 	resources = {
+# 		category = planet_researchers
+# 		produces = {
+# 			minerals = 2
+# 			engineering_research = 1.5
+# 			alloys = 1
+# 		}
+# 		produces = {
+# 			trigger = { planet = { has_active_building = building_mineral_purification_plant } }
+# 			minerals = 1
+# 		}
+# 		produces = {
+# 			trigger = { planet = { has_active_building = building_mineral_purification_hub } }
+# 			minerals = 2
+# 		}
+# 		upkeep = { energy = 4 }
+# 	}
+#
+# 	weight = {
+# 		weight = value:giga_specialist_weight|JOB|giga_interstellar_scavenger|RESOURCE|minerals|WEIGHT|0.4|RESOURCE2|engineering_research|WEIGHT2|0.6|INDENTURED|1.2|
+# 	}
+#
+# 	inline_script = jobs/automodding_priority_minerals
+#
+# 	inline_script = jobs/promotion/giga_job_promotion_specialist
+# }
+#
+# giga_interstellar_scavenger_drone = {
+# 	category = complex_drone
+#
+# 	swappable_data = {
+# 		default = {
+# 			condition_string = DRONE_JOB_TRIGGER
+# 			building_icon = building_foundry_3
+# 		}
+# 	}
+# 	tags = { minerals research alloys }
+#
+# 	possible_precalc = can_fill_drone_job
+#
+# 	resources = {
+# 		category = planet_researchers
+# 		produces = {
+# 			minerals = 2
+# 			engineering_research = 1.5
+# 			alloys = 1
+# 		}
+# 		produces = {
+# 			trigger = { planet = { has_active_building = building_mineral_purification_plant } }
+# 			minerals = 1
+# 		}
+# 		produces = {
+# 			trigger = { planet = { has_active_building = building_mineral_purification_hub } }
+# 			minerals = 2
+# 		}
+# 		upkeep = { energy = 4 }
+# 	}
+#
+# 	weight = {
+# 		weight = value:giga_complex_drone_weight|JOB|giga_interstellar_scavenger_drone|RESOURCE|minerals|WEIGHT|0.4|RESOURCE2|engineering_research|WEIGHT2|0.6|
+# 	}
+#
+# 	inline_script = jobs/automodding_priority_minerals
+# }

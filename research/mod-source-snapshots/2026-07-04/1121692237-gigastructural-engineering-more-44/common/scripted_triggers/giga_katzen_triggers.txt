@@ -1,0 +1,337 @@
+kaiser_is_very_happy = {
+	# has_country_flag = kaiser_happy_4
+	kaiser_opinion_range_elated = yes
+	has_country_flag = first_katzen_diplomacy
+	has_country_flag = allied_to_kaiser
+}
+
+kaiser_is_happy = {
+	OR = {
+		kaiser_opinion_range_elated = yes
+		kaiser_opinion_range_very_friendly = yes
+		kaiser_opinion_range_friendly = yes
+		# has_country_flag = kaiser_happy_4
+		# has_country_flag = kaiser_happy_3
+		# has_country_flag = kaiser_happy_2
+	}
+	has_country_flag = first_katzen_diplomacy
+	NOT = { has_country_flag = allied_to_kaiser }
+}
+
+kaiser_is_neutral = {
+	OR = {
+		kaiser_opinion_range_cordial = yes
+		kaiser_opinion_range_indifferent = yes
+		# has_country_flag = kaiser_happy_1
+		# has_country_flag = kaiser_neutral
+	}
+	has_country_flag = first_katzen_diplomacy
+}
+
+kaiser_is_angry = {
+	OR = {
+		kaiser_opinion_range_terse = yes
+		kaiser_opinion_range_displeased = yes
+		kaiser_opinion_range_angered = yes
+		# has_country_flag = kaiser_angry_1
+		# has_country_flag = kaiser_angry_2
+	}
+	has_country_flag = first_katzen_diplomacy
+}
+
+kaiser_is_at_war = {
+	# has_country_flag = kaiser_angry_3
+	kaiser_opinion_range_enraged = yes
+	has_country_flag = first_katzen_diplomacy
+}
+
+kaiser_opinion_range_elated = {
+	check_variable = {
+		which = kaiser_opinion
+		value >= 80
+	}
+}
+
+kaiser_opinion_range_very_friendly = {
+	check_variable = {
+		which = kaiser_opinion
+		value < 80
+	}
+	check_variable = {
+		which = kaiser_opinion
+		value >= 60
+	}
+}
+
+kaiser_opinion_range_friendly = {
+	check_variable = {
+		which = kaiser_opinion
+		value < 60
+	}
+	check_variable = {
+		which = kaiser_opinion
+		value >= 40
+	}
+}
+
+kaiser_opinion_range_cordial = {
+	check_variable = {
+		which = kaiser_opinion
+		value < 40
+	}
+	check_variable = {
+		which = kaiser_opinion
+		value >= 20
+	}
+}
+
+kaiser_opinion_range_indifferent = {
+	check_variable = {
+		which = kaiser_opinion
+		value < 20
+	}
+	check_variable = {
+		which = kaiser_opinion
+		value >= -20
+	}
+}
+
+kaiser_opinion_range_terse = {
+	check_variable = {
+		which = kaiser_opinion
+		value < -20
+	}
+	check_variable = {
+		which = kaiser_opinion
+		value >= -40
+	}
+}
+
+kaiser_opinion_range_displeased = {
+	check_variable = {
+		which = kaiser_opinion
+		value < -40
+	}
+	check_variable = {
+		which = kaiser_opinion
+		value >= -60
+	}
+}
+
+kaiser_opinion_range_angered = {
+	check_variable = {
+		which = kaiser_opinion
+		value < -60
+	}
+	check_variable = {
+		which = kaiser_opinion
+		value >= -80
+	}
+}
+
+kaiser_opinion_range_enraged = {
+	check_variable = {
+		which = kaiser_opinion
+		value < -80
+	}
+}
+
+kaiser_can_demand_system = {
+	NOR = {
+		is_capital_system = yes #Can't demand if its a capital
+		has_star_flag = kaiser_demands_system #Not already demanded
+	}
+	owner = {
+		giga_is_standard_country_type = yes #Only demand from regular empires (kaiser isn't suicidal)
+		NOR = {
+			is_at_war_with = event_target:flusion_primitives_country #Not at war
+			is_in_federation_with = event_target:flusion_primitives_country #Not allied (kaiser isn't THAT cocky)
+			has_country_flag = recently_gave_kaiser_land #didn't already give land to the Kaiser
+		}
+		has_country_flag = kaiser_demand_target #Same guy as before
+	}
+}
+
+is_small_katzen_fleet = {
+	OR = {
+		has_fleet_flag = katzen_panzer_fleet
+		has_fleet_flag = katzen_bomber_fleet
+	}
+}
+
+has_katzen_colony = {
+	any_system_planet = {
+		is_katzen_colony = yes
+	}
+}
+
+is_katzen_colony = {
+	owner = { is_country_type = katzenartig_imperium }
+	is_colony = yes
+}
+
+katzen_jump_blocked_system = {
+	exists = owner
+	owner = { is_country_type = katzenartig_imperium }
+	any_system_planet = { #Must have a colony
+		is_katzen_colony = yes
+		has_carrier_flag = gigaflusion
+		event_target:flusion_primitives_country = {
+			check_variable = {
+				which = zousa_res
+				value < 3
+			}
+		}
+	}
+}
+
+is_valid_kaiser_moon_candidate = {
+	OR = {
+		giga_is_frozen = yes
+		giga_is_barren_cn = yes
+		giga_is_molten = yes
+	}
+	OR = {
+		planet_size = 4
+		planet_size = 5
+		planet_size = 6
+		planet_size = 7
+		planet_size = 8
+	}
+}
+
+is_viable_system_for_submarine = {
+	NOT = {
+		any_ship_in_system = {
+			is_ship_size = giga_war_moon
+			is_ship_size = giga_planet_behemoth
+			is_ship_size = giga_aeternum_planetcraft
+			is_ship_size = giga_corrona_planetcraft
+			is_ship_size = giga_systemcraft
+			is_ship_size = giga_o_systemcraft
+			is_ship_size = quasarmod_quasarcraft
+		}
+	}
+}
+
+#Used for Kaiser moon recall and Flusion destruction perp identification
+#Kaiser also recalls for any Corronian ship but I've left that out the trigger so this could be used elsewhere
+katzen_is_planetkiller = {
+	OR = {
+		is_ship_size = colossus
+		is_ship_size = toxic_god
+		#is_ship_size = giga_toxic_god
+		is_ship_size = giga_systemcraft
+		is_ship_size = giga_o_systemcraft
+		is_ship_size = quasarmod_quasarcraft
+		is_ship_size = precursor_colossus
+		is_ship_size = sofe_ancient_weapon
+		is_ship_size = star_eater
+		is_ship_size = reshaper #Compound colossus
+		is_ship_size = giga_aeternum_colossus
+		is_ship_size = behemoth_03 #lowest Behemoth class with a planetkiller weapon
+		is_ship_size = behemoth_04
+		is_ship_size = voidspawn_boss
+		is_ship_size = synth_queen_titan
+		is_ship_size = warped_consciousness #The Reckoning / End of the Cycle boss
+	}
+}
+
+is_allowed_for_kaiser_spawn = {
+	NOR = {
+		has_star_flag = empire_home_system
+		has_star_flag = empire_cluster
+
+		#MEM
+		has_star_flag = mem_severance_relic_system
+
+		# is_fe_cluster = yes
+		AND = {
+			exists = space_owner
+			space_owner = { is_fallen_empire = yes }
+		}
+		any_system = {
+			distance = {
+				source = this
+				min_jumps  = 1
+				max_jumps = 2
+				use_bypasses = no
+			}
+			OR = {
+				has_star_flag = empire_home_system
+				has_star_flag = empire_cluster
+				# is_fe_cluster = yes
+				AND = {
+					exists = space_owner
+					space_owner = { is_fallen_empire = yes }
+				}
+			}
+		}
+	}
+}
+
+# used in can_generate_military_leader_from_pop rule overwrite
+# should make sure external candidates drawn from the imperium are only katzen
+#Root = country
+#This = pop
+# giga_kaiser_only_katzen_military_candidates = {
+# 	if = {
+# 		limit = {
+# 			exists = owner
+# 			owner = {
+# 				is_country_type = katzenartig_imperium
+# 			}
+# 			exists = event_target:flusion_katzens
+# 		}
+# 		or = {
+# 			root = {
+# 				is_country_type = katzenartig_imperium
+# 			}
+# 			is_same_species = event_target:flusion_katzens
+# 		}
+# 	}
+# }
+
+is_forbidden_for_kaiser_starbase = {
+	#not already owned
+	exists = starbase
+	exists = owner
+	any_system_planet = {
+		is_colony = yes
+		owner = {
+			NOT = { is_country_type = primitive }
+		}
+	}
+
+	#no hostiles
+	any_fleet_in_system = {
+		controller = {
+			OR = {
+				is_at_war_with = event_target:flusion_primitives_country
+				is_hostile = event_target:flusion_primitives_country
+			}
+		}
+	}
+
+	# kaiser shouldn't anger the xenophobe fallen empire unless he's at war with them
+	any_neighbor_system = {
+		exists = owner
+		owner = {
+			is_fallen_empire = yes
+			has_ai_personality = fallen_empire_xenophobe
+			not = { is_at_war_with = root }
+		}
+	}
+
+	# In case shrouded Faust is accessible, no-one should be in there
+	has_star_flag = eawaf_faust_killzone
+
+	# Don't interrupt the Sirens if they're guaranteed
+	AND = {
+		has_global_flag = giga_eawaf_sirens_guaranteed
+		has_star_flag = eawaf_system
+	}
+
+	# Wild space compatibility
+	is_star_class = sc_dn
+}

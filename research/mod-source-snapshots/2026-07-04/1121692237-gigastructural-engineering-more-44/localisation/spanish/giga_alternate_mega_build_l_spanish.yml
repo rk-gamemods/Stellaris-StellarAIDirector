@@ -1,0 +1,548 @@
+﻿l_spanish:
+  # Alternative Mega Build - Job-Based megastructure construction
+  
+  ############################################################################################################
+  # MODIFIERS
+  
+  # MOD_MEGASTRUCTURE_BUILD_SPEED_MULT_amb:0 "Megastructure Build Efficiency"
+  # MOD_MEGASTRUCTURE_BUILD_SPEED_MULT_original:0 "Megastructure Build Speed"
+  
+  # MOD_MEGASTRUCTURE_BUILD_SPEED_ADD_amb:0 "Monthly Megastructure Build Progress Per Megastructure"
+  # MOD_MEGASTRUCTURE_BUILD_SPEED_ADD_original:0 "Megastructure Build Speed"
+  
+  MOD_COUNTRY_MEGASTRUCTURE_BUILD_CAP_ADD_amb:0 "Máx $building_giga_megaworkshop_hub_plural$"
+  MOD_COUNTRY_MEGASTRUCTURE_BUILD_CAP_ADD_original:0 "Capacidad de Construcción de Megaestructuras"
+  mod_country_resource_max_giga_sr_amb_megaconstruction_add:0 "$giga_sr_amb_megaconstruction$ Capacidad de Almacenamiento"
+  
+  mod_country_giga_sr_amb_megaconstruction_produces_mult:0 "Mensual $giga_sr_amb_megaconstruction$"
+  mod_country_base_giga_sr_amb_megaconstruction_produces_add:0 "Mensual $giga_sr_amb_megaconstruction$"
+  
+  mod_megastructures_giga_sr_amb_megaconstruction_upkeep_mult:0 "Mantenimiento de Megaestructura $giga_sr_amb_megaconstruction$"
+  
+  giga_sr_amb_megaconstruction_deficit:99 "giga_sr_amb_megaconstruction_deficit"
+  
+  giga_amb_mega_speed:99 "giga_amb_mega_speed"
+  
+  giga_tooltip_positive:99 "§G+"
+  giga_tooltip_positive_bad:99 "§R+"
+  giga_tooltip_negative:99 "§R"
+  giga_tooltip_negative_good:99 "§G"
+  giga_tooltip_neutral:99 "§Y"
+  giga_tooltip_trailing_decimal:99 ".0"
+  
+  mod_giga_amb_tooltips_minerals_produces_add:0 "§W--------------§!\n§HDetalles:§!\n\n£giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! ingresos: [This.giga_amb_income_colour][This.giga_amb_income]§!\nInversión potencial este mes (incluyendo reserva): [This.giga_amb_stockpile_drain_colour][This.giga_amb_stockpile_drain]§!\n\nVelocidad de construcción base por £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!: §G+[giga_amb_ratio]§!\nVelocidad total de construcción base (antes de rendimientos decrecientes): [This.giga_amb_total_progress_colour][This.giga_amb_total_progress]§!\n\n[This.giga_amb_ai_details]§HProyectos de Megaconstrucción Activos:§!\n\nProyectos no estructurales: §Y[This.giga_amb_building_technical]§!\nKiloestructuras: §Y[This.giga_amb_building_kilos]§!\nMegaestructuras: §Y[This.giga_amb_building_megas]§!\nGigaestructuras: §Y[This.giga_amb_building_gigas]§!\n\nVelocidad de construcción base por proyecto"
+  
+  mod_giga_amb_tooltips_minerals_cost_mult:0 "£giga_sr_amb_megaconstruction£ $giga_sr_amb_megaconstruction$ necesarios por $MOD_MEGASTRUCTURE_BUILD_SPEED_ADD$"
+  
+  giga_amb_ai_details:0 "Límite de Construcción IA: §Y[This.giga_amb_ai_limit]§!\n\n"
+  
+  ############################################################################################################
+  # SUBJECT TERMS
+  
+  giga_supertensiles_subsidies:0 "Contribución de Megaconstrucción"
+  giga_supertensiles_subsidies_desc:0 "Este Término dicta la cantidad de £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! que el Sujeto está obligado a pagar al Señor cada mes. El número es un porcentaje de la producción mensual actual del Sujeto.\n\nUn valor negativo significa que el Señor está obligado a pagar al Sujeto en lugar de al revés, pero aún se basa en un porcentaje de la producción mensual actual del Sujeto.\n\n§EEste término está en una categoría separada debido a una limitación del motor donde las categorías de recursos ocultas condicionalmente rompen los acuerdos de sujeto. Si se soluciona el problema, se moverá de nuevo a la categoría de Contribución.§!"
+  
+  giga_resource_subsidies_supertensiles:99 "Supertensiles"
+  
+  giga_supertensiles_prospectorium_bonus_subject_1:0 "$mod_country_giga_sr_amb_megaconstruction_produces_mult$: §G+10%§!\nEste bono aumenta con el Nivel de Especialista."
+  giga_supertensiles_prospectorium_bonus_subject_2:0 "$mod_country_giga_sr_amb_megaconstruction_produces_mult$: §G+20%§!\nEste bono aumenta con el Nivel de Especialista."
+  giga_supertensiles_prospectorium_bonus_subject_3:0 "$mod_country_giga_sr_amb_megaconstruction_produces_mult$: §G+30%§!\nEste bono aumenta con el Nivel de Especialista."
+  
+  ############################################################################################################
+  # BUILDINGS
+  
+  building_giga_megaworkshop:0 "Fundición Molecular"
+  building_giga_megaworkshop_plural:0 "Fundiciones Moleculares"
+  building_giga_megaworkshop_desc:0 "Las matrices de síntesis molecular y las salas limpias impecables llenan estas instalaciones, produciendo los materiales altamente especializados requeridos para proyectos de construcción orbital a gran escala."
+  mod_planet_building_giga_megaworkshop_build_speed_mult:0 "$building_giga_megaworkshop$ Velocidad de construcción"
+  
+  building_giga_megaworkshop_hub:0 "Centro de Logística de Megaconstrucción"
+  building_giga_megaworkshop_hub_plural:0 "Centros de Logística de Megaconstrucción"
+  building_giga_megaworkshop_hub_desc:0 "Los expertos coordinan una vasta flota de naves de transporte y construcción, llevando adelante sus grandiosos diseños, mientras que las fundiciones moleculares producen grandes cantidades de materiales de construcción."
+  building_giga_megaworkshop_hub_count_condition:99 ""
+  mod_planet_building_giga_megaworkshop_hub_build_speed_mult:0 "$building_giga_megaworkshop_hub$ Velocidad de construcción"
+  
+  building_giga_supertensiles_mines:0 "$giga_sr_amb_megaconstruction$ Extractores"
+  building_giga_supertensiles_mines_plural:0 "$giga_sr_amb_megaconstruction$ Extractores"
+  building_giga_supertensiles_mines_desc:0 "En raras ocasiones, las condiciones adecuadas pueden permitir que se formen materiales de fuerza improbable en la naturaleza."
+  mod_building_giga_supertensiles_mines_max:0 "Máx $building_giga_supertensiles_mines$"
+  
+  building_giga_living_metal_infusion_plant:0 "Planta de Infusión de Metal Vivo"
+  building_giga_living_metal_infusion_plant_plural:0 "Plantas de Infusión de Metal Vivo"
+  building_giga_living_metal_infusion_plant_desc:0 "Incorporar las propiedades regenerativas del metal vivo en nuestros procesos de fabricación será de gran beneficio para nuestros proyectos de construcción en el espacio profundo."
+  
+  building_giga_fe_megaworkshop:0 "Nano-Ensamblador"
+  building_giga_fe_megaworkshop_plural:0 "Nano-Ensambladores"
+  building_giga_fe_megaworkshop_desc:0 "Enormes matrices de síntesis molecular trabajan en tándem con las bahías de replicadores para procesar minerales en bruto y convertirlos en materiales para la construcción de orbitales."
+  
+  building_giga_fe_megaworkshop_2:0 "Crisol Poliatómico"
+  building_giga_fe_megaworkshop_2_plural:0 "Crisoles Poliatómicos"
+  building_giga_fe_megaworkshop_2_desc:0 "Estas instalaciones retuercen la gravedad para unir átomos en disposiciones estables que antes se creían imposibles."
+  
+  holding_giga_megaworkshop:0 "Muelle de Exportación Megalogística"
+  holding_giga_megaworkshop_plural:0 "Muelles de Exportación Megalogística"
+  holding_giga_megaworkshop_desc:0 "Las fundiciones moleculares propiedad de un imperio extranjero utilizan recursos locales para alimentar proyectos de construcción lejanos. Algunos incluso podrían llamarlos proyectos de vanidad."
+  ove_requires_giga_tech_amb_supertensiles:99 "$overlord_has_technology$ £physics£ §Y$giga_tech_amb_supertensiles$§!"
+  
+  ############################################################################################################
+  # ECONOMIC CATEGORIES
+  
+  planet_giga_megaengineers:0 "Trabajos de Megaconstrucción"
+  planet_giga_megaengineers_job:0 "Trabajos de Técnico de Supertensiles"
+  planet_giga_megaengineering_overseers:0 "Trabajos de Director de Megaconstrucción"
+  planet_giga_overlord_megaengineers:0 "Ingenieros de Supertensiles del Soberano"
+  
+  ############################################################################################################
+  # JOBS
+  
+  job_giga_megaengineer:0 "Técnico de Supertensiles"
+  job_giga_megaengineer_plural:0 "Técnicos de Supertensiles"
+  job_giga_megaengineer_desc:0 "Los materiales especializados utilizados en la construcción espacial a gran escala requieren una fuerza de trabajo igualmente especializada."
+  job_giga_megaengineer_effect_desc:0 "$job_giga_megaengineer_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§! y £unity£ §Y$unity$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_swap_plural_with_icon:0 "[giga_megaengineer.GetIcon] [giga_megaengineer.GetNamePlural]"
+  mod_job_giga_megaengineer_add:0 "[giga_megaengineer.GetName] Jobs"
+  mod_job_giga_megaengineer_per_pop:0 "§G+1§! [giga_megaengineer.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_add£ per $VALUE$ £pop£"
+  mod_job_giga_megaengineer_automated_workforce_mult:99 "$job_giga_megaengineer_swap_plural_with_icon$ $MOD_PLANET_AUTOMATED_WORKFORCE$"
+  
+  job_giga_megaengineer_drone:0 "Dron Supertensiles"
+  giga_megaengineer_drone_wilderness:99 "Tensilesymbiont"
+  job_giga_megaengineer_drone_wilderness:99 "$giga_megaengineer_drone_wilderness$"
+  job_job_giga_megaengineer_drone_wilderness:99 "$giga_megaengineer_drone_wilderness$" #jobjobjobjobjob just a week away
+  job_giga_megaengineer_drone_plural:0 "Drones Supertensiles"
+  giga_megaengineer_drone_wilderness_plural:99 "Tensilesymbionts"
+  job_giga_megaengineer_drone_wilderness_plural:99 "$giga_megaengineer_drone_wilderness_plural$"
+  job_giga_megaengineer_drone_desc:0 "Los materiales especializados utilizados en la construcción a gran escala en el espacio requieren una fuerza de trabajo igualmente especializada."
+  giga_megaengineer_drone_wilderness_desc:99 "The webs weaved by these industrious animals have remarkable tensile properties, suited to the growth of monumental extra-atmospheric structures."
+  job_giga_megaengineer_drone_wilderness_desc:99 "$giga_megaengineer_drone_wilderness_desc$"
+  job_giga_megaengineer_drone_effect_desc:0 "$job_giga_megaengineer_drone_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§! y £unity£ §Y$unity$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_drone_swap_plural_with_icon:0 "[giga_megaengineer_drone.GetIcon] [giga_megaengineer_drone.GetNamePlural]"
+  mod_job_giga_megaengineer_drone_add:0 "[giga_megaengineer_drone.GetName] Jobs"
+  mod_job_giga_megaengineer_drone_per_pop:0 "§G+1§! [giga_megaengineer_drone.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_drone_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_add£ per $VALUE$ £pop£"
+  mod_job_giga_megaengineer_drone_automated_workforce_mult:99 "$job_giga_megaengineer_drone_swap_plural_with_icon$ $MOD_PLANET_AUTOMATED_WORKFORCE$"
+  
+  job_giga_amb_fe_acolyte_foundry:0 "Acólito de la Fundición"
+  job_giga_amb_fe_acolyte_foundry_plural:0 "Acólitos de la Fundición"
+  job_giga_amb_fe_acolyte_foundry_desc:0 "Considera ahora las obras de Iozak el Constructor de Naves, quien nos dio los hilos brillantes de los que se tejieron grandes velas plateadas, llevando naves de peregrinación."
+  job_giga_amb_fe_acolyte_foundry_effect_desc:0 "$job_giga_amb_fe_acolyte_foundry_swap_plural_with_icon$ producen £alloys£ §Y$alloys$§! y £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_amb_fe_acolyte_foundry_swap_plural_with_icon:0 "[giga_amb_fe_acolyte_foundry.GetIcon] [giga_amb_fe_acolyte_foundry.GetNamePlural]"
+  mod_job_giga_amb_fe_acolyte_foundry_add:0 "[giga_amb_fe_acolyte_foundry.GetName] Jobs"
+  mod_job_giga_amb_fe_acolyte_foundry_per_pop:0 "§G+1§! [giga_amb_fe_acolyte_foundry.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_amb_fe_acolyte_foundry_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_add£ per $VALUE$ £pop£"
+  mod_job_giga_amb_fe_acolyte_foundry_automated_workforce_mult:99 "$job_giga_amb_fe_acolyte_foundry_swap_plural_with_icon$ $MOD_PLANET_AUTOMATED_WORKFORCE$"
+  
+  job_giga_megaengineering_overseer:0 "Director de Megaconstrucción"
+  job_giga_megaengineering_overseer_plural:0 "Directores de Megaconstrucción"
+  job_giga_megaengineering_overseer_desc:0 "Estos científicos muy buscados son los mejores en su campo, los expertos más destacados en la construcción espacial y los proyectos de logística a megaescala."
+  job_giga_megaengineering_overseer_effect_desc:0 "$job_giga_megaengineering_overseer_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§! y £unity£ §Y$unity$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_swap_plural_with_icon:0 "[giga_megaengineering_overseer.GetIcon] [giga_megaengineering_overseer.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_add:0 "[giga_megaengineering_overseer.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_per_pop:0 "§G+1§! [giga_megaengineering_overseer.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_drone:0 "Supervisor de Megaconstrucción"
+  giga_megaengineering_overseer_drone_wilderness:99 "Neurotensilesymbiont"
+  job_giga_megaengineering_overseer_drone_wilderness:99 "$giga_megaengineering_overseer_drone_wilderness$"
+  job_giga_megaengineering_overseer_drone_plural:0 "Supervisores de Megaconstrucción"
+  giga_megaengineering_overseer_drone_wilderness_plural:99 "Neurotensilesymbionts"
+  job_giga_megaengineering_overseer_drone_wilderness_plural:99 "$giga_megaengineering_overseer_drone_wilderness_plural$"
+  job_giga_megaengineering_overseer_drone_desc:0 "Estos grupos de drones altamente especializados manejan las tremendas cantidades de procesamiento involucradas en la gestión de proyectos de construcción y logística a megaescala."
+  giga_megaengineering_overseer_drone_wilderness_desc:99 "Mutualistic neural cysts optimise the transfer of nutrients and products among tensilesymbiont communities."
+  job_giga_megaengineering_overseer_drone_wilderness_desc:99 "$giga_megaengineering_overseer_drone_wilderness_desc$"
+  job_giga_megaengineering_overseer_drone_effect_desc:0 "$job_giga_megaengineering_overseer_drone_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§! y £unity£ §Y$unity$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_drone_swap_plural_with_icon:0 "[giga_megaengineering_overseer_drone.GetIcon] [giga_megaengineering_overseer_drone.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_drone_add:0 "[giga_megaengineering_overseer_drone.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_drone_per_pop:0 "§G+1§! [giga_megaengineering_overseer_drone.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_drone_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_add£ per $VALUE$ £pop£"
+  
+  job_giga_amb_fe_celestial_architect:0 "Arquitecto Celestial"
+  job_giga_amb_fe_celestial_architect_plural:0 "Arquitectos Celestiales"
+  job_giga_amb_fe_celestial_architect_desc:0 "Moldear los cielos mismos es una vocación de gran honor y aún mayor responsabilidad."
+  job_giga_amb_fe_celestial_architect_effect_desc:0 "$job_giga_amb_fe_celestial_architect_swap_plural_with_icon$ producen grandes cantidades de £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_amb_fe_celestial_architect_swap_plural_with_icon:0 "[giga_amb_fe_celestial_architect.GetIcon] [giga_amb_fe_celestial_architect.GetNamePlural]"
+  mod_job_giga_amb_fe_celestial_architect_add:0 "[giga_amb_fe_celestial_architect.GetName] Jobs"
+  mod_job_giga_amb_fe_celestial_architect_per_pop:0 "§G+1§! [giga_amb_fe_celestial_architect.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_amb_fe_celestial_architect_per_pop_short:0 "\n§G+1§! £mod_job_giga_amb_fe_celestial_architect_add£ per $VALUE$ £pop£"
+  
+  job_giga_supertensiles_extractor:0 "Extractor de Supertensiles"
+  job_giga_supertensiles_extractor_plural:0 "Extractores de Supertensiles"
+  job_giga_supertensiles_extractor_desc:0 "Se utilizan equipos de minería de precisión y técnicas de procesamiento químico para desenredar materiales supertensiles de su estado natural y caótico."
+  job_giga_supertensiles_extractor_effect_desc:0 "$job_giga_supertensiles_extractor_swap_plural_with_icon$ producen £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_supertensiles_extractor_swap_plural_with_icon:0 "[giga_supertensiles_extractor.GetIcon] [giga_supertensiles_extractor.GetNamePlural]"
+  mod_job_giga_supertensiles_extractor_add:0 "[giga_supertensiles_extractor.GetName] Jobs"
+  mod_job_giga_supertensiles_extractor_per_pop:0 "§G+1§! [giga_supertensiles_extractor.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_supertensiles_extractor_per_pop_short:0 "\n§G+1§! £mod_job_giga_supertensiles_extractor_add£ per $VALUE$ £pop£"
+  
+  job_giga_supertensiles_extractor_drone:0 "Dron Extractor de Supertensiles"
+  job_giga_supertensiles_extractor_drone_wilderness:99 "Accumulosymbiont"
+  giga_supertensiles_extractor_drone_wilderness:99 "$job_giga_supertensiles_extractor_drone_wilderness$"
+  job_giga_supertensiles_extractor_drone_plural:0 "Drones Extractores de Supertensiles"
+  job_giga_supertensiles_extractor_drone_wilderness_plural:99 "Accumulatorsymbionts"
+  giga_supertensiles_extractor_drone_wilderness_plural:99 "$job_giga_supertensiles_extractor_drone_wilderness_plural$"
+  job_giga_supertensiles_extractor_drone_desc:0 "Se utilizan equipos de minería de precisión y técnicas de procesamiento químico para desenredar los materiales supertensiles de su estado natural y caótico."
+  job_giga_supertensiles_extractor_drone_wilderness_desc:99 "Niche chemical processing adaptations enable the synthesis of supertensile materials in places where its building blocks can be found naturally."
+  giga_supertensiles_extractor_drone_wilderness_desc:99 "$job_giga_supertensiles_extractor_drone_wilderness_desc$"
+  job_giga_supertensiles_extractor_drone_effect_desc:0 "$job_giga_supertensiles_extractor_drone_swap_plural_with_icon$ producen £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_supertensiles_extractor_drone_swap_plural_with_icon:0 "[giga_supertensiles_extractor_drone.GetIcon] [giga_supertensiles_extractor_drone.GetNamePlural]"
+  mod_job_giga_supertensiles_extractor_drone_add:0 "[giga_supertensiles_extractor_drone.GetName] Jobs"
+  mod_job_giga_supertensiles_extractor_drone_per_pop:0 "§G+1§! [giga_supertensiles_extractor_drone.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_supertensiles_extractor_drone_per_pop_short:0 "\n§G+1§! £mod_job_giga_supertensiles_extractor_add£ per $VALUE$ £pop£"
+  
+  job_giga_overlord_megaengineer:0 "Ingeniero Supertensiles del Señor Supremo"
+  job_giga_overlord_megaengineer_plural:0 "Ingenieros Supertensiles del Señor Supremo"
+  job_giga_overlord_megaengineer_desc:99 "$job_giga_megaengineer_desc$"
+  job_giga_overlord_megaengineer_effect_desc:0 "£job_giga_overlord_megaengineer£ $job_giga_overlord_megaengineer_plural$ convierten Sujeto £alloys£ §Y$alloys$§! y £unity£ §Y$unity$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! para el Señor Supremo."
+  job_giga_overlord_megaengineer_swap_plural_with_icon:99 "[giga_overlord_megaengineer.GetIcon] [giga_overlord_megaengineer.GetNamePlural]"
+  mod_job_giga_overlord_megaengineer_add:0 "Trabajos de $job_giga_overlord_megaengineer$"
+  mod_job_giga_overlord_megaengineer_per_pop:0 "§G+1§! Trabajo de $job_giga_overlord_megaengineer$ por $VALUE$ Poblaciones"
+  mod_job_giga_overlord_megaengineer_per_pop_short:0 "\n§G+1§! £mod_job_giga_overlord_megaengineer_add£ por $VALUE$ £pop£"
+  
+  job_giga_overlord_megaengineer_drone:0 "Dron Ingeniero Supertensiles del Señor Supremo"
+  job_giga_overlord_megaengineer_drone_plural:0 "Drones Ingenieros Supertensiles del Señor Supremo"
+  job_giga_overlord_megaengineer_drone_desc:99 "$job_giga_megaengineer_drone_desc$"
+  job_giga_overlord_megaengineer_drone_effect_desc:0 "£job_giga_overlord_megaengineer_drone£ $job_giga_overlord_megaengineer_drone_plural$ convierten Sujeto £alloys£ §Y$alloys$§! y £unity£ §Y$unity$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! para el Señor Supremo."
+  job_giga_overlord_megaengineer_drone_swap_plural_with_icon:99 "[giga_overlord_megaengineer_drone.GetIcon] [giga_overlord_megaengineer_drone.GetNamePlural]"
+  mod_job_giga_overlord_megaengineer_drone_add:0 "Trabajos de $job_giga_overlord_megaengineer_drone$"
+  mod_job_giga_overlord_megaengineer_drone_per_pop:0 "§G+1§! Trabajo de $job_giga_overlord_megaengineer_drone$ por cada $VALUE$ Poblaciones"
+  mod_job_giga_overlord_megaengineer_drone_per_pop_short:0 "\n§G+1§! £mod_job_giga_overlord_megaengineer_add£ por cada $VALUE$ £pop£"
+  
+  ############################################################################################################
+  # COUNTRY MODIFIERS
+  
+  giga_amb_base:0 "Mecánicas de Megaconstrucción Basadas en Trabajos"
+  giga_amb_base_tooltip:0 "Nuestro $MOD_MEGASTRUCTURE_BUILD_SPEED_ADD$ se basa en los ingresos de nuestro imperio de £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!.\n\nCada mes, cuando se está construyendo al menos una megaestructura, hasta el doble de nuestros ingresos de £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! se resta de nuestro acopio y se convierte en $MOD_MEGASTRUCTURE_BUILD_SPEED_ADD$. Este valor luego se divide entre todas las megaestructuras en construcción, y está sujeto a rendimientos decrecientes §Ydespués§! de ser dividido.\n\nVea el modificador de país §Y$giga_amb_speed$§! para detalles sobre cómo se calcula la velocidad."
+  giga_amb_base_desc:0 "§LSe requiere personal capacitado y materiales especializados para superar a las estrellas mismas.§!"
+  
+  giga_amb_storage_capacity:0 "Capacidad de Almacenamiento de $giga_sr_amb_megaconstruction$"
+  giga_amb_storage_capacity_tooltip:0 "La capacidad de almacenamiento de £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! es limitada y no se incrementa por los modificadores generales £mod_country_resource_max_add£ §Y$MOD_COUNTRY_RESOURCE_MAX_ADD$§!"
+  giga_amb_storage_capacity_desc:0 "§LRaros y preciosos, debemos almacenar nuestros materiales más avanzados con gran cuidado.§!"
+  
+  giga_amb_speed:0 "Velocidad de Megaconstrucción"
+  giga_amb_speed_desc:0 "§LCon expertos y materiales en suministro limitado, debemos elegir cuidadosamente dónde los desplegamos.§!"
+  
+  giga_amb_flat_replacement:0 "Compatibilidad de Megaconstrucción"
+  giga_amb_flat_replacement_desc:0 "Otro mod está proporcionando una fuente de $MOD_MEGASTRUCTURE_BUILD_SPEED_ADD$. Este modificador lo anula y proporciona un bono de reemplazo adecuado para el sistema de megaconstrucción basado en trabajos.\n§W--------------§!\n§LUna corrección concisa de la metodología a escala mega.§!"
+  
+  giga_amb_ai_limit:0 "Límite de IA de Megaconstrucción"
+  giga_amb_ai_limit_tooltip:0 "Limita artificialmente el número de megaestructuras que la IA puede construir a la vez, porque no entienden el concepto de repartir su velocidad de construcción entre varios proyectos, y tienden a repartirla demasiado cuando hay muchos proyectos disponibles.\n\nGeneralmente intentará mantenerse a 0.75-0.5 velocidad por proyecto cuando está al máximo. Actualiza anualmente.\n\nVea el modificador de país §Y$giga_amb_speed$§! para el valor del límite."
+  giga_amb_ai_limit_desc:0 "§L\"¿Por qué estás construyendo DIEZ segmentos de mundo anillo con una velocidad de 1.4?!\" - TTFTCUTS§!"
+  
+  giga_amb_empire_size_penalty:0 "Sanciones por Tamaño del Imperio de Megaconstrucción"
+  giga_amb_empire_size_penalty_desc:0 "§LUn medida que aumenta nuestra carga administrativa, coordinar proyectos entre nuestros mundos se vuelve más engorroso.§!"
+  
+  giga_amb_starting_megas_upkeep_offset:0 "Apoyo al Mantenimiento de Megaestructuras Iniciales"
+  giga_amb_starting_megas_upkeep_offset_desc:0 "Paga el mantenimiento base de $giga_sr_amb_megaconstruction$ de cualquier megaestructura poseída al inicio del juego.\n\n§LDejar nuestras instalaciones espaciales más importantes sin mantenimiento sería pura negligencia.§!"
+  
+  ############################################################################################################
+  # RESOURCES
+  
+  giga_sr_amb_megaconstruction:0 "Materiales Supertensiles"
+  giga_sr_amb_megaconstruction_desc_only:0 "Capaces de resistir niveles increíbles de tensión, estos materiales avanzados son esenciales en la construcción de las instalaciones espaciales más grandes."
+  giga_sr_amb_megaconstruction_desc:0 "$giga_sr_amb_megaconstruction_desc_only$\n\n§LEste recurso se utiliza cuando la opción §YLímite de Construcción de Megaestructuras§! en el menú de personalización de Gigastructures está configurada en §YBasad-Trabj§!.§!"
+  
+  ############################################################################################################
+  # TECHNOLOGIES
+  
+  giga_tech_amb_supertensiles:0 "Supertensiles Aplicados"
+  giga_tech_amb_supertensiles_desc:0 "Los métodos mejorados de síntesis molecular permiten la aplicación práctica de materiales con una resistencia a la tensión casi inimaginable."
+  
+  giga_tech_amb_living_metal_infusion:0 "Proceso de Infusión de Metal Vivo"
+  giga_tech_amb_living_metal_infusion_desc:0 "Las propiedades regenerativas del metal vivo podrían teóricamente ser explotadas para mejorar la calidad y la producción de nuestras fundiciones moleculares."
+  
+  giga_tech_amb_sentient_metal_molecular_foundries:0 "Nanocomputación Industrial de Metal Sentiente"
+  giga_tech_amb_sentient_metal_molecular_foundries_desc:0 "El equipo de procesamiento que incorpora la capacidad de computación a escala nanométrica del metal sensible podría llevar a mejoras dramáticas en el rendimiento de la fundición molecular."
+  
+  giga_tech_orbital_ring_supertensiles_mine_hub:0 "Diseño de Salas Limpias Moleculares Cero-G"
+  giga_tech_orbital_ring_supertensiles_mine_hub_desc:0 "Los espacios de procesamiento dedicados a $giga_sr_amb_megaconstruction$ en nuestros anillos orbitales tienen el potencial de impulsar significativamente las operaciones locales de extracción y procesamiento."
+  
+  giga_tech_fe_megaworkshop_1:99 "$building_giga_fe_megaworkshop$"
+  giga_tech_fe_megaworkshop_1_desc:99 "$building_giga_fe_megaworkshop_desc$"
+  
+  giga_tech_fe_megaworkshop_2:99 "$building_giga_fe_megaworkshop_2$"
+  giga_tech_fe_megaworkshop_2_desc:99 "$building_giga_fe_megaworkshop_2_desc$"
+  
+  ############################################################################################################
+  # DISTRICTS
+  
+  district_giga_supertensiles:0 "Distrito de Fundición Molecular"
+  district_giga_supertensiles_plural:0 "Distritos de Fundición Molecular"
+  district_giga_supertensiles_desc:99 "$building_giga_megaworkshop_desc$"
+  
+  ############################################################################################################
+  # DEPOSITS
+  
+  d_giga_amb_start_bonus:0 "Caché de Materiales de Megaconstrucción"
+  d_giga_amb_start_bonus_desc:0 "§WLos recursos otorgados por este depósito disminuirán con el tiempo hasta un goteo a mitad de juego. Úselos sabiamente.§!\n§W--------------§!\nUn caché de materiales de construcción adecuados para la construcción espacial a gran escala. Desafortunadamente, no durará para siempre..."
+  
+  d_giga_hab_supertensiles_1:0 "Depósito de $giga_sr_amb_megaconstruction$"
+  d_giga_hab_supertensiles_1_desc:0 "Este Complejo de Hábitat está construido cerca de un depósito explotable de materiales supertensiles."
+  
+  d_giga_lifeless_supertensiles_1:0 "Depósito de $giga_sr_amb_megaconstruction$"
+  d_giga_lifeless_supertensiles_1_desc:0 "Este mundo tiene una fuente explotable de materiales supertensiles."
+  
+  ############################################################################################################
+  # COLONY DESIGNATIONS
+  
+  col_giga_supertensiles_foundry:0 "Centro de Megalogística"
+  col_giga_supertensiles_foundry_desc:0 "Este planeta es un centro de fabricación y logística que se centra en proyectos de construcción en el espacio profundo."
+  col_giga_supertensiles_foundry_tt:99 "$col_giga_supertensiles_foundry_desc$"
+  
+  col_giga_habitat_supertensiles_foundry:0 "Estación de Megalogística"
+  col_giga_habitat_supertensiles_foundry_desc:0 "Una arcología artificial en el espacio profundo dedicada a la fabricación de megaestructuras"
+  col_giga_habitat_supertensiles_foundry_tt:99 "$col_giga_habitat_supertensiles_foundry_desc$"
+  
+  ############################################################################################################
+  # EDICTS
+  
+  edict_giga_amb_sentient_metal_supertensiles:0 "Fundiciones Moleculares Asistidas por Metal Sentiente"
+  edict_giga_amb_sentient_metal_supertensiles_desc:0 "Las propiedades adaptativas del metal sensible tienen varias aplicaciones potenciales en la fabricación de materiales supertensiles.\n\nMejora la producción base y el mantenimiento de £job_giga_megaengineer£ §Y$job_giga_megaengineer_plural$§! en un §Y50%§!.\n\nMejora la producción base y el mantenimiento de £job_giga_megaengineering_overseer£ §Y$job_giga_megaengineering_overseer_plural$§! en un §Y20%§!.\n\nReemplaza §Yla mitad del mantenimiento de £alloys£ $alloys$§! de ambos trabajos con £giga_sr_sentient_metal£ §Y$giga_sr_sentient_metal$§!."
+  
+  ############################################################################################################
+  # EVENTS
+  
+  giga_amb.1000.name:0 "§Y[FromFrom.GetName]§!: Recurso Estratégico Descubierto"
+  giga_amb.1000.has_tech:0 "El [Root.GetName] ha descubierto una fuente previamente desconocida de §H$giga_sr_amb_megaconstruction$§! en [FromFrom.GetName]. Una vez pensado imposible en la naturaleza, parece que bajo condiciones muy específicas estas moléculas de cadena increíblemente fuertes son capaces de formarse. Este nuevo descubrimiento podría ser explotado para complementar nuestra producción de supertensiles artificiales."
+  giga_amb.1000.no_tech:0 "El [Root.GetName] ha descubierto un recurso estratégico previamente desconocido en [FromFrom.GetName], denominado §H$giga_sr_amb_megaconstruction$§!. Estas fibras densamente entrelazadas poseen un increíble nivel de resistencia a la tensión, que podría ser explotado en proyectos a gran escala donde las fuerzas involucradas anteriormente hacían la construcción inviable."
+  giga_amb.1000.tooltip:99 "£giga_sr_amb_megaconstruction£§Y$giga_sr_amb_megaconstruction$§!\n§E$giga_sr_amb_megaconstruction_desc_only$§!"
+  
+  giga_amb.1001.name:0 "Un Error Logístico"
+  giga_amb.1001.desc:0 "Cuando dimos nuestros primeros pasos en el vacío del espacio, sabíamos que habría nuevos desafíos que superar y planeamos en consecuencia, o eso creíamos. A veces, incluso las mejores estimaciones de la complejidad de un problema pueden ser incorrectas.\n\nLas realidades de organizar e implementar la construcción a gran escala en el espacio han demostrado ser más gravosas para nuestras líneas de suministro de lo que inicialmente se esperaba, y se requerirá una reestructuración significativa en el futuro.\n\nUna posible vía para la investigación de nuevas técnicas de fabricación y despliegue promete resolver estos problemas, pero aún no está probada."
+  giga_amb.1001.tooltip:0 "\n§EInvestigando §Y$giga_tech_amb_supertensiles$§! será §Prequerido§! para hacer cualquier progreso significativo en la megaestructura."
+  
+  ############################################################################################################
+  # STARBASE BUILDINGS
+  
+  sm_ring_giga_supertensiles_hub:0 "Coordinador de Red de Megalogística"
+  sm_ring_giga_supertensiles_hub_desc:0 "Esta instalación orbital ayuda a mejorar nuestras $building_giga_megaworkshop_plural$ en tierra utilizando $sr_living_metal$ para agilizar los procesos de producción, lo que lleva a un aumento general del rendimiento."
+  
+  sm_ring_giga_supertensiles_mine_hub:0 "Instalación de Sala Limpia Orbital"
+  sm_ring_giga_supertensiles_mine_hub_desc:0 "Las instalaciones de montaje especializadas y las salas limpias en el anillo orbital permiten el procesamiento de materiales extraídos que de otra manera se desperdiciarían.\n\n§TProporciona §G+1§! £job_giga_supertensiles_extractor£ §YExtracción de Supertensiles§! Trabajo por cada £building£ §Y$building_giga_supertensiles_mines$§! Edificio§!\n"
+  ring_giga_supertensiles_mine_hub_condition:0 "§REl planeta debe poder soportar al menos un £building£ §Y$building_giga_supertensiles_mines$§! Edificio.§!"
+  
+  
+  
+  
+  
+  
+  ############################################################################################################
+  ############################################################################################################
+  ############################################################################################################
+  
+  # ACOT COMPAT
+  
+  ############################################################################################################
+  ############################################################################################################
+  ############################################################################################################
+  
+  ############################################################################################################
+  # DELTA
+  
+  giga_tech_amb_supertensiles_acot_delta:0 "Producción de Supertensiles Infundidos con Materia Oscura"
+  giga_tech_amb_supertensiles_acot_delta_desc:0 "Los sistemas de luz dura basados en materia oscura tienen el potencial de revolucionar la síntesis molecular."
+  
+  job_giga_megaengineer_acot_delta:0 "Tecnología de Materia de Luz Dura"
+  job_giga_megaengineer_acot_delta_plural:0 "Tecnologías de Materia de Luz Dura"
+  job_giga_megaengineer_acot_delta_desc:0 "Las herramientas de luz dura y las técnicas de compresión de materia oscura han mejorado dramáticamente las tasas de síntesis de materiales."
+  job_giga_megaengineer_acot_delta_effect_desc:0 "$job_giga_megaengineer_acot_delta_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_acot_delta_swap_plural_with_icon:0 "[giga_megaengineer_acot_delta.GetIcon] [giga_megaengineer_acot_delta.GetNamePlural]"
+  mod_job_giga_megaengineer_acot_delta_add:0 "[giga_megaengineer_acot_delta.GetName] Jobs"
+  mod_job_giga_megaengineer_acot_delta_per_pop:0 "§G+1§! [giga_megaengineer_acot_delta.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_acot_delta_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_acot_delta_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineer_drone_acot_delta:0 "Dron de Materia de Luz Dura"
+  job_giga_megaengineer_drone_acot_delta_plural:0 "Drones de Materia de Luz Dura"
+  job_giga_megaengineer_drone_acot_delta_desc:0 "Las herramientas de luz dura y las técnicas de compresión de materia oscura han mejorado dramáticamente las tasas de síntesis de materiales."
+  job_giga_megaengineer_drone_acot_delta_effect_desc:0 "$job_giga_megaengineer_drone_acot_delta_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_drone_acot_delta_swap_plural_with_icon:0 "[giga_megaengineer_drone_acot_delta.GetIcon] [giga_megaengineer_drone_acot_delta.GetNamePlural]"
+  mod_job_giga_megaengineer_drone_acot_delta_add:0 "[giga_megaengineer_drone_acot_delta.GetName] Jobs"
+  mod_job_giga_megaengineer_drone_acot_delta_per_pop:0 "§G+1§! [giga_megaengineer_drone_acot_delta.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_drone_acot_delta_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_drone_acot_delta_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_acot_delta:0 "Señor de la Megaconstrucción"
+  job_giga_megaengineering_overseer_acot_delta_plural:0 "Señores de la Megaconstrucción"
+  job_giga_megaengineering_overseer_acot_delta_desc:0 "Siguiendo los pasos de los precursores y sus formidables proyectos de construcción, nuestros propios expertos están abriéndose camino en el campo."
+  job_giga_megaengineering_overseer_acot_delta_effect_desc:0 "$job_giga_megaengineering_overseer_acot_delta_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_acot_delta_swap_plural_with_icon:0 "[giga_megaengineering_overseer_acot_delta.GetIcon] [giga_megaengineering_overseer_acot_delta.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_acot_delta_add:0 "[giga_megaengineering_overseer_acot_delta.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_acot_delta_per_pop:0 "§G+1§! [giga_megaengineering_overseer_acot_delta.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_acot_delta_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_acot_delta_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_drone_acot_delta:0 "Supermente de la Megaconstrucción"
+  job_giga_megaengineering_overseer_drone_acot_delta_plural:0 "Supermentes de la Megaconstrucción"
+  job_giga_megaengineering_overseer_drone_acot_delta_desc:0 "Siguiendo los pasos de los precursores y sus formidables proyectos de construcción, nuestros propios expertos están abriéndose camino en el campo."
+  job_giga_megaengineering_overseer_drone_acot_delta_effect_desc:0 "$job_giga_megaengineering_overseer_drone_acot_delta_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_drone_acot_delta_swap_plural_with_icon:0 "[giga_megaengineering_overseer_drone_acot_delta.GetIcon] [giga_megaengineering_overseer_drone_acot_delta.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_drone_acot_delta_add:0 "[giga_megaengineering_overseer_drone_acot_delta.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_drone_acot_delta_per_pop:0 "§G+1§! [giga_megaengineering_overseer_drone_acot_delta.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_drone_acot_delta_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_drone_acot_delta_add£ per $VALUE$ £pop£"
+  
+  building_giga_megaworkshop_acot_delta:0 "Fundición Molecular Oscura"
+  building_giga_megaworkshop_acot_delta_plural:0 "Fundiciones Moleculares Oscuras"
+  building_giga_megaworkshop_acot_delta_desc:0 "La tecnología de luz dura nos ha dado pinzas atómicas más precisas y flexibles que cualquier herramienta anterior."
+  mod_planet_building_giga_megaworkshop_acot_delta_build_speed_mult:0 "$building_giga_megaworkshop_acot_delta$ Velocidad de Construcción"
+  
+  building_giga_megaworkshop_hub_acot_delta:0 "Centro Logístico de Megaconstrucción Delta"
+  building_giga_megaworkshop_hub_acot_delta_plural:0 "Centros Logísticos de Megaconstrucción Delta"
+  building_giga_megaworkshop_hub_acot_delta_desc:0 "Los amarres de materia oscura y los sumideros de gravedad facilitan el levantamiento de grandes cantidades de material - nuestros proyectos de construcción orbital nunca han sido más fluidos."
+  building_giga_megaworkshop_hub_acot_delta_count_condition:99 ""
+  mod_planet_building_giga_megaworkshop_hub_acot_delta_build_speed_mult:0 "$building_giga_megaworkshop_hub_acot_delta$ Velocidad de Construcción"
+  
+  ############################################################################################################
+  # ALPHA
+  
+  giga_tech_amb_supertensiles_acot_alpha:0 "Metodología de Megaconstrucción del Proyecto Alfa"
+  giga_tech_amb_supertensiles_acot_alpha_desc:0 "El análisis de los diseños de materiales precursores nos ha llevado a nuevas alturas en la fabricación molecular."
+  
+  job_giga_megaengineer_acot_alpha:0 "Sintetizador de Materia Alfa"
+  job_giga_megaengineer_acot_alpha_plural:0 "Sintetizadores de Materia Alfa"
+  job_giga_megaengineer_acot_alpha_desc:0 "Las técnicas de síntesis basadas en energía oscura han elevado el nivel en la tasa y calidad de la producción de material supertensil."
+  job_giga_megaengineer_acot_alpha_effect_desc:0 "$job_giga_megaengineer_acot_alpha_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_acot_alpha_swap_plural_with_icon:0 "[giga_megaengineer_acot_alpha.GetIcon] [giga_megaengineer_acot_alpha.GetNamePlural]"
+  mod_job_giga_megaengineer_acot_alpha_add:0 "[giga_megaengineer_acot_alpha.GetName] Jobs"
+  mod_job_giga_megaengineer_acot_alpha_per_pop:0 "§G+1§! [giga_megaengineer_acot_alpha.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_acot_alpha_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_acot_alpha_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineer_drone_acot_alpha:0 "Dron de Materia Alfa"
+  job_giga_megaengineer_drone_acot_alpha_plural:0 "Drones de Materia Alfa"
+  job_giga_megaengineer_drone_acot_alpha_desc:0 "Las técnicas de síntesis basadas en energía oscura han elevado el nivel en la tasa y calidad de la producción de material supertensil."
+  job_giga_megaengineer_drone_acot_alpha_effect_desc:0 "$job_giga_megaengineer_drone_acot_alpha_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_drone_acot_alpha_swap_plural_with_icon:0 "[giga_megaengineer_drone_acot_alpha.GetIcon] [giga_megaengineer_drone_acot_alpha.GetNamePlural]"
+  mod_job_giga_megaengineer_drone_acot_alpha_add:0 "[giga_megaengineer_drone_acot_alpha.GetName] Jobs"
+  mod_job_giga_megaengineer_drone_acot_alpha_per_pop:0 "§G+1§! [giga_megaengineer_drone_acot_alpha.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_drone_acot_alpha_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_drone_acot_alpha_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_acot_alpha:0 "Señor de la Megaconstrucción Alfa"
+  job_giga_megaengineering_overseer_acot_alpha_plural:0 "Señores de la Megaconstrucción Alfa"
+  job_giga_megaengineering_overseer_acot_alpha_desc:0 "Empujando el sobre aún más, nuestros expertos en megaconstrucción ahora están planeando cosas que los precursores nunca soñaron."
+  job_giga_megaengineering_overseer_acot_alpha_effect_desc:0 "$job_giga_megaengineering_overseer_acot_alpha_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_acot_alpha_swap_plural_with_icon:0 "[giga_megaengineering_overseer_acot_alpha.GetIcon] [giga_megaengineering_overseer_acot_alpha.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_acot_alpha_add:0 "[giga_megaengineering_overseer_acot_alpha.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_acot_alpha_per_pop:0 "§G+1§! [giga_megaengineering_overseer_acot_alpha.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_acot_alpha_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_acot_alpha_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_drone_acot_alpha:0 "Supermente de la Megaconstrucción Alfa"
+  job_giga_megaengineering_overseer_drone_acot_alpha_plural:0 "Supermentes de la Megaconstrucción Alfa"
+  job_giga_megaengineering_overseer_drone_acot_alpha_desc:0 "Empujando el sobre aún más, nuestros expertos en megaconstrucción ahora están planeando cosas que los precursores nunca soñaron."
+  job_giga_megaengineering_overseer_drone_acot_alpha_effect_desc:0 "$job_giga_megaengineering_overseer_drone_acot_alpha_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £sr_dark_matter£ §Y$sr_dark_matter$§!, y £acot_sr_dark_energy£ §Y$acot_sr_dark_energy$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_drone_acot_alpha_swap_plural_with_icon:0 "[giga_megaengineering_overseer_drone_acot_alpha.GetIcon] [giga_megaengineering_overseer_drone_acot_alpha.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_drone_acot_alpha_add:0 "[giga_megaengineering_overseer_drone_acot_alpha.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_drone_acot_alpha_per_pop:0 "§G+1§! [giga_megaengineering_overseer_drone_acot_alpha.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_drone_acot_alpha_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_drone_acot_alpha_add£ per $VALUE$ £pop£"
+  
+  building_giga_megaworkshop_acot_alpha:0 "Arreglo Molecular Alfa"
+  building_giga_megaworkshop_acot_alpha_plural:0 "Arreglo Molecular Alfa"
+  building_giga_megaworkshop_acot_alpha_desc:0 "Los desarrollos adicionales en la canalización de energía oscura nos permiten tejer materiales cada vez más densos y fuertes."
+  mod_planet_building_giga_megaworkshop_acot_alpha_build_speed_mult:0 "$building_giga_megaworkshop_acot_alpha$ Velocidad de Construcción"
+  
+  building_giga_megaworkshop_hub_acot_alpha:0 "Centro Logístico de Megaconstrucción Alfa"
+  building_giga_megaworkshop_hub_acot_alpha_plural:0 "Centros Logísticos de Megaconstrucción Alfa"
+  building_giga_megaworkshop_hub_acot_alpha_desc:0 "El Proyecto Alfa nos ha proporcionado muchas ideas sobre las técnicas de planificación logística empleadas por los precursores, y cómo pueden ser mejoradas."
+  building_giga_megaworkshop_hub_acot_alpha_count_condition:99 ""
+  mod_planet_building_giga_megaworkshop_hub_acot_alpha_build_speed_mult:0 "$building_giga_megaworkshop_hub_acot_alpha$ Velocidad de Construcción"
+  
+  ############################################################################################################
+  # PHANON
+  
+  giga_tech_amb_supertensiles_acot_phanon:0 "Técnicas de Manipulación de Materia Rúnica"
+  giga_tech_amb_supertensiles_acot_phanon_desc:0 "Las propiedades esotéricas del poder rúnico prometen mejoras significativas en el campo de la megaconstrucción."
+  
+  job_giga_megaengineer_acot_phanon:0 "Mago de Materia Rúnica"
+  job_giga_megaengineer_acot_phanon_plural:0 "Magos de Materia Rúnica"
+  job_giga_megaengineer_acot_phanon_desc:0 "Un título mayormente ceremonial, los magos de materia son expertos en usar el poder rúnico para manipular materiales a nivel subatómico."
+  job_giga_megaengineer_acot_phanon_effect_desc:0 "$job_giga_megaengineer_acot_phanon_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £aot_sr_runic_power£ §Y$aot_sr_runic_power$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_acot_phanon_swap_plural_with_icon:0 "[giga_megaengineer_acot_phanon.GetIcon] [giga_megaengineer_acot_phanon.GetNamePlural]"
+  mod_job_giga_megaengineer_acot_phanon_add:0 "[giga_megaengineer_acot_phanon.GetName] Jobs"
+  mod_job_giga_megaengineer_acot_phanon_per_pop:0 "§G+1§! [giga_megaengineer_acot_phanon.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_acot_phanon_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_acot_phanon_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineer_drone_acot_phanon:0 "Manipulador de Materia Rúnica"
+  job_giga_megaengineer_drone_acot_phanon_plural:0 "Manipuladores de Materia Rúnica"
+  job_giga_megaengineer_drone_acot_phanon_desc:0 "Estos drones especializados son hábiles en el uso de energía rúnica para manipular materiales a nivel subatómico."
+  job_giga_megaengineer_drone_acot_phanon_effect_desc:0 "$job_giga_megaengineer_drone_acot_phanon_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £aot_sr_runic_power£ §Y$aot_sr_runic_power$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_drone_acot_phanon_swap_plural_with_icon:0 "[giga_megaengineer_drone_acot_phanon.GetIcon] [giga_megaengineer_drone_acot_phanon.GetNamePlural]"
+  mod_job_giga_megaengineer_drone_acot_phanon_add:0 "[giga_megaengineer_drone_acot_phanon.GetName] Jobs"
+  mod_job_giga_megaengineer_drone_acot_phanon_per_pop:0 "§G+1§! [giga_megaengineer_drone_acot_phanon.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_drone_acot_phanon_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_drone_acot_phanon_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_acot_phanon:0 "Archidemonio de Megaconstrucción"
+  job_giga_megaengineering_overseer_acot_phanon_plural:0 "Archidemonios de Megaconstrucción"
+  job_giga_megaengineering_overseer_acot_phanon_desc:0 "El centro neurálgico de nuestros esfuerzos de megaconstrucción, estos individuos utilizan redes de procesamiento rúnicas para gestionar y distribuir órdenes de trabajo con una eficiencia inimaginable."
+  job_giga_megaengineering_overseer_acot_phanon_effect_desc:0 "$job_giga_megaengineering_overseer_acot_phanon_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £aot_sr_runic_power£ §Y$aot_sr_runic_power$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_acot_phanon_swap_plural_with_icon:0 "[giga_megaengineering_overseer_acot_phanon.GetIcon] [giga_megaengineering_overseer_acot_phanon.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_acot_phanon_add:0 "[giga_megaengineering_overseer_acot_phanon.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_acot_phanon_per_pop:0 "§G+1§! [giga_megaengineering_overseer_acot_phanon.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_acot_phanon_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_acot_phanon_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_drone_acot_phanon:0 "Cúmulo de Demonios de Megaconstrucción"
+  job_giga_megaengineering_overseer_drone_acot_phanon_plural:0 "Cúmulos de Demonios de Megaconstrucción"
+  job_giga_megaengineering_overseer_drone_acot_phanon_desc:0 "El centro neurálgico de nuestros esfuerzos de megaconstrucción, estos enormes cúmulos de drones utilizan redes de procesamiento rúnicas para gestionar y distribuir órdenes de trabajo con una eficiencia inimaginable."
+  job_giga_megaengineering_overseer_drone_acot_phanon_effect_desc:0 "$job_giga_megaengineering_overseer_drone_acot_phanon_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £aot_sr_runic_power£ §Y$aot_sr_runic_power$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_drone_acot_phanon_swap_plural_with_icon:0 "[giga_megaengineering_overseer_drone_acot_phanon.GetIcon] [giga_megaengineering_overseer_drone_acot_phanon.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_drone_acot_phanon_add:0 "[giga_megaengineering_overseer_drone_acot_phanon.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_drone_acot_phanon_per_pop:0 "§G+1§! [giga_megaengineering_overseer_drone_acot_phanon.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_drone_acot_phanon_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_drone_acot_phanon_add£ per $VALUE$ £pop£"
+  
+  building_giga_megaworkshop_acot_phanon:0 "Sintetizador Molecular Rúnico"
+  building_giga_megaworkshop_acot_phanon_plural:0 "Sintetizadores Moleculares Rúnicos"
+  building_giga_megaworkshop_acot_phanon_desc:0 "Con las propiedades casi mágicas de la energía rúnica, nuestros diseños de materiales están limitados solo por nuestra imaginación."
+  mod_planet_building_giga_megaworkshop_acot_phanon_build_speed_mult:0 "Velocidad de Construcción de $building_giga_megaworkshop_acot_phanon$"
+  
+  building_giga_megaworkshop_hub_acot_phanon:0 "Centro Logístico de Megaconstrucción Rúnica"
+  building_giga_megaworkshop_hub_acot_phanon_plural:0 "Centros Logísticos de Megaconstrucción Rúnica"
+  building_giga_megaworkshop_hub_acot_phanon_desc:0 "Constructos misteriosos al borde de la comprensión doblan la realidad para exprimir aún más suministros en un solo contenedor de almacenamiento para el transporte."
+  building_giga_megaworkshop_hub_acot_phanon_count_condition:99 ""
+  mod_planet_building_giga_megaworkshop_hub_acot_phanon_build_speed_mult:0 "Velocidad de Construcción de $building_giga_megaworkshop_hub_acot_phanon$"
+  
+  ############################################################################################################
+  # SIGMA
+  
+  giga_tech_amb_supertensiles_acot_sigma:0 "Fusión Estelar de Masa Aplicada"
+  giga_tech_amb_supertensiles_acot_sigma_desc:0 "Nuestro dominio sobre el stellarite nos permite remodelar el mundo a nuestro gusto, hasta el nivel subatómico."
+  
+  job_giga_megaengineer_acot_sigma:0 "Sintetizador Estelar"
+  job_giga_megaengineer_acot_sigma_plural:0 "Sintetizadores Estelares"
+  job_giga_megaengineer_acot_sigma_desc:0 "Estos especialistas utilizan el poder del stellarite para fusionar materiales a granel en componentes de construcción avanzados."
+  job_giga_megaengineer_acot_sigma_effect_desc:0 "$job_giga_megaengineer_acot_sigma_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £acot_sr_stellarite£ §Y$acot_sr_stellarite$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_acot_sigma_swap_plural_with_icon:0 "[giga_megaengineer_acot_sigma.GetIcon] [giga_megaengineer_acot_sigma.GetNamePlural]"
+  mod_job_giga_megaengineer_acot_sigma_add:0 "[giga_megaengineer_acot_sigma.GetName] Jobs"
+  mod_job_giga_megaengineer_acot_sigma_per_pop:0 "§G+1§! [giga_megaengineer_acot_sigma.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_acot_sigma_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_acot_sigma_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineer_drone_acot_sigma:0 "Dron de Síntesis Estelar"
+  job_giga_megaengineer_drone_acot_sigma_plural:0 "Drones de Síntesis Estelar"
+  job_giga_megaengineer_drone_acot_sigma_desc:0 "Estos drones especializados utilizan el poder del stellarite para fusionar materiales a granel en componentes de construcción avanzados."
+  job_giga_megaengineer_drone_acot_sigma_effect_desc:0 "$job_giga_megaengineer_drone_acot_sigma_swap_plural_with_icon$ convierten £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £acot_sr_stellarite£ §Y$acot_sr_stellarite$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§!"
+  job_giga_megaengineer_drone_acot_sigma_swap_plural_with_icon:0 "[giga_megaengineer_drone_acot_sigma.GetIcon] [giga_megaengineer_drone_acot_sigma.GetNamePlural]"
+  mod_job_giga_megaengineer_drone_acot_sigma_add:0 "[giga_megaengineer_drone_acot_sigma.GetName] Jobs"
+  mod_job_giga_megaengineer_drone_acot_sigma_per_pop:0 "§G+1§! [giga_megaengineer_drone_acot_sigma.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineer_drone_acot_sigma_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineer_drone_acot_sigma_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_acot_sigma:0 "Señor Celestial"
+  job_giga_megaengineering_overseer_acot_sigma_plural:0 "Señores Celestiales"
+  job_giga_megaengineering_overseer_acot_sigma_desc:0 "Sosteniendo dominio sobre nuestros esfuerzos de construcción interestelares, estos individuos manejan el poder de las estrellas mismas."
+  job_giga_megaengineering_overseer_acot_sigma_effect_desc:0 "$job_giga_megaengineering_overseer_acot_sigma_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £acot_sr_stellarite£ §Y$acot_sr_stellarite$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_acot_sigma_swap_plural_with_icon:0 "[giga_megaengineering_overseer_acot_sigma.GetIcon] [giga_megaengineering_overseer_acot_sigma.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_acot_sigma_add:0 "[giga_megaengineering_overseer_acot_sigma.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_acot_sigma_per_pop:0 "§G+1§! [giga_megaengineering_overseer_acot_sigma.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_acot_sigma_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_acot_sigma_add£ per $VALUE$ £pop£"
+  
+  job_giga_megaengineering_overseer_drone_acot_sigma:0 "Mente Celestial"
+  job_giga_megaengineering_overseer_drone_acot_sigma_plural:0 "Mentes Celestiales"
+  job_giga_megaengineering_overseer_drone_acot_sigma_desc:0 "Sosteniendo dominio sobre nuestros esfuerzos de construcción interestelares, estos grupos de drones especializados manejan el poder de las estrellas mismas."
+  job_giga_megaengineering_overseer_drone_acot_sigma_effect_desc:0 "$job_giga_megaengineering_overseer_drone_acot_sigma_swap_plural_with_icon$ convierten grandes cantidades de £alloys£ §Y$alloys$§!, £unity£ §Y$unity$§!, £energy£ §Y$energy$§!, y £acot_sr_stellarite£ §Y$acot_sr_stellarite$§! en £giga_sr_amb_megaconstruction£ §Y$giga_sr_amb_megaconstruction$§! pero tienen un mantenimiento aumentado"
+  job_giga_megaengineering_overseer_drone_acot_sigma_swap_plural_with_icon:0 "[giga_megaengineering_overseer_drone_acot_sigma.GetIcon] [giga_megaengineering_overseer_drone_acot_sigma.GetNamePlural]"
+  mod_job_giga_megaengineering_overseer_drone_acot_sigma_add:0 "[giga_megaengineering_overseer_drone_acot_sigma.GetName] Jobs"
+  mod_job_giga_megaengineering_overseer_drone_acot_sigma_per_pop:0 "§G+1§! [giga_megaengineering_overseer_drone_acot_sigma.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_megaengineering_overseer_drone_acot_sigma_per_pop_short:0 "\n§G+1§! £mod_job_giga_megaengineering_overseer_drone_acot_sigma_add£ per $VALUE$ £pop£"
+  
+  building_giga_megaworkshop_acot_sigma:0 "Matriz de Fusión Estelar"
+  building_giga_megaworkshop_acot_sigma_plural:0 "Matrices de Fusión Estelar"
+  building_giga_megaworkshop_acot_sigma_desc:0 "El poder de las primeras estrellas está ahora a nuestra disposición. Fusionar materiales de cualquier calidad a partir de materia base es trivial, aunque las cantidades requeridas son significativas."
+  mod_planet_building_giga_megaworkshop_acot_sigma_build_speed_mult:0 "$building_giga_megaworkshop_acot_sigma$ Velocidad de Construcción"
+  
+  building_giga_megaworkshop_hub_acot_sigma:0 "Centro Logístico de Megaconstrucción Sigma"
+  building_giga_megaworkshop_hub_acot_sigma_plural:0 "Centros Logísticos de Megaconstrucción Sigma"
+  building_giga_megaworkshop_hub_acot_sigma_desc:0 "Nuestro dominio sobre el cosmos es innegable. Las estrellas mismas se doblegan a nuestra voluntad, y nuestro alcance es ilimitado."
+  building_giga_megaworkshop_hub_acot_sigma_count_condition:99 ""
+  mod_planet_building_giga_megaworkshop_hub_acot_sigma_build_speed_mult:0 "$building_giga_megaworkshop_hub_acot_sigma$ Velocidad de Construcción"

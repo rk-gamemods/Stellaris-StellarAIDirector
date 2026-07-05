@@ -1,0 +1,79 @@
+namespace = giga_squareworld_origin
+
+### Game Start
+country_event = {
+	id = giga_squareworld_origin.001
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_origin = origin_squareworld
+		# is_ai = no
+	}
+
+	immediate = {
+		set_country_flag = squareworld_expedition
+		capital_scope = {
+			# Clears the standard districts/deposits
+            prevent_anomaly = yes
+            trigger_megastructure_icon = yes
+            clear_blockers = yes
+			clear_deposits = yes
+			remove_all_districts = yes
+
+            giga_generate_starting_ringworld_districts = yes
+            ## remove the mineral deposit from the effect
+            if = {
+                limit = {
+                    has_deposit = d_great_ring_excavated_mountain
+                }
+                remove_deposit = d_great_ring_excavated_mountain
+            }
+
+            # add the special mining district in the first available secondary district
+            if = {
+                limit = { has_district = district_rw_urban_2 }
+                add_district = district_rw_urban_3
+                add_zone = {
+                    district = district_rw_urban_3
+                    zone = zone_squareworld_livingmetal
+                    zone_slot = 0
+                    replace = yes
+                }
+            }
+            else = {
+                add_district = district_rw_urban_2
+                add_zone = {
+                    district = district_rw_urban_2
+                    zone = zone_squareworld_livingmetal
+                    zone_slot = 0
+                    replace = yes
+                }
+            }
+
+            add_deposit = d_segment_rubble_3
+            add_deposit = d_segment_rubble_4
+            add_deposit = d_decrepit_tunnels_squareworld
+
+			# Adding Pop to make up for lost Slums/Collapsed Burrows deposits
+			create_pop_group = { species = owner }
+
+			# Adds Squareworld Modifier
+			add_modifier = { modifier = square_ringworld days = -1 }
+
+			# Force Demotes the unemployed specialist pops
+			# every_owned_pop_group = { clear_pop_category = yes }
+
+            #gas deposit for exotic metabolism empires
+            generate_home_planet_final_pass = yes
+
+            if = { #Galvanic civic game start compat due to deposits being wiped
+                limit = { owner = { is_galvanic_empire = yes } }
+                if = {
+                    limit = { NOT = { has_deposit = d_galvanic_living_metal } }
+                    add_deposit = d_galvanic_living_metal
+                }
+            }
+		}
+	}
+}

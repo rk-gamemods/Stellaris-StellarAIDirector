@@ -1,0 +1,32 @@
+if = {
+	limit = {
+		years_passed > 44
+		num_owned_planets > $PLANETS$
+		count_owned_planet = {
+			limit = {
+				planet = { has_planet_flag = stellarai_research_plan_claimed }
+			}
+			count < $COUNT$
+		}
+	}
+	random_owned_planet = {
+		limit = {
+			planet = {
+				stellarai_research_claim_candidate = yes
+				stellarai_good_research_candidate = yes
+			}
+		}
+		weights = {
+			base = 10
+			modifier = {
+				factor = 0.25
+				planet = { has_planet_flag = stellarai_rural_commitment_soft }
+			}
+			modifier = {
+				factor = 0.10
+				planet = { has_planet_flag = stellarai_industry_commitment_soft }
+			}
+		}
+		planet = { set_planet_flag = stellarai_research_plan_claimed }
+	}
+}

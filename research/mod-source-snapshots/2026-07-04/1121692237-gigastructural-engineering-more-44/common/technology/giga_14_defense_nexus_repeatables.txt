@@ -1,0 +1,225 @@
+###PDN Repeats Changes
+
+#First upgrade
+giga_tech_defense_nexus_capacity_1 = {
+	cost = @tier4cost3
+	area = engineering
+	tier = 4
+	category = { voidcraft }
+	prerequisites = { "giga_tech_planetary_drive_yard_defense" } 
+	weight = @tier4weight3
+	prereqfor_desc = {
+		custom = { title = "allow_defense_nexus_capacity_1"	desc = "allow_defense_nexus_capacity_1" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = planetshipyard_disabled }
+	}
+
+	modifier = {
+		weapon_type_strike_craft_speed_mult = 0.10
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_defense_nexus_capacity_1
+		}
+		modifier = { factor = 0 not = { any_owned_megastructure = { is_megastructure_type = planetary_drive_yard_1_fortress } } }
+	}
+
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_weak
+	}
+}
+
+giga_tech_defense_nexus_production_1 = {
+	cost = @tier4cost3
+	area = engineering
+	tier = 4
+	category = { voidcraft }
+	prerequisites = { "giga_tech_planetary_drive_yard_defense" } 
+	weight = @tier4weight3
+	prereqfor_desc = {
+		custom = { title = "allow_defense_nexus_production_1"	desc = "allow_defense_nexus_production_1" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = planetshipyard_disabled }
+	}
+
+	modifier = {
+		starbase_shipyard_build_speed_mult = 0.10
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_defense_nexus_production_1
+		}
+		modifier = { factor = 0 not = { any_owned_megastructure = { is_megastructure_type = planetary_drive_yard_1_fortress } } }
+	}
+
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_weak
+	}
+}
+
+giga_tech_defense_nexus_damage_1 = {
+	cost = @tier5cost2
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	prerequisites = { "giga_tech_defense_nexus_capacity_1" "giga_tech_defense_nexus_production_1" } 
+	weight = @tier5weight2
+	prereqfor_desc = {
+		custom = { title = "allow_defense_nexus_damage_1"	desc = "allow_defense_nexus_damage_1" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = planetshipyard_disabled }
+	}
+
+	modifier = {
+		weapon_type_strike_craft_weapon_damage_mult = 0.10
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_defense_nexus_damage_1
+		}
+		modifier = { factor = 0 not = { any_owned_megastructure = { is_megastructure_type = planetary_drive_yard_1_fortress } } }
+	}
+
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_weak
+	}
+}
+
+giga_tech_defense_nexus_capacity_2 = {
+	cost = @tier5cost2
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	prerequisites = { "giga_tech_defense_nexus_damage_1" } 
+	weight = @tier5weight2
+	prereqfor_desc = {
+		custom = { title = "allow_defense_nexus_capacity_2"	desc = "allow_defense_nexus_capacity_2" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = planetshipyard_disabled }
+	}
+
+	modifier = {
+		weapon_type_strike_craft_speed_mult = 0.10
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_defense_nexus_capacity_2
+		}
+		modifier = { factor = 0 not = { any_owned_megastructure = { is_megastructure_type = planetary_drive_yard_1_fortress } } }
+	}
+
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_weak
+	}
+}
+
+giga_tech_defense_nexus_damage_2 = {
+	cost = @tier5cost3
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	prerequisites = { "giga_tech_defense_nexus_damage_1" } 
+	weight = @tier5weight3
+	prereqfor_desc = {
+		custom = { title = "allow_defense_nexus_damage_2"	desc = "allow_defense_nexus_damage_2" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = planetshipyard_disabled }
+	}
+
+	modifier = {
+		weapon_type_strike_craft_weapon_damage_mult = 0.10
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_defense_nexus_damage_2
+		}
+		modifier = { factor = 0 not = { any_owned_megastructure = { is_megastructure_type = planetary_drive_yard_1_fortress } } }
+	}
+
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_weak
+	}
+}
+
+giga_tech_defense_nexus_production_2 = {
+	cost = @tier5cost3
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	prerequisites = { "giga_tech_defense_nexus_capacity_2" "giga_tech_defense_nexus_damage_2" } 
+	weight = @tier5weight3
+	prereqfor_desc = {
+		custom = { title = "allow_defense_nexus_production_2"	desc = "allow_defense_nexus_production_2" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = planetshipyard_disabled }
+	}
+
+	modifier = {
+		starbase_shipyard_build_speed_mult = 0.10
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_defense_nexus_production_2
+		}
+		modifier = { factor = 0 not = { any_owned_megastructure = { is_megastructure_type = planetary_drive_yard_1_fortress } } }
+	}
+
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_weak
+	}
+}
+
+#Repeatable
+giga_tech_repeatable_defense_nexus_capacity_upgrade = {
+	area = engineering
+	cost = @giga_expensive_repeatable_cost
+	cost_per_level = @giga_expensive_repeatable_techlevelcost
+	tier = 5
+	category = { voidcraft }
+	levels = 20
+	prerequisites = { "giga_tech_defense_nexus_production_2" }
+	weight = @tier5weight3
+	weight_groups = { repeatable }
+	mod_weight_if_group_picked = { repeatable = 0.01 }
+
+	potential = {
+		NOT = { has_global_flag = planetshipyard_disabled }
+	}
+
+	weight_modifier = {
+		modifier = { factor = 0 not = { any_owned_megastructure = { is_megastructure_type = planetary_drive_yard_1_fortress } } }
+	}
+
+	prereqfor_desc = {
+		custom = { title = "increases_defense_nexus_capacity"	desc = "increases_defense_nexus_capacity" }
+	}
+
+	ai_weight = {
+		factor = @giga_aiweight_multiplier_questionable # this costs way too much
+	}
+}
+

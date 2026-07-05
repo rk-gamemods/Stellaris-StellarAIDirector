@@ -1,0 +1,29 @@
+
+# catalyst workers
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = giga_catalyst_worker
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = { is_gestalt = no }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# catalyst worker drones
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = giga_catalyst_worker_drone
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = { is_gestalt = yes }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+

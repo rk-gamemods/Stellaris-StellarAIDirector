@@ -1,0 +1,50 @@
+##### SBX 3.0 SCRIPTED TRIGGERS #####
+
+### Ship Component Scripted Triggers ###
+ship_uses_special_starbase_components = {
+	OR = {
+		is_ship_size = starbase_outpost
+		is_ship_size = starbase_starport
+		is_ship_size = starbase_starhold
+		is_ship_size = starbase_starfortress
+		is_ship_size = starbase_citadel
+		
+# SBX 3.0 Starbases
+		is_ship_size = starbase_stronghold
+		is_ship_size = starbase_headquarters
+	}
+}
+
+ship_uses_starbase_components = {
+	OR = {
+# Starbases
+		is_ship_size = starbase_outpost
+		is_ship_size = starbase_starport
+		is_ship_size = starbase_starhold
+		is_ship_size = starbase_starfortress
+		is_ship_size = starbase_citadel
+
+# SBX 3.0 Starbases
+		is_ship_size = starbase_stronghold
+		is_ship_size = starbase_headquarters
+
+# Orbital Rings
+		is_ship_size = orbital_ring_tier_1
+		is_ship_size = orbital_ring_tier_2
+		is_ship_size = orbital_ring_tier_3
+
+# Deep Space Citadel
+		is_ship_size = starbase_deep_space_citadel_1
+		is_ship_size = starbase_deep_space_citadel_2
+		is_ship_size = starbase_deep_space_citadel_3
+
+# Waystations
+		is_ship_size = starbase_waystation_1
+		is_ship_size = starbase_waystation_2
+		is_ship_size = starbase_waystation_3
+	}
+}
+
+
+
+##### EOF

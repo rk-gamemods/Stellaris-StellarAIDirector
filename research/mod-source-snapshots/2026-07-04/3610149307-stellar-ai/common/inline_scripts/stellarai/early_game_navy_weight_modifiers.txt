@@ -1,0 +1,7 @@
+# modifier = {
+# 	factor = 0.66
+# 	AND = {
+# 		years_passed < 41
+# 		is_at_war = no
+# 	}
+# }

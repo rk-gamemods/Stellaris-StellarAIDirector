@@ -1,0 +1,135 @@
+namespace = ehof_resources
+
+# Enable resources for Galactic Market
+event = {
+	id = ehof_resources.000
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = galactic_market_founded
+		NOT = { is_on_market = giga_sr_sentient_metal }
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { is_on_market = giga_sr_sentient_metal }
+				any_playable_country = {
+				resource_stockpile_compare = {  resource = giga_sr_sentient_metal value >= 1 } }
+			}
+			enable_on_market = giga_sr_sentient_metal
+		}
+	}
+}
+
+################## Quasi-Negative Mass discovered on_survey
+ship_event = {
+	id = ehof_resources.001
+	title = "ehof_resource_discovered"
+	picture = GFX_evt_surreal_visions
+	show_sound = event_default
+	location = from
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			success_text = {
+				text = "giga_sr_negative_mass_discovery"
+				hidden:from = { has_resource = { type = giga_sr_negative_mass amount > 0 } }
+			}
+			success_text = {
+				text = "action.92.has_tech"
+				hidden:from = { has_resource = { type = giga_sr_negative_mass amount > 0 } }
+				hidden:owner = { has_technology = tech_negative_pressure }
+			}
+			success_text = {
+				text = "action.92.no_tech"
+				NAND = {
+					hidden:from = { has_resource = { type = giga_sr_negative_mass amount > 0 } }
+					hidden:owner = { has_technology = tech_negative_pressure }
+				}
+			}
+		}
+	}
+
+	trigger = {
+		from = {
+			has_strategic_resource = yes
+			has_anomaly = no
+		}
+		owner = {
+			root.from = { has_resource = { type = giga_sr_negative_mass amount > 0 } }
+			NOT = { has_country_flag = negative_mass_found }
+		}
+	}
+
+	immediate = { owner = { set_country_flag = negative_mass_found } }
+	option = { name = OK custom_tooltip = "giga_sr_negative_mass.tooltip" }
+}
+
+################## Sentient Metal discovered on_survey
+ship_event = {
+	id = ehof_resources.002
+	title = "ehof_resource_discovered"
+	picture = GFX_evt_surreal_visions
+	show_sound = event_default
+	location = from
+	is_triggered_only = yes
+	desc = {
+		trigger = {
+			success_text = {
+				text = "giga_sr_sentient_metal_discovery"
+				hidden:from = { has_resource = { type = giga_sr_sentient_metal amount > 0 } }
+			}
+			success_text = {
+				text = "action.92.has_tech"
+				hidden:from = { has_resource = { type = giga_sr_sentient_metal amount > 0 } }
+				hidden:owner = { has_technology = tech_negative_pressure }
+			}
+			success_text = {
+				text = "action.92.no_tech"
+				NAND = {
+					hidden:from = { has_resource = { type = giga_sr_sentient_metal amount > 0 } }
+					hidden:owner = { has_technology = tech_negative_pressure }
+				}
+			}
+		}
+	}
+
+	trigger = {
+		from = {
+			has_strategic_resource = yes
+			has_anomaly = no
+		}
+		owner = {
+			root.from = { has_resource = { type = giga_sr_sentient_metal amount > 0 } }
+			NOT = { has_country_flag = sentient_metal_found }
+		}
+	}
+
+	immediate = { owner = { set_country_flag = sentient_metal_found } }
+	option = { name = OK custom_tooltip = "giga_sr_sentient_metal.tooltip" }
+}
+
+
+################## QNM Modifier removal (Save cleanup basically)
+event = {
+	id = ehof_resources.101
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			has_resource = { type = giga_sr_negative_mass amount > 1000 }
+			ehof_default_country = yes
+		}
+	}
+
+	immediate = {
+		every_country = {
+			limit = { ehof_default_country = yes }
+
+			country_event = { id = ehof_mega_trader.102 days = 2 }
+		}
+	}
+}

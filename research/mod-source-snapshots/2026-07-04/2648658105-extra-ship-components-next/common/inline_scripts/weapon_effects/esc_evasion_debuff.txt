@@ -1,0 +1,15 @@
+# evasion debuff weapon effect
+
+use_ship_main_target = yes
+target_type = target_enemies
+target_focus = spread
+injected_modifier = {
+	modifier = {
+		modifier = esc_gravitic_weapon_movement_speed_debuff_$EFFECT_LEVEL$
+		days = 10
+	}
+	stack_info = {
+		id = ESC_evasion_debuff
+		priority = $EFFECT_LEVEL$
+	}
+}

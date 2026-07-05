@@ -1,0 +1,355 @@
+﻿l_spanish:
+  #########################################
+  ### Psychic Hypersiphon #################
+  #########################################
+  
+  #######################################################################################################################
+  # misc/technical
+  
+  giga_hypersiphon_power_estimate:0 "§HEstimación de Potencia Calculada:§!\n- Capacidad Naval Máxima: §Y[this.GigaGetNavalCap]§!\n- Capacidad Naval Utilizada: §Y[this.GigaGetUsedNavalCap]§!\n- Potencia de Flota Actual: §Y[this.GigaGetFleetPower]§!\n\n- Potencia Estimada: §Y[This.giga_hypersiphon_incursion_power]§!"
+  
+  giga_project_hypersiphon_portal:0 "Investigando La Incursión del Velo"
+  giga_project_hypersiphon_portal_DESC:0 "Los restos del misterioso portal del Velo utilizado por las entidades psíquicas hostiles que nos atacaron pueden permitirnos afinar mejor nuestra red $name_psy_siphon$."
+  
+  #######################################################################################################################
+  # techs
+  
+  giga_tech_shroud_conduit:0 "Conexiones Directas con el Velo"
+  giga_tech_shroud_conduit_desc:0 "Después de mucha meditación y estudio, nuestros telepatas creen que puede ser posible abrir túneles estables en el reino conocido como el Velo. Aunque de escala subatómica, el uso controlado de estos túneles permitiría a nuestra población psiónica beneficiarse de energías de otra manera restringidas a rituales peligrosos y costosos."
+  
+  giga_tech_psychic_hypersiphon:0 "Abriendo La Puerta"
+  giga_tech_psychic_hypersiphon_desc:0 "El Velo es un reino extraño. Al combinar nuevas tecnologías de contención con un inmenso poder telepático, podría ser posible vincular directamente nuestra realidad con la del Velo a una escala macroscópica. Hacerlo podría mejorar enormemente nuestros Conductos del Velo, llevando nuestra prosperidad a nuevas alturas. Se teoriza que la posibilidad de infiltración de energías no deseadas es inevitable, pero mínima en el peor de los casos."
+  
+  #######################################################################################################################
+  # construction events
+  
+  giga_dialog.1401.name:0 "$name_psy_siphon$ Construcción"
+  giga_dialog.1401.desc:0 "Nuestros ingenieros han montado el Emplazamiento para nuestro futuro $name_psy_siphon$, ¡que drenará energía del propio Velo!\n\nUna vez completado, el poder de nuestras instalaciones planetarias $building_giga_shroud_conduit$ se verá enormemente mejorado, llevándonos a nuevas alturas de prosperidad."
+  giga_dialog.1401.a:0 "Entendido."
+  
+  giga_dialog.1402.name:0 "$name_psy_siphon$ Nexo de Contención"
+  giga_dialog.1402.desc:0 "¡El marco de contención del $name_psy_siphon$ ya está en su lugar! Ha sido diseñado para contener una bola de pura energía psiónica hirviendo, formando el locus de los esfuerzos de nuestros telepatas para canalizar las energías del Velo.\n\nEl paso final será la construcción del equipo utilizado para abrir el portal en sí."
+  giga_dialog.1402.a:0 "Reúne los materiales del ritual."
+  
+  #giga_dialog.1403.name:0 "$name_psy_siphon$ Espira Construida"
+  #giga_dialog.1403.desc:0 "La espira del portal del $name_psy_siphon$ está terminada. Este equipo masivo, junto con los condensadores del portal, emitirá una poderosa ráfaga de energía psiónica, lo suficientemente potente como para desgarrar el espacio-tiempo y abrir un agujero al Velo! El portal obviamente no será lo suficientemente estable como para permitir el acceso físico al Velo, pero comenzará a salir de él mucha energía para ser recogida por la espira del portal. Lo único que queda por hacer ahora es encenderlo..."
+  #giga_dialog.1403.a:0 "¡Excelente!"
+  
+  giga_dialog.1404.name:0 "$name_psy_siphon$ Completado"
+  giga_dialog.1404.desc:0 "¡El gran portal que une nuestra realidad con el Velo cerca de [giga_system.GetName] ha sido completamente activado!\n\n¡La energía pura ahora está saliendo de esta puerta artificial al reino psíquico, y nuestros telepatas ya están sintiendo el gran beneficio que esta conexión directa está otorgando a sus habilidades psiónicas!"
+  giga_dialog.1404.a:0 "Somos maestros de lo inmaterial."
+  
+  #######################################################################################################################
+  # mega info
+  
+  psychic_hypersiphon_0:0 "$gc_mega$$name_psy_siphon$ Emplazamiento"
+  psychic_hypersiphon_0_DESC:0 "Este Emplazamiento servirá como base para la futura construcción de un $name_psy_siphon$."
+  psychic_hypersiphon_0_MEGASTRUCTURE_DETAILS:0 "$giga_list_category_megastructure$ - $giga_list_category_psionics$ - $giga_list_category_advanced_resource_production$\nAbre un portal §YVelo§!, potenciando los edificios §Y$building_giga_shroud_conduit$§!. - $giga_list_potentially_hazardous$\nLos Hipersifones adicionales aumentarán el efecto en cada edificio.\n§LUn inmenso portal que une nuestro universo con El Velo, potenciando nuestras habilidades psíquicas." #megalistentry PSYCHIC HYPERSIPHON
+  
+  psychic_hypersiphon_1:0 "$name_psy_siphon$ Nexo de Contención"
+  psychic_hypersiphon_1_DESC:0 "Esta gran estructura servirá como el núcleo principal para contener y refinar la energía extraída del Velo. El marco central sostendrá y estabilizará una pequeña \"estrella\" hecha de pura energía psiónica, sirviendo como un locus para un equipo de poderosos psíquicos."
+  
+  psychic_hypersiphon_2:99 "$name_psy_siphon$"
+  psychic_hypersiphon_2_DESC:0 "Un $name_psy_siphon$ completamente operativo y estabilizado. El portal que conecta nuestra realidad con el Velo ha sido completamente activado, y está liberando pura Esencia del Velo."
+  giga_psy_siphon_interaction_title:0 "§HDesbloquea Característica:§! Potenciado $building_giga_shroud_conduit$"
+  giga_psy_siphon_interaction_desc:0 "§HPotenciado $building_giga_shroud_conduit$§!\nPor cada $name_psy_siphon$ construido, los edificios £building£ §Y$building_giga_shroud_conduit$§! otorgarán trabajos extra, y producirán £giga_sr_psionic_sublimate£ §Y$giga_sr_psionic_sublimate$§! por cada Población psiónico en el planeta.\n\nEsto puede resultar en una pequeña §Rinestabilidad§! en los Conductos, pero es poco probable que tenga algún impacto significativo..."
+  
+  psychic_hypersiphon_3_aeternum:99 "Aeternite $name_psy_siphon$"
+  psychic_hypersiphon_3_aeternum_DESC:0 "Un $name_psy_siphon$ completamente operacional y estabilizado, construido hace incontables eones por Aeternum. El portal que conecta nuestra realidad con el Velo ha sido completamente activado, y está liberando pura Esencia del Velo sin ningún signo de inestabilidad."
+  
+  #######################################################################################################################
+  # buildings
+  
+  building_giga_shroud_conduit:0 "Conducto del Velo"
+  building_giga_shroud_conduit_desc:0 "Una masiva instalación psiónica que extrae forzadamente Energía del Velo y la redistribuye en la superficie del planeta, aumentando enormemente las habilidades telepáticas."
+  building_giga_shroud_conduit_hypersiphon_hint:0 "\nConstruir una Megaestructura §Y$psychic_hypersiphon_2$§! proporcionará trabajos adicionales y generará £giga_sr_psionic_sublimate£ §Y$giga_sr_psionic_sublimate$§! para cada £pop£ §YPoblación Psiónica§! en el planeta."
+  building_giga_shroud_conduit_hypersiphon_safe_effect:0 "\nHipersifones Psíquicos potenciando este edificio: §Y[owner.GetHypersiphonNetworkSize]§!\n\nGenerando £giga_sr_psionic_sublimate£ §Y$giga_sr_psionic_sublimate$§! de §Y[this.GetHypersiphon PoblaciónCount]§! Poblaciones Psíquicos"
+  building_giga_shroud_conduit_hypersiphon_effect:0 "\nHipersifones Psíquicos potenciando este edificio: §Y[owner.GetHypersiphonNetworkSize]§!\n\nGenerando £giga_sr_psionic_sublimate£ §Y$giga_sr_psionic_sublimate$§! y §Rinstabilidad§! de §Y[this.GetHypersiphon PoblaciónCount]§! Poblaciones Psíquicos"
+  decision_hypersiphon_mass_summon:0 "Invocación Masiva $shroud_summoned_army_plural$"
+  decision_hypersiphon_mass_summon_effect:0 "Invoca §G[owner.GetHypersiphonSummonCount]§! §Y$shroud_summoned_army_plural$§!, basado en el número de [owner.GetGigaShroudConduitJobIcon] §Y[owner.GetGigaShroudConduitJob]§! Trabajos y £pop£ §YPoblaciones Psiónicas§! en el planeta."
+  decision_hypersiphon_mass_summon_desc:0 "Con una preparación ritual intrincada, y enormes cantidades de $giga_sr_psionic_sublimate$ concentrado, las entidades del Velo podrían ser invocadas a gran escala."
+  
+  #######################################################################################################################
+  # jobs
+  
+  job_giga_shroud_conduit_worker:0 "Técnico de Conducto del Velo"
+  job_giga_shroud_conduit_worker_plural:0 "Técnicos de Conducto del Velo"
+  job_giga_shroud_conduit_worker_desc:0 "Especialistas encargados de manejar los minúsculos túneles del Velo abiertos por un $building_giga_shroud_conduit$."
+  job_giga_shroud_conduit_worker_effect_desc:0 "$job_giga_shroud_conduit_worker_swap_plural_with_icon$ canalizan £energy£ §Y$energy$§! para producir £unity£ §Y$unity$§! y aumentar la productividad en el planeta."
+  job_giga_shroud_conduit_worker_swap_plural_with_icon:0 "[giga_shroud_conduit_worker.GetIcon] [giga_shroud_conduit_worker.GetNamePlural]"
+  mod_job_giga_shroud_conduit_worker_add:0 "[giga_shroud_conduit_worker.GetName] Jobs"
+  mod_job_giga_shroud_conduit_worker_per_pop:0 "§G+1§! [giga_shroud_conduit_worker.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_shroud_conduit_worker_per_pop_short:0 "\n§G+1§! £mod_job_giga_shroud_conduit_worker_add£ per $VALUE$ £pop£"
+  job_giga_shroud_conduit_worker_icon:99 "£job_giga_shroud_conduit_worker£"
+  
+  giga_shroud_conduit_priest:99 "Shroud Channeller"
+  job_giga_shroud_conduit_priest:0 "Canalizador del Velo"
+  giga_shroud_conduit_priest_plural:99 "Shroud Channellers"
+  job_giga_shroud_conduit_priest_plural:0 "Canalizadores del Velo"
+  giga_shroud_conduit_priest_desc:99 "Psionic clergy tasked with managing the delicate connections generated by a $building_giga_shroud_conduit$."
+  job_giga_shroud_conduit_priest_desc:0 "Clero psiónico encargado de manejar las delicadas conexiones generadas por un $building_giga_shroud_conduit$."
+  job_giga_shroud_conduit_priest_effect_desc:0 "$job_giga_shroud_conduit_priest_swap_plural_with_icon$ usan £energy£ §Y$energy$§! para producir £unity£ §Y$unity$§!, proporcionar £amenities£ $MOD_PLANET_AMENITIES_ADD$, y aumentar la productividad en el planeta."
+  job_giga_shroud_conduit_priest_swap_plural_with_icon:0 "[giga_shroud_conduit_priest.GetIcon] [giga_shroud_conduit_priest.GetNamePlural]"
+  mod_job_giga_shroud_conduit_priest_add:0 "[giga_shroud_conduit_priest.GetName] Jobs"
+  mod_job_giga_shroud_conduit_priest_per_pop:0 "§G+1§! [giga_shroud_conduit_priest.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_shroud_conduit_priest_per_pop_short:0 "\n§G+1§! £mod_job_giga_shroud_conduit_priest_add£ per $VALUE$ £pop£"
+  job_giga_shroud_conduit_priest_icon:99 "£job_giga_shroud_conduit_priest£"
+  
+  job_giga_shroud_conduit_drone:0 "Dron de Conducto del Velo"
+  job_giga_shroud_conduit_drone_plural:0 "Drones de Conducto del Velo"
+  job_giga_shroud_conduit_drone_desc:0 "Drones activos psíquicamente especializados para manejar las delicadas conexiones generadas por un $building_giga_shroud_conduit$."
+  job_giga_shroud_conduit_drone_effect_desc:0 "$job_giga_shroud_conduit_drone_swap_plural_with_icon$ canalizan £energy£ §Y$energy$§! para producir £unity£ §Y$unity$§! y aumentar la productividad en el planeta."
+  job_giga_shroud_conduit_drone_swap_plural_with_icon:0 "[giga_shroud_conduit_drone.GetIcon] [giga_shroud_conduit_drone.GetNamePlural]"
+  mod_job_giga_shroud_conduit_drone_add:0 "[giga_shroud_conduit_drone.GetName] Jobs"
+  mod_job_giga_shroud_conduit_drone_per_pop:0 "§G+1§! [giga_shroud_conduit_drone.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_shroud_conduit_drone_per_pop_short:0 "\n§G+1§! £mod_job_giga_shroud_conduit_worker_add£ per $VALUE$ £pop£"
+  job_giga_shroud_conduit_drone_icon:99 "£job_giga_shroud_conduit_drone£"
+  
+  mod_planet_pops_psionic_upkeep_mult:99 "Upkeep from £pop£ Psionic Pops"
+  
+  #######################################################################################################################
+  # situations
+  
+  ####################################################
+  # siphon tracker
+  
+  giga_situation_hypersiphon_tracker_type:0 "Rastreador de $name_psy_siphon$"
+  giga_situation_hypersiphon_tracker:0 "Rastreador de $name_psy_siphon$ de [target.planet.GetName]"
+  giga_situation_hypersiphon_tracker_desc:0 "Administra eventos para este $name_psy_siphon$"
+  giga_situation_hypersiphon_tracker_monthly_change_tooltip:99 ""
+  
+  ####################################################
+  # instability
+  
+  giga_situation_hypersiphon_instability:0 "Inestabilidad del Conducto del Velo"
+  giga_situation_hypersiphon_instability_type:99 "$giga_situation_hypersiphon_instability$"
+  giga_situation_hypersiphon_instability_desc:0 "Los túneles psiónicos macroscópicos generados por nuestro $name_psy_siphon$ están causando fluctuaciones dentro de la estructura local del Velo.\nLas lecturas indican picos de actividad muy por encima de nuestras predicciones iniciales, y si el nivel de energía sube demasiado, podríamos comenzar a experimentar efectos negativos."
+  
+  giga_situation_hypersiphon_instability_monthly_change_tooltip:0 "£mod_black_hole£ §YInestabilidad del Conducto Velo§! es causada por edificios £building£ §Y$building_giga_shroud_conduit$§! potenciados por Megaestructuras §Y$name_psy_siphon$§!."
+  giga_situation_hypersiphon_instability_progress_instability:0 "Edificios $building_giga_shroud_conduit$"
+  giga_situation_hypersiphon_instability_progress_decay:0 "Decaimiento Natural"
+  giga_situation_hypersiphon_instability_progress_mitigate:99 "$giga_situation_hypersiphon_instability_approach_mitigate$"
+  giga_situation_hypersiphon_instability_progress_encourage:99 "$giga_situation_hypersiphon_instability_approach_encourage$"
+  
+  giga_situation_hypersiphon_instability_stage_1:0 "§EMínima§! Inestabilidad del Velo"
+  giga_situation_hypersiphon_instability_stage_1_effect:0 "Eventos disruptivos relacionados con Velo pueden ocurrir §Erara vez§!."
+  giga_situation_hypersiphon_instability_stage_2:0 "§GBaja§! Inestabilidad del Velo"
+  giga_situation_hypersiphon_instability_stage_2_effect:0 "Eventos disruptivos relacionados con Velo pueden ocurrir §Graramente§!."
+  giga_situation_hypersiphon_instability_stage_3:0 "§YModerada§! Inestabilidad del Velo"
+  giga_situation_hypersiphon_instability_stage_3_effect:0 "Eventos disruptivos relacionados con Velo pueden ocurrir §Ycon poca frecuencia§!."
+  giga_situation_hypersiphon_instability_stage_4:0 "§HAlta§! Inestabilidad del Velo"
+  giga_situation_hypersiphon_instability_stage_4_effect:0 "Eventos disruptivos relacionados con Velo ocurrirán §Hcon frecuencia§!."
+  giga_situation_hypersiphon_instability_stage_5:0 "§RExtrema§! Inestabilidad del Velo"
+  giga_situation_hypersiphon_instability_stage_5_effect:0 "Eventos disruptivos relacionados con Velo ocurrirán §Rmuy frecuentemente§!."
+  
+  giga_situation_hypersiphon_instability_approach_neutral:0 "Observar"
+  giga_situation_hypersiphon_instability_approach_neutral_desc:0 "el Velo es un reino misterioso y poco comprendido. Sabemos que algo viene, pero es informe, efímero. Continuaremos observando."
+  giga_situation_hypersiphon_instability_approach_neutral_effect:0 "Continuaremos observando las fluctuaciones dentro del Velo."
+  
+  giga_situation_hypersiphon_instability_approach_encourage:0 "Alentar"
+  giga_situation_hypersiphon_instability_approach_encourage_desc:0 "Es imperativo que usemos este poder en su máxima extensión, incluso si eso significa enfurecer a aquellos que se interpondrían en el camino de nuestra grandeza."
+  giga_situation_hypersiphon_instability_approach_encourage_effect:0 "[GetGigaShroudConduitJobIcon]§Y[GetGigaShroudConduitJob]§! Los trabajos son §Gmás efectivos§! para impulsar la producción, pero el progreso de la situación se acelera en §R25%§!, y los eventos negativos son más comunes.\n "
+  
+  giga_situation_hypersiphon_instability_approach_mitigate:0 "Mitigar"
+  giga_situation_hypersiphon_instability_approach_mitigate_desc:0 "Debemos minimizar nuestro impacto en el Velo y sus habitantes, para no atraer su ira."
+  giga_situation_hypersiphon_instability_approach_mitigate_effect:0 "El progreso de la situación se ralentiza en §G50%§! y los eventos negativos son menos comunes, pero [GetGigaShroudConduitJobIcon]§Y[GetGigaShroudConduitJob]§! Los trabajos son §Rmenos efectivos§! para impulsar la producción.\n "
+  
+  giga_situation_hypersiphon_instability_complete_effect:0 "Ocurrirá otra gran incursión del Velo en algún lugar de nuestro espacio."
+  giga_situation_hypersiphon_instability_complete_effect_unknown:0 "Las consecuencias de permitir que estas energías crezcan son actualmente desconocidas."
+  giga_situation_hypersiphon_instability_fail_effect:0 "el Velo vuelve a estar tranquilo una vez más."
+  
+  #######################################################################################################################
+  # situation events
+  
+  # instability situation start
+  giga_hypersiphon.002.name:0 "Corrientes invisibles"
+  giga_hypersiphon.002.desc:0 "Comenzó como un suave insistir en las mentes de nuestros telépatas, pero rápidamente se ha convertido en algo más. Ahora es evidente que recolectar energías directamente de la sustancia del Velo en tales cantidades está causando más turbulencia en su flujo de lo que inicialmente anticipamos.\n\nTal como está, seguimos inciertos sobre lo que estas perturbaciones podrían significar para nosotros en el futuro, pero si continúan aumentando en intensidad, podemos comenzar a llamar la atención de los poderes que se demoran allí.\n\nPor ahora, observaremos."
+  giga_hypersiphon.002.a:0 "Preocupante."
+  
+  # siphon causes a blocker and damage
+  giga_hypersiphon.010.name:0 "Fallo en el sifón del Velo"
+  giga_hypersiphon.010.desc:0 "La tripulación del $building_giga_shroud_conduit$ en [hypersiphon_target.GetName] está informando de un enorme pico de energía psiónica en el [hypersiphon_target.GetPlanetMoon], que se manifiesta en una perturbación física en la superficie.\n\nEl área afectada ha quedado inutilizable y requerirá un esfuerzo concentrado para limpiarla."
+  giga_hypersiphon.010.a:0 "Inconveniente."
+  giga_hypersiphon.010.result.1:0 "Una pequeña región de [hypersiphon_target.GetName] ha sido contaminada con residuos ectoplasmáticos."
+  giga_hypersiphon.010.result.2:0 "Una gran región de [hypersiphon_target.GetName] ha sido contaminada con residuos ectoplasmáticos."
+  giga_hypersiphon.010.result.3:0 "Se ha formado una región anómala en la superficie de [hypersiphon_target.GetName], confundiendo significativamente a nuestros [hypersiphon_target.owner.GetScientistPlural]."
+  giga_hypersiphon.010.result.4:99 "$giga_hypersiphon.010.result.3$"
+  giga_hypersiphon.010.result.5:0 "Una enorme región de [hypersiphon_target.GetName] ha sido consumida por un violento sistema de tormentas psiónicas, causando estragos en la superficie pero actuando como una conexión con el Velo."
+  
+  # siphon causes storm and shroud cows
+  giga_hypersiphon.020.name:0 "Vacas del Velo en [hypersiphon_target.GetName]"
+  giga_hypersiphon.020.desc.first:0 "Se ha formado una enorme tormenta psiónica en el sistema [hypersiphon_target.GetName], causando estragos en nuestras operaciones basadas en el espacio.\n\nMisteriosamente, también han aparecido en el sistema un gran número de entidades del Velo aparentemente pasivas. Nuestros telépatas las han apodado \"Vacas del Velo\", debido al sorprendente parecido que guardan con los Tiyanki, tanto en apariencia física como en canción psiónica."
+  giga_hypersiphon.020.desc.normal:0 "Las criaturas del Velo se han manifestado en el sistema [hypersiphon_target.GetName], y una vez más están acompañadas por una tormenta psiónica disruptiva."
+  giga_hypersiphon.020.desc.damage:0 "Se ha formado otra tormenta psiónica en el sistema [hypersiphon_target.GetName]. También se han manifestado más Vacas del Velo, inmediatamente hostiles a la navegación local e instalaciones."
+  giga_hypersiphon.020.a:0 "Qué peculiar..."
+  giga_hypersiphon.020.b:0 "¿Más de ellos?"
+  giga_hypersiphon.020.c:0 "¡A las estaciones de batalla!"
+  giga_hypersiphon.020.effect:0 "Se ha formado una tormenta psiónica en [hypersiphon_target.GetName], ¡y ha traído fauna del Velo con ella!"
+  
+  # shroud cows dissipate
+  giga_hypersiphon.022.name:0 "La perturbación del Velo cesa en [hypersiphon_target.GetName]"
+  giga_hypersiphon.022.desc:0 "La tormenta psiónica en el sistema [hypersiphon_target.GetName] se ha despejado, y las operaciones están volviendo a la normalidad.\n\nLas misteriosas apariciones que vinieron con ella también han desaparecido sin dejar rastro."
+  giga_hypersiphon.022.a:0 "Todo despejado, por ahora."
+  
+  # siphon causes visions of doom
+  giga_hypersiphon.030.name:0 "Visiones de condena en [hypersiphon_target.GetName]"
+  giga_hypersiphon.030.desc:0 "La población de [hypersiphon_target.GetName] ha sido recientemente golpeada con terribles sueños y visiones de un desastre inminente. Varios sectores de la industria en el [hypersiphon_target.GetPlanetMoon] han informado de sucesos extraños, donde la retroalimentación psiónica ha llevado a un aumento en las tasas de muerte y averías mecánicas.\n\nNuestros telépatas informan que una fuerte presencia relacionada con el Velo se ha asentado, y que puede llevar algún tiempo que los efectos se disipen."
+  giga_hypersiphon.030.a:0 "Inquietante."
+  giga_hypersiphon.030.result.1.1:0 "La muerte y la destrucción han visitado este mundo."
+  giga_hypersiphon.030.result.1.2:0 "Se ha causado una destrucción significativa en este mundo."
+  giga_hypersiphon.030.result.1.3:0 "La destrucción generalizada ha llegado a este mundo."
+  
+  # minor incursion
+  giga_hypersiphon.040.name:0 "Incursión del Velo en [hypersiphon_target.GetName]!"
+  giga_hypersiphon.040.desc:0 "Entidades hostiles del Velo se han manifestado en el sistema [hypersiphon_target.GetName]!\n\nLos informes iniciales sugieren que se están moviendo de manera errática, sin un propósito claro, atacando todo a la vista. Nuestros telépatas especulan que estas apariciones carecen de una conexión con su reino de origen, y sin una fuente de sustento, sus energías pueden eventualmente disiparse en el espacio abierto."
+  giga_hypersiphon.040.a:0 "Infortunado."
+  giga_hypersiphon.040.result:0 "§LVisitantes con malas intenciones, y propósito confuso...§!"
+  
+  # major incursion happens
+  giga_hypersiphon.100.name:0 "Incursión mayor del Velo en [hypersiphon_target.GetName]!"
+  giga_hypersiphon.100.desc:0 "Un gran número de entidades hostiles del Velo se han manifestado en el sistema [hypersiphon_target.GetName], agrupadas alrededor de algún tipo de grieta.\n\nParecen estar lanzando un ataque dirigido a nuestras instalaciones en el sistema, sugiriendo alguna forma de acción organizada. Nuestros telépatas especulan que con esta conexión sostenida con su reino de origen, tales entidades podrían operar en nuestro plano indefinidamente, e incluso vagar más allá de las fronteras del sistema."
+  giga_hypersiphon.100.a:0 "¡Preparar un contraataque inmediatamente!"
+  giga_hypersiphon.100.restart:0 "Reinicia la situación: §Y$giga_situation_hypersiphon_instability$§!\n\n§MA través del velo, con malicia y furia...§!"
+  
+  # incursion notification
+  giga_hypersiphon.101.name:0 "Pico de Energía Psiónica"
+  giga_hypersiphon.101.desc:0 "Se ha detectado una enorme firma de energía en el sistema [hypersiphon_target.GetName], ubicado dentro del [hypersiphon_target.owner.GetName]. Los informes iniciales sugieren que algún tipo de apariciones hostiles han emergido de una grieta, y están atacando todo en el sistema."
+  giga_hypersiphon.101.a:0 "Inquietante."
+  
+  # planet shrouded notification
+  giga_hypersiphon.103.name:0 "Colonia Consumida por el Velo"
+  giga_hypersiphon.103.desc:0 "Los ataques sostenidos por las entidades del Velo han destruido el asentamiento en [This.GetName], cubriendo el planeta con una espesa capa de nubes de tormenta psiónica. Parece que la superficie ha sido barrida de cualquier vida detectable, y las lecturas del planeta sugieren que ahora son prevalentes condiciones extrañas, que desafían la física."
+  giga_hypersiphon.103.a:0 "Una tragedia."
+  
+  # destroyed portal yourself
+  giga_hypersiphon.105.name:0 "Incursión del Velo Detenida"
+  giga_hypersiphon.105.desc.first:0 "Nuestras fuerzas han colapsado con éxito la grieta del Velo en el sistema [fromfrom.solar_system.GetName]. Con su conexión a Velo cortada, las entidades hostiles que surgieron de ella se han disipado rápidamente, volviéndolas inofensivas.\n\nQueda una pregunta: ¿cuál es nuestra solución a largo plazo a este problema? La inestabilidad permanece, y esto volverá a suceder si las cosas permanecen sin cambios. Una débil firma de los invasores todavía persiste alrededor de la apertura cerrada, y los residuos dejados en nuestras naves pueden ser estudiados.\n\nQuizás eso nos dará las respuestas que buscamos."
+  giga_hypersiphon.105.desc.other:0 "Nuestras fuerzas han colapsado con éxito la grieta del Velo en el sistema [fromfrom.solar_system.GetName]. Con su conexión a Velo cortada, las entidades hostiles que surgieron de ella se han disipado rápidamente, volviéndolas inofensivas.\n\nVelo sigue agitado - parece que nuestro trabajo nunca termina."
+  giga_hypersiphon.105.a:0 "Una oportunidad interesante..."
+  giga_hypersiphon.105.b:0 "Siempre vigilante."
+  
+  # destroyed someone else's portal
+  giga_hypersiphon.106.name:0 "Cierre del Portal del Velo"
+  giga_hypersiphon.106.desc:0 "Nuestras fuerzas han colapsado con éxito la grieta energética en el sistema [fromfrom.solar_system.GetName]. Con su conexión a su origen cortada, las entidades hostiles que surgieron de ella se han disipado rápidamente, volviéndolas inofensivas.\n\nLas lecturas sugieren que la región ahora es segura, sin lecturas de energía residuales de ninguna significancia."
+  giga_hypersiphon.106.a:0 "Esperemos que se mantenga así."
+  
+  # someone else destroyed your portal
+  giga_hypersiphon.107.name:0 "Incursión del Velo Detenida"
+  giga_hypersiphon.107.desc.first:0 "Las fuerzas pertenecientes a la [from.GetName] han colapsado con éxito la grieta del Velo en el sistema [fromfrom.solar_system.GetName]. Con su conexión a Velo cortada, las entidades hostiles que surgieron de ella se han disipado rápidamente, volviéndolas inofensivas.\n\nQueda una pregunta: ¿cuál es nuestra solución a largo plazo a este problema? La inestabilidad permanece, y esto volverá a suceder si las cosas permanecen sin cambios. Una débil firma de los invasores todavía persiste alrededor de la apertura cerrada, y los residuos dejados en nuestras naves pueden ser estudiados.\n\nQuizás eso nos dará las respuestas que buscamos."
+  giga_hypersiphon.107.desc.other:0 "Las fuerzas pertenecientes a la [from.GetName] han colapsado con éxito la grieta del Velo en el sistema [fromfrom.solar_system.GetName]. Con su conexión a Velo cortada, las entidades hostiles que surgieron de ella se han disipado rápidamente, volviéndolas inofensivas.\n\nVelo sigue agitado - parece probable que pueda ocurrir otra incursión en el futuro."
+  giga_hypersiphon.107.a:0 "Una oportunidad interesante..."
+  giga_hypersiphon.107.b:0 "Quizás se mantenga cerrado esta vez..."
+  
+  # a portal was destroyed and you aren't involved
+  giga_hypersiphon.108.name:0 "Cierre del Portal del Velo"
+  giga_hypersiphon.108.desc:0 "Fuerzas pertenecientes a la [from.GetName] han logrado colapsar exitosamente la grieta energética en el sistema [fromfrom.solar_system.GetName]. Con su conexión a su origen cortada, las entidades hostiles que emergieron de ella se han disipado rápidamente, volviéndolas inofensivas.\n\nLos informes sugieren que la región ahora es segura, sin lecturas de energía persistentes de ninguna significancia."
+  giga_hypersiphon.108.a:0 "Entendido."
+  
+  # unlocking new approaches
+  giga_hypersiphon.109.name:0 "Análisis Completo del Portal del Velo"
+  giga_hypersiphon.109.desc:0 "El análisis preliminar de los residuos dejados por los invasores del Velo ha arrojado algunas ideas sobre cómo nuestros Conductos del Velo e Hipersifones están afectando el flujo y reflujo del Velo.\n\nLa aplicación cuidadosa de medidas de seguridad y rituales ejecutados con precisión nos permitiría mitigar los efectos negativos de nuestra conexión, pero el cuidado extra reduciría los beneficios económicos de nuestras instalaciones de conductos.\n\nAlternativamente, podríamos ignorar el daño que se está causando y en su lugar centrarnos en impulsar nuestros conductos atrayendo energías cosechables. Esto mejoraría los beneficios de nuestros conductos, pero podría hacer que las reacciones negativas ocurran con más frecuencia."
+  giga_hypersiphon.109.a:0 "Intrigante."
+  giga_hypersiphon.109.effect:0 "Desbloquea los enfoques §Y$giga_situation_hypersiphon_instability_approach_mitigate$§! y §Y$giga_situation_hypersiphon_instability_approach_encourage$§! a la Situación §Y$giga_situation_hypersiphon_instability$§!."
+  
+  #######################################################################################################################
+  # deposits
+  
+  d_giga_hypersiphon_goop:0 "£blocker£ Descarga del Velo"
+  d_giga_hypersiphon_goop_desc:0 "Esencia psiónica condensada y residuo ectoplasmático, violentamente tóxico a nivel ontológico."
+  
+  d_giga_hypersiphon_psionic_anomaly:0 "£blocker£ Zona Anómala"
+  d_giga_hypersiphon_psionic_anomaly_desc:0 "Una región donde las leyes de la naturaleza se doblan como ramas en el viento."
+  
+  d_giga_hypersiphon_psionic_supercell_planet:0 "£blocker£ Supercelda Psiónica"
+  d_giga_hypersiphon_psionic_supercell_planet_desc:0 "Una tormenta feroz que consume una gran región de la superficie planetaria, volviéndola inhabitable, y enviando ondas de choque psiónicas a través de las mentes de toda la población."
+  
+  d_giga_hypersiphon_psionic_supercell_artificial:0 "£blocker£ Interferencia de Sistemas Psiónicos"
+  d_giga_hypersiphon_psionic_supercell_artificial_desc:0 "Una enorme anomalía psiónica que causa una interferencia significativa con los sistemas locales. Las ondas de choque frecuentemente ondulan a través de la conciencia colectiva de toda la población."
+  
+  #######################################################################################################################
+  # ships and fleets
+  
+  NAME_Giga_Hypersiphon_Cows:0 "Apariciones Itinerantes"
+  NAME_Giga_Hypersiphon_Cows_Fleet:0 "Vacas del Velo"
+  
+  giga_hypersiphon_shroud_cow_cow:0 "Matriarca de las Vacas del Velo"
+  giga_hypersiphon_shroud_cow_cow_plural:99 "Shroud Cow Matriarchs"
+  
+  NAME_Giga_Hypersiphon_Tiyanki_Cow:99 "$giga_hypersiphon_shroud_cow_cow$"
+  giga_hypersiphon_shroud_cow_bull:0 "Patriarca de las Vacas del Velo"
+  giga_hypersiphon_shroud_cow_bull_plural:99 "Shroud Cow Patriarchs"
+  NAME_Giga_Hypersiphon_Tiyanki_Bull:99 "$giga_hypersiphon_shroud_cow_bull$"
+  giga_hypersiphon_shroud_cow_hatchling:0 "Cría de las Vacas del Velo"
+  giga_hypersiphon_shroud_cow_hatchling_plural:99 "Shroud Cow Spawn"
+  NAME_Giga_Hypersiphon_Tiyanki_Hatchling:99 "$giga_hypersiphon_shroud_cow_hatchling$"
+  giga_hypersiphon_shroud_cow_calf:0 "Joven Vaca del Velo"
+  giga_hypersiphon_shroud_cow_calf_plural:99 "Shroud Cow Juveniles"
+  NAME_Giga_Hypersiphon_Tiyanki_Calf:99 "$giga_hypersiphon_shroud_cow_calf$"
+  
+  NAME_Giga_Hypersiphon_Incursion:0 "Entidades del Velo"
+  NAME_Giga_Hypersiphon_Incursion_Fleet:0 "Apariciones Hostiles"
+  
+  giga_hypersiphon_shroud_entity_small:0 "Centella del Velo"
+  giga_hypersiphon_shroud_entity_small_plural:99 "Shroud Wisps"
+  giga_hypersiphon_shroud_entity_small_design:0 "Manifestación Menor del Velo"
+  giga_hypersiphon_shroud_entity_small_1:0 "$giga_hypersiphon_shroud_entity_small_design$ (Categoría Uno)"
+  giga_hypersiphon_shroud_entity_small_section_1:99 "$giga_hypersiphon_shroud_entity_small_1$"
+  giga_hypersiphon_shroud_entity_small_2:0 "$giga_hypersiphon_shroud_entity_small_design$ (Categoría Dos)"
+  giga_hypersiphon_shroud_entity_small_section_2:99 "$giga_hypersiphon_shroud_entity_small_2$"
+  giga_hypersiphon_shroud_entity_small_3:0 "$giga_hypersiphon_shroud_entity_small_design$ (Categoría Tres)"
+  giga_hypersiphon_shroud_entity_small_section_3:99 "$giga_hypersiphon_shroud_entity_small_3$"
+  giga_hypersiphon_shroud_entity_small_4:0 "$giga_hypersiphon_shroud_entity_small_design$ (Categoría Cuatro)"
+  giga_hypersiphon_shroud_entity_small_section_4:99 "$giga_hypersiphon_shroud_entity_small_4$"
+  giga_hypersiphon_shroud_entity_small_5:0 "$giga_hypersiphon_shroud_entity_small_design$ (Categoría Cinco)"
+  giga_hypersiphon_shroud_entity_small_section_5:99 "$giga_hypersiphon_shroud_entity_small_5$"
+  giga_hypersiphon_shroud_entity_small_6:0 "$giga_hypersiphon_shroud_entity_small_design$ (Categoría Seis)"
+  giga_hypersiphon_shroud_entity_small_section_6:99 "$giga_hypersiphon_shroud_entity_small_6$"
+  
+  giga_hypersiphon_shroud_entity_large:0 "Tormenta del Velo"
+  giga_hypersiphon_shroud_entity_large_plural:99 "Shroud Storms"
+  giga_hypersiphon_shroud_entity_large_design:0 "Manifestación Mayor del Velo"
+  giga_hypersiphon_shroud_entity_large_1:0 "$giga_hypersiphon_shroud_entity_large_design$ (Categoría Uno)"
+  giga_hypersiphon_shroud_entity_large_section_1:99 "$giga_hypersiphon_shroud_entity_large_1$"
+  giga_hypersiphon_shroud_entity_large_2:0 "$giga_hypersiphon_shroud_entity_large_design$ (Categoría Dos)"
+  giga_hypersiphon_shroud_entity_large_section_2:99 "$giga_hypersiphon_shroud_entity_large_2$"
+  giga_hypersiphon_shroud_entity_large_3:0 "$giga_hypersiphon_shroud_entity_large_design$ (Categoría Tres)"
+  giga_hypersiphon_shroud_entity_large_section_3:99 "$giga_hypersiphon_shroud_entity_large_3$"
+  giga_hypersiphon_shroud_entity_large_4:0 "$giga_hypersiphon_shroud_entity_large_design$ (Categoría Cuatro)"
+  giga_hypersiphon_shroud_entity_large_section_4:99 "$giga_hypersiphon_shroud_entity_large_4$"
+  giga_hypersiphon_shroud_entity_large_5:0 "$giga_hypersiphon_shroud_entity_large_design$ (Categoría Cinco)"
+  giga_hypersiphon_shroud_entity_large_section_5:99 "$giga_hypersiphon_shroud_entity_large_5$"
+  giga_hypersiphon_shroud_entity_large_6:0 "$giga_hypersiphon_shroud_entity_large_design$ (Categoría Seis)"
+  giga_hypersiphon_shroud_entity_large_section_6:99 "$giga_hypersiphon_shroud_entity_large_6$"
+  
+  giga_hypersiphon_incursion_starbase:0 "Bastión del Velo"
+  giga_hypersiphon_incursion_starbase_plural:99 "Shroud Bastions"
+  NAME_Giga_Hypersiphon_Incursion_Starbase:99 "$giga_hypersiphon_incursion_starbase$"
+  giga_hypersiphon_incursion_portal:0 "Portal Dimensional"
+  giga_hypersiphon_incursion_portal_plural:99 "Dimensional Portals"
+  NAME_Giga_Hypersiphon_Incursion_Portal:0 "Ancla del Velo"
+  
+  #######################################################################################################################
+  # modifiers
+  
+  giga_hypersiphon_instability_resources:0 "Visiones de Perdición:"
+  giga_hypersiphon_instability_resources_energy:0 "$giga_hypersiphon_instability_resources$ Vacío Entropico"
+  giga_hypersiphon_instability_resources_energy_desc:0 "El movimiento se ralentiza, la carga se disipa a una velocidad antinatural."
+  giga_hypersiphon_instability_resources_minerals:0 "$giga_hypersiphon_instability_resources$ Desperdicio Antinatural"
+  giga_hypersiphon_instability_resources_minerals_desc:0 "Un corte aquí, un corte allá... en realidad, vamos a empezar de nuevo este..."
+  giga_hypersiphon_instability_resources_food:0 "$giga_hypersiphon_instability_resources$ Consumo Voraz"
+  giga_hypersiphon_instability_resources_food_desc:0 "Nunca saciado, nunca apagado, nunca completo."
+  giga_hypersiphon_instability_resources_alloys:0 "$giga_hypersiphon_instability_resources$ Fascinación Material"
+  giga_hypersiphon_instability_resources_alloys_desc:0 "Un deseo insaciable de trastear, de experimentar, de fallar."
+  giga_hypersiphon_instability_resources_consumer_goods:0 "$giga_hypersiphon_instability_resources$ Manifestación de la Codicia"
+  giga_hypersiphon_instability_resources_consumer_goods_desc:0 "La síntesis de querer y necesitar ha llevado a un torbellino de avaricia."
+  giga_hypersiphon_instability_resources_unity:0 "$giga_hypersiphon_instability_resources$ Susurros en las Paredes"
+  giga_hypersiphon_instability_resources_unity_desc:0 "Cada edificio rezuma desprecio, cada recinto se siente sofocante."
+  giga_hypersiphon_instability_resources_research:0 "$giga_hypersiphon_instability_resources$ Cognición Nublada"
+  giga_hypersiphon_instability_resources_research_desc:0 "Mentes agudas vuelven opacas por una dolencia desconocida."
+  
+  # modifier errorlogsilencing loc
+  giga_hypersiphon_storm_1:99 "giga_hypersiphon_storm_1"
+  giga_hypersiphon_storm_2:99 "giga_hypersiphon_storm_2"
+  giga_hypersiphon_storm_3:99 "giga_hypersiphon_storm_3"
+  giga_hypersiphon_storm_4:99 "giga_hypersiphon_storm_4"
+  giga_fleet_power_scaling_buff:99 "giga_fleet_power_scaling_buff"

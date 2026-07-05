@@ -1,0 +1,4 @@
+	NPop = {
+		RESETTLE_UNEMPLOYED_BASE_RATE		= 20	# Base pop amount that can auto-migrate from a planet per month
+	}
+

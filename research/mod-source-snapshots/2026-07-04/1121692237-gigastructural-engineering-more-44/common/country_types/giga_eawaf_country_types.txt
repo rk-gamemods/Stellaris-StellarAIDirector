@@ -1,0 +1,81 @@
+# The Sirens
+giga_eawaf_sirens = {
+	attack_unarmed_orbital_stations = no
+	blocks_piracy = yes
+	destroys_starbases = no
+	show_in_contacts_list = yes
+	randomize_ethos = no
+	sub_title = "GIGA_EAWAF_SIRENS_COUNTRY"
+	counts_for_victory = no
+	share_survey_data = no
+	custom_diplomacy = yes
+	diplomatic_wars = no
+	enforces_borders = no
+	needs_survey = no
+	has_complete_sensor = yes
+	can_have_their_comms_shared = yes
+	observable = yes
+	has_pulse_events = yes
+	default_ships = no
+
+	ai = {
+		enabled = yes
+		colonizer = no
+		internal_policies = no
+		starbase_upgrade = yes
+		modification = no
+		government = no
+		construction = no
+		tech = no
+		modules = {
+			foreign_minister_module
+			interior_minister_module
+			berserk_military_minister_module
+		}
+	}
+
+	faction = {
+		hostile = yes
+		pirate = no
+		needs_border_access = no
+		generate_borders = yes
+		needs_colony = no
+		auto_delete = no
+	}
+
+	modules = {
+		exclusive_diplomacy_module = {
+			contact_rule = on_action_only
+		}
+		standard_event_module = {}
+		tiered_technology_module = {
+			tier = 5
+			rare = no
+		}
+	}
+}
+
+#For unfinished dust storm strife field galaxy map indicator - Caramel
+# giga_eawaf_strife_field = {
+# 	has_pulse_events = no
+# 	# #playable = no
+# 	# relations = no
+# 	# piracy_risk = no
+# 	# show_in_contacts_list = no
+# 	government = no
+# 	default_ships = yes
+# 	# counts_for_victory = no
+# 	ai = {
+# 		enabled = no
+# 	}
+# 	modules = {
+# 		standard_event_module = {}
+# 	}
+# 	share_communications = no
+# 	observable = no
+# 	faction = {
+# 		generate_borders = no #the game will crash without this
+# 		needs_colony = no
+# 		auto_delete = no
+# 	}
+# }

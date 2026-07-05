@@ -1,0 +1,7 @@
+or = {
+    has_industrial_designation = yes
+    has_foundry_designation = yes
+    has_factory_designation = yes
+}
+
+# eof

@@ -1,0 +1,6 @@
+mod_id,slug,ai_weight,ai_weight_coefficient,ai_resource_production,ai_priority,ai_budget,economic_plan,desired_max,focus,potential,scripted_trigger,scripted_value,on_action,country_event,planet_event,megastructure,technology,strategic_resource,ship_size,component,starbase,personality
+1121692237,gigastructural-engineering-more-44,1413,23,95,57,9,15,22,1345,6651,1,0,89,5128,478,21610,3157,89,759,9814,2948,374
+2648658105,extra-ship-components-next,1914,0,9,0,1,0,0,496,840,0,0,0,114,33,9,2409,1190,387,13489,1234,1
+3250900527,starbase-extended-30,91,0,0,0,0,0,0,21,97,0,0,0,0,0,1,74,0,200,425,2757,0
+3610149307,stellar-ai,144,40,27,33,0,80,12,10,334,0,0,0,4,0,10,47,72,3,0,46,78
+683230077,nsc3,491,0,0,0,1,0,0,928,457,1,0,1,58,7,470,492,106,1186,6296,2855,176

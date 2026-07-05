@@ -1,0 +1,43 @@
+ai_weight = {
+		factor = @forge_tier1_factor
+
+		inline_script = {
+			script = stellarai/invalid_planet_type_guard
+			PLANET_FLAG = stellarai_invalid_for_industry
+		}
+
+		modifier = {
+			factor = 0.20
+			owner = {
+				stellarai_consumer_goods_pressure = yes
+				NOT = { stellarai_has_consumer_goods_world = yes }
+			}
+		}
+
+		modifier = {
+			factor = 1.15
+			owner = { stellarai_military_emergency = yes }
+		}
+
+		modifier = {
+			factor = 1.08
+			owner = { stellarai_exterminator_war_ramp = yes }
+		}
+
+		modifier = {
+			factor = 0.5
+			AND = {
+				years_passed < 31
+				owner = {
+					AND = {
+						has_monthly_income = {
+							resource = alloys
+							value > 15
+						}
+						is_at_war = no
+						highest_threat < 20
+					}
+				}
+			}
+		}
+}

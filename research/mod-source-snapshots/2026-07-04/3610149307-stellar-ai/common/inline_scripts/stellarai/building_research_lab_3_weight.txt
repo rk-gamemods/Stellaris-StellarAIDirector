@@ -1,0 +1,26 @@
+ai_weight = {
+	inline_script = {
+		script = stellarai/rare_resource_guard_modifiers
+		STRATEGIC_RESOURCE = exotic_gases
+		MIN_INCOME = @b3_rare_upkeep
+		MIN_STOCKPILE = 12
+		EARLY_FACTOR = 0.15
+		EARLY_YEARS = 100
+		EARLY_STOCKPILE = 40
+		SURPLUS_FACTOR = 1.10
+		SURPLUS_INCOME = 6
+		SURPLUS_STOCKPILE = 70
+	}
+	modifier = {
+			factor = @research_lab_tier3_factor
+			owner = {
+				has_monthly_income = {
+					resource = consumer_goods
+					value > 3
+				}
+			}
+	}
+	inline_script = {
+		script = stellarai/building_research_lab_1_weight_modifiers
+	}
+}

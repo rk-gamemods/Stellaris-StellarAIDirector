@@ -1,0 +1,31 @@
+# chemists
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = chemist
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = no
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# chemist drones
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = chemist_drone
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = yes
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}

@@ -1,0 +1,6 @@
+# Scripted effects for My Codex Mod.
+# Use logging during development, remove or gate noisy logs before release.
+
+my_codex_mod_debug_log_country = {
+    log = "[my_codex_mod] debug country effect reached"
+}

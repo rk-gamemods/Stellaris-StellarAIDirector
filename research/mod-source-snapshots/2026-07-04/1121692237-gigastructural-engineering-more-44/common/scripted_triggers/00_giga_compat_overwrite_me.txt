@@ -1,0 +1,158 @@
+# Irony this is a placeholder file please ignore it
+
+# triggers for compat which are designed to be overwritten by files with higher priority
+# Machine shipset gigas patch (ringworlds)
+has_machine_shipset_gigas_ring_active = { always = no }
+
+#ACOT/AOT
+has_acot = { always = no }
+is_acot_pmc_vault = { always = no }
+is_acot_awesome_planet_class = { always = no }
+is_sbtg_activated = { always = no }
+is_progenitor_empires = { always = no }
+is_acot_advanced_starbase = { always = no }
+is_acot_unique_planet_class = { always = no }
+acot_has_non_psionic_shields = { always = no }
+has_aot_research_building = { always = no }
+
+# bug branch
+has_bug_branch = { always = no }
+is_bugged_terravore = { always = no }
+
+is_competitive = { always = no }
+is_cooperative = { always = no }
+is_pluralist = { always = no }
+
+is_elitist = { always = no }
+is_ecocentrist = { always = no }
+is_anthropocentric = { always = no }
+is_fanatic_anthropocentric = { always = no }
+is_bugged_cult = { always = no }
+is_bugged_advanced_cult = { is_death_cult_empire = yes } # used in priest swap inline, don't remove
+is_bugged_luminosity_cult = { always = no }
+is_bugged_war_cult = { always = no }
+is_bugged_life_cult = { always = no }
+is_bugged_death_cult = { always = no }
+is_bugged_machine_cult = { always = no }
+is_bugged_government_intervention = { always = no }
+is_bugged_rooftop_farmers = { always = no }
+is_bugged_mining_civic = { has_valid_civic = civic_mining_guilds } # gets overwritten with extra bug branch civics, but include vanilla one
+is_bugged_ruthless_industrialism = { always = no }
+is_bugged_war_engineers = { always = no }
+is_bugged_burrows = { always = no }
+is_bugged_agrarian_idyll = { always = no }
+is_bugged_megastructure_civic = { always = no }
+
+is_bugged_governmental = { always = no }
+is_bugged_governmental_materialist = { always = no }
+is_bugged_governmental_spiritualist = { always = no }
+is_bugged_governmental_militarist = { always = no }
+is_bugged_governmental_pacifist = { always = no }
+is_bugged_governmental_elitist = { always = no }
+is_bugged_governmental_pluralist = { always = no }
+is_bugged_governmental_competitive = { always = no }
+is_bugged_governmental_cooperative = { always = no }
+is_bugged_governmental_anthropocentric = { always = no }
+is_bugged_governmental_ecocentric = { always = no }
+is_bugged_governmental_autocratic = { always = no }
+
+# hypothetical stars
+is_hypo_stars_white_hole = { always = no }
+
+# ESC
+ESC_TRIGGER_needs_dark_matter_for_ship_components = { always = no }
+
+# PD
+has_planetary_diversity = { always = no }
+pd_is_continental  = { always = no }
+pd_is_ocean = { always = no }
+pd_is_tropical = { always = no }
+pd_is_desert = { always = no }
+pd_is_arid = { always = no }
+pd_is_savannah = { always = no }
+pd_is_arctic = { always = no }
+pd_is_alpine = { always = no }
+pd_is_tundra = { always = no }
+pd_is_planet_class_all = { always = no }
+pd_is_planet_class_uncommon = { always = no }
+pd_is_planet_class_superhabitable = { always = no }
+pd_is_planet_class_tidally_locked = { always = no }
+pd_is_planet_class_cave = { always = no }
+pd_is_planet_class_pd_gaia = { always = no }
+pd_is_planet_class_gaia = { always = no }
+pd_is_planet_class_nuked = { always = no }
+pd_is_planet_pd_class_nuked = { always = no }
+pd_is_planet_for_aqua_trait = { always = no }
+pd_is_planet_class_hive = { always = no }
+pd_is_planet_class_hive_all = { always = no }
+pd_is_planet_class_machine = { always = no }
+pd_is_planet_class_machine_all = { always = no }
+pd_is_wet_gaia_class = { always = no }
+pd_is_domed_colony_class = { always = no }
+pd_has_domed_base_modifier = { always = no }
+pd_has_domed_moon_base_modifier = { always = no }
+is_pd_uncommon_hive = { always = no }
+is_pd_uncommon_hive_arc = { always = no }
+is_pd_uncommon_machine = { always = no }
+is_pd_uncommon_machine_arc = { always = no }
+
+# PD Arcologies
+pd_shielded_world_modifier = { always = no }
+pd_is_pd_arcology = { always = no }
+pd_is_pd_hive_world = { always = no }
+pd_is_pd_hive_arc = { always = no }
+pd_is_pd_machine_arc = { always = no }
+has_pd_capital_deposit = { always = no }
+is_pd_commercial_arcology = { always = no }
+is_pd_fortress_arcology = { always = no }
+is_pd_garden_arcology = { always = no }
+is_pd_palace_arcology = { always = no }
+is_pd_senate_arcology = { always = no }
+is_pd_machine_capital = { always = no }
+is_pd_headquarters_arcology = { always = no }
+
+# Ancient Empire
+ag_is_ancient_ringworld = { always = no }
+
+# ATW
+atw_is_alpine = { always = no }
+atw_is_arctic = { always = no }
+atw_is_arid = { always = no }
+atw_is_continental = { always = no }
+atw_is_desert = { always = no }
+atw_is_gaia = { always = no }
+atw_is_nuked = { always = no }
+atw_is_ocean_basic = { always = no }
+atw_is_savannah = { always = no }
+atw_is_tropical = { always = no }
+atw_is_tundra = { always = no }
+
+atw_is_molten = { always = no }
+atw_is_toxic = { always = no }
+atw_is_gas_giant = { always = no }
+atw_is_barren = { always = no }
+atw_is_barren_cold = { always = no }
+atw_is_frozen = { always = no }
+
+
+# Forerunner Tradition Overhaul
+has_forerunner_defensive_traditions = {
+	AND = {
+		has_global_flag = forerunner_enabled
+		has_active_tradition = frr_supremacy_deterrence_c
+		has_active_tradition = frr_supremacy_quality_c
+	}
+}
+
+# guilli's
+gpm_mod_active = { always = no }
+
+# Stellar Manipulation
+stellar_manip_is_active = { always = no }
+
+# Hyperquasaric Megaconstruction
+quasarmod_enabled = { always = no }
+
+
+# Machine & Robot Expansion: Continued
+oxr_mdlc_can_build_grand_archive = { always = no }

@@ -1,0 +1,15 @@
+tool_or_command,purpose,version_caveat,source_ids
+error.log,Primary syntax/scope/missing asset diagnostic log,Stable concept,S007
+game.log,Runtime messages and custom log effect output,Stable concept,S007
+-script_debug,Launch flag for script debugging,Verify behavior in current build,S007
+-debug_mode,Debug launch mode,Verify behavior in current build,S007
+-debugtooltip,Debug tooltip flag,Verify behavior in current build,S007
+-logall,Avoid duplicate log suppression,Verify behavior in current build,S007
+debugtooltip,Inspect generated IDs and hidden state,Console page verified for PC 4.2; confirm with help,S010
+help / help <command>,List/describe console commands,Use in target version,S010
+reload text,Reload localisation,Stable localisation command,S008
+switchlanguage l_english,Switch language/reload localisation,Stable localisation command,S008
+toggle_string_id,Show string IDs instead of localisation,Stable localisation command,S008
+script_profiler,Profile script performance,Tutorial referenced,S007
+trigger_docs,Generate current trigger documentation,Use current game output over stale wiki,S009
+run <file>,Execute console command file; used by LLM bridge,Use only with trusted whitelisted commands,S015

@@ -1,0 +1,6 @@
+inline_script = {
+		script = stellarai/specialized_research_building_common_weight
+	    TIER_FACTOR = @research_building_tier3_factor
+		STRATEGIC_RESOURCE = exotic_gases
+		RARE_UPKEEP = @b3_rare_upkeep
+}

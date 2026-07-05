@@ -1,0 +1,705 @@
+defined_text = {
+	name = giga_terraform_site_barren
+
+	text = {
+		trigger = {
+			exists = owner
+			owner = { has_technology = giga_tech_terraform_barren }
+		}
+
+		localization_key = "giga_terraform_site_barren_loc"
+	}
+}
+
+defined_text = {
+	name = giga_terraform_site_toxic
+
+	text = {
+		trigger = {
+			exists = owner
+			owner = { has_technology = giga_tech_terraform_toxic }
+		}
+
+		localization_key = "giga_terraform_site_toxic_loc"
+	}
+}
+
+defined_text = {
+	name = giga_virtual_training_coordinator_extra
+
+	text = {
+		trigger = {
+			exists = owner
+			owner = {
+				or = {
+					giga_vr_training_military = yes
+					giga_vr_training_government = yes
+					giga_vr_training_science = yes
+					giga_vr_training_leaders = yes
+				}
+			}
+		}
+
+		localization_key = job_giga_virtual_training_coordinator_effect_extra
+	}
+
+	default = frameworld_blank
+}
+
+defined_text = {
+	name = giga_virtual_training_job
+
+	text = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+			}
+		}
+
+		localization_key = job_giga_virtual_training_coordination_drone
+	}
+
+	default = job_giga_virtual_training_coordinator
+}
+
+defined_text = {
+	name = giga_virtual_training_job_plural
+
+	text = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+			}
+		}
+
+		localization_key = job_giga_virtual_training_coordination_drone_plural
+	}
+
+	default = job_giga_virtual_training_coordinator_plural
+}
+
+defined_text = {
+	name = giga_virtual_training_job_icon
+
+	text = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+			}
+		}
+
+		localization_key = planet_giga_virtual_training_job_icon_gestalt
+	}
+
+	default = planet_giga_virtual_training_job_icon
+}
+
+defined_text = {
+	name = giga_virtual_diplomats_icon
+
+	text = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_machine_empire = yes
+			}
+		}
+
+		localization_key = planet_giga_virtual_diplomats_icon_machine
+	}
+
+	default = planet_giga_virtual_diplomats_icon
+}
+
+
+# Artisan / others
+defined_text = {
+	name = GetArtisanIcon
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_crafter_empire = no
+		}
+		localization_key = job_artisan_icon
+	}
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_crafter_empire = yes
+		}
+		localization_key = job_artificer_icon
+	}
+	default = job_artisan_icon
+}
+
+# Researcher icons
+defined_text = {
+	name = GetResearcherIcon
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_regular_empire = yes
+		}
+		localization_key = job_researcher_icon
+	}
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_hive_empire = yes
+		}
+		localization_key = job_brain_drone_icon
+	}
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_machine_empire = yes
+		}
+		localization_key = job_calculator_icon
+	}
+	default = job_researcher_icon
+}
+
+defined_text = {
+	name = GetNanotechResearcher
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_regular_empire = yes
+		}
+		localization_key = job_nanotech_researcher
+	}
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_gestalt = yes
+		}
+		localization_key = job_nanotech_research_unit
+	}
+	default = job_nanotech_researcher
+}
+
+defined_text = {
+	name = GetNanotechResearcherIcon
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_regular_empire = yes
+		}
+		localization_key = job_nanotech_researcher_icon
+	}
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_gestalt = yes
+		}
+		localization_key = job_nanotech_research_unit_icon
+	}
+	default = job_nanotech_researcher_icon
+}
+
+
+# planet scope
+defined_text = {
+	name = GetElysiumControllerOriginTooltip
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_colony = yes
+			exists = owner
+			owner = {
+				has_origin = origin_elysium
+			}
+		}
+		localization_key = job_giga_elysium_controller_origin_effect_desc
+	}
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_colony = no
+			exists = from
+			from = {
+				has_origin = origin_elysium
+			}
+		}
+		localization_key = job_giga_elysium_controller_origin_effect_desc
+	}
+	default = frameworld_blank
+}
+
+defined_text = {
+	name = GetCrystalMiner
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_gestalt = yes
+		}
+		localization_key = job_crystal_mining_drone
+	}
+	default = job_crystal_miner
+}
+
+defined_text = {
+	name = GetMoteHarvester
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_gestalt = yes
+		}
+		localization_key = job_mote_harvesting_drone
+	}
+	default = job_mote_harvester
+}
+
+defined_text = {
+	name = GetGasExtractor
+	text = {
+		trigger = {
+			is_scope_valid = yes
+			is_gestalt = yes
+		}
+		localization_key = job_gas_extraction_drone
+	}
+	default = job_gas_extractor
+}
+
+defined_text = { 
+	name = giga_chk_grow_01
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_ether_drake		 }			localization_key = space_dragon_red }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_wraith			 }			localization_key = wraith_01_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_tiyanki_matriarch	 }			localization_key = leviathan_01_elder_tiyanki }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_stellarite_devourer}			localization_key = stellarite }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_voidspawn      	 }			localization_key = leviathan_01_voidspawn }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_swarm_queen		 }			localization_key = queen_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_tiyanki			 }			localization_key = space_whale_5 }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_amoeba			 }			localization_key = space_amoeba_mother }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_swarmling			 }			localization_key = small_ship_swarm }
+	text = { trigger = { 	has_megastructure_flag = giga_vat_01_grow_toxic_god			 }			localization_key = toxic_god }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_voidworm			 }			localization_key = voidworms_titan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_crystal			 }			localization_key = crystal_ship_large_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_cutholoid			 }			localization_key = cutholoid }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_brood_mother		 }			localization_key = large_ship_carrier_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_grow_warrior			 }			localization_key = large_ship_swarm }
+}
+
+defined_text = { 
+	name = giga_chk_grow_02
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_swarm_queen }			localization_key = queen_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_tiyanki	  }			localization_key = space_whale_5 }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_amoeba	  }			localization_key = space_amoeba_mother }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_swarmling   }			localization_key = small_ship_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_voidworm			 }			localization_key = voidworms_titan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_crystal			 }			localization_key = crystal_ship_large_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_cutholoid			 }			localization_key = cutholoid }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_brood_mother		 }			localization_key = large_ship_carrier_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_grow_warrior			 }			localization_key = large_ship_swarm }
+}
+
+defined_text = { 
+	name = giga_chk_grow_03
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_swarm_queen }			localization_key = queen_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_tiyanki	  }			localization_key = space_whale_5 }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_amoeba	  }			localization_key = space_amoeba_mother }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_swarmling   }			localization_key = small_ship_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_voidworm			 }			localization_key = voidworms_titan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_crystal			 }			localization_key = crystal_ship_large_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_cutholoid			 }			localization_key = cutholoid }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_brood_mother		 }			localization_key = large_ship_carrier_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_grow_warrior			 }			localization_key = large_ship_swarm }
+}
+
+defined_text = { 
+	name = giga_chk_grow_04
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_swarm_queen }			localization_key = queen_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_tiyanki	  }			localization_key = space_whale_5 }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_amoeba	  }			localization_key = space_amoeba_mother }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_swarmling   }			localization_key = small_ship_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_voidworm			 }			localization_key = voidworms_titan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_crystal			 }			localization_key = crystal_ship_large_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_cutholoid			 }			localization_key = cutholoid }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_brood_mother		 }			localization_key = large_ship_carrier_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_grow_warrior			 }			localization_key = large_ship_swarm }
+}
+
+defined_text = { 
+	name = giga_chk_grow_05
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_swarm_queen }			localization_key = queen_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_tiyanki	  }			localization_key = space_whale_5 }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_amoeba	  }			localization_key = space_amoeba_mother }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_swarmling   }			localization_key = small_ship_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_voidworm			 }			localization_key = voidworms_titan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_crystal			 }			localization_key = crystal_ship_large_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_cutholoid			 }			localization_key = cutholoid }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_brood_mother		 }			localization_key = large_ship_carrier_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_grow_warrior			 }			localization_key = large_ship_swarm }
+}
+
+defined_text = { 
+	name = giga_chk_grow_06
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_swarm_queen }			localization_key = queen_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_tiyanki	  }			localization_key = space_whale_5 }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_amoeba	  }			localization_key = space_amoeba_mother }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_swarmling   }			localization_key = small_ship_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_voidworm			 }			localization_key = voidworms_titan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_crystal			 }			localization_key = crystal_ship_large_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_cutholoid			 }			localization_key = cutholoid }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_brood_mother		 }			localization_key = large_ship_carrier_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_grow_warrior			 }			localization_key = large_ship_swarm }
+}
+
+defined_text = { 
+	name = giga_chk_grow_07
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_swarm_queen }			localization_key = queen_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_tiyanki	  }			localization_key = space_whale_5 }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_amoeba	  }			localization_key = space_amoeba_mother }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_swarmling   }			localization_key = small_ship_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_voidworm			 }			localization_key = voidworms_titan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_crystal			 }			localization_key = crystal_ship_large_blue }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_cutholoid			 }			localization_key = cutholoid }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_brood_mother		 }			localization_key = large_ship_carrier_swarm }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_grow_warrior			 }			localization_key = large_ship_swarm }
+}
+
+defined_text = {
+	name = giga_vat_switch_01
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_fauna }			localization_key = giga_vat_switch_leviathan }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_leviathans }			localization_key = giga_vat_switch_scourge }
+	text = { trigger = {	has_megastructure_flag = giga_vat_01_scourge }			localization_key = giga_vat_switch_fauna }
+}
+
+defined_text = {
+	name = giga_vat_switch_02
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_fauna }			localization_key = giga_vat_switch_scourge }
+	text = { trigger = {	has_megastructure_flag = giga_vat_02_scourge }			localization_key = giga_vat_switch_fauna }
+}
+
+defined_text = {
+	name = giga_vat_switch_03
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_fauna }			localization_key = giga_vat_switch_scourge }
+	text = { trigger = {	has_megastructure_flag = giga_vat_03_scourge }			localization_key = giga_vat_switch_fauna }
+}
+
+defined_text = {
+	name = giga_vat_switch_04
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_fauna }			localization_key = giga_vat_switch_scourge }
+	text = { trigger = {	has_megastructure_flag = giga_vat_04_scourge }			localization_key = giga_vat_switch_fauna }
+}
+
+defined_text = {
+	name = giga_vat_switch_05
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_fauna }			localization_key = giga_vat_switch_scourge }
+	text = { trigger = {	has_megastructure_flag = giga_vat_05_scourge }			localization_key = giga_vat_switch_fauna }
+}
+
+defined_text = {
+	name = giga_vat_switch_06
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_fauna }			localization_key = giga_vat_switch_scourge }
+	text = { trigger = {	has_megastructure_flag = giga_vat_06_scourge }			localization_key = giga_vat_switch_fauna }
+}
+
+defined_text = {
+	name = giga_vat_switch_07
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_fauna }			localization_key = giga_vat_switch_scourge }
+	text = { trigger = {	has_megastructure_flag = giga_vat_07_scourge }			localization_key = giga_vat_switch_fauna }
+}
+
+defined_text = {
+	name = GetCountResourceTest
+	value = value:giga_count_resource|resource|energy|
+}
+
+defined_text = {
+	name = GetHypersiphonNetworkSize
+	value = value:giga_psychic_hypersiphon_network_size
+}
+defined_text = {
+	name = GetHypersiphonPopCount
+	value = value:giga_psychic_hypersiphon_psionic_pops
+}
+defined_text = {
+	name = GetHypersiphonSummonCount
+	value = value:giga_psychic_hypersiphon_summon_count
+}
+defined_text = {
+	name = GetGigaShroudConduitJob
+	text = {
+		trigger = {
+			giga_country_uses_priests = yes
+		}
+		localization_key = job_giga_shroud_conduit_priest
+	}
+	text = {
+		trigger = {
+			is_gestalt = yes
+		}
+		localization_key = job_giga_shroud_conduit_drone
+	}
+	default = job_giga_shroud_conduit_worker
+}
+defined_text = {
+	name = GetGigaShroudConduitJobPlural
+	text = {
+		trigger = {
+			giga_country_uses_priests = yes
+		}
+		localization_key = job_giga_shroud_conduit_priest_plural
+	}
+	text = {
+		trigger = {
+			is_gestalt = yes
+		}
+		localization_key = job_giga_shroud_conduit_drone_plural
+	}
+	default = job_giga_shroud_conduit_worker_plural
+}
+defined_text = {
+	name = GetGigaShroudConduitJobIcon
+	text = {
+		trigger = {
+			giga_country_uses_priests = yes
+		}
+		localization_key = job_giga_shroud_conduit_priest_icon
+	}
+	text = {
+		trigger = {
+			is_gestalt = yes
+		}
+		localization_key = job_giga_shroud_conduit_drone_icon
+	}
+	default = job_giga_shroud_conduit_worker_icon
+}
+
+defined_text = {
+	name = GetAsteroidIndustryAlloysBuildingMax
+	text = {
+		trigger = {
+			is_giga_one_planet_origin = yes
+		}
+		localization_key = building_giga_asteroid_factory_alloys_one_planet_modifier
+	}
+	default = building_giga_asteroid_factory_alloys_modifier
+}
+defined_text = {
+	name = GetAsteroidIndustryConsumerGoodsBuildingMax
+	text = {
+		trigger = {
+			is_giga_one_planet_origin = yes
+		}
+		localization_key = building_giga_asteroid_factory_consumer_goods_one_planet_modifier
+	}
+	default = building_giga_asteroid_factory_consumer_goods_modifier
+}
+defined_text = {
+	name = GetAsteroidIndustryEnergyBuildingMax
+	text = {
+		trigger = {
+			is_giga_one_planet_origin = yes
+		}
+		localization_key = building_giga_asteroid_factory_energy_one_planet_modifier
+	}
+	default = building_giga_asteroid_factory_energy_modifier
+}
+defined_text = {
+	name = GetAsteroidIndustryFoodBuildingMax
+	text = {
+		trigger = {
+			is_giga_one_planet_origin = yes
+		}
+		localization_key = building_giga_asteroid_factory_food_one_planet_modifier
+	}
+	default = building_giga_asteroid_factory_food_modifier
+}
+defined_text = {
+	name = GetAsteroidIndustrySupertensilesBuildingMax
+	text = {
+		trigger = {
+			is_giga_one_planet_origin = yes
+		}
+		localization_key = building_giga_asteroid_factory_supertensiles_one_planet_modifier
+	}
+	default = building_giga_asteroid_factory_supertensiles_modifier
+}
+
+defined_text = {
+	name = GetMatrioshkaBrainUplinkCountNumerator
+	value = owner.value:giga_matrioshka_brain_uplink_count
+}
+defined_text = {
+	name = GetMatrioshkaBrainUplinkCountDenominator
+	value = owner.modifier:building_giga_matrioshka_brain_uplink_country_max
+}
+
+defined_text = {
+	name = giga_flusion_administration_mechanics
+	text = {
+		trigger = {
+			owner = {
+				is_virtual_empire = yes
+			}
+		}
+		localization_key = giga_flusion_administration_virtual
+	}
+	default = BLANK_STRING
+}
+
+# WHY is this not vanilla?! they have a specialist plural one!
+defined_text = {
+    name = GetWorkerPlural
+    text = {
+        trigger = {
+            is_scope_valid = yes
+            is_regular_empire = yes
+        }
+        localization_key = pop_cat_worker_plural
+    }
+    text = {
+        trigger = {
+            is_scope_valid = yes
+            is_gestalt = yes
+        }
+        localization_key = pop_cat_simple_drone_plural
+    }
+    default = pop_cat_worker_plural
+}
+
+
+
+defined_text = {
+    name = GetAldersonAnnexationApproachNameFlavor
+	#default = giga_situation_alderson_primitives_approach_annex_generic
+	text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_generic } }
+		localization_key = giga_situation_alderson_primitives_approach_annex_generic
+	}
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_diplomatic } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_diplomatic
+    }
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_military } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_military
+    }
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_worker_coop } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_worker_coop
+    }
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_shared_burden } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_shared_burden
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_dystopian_society } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_dystopian_society
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_corporate } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_corporate
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_technocracy } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_technocracy
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_machine_servitor } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_machine_servitor
+    }
+}
+
+defined_text = {
+    name = GetAldersonAnnexationApproachDescFlavor
+	#default = giga_situation_alderson_primitives_approach_annex_tooltip_generic
+	text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_generic } }
+		localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_generic
+	}
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_diplomatic } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_diplomatic
+    }
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_military } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_military
+    }
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_worker_coop } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_worker_coop
+    }
+    text = {
+        trigger = { owner = { has_country_flag = alderson_annexation_shared_burden } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_shared_burden
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_dystopian_society } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_dystopian_society
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_corporate } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_corporate
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_technocracy } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_technocracy
+    }
+    text = {
+		trigger = { owner = { has_country_flag = alderson_annexation_machine_servitor } }
+        localization_key = giga_situation_alderson_primitives_approach_annex_tooltip_machine_servitor
+    }
+}
+
+defined_text = {
+    name = GetAldersonAnnexationOutcomeDescFlavor
+	default = giga_alderson.004.desc.generic
+    text = {
+        trigger = { has_country_flag = alderson_annexation_diplomatic }
+        localization_key = giga_alderson.004.desc.diplomatic
+    }
+    text = {
+        trigger = { has_country_flag = alderson_annexation_military }
+        localization_key = giga_alderson.004.desc.military
+    }
+    text = {
+        trigger = { has_country_flag = alderson_annexation_worker_coop }
+        localization_key = giga_alderson.004.desc.worker_coop
+    }
+    text = {
+        trigger = { has_country_flag = alderson_annexation_shared_burden }
+        localization_key = giga_alderson.004.desc.shared_burden
+    }
+    text = {
+		trigger = { has_country_flag = alderson_annexation_dystopian_society }
+        localization_key = giga_alderson.004.desc.dystopian_society
+    }
+    text = {
+		trigger = { has_country_flag = alderson_annexation_corporate }
+        localization_key = giga_alderson.004.desc.corporate
+    }
+    text = {
+		trigger = { has_country_flag = alderson_annexation_technocracy }
+        localization_key = giga_alderson.004.desc.technocracy
+    }
+    text = {
+		trigger = { has_country_flag = alderson_annexation_machine_servitor }
+        localization_key = giga_alderson.004.desc.machine_servitor
+    }
+}
+
+define_text = {
+	name = GigaGalwonTooltipGetRingworld
+	default = giga_galactic_wonders_tooltip_ring_world_construction
+	text = {
+		trigger = {
+			giga_can_use_habitables = no
+			country_uses_bio_ships = no
+		}
+		localization_key = giga_galactic_wonders_tooltip_ring_world_no_habitables
+	}
+	text = {
+		trigger = {
+			giga_can_use_habitables = no
+			country_uses_bio_ships = yes
+		}
+		localization_key = giga_galactic_wonders_tooltip_ring_world_no_habitables_bio
+	}
+}

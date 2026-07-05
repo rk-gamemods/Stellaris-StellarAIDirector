@@ -1,0 +1,1552 @@
+############################################################
+##                 ESC : Missile Weapons                  ##
+############################################################
+
+# - Joker Missiles					G
+# - Wraith Missiles					G
+# - Plasma Missiles					S/M/L
+# - Improved Plasma Missiles		S/M/L
+# - Incinerator Missiles			S/M/L
+# - Desolator Torpedo				G
+# - Eradicator Torpedo				G
+# - Corrosive Warhead Torpedo		G
+# - Typhoon Missiles				G
+# - Hurricane Missiles				G
+# - Exotic Matter Warhead			X
+# - Strange Matter Warhead			X
+# - Reflex Missile Launcher			Titanic
+
+############################################################
+##                     Joker Missiles                     ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_MISSILE_6
+	size = small
+	icon = GFX_esc_missile_6
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 62 max = 90 }
+	windup = { min = 10 max = 40 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_G_2
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.45
+	missile_health = 10
+	missile_armor = 10
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -30
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_missile_hull_damage
+	armor_damage = @ESC_WEAPON_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_missile_shield_penetration
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_missiles_6" }
+	component_set = ESC_MISSILE_6
+	projectile_gfx = "esc_missiles_6"
+	upgrades_to = ESC_MISSILE_7
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	ai_tag_weight = 0
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+############################################################
+##                    Wraith Missiles                     ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_MISSILE_7
+	size = small
+	icon = GFX_esc_missile_7
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 75 max = 120 }
+	windup = { min = 10 max = 40 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_G_2
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.5
+	missile_health = 15
+	missile_armor = 10
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -35
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_missile_hull_damage
+	armor_damage = @ESC_WEAPON_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_missile_shield_penetration
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_missiles_7" }
+	component_set = ESC_MISSILE_7
+	projectile_gfx = "esc_missiles_7"
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	ai_tag_weight = 0
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+############################################################
+##                    Plasma Missiles                     ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_PLASMA_MISSILE_1
+	size = small
+	icon = GFX_esc_plasma_missile_1
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 24 max = 66 }
+	windup = { min = 6 max = 24 }
+	total_fire_time = 35
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 24
+	missile_armor = 0
+	missile_shield = 15
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -20
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_1" }
+	component_set = ESC_PLASMA_MISSILE_1
+	projectile_gfx = "small_esc_plasma_missile_1"
+	upgrades_to = SMALL_ESC_PLASMA_MISSILE_2
+	tags = { weapon_type_explosive weapon_type_energy s_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_PLASMA_MISSILE_1
+	size = medium
+	icon = GFX_esc_plasma_missile_1
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 60 max = 132 }
+	windup = { min = 7 max = 27 }
+	total_fire_time = 40
+	range = @ESC_WEAPON_RANGE_M_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 27
+	missile_armor = 0
+	missile_shield = 20
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -34
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_1" }
+	component_set = ESC_PLASMA_MISSILE_1
+	projectile_gfx = "medium_esc_plasma_missile_1"
+	upgrades_to = MEDIUM_ESC_PLASMA_MISSILE_2
+	tags = { weapon_type_explosive weapon_type_energy m_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_PLASMA_MISSILE_1
+	size = large
+	icon = GFX_esc_plasma_missile_1
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 148 max = 334 }
+	windup = { min = 8 max = 30 }
+	total_fire_time = 45
+	range = @ESC_WEAPON_RANGE_L_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 30
+	missile_armor = 0
+	missile_shield = 25
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -64
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_1" }
+	component_set = ESC_PLASMA_MISSILE_1
+	projectile_gfx = "large_esc_plasma_missile_1"
+	upgrades_to = LARGE_ESC_PLASMA_MISSILE_2
+	tags = { weapon_type_explosive weapon_type_energy l_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+############################################################
+##               Improved Plasma Missiles                 ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_PLASMA_MISSILE_2
+	size = small
+	icon = GFX_esc_plasma_missile_2
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 30 max = 84 }
+	windup = { min = 6 max = 24 }
+	total_fire_time = 35
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 27
+	missile_armor = 0
+	missile_shield = 15
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -24
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_2" }
+	component_set = ESC_PLASMA_MISSILE_2
+	projectile_gfx = "small_esc_plasma_missile_2"
+	upgrades_to = SMALL_ESC_PLASMA_MISSILE_3
+	tags = { weapon_type_explosive weapon_type_energy s_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_PLASMA_MISSILE_2
+	size = medium
+	icon = GFX_esc_plasma_missile_2
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 90 max = 214 }
+	windup = { min = 7 max = 27 }
+	total_fire_time = 40
+	range = @ESC_WEAPON_RANGE_M_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 30
+	missile_armor = 0
+	missile_shield = 20
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -46
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_2" }
+	component_set = ESC_PLASMA_MISSILE_2
+	projectile_gfx = "medium_esc_plasma_missile_2"
+	upgrades_to = MEDIUM_ESC_PLASMA_MISSILE_3
+	tags = { weapon_type_explosive weapon_type_energy m_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_PLASMA_MISSILE_2
+	size = large
+	icon = GFX_esc_plasma_missile_2
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 212 max = 438 }
+	windup = { min = 8 max = 30 }
+	total_fire_time = 45
+	range = @ESC_WEAPON_RANGE_L_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 33
+	missile_armor = 0
+	missile_shield = 25
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -90
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_2" }
+	component_set = ESC_PLASMA_MISSILE_2
+	projectile_gfx = "large_esc_plasma_missile_2"
+	upgrades_to = LARGE_ESC_PLASMA_MISSILE_3
+	tags = { weapon_type_explosive weapon_type_energy l_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+############################################################
+##                 Incinerator Missiles                   ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_PLASMA_MISSILE_3
+	size = small
+	icon = GFX_esc_plasma_missile_3
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 42 max = 104 }
+	windup = { min = 6 max = 24 }
+	total_fire_time = 35
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 30
+	missile_armor = 0
+	missile_shield = 15
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -28
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_3" }
+	component_set = ESC_PLASMA_MISSILE_3
+	projectile_gfx = "small_esc_plasma_missile_3"
+	tags = { weapon_type_explosive weapon_type_energy s_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_PLASMA_MISSILE_3
+	size = medium
+	icon = GFX_esc_plasma_missile_3
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 118 max = 246 }
+	windup = { min = 7 max = 27 }
+	total_fire_time = 40
+	range = @ESC_WEAPON_RANGE_M_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 33
+	missile_armor = 0
+	missile_shield = 20
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -52
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_3" }
+	component_set = ESC_PLASMA_MISSILE_3
+	projectile_gfx = "medium_esc_plasma_missile_3"
+	tags = { weapon_type_explosive weapon_type_energy m_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_PLASMA_MISSILE_3
+	size = large
+	icon = GFX_esc_plasma_missile_3
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 256 max = 508 }
+	windup = { min = 8 max = 30 }
+	total_fire_time = 45
+	range = @ESC_WEAPON_RANGE_L_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 36
+	missile_armor = 0
+	missile_shield = 25
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -100
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_plasma_missile_hull_damage
+	armor_damage = @ESC_WEAPON_plasma_missile_armor_damage
+	armor_penetration = @ESC_WEAPON_plasma_missile_armor_penetration
+	shield_damage = @ESC_WEAPON_plasma_missile_shield_damage
+	shield_penetration = @ESC_WEAPON_plasma_missile_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_plasma_missiles_3" }
+	component_set = ESC_PLASMA_MISSILE_3
+	projectile_gfx = "large_esc_plasma_missile_3"
+	tags = { weapon_type_explosive weapon_type_energy l_slot }
+	ai_tags = { weapon_role_anti_armor weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+############################################################
+##                   Desolator Torpedo                    ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_TORPEDO_4
+	size = torpedo
+	icon = GFX_esc_torpedo_4
+	icon_frame = 1
+	type = missile
+
+	firing_arc = 25.0
+
+	damage = { min = 210 max = 315 }
+	size_damage_factor = 0.2
+	windup = { min = 5 max = 10 }
+	total_fire_time = 200
+	range = @ESC_WEAPON_RANGE_S_1
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_1
+	missile_evasion = 0.1
+	missile_health = 12
+	missile_armor = 13
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -38
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_torpedo_hull_damage
+	armor_damage = @ESC_WEAPON_torpedo_armor_damage
+	armor_penetration = @ESC_WEAPON_torpedo_armor_penetration
+	shield_damage = @ESC_WEAPON_torpedo_shield_damage
+	shield_penetration = @ESC_WEAPON_torpedo_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_torpedoes_4" }
+	component_set = ESC_TORPEDO_4
+	projectile_gfx = "esc_missiles_6"
+	upgrades_to = ESC_TORPEDO_5
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_anti_shield explosive explosive_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_torpedo
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+############################################################
+##                  Eradicator Torpedo                    ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_TORPEDO_5
+	size = torpedo
+	icon = GFX_esc_torpedo_5
+	icon_frame = 1
+	type = missile
+
+	firing_arc = 25.0
+
+	damage = { min = 250 max = 350 }
+	size_damage_factor = 0.2
+	windup = { min = 5 max = 10 }
+	total_fire_time = 200
+	range = @ESC_WEAPON_RANGE_S_1
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_1
+	missile_evasion = 0.1
+	missile_health = 15
+	missile_armor = 15
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -44
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_torpedo_hull_damage
+	armor_damage = @ESC_WEAPON_torpedo_armor_damage
+	armor_penetration = @ESC_WEAPON_torpedo_armor_penetration
+	shield_damage = @ESC_WEAPON_torpedo_shield_damage
+	shield_penetration = @ESC_WEAPON_torpedo_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_torpedoes_5" }
+	component_set = ESC_TORPEDO_5
+	projectile_gfx = "esc_missiles_7"
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_anti_shield explosive explosive_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_torpedo
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+############################################################
+##               Corrosive Warhead Torpedo                ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_CORROSIVE_WARHEAD
+	size = torpedo
+	icon = GFX_esc_corrosive_warhead_torpedo
+	icon_frame = 1
+	type = missile
+
+	firing_arc = 25.0
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 275
+		MAX_DAMAGE = 450
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_l
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 5 max = 10 }
+	total_fire_time = 150
+	range = @ESC_WEAPON_RANGE_G_3
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 20
+	missile_armor = 15
+	missile_shield = 10
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -65
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 9
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_corrosive_warhead_hull_damage
+	armor_damage = @ESC_WEAPON_corrosive_warhead_armor_damage
+	armor_penetration = @ESC_WEAPON_corrosive_warhead_armor_penetration
+	shield_damage = @ESC_WEAPON_corrosive_warhead_shield_damage
+	shield_penetration = @ESC_WEAPON_corrosive_warhead_shield_penetration
+	tracking = 0.2
+
+	prerequisites = { "esc_tech_corrosive_warhead_torpedo" }
+	component_set = ESC_CORROSIVE_WARHEAD
+	projectile_gfx = "esc_corrosive_warhead_torpedoes"
+	tags = { weapon_type_explosive weapon_type_energy g_slot weapon_role_artillery }
+	ai_tags = { weapon_role_anti_shield explosive explosive_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_torpedo
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+############################################################
+##                   Typhoon Missiles                     ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_SWARMER_MISSILES_3
+	size = medium
+	icon = GFX_esc_swarmer_missiles_3
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 85 max = 120 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_G_3
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.15
+	missile_health = 25
+	missile_armor = 15
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -35
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_swarmer_hull_damage
+	armor_damage = @ESC_WEAPON_swarmer_armor_damage
+	armor_penetration = @ESC_WEAPON_swarmer_armor_penetration
+	shield_damage = @ESC_WEAPON_swarmer_shield_damage
+	shield_penetration = @ESC_WEAPON_swarmer_shield_penetration
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_swarmer_missiles_3" }
+	component_set = ESC_SWARMER_MISSILES_3
+	projectile_gfx = "esc_swarmer_missiles_3"
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	upgrades_to = ESC_SWARMER_MISSILES_4
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_swarmer_missiles
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_SWARMER_MISSILES_3
+	size = medium
+	icon = GFX_esc_bio_swarmer_missiles_3
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 85 max = 120 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_G_3
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.15
+	missile_health = 25
+	missile_armor = 15
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -35
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_swarmer_hull_damage
+	armor_damage = @ESC_WEAPON_swarmer_armor_damage
+	armor_penetration = @ESC_WEAPON_swarmer_armor_penetration
+	shield_damage = @ESC_WEAPON_swarmer_shield_damage
+	shield_penetration = @ESC_WEAPON_swarmer_shield_penetration
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_swarmer_missiles_3" }
+	component_set = ESC_BIO_SWARMER_MISSILES_3
+	projectile_gfx = "esc_swarmer_missiles_3"
+	tags = { weapon_type_explosive m_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	upgrades_to = MEDIUM_ESC_BIO_SWARMER_MISSILES_4
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_swarmer_missiles
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = TORPEDO_ESC_BIO_SWARMER_MISSILES_3
+	size = torpedo
+	icon = GFX_esc_bio_swarmer_missiles_3
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 85 max = 120 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_G_3
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.15
+	missile_health = 25
+	missile_armor = 15
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -35
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_swarmer_hull_damage
+	armor_damage = @ESC_WEAPON_swarmer_armor_damage
+	armor_penetration = @ESC_WEAPON_swarmer_armor_penetration
+	shield_damage = @ESC_WEAPON_swarmer_shield_damage
+	shield_penetration = @ESC_WEAPON_swarmer_shield_penetration
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_swarmer_missiles_3" }
+	component_set = ESC_BIO_SWARMER_MISSILES_3
+	projectile_gfx = "esc_swarmer_missiles_3"
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	upgrades_to = TORPEDO_ESC_BIO_SWARMER_MISSILES_4
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_swarmer_missiles
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships_conditional
+		EXTRA_CONDITION = "ship_uses_harbinger_components"
+		EXTRA_CONDITION_VALUE = yes
+		EVAL_TARGET = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+############################################################
+##                  Hurricane Missiles                    ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_SWARMER_MISSILES_4
+	size = medium
+	icon = GFX_esc_swarmer_missiles_4
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 120 max = 150 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_G_3
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.15
+	missile_health = 30
+	missile_armor = 20
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -49
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_swarmer_hull_damage
+	armor_damage = @ESC_WEAPON_swarmer_armor_damage
+	armor_penetration = @ESC_WEAPON_swarmer_armor_penetration
+	shield_damage = @ESC_WEAPON_swarmer_shield_damage
+	shield_penetration = @ESC_WEAPON_swarmer_shield_penetration
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_swarmer_missiles_4" }
+	component_set = ESC_SWARMER_MISSILES_4
+	projectile_gfx = "esc_swarmer_missiles_4"
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_swarmer_missiles
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_SWARMER_MISSILES_4
+	size = medium
+	icon = GFX_esc_bio_swarmer_missiles_4
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 120 max = 150 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_G_3
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.15
+	missile_health = 30
+	missile_armor = 20
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -49
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_swarmer_hull_damage
+	armor_damage = @ESC_WEAPON_swarmer_armor_damage
+	armor_penetration = @ESC_WEAPON_swarmer_armor_penetration
+	shield_damage = @ESC_WEAPON_swarmer_shield_damage
+	shield_penetration = @ESC_WEAPON_swarmer_shield_penetration
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_swarmer_missiles_4" }
+	component_set = ESC_BIO_SWARMER_MISSILES_4
+	projectile_gfx = "esc_swarmer_missiles_4"
+	tags = { weapon_type_explosive m_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_swarmer_missiles
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = TORPEDO_ESC_BIO_SWARMER_MISSILES_4
+	size = torpedo
+	icon = GFX_esc_bio_swarmer_missiles_4
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 120 max = 150 }
+	windup = { min = 5 max = 20 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_G_3
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.15
+	missile_health = 30
+	missile_armor = 20
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -49
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_swarmer_hull_damage
+	armor_damage = @ESC_WEAPON_swarmer_armor_damage
+	armor_penetration = @ESC_WEAPON_swarmer_armor_penetration
+	shield_damage = @ESC_WEAPON_swarmer_shield_damage
+	shield_penetration = @ESC_WEAPON_swarmer_shield_penetration
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_swarmer_missiles_4" }
+	component_set = ESC_BIO_SWARMER_MISSILES_4
+	projectile_gfx = "esc_swarmer_missiles_4"
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_artillery artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_swarmer_missiles
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships_conditional
+		EXTRA_CONDITION = "ship_uses_harbinger_components"
+		EXTRA_CONDITION_VALUE = yes
+		EVAL_TARGET = yes
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+############################################################
+##                Exotic Matter Warhead                   ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_XMISSILE_1
+	size = extra_large
+	icon = GFX_esc_x_missiles_1
+	icon_frame = 1
+	type = missile
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	#use_ship_kill_target = no
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 190
+		MAX_DAMAGE = 380
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 10 max = 35 }
+	total_fire_time = 75
+	range = @ESC_WEAPON_RANGE_X_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.1
+	missile_health = 30
+	missile_armor = 20
+	missile_shield = 10
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -300
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_exotic_hull_damage
+	armor_damage = @ESC_WEAPON_exotic_armor_damage
+	armor_penetration = @ESC_WEAPON_exotic_armor_penetration
+	shield_damage = @ESC_WEAPON_exotic_shield_damage
+	shield_penetration = @ESC_WEAPON_exotic_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_xmissile_1" }
+	component_set = ESC_XMISSILE_1
+	projectile_gfx = "esc_xmissile1"
+	upgrades_to = ESC_XMISSILE_2
+	tags = { weapon_type_energy weapon_type_explosive x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+############################################################
+##                Strange Matter Warhead                  ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_XMISSILE_2
+	size = extra_large
+	icon = GFX_esc_x_missiles_2
+	icon_frame = 1
+	type = missile
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	#use_ship_kill_target = no
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 220
+		MAX_DAMAGE = 440
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 10 max = 35 }
+	total_fire_time = 75
+	range = @ESC_WEAPON_RANGE_X_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.1
+	missile_health = 30
+	missile_armor = 25
+	missile_shield = 15
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -325
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_exotic_hull_damage
+	armor_damage = @ESC_WEAPON_exotic_armor_damage
+	armor_penetration = @ESC_WEAPON_exotic_armor_penetration
+	shield_damage = @ESC_WEAPON_exotic_shield_damage
+	shield_penetration = @ESC_WEAPON_exotic_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_xmissile_2" }
+	component_set = ESC_XMISSILE_2
+	projectile_gfx = "esc_xmissile2"
+	upgrades_to = ESC_XMISSILE_3_JUGGERNAUT
+	tags = { weapon_type_energy weapon_type_explosive x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+############################################################
+##               Reflex Missile Launcher                  ##
+############################################################
+
+# titan
+weapon_component_template = {
+	key = ESC_XMISSILE_3_TITANIC
+	size = titanic
+	icon = GFX_esc_x_missiles_3
+	icon_frame = 1
+	type = missile
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 500
+		MAX_DAMAGE = 750
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 15 max = 45 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_T_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.1
+	missile_health = 45
+	missile_armor = 30
+	missile_shield = 20
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_exotic_hull_damage
+	armor_damage = @ESC_WEAPON_exotic_armor_damage
+	armor_penetration = @ESC_WEAPON_exotic_armor_penetration
+	shield_damage = @ESC_WEAPON_exotic_shield_damage
+	shield_penetration = @ESC_WEAPON_exotic_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_xmissile_titanic" }
+	component_set = ESC_XMISSILE_3_TITANIC
+	projectile_gfx = "esc_xmissile3"
+	tags = { weapon_type_explosive weapon_type_energy t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard_bio
+		BIOSHIP_WEAPON = no
+		ARKSHIP_WEAPON = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# juggernaut
+weapon_component_template = {
+	key = ESC_XMISSILE_3_JUGGERNAUT
+	size = extra_large
+	icon = GFX_esc_x_missiles_3
+	icon_frame = 1
+	type = missile
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 500
+		MAX_DAMAGE = 750
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 15 max = 45 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_J_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_3
+	missile_evasion = 0.1
+	missile_health = 45
+	missile_armor = 30
+	missile_shield = 20
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_exotic_hull_damage
+	armor_damage = @ESC_WEAPON_exotic_armor_damage
+	armor_penetration = @ESC_WEAPON_exotic_armor_penetration
+	shield_damage = @ESC_WEAPON_exotic_shield_damage
+	shield_penetration = @ESC_WEAPON_exotic_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_xmissile_titanic" }
+	component_set = ESC_XMISSILE_3_JUGGERNAUT
+	projectile_gfx = "esc_xmissile3"
+	tags = { weapon_type_energy weapon_type_explosive x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships_conditional
+		EXTRA_CONDITION = "ESC_ship_uses_juggernaut_components"
+		EXTRA_CONDITION_VALUE = yes
+		EVAL_TARGET = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# arkship
+weapon_component_template = {
+	key = ESC_XMISSILE_3_ARKSHIP
+	size = titanic
+	icon = GFX_esc_x_missiles_3
+	icon_frame = 1
+	type = missile
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 1000
+		MAX_DAMAGE = 2250
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.2
+	windup = { min = 15 max = 45 }
+	total_fire_time = 60
+	range = @ESC_WEAPON_RANGE_T_4
+	accuracy = 1.0
+	missile_speed = @ESC_WEAPON_RANGE_ARKSHIP_5
+	missile_evasion = 0.1
+	missile_health = 45
+	missile_armor = 30
+	missile_shield = 20
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = 0
+
+	resources = {
+		category = ship_components
+		upkeep = {
+			alloys = @titanic_t7_upkeep_alloys
+			energy = @titanic_t7_upkeep_energy
+		}
+	}
+
+	hull_damage = @ESC_WEAPON_exotic_hull_damage
+	armor_damage = @ESC_WEAPON_exotic_armor_damage
+	armor_penetration = @ESC_WEAPON_exotic_armor_penetration
+	shield_damage = @ESC_WEAPON_exotic_shield_damage
+	shield_penetration = @ESC_WEAPON_exotic_shield_penetration
+	tracking = 0.1
+
+	prerequisites = { "esc_tech_xmissile_titanic" }
+	component_set = ESC_XMISSILE_3_ARKSHIP
+	projectile_gfx = "esc_xmissile3"
+	tags = { weapon_type_explosive weapon_type_energy t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard
+		ARKSHIP_WEAPON = yes
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}

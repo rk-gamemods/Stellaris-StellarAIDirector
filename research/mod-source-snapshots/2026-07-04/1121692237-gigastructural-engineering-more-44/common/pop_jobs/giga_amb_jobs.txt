@@ -1,0 +1,619 @@
+# Alternative Mega Build
+
+giga_megaengineer = {
+	category = specialist
+
+	swappable_data = {
+		default = {
+			condition_string = SPECIALIST_JOB_TRIGGER
+			building_icon = building_giga_megaworkshop
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+
+	resources = {
+		category = planet_giga_megaengineers_job
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineer_output
+		}
+		upkeep = {
+			alloys = @giga_amb_megaengineer_alloys_upkeep
+			unity = @giga_amb_megaengineer_unity_upkeep
+		}
+
+		produces = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineer_output_edict
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			alloys = @giga_amb_megaengineer_alloys_edict
+			giga_sr_sentient_metal = @giga_amb_megaengineer_sentient_metal_edict
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_specialist_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+}
+
+giga_megaengineering_overseer = {
+	category = ruler
+
+	swappable_data = {
+		default = {
+			condition_string = RULER_JOB_TRIGGER
+			building_icon = building_giga_megaworkshop_hub
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_ruler_job
+
+	resources = {
+		category = planet_giga_megaengineering_overseers
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineering_overseer_output
+		}
+		upkeep = {
+			consumer_goods = @giga_amb_megaengineering_overseer_extra
+			alloys = @giga_amb_megaengineering_overseer_alloys_upkeep
+			unity = @giga_amb_megaengineering_overseer_unity_upkeep
+		}
+
+		produces = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineering_overseer_output_edict
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			alloys = @giga_amb_megaengineering_overseer_alloys_edict
+			giga_sr_sentient_metal = @giga_amb_megaengineering_overseer_sentient_metal_edict
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_ruler_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+# GESTALTS
+
+giga_megaengineer_drone = {
+	category = complex_drone
+
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_giga_megaworkshop
+			icon = giga_megaengineer
+		}
+		swap_type = {
+			trigger = {
+				owner? = { is_wilderness_empire = yes }
+			}
+			name = giga_megaengineer_drone_wilderness
+			desc = giga_megaengineer_drone_wilderness_desc
+			building_icon = building_giga_megaworkshop
+			icon = giga_megaengineer
+			condition_string = DRONE_JOB_TRIGGER
+			weight = 100
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	resources = {
+		category = planet_giga_megaengineers_job
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineer_output
+		}
+		upkeep = {
+			alloys = @giga_amb_megaengineer_alloys_upkeep
+			unity = @giga_amb_megaengineer_unity_upkeep
+		}
+
+		produces = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineer_output_edict
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			alloys = @giga_amb_megaengineer_alloys_edict
+			giga_sr_sentient_metal = @giga_amb_megaengineer_sentient_metal_edict
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = "
+			modifier = {
+				factor = 0.5
+				planet = {
+					has_available_jobs = giga_megaengineering_overseer_drone
+				}
+			}
+		"
+	}
+}
+
+giga_megaengineering_overseer_drone = {
+	category = complex_drone
+
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_giga_megaworkshop_hub
+			icon = giga_megaengineering_overseer
+		}
+		swap_type = {
+			trigger = {
+				owner? = { is_wilderness_empire = yes }
+			}
+			name = giga_megaengineering_overseer_drone_wilderness
+			desc = giga_megaengineering_overseer_drone_wilderness_desc
+			building_icon = building_giga_megaworkshop_hub
+			icon = giga_megaengineering_overseer
+			condition_string = DRONE_JOB_TRIGGER
+			weight = 100
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	resources = {
+		category = planet_giga_megaengineering_overseers
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineering_overseer_output
+		}
+		upkeep = {
+			alloys = @giga_amb_megaengineering_overseer_alloys_upkeep
+			unity = @giga_amb_megaengineering_overseer_unity_upkeep
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_machine_empire = yes
+				}
+			}
+			energy = @giga_amb_megaengineering_overseer_gestalt_extra
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_hive_empire = yes
+				}
+				species = {
+					is_lithoid = no
+				}
+			}
+			food = @giga_amb_megaengineering_overseer_gestalt_extra
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					is_hive_empire = yes
+				}
+				species = {
+					is_lithoid = yes
+				}
+			}
+			minerals = @giga_amb_megaengineering_overseer_gestalt_extra
+		}
+
+		produces = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			giga_sr_amb_megaconstruction = @giga_amb_megaengineering_overseer_output_edict
+		}
+		upkeep = {
+			trigger = {
+				owner = { has_edict = giga_amb_sentient_metal_supertensiles }
+			}
+			alloys = @giga_amb_megaengineering_overseer_alloys_edict
+			giga_sr_sentient_metal = @giga_amb_megaengineering_overseer_sentient_metal_edict
+		}
+	}
+
+	inline_script = {
+		script = jobs/weights/giga_complex_drone_weight
+		EARLY_MOD_LINE = ""
+		EXTRA_WEIGHT_MOD = ""
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+# SPIRITUALIST FE
+
+giga_amb_fe_acolyte_foundry = {
+	category = precursor
+
+	swappable_data = {
+		default = {
+			building_icon = building_giga_fe_megaworkshop
+			icon = giga_megaengineer
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_precursor_job
+
+	possible = {
+		owner = { is_fallen_empire_spiritualist = yes }
+	}
+
+	resources = {
+		category = planet_giga_megaengineers
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_acolyte_output
+			alloys = @giga_amb_acolyte_alloys_output
+		}
+	}
+
+	weight = {
+		weight = @specialist_job_weight
+
+		# crisis purge
+		modifier = {
+			factor = 0.01
+			exists = planet
+			exists = planet.controller
+			planet.controller = {
+				OR = {
+					is_country_type = swarm
+					is_country_type = ai_empire
+				}
+			}
+		}
+	}
+}
+
+giga_amb_fe_celestial_architect = {
+	category = precursor
+
+	swappable_data = {
+		default = {
+			building_icon = building_giga_fe_megaworkshop_2
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_precursor_job
+
+	possible = {
+		owner = { is_fallen_empire_spiritualist = yes }
+		is_same_species = owner
+	}
+
+	resources = {
+		category = planet_giga_megaengineering_overseers
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_celestial_architect_output
+		}
+	}
+
+	weight = {
+		weight = @ruler_job_weight
+
+		# crisis purge
+		modifier = {
+			factor = 0.01
+			exists = planet
+			exists = planet.controller
+			planet.controller = {
+				OR = {
+					is_country_type = swarm
+					is_country_type = ai_empire
+				}
+			}
+		}
+	}
+
+	inline_script = jobs/automodding_priority_charisma
+}
+
+# MINERS
+
+giga_supertensiles_extractor = {
+	category = worker
+
+	swappable_data = {
+		default = {
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_giga_supertensiles_mines
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_worker_job
+	possible = {
+		hidden_trigger = { exists = owner }
+		owner = { is_gestalt = no }
+	}
+
+	resources = {
+		category = planet_sr_miners
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_supertensiles_miner_output
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = {
+					has_edict = mining_subsidies
+				}
+			}
+			energy = 0.5
+		}
+	}
+
+	# diffent weight not using scripts
+	weight = {
+		base = @specialist_job_weight
+		modifier = {
+			factor = 10
+			is_enslaved = yes
+			can_take_servant_job = no
+			NOT = { has_slavery_type = { type = slavery_indentured } }
+		}
+		modifier = {
+			factor = 3
+			OR = {
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { has_technology = tech_droid_workers }
+		}
+		modifier = {
+			factor = 200
+			OR = {
+				is_non_sapient_robot = yes
+				is_shackled_robot = yes
+			}
+			can_take_servant_job = no
+			owner = { NOT = { has_technology = tech_droid_workers } }
+		}
+		modifier = {
+			factor = 0.25
+			can_take_servant_job = yes
+		}
+		modifier = {
+			factor = 5
+			has_trait = trait_cyborg_creed_of_labor
+		}
+	}
+}
+
+giga_supertensiles_extractor_drone = {
+	category = complex_drone
+
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_giga_supertensiles_mines
+			icon = giga_supertensiles_extractor
+		}
+		swap_type = {
+			trigger = {
+				owner? = { is_wilderness_empire = yes }
+			}
+			name = giga_supertensiles_extractor_drone_wilderness
+			desc = giga_supertensiles_extractor_drone_wilderness_desc
+			building_icon = building_giga_supertensiles_mines
+			icon = giga_supertensiles_extractor
+			condition_string = DRONE_JOB_TRIGGER
+			weight = 100
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+
+	possible = { NOT = { has_trait = trait_nerve_stapled } }
+
+	resources = {
+		category = planet_sr_miners
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_supertensiles_miner_output
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	# diffent weight not using scripts
+	weight = {
+		weight = @complex_drone_job_weight
+		modifier = {
+			factor = 0.9
+			exists = owner
+			years_passed < 1
+			owner = { has_valid_civic = civic_machine_assimilator }
+			has_trait = trait_cybernetic
+		}
+	}
+}
+
+# HOLDING
+
+giga_overlord_megaengineer = {
+	category = specialist
+	can_set_priority = no
+
+	swappable_data = {
+		default = {
+			building_icon = holding_giga_megaworkshop
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_specialist_job
+	possible = {
+		complex_specialist_job_check_trigger = yes
+	}
+
+	overlord_resources = {
+		category = planet_giga_overlord_megaengineers
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_overlord_megaengineer_output
+		}
+	}
+
+	resources = {
+		category = planet_giga_overlord_megaengineers
+		upkeep = {
+			alloys = @giga_amb_overlord_megaengineer_alloys_upkeep
+			unity = @giga_amb_overlord_megaengineer_unity_upkeep
+		}
+	}
+
+	weight = {
+		weight = @overlord_job_weight
+	}
+}
+
+giga_overlord_megaengineer_drone = {
+	category = complex_drone
+	can_set_priority = no
+
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = holding_giga_megaworkshop
+			icon = giga_overlord_megaengineer
+		}
+	}
+	tags = { giga_supertensiles }
+
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+	}
+
+	overlord_resources = {
+		category = planet_giga_overlord_megaengineers
+		produces = {
+			giga_sr_amb_megaconstruction = @giga_amb_overlord_megaengineer_output
+		}
+	}
+
+	resources = {
+		category = planet_giga_overlord_megaengineers
+		upkeep = {
+			alloys = @giga_amb_overlord_megaengineer_alloys_upkeep
+			unity = @giga_amb_overlord_megaengineer_unity_upkeep
+		}
+	}
+
+	weight = {
+		weight = @overlord_job_weight
+	}
+}

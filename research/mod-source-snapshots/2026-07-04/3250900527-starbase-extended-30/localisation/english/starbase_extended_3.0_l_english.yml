@@ -1,0 +1,377 @@
+﻿l_english:0
+
+# STARBASE ENTENDED 3.0
+
+# STARBASES
+starbase_stronghold:0 "Stronghold"
+starbase_stronghold_plural:0 "Strongholds"
+starbase_stronghold_cap: "Stronghold"
+
+starbase_headquarters:0 "Headquarters"
+starbase_headquarters_plural:0 "Headquarters Starbases"
+starbase_headquarters_cap: "Headquarters"
+
+# MODIFIERS
+
+# STARBASE MODIFIERS
+STARBASE_MODIFIER_COLLECTION_RANGE: "Collection Range"
+STARBASE_MODIFIER_PROTECTION_RANGE: "Protection Range"
+STARBASE_MODIFIER_PROTECTION: "Protection"
+
+# PHYSICS RESEARCH SUPPORT LAB 
+mod_station_researchers_physics_research_produces_mult:0 "Research Station Physics £physics  Output"
+
+# SOCIETY RESEARCH SUPPORT LAB
+mod_station_researchers_society_research_produces_mult:0 "Research Station Society £society  Output"
+
+# ENGINEERING RESEARCH SUPPORT LAB
+mod_station_researchers_engineering_research_produces_mult:0 "Research Station Engineering £engineering  Output"
+
+
+# STARBASE MODULES
+
+# MILITARY MODULES
+# SHIELD GENERATOR
+sm_shield_module:0 "Shield Generator"
+sm_shield_module_desc:0 "Adds more shields to the Starbase.\n§RMaximum capacity 4 shield modules.§!"
+
+# ARMOR MODULES
+sm_armor_module:0 "Armor Protection"
+sm_armor_module_desc:0 "Adds more armor to the Starbase.\n§RMaximum capacity 4 armor modules.§!"
+
+# POINT DEFENSE BATTERY
+sm_pd_battery:0 "Point Defense Battery"
+sm_pd_battery_desc:0 "Adds 1 point defense battery to the Starbase.\n§RMaximum capacity 5 PD batteries.§!"
+
+# GUN BATTERY
+sm_gun_battery:0 "Medium Battery"
+sm_gun_battery_desc:0 "Adds 1 medium battery to the Starbase.\n§RMaximum capacity 10 batteries.§!"
+
+# LARGE GUN BATTERY
+ sm_large_battery:0 "Large Battery"
+ sm_large_battery_desc:0 "Adds 1 large battery to the Starbase.\n§RMaximum capacity 5 batteries.§!"
+
+# EXTRA LARGE BATTERY
+ sm_xl_battery:0 "Extra Large Battery"
+ sm_xl_battery_desc:0 "Adds 1 extra large battery to the Starbase.\n§RMaximum capacity 5 batteries.§!"
+
+# TITANIC BATTERY
+ sm_titanic_battery:0 "Titanic Battery"
+ sm_titanic_battery_desc:0 "Adds 1 titanic weapon battery to the Starbase.\n§RMaximum capacity 2 batteries.§!"
+
+ # HANGAR BAY
+ sm_hangar_bay:0 "Hangar Bay"
+ sm_hangar_bay_desc:0 "Adds 1 hangar bay to the Starbase.\n§RMaximum capacity 5 hangar bays.§!"
+
+# TORPEDO BATTERY / EX MISSILE BATTERY
+sm_missile_battery:0 "Torpedo Battery"
+sm_missile_battery_desc:0 "Adds 1 torpedo battery to the Starbase.\n§RMaximum capacity 5 batteries.§!"  
+
+# STARBASE BUILDINGS
+# FOOD MARKET
+sm_trader_bay:0 "Food Market Bay"
+sm_trader_bay_desc:0 "Build a market bay improving food the commerce of the system"
+ 
+# ADVANCED SPACE ENGINEERS
+sm_adv_space_engineers:0 "Advanced Space Engineers"
+sm_adv_space_engineers_desc:0 "Recruit advanced space engineers helping in building more starbase buildings and modules at a faster rate.\n" 
+ 
+# ASTEROID MINING TEAM
+sm_asteroid_mining:0 "Asteroid Mining Team"
+sm_asteroid_mining_desc:0 "Launch a team of miner to mine small asteroids present in the system too small to be targeted by a mining station. Having an §GAsteroid Mining Experts§! will improve the output by §Y2 Minerals§!  £minerals.\n" 
+ 
+# ASTEROID MINING EXPERTS
+sm_mining_experts:0 "Asteroid Mining Experts"
+sm_mining_experts_desc:0 "Recruit experts helping in the mining of asteroids improving the output of every asteroid mining team. Will improve the outpout of every §GAsteroid Mining Team§! by §Y2 Minerals§! £minerals.\n" 
+ 
+# REINFORCED DEFENSES
+sm_reinforced_defenses:0 "Reinforced Starbase Defenses"
+sm_reinforced_defenses_desc:0 "Improve the shields and armors of the Starbase.\n"
+ 
+# STRATEGIC DEFENSES
+sm_strategic_defenses:0 "Strategic Starbase Defenses"
+sm_strategic_defenses_desc:0 "Improve the shields and weapons of the Starbase.\n"
+ 
+# ADVANCED DEFENSES
+sm_adv_starbase:0 "Advanced Starbase Defenses"
+sm_adv_starbase_desc:0 "Improve the armors and weapons of the Starbase.\n"
+ 
+# ORBITAL LAB
+sm_orbital_lab:0 "Orbital Research Lab"
+sm_orbital_lab_desc:0 "A research lab in orbit. Having a §GSupport Lab§! will improve the research output.\n"
+
+# ENERGY COLLECTOR 
+sm_energy_collector:0 "Energy Collector"
+sm_energy_collector_desc:0 "A special module collecting the energy from the star.\n"
+
+# PHYSICS RESEARCH SUPPORT LAB
+sm_orbital_physics_support_lab:0 "Physics Research Support Lab"
+sm_orbital_physics_support_lab_desc:0 "A support lab improving the research in the physics domain. Will improve the outpout of every §GOrbital Research Lab§! by §Y2 Physics Research§!.\n"
+
+# SOCIETY RESEARCH SUPPORT LAB
+sm_orbital_society_support_lab:0 "Society Research Support Lab"
+sm_orbital_society_support_lab_desc:0 "A support lab improving the research in the society domain. Will improve the outpout of every §GOrbital Research Lab§! by §Y2 Society Research§!.\n"
+
+# ENGINEERING RESEARCH SUPPORT LAB
+sm_orbital_engineering_support_lab:0 "Engineering Research Support Lab"
+sm_orbital_engineering_support_lab_desc:0 "A support lab improving the research in the engineering domain. Will improve the outpout of every §GOrbital Research Lab§! by §Y2 Engineering Research§!.\n"
+
+# NAVY EXPERTS SECTOR
+sm_navy_expert_sector:0 "Navy Experts Sector"
+sm_navy_expert_sector_desc:0 "Construct ships, platforms and modules with a lower cost.\n"
+ 
+# ADVANCED ASSEMBLY YARD
+sm_adv_assembly_yard:0 "Advanced Assembly Yard"
+sm_adv_assembly_yard_desc:0 "Improves the naval production.\n"
+
+# EXPERIENCED CREW QUARTERS
+sm_experienced_crews:0 "Experienced Crew Quarters"
+sm_experienced_crews_desc:0 "Increase the experience gained after each combat.\n"
+
+# NAVY VETERAN QUARTERS
+sm_navy_veteran:0 "Navy Veterans Quarters"
+sm_navy_veteran_desc:0 "Increase the efficiency of the ships built in this system.\n"
+
+# ADVANCED MILITARY PROGRAM
+sm_advanced_military_program:0 "Advanced Military Program"
+sm_advanced_military_program_desc:0 "Improve the recruitement speed of new troops in the system.\n"
+ 
+# ORBITAL POWER PLANT
+sm_space_power_plant:0 "Orbital Power Plant"
+sm_space_power_plant_desc:0 "A power plant in orbit around the Starbase generating energy.\n"
+
+# REPAIR PLATFORMS
+sm_repair_module:0 "Repair Platforms"
+sm_repair_module_desc:0 "Add repair platforms around the Starbase performing quick ship maintenance and repair.\n"
+
+# TILE CLEARING TEAM
+sm_tile_blocker_cleaner:0 "Tile Clearing Team"
+sm_tile_blocker_cleaner_desc:0 "Deploys in the system a team of experts specialized in the removal of planet tile blockers.\n"
+ 
+# SPACE FOUNDRY
+sm_space_foundry:0 "Space Foundry"
+sm_space_foundry_desc:0 "The space foundry will refine minerals into alloys. Having a §GChain Manufacturing§! will improve the output by §Y1 Alloy§!  £alloys.\n"
+ 
+# SPACE FACTORY
+sm_space_factory:0 "Space Factory"
+sm_space_factory_desc:0 "The space factory will refine minerals into consumer goods. Having a §GChain Manufacturing§! will improve the output by §Y2 Consumer Goods§!  £consumer_goods.\n"
+ 
+# SECURITY BRANCH OFFICE
+sm_security_branch_office:0 "Security Branch Office"
+sm_security_branch_office_desc:0 "A secury branch office will focus on the defense of your trade routes against the local piracy."
+ 
+# ADMINISTRATION OFFICE
+sm_administration_office:0 "Administration Office"
+sm_administration_office_desc:0 "An administration office is a special starbase building which has the possibility to increase the administration capacity of the country."
+ 
+# SYNTHETIC CRYTAL FABRICATOR
+sm_synthetic_crystal_fabricator:0 "Synthetic Crystals Fabricator"
+sm_synthetic_crystal_fabricator_desc:0 "Transforms minerals into rare crystals thanks to the special conditions in the space."
+
+# SYBTHETIC VOLATILE MOLES FABRICATOR
+sm_synthetic_volatile_motes_fabricator:0 "Synthetic Volatile Motes Fabricator"
+sm_synthetic_volatile_motes_fabricator_desc:0 "Transforms minerals into volatile motes thanks to the special conditions in the space."
+ 
+# SYNTHETIC GASES FABRICATOR
+sm_synthetic_gase_fabricator:0 "Synthetic Gases Fabricator"
+sm_synthetic_gase_fabricator_desc:0 "Transforms minerals into exotic gases thanks to the special conditions in the space."
+ 
+# ORBITAL ASSEMBLY
+sm_orbital_assembly:0 "Orbital Assembly"
+sm_orbital_assembly_desc:0 "Builds robot populations in the Starbase and transfers them into the colonies of the system."
+ 
+# CHAIN MANUFACTURING
+sm_chain_manufacturing:0 "Chain Manufacturing"
+sm_chain_manufacturing_desc:0 "Helps in the production of alloys and consumer goods both in space and on a planet. Will improve the outpout of every §GSpace Foundry§! by §Y1 Alloy§!  £alloys  and §GSpace Factory§! by §Y2 Consumer Goods§!  £consumer_goods.\n" 
+ 
+# CONSTRUCTION PLANIFICATOR
+sm_construction_planificator:0 "Construction Planificator"
+sm_construction_planificator_desc:0 "Creates building schemas in order to accelerate the construction of buildings, disctrics and projects on the planets of the system."
+ 
+# FINACIAL SPACE CENTER
+sm_financial_space_center:0 "Financial Space Center"
+sm_financial_space_center_desc:0 "Increase the trade value of the system thanks to the help of some financial experts."
+ 
+# TERRFORMING SECTION
+sm_terraforming_module:0 "Terraforming Section"
+sm_terraforming_module_desc:0 "Send on teams of terraformers to increase the habitability of the local colonies present in the system."
+ 
+# STASIS CHAMBERS
+sm_stasis_chambers:0 "Statis Chambers"
+sm_stasis_chambers_desc:0 "Increase the growth of the local populations present in the system."
+ 
+# EMERGENCY PORTAL
+sm_emergency_portal:0 "Emergency Portal"
+sm_emergency_portal_desc:0 "An emergency portal from which the coordinates have be recorded by every navy pilot in order to increase their survival chances in case of emergency jump."
+ 
+# STARBASE OPTIMAL SYSTEMS
+sm_starbase_optimal_systems:0 "Starbase Optimal Systems"
+sm_starbase_optimal_systems_desc:0 "The top technology for the systems of the Starbase allowing it to be much more efficient."
+
+# ORBITAL AGENCY
+sm_market_computers:0 "Orbital Agency"
+sm_market_computers_desc:0 "An orbital agency helping in the development of colonies in the system."
+
+# STELLAR HOUSING
+sm_stellar_housing:0 "Stellar Housings"
+sm_stellar_housing_desc:0 "Deploys orbital houses around the colonies in order to slightly increase the populations of the colonies present in the system."
+ 
+# ADMINISTARTION COMPUTERS
+sm_administration_computers:0 "Administration Computers"
+sm_administration_computers_desc:0 "Deploys automatic protocoles to help in the governor of the major task of the colony increasing the stability."
+
+# RESEARCH COMPUTERS
+sm_research_computers:0 "Research Computers"
+sm_research_computers_desc:0 "Deploys research station in orbit around colonies allowing the creation of more researcher jobs."
+
+# SHIP DISRUPTOR
+sm_ship_disruptor:0 "Ship Disruptor"
+sm_ship_disruptor_desc:0 "A special disruptor designed to reduce the efficiency of enemy ships."
+ 
+# SHIP AMPLIFIER
+sm_ship_amplifier:0 "Ship Amplifier"
+sm_ship_amplifier_desc:0 "A special disruptor designed to increase the efficiency of friendly ships."
+
+# SPY COMMAND
+# sm_spy_command_post:0 "Spying Command Post"
+# sm_spy_command_post_desc:0 "A command post designed to increase the intels in the neighbour systems."
+
+# CORVETTE ASSEMBLY YARD
+sm_corvette_assembly_yard:0 "Corvette Automated Assembly Yard"
+sm_corvette_assembly_yard_desc:0 "An automated assembly yard specialized in the construction of Corvettes. Can only have one category of automated assembly yard."
+ 
+# DESTROYER ASSEMBLY YARD
+sm_destroyer_assembly_yard:0 "Destroyer Automated Assembly Yard"
+sm_destroyer_assembly_yard_desc:0 "An automated assembly yard specialized in the construction of Destroyers. Can only have one category of automated assembly yard."
+
+# CRUISER ASSEMBLY YARD
+sm_cruiser_assembly_yard:0 "Cruiser Automated Assembly Yard"
+sm_cruiser_assembly_yard_desc:0 "An automated assembly yard specialized in the construction of Cruisers. Can only have one category of automated assembly yard."
+
+# BATTLESHIP ASSEMBLY YARD
+sm_battleship_assembly_yard:0 "Battleship Automated Assembly Yard"
+sm_battleship_assembly_yard_desc:0 "An automated assembly yard specialized in the construction of Battleships. Can only have one category of automated assembly yard."
+
+# CREW FORMATION MODULE
+sm_crew_formation_modules:0 "Crew Formation Module"
+sm_crew_formation_modules_desc:0 "A special section of the Starbase focusing on the deep formation of new Starbase crew member allowing them to deploy in our territority in order to improve the maintenance of other starbases."
+
+
+# STARBASE TECHS
+
+# STARBASE 6 STRONGHOLD
+tech_starbase_6:0 "Stronghold Starbase"
+tech_starbase_6_desc:0 "The Stronghold is a powerful and highly advanced system defense station."
+TECH_UNLOCK_STRONGHOLD_CONSTRUCTION_TITLE:0 "§HUnlocks Starbase Upgrade:§! Solar Stronghold"
+TECH_UNLOCK_STRONGHOLD_CONSTRUCTION_DESC:0 "§HSolar Stronghold§!\nThat's no moon, it's a space station."
+ 
+# TECH STARBASE 7 HEADQUARTERS
+tech_starbase_7:0 "Headquarters Starbase"
+tech_starbase_7_desc:0 "The final upgrade in the starbase chain, the Headquarters is the ultimate command and defense station."
+TECH_UNLOCK_HEADQUARTERS_CONSTRUCTION_TITLE:0 "§HUnlocks Starbase Upgrade:§! Headquarters"
+TECH_UNLOCK_HEADQUARTERS_CONSTRUCTION_DESC:0 "§HHeadquarters§!\nProbably one of the safest place of the Galaxy."
+
+
+# WEAPON MODULES AND REACTOR 
+
+# POINT DEFENSE MODULE
+POINT_DEFENCE_STARBASE:0 "Automated Point Defense System"
+POINT_DEFENCE_STARBASE_DESC:0 "Adds a battery of 2 point defense guns."
+
+# T WEAPON WEAPONS
+PERDITION_BEAM_STARBASE:0 "Atomic Phase Disintegrator"
+PERDITION_BEAM_STARBASE_DESC:0 "Adds a battery of 1 titanic gun."
+
+# XL WEAPONS
+XL_BEAM_STARBASE:0 "Polarized Electron Modulator"
+XL_BEAM_STARBASE_DESC:0 "Adds a battery of 1 extra large gun."
+
+# DARK MATTER REACTOR
+CITADEL_DARK_MATTER_REACTOR:0 "Dark Matter Starbase Reactor"
+CITADEL_DARK_MATTER_REACTOR_DESC:0 "Dark Matter Starbase Reactor"
+
+
+# AURAS
+# SHIP DISRUPTOR
+STARBASE_AURA_SHIP_DISRUPTOR:0 "Ship Disruptor"
+aura_starbase_ship_disruptor:0 "$offensive_aura$ - $sm_ship_disruptor$"
+
+# SHIP AMPLIFIER
+STARBASE_AURA_SHIP_AMPLIFIER:0 "Ship Amplifier"
+aura_starbase_ship_amplifier:0 "$defensive_aura$ - $sm_ship_amplifier$"
+
+# SECTIONS 
+# MEDUIM GUN BATTERY SECTION
+BATTERY_STARBASE_SECTION:0 "Medium Battery Section"
+
+#LARGE GUN BATTERY SECTION
+LARGE_STARBASE_SECTION:0 "Large Battery Section"
+
+# EXTRA LARGE BATTERY SECTION
+EXTRA_LARGE_STARBASE_SECTION:0 "Extra Large Battery Section"
+
+# TITANIC BATTERY SECTION
+TITANIC_STARBASE_SECTION:0 "Titanic Battery Section"
+
+# TORPEDO BAY SECTION / EX MISSILE BATTERY
+MISSILE_STARBASE_SECTION:0 "Torpedo Bay Section"
+
+# HANGAR BAY SECTION
+HANGAR_STARBASE_SECTION:0 "Hangar Bay Section"
+
+# PD GUN BATTERY SECTION 
+PD_STARBASE_SECTION:0 "Point Defense Battery Section"
+
+
+# ORBITAL RING MODULES
+
+# MILITARY OR MODULES
+# OR SHIELD GENERATOR MODULE
+sm_orbital_ring_shield_module:0 "Orbital Shield Generator"
+sm_orbital_ring_shield_module_desc:0 "Adds 1 shield module to the Orbital Ring.\n§RMaximum capacity 4 modules.§!"
+
+# OR ARMOR MODULE
+sm_orbital_ring_armor_module:0 "Orbital Armor Protection"
+sm_orbital_ring_armor_module_desc:0 "Adds 1 armor module to the Orbital Ring.\n§RMaximum capacity 4 modules.§!" 
+ 
+# OR POINT DEFENSE MODULE
+sm_orbital_ring_pd_battery:0 "Orbital Ring Point Defense Gun Battery"
+sm_orbital_ring_pd_battery_desc:0 "Adds 1 point defense battery to the Orbital Ring.\n§RMaximum capacity 5 modules.§!" 
+
+# OR TORPEDO BATTERY
+sm_orbital_ring_missile_battery:0 "Orbital Ring Torpedo Battery"
+sm_orbital_ring_missile_battery_desc:0 "Adds 1 torpedo battery to the Orbital Ring.\n§RMaximum capacity 5 modules.§!" 
+
+# OR GUN BATTERY MODULE
+sm_orbital_ring_gun_battery:0 "Orbital Ring Gun Battery"
+sm_orbital_ring_gun_battery_desc:0 "Adds 1 medium battery to the Orbital Ring.\n§RMaximum capacity 10 modules.§!"
+
+# OR LARGE BATTERY MODULE
+sm_orbital_ring_large_gun_battery:0 "Orbital Ring Large Gun Battery"
+sm_orbital_ring_large_gun_battery_desc:0 "Adds 2 large batteries to the Orbital Ring.\n§RMaximum capacity 5 modules.§!" 
+ 
+# OR XL BATTERY MODULE
+sm_orbital_ring_xl_gun_battery:0 "Orbital Ring Extra Large Gun Battery"
+sm_orbital_ring_xl_gun_battery_desc:0 "Adds 1 extra large battery to the Orbital Ring.\n§RMaximum capacity 5 modules.§!"
+
+# OR TITANIC BATTERY MODULE
+sm_orbital_ring_titanic_gun_battery:0 "Orbital Ring Titanic Gun Battery"
+sm_orbital_ring_titanic_gun_battery_desc:0 "Adds 1 titanic battery to the Orbital Ring.\n§RMaximum capacity 2 modules.§!"
+
+# OR HANGAR SECTION MODULE
+sm_orbital_ring_hangar_bay:0 "Orbital Ring Hangar Bay"
+sm_orbital_ring_hangar_bay_desc:0 "Adds 2 fighter wings to the Orbital Ring\n§RMaximum capacity 5 modules.§!"
+
+# STARBASE EXTENDED 3.0 ORBITAL RING WEAPONS
+
+# OR POINT DEFENSE GUN
+POINT_DEFENCE_ORBITAL_RING:0 "Orbital Ring PD Gun"
+POINT_DEFENCE_ORBITAL_RING_DESC:0 "Orbital Ring PD Gun"
+
+# OR EXTRA LARGE GUN
+XL_BEAM_ORBITAL_RING:0 "Orbital Ring XL Beam"
+XL_BEAM_ORBITAL_RING_DESC:0 "Orbital Ring XL Beam"
+
+# OR TITANIC GUN
+PERDITION_BEAM_ORBITAL_RING:0 "Orbital Ring Perdition Beam"
+PERDITION_BEAM_ORBITAL_RING_DESC:0 "Orbital Ring Perdition Beam"

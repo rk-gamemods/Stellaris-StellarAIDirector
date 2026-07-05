@@ -1,0 +1,16 @@
+owner = {
+	or = {
+		is_authoritarian = yes
+		is_xenophobe = yes
+		has_valid_civic = civic_dystopian_society
+        is_twisted_experimenters_empire = yes
+
+		# Ethics and civcs mod
+		and = {
+			has_bug_branch = yes
+			is_elitist = yes
+		}
+	}
+}
+
+# eof

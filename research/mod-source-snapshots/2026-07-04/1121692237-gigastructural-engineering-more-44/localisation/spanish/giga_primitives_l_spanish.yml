@@ -1,0 +1,100 @@
+﻿l_spanish:
+  ##############
+  ### Armies ###
+  ##############
+  # army names given when spawning custom armies
+  
+  # eaw, faust
+  NAME_reichsarmee:99 "Reichsarmee"
+  NAME_reichsarmee_army:99 "Reichsarmee Task Force"
+  NAME_aquileian:0 "Guardia Aquileiana"
+  NAME_wingbardian:0 "Fuerzas Armadas Wingbardianas"
+  NAME_river:0 "Operativos de la Federación del Río"
+  NAME_changeling:0 "Enjambre Cambiante"
+  NAME_equestrian:0 "Guarnición Equestre"
+  NAME_kirin:0 "Ejército Kirin"
+  NAME_storm:0 "Legiones de la Tormenta"
+  NAME_faust_guard:0 "Guardia Faustiana"
+  NAME_faust_pdf:0 "Fuerza de Defensa Planetaria"
+  
+  # corrona
+  NAME_bone:0 "Legiones de Hueso"
+  NAME_madknight:0 "El Caballero Loco"
+  
+  # flusion
+  NAME_katzen_army:0 "El Katzenarmee"
+  NAME_katzen_air:0 "Fuerza Aérea Katzen"
+  NAME_katzen_navy:0 "Armada Katzen"
+  NAME_katzen_panzers:99 "Riesigerkatzenpanzers"
+  NAME_kronk_army:0 "Fuerza de Tarea Kronk"
+  NAME_yinjite_army:0 "Fuerza de Tarea Yinjite"
+  NAME_haranian_army:0 "Fuerza de Tarea Haraniana"
+  NAME_solakian_army:0 "Fuerzas Armadas Roqualianas"
+  NAME_solakian_air:0 "Fuerza Aérea Roqualiana"
+  NAME_laurnaise_army:0 "Gruntites Laurnaises"
+  NAME_laurnaise_navy:0 "Armada Laurnaise"
+  NAME_ezicanian_army:0 "Cazadores Zuspri"
+  NAME_axolinian_army:0 "Milicias Axolinianas"
+  NAME_zousanian_army:0 "Defensores Linterianos"
+  NAME_mercurian_army:0 "Guardia Costera Mercuriana"
+  NAME_altarian_army:0 "Protectores Atallrianos"
+  NAME_manglarian_army:99 "Rustalian Maulers"
+  NAME_infusedezic_army:0 "Legiones Infundidas de Zuspris"
+  NAME_ufs_army:0 "Pacificadores de la UFS"
+  NAME_gruntite_army:0 "Fuerzas Gruntite"
+  
+  NAME_solakian_rebel:0 "Luchadores por la Libertad Roqualianos"
+  NAME_ezic_rebel:0 "Cazadores Zuspri"
+  NAME_ezic_militia:0 "Milicias Zuspri"
+  NAME_zousanian_rebel:0 "Guardianes Linterianos"
+  NAME_laurnaise_rebel:0 "Gruntites Laurnaises Renegados"
+  NAME_kronk_rebel:0 "Legiones Kronk"
+  NAME_cookian_rebel:0 "Milicias Galletianas"
+  NAME_byuncyat_rebel:0 "Milicias Byun-Cyat"
+  NAME_ravkan_rebel:0 "Rebeldes Ravkan"
+  NAME_symbian_rebel:0 "Fuerza de Tarea Symbiana"
+  NAME_katzenpanzer_rebel:0 "Riesigerkatzenpanzers Robados"
+  NAME_generic_rebel:0 "División Infiltrada"
+  NAME_flusionian_rebel:0 "Milicias Flusionianas"
+  NAME_flusionian_defector:0 "Desertores Flusionianos"
+  
+  # katzen
+  NAME_katzenarmee:0 "Fuerza de Tarea del Katzenarmee"
+  NAME_katzenarmee_1:0 "Fuerza de Tarea I del Katzenarmee"
+  NAME_katzenarmee_2:0 "Fuerza de Tarea II del Katzenarmee"
+  NAME_katzen_garrison:0 "Guarnición del Katzenarmee"
+  NAME_katzen_peacekeeper:0 "Guarnición Pacificadora del Katzenarmee"
+  NAME_katzencolonial_army:0 "Guarnición Colonial del Katzenarmee"
+  
+  # katzen special
+  NAME_katzenpsionic_army:0 "Avatares Psiónicos Katzen"
+  NAME_katzenpsionic_defense:0 "Avatares Psiónicos"
+  
+  # katzen FEs
+  NAME_katzenelite_army:0 "Élite Felina"
+  NAME_grandezic_army:0 "Grandes Zuspris"
+  NAME_nienet_army:0 "Guardia Nienet"
+  NAME_potradus_army:0 "Guardia Potradus"
+  NAME_forcinia_army:0 "Guardia Forcinia"
+  NAME_vicke_army:0 "Guardia Vicke"
+  NAME_meopaelite_army:0 "Élite Meopiana"
+  NAME_katzenland_army:0 "Guardia de Nueva Katzenland"
+  
+  # paluush
+  NAME_paluush_army:0 "Legiones Colosales de Paluush"
+  NAME_grandbunny_army:0 "El Grandbunny"
+  NAME_pohtin_army:99 "Poh'tin"
+  NAME_sparkbun_army:99 "Sparkbun"
+  
+  # alderson
+  NAME_excognitor_army:0 "Praetoriano Excognitor"
+  NAME_dominion_army:0 "Depredador del Dominio"
+  
+  # pouchkinn
+  NAME_pouchkguard_army:99 "Pouchkguard"
+  NAME_lab_army:0 "Unidades de Respuesta Ofensiva de Laboratorio"
+  
+  # rogue PCC
+  NAME_pcc_army:0 "Unidades de Expurgación de Amenazas"
+  
+  

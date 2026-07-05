@@ -1,0 +1,743 @@
+{
+  "collection_name": "4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity",
+  "mod_count": 117,
+  "mods": [
+    {
+      "name": "Battle Debris - Starship Graveyards",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1353547443",
+      "position": 1,
+      "steam_id": "1353547443"
+    },
+    {
+      "name": "ASB Ironman",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1880071041",
+      "position": 2,
+      "steam_id": "1880071041"
+    },
+    {
+      "name": "ASB Addon: More Particles",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1468105710",
+      "position": 3,
+      "steam_id": "1468105710"
+    },
+    {
+      "name": "! Immersive Energy Shield",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3153706012",
+      "position": 4,
+      "steam_id": "3153706012"
+    },
+    {
+      "name": "Immersive Camera",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2603749338",
+      "position": 5,
+      "steam_id": "2603749338"
+    },
+    {
+      "name": "Cityscapes Revived",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3597087138",
+      "position": 6,
+      "steam_id": "3597087138"
+    },
+    {
+      "name": "RustyVanillaRooms",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3691866974",
+      "position": 7,
+      "steam_id": "3691866974"
+    },
+    {
+      "name": "*Remastered Human Portraits",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1591647610",
+      "position": 8,
+      "steam_id": "1591647610"
+    },
+    {
+      "name": "CyberneticHumansExpanded",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3273853969",
+      "position": 9,
+      "steam_id": "3273853969"
+    },
+    {
+      "name": "Human Union",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2831641558",
+      "position": 10,
+      "steam_id": "2831641558"
+    },
+    {
+      "name": "More Human Clothes nach 3.4",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2807625132",
+      "position": 11,
+      "steam_id": "2807625132"
+    },
+    {
+      "name": "Stellerotica - Human Hair v2",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2037107797",
+      "position": 12,
+      "steam_id": "2037107797"
+    },
+    {
+      "name": "Animated Cat Portraits",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2980443402",
+      "position": 13,
+      "steam_id": "2980443402"
+    },
+    {
+      "name": "Cuter Evil Cats",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3664761724",
+      "position": 14,
+      "steam_id": "3664761724"
+    },
+    {
+      "name": "MEM Portraits Standalone",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3087170862",
+      "position": 15,
+      "steam_id": "3087170862"
+    },
+    {
+      "name": "Cyber",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3270323945",
+      "position": 16,
+      "steam_id": "3270323945"
+    },
+    {
+      "name": "Steampunk Badger Portraits",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3248358945",
+      "position": 17,
+      "steam_id": "3248358945"
+    },
+    {
+      "name": "Alien Suns (Updated for 3.5)",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\689601294",
+      "position": 18,
+      "steam_id": "689601294"
+    },
+    {
+      "name": "Alien Suns Rediscovered",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3403640910",
+      "position": 19,
+      "steam_id": "3403640910"
+    },
+    {
+      "name": "Cosmic Chronicles: A Portrait Pack",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3406499352",
+      "position": 20,
+      "steam_id": "3406499352"
+    },
+    {
+      "name": "Necrats Portraits Updated to v3.14.15",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3425072893",
+      "position": 21,
+      "steam_id": "3425072893"
+    },
+    {
+      "name": "Vampire Beast Portraits Updated to v3.14.15",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3425057306",
+      "position": 22,
+      "steam_id": "3425057306"
+    },
+    {
+      "name": "Animated Brontosaur",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3441138115",
+      "position": 23,
+      "steam_id": "3441138115"
+    },
+    {
+      "name": "Animated Amphiboids",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3455445703",
+      "position": 24,
+      "steam_id": "3455445703"
+    },
+    {
+      "name": "Animated Portraits - Seelikor Portraits",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3657310962",
+      "position": 25,
+      "steam_id": "3657310962"
+    },
+    {
+      "name": "Dimorphism+ - Fox Portraits",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3658957565",
+      "position": 26,
+      "steam_id": "3658957565"
+    },
+    {
+      "name": "Animated Portraits Redone - Astroraptor Portraits",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3665532588",
+      "position": 27,
+      "steam_id": "3665532588"
+    },
+    {
+      "name": "Animated Zeriphen Portraits Redone",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3721963320",
+      "position": 28,
+      "steam_id": "3721963320"
+    },
+    {
+      "name": "Species Traits Expansion: Galactic Diversity",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3484023963",
+      "position": 29,
+      "steam_id": "3484023963"
+    },
+    {
+      "name": "Osiris's Namelists for Stellaris",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2936596940",
+      "position": 30,
+      "steam_id": "2936596940"
+    },
+    {
+      "name": "Cybrxkhan's Assortment of Namelists for Stellaris",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\682691478",
+      "position": 31,
+      "steam_id": "682691478"
+    },
+    {
+      "name": "Flags, Emblems and Backgrounds Merged",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2811907627",
+      "position": 32,
+      "steam_id": "2811907627"
+    },
+    {
+      "name": "Kurogane 2.0",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3245080043",
+      "position": 33,
+      "steam_id": "3245080043"
+    },
+    {
+      "name": "Kurogane 2.0: No KGX Sections",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3294143768",
+      "position": 34,
+      "steam_id": "3294143768"
+    },
+    {
+      "name": "Kurogane 2.0: Titan-Juggernaut and Frigate Swap",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3285153766",
+      "position": 35,
+      "steam_id": "3285153766"
+    },
+    {
+      "name": "Universe at War: Novus Ships",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2040763291",
+      "position": 36,
+      "steam_id": "2040763291"
+    },
+    {
+      "name": "Universe at War: Hierarchy Ships",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2028165747",
+      "position": 37,
+      "steam_id": "2028165747"
+    },
+    {
+      "name": "B5 Shadows Ship Set",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2824886393",
+      "position": 38,
+      "steam_id": "2824886393"
+    },
+    {
+      "name": "Star Wars Separatist Ships 4.4 NSC3 Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2831178263",
+      "position": 39,
+      "steam_id": "2831178263"
+    },
+    {
+      "name": "Star Wars Empire Ships 4.4 NSC3 Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2829069669",
+      "position": 40,
+      "steam_id": "2829069669"
+    },
+    {
+      "name": "Star Wars Sith Empire Ships 4.4 NSC3 Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2871981062",
+      "position": 41,
+      "steam_id": "2871981062"
+    },
+    {
+      "name": "Star Wars Rebel Ships 4.4 NSC3 Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2822984175",
+      "position": 42,
+      "steam_id": "2822984175"
+    },
+    {
+      "name": "Star Wars Zann Consortium Ships 4.4 NSC3 Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3315764351",
+      "position": 43,
+      "steam_id": "3315764351"
+    },
+    {
+      "name": "Star Wars Republic Ships 4.4 NSC3 Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2825986399",
+      "position": 44,
+      "steam_id": "2825986399"
+    },
+    {
+      "name": "Star Wars Yuusan Vong Ships 4.4 NSC3 Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3432698915",
+      "position": 45,
+      "steam_id": "3432698915"
+    },
+    {
+      "name": "Vengeance Shipset",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2960574667",
+      "position": 46,
+      "steam_id": "2960574667"
+    },
+    {
+      "name": "[JP_EN]Bioparasitic Shipset",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2864630469",
+      "position": 47,
+      "steam_id": "2864630469"
+    },
+    {
+      "name": "Apocalypse Molluscoid Ships: 2.7",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2151652085",
+      "position": 48,
+      "steam_id": "2151652085"
+    },
+    {
+      "name": "Fairy Empire Shipset",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2148259818",
+      "position": 49,
+      "steam_id": "2148259818"
+    },
+    {
+      "name": "Tall White Reborn",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2972849902",
+      "position": 50,
+      "steam_id": "2972849902"
+    },
+    {
+      "name": "Synthetic Queen Ship Set",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3250584386",
+      "position": 51,
+      "steam_id": "3250584386"
+    },
+    {
+      "name": "Neo-Enigmatic Shipset",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3071707483",
+      "position": 52,
+      "steam_id": "3071707483"
+    },
+    {
+      "name": "Dawn of Andromeda: Higharth Shipset",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3524998443",
+      "position": 53,
+      "steam_id": "3524998443"
+    },
+    {
+      "name": "Dawn of Andromeda: Drekkos Shipset",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3502102519",
+      "position": 54,
+      "steam_id": "3502102519"
+    },
+    {
+      "name": "AI Ship Set - LS Edition",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1436141067",
+      "position": 55,
+      "steam_id": "1436141067"
+    },
+    {
+      "name": "C&C: Scrin Ships",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2160610678",
+      "position": 56,
+      "steam_id": "2160610678"
+    },
+    {
+      "name": "No Clustered Starts",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\687226658",
+      "position": 57,
+      "steam_id": "687226658"
+    },
+    {
+      "name": "More Primitives",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2878075116",
+      "position": 58,
+      "steam_id": "2878075116"
+    },
+    {
+      "name": "Gigastructural Engineering & More (4.4)",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1121692237",
+      "position": 59,
+      "steam_id": "1121692237"
+    },
+    {
+      "name": "Guilli's Planet Modifiers and Features",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\865040033",
+      "position": 60,
+      "steam_id": "865040033"
+    },
+    {
+      "name": "Planetary Diversity",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\819148835",
+      "position": 61,
+      "steam_id": "819148835"
+    },
+    {
+      "name": "Planetary Diversity - Vanilla Replacements",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3173239930",
+      "position": 62,
+      "steam_id": "3173239930"
+    },
+    {
+      "name": "Planetary Diversity - More Arcologies",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1732447147",
+      "position": 63,
+      "steam_id": "1732447147"
+    },
+    {
+      "name": "Planetary Diversity - Gaia Worlds",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2284514368",
+      "position": 64,
+      "steam_id": "2284514368"
+    },
+    {
+      "name": "Immersive Galaxy Reborn",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3266531829",
+      "position": 65,
+      "steam_id": "3266531829"
+    },
+    {
+      "name": "Ancient Systems",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2638108246",
+      "position": 66,
+      "steam_id": "2638108246"
+    },
+    {
+      "name": "Extra Ship Components NEXT",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2648658105",
+      "position": 67,
+      "steam_id": "2648658105"
+    },
+    {
+      "name": "NSC3",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\683230077",
+      "position": 68,
+      "steam_id": "683230077"
+    },
+    {
+      "name": "Starbase Extended 3.0",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3250900527",
+      "position": 69,
+      "steam_id": "3250900527"
+    },
+    {
+      "name": "ESC NEXT: Overwrites: Component Progression",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2653789292",
+      "position": 70,
+      "steam_id": "2653789292"
+    },
+    {
+      "name": "ESC NEXT: Overwrites: Global Ship Designs",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2653699311",
+      "position": 71,
+      "steam_id": "2653699311"
+    },
+    {
+      "name": "ESC NEXT: Overwrites: Special Weapon Types Patch",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2663957444",
+      "position": 72,
+      "steam_id": "2663957444"
+    },
+    {
+      "name": "ASB Addon: ESC NEXT",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2769917594",
+      "position": 73,
+      "steam_id": "2769917594"
+    },
+    {
+      "name": "Synthetic Queen Shipset - NSC3 Patch",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3494095006",
+      "position": 74,
+      "steam_id": "3494095006"
+    },
+    {
+      "name": "Neo-Enigmatic Shipset  - NSC3 Patch",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3488219526",
+      "position": 75,
+      "steam_id": "3488219526"
+    },
+    {
+      "name": "Dawn of Andromeda - Higharth Shipset - NSC3 Patch",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3526218540",
+      "position": 76,
+      "steam_id": "3526218540"
+    },
+    {
+      "name": "Dawn of Andromeda - Drekkos Shipset - NSC3 Patch",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3503278878",
+      "position": 77,
+      "steam_id": "3503278878"
+    },
+    {
+      "name": "[Salvaged+]Marauders & Menacing Remodeled",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2936292863",
+      "position": 78,
+      "steam_id": "2936292863"
+    },
+    {
+      "name": "More Events Mod",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\727000451",
+      "position": 79,
+      "steam_id": "727000451"
+    },
+    {
+      "name": "Archaeology Story Pack 4.4.1",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3723865830",
+      "position": 80,
+      "steam_id": "3723865830"
+    },
+    {
+      "name": "Forgotten Empires 4.4.1",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3728581560",
+      "position": 81,
+      "steam_id": "3728581560"
+    },
+    {
+      "name": "Extra Events 4.3 Continued",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3706385523",
+      "position": 82,
+      "steam_id": "3706385523"
+    },
+    {
+      "name": "AI-Player Exclusive Archaeology & Astral Rifts",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2273568769",
+      "position": 83,
+      "steam_id": "2273568769"
+    },
+    {
+      "name": "Unique Systems Guaranteed",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3354855440",
+      "position": 84,
+      "steam_id": "3354855440"
+    },
+    {
+      "name": "Planet Raider",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1286356239",
+      "position": 85,
+      "steam_id": "1286356239"
+    },
+    {
+      "name": "Fleet Formation Mod - No Trails",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3270451562",
+      "position": 86,
+      "steam_id": "3270451562"
+    },
+    {
+      "name": "Kleom's Colorful Ships",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3072726361",
+      "position": 87,
+      "steam_id": "3072726361"
+    },
+    {
+      "name": "Wormhole Jump Gates",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2816035124",
+      "position": 88,
+      "steam_id": "2816035124"
+    },
+    {
+      "name": "4x Reduced MIA",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3674156622",
+      "position": 89,
+      "steam_id": "3674156622"
+    },
+    {
+      "name": "Reduce Truce To Only 3 Year 3.12",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2592505015",
+      "position": 90,
+      "steam_id": "2592505015"
+    },
+    {
+      "name": "Smarter Hyper Relays: Improved AI (shrimpAI)",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2815767345",
+      "position": 91,
+      "steam_id": "2815767345"
+    },
+    {
+      "name": "Faster City Growth",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3496531985",
+      "position": 92,
+      "steam_id": "3496531985"
+    },
+    {
+      "name": "Just Star Names (Continued)",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2907769573",
+      "position": 93,
+      "steam_id": "2907769573"
+    },
+    {
+      "name": "Ideal System Locator (formerly Arc Furnace System Locator +)",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3243319558",
+      "position": 94,
+      "steam_id": "3243319558"
+    },
+    {
+      "name": "Ancient Systems Difficulty MOD",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2762664736",
+      "position": 95,
+      "steam_id": "2762664736"
+    },
+    {
+      "name": "\u4e3b\u5bb0\u53ef\u7f16\u961f",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3464267804",
+      "position": 96,
+      "steam_id": "3464267804"
+    },
+    {
+      "name": "More Mercenary Shipgraphics",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2939375682",
+      "position": 97,
+      "steam_id": "2939375682"
+    },
+    {
+      "name": "Chris\u2019 Covert Operations",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3496262792",
+      "position": 98,
+      "steam_id": "3496262792"
+    },
+    {
+      "name": "Empire-Scaled Leader Capacity (4.*)",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3657108661",
+      "position": 99,
+      "steam_id": "3657108661"
+    },
+    {
+      "name": "UI Overhaul Dynamic",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1623423360",
+      "position": 100,
+      "steam_id": "1623423360"
+    },
+    {
+      "name": "Improved Leaders View (UI)",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2976235256",
+      "position": 101,
+      "steam_id": "2976235256"
+    },
+    {
+      "name": "UI Overhaul Dynamic + Improved Leaders View",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\2978032655",
+      "position": 102,
+      "steam_id": "2978032655"
+    },
+    {
+      "name": "UI Overhaul Dynamic + Gigastructural Engineering",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3002188516",
+      "position": 103,
+      "steam_id": "3002188516"
+    },
+    {
+      "name": "UI Overhaul Dynamic + Planetary Diversity",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1623423504",
+      "position": 104,
+      "steam_id": "1623423504"
+    },
+    {
+      "name": "UI Overhaul Dynamic - Tiny Options",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3339549399",
+      "position": 105,
+      "steam_id": "3339549399"
+    },
+    {
+      "name": "UI Overhaul Dynamic - Tiny Outliner",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1628912584",
+      "position": 106,
+      "steam_id": "1628912584"
+    },
+    {
+      "name": "UI Overhaul Dynamic - Extended Topbar for DLCs",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3090328185",
+      "position": 107,
+      "steam_id": "3090328185"
+    },
+    {
+      "name": "RustyMonthlyLimits",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3647490194",
+      "position": 108,
+      "steam_id": "3647490194"
+    },
+    {
+      "name": "Post Survey Discoveries",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3724178181",
+      "position": 109,
+      "steam_id": "3724178181"
+    },
+    {
+      "name": "RSA - Feature Preserver - Deposit Fixer",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3536044971",
+      "position": 110,
+      "steam_id": "3536044971"
+    },
+    {
+      "name": "Feature Preserver Dependency",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3657869155",
+      "position": 111,
+      "steam_id": "3657869155"
+    },
+    {
+      "name": "Stellar AI",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3610149307",
+      "position": 112,
+      "steam_id": "3610149307"
+    },
+    {
+      "name": "Spacefleet Tactica",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3696204283",
+      "position": 113,
+      "steam_id": "3696204283"
+    },
+    {
+      "name": "SFT ADD-ON : Disable New Ship Sections",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3703611846",
+      "position": 114,
+      "steam_id": "3703611846"
+    },
+    {
+      "name": "SFT ADD-ON : Combat Computer Restriction Removal",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3726506420",
+      "position": 115,
+      "steam_id": "3726506420"
+    },
+    {
+      "name": "!!!Universal Resource Patch [2.4+]",
+      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1595876588",
+      "position": 116,
+      "steam_id": "1595876588"
+    },
+    {
+      "name": "Stellar AI Director",
+      "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\mods\\StellarAIDirector",
+      "position": 117,
+      "steam_id": ""
+    }
+  ],
+  "optional_integrations": {
+    "Guilli's Planet Modifiers and Features": true,
+    "Planetary Diversity": true,
+    "Smarter Hyper Relays": true,
+    "Spacefleet Tactica": true,
+    "Universal Resource Patch": true
+  },
+  "patch_mod_enabled": true,
+  "required_mods": {
+    "1121692237": {
+      "load_position": 59,
+      "name": "Gigastructural Engineering & More (4.4)",
+      "present": true
+    },
+    "2648658105": {
+      "load_position": 67,
+      "name": "Extra Ship Components NEXT",
+      "present": true
+    },
+    "3250900527": {
+      "load_position": 69,
+      "name": "Starbase Extended 3.0",
+      "present": true
+    },
+    "3610149307": {
+      "load_position": 112,
+      "name": "Stellar AI",
+      "present": true
+    },
+    "683230077": {
+      "load_position": 68,
+      "name": "NSC3",
+      "present": true
+    }
+  }
+}

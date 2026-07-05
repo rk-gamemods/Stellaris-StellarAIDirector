@@ -1,0 +1,175 @@
+﻿l_polish:
+  
+  giga_gas_giant_home_system_NAME:99 "Gas Giant Home"
+  giga_gas_giant_home_system_DESC:99 "Start on a habitable gas giant with your original homeworld destroyed."
+  origin_gas_giant:99 "Gas Giant Liftoff"
+  origin_gas_giant_desc:99 "During this empire's early space age their homeworld was struck by a stray comet. Already possessed enough infrastructure in space to survive temporarily, a gas giant mining station became their new home. Over the years the gas giant has fulfilled their needs many times over, bringing new insights into the various gases that occur in the galaxy. Due to an abundance of exotic gases during this empire's development, improved industrial techniques using these gases have been refined, albeit with a reliance on these gases for even the most basic industry."
+  origin_gas_giant_robot:99 "Gas Giant Liftoff"
+  origin_gas_giant_robot_desc:99 "During this empire's early space age their homeworld was struck by a stray comet. Already possessed enough infrastructure in space to survive temporarily, a gas giant mining station became their new home. Over the years the gas giant has fulfilled their needs many times over, bringing new insights into the various gases that occur in the galaxy. Due to an abundance of exotic gases during this empire's development, improved industrial techniques using these gases have been refined, albeit with a reliance on these gases for even the most basic industry."
+  
+  origin_gas_giant_effects:99 "- $HOMEWORLD$ ['concept_giga_habitable_gas_giant'] (Size: £planetsize£ 16-28)$NEW_LINE$- Species Trait:$TABBED_NEW_LINE$- ['trait:trait_giga_gas_giant_hab']$NEW_LINE$- $ADDITONAL_TECHNOLOGIES_STRING$$TABBED_NEW_LINE$- ['technology:tech_space_mining_1', £engineering_research£ $tech_space_mining_1$]$TABBED_NEW_LINE$- ['technology:tech_hydroponics', £society_research£ $tech_hydroponics$]"
+  origin_gas_giant_effects_robot:99 "- $HOMEWORLD$ ['concept_giga_habitable_gas_giant'] (Size: £planetsize£ 16-28)$NEW_LINE$- Species Trait:$TABBED_NEW_LINE$- ['trait:trait_giga_gas_giant_hab_robot']$NEW_LINE$- $ADDITONAL_TECHNOLOGIES_STRING$ ['technology:tech_space_mining_1', £engineering_research£ $tech_space_mining_1$]"
+  
+  concept_giga_habitable_gas_giant:99 "$pc_habitable_gas_giant$"
+  concept_giga_habitable_gas_giant_desc:99 "$pc_habitable_gas_giant_desc$"
+  
+  concept_giga_gas_worlds:99 "Gas World"
+  concept_giga_gas_worlds_desc:99 "Habitable gas giants, planets with artificially gas flooded atmosphere, and even some slightly more habitable toxic worlds are categorized as \"Gas Worlds\"."
+  
+  building_giga_gas_giant_habitation_module:99 "Gas Giant Habitation Module"
+  building_giga_gas_giant_habitation_module_desc:99 "Collection of facilities necessary to maintain a colony on a gas giant assembled by the original population of this planet. These facilities include reactors to provide power for the colony, docking bays to unload minerals collected from local moons and large climate-controlled hangars that can be used for hydroponic farms. In addition to that, these facilities serve as headquarters for resource distribution network and provide various services to the local populations."
+  
+  trait_giga_gas_giant_hab:99 "Exotic Gas Reliant"
+  trait_giga_gas_giant_hab_desc:99 "§LOver centuries of exposure to exotic gases while living on a gas giant, this species has become somewhat dependent on them in their daily functions.§!"
+  trait_giga_gas_giant_hab_tooltip:99 "§YScience§! and §YIndustrial§! Job Exotic Gas upkeep: §R+0.03§!\n    - Housing Usage on ['concept_giga_gas_worlds', §YGas§!] worlds: §G-10%§!\n    - £job_researcher£ $job_researcher$ upkeep on ['concept_giga_gas_worlds', §YGas§!] worlds: §G-10%§!\n    - Job Exotic Gas upkeep on ['concept_giga_gas_worlds', §YGas§!] worlds: §G-33%§!\n    - Housing Usage on non-['concept_giga_gas_worlds', §YGas§!] worlds: §R+30%§!\n    - Habitability on non-['concept_giga_gas_worlds', §YGas§!] worlds: §R-20%§!\n    - Job Exotic Gas upkeep on non-['concept_giga_gas_worlds', §YGas§!] worlds: §R+50%§!"
+  trait_giga_gas_giant_hab_robot:99 "Exotic Gas-Fueled"
+  trait_giga_gas_giant_hab_robot_desc:99 "§LSmall self-modifications over time has compounded into the near dependency of exotic gases to fuel these machines."
+  trait_giga_gas_giant_hab_robot_tooltip:99 "$trait_giga_gas_giant_hab_tooltip$"
+  
+  giga_gas_giant_hab_colony_tt:99 "Considered a ['concept_giga_gas_worlds', §YGas§!] world for Gas Giant Liftoff Species."
+  
+  giga_gas_giant_hab_colony:99 "Flooded Atmosphere"
+  giga_gas_giant_hab_colony_desc:99 ""
+  
+  decision_giga_flood_atmosphere:99 "Flood Planetary Atmosphere"
+  decision_giga_flood_atmosphere_desc:99 ""
+  
+  # d_giga_gas_giant_hab_core:0 "Rich Planetary Core"
+  # d_giga_gas_giant_hab_core_desc:0 ""
+  
+  # district_giga_gas_giant_habitat_mining:0 "Core Mining Site"
+  # district_giga_gas_giant_habitat_mining_plural:0 "Core Mining Sites"
+  # district_giga_gas_giant_habitat_mining_desc:0 ""
+  
+  giga_gas_giant_hab:99 "Habitable Gas Giant"
+  giga_gas_giant_hab_desc:99 "Plentiful exotic gases means easy collection, but harsher working conditions for planetary core mining operations."
+  
+  # mod_district_giga_gas_giant_habitat_mining_max:0 "Max $district_giga_gas_giant_habitat_mining_plural$"
+  
+  ### Jobs
+  
+  job_giga_gas_extraction_manager:99 "Exotic Gas Extraction Manager"
+  job_giga_gas_extraction_manager_plural:99 "Exotic Gas Extraction Managers"
+  job_giga_gas_extraction_manager_desc:99 "Due to a rich atmosphere or other exotic environment property these administrators ensure our $job_technician_plural$ exploit these resources to the maximum."
+  job_giga_gas_extraction_manager_effect_desc:99 "$job_giga_gas_extraction_manager_swap_plural_with_icon$ collect £exotic_gases£ §Y$exotic_gases$§! and provide £job_technician£ §Y$job_technician_plural$§! with £exotic_gases£ §Y$exotic_gases$§! production"
+  job_giga_gas_extraction_manager_swap_plural_with_icon:99 "[giga_gas_extraction_manager.GetIcon] [giga_gas_extraction_manager.GetNamePlural]"
+  mod_job_giga_gas_extraction_manager_add:99 "[giga_gas_extraction_manager.GetName] Jobs"
+  mod_job_giga_gas_extraction_manager_per_pop:99 "§G+1§! [giga_gas_extraction_manager.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_gas_extraction_manager_per_pop_short:99 "\n§G+1§! £mod_job_giga_gas_extraction_manager_add£ per $VALUE$ £pop£"
+  
+  job_giga_gas_extraction_manager_drone:99 "Exotic Gas Extraction Management Cluster"
+  giga_gas_extraction_manager_drone_wilderness:99 "Aerosymbiont"
+  job_giga_gas_extraction_manager_drone_wilderness:99 "$giga_gas_extraction_manager_drone_wilderness$"
+  job_giga_gas_extraction_manager_drone_plural:99 "Exotic Gas Extraction Management Clusters"
+  giga_gas_extraction_manager_drone_wilderness_plural:99 "Aerosymbionts"
+  job_giga_gas_extraction_manager_drone_wilderness_plural:99 "$giga_gas_extraction_manager_drone_wilderness_plural$"
+  job_giga_gas_extraction_manager_drone_desc:99 "Due to a rich atmosphere or other exotic environment property these administrators ensure our $job_technician_drone_plural$ exploit these resources to the maximum."
+  giga_gas_extraction_manager_drone_wilderness_desc:99 "These soaring creatures release airborne hormones in response to atmospheric changes, signalling environmental conditions to nearby $job_photosymbiont_plural$."
+  job_giga_gas_extraction_manager_drone_wilderness_desc:99 "$giga_gas_extraction_manager_drone_wilderness_desc$"
+  job_giga_gas_extraction_manager_drone_effect_desc:99 "$job_giga_gas_extraction_manager_drone_swap_plural_with_icon$ collect £exotic_gases£ §Y$exotic_gases$§! and provide [technician.GetIcon] [GetTechnicianPlural] with £exotic_gases£ §Y$exotic_gases$§! production"
+  job_giga_gas_extraction_manager_drone_swap_plural_with_icon:99 "[giga_gas_extraction_manager_drone.GetIcon] [giga_gas_extraction_manager_drone.GetNamePlural]"
+  mod_job_giga_gas_extraction_manager_drone_add:99 "[giga_gas_extraction_manager_drone.GetName] Jobs"
+  mod_job_giga_gas_extraction_manager_drone_per_pop:99 "§G+1§! [giga_gas_extraction_manager_drone.GetName] Job per $VALUE$ Pops"
+  mod_job_giga_gas_extraction_manager_drone_per_pop_short:99 "\n§G+1§! £mod_job_giga_gas_extraction_manager_add£ per $VALUE$ £pop£"
+  
+  
+  #########################################
+  ### Gas Giant Habitat districts #########
+  #########################################
+  
+  # district_giga_gas_giant_habitat_city:0 "$district_hab_housing$"
+  # district_giga_gas_giant_habitat_city_plural:0 "$district_hab_housing_desc$"
+  # district_giga_gas_giant_habitat_city_desc:0 "$district_hab_housing_plural$"
+  
+  #district_giga_gas_giant_habitat_hive:99 "$district_hive$"
+  #district_giga_gas_giant_habitat_hive_plural:99 "$district_hive_plural$"
+  #district_giga_gas_giant_habitat_hive_desc:99 "$district_hive_desc$"
+  
+  #district_giga_gas_giant_habitat_nexus:99 "$district_nexus$"
+  #district_giga_gas_giant_habitat_nexus_plural:99 "$district_nexus_plural$"
+  #district_giga_gas_giant_habitat_nexus_desc:99 "$district_nexus_desc$"
+  
+  # district_giga_gas_giant_habitat_industrial:0 "$district_industrial$"
+  # district_giga_gas_giant_habitat_industrial_plural:0 "$district_industrial_plural$"
+  # district_giga_gas_giant_habitat_industrial_desc:0 "$district_industrial_desc$"
+  
+  district_giga_gas_giant_craglands:99 "Communal Eye"
+  district_giga_gas_giant_craglands_plural:99 "Communal Eyes"
+  district_giga_gas_giant_craglands_desc:99 "A diverse multitude of symbionts and their structures circle in a stretch of calm wind."
+  
+  district_giga_gas_giant_habitat_wind:99 "Wind Turbine Array"
+  district_giga_gas_giant_habitat_wind_plural:99 "Wind Turbine Arrays"
+  district_giga_gas_giant_habitat_wind_desc:99 "Massive arrays of wind turbines floating within the gas giant's atmosphere, generating huge amounts of energy."
+  district_giga_gas_giant_habitat_wind_wilderness:99 "Zephyric Photolift"
+  district_giga_gas_giant_habitat_wind_wilderness_plural:99 "Zephyric Photolifts"
+  district_giga_gas_giant_habitat_wind_wilderness_desc:99 "Life thrives in the cloudtops, riding the winds up and down to bathe in just the right amount of sun."
+  
+  district_giga_gas_giant_habitat_science:99 "Research Laboratory"
+  district_giga_gas_giant_habitat_science_plural:99 "Research Laboratories"
+  district_giga_gas_giant_habitat_science_desc:99 "These advanced research facilities have the very latest science equipment along with an extremely large staff capacity."
+  district_giga_gas_giant_habitat_science_wilderness:99 "Neurovapour Knot"
+  district_giga_gas_giant_habitat_science_wilderness_plural:99 "Neurovapour Knots"
+  district_giga_gas_giant_habitat_science_wilderness_desc:99 "The electrochemical and biological currents of thought converge in the windswell here, pollinating each other with ideas."
+  
+  district_giga_gas_giant_habitat_exotic:99 "Gas Pumping Facility"
+  district_giga_gas_giant_habitat_exotic_plural:99 "Gas Pumping Facilities"
+  district_giga_gas_giant_habitat_exotic_desc:99 "Machinery that can extract Gases from isolated pockets within this planet's atmosphere."
+  mod_district_giga_gas_giant_habitat_exotic_max:99 "Max $district_giga_gas_giant_habitat_exotic_plural$"
+  district_giga_gas_giant_habitat_exotic_wilderness:99 "Convection Bloom"
+  district_giga_gas_giant_habitat_exotic_wilderness_plural:99 "Convection Blooms"
+  district_giga_gas_giant_habitat_exotic_wilderness_desc:99 "The timeless cradle of life; a union of warmth and water, abounding in the chemicals of creation."
+  mod_district_giga_gas_giant_habitat_exotic_wilderness_max:99 "Max $district_giga_gas_giant_habitat_exotic_wilderness_plural$"
+  
+  
+  #########################################
+  ### Gas Giant Habitat buildings #########
+  #########################################
+  
+  building_giga_gas_fusion_plant_fixed:99 "$building_giga_gas_fusion_plant$"
+  building_giga_gas_fusion_plant_fixed_desc:99 "$building_giga_gas_fusion_plant_desc$"
+  mod_building_giga_gas_fusion_plant_fixed_max:99 "$mod_building_giga_gas_fusion_plant_max$"
+  
+  building_giga_gas_mote_harvester_fixed:99 "$building_giga_gas_mote_harvester$"
+  building_giga_gas_mote_harvester_fixed_desc:99 "$building_giga_gas_mote_harvester_desc$"
+  mod_building_giga_gas_mote_harvester_fixed_max:99 "$mod_building_giga_gas_mote_harvester_max$"
+  
+  building_giga_gas_floater_harvester_fixed:99 "$building_giga_gas_floater_harvester$"
+  building_giga_gas_floater_harvester_fixed_desc:99 "$building_giga_gas_floater_harvester_desc$"
+  mod_building_giga_gas_floater_harvester_fixed_max:99 "$mod_building_giga_gas_floater_harvester_max$"
+  
+  
+  
+  #############################################################################################################################################
+  ### Planet Designations #####################################################################################################################
+  #############################################################################################################################################
+  
+  col_giga_gas_giant_habitat:99 "$col_habitat$"
+  col_giga_gas_giant_habitat_desc:99 "$col_habitat_desc$"
+  
+  col_giga_gas_giant_habitat_capital:99 "$col_capital$"
+  col_giga_gas_giant_habitat_capital_desc:99 "$col_capital_desc$"
+  
+  col_giga_gas_giant_habitat_capital_hive:99 "$col_capital_hive$"
+  col_giga_gas_giant_habitat_capital_hive_desc:99 "$col_capital_hive_desc$"
+  
+  col_giga_gas_giant_habitat_capital_machine:99 "$col_capital_machine$"
+  col_giga_gas_giant_habitat_capital_machine_desc:99 "$col_capital_machine_desc$"
+  
+  col_giga_gas_giant_habitat_energy:99 "$col_habitat_energy$"
+  col_giga_gas_giant_habitat_energy_desc:99 "$col_habitat_energy_desc$"
+  
+  col_giga_gas_giant_habitat_research:99 "$col_habitat_research$"
+  col_giga_gas_giant_habitat_research_desc:99 "$col_habitat_research_desc$"
+  
+  col_giga_gas_giant_habitat_fortress:99 "$col_habitat_fortress$"
+  col_giga_gas_giant_habitat_fortress_desc:99 "$col_habitat_fortress_desc$"
+  
+  col_giga_gas_giant_habitat_foundry:99 "$col_habitat_foundry$"
+  col_giga_gas_giant_habitat_foundry_desc:99 "$col_habitat_foundry_desc$"
+  
+  col_giga_gas_giant_habitat_factory:99 "$col_habitat_factory$"
+  col_giga_gas_giant_habitat_factory_desc:99 "$col_habitat_factory_desc$"
+  
+  col_giga_gas_giant_habitat_refinery:99 "$col_habitat_refinery$"
+  col_giga_gas_giant_habitat_refinery_desc:99 "$col_habitat_refinery_desc$"
+  

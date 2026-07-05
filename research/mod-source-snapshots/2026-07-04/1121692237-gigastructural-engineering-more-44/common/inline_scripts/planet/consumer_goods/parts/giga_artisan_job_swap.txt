@@ -1,0 +1,33 @@
+# regular empires
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = artisan
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = no
+        }
+        NOT = {	has_modifier = penal_colony }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}
+
+# gestalt
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = artisan_drone
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        owner = {
+            is_gestalt = yes
+            is_wilderness_empire = no
+        }
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}

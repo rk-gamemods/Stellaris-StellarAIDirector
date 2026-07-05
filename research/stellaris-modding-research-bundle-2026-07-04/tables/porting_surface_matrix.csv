@@ -1,0 +1,8 @@
+surface,4.0 risk,4.4 risk,4.5 risk,test_required
+pops,Pop groups/workforce replace older assumptions,Arkship colonies may alter colony context,Ethics/factions percentages replace divisions,Clean game + pop/faction tests
+jobs,Workforce/job efficiency changes,Improved job selection and Nomad jobs,Likely impacted by pop/faction changes,Planet economy tests
+trade/logistics,Trade routes removed; trade as resource,Waylines/Operational Reserves/Nomad harvesting,TBD,Economy and resource flow tests
+planets/colonies,District/building/job UI rework,Arkship ship-carried colonies,TBD,Normal + Nomad empire tests
+UI,Planet UI rework,Situation Log/Waystation/Arkship UI,Pop/faction UI changes,Open every touched screen
+AI,Economy/logistics strategy changes,"Contracts, automation, Nomad behavior",AI policy/naval cap exposes,Observe AI tests
+events/scopes,Scope assumptions changed by new systems,home_colony/background_colony in beta,Pop triggers removed/changed,error.log + manual trigger tests

@@ -1,0 +1,4 @@
+﻿l_english:
+ staid_load_proof.1.name:0 "Stellar AI Director Loaded"
+ staid_load_proof.1.desc:0 "Stellar AI Director v1 is loaded in this playset. If this message appears after starting a new game, the mod's startup proof event, event file, on-action connector, and localization are active."
+ staid_load_proof.1.a:0 "Confirmed."

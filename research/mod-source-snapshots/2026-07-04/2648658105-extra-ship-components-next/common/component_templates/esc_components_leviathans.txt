@@ -1,0 +1,2277 @@
+############################################################
+##                ESC : Leviathan Weapons                 ##
+############################################################
+
+# - Enigmatic Energy Discharger					L
+# - Enigmatic Energy Lash						M
+# - Enigmatic Energy Autocannon					S
+# - Enigmatic Energy Lance						X, Titanic
+# - Dimensional Horror Point Defense			M
+# - Advanced Energy Syphon						S/M/L
+# - Paradox Energy Syphon						S/M/L
+# - Tiyanki Beam Cannon							X, Titanic
+# - Junk Mine Launcher							G
+# - Voidspawn Missile Launcher					G, X, Titanic
+
+############################################################
+##              Enigmatic Energy Autocannon               ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_ENIGMATIC_AUTOCANNON
+	size = small
+	icon = GFX_esc_enigmatic_autocannon
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 25.0 max = 35.0 }
+	windup = { min = 2.0 max = 14.0 }
+	total_fire_time = 15
+	range = @ESC_WEAPON_RANGE_S_3
+	accuracy = 0.9
+	power = -25
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.65
+
+	prerequisites = { "esc_tech_enigmatic_autocannon" }
+	component_set = ESC_ENIGMATIC_AUTOCANNON
+	projectile_gfx = "esc_enigmatic_cannon_small"
+	tags = { weapon_type_energy s_slot }
+	ai_tags = { weapon_role_anti_shield gunship brawler brawler_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+############################################################
+##                 Enigmatic Energy Lash                  ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_ENIGMATIC_LASH
+	size = medium
+	icon = GFX_esc_enigmatic_lash
+	icon_frame = 1
+	type = point_defence
+
+	damage = { min = 10.0 max = 15.0 }
+	windup = { min = 1.0 max = 1.0 }
+	total_fire_time = 5
+	range = @ESC_WEAPON_RANGE_P_3
+	accuracy = 0.75
+	power = -25
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.5
+
+	prerequisites = { "esc_tech_enigmatic_lash" }
+	component_set = ESC_ENIGMATIC_LASH
+	projectile_gfx = "esc_enigmatic_cannon_medium"
+	tags = { weapon_type_point_defense weapon_type_energy m_slot }
+	ai_tags = { weapon_role_point_defense weapon_role_anti_shield screen gunship }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	inline_script = {
+		script = weapon_effects/esc_fire_rate_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+
+	point_defence_targets = { "missile" "strike_craft" }
+}
+
+weapon_component_template = {
+	key = ESC_BIO_ENIGMATIC_LASH
+	size = medium
+	icon = GFX_esc_bio_enigmatic_lash
+	icon_frame = 1
+	type = point_defence
+
+	damage = { min = 10.0 max = 15.0 }
+	windup = { min = 1.0 max = 1.0 }
+	total_fire_time = 5
+	range = @ESC_WEAPON_RANGE_P_3
+	accuracy = 0.75
+	power = -25
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.5
+
+	prerequisites = { "esc_tech_enigmatic_lash" }
+	component_set = ESC_BIO_ENIGMATIC_LASH
+	projectile_gfx = "esc_enigmatic_cannon_medium"
+	tags = { weapon_type_point_defense weapon_type_energy m_slot }
+	ai_tags = { weapon_role_point_defense weapon_role_anti_shield screen gunship }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	inline_script = {
+		script = weapon_effects/esc_fire_rate_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+
+	point_defence_targets = { "missile" "strike_craft" }
+}
+
+############################################################
+##              Enigmatic Energy Discharger               ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_ENIGMATIC_CANNON
+	size = large
+	icon = GFX_esc_enigmatic_discharger
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 305.0 max = 825.0 }
+	windup = { min = 2.0 max = 20.0 }
+	total_fire_time = 55
+	range = @ESC_WEAPON_RANGE_L_6
+	min_range = @ESC_WEAPON_MIN_RANGE_5
+	accuracy = 0.9
+	power = -110
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_enigmatic_cannon" }
+	component_set = ESC_ENIGMATIC_CANNON
+	projectile_gfx = "esc_enigmatic_cannon_large"
+	tags = { weapon_type_energy l_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+############################################################
+##                Enigmatic Energy Lance                  ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_ENIGMATIC_LANCE
+	size = extra_large
+	icon = GFX_esc_enigmatic_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 1750
+		MAX_DAMAGE = 2500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 12.0 max = 47.0 }
+	total_fire_time = 70
+	range = @ESC_WEAPON_RANGE_X_4
+	accuracy = 0.85
+	power = -300
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.15
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_enigmatic_lance" }
+	component_set = ESC_ENIGMATIC_LANCE
+	projectile_gfx = "esc_enigmatic_lance"
+	upgrades_to = ESC_ENIGMATIC_LANCE_JUGGERNAUT
+	tags = { weapon_type_energy x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = ESC_BIO_ENIGMATIC_LANCE
+	size = extra_large
+	icon = GFX_esc_bio_enigmatic_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 1750
+		MAX_DAMAGE = 2500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 12.0 max = 47.0 }
+	total_fire_time = 70
+	range = @ESC_WEAPON_RANGE_X_4
+	accuracy = 0.85
+	power = -300
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.15
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_enigmatic_lance" }
+	component_set = ESC_BIO_ENIGMATIC_LANCE
+	projectile_gfx = "esc_enigmatic_lance"
+	upgrades_to = ESC_BIO_ENIGMATIC_LANCE_JUGGERNAUT
+	tags = { weapon_type_energy x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+############################################################
+##            Enigmatic Energy Lance (Titanic)            ##
+############################################################
+
+# titan
+weapon_component_template = {
+	key = ESC_ENIGMATIC_LANCE_TITANIC
+	size = titanic
+	icon = GFX_esc_enigmatic_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 6000
+		MAX_DAMAGE = 8500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 30.0 max = 100.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_T_4
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.15
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_enigmatic_lance_titanic" }
+	component_set = ESC_ENIGMATIC_LANCE_TITANIC
+	projectile_gfx = "esc_enigmatic_lance_titanic"
+	tags = { weapon_type_energy t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard_bio
+		BIOSHIP_WEAPON = no
+		ARKSHIP_WEAPON = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = ESC_BIO_ENIGMATIC_LANCE_TITANIC
+	size = titanic
+	icon = GFX_esc_bio_enigmatic_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 6000
+		MAX_DAMAGE = 8500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 30.0 max = 100.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_T_4
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.15
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_enigmatic_lance_titanic" }
+	component_set = ESC_BIO_ENIGMATIC_LANCE_TITANIC
+	projectile_gfx = "esc_enigmatic_lance_titanic"
+	tags = { weapon_type_energy t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard_bio
+		BIOSHIP_WEAPON = yes
+		ARKSHIP_WEAPON = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+# juggernaut
+weapon_component_template = {
+	key = ESC_ENIGMATIC_LANCE_JUGGERNAUT
+	size = extra_large
+	icon = GFX_esc_enigmatic_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 6000
+		MAX_DAMAGE = 8500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 30.0 max = 100.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_J_4
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.15
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_enigmatic_lance_titanic" }
+	component_set = ESC_ENIGMATIC_LANCE_JUGGERNAUT
+	projectile_gfx = "esc_enigmatic_lance"
+	tags = { weapon_type_energy x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships_conditional
+		EXTRA_CONDITION = "ESC_ship_uses_juggernaut_components"
+		EXTRA_CONDITION_VALUE = yes
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = ESC_BIO_ENIGMATIC_LANCE_JUGGERNAUT
+	size = extra_large
+	icon = GFX_esc_bio_enigmatic_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 6000
+		MAX_DAMAGE = 8500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 30.0 max = 100.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_J_4
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.15
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_enigmatic_lance_titanic" }
+	component_set = ESC_BIO_ENIGMATIC_LANCE_JUGGERNAUT
+	projectile_gfx = "esc_enigmatic_lance"
+	tags = { weapon_type_energy x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships_conditional
+		EXTRA_CONDITION = "ESC_ship_uses_juggernaut_components"
+		EXTRA_CONDITION_VALUE = yes
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+# arkship
+weapon_component_template = {
+	key = ESC_ENIGMATIC_LANCE_ARKSHIP
+	size = titanic
+	icon = GFX_esc_enigmatic_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 8000
+		MAX_DAMAGE = 15000
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 30.0 max = 100.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_ARKSHIP_4
+	accuracy = 0.85
+	power = 0
+
+	resources = {
+		category = ship_components
+		upkeep = {
+			alloys = @titanic_t7_upkeep_alloys
+			energy = @titanic_t7_upkeep_energy
+		}
+	}
+
+	hull_damage = @ESC_WEAPON_enigmatic_hull_damage
+	armor_penetration = @ESC_WEAPON_enigmatic_armor_penetration
+	armor_damage = @ESC_WEAPON_enigmatic_armor_damage
+	shield_penetration = @ESC_WEAPON_enigmatic_shield_penetration
+	shield_damage = @ESC_WEAPON_enigmatic_shield_damage
+	tracking = 0.15
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_enigmatic_lance_titanic" }
+	component_set = ESC_ENIGMATIC_LANCE_ARKSHIP
+	projectile_gfx = "esc_enigmatic_lance_titanic"
+	tags = { weapon_type_energy t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_shield artillery }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_enigmatic
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard
+		ARKSHIP_WEAPON = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+############################################################
+##            Dimensional Horror Point Defense            ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_EXTRADIMENSIONAL_PD
+	size = medium
+	icon = GFX_esc_horror_pd
+	icon_frame = 1
+	type = point_defence
+
+	damage = { min = 20.0 max = 28.0 }
+	windup = { min = 1.0 max = 3.0 }
+	total_fire_time = 8
+	range = @ESC_WEAPON_RANGE_P_4
+	accuracy = 0.8
+	power = -25
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 8
+		STRATEGIC_RESOURCE_TYPE = sr_dark_matter
+	}
+
+	hull_damage = @ESC_WEAPON_dimensional_horror_hull_damage
+	armor_penetration = @ESC_WEAPON_dimensional_horror_armor_penetration
+	armor_damage = @ESC_WEAPON_dimensional_horror_armor_damage
+	shield_penetration = @ESC_WEAPON_dimensional_horror_shield_penetration
+	shield_damage = @ESC_WEAPON_dimensional_horror_shield_damage
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_extradimensional_pd" }
+	component_set = ESC_EXTRADIMENSIONAL_PD
+	projectile_gfx = "dimensional_horror_spike_weapon"
+	tags = { weapon_type_point_defense weapon_type_energy m_slot }
+	ai_tags = { weapon_role_point_defense screen }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+
+	point_defence_targets = { "missile" "strike_craft" }
+}
+
+############################################################
+##                 Advanced Energy Syphon                 ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_SPACE_WHALE_WEAPON_2
+	size = small
+	icon = GFX_esc_energy_syphon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 16.0 max = 42.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 0.75
+	power = -9
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 5
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = s
+		TIER = 2
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_space_whale_weapon_2" }
+	component_set = ESC_SPACE_WHALE_WEAPON_2
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy s_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+	upgrades_to = SMALL_ESC_SPACE_WHALE_WEAPON_3
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+weapon_component_template = {
+	key = SMALL_ESC_BIO_SPACE_WHALE_WEAPON_2
+	size = small
+	icon = GFX_esc_energy_syphon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 16.0 max = 42.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 0.75
+	power = -9
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 5
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = s
+		TIER = 2
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_space_whale_weapon_2" }
+	component_set = ESC_BIO_SPACE_WHALE_WEAPON_2
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy s_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+	upgrades_to = SMALL_ESC_BIO_SPACE_WHALE_WEAPON_3
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_SPACE_WHALE_WEAPON_2
+	size = medium
+	icon = GFX_esc_energy_syphon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 32.0 max = 84.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_M_5
+	accuracy = 0.75
+	power = -18
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 5
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = m
+		TIER = 2
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.15
+
+	prerequisites = { "esc_tech_space_whale_weapon_2" }
+	component_set = ESC_SPACE_WHALE_WEAPON_2
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy m_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+	upgrades_to = MEDIUM_ESC_SPACE_WHALE_WEAPON_3
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_SPACE_WHALE_WEAPON_2
+	size = medium
+	icon = GFX_esc_energy_syphon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 32.0 max = 84.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_M_5
+	accuracy = 0.75
+	power = -18
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 5
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = m
+		TIER = 2
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.15
+
+	prerequisites = { "esc_tech_space_whale_weapon_2" }
+	component_set = ESC_BIO_SPACE_WHALE_WEAPON_2
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy m_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+	upgrades_to = MEDIUM_ESC_BIO_SPACE_WHALE_WEAPON_3
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_SPACE_WHALE_WEAPON_2
+	size = large
+	icon = GFX_esc_energy_syphon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 64.0 max = 168.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_4
+	accuracy = 0.75
+	power = -36
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 5
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = l
+		TIER = 2
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.05
+
+	prerequisites = { "esc_tech_space_whale_weapon_2" }
+	component_set = ESC_SPACE_WHALE_WEAPON_2
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy l_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+	upgrades_to = LARGE_ESC_SPACE_WHALE_WEAPON_3
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+weapon_component_template = {
+	key = LARGE_ESC_BIO_SPACE_WHALE_WEAPON_2
+	size = large
+	icon = GFX_esc_energy_syphon_2
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 64.0 max = 168.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_4
+	accuracy = 0.75
+	power = -36
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 5
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = l
+		TIER = 2
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.05
+
+	prerequisites = { "esc_tech_space_whale_weapon_2" }
+	component_set = ESC_BIO_SPACE_WHALE_WEAPON_2
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy l_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+	upgrades_to = LARGE_ESC_BIO_SPACE_WHALE_WEAPON_3
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+############################################################
+##                 Paradox Energy Syphon                  ##
+############################################################
+
+# small
+weapon_component_template = {
+	key = SMALL_ESC_SPACE_WHALE_WEAPON_3
+	size = small
+	icon = GFX_esc_energy_syphon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 22.0 max = 56.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 0.75
+	power = -11
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 6
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = s
+		TIER = 3
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_space_whale_weapon_3" }
+	component_set = ESC_SPACE_WHALE_WEAPON_3
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy s_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+weapon_component_template = {
+	key = SMALL_ESC_BIO_SPACE_WHALE_WEAPON_3
+	size = small
+	icon = GFX_esc_energy_syphon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 22.0 max = 56.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 0.75
+	power = -11
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = s
+		TIER = 6
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = s
+		TIER = 3
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.3
+
+	prerequisites = { "esc_tech_space_whale_weapon_3" }
+	component_set = ESC_BIO_SPACE_WHALE_WEAPON_3
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy s_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+# medium
+weapon_component_template = {
+	key = MEDIUM_ESC_SPACE_WHALE_WEAPON_3
+	size = medium
+	icon = GFX_esc_energy_syphon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 44.0 max = 112.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_M_5
+	accuracy = 0.75
+	power = -22
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = m
+		TIER = 3
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.15
+
+	prerequisites = { "esc_tech_space_whale_weapon_3" }
+	component_set = ESC_SPACE_WHALE_WEAPON_3
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy m_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+weapon_component_template = {
+	key = MEDIUM_ESC_BIO_SPACE_WHALE_WEAPON_3
+	size = medium
+	icon = GFX_esc_energy_syphon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 44.0 max = 112.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_M_5
+	accuracy = 0.75
+	power = -22
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 6
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = m
+		TIER = 3
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.15
+
+	prerequisites = { "esc_tech_space_whale_weapon_3" }
+	component_set = ESC_BIO_SPACE_WHALE_WEAPON_3
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy m_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+# large
+weapon_component_template = {
+	key = LARGE_ESC_SPACE_WHALE_WEAPON_3
+	size = large
+	icon = GFX_esc_energy_syphon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 88.0 max = 224.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_4
+	accuracy = 0.75
+	power = -44
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 6
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = l
+		TIER = 3
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.05
+
+	prerequisites = { "esc_tech_space_whale_weapon_3" }
+	component_set = ESC_SPACE_WHALE_WEAPON_3
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy l_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+weapon_component_template = {
+	key = LARGE_ESC_BIO_SPACE_WHALE_WEAPON_3
+	size = large
+	icon = GFX_esc_energy_syphon_3
+	icon_frame = 1
+	type = instant
+
+	damage = { min = 88.0 max = 224.0 }
+	windup = { min = 5.0 max = 20.0 }
+	total_fire_time = 30
+	range = @ESC_WEAPON_RANGE_L_4
+	accuracy = 0.75
+	power = -44
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_no_sr_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = l
+		TIER = 6
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_energy_syphon
+		SIZE = l
+		TIER = 3
+	}
+
+	hull_damage = @ESC_WEAPON_syphon_hull_damage
+	armor_penetration = @ESC_WEAPON_syphon_armor_penetration
+	armor_damage = @ESC_WEAPON_syphon_armor_damage
+	shield_penetration = @ESC_WEAPON_syphon_shield_penetration
+	shield_damage = @ESC_WEAPON_syphon_shield_damage
+	tracking = 0.05
+
+	prerequisites = { "esc_tech_space_whale_weapon_3" }
+	component_set = ESC_BIO_SPACE_WHALE_WEAPON_3
+	projectile_gfx = "space_whale_weapon"
+	tags = { weapon_type_energy l_slot weapon_type_space_fauna }
+	ai_tags = { weapon_role_anti_shield weapon_type_space_fauna }
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+############################################################
+##                  Tiyanki Beam Cannon                   ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_TIYANKI_CANNON
+	size = extra_large
+	icon = GFX_esc_tiyanki_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 1000
+		MAX_DAMAGE = 2500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 2.0 max = 20.0 }
+	total_fire_time = 70
+	range = @ESC_WEAPON_RANGE_X_4
+	accuracy = 0.85
+	power = -290
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_tiyanki_hull_damage
+	armor_penetration = @ESC_WEAPON_tiyanki_armor_penetration
+	armor_damage = @ESC_WEAPON_tiyanki_armor_damage
+	shield_penetration = @ESC_WEAPON_tiyanki_shield_penetration
+	shield_damage = @ESC_WEAPON_tiyanki_shield_damage
+	tracking = 0.3
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_tiyanki_beam" }
+	component_set = ESC_TIYANKI_CANNON
+	projectile_gfx = "esc_tiyanki_lance"
+	upgrades_to = ESC_TIYANKI_CANNON_JUGGERNAUT
+	tags = { weapon_type_energy weapon_type_space_fauna x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor weapon_role_anti_shield artillery }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = ESC_BIO_TIYANKI_CANNON
+	size = extra_large
+	icon = GFX_esc_bio_tiyanki_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 1000
+		MAX_DAMAGE = 2500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 2.0 max = 20.0 }
+	total_fire_time = 70
+	range = @ESC_WEAPON_RANGE_X_4
+	accuracy = 0.85
+	power = -290
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_tiyanki_hull_damage
+	armor_penetration = @ESC_WEAPON_tiyanki_armor_penetration
+	armor_damage = @ESC_WEAPON_tiyanki_armor_damage
+	shield_penetration = @ESC_WEAPON_tiyanki_shield_penetration
+	shield_damage = @ESC_WEAPON_tiyanki_shield_damage
+	tracking = 0.3
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_tiyanki_beam" }
+	component_set = ESC_BIO_TIYANKI_CANNON
+	projectile_gfx = "esc_tiyanki_lance"
+	upgrades_to = ESC_BIO_TIYANKI_CANNON_JUGGERNAUT
+	tags = { weapon_type_energy weapon_type_space_fauna x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor weapon_role_anti_shield artillery }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships
+		EVAL_TARGET = yes
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+############################################################
+##             Tiyanki Beam Cannon (Titanic)              ##
+############################################################
+
+# titan
+weapon_component_template = {
+	key = ESC_TIYANKI_CANNON_TITANIC
+	size = titanic
+	icon = GFX_esc_tiyanki_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 4500
+		MAX_DAMAGE = 9500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 20.0 max = 35.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_T_3
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_tiyanki_hull_damage
+	armor_penetration = @ESC_WEAPON_tiyanki_armor_penetration
+	armor_damage = @ESC_WEAPON_tiyanki_armor_damage
+	shield_penetration = @ESC_WEAPON_tiyanki_shield_penetration
+	shield_damage = @ESC_WEAPON_tiyanki_shield_damage
+	tracking = 0.05
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_tiyanki_beam_titanic" }
+	component_set = ESC_TIYANKI_CANNON_TITANIC
+	projectile_gfx = "esc_tiyanki_lance_titanic"
+	tags = { weapon_type_energy weapon_type_space_fauna t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor weapon_role_anti_shield artillery }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard_bio
+		BIOSHIP_WEAPON = no
+		ARKSHIP_WEAPON = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = ESC_BIO_TIYANKI_CANNON_TITANIC
+	size = titanic
+	icon = GFX_esc_bio_tiyanki_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 4500
+		MAX_DAMAGE = 9500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 20.0 max = 35.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_T_3
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_tiyanki_hull_damage
+	armor_penetration = @ESC_WEAPON_tiyanki_armor_penetration
+	armor_damage = @ESC_WEAPON_tiyanki_armor_damage
+	shield_penetration = @ESC_WEAPON_tiyanki_shield_penetration
+	shield_damage = @ESC_WEAPON_tiyanki_shield_damage
+	tracking = 0.05
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_tiyanki_beam_titanic" }
+	component_set = ESC_BIO_TIYANKI_CANNON_TITANIC
+	projectile_gfx = "esc_tiyanki_lance_titanic"
+	tags = { weapon_type_energy weapon_type_space_fauna t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor weapon_role_anti_shield artillery }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard_bio
+		BIOSHIP_WEAPON = yes
+		ARKSHIP_WEAPON = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# juggernaut
+weapon_component_template = {
+	key = ESC_TIYANKI_CANNON_JUGGERNAUT
+	size = extra_large
+	icon = GFX_esc_tiyanki_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 4500
+		MAX_DAMAGE = 9500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 20.0 max = 35.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_J_3
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_tiyanki_hull_damage
+	armor_penetration = @ESC_WEAPON_tiyanki_armor_penetration
+	armor_damage = @ESC_WEAPON_tiyanki_armor_damage
+	shield_penetration = @ESC_WEAPON_tiyanki_shield_penetration
+	shield_damage = @ESC_WEAPON_tiyanki_shield_damage
+	tracking = 0.05
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_tiyanki_beam_titanic" }
+	component_set = ESC_TIYANKI_CANNON_JUGGERNAUT
+	projectile_gfx = "esc_tiyanki_lance"
+	tags = { weapon_type_energy weapon_type_space_fauna x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor weapon_role_anti_shield artillery }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships_conditional
+		EXTRA_CONDITION = "ESC_ship_uses_juggernaut_components"
+		EXTRA_CONDITION_VALUE = yes
+		EVAL_TARGET = no
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = ESC_BIO_TIYANKI_CANNON_JUGGERNAUT
+	size = extra_large
+	icon = GFX_esc_bio_tiyanki_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 4500
+		MAX_DAMAGE = 9500
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 20.0 max = 35.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_J_3
+	accuracy = 0.85
+	power = -500
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = t
+		TIER = 6
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+	}
+
+	hull_damage = @ESC_WEAPON_tiyanki_hull_damage
+	armor_penetration = @ESC_WEAPON_tiyanki_armor_penetration
+	armor_damage = @ESC_WEAPON_tiyanki_armor_damage
+	shield_penetration = @ESC_WEAPON_tiyanki_shield_penetration
+	shield_damage = @ESC_WEAPON_tiyanki_shield_damage
+	tracking = 0.05
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_tiyanki_beam_titanic" }
+	component_set = ESC_BIO_TIYANKI_CANNON_JUGGERNAUT
+	projectile_gfx = "esc_tiyanki_lance"
+	tags = { weapon_type_energy weapon_type_space_fauna x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor weapon_role_anti_shield artillery }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_uses_bio_ships_conditional
+		EXTRA_CONDITION = "ESC_ship_uses_juggernaut_components"
+		EXTRA_CONDITION_VALUE = yes
+		EVAL_TARGET = yes
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+# arkship
+weapon_component_template = {
+	key = ESC_TIYANKI_CANNON_ARKSHIP
+	size = titanic
+	icon = GFX_esc_tiyanki_lance
+	icon_frame = 1
+	type = instant
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 6000
+		MAX_DAMAGE = 14000
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_ENERGY_t
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER
+	}
+
+	windup = { min = 20.0 max = 35.0 }
+	total_fire_time = 165
+	range = @ESC_WEAPON_RANGE_T_3
+	accuracy = 0.85
+	power = 0
+
+	resources = {
+		category = ship_components
+		upkeep = {
+			alloys = @titanic_t7_upkeep_alloys
+			energy = @titanic_t7_upkeep_energy
+		}
+	}
+
+	hull_damage = @ESC_WEAPON_tiyanki_hull_damage
+	armor_penetration = @ESC_WEAPON_tiyanki_armor_penetration
+	armor_damage = @ESC_WEAPON_tiyanki_armor_damage
+	shield_penetration = @ESC_WEAPON_tiyanki_shield_penetration
+	shield_damage = @ESC_WEAPON_tiyanki_shield_damage
+	tracking = 0.05
+
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_3
+	#use_ship_kill_target = no
+
+	prerequisites = { "esc_tech_tiyanki_beam_titanic" }
+	component_set = ESC_TIYANKI_CANNON_ARKSHIP
+	projectile_gfx = "esc_tiyanki_lance_titanic"
+	tags = { weapon_type_energy weapon_type_space_fauna t_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_armor weapon_role_anti_shield artillery }
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_titanic_standard
+		ARKSHIP_WEAPON = yes
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 2
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+############################################################
+##                   Junk Mine Launcher                   ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_JUNK_MINE_LAUNCHER
+	size = torpedo
+	icon = GFX_esc_junk_mine
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 50 max = 100 }
+	size_damage_factor = 0.1
+	windup = { min = 2 max = 15 }
+	total_fire_time = 40
+	range = @ESC_WEAPON_RANGE_S_2
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 10
+	missile_armor = 15
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -20
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @ESC_COST_WEAPON_m_t5_primary
+			minerals = @ESC_COST_WEAPON_m_t5_primary
+		}
+		upkeep = {
+			energy = 0.44
+			minerals = 0.22
+		}
+	}
+
+	hull_damage = @ESC_WEAPON_junk_hull_damage
+	armor_damage = @ESC_WEAPON_junk_armor_damage
+	armor_penetration = @ESC_WEAPON_junk_armor_penetration
+	shield_damage = @ESC_WEAPON_junk_shield_damage
+	shield_penetration = @ESC_WEAPON_junk_shield_penetration
+	tracking = 0.25
+
+	prerequisites = { "esc_tech_junk_mines" }
+	component_set = ESC_JUNK_MINE_LAUNCHER
+	projectile_gfx = "scavenger_bot_secondary_weapon"
+	tags = { weapon_type_explosive g_slot }
+	ai_tags = { weapon_role_artillery explosive explosive_stealth artillery artillery_stealth }
+
+	potential = {
+		ship_uses_mauler_components = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+	}
+}
+
+############################################################
+##               Voidspawn Missile Launcher               ##
+############################################################
+
+weapon_component_template = {
+	key = ESC_VOIDSPAWN_MISSILE
+	size = torpedo
+	icon = GFX_esc_voidspawn_missile_1
+	icon_frame = 1
+	type = missile
+
+	damage = { min = 120 max = 160 }
+	size_damage_factor = 0.1
+	windup = { min = 2 max = 20 }
+	total_fire_time = 80
+	range = @ESC_WEAPON_RANGE_S_4
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 50
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -50
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = m
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_voidspawn_hull_damage
+	armor_damage = @ESC_WEAPON_voidspawn_armor_damage
+	armor_penetration = @ESC_WEAPON_voidspawn_armor_penetration
+	shield_damage = @ESC_WEAPON_voidspawn_shield_damage
+	shield_penetration = @ESC_WEAPON_voidspawn_shield_penetration
+	tracking = 0.15
+
+	prerequisites = { "esc_tech_voidspawn_missile" }
+	component_set = ESC_VOIDSPAWN_MISSILE
+	projectile_gfx = "voidspawn_missile"
+	tags = { weapon_type_explosive weapon_type_space_fauna g_slot }
+	ai_tags = { weapon_role_artillery weapon_role_anti_hull explosive explosive_stealth artillery artillery_stealth }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	inline_script = {
+		script = ship_components_general/esc_inlines_conditional_potential
+		CONDITION = "ship_uses_mauler_components"
+		CONDITION_VALUE = no
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+############################################################
+##               Voidspawn Missile Launcher               ##
+############################################################
+
+# x-slot
+weapon_component_template = {
+	key = ESC_VOIDSPAWN_MISSILE_X
+	size = extra_large
+	icon = GFX_esc_voidspawn_missile_1
+	icon_frame = 1
+	type = missile
+	firing_arc = 25.0
+	min_range = @ESC_WEAPON_MIN_RANGE_2
+	#use_ship_kill_target = no
+
+	inline_script = { # damage and collateral damage
+		script = weapon_effects/esc_inlines_collateral_damage
+		MIN_DAMAGE = 300
+		MAX_DAMAGE = 600
+		COLLATERAL_RANGE = @ESC_COLLATERAL_RANGE_EXPLOSIVE_xl
+		COLLATERAL_SCALE_MULTIPLIER = @ESC_COLLATERAL_MULTIPLIER_BIG
+	}
+
+	size_damage_factor = 0.1
+	windup = { min = 2 max = 20 }
+	total_fire_time = 80
+	range = @ESC_WEAPON_RANGE_X_5
+	accuracy = 1.0
+	missile_speed = @ESC_MISSILE_SPEED_2
+	missile_evasion = 0.1
+	missile_health = 75
+	missile_armor = 0
+	missile_shield = 0
+	missile_retarget_range = @ESC_WEAPON_RANGE_G_2
+	power = -330
+
+	inline_script = {
+		script = component_costs/shorthands/esc_inlines_standard_cost
+		COMPONENT_TYPE = WEAPON
+		SIZE = xl
+		TIER = 7
+		STRATEGIC_RESOURCE_TYPE = volatile_motes
+	}
+
+	hull_damage = @ESC_WEAPON_voidspawn_hull_damage
+	armor_damage = @ESC_WEAPON_voidspawn_armor_damage
+	armor_penetration = @ESC_WEAPON_voidspawn_armor_penetration
+	shield_damage = @ESC_WEAPON_voidspawn_shield_damage
+	shield_penetration = @ESC_WEAPON_voidspawn_shield_penetration
+	tracking = 0.15
+
+	prerequisites = { "esc_tech_voidspawn_missile_x" }
+	component_set = ESC_VOIDSPAWN_MISSILE_X
+	projectile_gfx = "voidspawn_missile"
+	tags = { weapon_type_kinetic weapon_type_explosive weapon_type_space_fauna x_slot weapon_role_artillery }
+	ai_tags = { weapon_role_artillery weapon_role_anti_hull explosive }
+	military_power_multiplier = @ESC_MILITARY_POWER_MULT_missiles_special
+
+	inline_script = {
+		script = weapon_effects/esc_armor_weakening_debuff
+		EFFECT_LEVEL = 1
+	}
+
+	# only regular empires may use this component
+	valid_for_country = {
+		is_fallen_empire = no
+	}
+
+	ai_weight = {
+		weight = 1
+		### AI shouldn't use this component if it can't afford at least some upgrades right away
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}

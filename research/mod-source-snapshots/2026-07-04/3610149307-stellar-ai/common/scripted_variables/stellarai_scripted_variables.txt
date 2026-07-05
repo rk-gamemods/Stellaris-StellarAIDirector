@@ -1,0 +1,320 @@
+# Rare upkeep settings
+# @b2_rare_upkeep_guardrail = 2
+# @b3_rare_upkeep_guardrail = 3
+# @b4_rare_upkeep_guardrail = 5
+# @b5_rare_upkeep_guardrail = 4
+
+#@danger_of_deficit_modifier_factor = 0.01
+
+# Economic plans target
+@stellarai_early_economic_plan_research_target = 250
+@stellarai_early_economic_plan_research_focus_target = 100
+@stellarai_early_economic_plan_scaling_research_limit = 500
+@stellarai_early_economic_plan_scaling_research_target = 100
+
+# Re-ignite the AI when spinning its wheels in midgame
+@stellarai_additional_research_economic_plan_scaling_research_limit = 800
+#@stellarai_additional_research_economic_plan_research_target = 1500
+@stellarai_additional_research_economic_plan_scaling_research_target = 150
+
+# Stellarai advanced economy plan
+@stellarai_midgame_economic_plan_advanced_research_target = 375
+@stellarai_midgame_economic_plan_advanced_research_focus_target = 188
+@stellarai_midgame_economic_plan_advanced_scaling_research_limit = 1500
+@stellarai_midgame_economic_plan_advanced_scaling_research_target = 100
+
+# Colony type weights
+@stellarai_easy_to_swap = 3
+#@urban_colony_stickiness = 1
+@research_colony_type_stickiness = 8
+@industrial_colony_type_stickiness = 4
+@industrial_forge_colony_type_stickiness = 4
+@bureau_colony_type_stickiness = 4
+@mining_colony_type_stickiness = 4
+@farming_colony_type_stickiness = 4
+@energy_colony_type_stickiness = 6
+@fortress_colony_type_stickiness = 1
+
+
+# Colony type stickiness modifiers
+@very_low_zones_weight = 5
+@quite_low_zones_weight = 6
+#@zone_mining_weight = 100
+@urban_research_additional_weak_signal_weight = 100
+#@urban_research_additional_strong_signal_weight = 200
+#@urban_research_guard_weight = -1000
+
+@zone_research_weight_per_zone = 80
+@zone_industry_weight_per_zone = 70
+
+# @colony_energy_two_districts_add = 100
+# @colony_energy_several_districts_add = 200
+
+# @colony_mining_two_districts_add = 90
+# @colony_mining_several_districts_add = 180
+
+# @colony_farming_two_districts_add = 80
+# @colony_farming_several_districts_add = 150
+
+# @colony_usefull_energy_mult = 8
+# @colony_usefull_energy_mult_higher = 10
+# @colony_usefull_energy_mult_highest = 11
+
+
+@colony_usefull_mining_mult = 1.5
+@colony_usefull_mining_mult_highest = 2.5
+
+@stellarai_rural_mining_rich_modifier = 100
+
+# @colony_usefull_farming_mult = 1.4
+# @colony_usefull_farming_mult_higher = 1.2
+# @colony_usefull_farming_mult_highest = 1.5
+
+# @colony_usefull_rural_colony_mult_low = 10
+# @colony_usefull_rural_colony_mult_quite_low = 15
+# @colony_usefull_rural_colony_mult = 20
+# @colony_usefull_rural_colony_mult_higher = 30
+# @colony_usefull_rural_colony_mult_highest = 40
+
+@colony_energy_rural_colony_districts_in_use_mult = 8
+@colony_mining_rural_colony_districts_in_use_mult = 7
+@colony_farming_rural_colony_districts_in_use_mult = 6.5
+
+@colony_energy_rural_colony_free_districts_mult = 2.5
+@colony_mining_rural_colony_free_districts_mult = 2.2
+@colony_farming_rural_colony_free_districts_mult = 2
+
+# @energy_hazardous_weather_bonus = 50
+# @energy_wild_storms_bonus = 50
+
+# @stellarai_rural_farming_lush_modifier = 50
+# @stellarai_rural_mining_rich_modifier = 50
+
+#@zone_urban_research_additional_weight = 100
+@zone_factory_additional_weight = 55
+@factory_building_weight_per_building = 80
+
+@zone_forge_additional_weight = 90
+@forge_building_weight_per_building = 120
+
+@zone_urban_bureau_additional_weight = 24
+
+@stellarai_zone_rural = 10
+@stellarai_zone_rural_priority = 15
+
+@stellarai_rural_max_size = 13
+@stellarai_rural_over_max_size = -25
+
+# Energy zone conditional
+# @zone_energy_conditions_additional_weight = 60
+# @zone_energy_available_zones_additional_weight = 90
+
+# Rural “wrong type in use” penalties
+# @rural_wrong_type_penalty_soft = -100
+# @rural_wrong_type_penalty_hard = -800
+# @rural_zero_own_district_penalty = -1000
+
+# Shared weights settings
+@shared_weight_add_reserach_very_high = 30
+@shared_weight_add_reserach_high = 20
+@shared_weight_add_reserach_medium = 15
+@shared_weight_add_reserach_low = 10
+
+@shared_weight_mult_reserach_very_high = 100
+@shared_weight_mult_reserach_high = 90
+@shared_weight_mult_reserach_medium = 70
+
+
+# Research job weights
+# @custom_specialist_researcher_job_weight = 20
+
+# @ai_research_specialized_production_tier1 = 15
+# @ai_research_specialized_production_tier2 = 30
+# @ai_research_specialized_production_tier3 = 60
+# @ai_research_specialized_production_tier4 = 90
+
+# Research labs additional weight
+@research_lab_building_tier1_additional_ai_weight = 10
+# @research_lab_building_tier2_additional_ai_weight = 499
+# @research_lab_building_tier3_additional_ai_weight = 499
+# @research_lab_building_tier4_additional_ai_weight = 499
+
+# Generic research scripted additional weight
+@research_lab_scripted_tier1_additional_ai_weight = 10
+@research_lab_scripted_tier2_additional_ai_weight = 20
+@research_lab_scripted_tier3_additional_ai_weight = 30
+@research_lab_scripted_tier4_additional_ai_weight = 40
+
+# Specialized research buildings
+@research_building_tier1_additional_ai_weight = 15
+# @research_building_tier2_additional_ai_weight = 500
+# @research_building_tier3_additional_ai_weight = 500
+# @research_building_tier4_additional_ai_weight = 500
+
+# Specialized research buildings
+@research_scripted_tier1_additional_ai_weight = 15
+@research_scripted_tier2_additional_ai_weight = 25
+@research_scripted_tier3_additional_ai_weight = 35
+@research_scripted_tier4_additional_ai_weight = 45
+
+# Special research building scripted additional weight
+@research_scripted_special_tier1_additional_ai_weight = 5
+@research_scripted_special_tier2_additional_ai_weight = 10
+@research_scripted_special_tier3_additional_ai_weight = 15
+@research_scripted_special_tier4_additional_ai_weight = 20
+
+# Research lab and specialized research coefficient values
+@research_lab_tier1_coefficient = 4.0
+@research_lab_tier2_coefficient = 4.5
+@research_lab_tier3_coefficient = 4.5
+@research_lab_tier4_coefficient = 4.5
+
+@research_building_tier1_coefficient = 4.8
+@research_building_tier2_coefficient = 5.0
+@research_building_tier3_coefficient = 5.0
+@research_building_tier4_coefficient = 5.0
+
+# Ai weight factor capital planet
+@research_building_capital_planet_factor = 9
+
+# Ai weight factor research planet
+@research_building_research_planet_factor = 10
+@research_building_not_research_planet_factor = 0.3
+
+# ai weight settings, generic research lab
+# @research_lab_tier1_factor=1.5
+@research_lab_tier2_factor = 1.4
+@research_lab_tier3_factor = 1.5
+
+# ai weight settings, specialized research lab
+# @research_building_tier1_factor=1.6
+@research_building_tier2_factor = 1.5
+@research_building_tier3_factor = 1.6
+
+# Factory factor
+@factory_tier1_factor = 1.08
+@factory_tier2_factor = 1.10
+@factory_tier3_factor = 1.10
+
+# Forge factor
+@forge_tier1_factor = 1.04
+@forge_tier2_factor = 1.08
+@forge_tier3_factor = 1.08
+
+# refinery factor
+@refinery_tier1_factor = 1.1
+@refinery_tier2_factor = 1.1
+@refinery_tier3_factor = 1.1
+
+# Strategic resources factor for mines
+@strategic_resource_building_mine_tier1_factor = 1.05
+@strategic_resource_building_mine_tier2_factor = 1.05
+#@strategic_resource_building_mine_tier3_factor = 1.5
+
+# Strategic resources factor for refineries
+@strategic_resource_building_tier1_factor = 2
+#@strategic_resource_building_tier2_factor = 1.3
+#@strategic_resource_building_tier3_factor = 1.3
+
+# Production ministries etc buildings factor
+@special_resource_building_tier1_factor = 1.2
+@special_resource_building_tier2_factor = 1.3
+@special_resource_building_tier3_factor = 1.3
+
+# Food building ai weight factor
+@food_reseource_building_tier1_factor = 1.12
+@food_reseource_building_tier2_factor = 1.12
+@food_reseource_building_tier3_factor = 1.12
+@food_reseource_building_tier4_factor = 1.12
+
+# Mining ai weight factor
+@minerals_reseource_building_tier1_factor = 1.12
+@minerals_reseource_building_tier2_factor = 1.12
+@minerals_reseource_building_tier3_factor = 1.12
+@minerals_reseource_building_tier4_factor = 1.12
+
+# Energy ai weight factor
+@energy_reseource_building_tier1_factor = 1.15
+@energy_reseource_building_tier2_factor = 1.15
+@energy_reseource_building_tier3_factor = 1.15
+@energy_reseource_building_tier4_factor = 1.15
+
+# Factory and forge coefficient
+@factory_tier1_coefficient = 4.1
+@forge_tier1_coefficient = 2.8
+
+@research_scripted_efficiency_additional_ai_weight = 5
+
+# building additional weight to keep economy stable (more courage to upgrade)
+# @food_building_additional_weight = 5
+# @energy_resource_building_additional_ai_weight = 15
+# @energy_resource_building_additional_ai_weight_special = 30
+# @mineral_resource_building_additional_ai_weight = 8
+
+# @foundry_building_additional_ai_weight = 2
+# @foundry_building_tier2_additional_ai_weight = 4
+# @foundry_building_tier3_additional_ai_weight = 5
+
+# @factory_building_additional_ai_weight = 5
+# @factory_building_tier2_additional_ai_weight = 8
+# @factory_building_tier3_additional_ai_weight = 10
+
+# @refinery_building_additional_ai_weight = 10
+# @industrial_special_building_additional_ai_weight = 10
+
+@ai_zone_priority_research_general = 12
+@ai_zone_priority_research_special = 13
+
+@ai_zone_priority_generic_research_coefficient = 2.1
+@ai_zone_priority_special_research_coefficient = 2.2
+@ai_zone_priority_research_unity_coefficient = 1.8
+
+@ai_zone_priority_research_unity = 9
+
+@ai_zone_priority_urban = 9 
+@ai_zone_priority_urban_coefficient = 1.3 
+
+
+@ai_zone_priority_industry = 11
+@ai_zone_priority_industry_coefficient = 1.04
+
+@ai_zone_priority_industry_non_military = 12
+@ai_zone_priority_industry_non_military_coefficient = 1.08
+
+@ai_zone_priority_energy = 11
+@ai_zone_priority_energy_special = 11
+@stellarai_energy_zone_coefficient = 1.20
+
+#@ai_zone_coefficient_energy = 1.8
+
+@ai_zone_priority_minerals = 10
+@stellarai_minerals_zone_coefficient = 1.15
+
+@ai_zone_priority_food = 10
+@stellarai_food_zone_coefficient = 1.12
+
+@ai_zone_priority_strategic_resource = 11
+
+#Personalities
+@extremely_aggressive = 4.5
+@much_more_agressive = 4
+@more_agressive = 3.5
+@quite_agressive = 3
+@agressive = 2.5
+@normal_agression = 1.8
+@peacefull = 0.5
+
+@very_brave = 1.5
+@brave = 1
+@quite_brave = 0.9
+@normal_bravery = 0.85
+@not_brave = 0.5
+
+@extreme_military_spending = 3
+@high_military_spending = 2
+@quite_high_military_spending = 1.5
+@normal_military_spending = 1.2
+@low_military_spending = 0.8
+@very_low_military_spending = 0.5
+
+@expansionists_colony_spending = 1

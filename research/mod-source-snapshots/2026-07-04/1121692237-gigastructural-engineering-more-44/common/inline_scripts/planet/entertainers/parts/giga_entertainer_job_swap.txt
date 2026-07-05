@@ -1,0 +1,11 @@
+inline_script = {
+    script = generic_parts/giga_toggled_job
+    job = entertainer
+    add = $add$
+    type = $type$
+    count = $jobs$
+    condition = "
+        $condition$
+    "
+    multiplier = "$multiplier$"
+}

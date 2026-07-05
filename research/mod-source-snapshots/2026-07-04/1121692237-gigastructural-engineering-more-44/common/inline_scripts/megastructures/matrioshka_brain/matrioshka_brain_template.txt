@@ -1,0 +1,69 @@
+entity = $entity$
+construction_entity = $construction_entity$
+portrait = $portrait$
+upgrade_from = { matrioshka_brain_$prev_stage$_$class$_star }
+ai_weight = { factor = value:giga_ai_base_continue } # If we can build it, we will build it
+
+outliner_trigger = {
+    exists = owner
+    NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+}
+
+$hide$
+
+build_time = $build_time$
+resources = {
+    category = giga_gigastructures
+    inline_script = {
+        script = megastructures/generic_parts/giga_mega_bulk_matter_cost
+        giga_sr_bulk_matter = $cost_giga_sr_bulk_matter$
+    }
+    cost = {
+        unity = $cost_unity$
+    }
+    inline_script = {
+        script = megastructures/generic_parts/giga_mega_alloy_cost
+        alloys = $cost_alloys$
+    }
+    cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|$cost_alloys$| }
+    cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|$cost_unity$| }
+    produces = {
+        $produces$
+    }
+    upkeep = {
+        trigger = { NOT = { has_global_flag = giga_disable_influence_upkeep } }
+        influence = $upkeep_influence$
+    }
+    upkeep = { 
+        $upkeep$
+    }
+}
+
+on_build_start = {
+    $on_start$
+    giga_ai_savings_withdraw = { 
+        CATEGORY = important 
+        RESOURCE = alloys 
+        AMOUNT = $cost_alloys$
+    }
+    giga_ai_savings_withdraw = { 
+        CATEGORY = important 
+        RESOURCE = unity  
+        AMOUNT = $cost_unity$
+    }
+}
+
+potential = { NOT = { has_global_flag = matrioshka_brain_disabled } }
+possible = {
+    $possible$
+    from = {
+        has_gigastructural_constructs = yes
+        has_technology = giga_tech_matrioshka_brain_1
+    }
+}
+
+on_build_complete = {
+    save_event_target_as = giga_system
+    if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+    $on_complete$
+}

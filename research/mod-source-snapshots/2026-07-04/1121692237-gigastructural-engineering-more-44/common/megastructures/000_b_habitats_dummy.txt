@@ -1,0 +1,10 @@
+# Irony this is a placeholder file please ignore it
+habitat_central_complex = {
+    entity = ""
+}
+habitat_central_complex_ruined = {
+    entity = ""
+}
+habitat_central_complex_restored = {
+    entity = ""
+}

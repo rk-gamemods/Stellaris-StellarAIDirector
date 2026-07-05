@@ -1,0 +1,14 @@
+col_giga_eawaf_sirens_capital = {
+    icon = GFX_colony_type_capital
+
+    potential = {
+        has_carrier_flag = giga_eawaf_planet
+        owner? = {
+            is_country_type = giga_eawaf_sirens
+        }
+    }
+
+    weight_modifier = {
+        base = 999
+    }
+}

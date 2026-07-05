@@ -1,0 +1,197 @@
+{
+  "main_menu_proven": true,
+  "markers": [
+    {
+      "confirmation_env": "STELLAR_AI_DIRECTOR_MAIN_MENU_CONFIRMED",
+      "confirmation_value": "yes",
+      "confirmed": true,
+      "launcher_installation": {
+        "descriptor_exists": true,
+        "descriptor_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\mod\\StellarAIDirector.mod",
+        "descriptor_path_value": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector",
+        "descriptor_points_to_source": true,
+        "dlc_load_exists": true,
+        "dlc_load_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\dlc_load.json",
+        "enabled_in_dlc_load": false,
+        "enabled_mod_entry": "mod/StellarAIDirector.mod",
+        "source_descriptor_exists": true,
+        "source_mod_path": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector"
+      },
+      "logs": [
+        {
+          "exists": true,
+          "mtime_ns": 1783209166069135600,
+          "name": "error.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log",
+          "sha256": "f6eea5eaf567ad14d125c3a3476bba25691d47d9fd812babc376fb26b25c26db",
+          "size_bytes": 41973687
+        },
+        {
+          "exists": true,
+          "mtime_ns": 1783209042100828400,
+          "name": "game.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log",
+          "sha256": "fbc859af3de3cd2e23e45c64b8995ae608faba3b00e41750d98607bd0b4ffaab",
+          "size_bytes": 177
+        }
+      ],
+      "mode": "baseline_without_director",
+      "timestamp_utc": "2026-07-04T23:54:37.066341+00:00"
+    },
+    {
+      "confirmation_env": "STELLAR_AI_DIRECTOR_MAIN_MENU_CONFIRMED",
+      "confirmation_value": "yes",
+      "confirmed": true,
+      "launcher_installation": {
+        "descriptor_exists": true,
+        "descriptor_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\mod\\StellarAIDirector.mod",
+        "descriptor_path_value": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector",
+        "descriptor_points_to_source": true,
+        "dlc_load_exists": true,
+        "dlc_load_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\dlc_load.json",
+        "enabled_in_dlc_load": true,
+        "enabled_mod_entry": "mod/StellarAIDirector.mod",
+        "source_descriptor_exists": true,
+        "source_mod_path": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector"
+      },
+      "logs": [
+        {
+          "exists": true,
+          "mtime_ns": 1783209449933177100,
+          "name": "error.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log",
+          "sha256": "d6f753e92c6d6622e8b6f1ada6a9758e632c70e5d5ba0cbb4d5cb34e081cbe7a",
+          "size_bytes": 41977106
+        },
+        {
+          "exists": true,
+          "mtime_ns": 1783209323080243000,
+          "name": "game.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log",
+          "sha256": "1c6b68985c371bf785417492158026c9ba84076391e703ef57413c6b7a13e5fe",
+          "size_bytes": 177
+        }
+      ],
+      "mode": "with_director",
+      "timestamp_utc": "2026-07-04T23:59:01.455238+00:00"
+    },
+    {
+      "confirmation_env": "STELLAR_AI_DIRECTOR_MAIN_MENU_CONFIRMED",
+      "confirmation_value": "yes",
+      "confirmed": true,
+      "launcher_installation": {
+        "descriptor_exists": true,
+        "descriptor_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\mod\\StellarAIDirector.mod",
+        "descriptor_path_value": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector",
+        "descriptor_points_to_source": true,
+        "dlc_load_exists": true,
+        "dlc_load_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\dlc_load.json",
+        "enabled_in_dlc_load": true,
+        "enabled_mod_entry": "mod/StellarAIDirector.mod",
+        "source_descriptor_exists": true,
+        "source_mod_path": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector"
+      },
+      "logs": [
+        {
+          "exists": true,
+          "mtime_ns": 1783211558452624000,
+          "name": "error.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log",
+          "sha256": "af022cbb9f7ae57d26a08ddec0deb150a11da5ac0b8107208fe996dd351366e6",
+          "size_bytes": 41971038
+        },
+        {
+          "exists": true,
+          "mtime_ns": 1783211439473975900,
+          "name": "game.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log",
+          "sha256": "f8f0a0d141f7794fa714ba51770c85f6598debceab8fd6db11c4246bdfdf37df",
+          "size_bytes": 177
+        }
+      ],
+      "mode": "with_director",
+      "timestamp_utc": "2026-07-05T00:34:38.339678+00:00"
+    }
+  ],
+  "missing_modes": [],
+  "modes": {
+    "baseline_without_director": {
+      "confirmation_env": "STELLAR_AI_DIRECTOR_MAIN_MENU_CONFIRMED",
+      "confirmation_value": "yes",
+      "confirmed": true,
+      "launcher_installation": {
+        "descriptor_exists": true,
+        "descriptor_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\mod\\StellarAIDirector.mod",
+        "descriptor_path_value": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector",
+        "descriptor_points_to_source": true,
+        "dlc_load_exists": true,
+        "dlc_load_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\dlc_load.json",
+        "enabled_in_dlc_load": false,
+        "enabled_mod_entry": "mod/StellarAIDirector.mod",
+        "source_descriptor_exists": true,
+        "source_mod_path": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector"
+      },
+      "logs": [
+        {
+          "exists": true,
+          "mtime_ns": 1783209166069135600,
+          "name": "error.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log",
+          "sha256": "f6eea5eaf567ad14d125c3a3476bba25691d47d9fd812babc376fb26b25c26db",
+          "size_bytes": 41973687
+        },
+        {
+          "exists": true,
+          "mtime_ns": 1783209042100828400,
+          "name": "game.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log",
+          "sha256": "fbc859af3de3cd2e23e45c64b8995ae608faba3b00e41750d98607bd0b4ffaab",
+          "size_bytes": 177
+        }
+      ],
+      "mode": "baseline_without_director",
+      "timestamp_utc": "2026-07-04T23:54:37.066341+00:00"
+    },
+    "with_director": {
+      "confirmation_env": "STELLAR_AI_DIRECTOR_MAIN_MENU_CONFIRMED",
+      "confirmation_value": "yes",
+      "confirmed": true,
+      "launcher_installation": {
+        "descriptor_exists": true,
+        "descriptor_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\mod\\StellarAIDirector.mod",
+        "descriptor_path_value": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector",
+        "descriptor_points_to_source": true,
+        "dlc_load_exists": true,
+        "dlc_load_path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\dlc_load.json",
+        "enabled_in_dlc_load": true,
+        "enabled_mod_entry": "mod/StellarAIDirector.mod",
+        "source_descriptor_exists": true,
+        "source_mod_path": "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/mods/StellarAIDirector"
+      },
+      "logs": [
+        {
+          "exists": true,
+          "mtime_ns": 1783211558452624000,
+          "name": "error.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log",
+          "sha256": "af022cbb9f7ae57d26a08ddec0deb150a11da5ac0b8107208fe996dd351366e6",
+          "size_bytes": 41971038
+        },
+        {
+          "exists": true,
+          "mtime_ns": 1783211439473975900,
+          "name": "game.log",
+          "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log",
+          "sha256": "f8f0a0d141f7794fa714ba51770c85f6598debceab8fd6db11c4246bdfdf37df",
+          "size_bytes": 177
+        }
+      ],
+      "mode": "with_director",
+      "timestamp_utc": "2026-07-05T00:34:38.339678+00:00"
+    }
+  },
+  "required_modes": [
+    "baseline_without_director",
+    "with_director"
+  ]
+}

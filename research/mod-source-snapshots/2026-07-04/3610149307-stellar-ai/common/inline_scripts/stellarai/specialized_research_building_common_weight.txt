@@ -1,0 +1,85 @@
+ai_weight = {		
+		inline_script = {
+			script = stellarai/rare_resource_guard_modifiers
+			STRATEGIC_RESOURCE = $STRATEGIC_RESOURCE$
+			MIN_INCOME = $RARE_UPKEEP$
+			MIN_STOCKPILE = 10
+			EARLY_FACTOR = 0.20
+			EARLY_YEARS = 61
+			EARLY_STOCKPILE = 30
+			SURPLUS_FACTOR = 1.10
+			SURPLUS_INCOME = 4
+			SURPLUS_STOCKPILE = 50
+		}
+		modifier = {
+			factor = $TIER_FACTOR$
+			owner = {
+				AND = {
+					has_monthly_income = {
+						resource = $STRATEGIC_RESOURCE$
+						value > $RARE_UPKEEP$
+					}
+					has_monthly_income = {
+						resource = consumer_goods
+						value > 3
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = @research_building_capital_planet_factor
+			is_capital = yes
+			owner = {
+				AND = {
+					has_monthly_income = {
+						resource = $STRATEGIC_RESOURCE$
+						value > $RARE_UPKEEP$
+					}
+					has_monthly_income = {
+						resource = consumer_goods
+						value > 3
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = @research_building_research_planet_factor
+			has_research_designation = yes
+			owner = {
+				AND = {
+					has_monthly_income = {
+						resource = $STRATEGIC_RESOURCE$
+						value > $RARE_UPKEEP$
+					}
+					has_monthly_income = {
+						resource = consumer_goods
+						value > 3
+					}
+				}
+			}
+		}
+		modifier = {
+			factor = @research_building_not_research_planet_factor
+			is_capital = no
+			has_research_designation = no
+		}
+		modifier = {
+			factor = 0.10
+			owner = {
+				is_at_war = no
+				stellarai_economic_crisis = yes
+			}
+		}
+
+		modifier = {
+			factor = 1.25
+			has_carrier_flag = stellarai_research_plan_claimed
+		owner = { stellarai_research_ready = yes }
+		}
+
+		
+		inline_script = {
+			script = stellarai/invalid_planet_type_guard
+			PLANET_FLAG = stellarai_invalid_for_research_to_build
+		}
+}

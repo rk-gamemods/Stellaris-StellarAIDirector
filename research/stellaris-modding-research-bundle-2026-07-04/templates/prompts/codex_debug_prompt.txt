@@ -1,0 +1,26 @@
+You are debugging a Stellaris 4.4.x PDXScript mod.
+
+Constraints:
+- Do not invent folders, triggers, effects, modifiers, or scopes.
+- Prefer current vanilla files and supplied generated docs over memory.
+- Additive unique-key changes are preferred.
+- Do not assume all countries have normal planets; account for Nomads/Arkships.
+- Do not assume load order is always last-wins; flag FIOS/LIOS uncertainty.
+
+Input files:
+- error.log
+- game.log
+- mod tree
+- changed files
+- vanilla reference files
+- load order
+- target version/checksum
+
+Tasks:
+1. Classify each error by file, key, scope, and severity.
+2. Identify wrong scopes and missing exists checks.
+3. Identify duplicate keys and possible load-order conflicts.
+4. Identify stale copied vanilla files.
+5. Produce a minimal patch.
+6. Produce a runtime test plan.
+7. List all assumptions requiring validation in-game, CWTools, or Irony.

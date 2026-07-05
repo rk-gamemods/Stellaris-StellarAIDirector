@@ -1,0 +1,47 @@
+ai_weight = {
+		factor = @factory_tier1_factor
+
+		inline_script = {
+			script = stellarai/invalid_planet_type_guard
+			PLANET_FLAG = stellarai_invalid_for_industry_to_build
+		}
+
+		modifier = {
+			factor = 0.90
+			owner = { stellarai_military_emergency = yes }
+		}
+
+
+		modifier = {
+			factor = 2.0
+			owner = { stellarai_consumer_goods_pressure = yes }
+		}
+
+		modifier = {
+			factor = 0.65
+			owner = {
+				country_uses_consumer_goods = yes
+				has_monthly_income = { resource = consumer_goods value > 24 }
+				resource_stockpile_compare = { resource = consumer_goods value > 2400 }
+			}
+		}
+
+		modifier = {
+			factor = 0.5
+			AND = {
+				years_passed < 31
+				owner = {
+					AND = {
+						has_monthly_income = {
+							resource = consumer_goods
+							value > 8
+						}
+						is_at_war = no
+						is_gestalt = no
+						is_hive_empire = no
+						highest_threat < 20
+					}
+				}
+			}
+		}
+}

@@ -1,0 +1,22 @@
+OR = {
+    owner = { is_ai = no }
+
+    AND = {
+        owner = { is_ai = yes }
+        NOT = { planet = { has_planet_flag = stellarai_research_plan_claimed } }
+
+        NOR = {
+            planet = { has_planet_flag = stellarai_research_commitment_hard }
+            planet = { has_planet_flag = stellarai_industry_commitment_hard }
+        }
+
+        OR = {
+            planet = { has_planet_flag = stellarai_trade_commitment_soft }
+            NOR = {
+                planet = { has_planet_flag = stellarai_research_commitment_soft }
+                planet = { has_planet_flag = stellarai_industry_commitment_soft }
+                planet = { has_planet_flag = stellarai_rural_commitment_soft }
+            }
+        }
+    }
+}

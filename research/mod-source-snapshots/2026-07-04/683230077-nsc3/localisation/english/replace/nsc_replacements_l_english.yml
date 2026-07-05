@@ -1,0 +1,21 @@
+﻿l_english:
+
+
+###################################################
+############ REPLACED KEYS ########################
+###################################################
+
+CORVETTE_MID_S2PD1: "Picket Core"
+CORVETTE_MID_S3: "Interceptor Core"
+CORVETTE_MID_PD3: "Pinpoint Core"
+
+CRISIS_CORVETTE_MID_S3: "Interceptor Core"
+
+DESTROYER_BOW_L1: "Artillery Bow"
+
+military_station_large: "Defense Fortress"
+
+sm_naval_logistics_office_desc:1 "A minimal-but-extant bureaucratic layer increases the theoretical capacity of the Starbase's Anchorages.\n"
+sm_naval_logistics_office_desc_modifier:2 "Anchorages: §G+3§! §YNaval Capacity§!\nFleet Docks: §G+50§! §YNaval Capacity§!"
+
+requires_anchorage: "Requires §YAnchorage§! or §YFleet Dock§!."
