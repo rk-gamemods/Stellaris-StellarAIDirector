@@ -25,3 +25,11 @@ Each mod should include its own `README.md` with:
 - Treat overwrites, copied vanilla files, UI files, and `replace_path` as high-risk until validated against current vanilla files and Irony conflict results.
 
 The attached research bundle includes a starter skeleton at `research/stellaris-modding-research-bundle-2026-07-04/templates/stellaris_mod_skeleton/`.
+
+## Local 4.4 Replacements
+
+- `StellarAIDirector/` - AI budget/priority patch for the Irony playset.
+- `RKImmortalLeadersTrait/` - local 4.4 replacement for the old Immortal Leaders Trait mod.
+- `RKMoreTraitPoints/` - local 4.4 replacement for More Trait Points; do not stack with other species-archetype trait-point mods.
+- `RKMilitusExtraTraitPicks/` - local 4.4 replacement for Militus' Extra Trait Points; do not stack with other species-archetype trait-point mods.
+- `RKThreeCivicMoreTraitPointsPicks/` - local 4.4 replacement for 3 Civic Points + More Trait Points/Picks; do not stack with other species-archetype trait-point mods.
