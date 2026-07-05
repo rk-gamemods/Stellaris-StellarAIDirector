@@ -6,6 +6,7 @@ staid_core_deficit_short_runway = {
 		has_deficit = energy
 		has_deficit = minerals
 		has_deficit = alloys
+		has_deficit = trade
 		AND = { country_uses_consumer_goods = yes has_deficit = consumer_goods }
 		AND = { country_uses_food = yes has_deficit = food }
 		AND = {
@@ -20,7 +21,31 @@ staid_core_deficit_short_runway = {
 			NOT = { has_monthly_income = { resource = alloys value > 0 } }
 			resource_stockpile_compare = { resource = alloys value < 2400 }
 		}
+		AND = {
+			NOT = { has_monthly_income = { resource = trade value > 0 } }
+			resource_stockpile_compare = { resource = trade value < 2400 }
+		}
 	}
+}
+
+staid_trade_capacity_safe = {
+	NOT = { has_deficit = trade }
+	has_monthly_income = { resource = trade value > 25 }
+}
+
+staid_trade_fleet_capacity_safe = {
+	staid_trade_capacity_safe = yes
+	has_monthly_income = { resource = trade value > 75 }
+}
+
+staid_trade_planetary_capacity_safe = {
+	staid_trade_capacity_safe = yes
+	has_monthly_income = { resource = trade value > 50 }
+}
+
+staid_trade_surplus_capacity_safe = {
+	staid_trade_capacity_safe = yes
+	has_monthly_income = { resource = trade value > 100 }
 }
 
 staid_survival_mode = {
@@ -46,6 +71,7 @@ staid_megastructure_prep_ready = {
 	can_build_megastructures = yes
 	NOT = { staid_recovery_mode = yes }
 	NOT = { staid_core_deficit_short_runway = yes }
+	staid_trade_planetary_capacity_safe = yes
 	resource_stockpile_compare = { resource = alloys value > 15000 }
 	has_monthly_income = { resource = alloys value > 130 }
 	has_monthly_income = { resource = energy value > 80 }
@@ -60,6 +86,7 @@ staid_megastructure_commit_safe = {
 	is_nomadic = no
 	can_build_megastructures = yes
 	NOT = { staid_core_deficit_short_runway = yes }
+	staid_trade_planetary_capacity_safe = yes
 	OR = {
 		is_at_war = no
 		used_naval_capacity_percent > 0.85
@@ -78,12 +105,14 @@ staid_shipyard_payoff_ready = {
 	NOT = { staid_recovery_mode = yes }
 	has_monthly_income = { resource = alloys value > 150 }
 	has_monthly_income = { resource = energy value > 100 }
+	staid_trade_fleet_capacity_safe = yes
 	resource_stockpile_compare = { resource = alloys value > 12000 }
 }
 
 staid_fleet_buildup_economy_safe = {
 	NOT = { staid_recovery_mode = yes }
 	NOT = { staid_core_deficit_short_runway = yes }
+	staid_trade_fleet_capacity_safe = yes
 	has_monthly_income = { resource = alloys value > 200 }
 	has_monthly_income = { resource = energy value > 150 }
 	resource_stockpile_compare = { resource = alloys value > 15000 }
@@ -93,6 +122,7 @@ staid_fleet_buildup_economy_safe = {
 
 staid_surplus_sink_pressure = {
 	NOT = { staid_recovery_mode = yes }
+	staid_trade_surplus_capacity_safe = yes
 	has_monthly_income = { resource = alloys value > 300 }
 	has_monthly_income = { resource = energy value > 300 }
 	resource_stockpile_compare = { resource = alloys value > 20000 }
@@ -133,6 +163,7 @@ staid_planetary_capacity_growth_ready = {
 	is_nomadic = no
 	NOT = { staid_recovery_mode = yes }
 	NOT = { staid_core_deficit_short_runway = yes }
+	staid_trade_planetary_capacity_safe = yes
 	has_monthly_income = { resource = minerals value > 100 }
 	has_monthly_income = { resource = energy value > 100 }
 	resource_stockpile_compare = { resource = minerals value > 5000 }
@@ -168,6 +199,7 @@ staid_starbase_defense_economy_safe = {
 	is_nomadic = no
 	NOT = { staid_recovery_mode = yes }
 	NOT = { staid_core_deficit_short_runway = yes }
+	staid_trade_capacity_safe = yes
 	has_monthly_income = { resource = alloys value > 60 }
 	has_monthly_income = { resource = energy value > 50 }
 	resource_stockpile_compare = { resource = alloys value > 3000 }

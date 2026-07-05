@@ -4,7 +4,7 @@
 
 - `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally replaces the upstream `alloys_expenditure_megastructures` object so late-game megastructure reserves obey Director survival, recovery, prep, and commit gates.
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally replaces upstream Gigas special-resource megastructure budget objects: `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
-- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, unlock-research, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
+- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, trade-capacity, unlock-research, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
 
 ## Expected Additive Surfaces
 

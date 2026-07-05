@@ -1,7 +1,7 @@
 {
   "game_executable": "C:\\Steam\\steamapps\\common\\Stellaris\\stellaris.exe",
   "game_executable_exists": true,
-  "latest_runtime_mtime_ns": 1783268182462421000,
+  "latest_runtime_mtime_ns": 1783277413351202800,
   "launch_evidence_status": "stale_or_missing_logs",
   "launcher_installation": {
     "descriptor_exists": true,
@@ -18,21 +18,27 @@
   "logs": [
     {
       "director_expected_line_count": 4,
-      "director_line_count": 4,
+      "director_line_count": 16,
       "director_problem_line_count": 0,
-      "director_unclassified_line_count": 0,
+      "director_unclassified_line_count": 12,
       "exists": true,
-      "mtime_ns": 1783216285351391200,
+      "mtime_ns": 1783276048610475200,
       "name": "error.log",
       "newer_than_generated": false,
       "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\error.log",
       "sample_director_lines": [
-        "expected_intentional_override: [21:36:50][game_singleobjectdatabase.h:170]: Object with key: alloys_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_alloys_budget.txt line: 5",
-        "expected_intentional_override: [21:36:50][game_singleobjectdatabase.h:170]: Object with key: sentient_metal_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 6",
-        "expected_intentional_override: [21:36:50][game_singleobjectdatabase.h:170]: Object with key: negative_mass_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 24",
-        "expected_intentional_override: [21:36:50][game_singleobjectdatabase.h:170]: Object with key: supertensiles_upkeep_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 42"
+        "expected_intentional_override: [13:04:46][game_singleobjectdatabase.h:170]: Object with key: alloys_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_alloys_budget.txt line: 5",
+        "expected_intentional_override: [13:04:46][game_singleobjectdatabase.h:170]: Object with key: sentient_metal_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 6",
+        "expected_intentional_override: [13:04:46][game_singleobjectdatabase.h:170]: Object with key: negative_mass_expenditure_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 24",
+        "expected_intentional_override: [13:04:46][game_singleobjectdatabase.h:170]: Object with key: supertensiles_upkeep_megastructures already exists, using the one at  file: common/ai_budget/zzz_staid_gigas_resource_budgets.txt line: 42",
+        "unclassified: [13:05:30][trigger.cpp:338]: Expected \"using_war_goal = {\", but got \"using_war_goal = wg_conquest\" at  common/scripted_triggers/zzz_staid_threat_response_triggers.txt:5 @ in scripted trigger staid_tr_is_conquest_war_goal at file: events/zzz",
+        "unclassified: [13:05:30][trigger.cpp:338]: Expected \"using_war_goal = {\", but got \"using_war_goal = wg_humiliation\" at  common/scripted_triggers/zzz_staid_threat_response_triggers.txt:13 @ in scripted trigger staid_tr_is_humiliation_war_goal at file: eve",
+        "unclassified: [13:05:31][trigger.cpp:338]: Expected \"using_war_goal = {\", but got \"using_war_goal = wg_subjugation\" at  common/scripted_triggers/zzz_staid_threat_response_triggers.txt:9 @ in scripted trigger staid_tr_is_subjugation_war_goal at file: even",
+        "unclassified: [13:05:31][trigger.cpp:338]: Expected \"using_war_goal = {\", but got \"using_war_goal = wg_humiliation\" at  common/scripted_triggers/zzz_staid_threat_response_triggers.txt:13 @ in scripted trigger staid_tr_is_humiliation_war_goal at common/sc",
+        "unclassified: [13:05:31][trigger.cpp:338]: Expected \"using_war_goal = {\", but got \"using_war_goal = wg_subjugation\" at  common/scripted_triggers/zzz_staid_threat_response_triggers.txt:9 @ in scripted trigger staid_tr_is_subjugation_war_goal at common/scr",
+        "unclassified: [13:05:31][trigger.cpp:338]: Expected \"using_war_goal = {\", but got \"using_war_goal = wg_conquest\" at  common/scripted_triggers/zzz_staid_threat_response_triggers.txt:5 @ in scripted trigger staid_tr_is_conquest_war_goal at common/scripted_"
       ],
-      "size_bytes": 41990928
+      "size_bytes": 42113555
     },
     {
       "director_expected_line_count": 0,
@@ -40,15 +46,15 @@
       "director_problem_line_count": 0,
       "director_unclassified_line_count": 2,
       "exists": true,
-      "mtime_ns": 1783218028303788600,
+      "mtime_ns": 1783275922789788800,
       "name": "game.log",
       "newer_than_generated": false,
       "path": "C:\\Users\\Admin\\Documents\\Paradox Interactive\\Stellaris\\logs\\game.log",
       "sample_director_lines": [
-        "unclassified: [21:41:08][effect_impl.cpp:21978]: [2200.1.1] Log effect, file: events/zzz_staid_load_proof_events.txt line: 17. STELLAR_AI_DIRECTOR_LOAD_PROOF: Stellar AI Director v1 loaded for United Nations of Earth",
-        "unclassified: [21:48:16][eventcommands.cpp:88]: Event staid_load_proof.1 added info about event selection. selectedOption 0, human 1, playerEventId 3"
+        "unclassified: [14:21:00][effect_impl.cpp:21978]: [2200.1.1] Log effect, file: events/zzz_staid_load_proof_events.txt line: 17. STELLAR_AI_DIRECTOR_LOAD_PROOF: Stellar AI Director v1 loaded for United Cevantian Nation",
+        "unclassified: [14:24:36][eventcommands.cpp:88]: Event staid_load_proof.1 added info about event selection. selectedOption 0, human 1, playerEventId 3"
       ],
-      "size_bytes": 3810
+      "size_bytes": 2551
     }
   ],
   "main_menu_evidence": "manual main-menu proof markers recorded for baseline_without_director, with_director",

@@ -7,12 +7,35 @@
 basic_economy_plan = {
 	subplan = {
 		scaling = yes
+		set_name = "Stellar AI Director trade capacity reserve"
+		potential = {
+			staid_trade_capacity_safe = yes
+		}
+		income = {
+			trade = 100
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director trade deficit recovery"
+		potential = {
+			NOT = { staid_trade_capacity_safe = yes }
+		}
+		income = {
+			trade = 150
+		}
+	}
+
+	subplan = {
+		scaling = yes
 		set_name = "Stellar AI Director mega alloy reserve"
 		potential = {
 			staid_megastructure_prep_ready = yes
 		}
 		income = {
 			alloys = 15
+			trade = 25
 		}
 	}
 
@@ -43,6 +66,7 @@ basic_economy_plan = {
 		income = {
 			alloys = 20
 			energy = 20
+			trade = 50
 		}
 	}
 
@@ -69,6 +93,7 @@ basic_economy_plan = {
 		income = {
 			alloys = 35
 			energy = 30
+			trade = 75
 		}
 		naval_cap = 200
 	}
@@ -83,6 +108,7 @@ basic_economy_plan = {
 		income = {
 			alloys = 7
 			energy = 6
+			trade = 25
 		}
 		naval_cap = 40
 	}
@@ -96,6 +122,7 @@ basic_economy_plan = {
 		income = {
 			minerals = 50
 			energy = 40
+			trade = 50
 		}
 		pops = 250000
 	}
@@ -109,6 +136,7 @@ basic_economy_plan = {
 		income = {
 			alloys = 18
 			energy = 25
+			trade = 25
 		}
 	}
 
@@ -121,6 +149,7 @@ basic_economy_plan = {
 		income = {
 			alloys = 30
 			energy = 40
+			trade = 50
 		}
 	}
 }

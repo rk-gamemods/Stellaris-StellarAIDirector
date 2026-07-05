@@ -28,10 +28,14 @@ Missing required Steam parents during generation: none.
 - Adds economic-plan subplans for alloy reserves, Gigas special resources,
   and static-defense/starbase pressure when defensive or threatened empires
   have safe income and stockpiles.
+- Adds trade-capacity recovery and reserve subplans so the Director preserves
+  Stellaris 4.4 logistics/upkeep headroom instead of treating trade as a
+  normal buy/sell commodity.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
-  surplus can become fleet power without ignoring energy/alloy runway checks.
+  surplus can become fleet power without ignoring energy/alloy/trade runway checks.
 - Adds a planetary-capacity economic subplan for safe mineral/energy-backed
-  pop and empire-size growth without direct building/job overrides.
+  pop and empire-size growth without direct building/job overrides or trade
+  logistics collapse.
 - Adds an unlock-research economic subplan so surplus empires keep pushing
   engineering/research/unity until core Mega Engineering and Mega Shipyard
   unlocks are present.
@@ -48,7 +52,7 @@ Missing required Steam parents during generation: none.
 Place Stellar AI Director after all required parents and after parent
 compatibility patches that the Director must supersede. In the current selected
 collection, the latest required parent is at load position
-114.
+115.
 The Director should be below Stellar AI so its megastructure alloy reserve
 override wins intentionally.
 

@@ -2063,6 +2063,13 @@ class EmpireState:
     personality: str = "balanced"
 
 
+TRADE_CAPACITY_RESOURCE = "trade"
+TRADE_MIN_MONTHLY_INCOME = 25.0
+TRADE_FLEET_MONTHLY_INCOME = 75.0
+TRADE_PLANETARY_MONTHLY_INCOME = 50.0
+TRADE_SURPLUS_MONTHLY_INCOME = 100.0
+
+
 def stockpile_runway_months(state: EmpireState, resource: str) -> float:
     income = state.incomes.get(resource, 0.0)
     if income >= 0:
@@ -2070,8 +2077,35 @@ def stockpile_runway_months(state: EmpireState, resource: str) -> float:
     return state.stockpiles.get(resource, 0.0) / abs(income) if income < 0 else math.inf
 
 
+def trade_capacity_known(state: EmpireState) -> bool:
+    return TRADE_CAPACITY_RESOURCE in state.incomes or TRADE_CAPACITY_RESOURCE in state.stockpiles
+
+
+def trade_capacity_pressure(state: EmpireState) -> bool:
+    if not trade_capacity_known(state):
+        return False
+    trade_income = state.incomes.get(TRADE_CAPACITY_RESOURCE, 0.0)
+    if trade_income < 0 and stockpile_runway_months(state, TRADE_CAPACITY_RESOURCE) < 24:
+        return True
+    expansion_pressure = (
+        state.wants_fleet_buildup
+        or state.has_completed_shipyard_multiplier
+        or state.has_megastructure_prereqs
+        or state.used_naval_capacity_percent >= 0.95
+    )
+    return trade_income < TRADE_MIN_MONTHLY_INCOME and expansion_pressure
+
+
+def trade_capacity_safe(state: EmpireState, minimum_income: float = TRADE_MIN_MONTHLY_INCOME) -> bool:
+    if not trade_capacity_known(state):
+        return True
+    if trade_capacity_pressure(state):
+        return False
+    return state.incomes.get(TRADE_CAPACITY_RESOURCE, 0.0) >= minimum_income
+
+
 def core_deficit_with_short_runway(state: EmpireState) -> bool:
-    for resource in ("energy", "minerals", "consumer_goods", "food", "alloys"):
+    for resource in ("energy", "minerals", "consumer_goods", "food", "alloys", TRADE_CAPACITY_RESOURCE):
         if state.incomes.get(resource, 0.0) < 0 and stockpile_runway_months(state, resource) < 24:
             return True
     return False
@@ -2079,6 +2113,8 @@ def core_deficit_with_short_runway(state: EmpireState) -> bool:
 
 def surplus_sink_pressure(state: EmpireState) -> bool:
     if core_deficit_with_short_runway(state):
+        return False
+    if not trade_capacity_safe(state, TRADE_SURPLUS_MONTHLY_INCOME):
         return False
     if state.incomes.get("energy", 0.0) < 0 or state.incomes.get("alloys", 0.0) < 0:
         return False
@@ -2088,16 +2124,20 @@ def surplus_sink_pressure(state: EmpireState) -> bool:
 
 
 def choose_decision_state(state: EmpireState) -> str:
-    if core_deficit_with_short_runway(state) or state.lost_economy_fraction >= 0.35:
+    if core_deficit_with_short_runway(state) or trade_capacity_pressure(state) or state.lost_economy_fraction >= 0.35:
         return "survival_mode"
-    if state.recently_lost_war or any(state.incomes.get(res, 0.0) < 0 for res in ("energy", "minerals", "alloys")):
+    if state.recently_lost_war or any(state.incomes.get(res, 0.0) < 0 for res in ("energy", "minerals", "alloys", TRADE_CAPACITY_RESOURCE)):
         return "recovery_mode"
     if state.at_war and state.used_naval_capacity_percent < 0.85 and state.project_progress < 0.75:
         return "recovery_mode"
     if state.project_progress >= 0.75 and not core_deficit_with_short_runway(state):
         return "investment_commit_mode"
     if state.has_completed_shipyard_multiplier:
-        if state.incomes.get("alloys", 0.0) >= 150 and state.incomes.get("energy", 0.0) >= 100:
+        if (
+            state.incomes.get("alloys", 0.0) >= 150
+            and state.incomes.get("energy", 0.0) >= 100
+            and trade_capacity_safe(state, TRADE_FLEET_MONTHLY_INCOME)
+        ):
             return "payoff_exploitation_mode"
         return "recovery_mode"
     if surplus_sink_pressure(state):
@@ -2108,7 +2148,12 @@ def choose_decision_state(state: EmpireState) -> str:
                 return "shipyard_expansion_mode"
         if state.unity_sink_available:
             return "unity_expansion_mode"
-    if state.has_megastructure_prereqs and state.incomes.get("alloys", 0.0) >= 120 and state.stockpiles.get("alloys", 0.0) >= 15000:
+    if (
+        state.has_megastructure_prereqs
+        and state.incomes.get("alloys", 0.0) >= 120
+        and state.stockpiles.get("alloys", 0.0) >= 15000
+        and trade_capacity_safe(state, TRADE_PLANETARY_MONTHLY_INCOME)
+    ):
         if state.highest_threat < 45 or state.used_naval_capacity_percent >= 0.9:
             return "investment_prep_mode"
     return "normal_growth_mode"
@@ -4654,6 +4699,7 @@ staid_core_deficit_short_runway = {
 \t\thas_deficit = energy
 \t\thas_deficit = minerals
 \t\thas_deficit = alloys
+\t\thas_deficit = trade
 \t\tAND = { country_uses_consumer_goods = yes has_deficit = consumer_goods }
 \t\tAND = { country_uses_food = yes has_deficit = food }
 \t\tAND = {
@@ -4668,7 +4714,31 @@ staid_core_deficit_short_runway = {
 \t\t\tNOT = { has_monthly_income = { resource = alloys value > 0 } }
 \t\t\tresource_stockpile_compare = { resource = alloys value < 2400 }
 \t\t}
+\t\tAND = {
+\t\t\tNOT = { has_monthly_income = { resource = trade value > 0 } }
+\t\t\tresource_stockpile_compare = { resource = trade value < 2400 }
+\t\t}
 \t}
+}
+
+staid_trade_capacity_safe = {
+\tNOT = { has_deficit = trade }
+\thas_monthly_income = { resource = trade value > 25 }
+}
+
+staid_trade_fleet_capacity_safe = {
+\tstaid_trade_capacity_safe = yes
+\thas_monthly_income = { resource = trade value > 75 }
+}
+
+staid_trade_planetary_capacity_safe = {
+\tstaid_trade_capacity_safe = yes
+\thas_monthly_income = { resource = trade value > 50 }
+}
+
+staid_trade_surplus_capacity_safe = {
+\tstaid_trade_capacity_safe = yes
+\thas_monthly_income = { resource = trade value > 100 }
 }
 
 staid_survival_mode = {
@@ -4694,6 +4764,7 @@ staid_megastructure_prep_ready = {
 \tcan_build_megastructures = yes
 \tNOT = { staid_recovery_mode = yes }
 \tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_trade_planetary_capacity_safe = yes
 \tresource_stockpile_compare = { resource = alloys value > 15000 }
 \thas_monthly_income = { resource = alloys value > 120 }
 \thas_monthly_income = { resource = energy value > 80 }
@@ -4708,6 +4779,7 @@ staid_megastructure_commit_safe = {
 \tis_nomadic = no
 \tcan_build_megastructures = yes
 \tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_trade_planetary_capacity_safe = yes
 \tOR = {
 \t\tis_at_war = no
 \t\tused_naval_capacity_percent > 0.85
@@ -4726,12 +4798,14 @@ staid_shipyard_payoff_ready = {
 \tNOT = { staid_recovery_mode = yes }
 \thas_monthly_income = { resource = alloys value > 150 }
 \thas_monthly_income = { resource = energy value > 100 }
+\tstaid_trade_fleet_capacity_safe = yes
 \tresource_stockpile_compare = { resource = alloys value > 10000 }
 }
 
 staid_fleet_buildup_economy_safe = {
 \tNOT = { staid_recovery_mode = yes }
 \tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_trade_fleet_capacity_safe = yes
 \thas_monthly_income = { resource = alloys value > 200 }
 \thas_monthly_income = { resource = energy value > 150 }
 \tresource_stockpile_compare = { resource = alloys value > 15000 }
@@ -4741,6 +4815,7 @@ staid_fleet_buildup_economy_safe = {
 
 staid_surplus_sink_pressure = {
 \tNOT = { staid_recovery_mode = yes }
+\tstaid_trade_surplus_capacity_safe = yes
 \thas_monthly_income = { resource = alloys value > 300 }
 \thas_monthly_income = { resource = energy value > 300 }
 \tresource_stockpile_compare = { resource = alloys value > 20000 }
@@ -4781,6 +4856,7 @@ staid_planetary_capacity_growth_ready = {
 \tis_nomadic = no
 \tNOT = { staid_recovery_mode = yes }
 \tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_trade_planetary_capacity_safe = yes
 \thas_monthly_income = { resource = minerals value > 100 }
 \thas_monthly_income = { resource = energy value > 100 }
 \tresource_stockpile_compare = { resource = minerals value > 5000 }
@@ -4816,6 +4892,7 @@ staid_starbase_defense_economy_safe = {
 \tis_nomadic = no
 \tNOT = { staid_recovery_mode = yes }
 \tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_trade_capacity_safe = yes
 \thas_monthly_income = { resource = alloys value > 60 }
 \thas_monthly_income = { resource = energy value > 50 }
 \tresource_stockpile_compare = { resource = alloys value > 3000 }
@@ -4996,12 +5073,35 @@ def economic_plan_text() -> str:
 basic_economy_plan = {
 \tsubplan = {
 \t\tscaling = yes
+\t\tset_name = "Stellar AI Director trade capacity reserve"
+\t\tpotential = {
+\t\t\tstaid_trade_capacity_safe = yes
+\t\t}
+\t\tincome = {
+\t\t\ttrade = 100
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director trade deficit recovery"
+\t\tpotential = {
+\t\t\tNOT = { staid_trade_capacity_safe = yes }
+\t\t}
+\t\tincome = {
+\t\t\ttrade = 150
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
 \t\tset_name = "Stellar AI Director mega alloy reserve"
 \t\tpotential = {
 \t\t\tstaid_megastructure_prep_ready = yes
 \t\t}
 \t\tincome = {
 \t\t\talloys = 15
+\t\t\ttrade = 25
 \t\t}
 \t}
 
@@ -5032,6 +5132,7 @@ basic_economy_plan = {
 \t\tincome = {
 \t\t\talloys = 20
 \t\t\tenergy = 20
+\t\t\ttrade = 50
 \t\t}
 \t}
 
@@ -5058,6 +5159,7 @@ basic_economy_plan = {
 \t\tincome = {
 \t\t\talloys = 35
 \t\t\tenergy = 30
+\t\t\ttrade = 75
 \t\t}
 \t\tnaval_cap = 200
 \t}
@@ -5072,6 +5174,7 @@ basic_economy_plan = {
 \t\tincome = {
 \t\t\talloys = 7
 \t\t\tenergy = 6
+\t\t\ttrade = 25
 \t\t}
 \t\tnaval_cap = 40
 \t}
@@ -5085,6 +5188,7 @@ basic_economy_plan = {
 \t\tincome = {
 \t\t\tminerals = 50
 \t\t\tenergy = 40
+\t\t\ttrade = 50
 \t\t}
 \t\tpops = 250000
 \t}
@@ -5098,6 +5202,7 @@ basic_economy_plan = {
 \t\tincome = {
 \t\t\talloys = 18
 \t\t\tenergy = 25
+\t\t\ttrade = 25
 \t\t}
 \t}
 
@@ -5110,6 +5215,7 @@ basic_economy_plan = {
 \t\tincome = {
 \t\t\talloys = 30
 \t\t\tenergy = 40
+\t\t\ttrade = 50
 \t\t}
 \t}
 }
@@ -5166,10 +5272,14 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Adds economic-plan subplans for alloy reserves, Gigas special resources,
   and static-defense/starbase pressure when defensive or threatened empires
   have safe income and stockpiles.
+- Adds trade-capacity recovery and reserve subplans so the Director preserves
+  Stellaris 4.4 logistics/upkeep headroom instead of treating trade as a
+  normal buy/sell commodity.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
-  surplus can become fleet power without ignoring energy/alloy runway checks.
+  surplus can become fleet power without ignoring energy/alloy/trade runway checks.
 - Adds a planetary-capacity economic subplan for safe mineral/energy-backed
-  pop and empire-size growth without direct building/job overrides.
+  pop and empire-size growth without direct building/job overrides or trade
+  logistics collapse.
 - Adds an unlock-research economic subplan so surplus empires keep pushing
   engineering/research/unity until core Mega Engineering and Mega Shipyard
   unlocks are present.
@@ -5239,6 +5349,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan maps shipyard ROI into alloy/energy/naval-cap targets after anti-collapse gates |",
         "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |",
         "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
+        "| trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |",
         "| ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |",
         "| threat-response values/triggers | `common/script_values/zzz_staid_threat_response_values.txt`, `common/scripted_triggers/zzz_staid_threat_response_triggers.txt` | low | additive `staid_tr_` namespace with unknown-war-goal inertness and foreign-affairs safety gates |",
         "| threat-response opinions/events | `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`, `common/on_actions/zzz_staid_threat_response_on_actions.txt`, `events/zzz_staid_threat_response_events.txt` | medium | event-dispatched opinion/readiness response gated by attacker leader, awareness, participant exclusion, and forbidden-effect validation |",
@@ -5276,6 +5387,10 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "## Surplus Sink Policy",
             "",
             "When survival and recovery gates are clear, surplus pressure is approximated from strong monthly alloy/energy income plus a large alloy stockpile. The v1 scripted ordering is research sink first, fleet-production sink second, and unity sink third. Fleet-throughput policy now maps shipyard readiness into alloy, energy, and naval-cap economic-plan targets while blocking over-naval-cap upkeep spirals.",
+            "",
+            "## Trade-Capacity Policy",
+            "",
+            "Stellaris 4.4 treats `trade` as a standard advanced resource and the market resource, but local vanilla ship-size files also use `logistics = { trade = ... }` and vanilla economic plans target trade income through intermediate, mature, and endgame stages. The Director therefore models trade as logistics/capacity headroom: it is not converted through market ROI pricing, and fleet, planet, defense, surplus, and megastructure gates require explicit trade income floors before adding more upkeep pressure.",
             "",
             "## Unlock-Research Policy",
             "",
@@ -5346,7 +5461,7 @@ def load_order_note_text(playset: dict[str, Any]) -> str:
             "",
             "- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally overrides Stellar AI's `alloys_expenditure_megastructures` budget.",
             "- `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally overrides Gigas `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures` budgets.",
-            "- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, fleet-throughput, static-defense, and planetary-capacity targets.",
+            "- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets.",
             "- Additive scripted triggers, script values, and economic-plan subplans use the `staid_` namespace and should not conflict with parent object IDs.",
         ]
     )
@@ -5360,7 +5475,7 @@ def conflicts_note_text() -> str:
 
 - `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally replaces the upstream `alloys_expenditure_megastructures` object so late-game megastructure reserves obey Director survival, recovery, prep, and commit gates.
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally replaces upstream Gigas special-resource megastructure budget objects: `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
-- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, unlock-research, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
+- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally adds/overrides `basic_economy_plan` subplans with Director late-game economy, trade-capacity, unlock-research, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
 
 ## Expected Additive Surfaces
 
@@ -5488,6 +5603,10 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         f"| shipyard stockpile alloys | {thresholds['shipyard_stockpile_alloys']} | reserve before shipyard payoff exploitation |",
         f"| shipyard income alloys | {thresholds['shipyard_income_alloys']} | monthly alloy floor for fleet-production sink |",
         "| fleet buildup stockpile energy | 8000 | energy runway before shipyard/fleet sink can add naval-cap pressure |",
+        "| trade capacity income floor | 25 | minimum monthly trade before generic expansion gates are considered safe |",
+        "| fleet trade capacity income floor | 75 | minimum monthly trade before fleet-throughput and payoff gates add logistics pressure |",
+        "| planetary trade capacity income floor | 50 | minimum monthly trade before planetary-capacity and megastructure-prep gates add logistics pressure |",
+        "| surplus trade capacity income floor | 100 | minimum monthly trade before surplus sink pressure can activate |",
         "| fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |",
         "| static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |",
         "| static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |",
@@ -5508,9 +5627,15 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.",
         "- Direct starbase module/building weights remain deferred until each parent surface can be proven safe to override.",
         "",
+        "## Trade-Capacity Policy",
+        "",
+        "- Trade is modeled as Stellaris 4.4 logistics/capacity headroom, not as a normal priced ROI resource.",
+        "- The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object override preserves vanilla trade-income pressure.",
+        "- Fleet, planetary, megastructure, static-defense, and surplus gates require trade income floors before adding more ship, colony, or resource-imbalance upkeep pressure.",
+        "",
         "## Fleet-Throughput Policy",
         "",
-        "- Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, alloy stockpile, and energy stockpile are all safe.",
+        "- Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, trade income, alloy stockpile, and energy stockpile are all safe.",
         "- Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).",
         "- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.",
         "",
@@ -5527,7 +5652,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "## Planetary-Capacity Policy",
         "",
-        "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral and energy runway are safe.",
+        "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.",
         "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.",
         "- No generated building/job references are emitted in v1; direct planet automation rewrites remain deferred until a specific missing parent surface is proven.",
         "",
@@ -5548,7 +5673,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "- Do not lower prep or commit reserves below survival/recovery safety gates.",
         "- Keep research sink before fleet sink until core modded unlocks are available.",
-        "- Treat unpriced resources as bottlenecks, not fake scalar value.",
+        "- Treat unpriced resources and trade logistics as bottlenecks, not fake scalar value.",
         "- Re-run generator, validator, unit tests, and coverage after every tuning change.",
     ]
     return "\n".join(lines) + "\n"

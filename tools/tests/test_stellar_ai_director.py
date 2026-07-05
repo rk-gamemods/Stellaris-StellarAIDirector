@@ -172,6 +172,7 @@ from stellar_ai_director_lib import (
     strip_comments,
     substitute_inline_params,
     surplus_sink_pressure,
+    trade_capacity_pressure,
     decision_tree_artifact_passes,
     documentation_artifact_passes,
     generated_surface_artifact_passes,
@@ -309,12 +310,12 @@ class ResourceHelperTests(unittest.TestCase):
         self.assertIsNone(inline_bool_value(block, "missing"))
 
     def test_weighted_and_market_values_preserve_unpriced_resources(self):
-        resources = {"alloys": 10.0, "energy": 20.0, "unknown": 3.0}
+        resources = {"alloys": 10.0, "energy": 20.0, "trade": 12.0, "unknown": 3.0}
         self.assertEqual(weighted_resource_value(resources), 15.0)
         self.assertEqual(market_resource_value({"alloys": 0.0}, {"alloys": MarketPrice("alloys", 100, 400, True)}, "base_buy"), (0.0, {}))
         total, unpriced = market_resource_value(resources, {"alloys": MarketPrice("alloys", 100, 400, True)}, "fee_base_buy")
         self.assertEqual(total, 72.0)
-        self.assertEqual(unpriced, {"unknown": 3.0})
+        self.assertEqual(unpriced, {"trade": 12.0, "unknown": 3.0})
         fee_sell_total, _ = market_resource_value({"alloys": 10.0}, {"alloys": MarketPrice("alloys", 100, 400, True)}, "fee_min_sell")
         self.assertAlmostEqual(fee_sell_total, 5.6)
         with self.assertRaises(ValueError):
@@ -433,6 +434,15 @@ class StrategyClassificationTests(unittest.TestCase):
         self.assertFalse(core_deficit_with_short_runway(stable))
         self.assertTrue(surplus_sink_pressure(surplus))
         self.assertFalse(surplus_sink_pressure(deficit))
+        trade_deficit = EmpireState(incomes={"trade": -20}, stockpiles={"trade": 200})
+        self.assertTrue(trade_capacity_pressure(trade_deficit))
+        self.assertTrue(core_deficit_with_short_runway(trade_deficit))
+        self.assertEqual(choose_decision_state(trade_deficit), "survival_mode")
+        self.assertFalse(
+            surplus_sink_pressure(
+                EmpireState(incomes={"alloys": 400, "energy": 400, "trade": 40}, stockpiles={"alloys": 30000})
+            )
+        )
         self.assertFalse(surplus_sink_pressure(EmpireState(incomes={"alloys": 300, "energy": -1}, stockpiles={"alloys": 30000, "energy": 99999})))
         self.assertEqual(choose_decision_state(EmpireState(recently_lost_war=True)), "recovery_mode")
         self.assertEqual(
@@ -442,6 +452,19 @@ class StrategyClassificationTests(unittest.TestCase):
         self.assertEqual(
             choose_decision_state(EmpireState(at_war=True, used_naval_capacity_percent=0.9, incomes={"alloys": 350, "energy": 350}, stockpiles={"alloys": 25000}, shipyard_capacity_bottleneck=True, wants_fleet_buildup=True)),
             "shipyard_expansion_mode",
+        )
+        self.assertEqual(
+            choose_decision_state(
+                EmpireState(
+                    at_war=True,
+                    used_naval_capacity_percent=0.9,
+                    incomes={"alloys": 350, "energy": 350, "trade": 10},
+                    stockpiles={"alloys": 25000, "trade": 10000},
+                    shipyard_capacity_bottleneck=True,
+                    wants_fleet_buildup=True,
+                )
+            ),
+            "survival_mode",
         )
         self.assertEqual(
             choose_decision_state(EmpireState(has_megastructure_prereqs=True, highest_threat=60, used_naval_capacity_percent=0.8, incomes={"alloys": 200}, stockpiles={"alloys": 20000})),
@@ -485,6 +508,10 @@ class GeneratedTextAndWriterTests(unittest.TestCase):
         self.assertIn("used_naval_capacity_percent < 1.05", triggers)
         self.assertIn("staid_fleet_payoff_exploitation_ready", triggers)
         self.assertIn("staid_planetary_capacity_growth_ready", triggers)
+        self.assertIn("has_deficit = trade", triggers)
+        self.assertIn("staid_trade_capacity_safe", triggers)
+        self.assertIn("staid_trade_fleet_capacity_safe = yes", triggers)
+        self.assertIn("has_monthly_income = { resource = trade value > 75 }", triggers)
         self.assertIn("resource_stockpile_compare = { resource = minerals value > 5000 }", triggers)
         self.assertIn("staid_core_unlock_research_priority_ready", triggers)
         self.assertIn("has_technology = tech_mega_engineering", triggers)
@@ -509,16 +536,21 @@ class GeneratedTextAndWriterTests(unittest.TestCase):
         self.assertIn("giga_sr_amb_megaconstruction", gigas_budget)
         economy = economic_plan_text()
         self.assertIn("giga_sr_sentient_metal", economy)
+        self.assertIn("Stellar AI Director trade capacity reserve", economy)
+        self.assertIn("Stellar AI Director trade deficit recovery", economy)
+        self.assertIn("trade = 150", economy)
         self.assertIn("Stellar AI Director defensive starbase reserve", economy)
         self.assertIn("staid_static_defense_investment_ready = yes", economy)
         self.assertIn("Stellar AI Director crisis starbase reserve", economy)
         self.assertIn("staid_crisis_starbase_pressure = yes", economy)
         self.assertIn("Stellar AI Director fleet throughput reserve", economy)
         self.assertIn("staid_shipyard_expansion_ready = yes", economy)
+        self.assertIn("trade = 75", economy)
         self.assertIn("staid_fleet_payoff_exploitation_ready = yes", economy)
         self.assertIn("naval_cap = 200", economy)
         self.assertIn("Stellar AI Director planetary capacity reserve", economy)
         self.assertIn("staid_planetary_capacity_growth_ready = yes", economy)
+        self.assertIn("trade = 50", economy)
         self.assertIn("pops = 250000", economy)
         self.assertNotIn("empire_size =", economy)
         self.assertIn("Stellar AI Director modded unlock research reserve", economy)
@@ -550,6 +582,8 @@ class GeneratedTextAndWriterTests(unittest.TestCase):
                 self.assertIn("not run yet", observer_test_log_text(self.playset))
         tuning = tuning_notes_text(self.thresholds)
         self.assertIn("| eligible ROI rows | 125 |", tuning)
+        self.assertIn("Trade-Capacity Policy", tuning)
+        self.assertIn("trade logistics", tuning)
         self.assertIn("do not emit `empire_size`", tuning)
         self.assertIn("Re-run generator", tuning)
 

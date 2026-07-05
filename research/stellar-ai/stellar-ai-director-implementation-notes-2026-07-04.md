@@ -14,6 +14,7 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan maps shipyard ROI into alloy/energy/naval-cap targets after anti-collapse gates |
 | starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |
 | planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |
+| trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |
 | ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |
 | threat-response values/triggers | `common/script_values/zzz_staid_threat_response_values.txt`, `common/scripted_triggers/zzz_staid_threat_response_triggers.txt` | low | additive `staid_tr_` namespace with unknown-war-goal inertness and foreign-affairs safety gates |
 | threat-response opinions/events | `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`, `common/on_actions/zzz_staid_threat_response_on_actions.txt`, `events/zzz_staid_threat_response_events.txt` | medium | event-dispatched opinion/readiness response gated by attacker leader, awareness, participant exclusion, and forbidden-effect validation |
@@ -22,18 +23,18 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 ## Selected Playset
 
 - Collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-- Mod count: 119
+- Mod count: 120
 - Irony patch mod enabled: True
 
 ## Required Parent Detection
 
 | mod | present | load position |
 | --- | --- | ---: |
-| Stellar AI | True | 114 |
-| Gigastructural Engineering & More (4.4) | True | 61 |
-| NSC3 | True | 70 |
-| Extra Ship Components NEXT | True | 69 |
-| Starbase Extended 3.0 | True | 71 |
+| Stellar AI | True | 115 |
+| Gigastructural Engineering & More (4.4) | True | 62 |
+| NSC3 | True | 71 |
+| Extra Ship Components NEXT | True | 70 |
+| Starbase Extended 3.0 | True | 72 |
 
 ## Generated ROI Thresholds
 
@@ -55,6 +56,10 @@ These values are generated from rows where `data_quality = resolved` and `decisi
 ## Surplus Sink Policy
 
 When survival and recovery gates are clear, surplus pressure is approximated from strong monthly alloy/energy income plus a large alloy stockpile. The v1 scripted ordering is research sink first, fleet-production sink second, and unity sink third. Fleet-throughput policy now maps shipyard readiness into alloy, energy, and naval-cap economic-plan targets while blocking over-naval-cap upkeep spirals.
+
+## Trade-Capacity Policy
+
+Stellaris 4.4 treats `trade` as a standard advanced resource and the market resource, but local vanilla ship-size files also use `logistics = { trade = ... }` and vanilla economic plans target trade income through intermediate, mature, and endgame stages. The Director therefore models trade as logistics/capacity headroom: it is not converted through market ROI pricing, and fleet, planet, defense, surplus, and megastructure gates require explicit trade income floors before adding more upkeep pressure.
 
 ## Unlock-Research Policy
 

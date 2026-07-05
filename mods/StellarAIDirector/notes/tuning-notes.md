@@ -10,6 +10,10 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | shipyard stockpile alloys | 12000 | reserve before shipyard payoff exploitation |
 | shipyard income alloys | 150 | monthly alloy floor for fleet-production sink |
 | fleet buildup stockpile energy | 8000 | energy runway before shipyard/fleet sink can add naval-cap pressure |
+| trade capacity income floor | 25 | minimum monthly trade before generic expansion gates are considered safe |
+| fleet trade capacity income floor | 75 | minimum monthly trade before fleet-throughput and payoff gates add logistics pressure |
+| planetary trade capacity income floor | 50 | minimum monthly trade before planetary-capacity and megastructure-prep gates add logistics pressure |
+| surplus trade capacity income floor | 100 | minimum monthly trade before surplus sink pressure can activate |
 | fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |
 | static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |
 | static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |
@@ -30,9 +34,15 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.
 - Direct starbase module/building weights remain deferred until each parent surface can be proven safe to override.
 
+## Trade-Capacity Policy
+
+- Trade is modeled as Stellaris 4.4 logistics/capacity headroom, not as a normal priced ROI resource.
+- The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object override preserves vanilla trade-income pressure.
+- Fleet, planetary, megastructure, static-defense, and surplus gates require trade income floors before adding more ship, colony, or resource-imbalance upkeep pressure.
+
 ## Fleet-Throughput Policy
 
-- Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, alloy stockpile, and energy stockpile are all safe.
+- Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, trade income, alloy stockpile, and energy stockpile are all safe.
 - Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).
 - Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.
 
@@ -49,7 +59,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 ## Planetary-Capacity Policy
 
-- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral and energy runway are safe.
+- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.
 - The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.
 - No generated building/job references are emitted in v1; direct planet automation rewrites remain deferred until a specific missing parent surface is proven.
 
@@ -70,5 +80,5 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 - Do not lower prep or commit reserves below survival/recovery safety gates.
 - Keep research sink before fleet sink until core modded unlocks are available.
-- Treat unpriced resources as bottlenecks, not fake scalar value.
+- Treat unpriced resources and trade logistics as bottlenecks, not fake scalar value.
 - Re-run generator, validator, unit tests, and coverage after every tuning change.
