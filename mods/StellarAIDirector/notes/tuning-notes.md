@@ -32,7 +32,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 - Defensive or high-threat empires get additive starbase reserve subplans only after recovery and short-runway deficit gates are clear.
 - Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.
-- Direct starbase module/building weights remain deferred until each parent surface can be proven safe to override.
+- The generated ESC starbase reactor override adds direct crisis-starbase AI weight support; other starbase modules/buildings remain manual-review candidates.
 
 ## Trade-Capacity Policy
 
@@ -49,13 +49,13 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 ## Unlock-Research Policy
 
 - The unlock-research policy is mandatory survival pressure after the opening curve, not a surplus-only luxury; it keeps physics, society, engineering, and unity pressure on until core Mega Engineering, Mega Shipyard, Gigas, NSC3, and ESC unlock paths are reachable.
-- Direct technology/AP/tradition object overrides are deferred until their parent surfaces are copied with source context; generated references are limited to validator-checked technology gates.
+- Direct technology/AP/tradition route overrides are emitted from copied source objects and trace back to the policy matrix and route override report.
 
 ## Mega/Giga Build Priority Policy
 
 - ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.
-- Direct individual megastructure/gigastructure build-weight overrides are the next replacement surface once each parent object can be copied with source context.
-- Exotic or path-specific projects remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.
+- Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts.
+- Exotic projects outside those route starts remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.
 
 ## Planetary-Capacity Policy
 
@@ -65,8 +65,8 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 ## NSC3/ESC Design Policy
 
-- Direct NSC3/ESC ship and component design overrides remain required follow-up surfaces when observer evidence or source inspection proves parent AI cannot use the new hulls or components at crisis scale.
-- Warning rows in the P11 integration audit are treated as parent-design gaps to inventory, copy with source context, and promote into replacement policy when needed.
+- NSC3 and ESC unlock technologies now have copied source-object route AI weights and are paired with fleet-throughput economy gates.
+- ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 
 ## Threat-Response Policy
 

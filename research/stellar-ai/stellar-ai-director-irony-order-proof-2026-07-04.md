@@ -1,27 +1,28 @@
 # Stellar AI Director Irony Order Proof
 
-Status: ok
+Status: fail
 Collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
 Before snapshot: `C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\stellar-ai\irony-selected-collection-before-director-20260705T002858Z.json`
-Mod count before: 119
-Mod count after: 120
-Director position: 120
+Mod count before: 116
+Mod count after: 119
+Director position: None
 Latest dependency position: 119
 
 ## Order Check
 
-- status: ok
-- director_count: 1
-- director_position: 120
-- director_is_final_entry: True
-- existing_mod_order_preserved: True
-- expected_mod_count: 120
-- actual_mod_count: 120
-
-## Warnings
-
-- The historical pre-Director snapshot no longer matches the selected collection; validated the current collection by removing the single final Director entry.
+- status: fail
+- director_count: 0
+- director_position: None
+- director_is_final_entry: False
+- existing_mod_order_preserved: False
+- expected_mod_count: 117
+- actual_mod_count: 119
 
 ## Dependency Status Counts
 
 - ok: 6
+
+## Errors
+
+- Irony order check failed: {'director_count': 0, 'director_position': None, 'director_is_final_entry': False, 'existing_mod_order_preserved': False, 'expected_mod_count': 117, 'actual_mod_count': 119, 'status': 'fail'}
+- Stellar AI Director is not present in the selected Irony collection.

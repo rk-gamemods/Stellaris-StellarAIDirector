@@ -204,13 +204,62 @@ ROUTE_OBJECT_HINTS = {
 
 GENERATED_SURFACE_FOLDERS = {
     "ai_budget": "ai_budget",
+    "ascension_perks": "ascension_perk",
+    "component_templates": "component_template",
     "economic_plans": "economic_plan",
+    "megastructures": "megastructure",
     "opinion_modifiers": "opinion_modifier",
     "on_actions": "on_action",
     "scripted_triggers": "scripted_trigger",
     "script_values": "scripted_value",
+    "ship_sizes": "ship_size",
+    "starbase_buildings": "starbase_building",
+    "starbase_modules": "starbase_module",
+    "technology": "technology",
+    "traditions": "tradition",
 }
 GENERATED_AUXILIARY_COMMON_FOLDERS: set[str] = set()
+
+ROUTE_OVERRIDE_TARGETS = [
+    # Core unlock techs and high-scale research chains.
+    {"object_id": "tech_mega_engineering", "object_type": "technology", "mod_id": "vanilla", "route_id": "mega_engineering_core", "weight": 200000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_mega_shipyard", "object_type": "technology", "mod_id": "vanilla", "route_id": "mega_shipyard_core", "weight": 180000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_planet_assembly", "object_type": "technology", "mod_id": "1121692237", "route_id": "planetcraft_route", "weight": 160000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_system_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 150000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_system_2", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 170000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_system_3", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 190000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_Carrier_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 125000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_Dreadnought_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 150000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_Flagship_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 170000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_heavycarrier_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 130000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_supercarrier_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 145000, "file_key": "01_unlock_technology"},
+    {"object_id": "esc_tech_dark_matter_power_core_2", "object_type": "technology", "mod_id": "2648658105", "route_id": "esc_component_route", "weight": 150000, "file_key": "01_unlock_technology"},
+    {"object_id": "esc_tech_strikecraft_5", "object_type": "technology", "mod_id": "2648658105", "route_id": "esc_component_route", "weight": 140000, "file_key": "01_unlock_technology"},
+    {"object_id": "esc_tech_dreadnought_computer", "object_type": "technology", "mod_id": "2648658105", "route_id": "esc_component_route", "weight": 130000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_starbase_6", "object_type": "technology", "mod_id": "3250900527", "route_id": "fallen_empire_benchmark_route", "weight": 135000, "file_key": "01_unlock_technology"},
+    # AP and tradition pressure for routes that Stellaris otherwise treats as optional flavor.
+    {"object_id": "ap_gigastructural_constructs", "object_type": "ascension_perk", "mod_id": "1121692237", "route_id": "economy_megastructure_core", "weight": 120000, "file_key": "02_perks_traditions"},
+    {"object_id": "ap_celestial_printing", "object_type": "ascension_perk", "mod_id": "1121692237", "route_id": "planetcraft_route", "weight": 180000, "file_key": "02_perks_traditions"},
+    {"object_id": "ap_lord_of_war", "object_type": "ascension_perk", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 80000, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_supremacy_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 90000, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_prosperity_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "economy_megastructure_core", "weight": 85000, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_adaptability_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 75000, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_mercantile_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 65000, "file_key": "02_perks_traditions"},
+    # Concrete build-priority objects for economy multipliers, Mega Shipyard, planetcraft, war moons, and systemcraft.
+    {"object_id": "dyson_sphere_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_dyson_sphere.txt", "route_id": "economy_megastructure_core", "weight": 130000, "file_key": "03_megastructures"},
+    {"object_id": "mega_shipyard_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_mega_shipyard.txt", "route_id": "mega_shipyard_core", "weight": 150000, "file_key": "03_megastructures"},
+    {"object_id": "neutronium_gigaforge_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_neutronium_gigaforge.txt", "route_id": "economy_megastructure_core", "weight": 135000, "file_key": "03_megastructures"},
+    {"object_id": "nidavellir_forge_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_nidavellir_forge.txt", "route_id": "economy_megastructure_core", "weight": 140000, "file_key": "03_megastructures"},
+    {"object_id": "matrioshka_brain_0_g_star", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_matrioshka_brain_revised.txt", "route_id": "economy_megastructure_core", "weight": 145000, "file_key": "03_megastructures"},
+    {"object_id": "planetcraft_printer_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_behemoth_assembly_plant.txt", "route_id": "planetcraft_route", "weight": 180000, "file_key": "03_megastructures"},
+    {"object_id": "war_moon_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_attack_moon.txt", "route_id": "war_moon_route", "weight": 165000, "file_key": "03_megastructures"},
+    {"object_id": "war_system_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_stellar_systemcraft.txt", "route_id": "systemcraft_route", "weight": 200000, "file_key": "03_megastructures"},
+    # Parent design surfaces that need direct pressure when AI weights are partial or wrong-goal.
+    # NSC3 hull and ESC component-template usage is covered through unlock tech, fleet economy,
+    # and starbase support here because the current atlas does not model ESC internal `key =`
+    # component-template entries as top-level load-order objects.
+    {"object_id": "esc_starbase_reactor", "object_type": "starbase_building", "mod_id": "2648658105", "route_id": "fallen_empire_benchmark_route", "weight": 75000, "file_key": "05_starbase_defense"},
+]
 
 THREAT_RESPONSE_AXES = (
     "moral_outrage",
@@ -2879,6 +2928,234 @@ def write_text_file(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
+def mod_source_root_for_id(mod_id: str, snapshot_root: Path = SNAPSHOT_ROOT) -> Path:
+    if mod_id == "vanilla":
+        return STELLARIS_INSTALL_ROOT
+    manifest = read_snapshot_manifest(snapshot_root)
+    row = manifest.get(mod_id)
+    if not row:
+        raise ValueError(f"No source snapshot found for mod id {mod_id}")
+    return Path(row["snapshot_path"])
+
+
+def generated_common_folder_for_type(object_type: str) -> str:
+    for folder, mapped_type in GENERATED_SURFACE_FOLDERS.items():
+        if mapped_type == object_type:
+            return folder
+    raise ValueError(f"Unsupported generated override type: {object_type}")
+
+
+def _brace_delta(line: str) -> int:
+    in_quote = False
+    escaped = False
+    delta = 0
+    for char in line:
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\":
+            escaped = True
+            continue
+        if char == '"':
+            in_quote = not in_quote
+            continue
+        if in_quote:
+            continue
+        if char == "#":
+            break
+        if char == "{":
+            delta += 1
+        elif char == "}":
+            delta -= 1
+    return delta
+
+
+def extract_top_level_object_text(source_text: str, object_id: str) -> str:
+    pattern = re.compile(rf"(?m)^[ \t]*{re.escape(object_id)}[ \t]*=[ \t]*\{{")
+    match = pattern.search(source_text)
+    if not match:
+        raise ValueError(f"Could not find top-level object {object_id}")
+    depth = 0
+    start = match.start()
+    position = start
+    while position < len(source_text):
+        line_end = source_text.find("\n", position)
+        if line_end == -1:
+            line_end = len(source_text)
+        line = source_text[position:line_end]
+        depth += _brace_delta(line)
+        if depth == 0 and position > start:
+            return source_text[start : line_end + 1]
+        position = line_end + 1
+    raise ValueError(f"Could not find closing brace for {object_id}")
+
+
+def replace_top_level_child_block(block_text: str, child_key: str, replacement_text: str) -> str:
+    lines = block_text.rstrip().splitlines()
+    output: list[str] = []
+    depth = 0
+    index = 0
+    child_pattern = re.compile(rf"^[ \t]*{re.escape(child_key)}[ \t]*=")
+    while index < len(lines):
+        line = lines[index]
+        if depth == 1 and child_pattern.match(line):
+            depth += _brace_delta(line)
+            index += 1
+            while index < len(lines) and depth > 1:
+                depth += _brace_delta(lines[index])
+                index += 1
+            continue
+        output.append(line)
+        depth += _brace_delta(line)
+        index += 1
+    closing_index = len(output) - 1
+    while closing_index >= 0 and not re.match(r"^[ \t]*}\s*$", output[closing_index]):
+        closing_index -= 1
+    if closing_index < 0:
+        raise ValueError("Generated block has no final closing brace")
+    output[closing_index:closing_index] = ["", *replacement_text.rstrip().splitlines()]
+    return "\n".join(output) + "\n"
+
+
+def route_weight_modifiers(route_id: str) -> list[str]:
+    route_gate = {
+        "mega_engineering_core": "staid_core_unlock_research_priority_ready",
+        "mega_shipyard_core": "staid_shipyard_expansion_ready",
+        "economy_megastructure_core": "staid_megastructure_commit_safe",
+        "gigas_special_resource_core": "staid_megastructure_commit_safe",
+        "planetcraft_route": "staid_planetary_capacity_growth_ready",
+        "war_moon_route": "staid_fleet_buildup_economy_safe",
+        "systemcraft_route": "staid_surplus_sink_pressure",
+        "nsc3_capital_hull_route": "staid_fleet_payoff_exploitation_ready",
+        "esc_component_route": "staid_fleet_payoff_exploitation_ready",
+        "crowded_tall_route": "staid_planetary_capacity_growth_ready",
+        "conquest_escape_route": "staid_aggressive_fleet_pressure",
+        "fallen_empire_benchmark_route": "staid_crisis_starbase_pressure",
+    }.get(route_id, "staid_surplus_sink_pressure")
+    return [
+        "\tmodifier = { factor = 0 staid_survival_mode = yes }",
+        "\tmodifier = { factor = 0.35 staid_recovery_mode = yes }",
+        f"\tmodifier = {{ factor = 4 {route_gate} = yes }}",
+        "\tmodifier = { factor = 2 years_passed > 44 }",
+        "\tmodifier = { factor = 3 years_passed > 79 }",
+        "\tmodifier = { factor = 5 years_passed > 119 }",
+    ]
+
+
+def director_ai_weight_block(target: dict[str, Any]) -> str:
+    lines = [
+        "\tai_weight = {",
+        f"\t\tfactor = {target['weight']}",
+        "",
+        f"\t\t# policy_route = {target['route_id']}",
+        f"\t\t# source_object = {target['object_type']}:{target['object_id']}",
+    ]
+    lines.extend(line.replace("\t", "\t\t", 1) for line in route_weight_modifiers(str(target["route_id"])))
+    lines.append("\t}")
+    return "\n".join(lines) + "\n"
+
+
+def route_override_target_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
+    atlas_rows = _read_csv_rows(OBJECT_ATLAS_CSV) if OBJECT_ATLAS_CSV.exists() else collect_object_atlas_rows(snapshot_root)
+    resolved: list[dict[str, Any]] = []
+    for target in ROUTE_OVERRIDE_TARGETS:
+        candidates = [
+            row
+            for row in atlas_rows
+            if row["object_id"] == target["object_id"]
+            and row["object_type"] == target["object_type"]
+            and row["mod_id"] == target["mod_id"]
+            and row["validation_status"] == "ok"
+        ]
+        if target.get("source_file"):
+            candidates = [row for row in candidates if row["source_file"] == target["source_file"]]
+        candidates.sort(key=lambda row: (row["source_has_ai_weight"] != "yes", row["source_file"]))
+        if not candidates:
+            raise ValueError(f"No atlas source row found for route override target {target}")
+        row = {**candidates[0], **target}
+        source_root = mod_source_root_for_id(row["mod_id"], snapshot_root)
+        source_path = source_root / row["source_file"]
+        if not source_path.exists():
+            raise ValueError(f"Missing source file for route override {row['object_id']}: {source_path}")
+        row["source_path"] = str(source_path)
+        row["generated_folder"] = generated_common_folder_for_type(row["object_type"])
+        row["generated_file"] = (
+            MOD_ROOT
+            / "common"
+            / row["generated_folder"]
+            / f"zzzz_staid_{row['file_key']}_{row['generated_folder']}.txt"
+        ).as_posix()
+        resolved.append(row)
+    return resolved
+
+
+def route_override_file_header(folder: str) -> str:
+    return (
+        "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
+        "# Full-object override: copied parent/vanilla objects with Director-owned ai_weight.\n"
+        "# Trace each object through research/stellar-ai/object-atlas/policy-matrix-2026-07-06.csv.\n\n"
+        f"# Generated surface: common/{folder}\n\n"
+    )
+
+
+def route_override_object_text(target: dict[str, Any]) -> str:
+    source_text = read_text(Path(target["source_path"]))
+    block = extract_top_level_object_text(source_text, target["object_id"])
+    block = replace_top_level_child_block(block, "ai_weight", director_ai_weight_block(target))
+    return (
+        f"# policy_route = {target['route_id']}; source = {target['source_file']}; "
+        f"parent_ai = {target['parent_ai_support']}; source_ai_weight = {target['source_has_ai_weight']}\n"
+        + block
+    )
+
+
+def route_override_report_text(rows: list[dict[str, Any]]) -> str:
+    lines = [
+        "# Stellar AI Director Route Override Report",
+        "",
+        "Generated full-object override surfaces. These are actual mod behavior changes, not atlas-only evidence.",
+        "",
+        "| route | object | type | parent strategy | source AI | generated file | source |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        generated_file = Path(row["generated_file"]).relative_to(MOD_ROOT).as_posix()
+        lines.append(
+            f"| {row['route_id']} | `{row['object_id']}` | {row['object_type']} | "
+            f"{row['parent_ai_support']} | {row['source_has_ai_weight']} | `{generated_file}` | `{row['source_file']}` |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Manual Review Blockers",
+            "",
+            "- ESC component templates use internal `key = ...` entries in `common/component_templates`; the current atlas does not model those as top-level loader objects, so this generator does not emit guessed component-template overrides.",
+            "- NSC3 hull usage is implemented through technology weights, Mega Shipyard/fleet-throughput economy, and reserve pressure until a source-verified ship-design override surface is added.",
+            "- Runtime proof still requires an explicit observer run; static validation proves load-safety and reference integrity only.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def generate_route_override_artifacts() -> list[dict[str, Any]]:
+    rows = route_override_target_rows()
+    grouped: dict[Path, list[dict[str, Any]]] = {}
+    for row in rows:
+        grouped.setdefault(Path(row["generated_file"]), []).append(row)
+    for file_path, file_rows in grouped.items():
+        body = [route_override_file_header(file_rows[0]["generated_folder"])]
+        for row in file_rows:
+            body.append(route_override_object_text(row))
+            body.append("")
+        write_text_file(file_path, "\n".join(body))
+    write_csv(RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.csv", rows)
+    write_text_file(
+        RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.md",
+        route_override_report_text(rows),
+    )
+    return rows
+
+
 def axis_vector(values: tuple[int, ...]) -> dict[str, int]:
     return dict(zip(THREAT_RESPONSE_AXES, values, strict=True))
 
@@ -4527,7 +4804,7 @@ def starbase_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
     }
     required_note_terms = {
         "static-defense",
-        "direct starbase module/building weights remain deferred",
+        "esc starbase reactor override",
     }
     if not (economy_path.exists() and triggers_path.exists() and tuning_path.exists()):
         return False
@@ -4627,7 +4904,8 @@ def nsc3_esc_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
     audit_path = repo_root / "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv"
     tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
     conflicts_path = repo_root / "mods/StellarAIDirector/notes/conflicts.md"
-    if not (audit_path.exists() and tuning_path.exists() and conflicts_path.exists()):
+    technology_path = repo_root / "mods/StellarAIDirector/common/technology/zzzz_staid_01_unlock_technology_technology.txt"
+    if not (audit_path.exists() and tuning_path.exists() and conflicts_path.exists() and technology_path.exists()):
         return False
     with audit_path.open(encoding="utf-8", newline="") as handle:
         p11_rows = [row for row in csv.DictReader(handle) if row.get("phase") == "P11"]
@@ -4635,11 +4913,12 @@ def nsc3_esc_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         return False
     if not all(row.get("priority_band") == "nsc3_esc_parent_design_ai_preservation" for row in p11_rows):
         return False
-    notes = (read_text(tuning_path) + "\n" + read_text(conflicts_path)).lower()
+    notes = (read_text(tuning_path) + "\n" + read_text(conflicts_path) + "\n" + read_text(technology_path)).lower()
     required_terms = {
         "nsc3/esc design policy",
-        "direct nsc3/esc ship and component design overrides are deferred",
-        "observer evidence",
+        "nsc3 and esc unlock technologies now have copied source-object route ai weights",
+        "tech_dreadnought_1",
+        "esc_tech_dark_matter_power_core_2",
     }
     return all(term in notes for term in required_terms)
 
@@ -4648,12 +4927,16 @@ def unlock_priority_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
     economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
     triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
     tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    technology_path = repo_root / "mods/StellarAIDirector/common/technology/zzzz_staid_01_unlock_technology_technology.txt"
+    ascension_path = repo_root / "mods/StellarAIDirector/common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt"
+    traditions_path = repo_root / "mods/StellarAIDirector/common/traditions/zzzz_staid_02_perks_traditions_traditions.txt"
     reference_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv"
-    if not (economy_path.exists() and triggers_path.exists() and tuning_path.exists() and reference_audit_path.exists()):
+    required_paths = [economy_path, triggers_path, tuning_path, reference_audit_path, technology_path, ascension_path, traditions_path]
+    if not all(path.exists() for path in required_paths):
         return False
     try:
-        parse_file(economy_path)
-        parse_file(triggers_path)
+        for path in (economy_path, triggers_path, technology_path, ascension_path, traditions_path):
+            parse_file(path)
     except PDXParseError:
         return False
     with reference_audit_path.open(encoding="utf-8", newline="") as handle:
@@ -4661,7 +4944,7 @@ def unlock_priority_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
             return False
     economy = read_text(economy_path)
     triggers = read_text(triggers_path)
-    tuning = read_text(tuning_path).lower()
+    tuning = (read_text(tuning_path) + "\n" + read_text(technology_path) + "\n" + read_text(ascension_path) + "\n" + read_text(traditions_path)).lower()
     return (
         "Stellar AI Director modded unlock research reserve" in economy
         and "staid_core_unlock_research_priority_ready = yes" in economy
@@ -4669,7 +4952,10 @@ def unlock_priority_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         and "has_technology = tech_mega_engineering" in triggers
         and "has_technology = tech_mega_shipyard" in triggers
         and "unlock-research policy" in tuning
-        and "direct technology/ap/tradition object overrides are deferred" in tuning
+        and "direct technology/ap/tradition route overrides are emitted" in tuning
+        and "tech_mega_engineering" in tuning
+        and "ap_celestial_printing" in tuning
+        and "tr_supremacy_adopt" in tuning
     )
 
 
@@ -4677,16 +4963,18 @@ def mega_giga_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
     alloy_budget_path = repo_root / "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt"
     gigas_budget_path = repo_root / "mods/StellarAIDirector/common/ai_budget/zzz_staid_gigas_resource_budgets.txt"
     economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
+    megastructure_path = repo_root / "mods/StellarAIDirector/common/megastructures/zzzz_staid_03_megastructures_megastructures.txt"
     tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
     policy_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-integration-policy-audit-2026-07-04.csv"
     roi_quality_path = repo_root / "research/stellar-ai/stellar-ai-director-roi-quality-audit-2026-07-04.csv"
-    required_paths = [alloy_budget_path, gigas_budget_path, economy_path, tuning_path, policy_audit_path, roi_quality_path]
+    required_paths = [alloy_budget_path, gigas_budget_path, economy_path, megastructure_path, tuning_path, policy_audit_path, roi_quality_path]
     if not all(path.exists() for path in required_paths):
         return False
     try:
         parse_file(alloy_budget_path)
         parse_file(gigas_budget_path)
         parse_file(economy_path)
+        parse_file(megastructure_path)
     except PDXParseError:
         return False
     with policy_audit_path.open(encoding="utf-8", newline="") as handle:
@@ -4698,14 +4986,14 @@ def mega_giga_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
     with roi_quality_path.open(encoding="utf-8", newline="") as handle:
         if any(row.get("status") == "fail" for row in csv.DictReader(handle)):
             return False
-    combined = "\n".join(read_text(path) for path in (alloy_budget_path, gigas_budget_path, economy_path, tuning_path)).lower()
+    combined = "\n".join(read_text(path) for path in (alloy_budget_path, gigas_budget_path, economy_path, megastructure_path, tuning_path)).lower()
     required_terms = {
         "staid_pause_new_megastructure",
         "staid_megastructure_prep_ready",
         "staid_megastructure_commit_safe",
         "stellar ai director mega alloy reserve",
         "stellar ai director giga special resource reserve",
-        "direct individual megastructure/gigastructure build-weight overrides are the next replacement surface",
+        "generated full-object route overrides",
         "observer-tested against the high-scale crisis benchmark",
     }
     return all(term in combined for term in required_terms)
@@ -4917,9 +5205,9 @@ def generated_surface_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         and not any(row.get("status") == "missing" for row in reference_rows)
         and not any(row.get("classification") == "unexpected_parent_object_collision" for row in conflict_rows)
         and {"additive_director_object", "intentional_director_override"}.issubset(classifications)
-        and "direct individual megastructure/gigastructure build-weight overrides are the next replacement surface" in tuning
-        and "direct technology/ap/tradition object overrides are deferred until their parent surfaces are copied with source context" in tuning
-        and "direct starbase module/building weights remain deferred" in tuning
+        and "generated full-object route overrides now cover" in tuning
+        and "direct technology/ap/tradition route overrides are emitted" in tuning
+        and "esc starbase reactor override" in tuning
     )
 
 
@@ -5360,6 +5648,7 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt", gigas_resource_budget_text())
     write_text_file(MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt", economic_plan_text())
     write_text_file(MOD_ROOT / "common" / "script_values" / "zzz_staid_roi_values.txt", script_values_text(thresholds))
+    generate_route_override_artifacts()
     write_text_file(
         RESEARCH_ROOT / "stellar-ai-director-implementation-notes-2026-07-04.md",
         implementation_notes_text(playset, thresholds),
@@ -6081,8 +6370,13 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
   readiness economy subplan capped at alloys 7, energy 6, and naval cap 40.
 - Keeps unknown or unclassified war goals inert and does not declare wars,
   join wars, add punitive casus belli, or override diplomatic actions.
-- Leaves NSC3/ESC ship and component design weights untouched in v1 unless
-  observer evidence proves parent AI cannot use them.
+- Adds full-object route overrides for Mega Engineering, Mega Shipyard, Gigas
+  planetcraft/systemcraft unlocks, NSC3 hull unlocks, ESC high-tier component
+  unlocks, AP/tradition pressure, economy megastructures, planetcraft, war moon,
+  systemcraft, and ESC starbase reactor support.
+- Leaves ESC internal component-template `key = ...` overrides and direct NSC3
+  ship-design templates as manual-review blockers until the atlas models those
+  loader surfaces safely.
 
 ## Load Order
 
@@ -6140,7 +6434,10 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| Gigas special-resource reserves | `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` | medium | intentional full-object overrides of Gigas megastructure special-resource budgets |",
         "| economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |",
         "| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |",
-        "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |",
+        "| route unlock overrides | `common/technology/zzzz_staid_01_unlock_technology_technology.txt` | high | full-object copied source overrides add Director AI weights for Mega Engineering, Mega Shipyard, Gigas, NSC3, ESC, and starbase unlock chains |",
+        "| AP/tradition route overrides | `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` | medium | full-object copied source overrides add Director AI weights for Gigas, planetcraft, conquest escape, economy, and crowded tall routes |",
+        "| megastructure route overrides | `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` | high | full-object copied source overrides add Director AI weights for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft starts |",
+        "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt`, `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` | medium | additive economy reserves plus copied ESC starbase reactor AI weight support when crisis pressure is safe |",
         "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
         "| trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |",
         "| ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |",
@@ -6187,11 +6484,11 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Unlock-Research Policy",
             "",
-            "The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Direct technology/AP/tradition object overrides are still handled cautiously, but the economic plan no longer waits for comfortable surplus before pushing research.",
+            "The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Full-object copied source overrides now add direct AI weights for those route unlocks and for selected AP/tradition route pressure.",
             "",
             "## Static-Defense Policy",
             "",
-            "Defensive starbase investment is expressed as additive `basic_economy_plan` subplans because vanilla economic plans explicitly merge subplans safely. The v1 policy requires no recovery mode, no short-runway core deficit, safe alloy/energy income and stockpiles, then either defensive ethics without an aggressive under-cap fleet push or high threat pressure. Direct starbase module/building weights remain deferred until a safe parent surface can be proven for each object.",
+            "Defensive starbase investment is expressed as additive `basic_economy_plan` subplans plus a copied ESC starbase reactor override. The v1 policy requires no recovery mode, no short-runway core deficit, safe alloy/energy income and stockpiles, then either defensive ethics without an aggressive under-cap fleet push or high threat pressure.",
             "",
             "## Planetary-Capacity Policy",
             "",
@@ -6199,7 +6496,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## NSC3/ESC Design Policy",
             "",
-            "Direct NSC3/ESC ship and component design overrides are deferred until observer evidence shows parent AI weights cannot use the new hulls or components. The P11 integration audit must have no failed rows; warning rows are tracked as parent-design gaps rather than automatic override targets.",
+            "NSC3 and ESC unlock usage now has direct technology AI-weight overrides plus fleet-throughput economy pressure. ESC internal component-template `key = ...` entries and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.",
             "",
             "## Threat-Response Policy",
             "",
@@ -6209,11 +6506,11 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## v1 Boundaries",
             "",
-            "- Direct technology/AP/tradition object overrides are deferred until each object is copied with full source context; the replacement economy plan already treats those unlocks as mandatory targets.",
-            "- Direct Mega Shipyard object weights remain deferred unless a safe parent object surface is proven; v1 maps the payoff through country-level economy-plan targets and source ROI evidence.",
-            "- Direct starbase module/building weights remain deferred; v1 uses a country-level static-defense economy target rather than overriding Starbase Extended objects.",
+            "- Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.",
+            "- Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.",
+            "- Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.",
             "- Direct planet building/job overrides are not emitted in v1; no generated building/job references are used.",
-            "- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.",
+            "- ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.",
             "- Exotic Gigas superprojects remain outside the main decision path until the core reserve/commit/payoff loop is observer-tested, but their special-resource budget objects are gated by Director survival/recovery state.",
         ]
     )
@@ -6269,6 +6566,10 @@ def conflicts_note_text() -> str:
 - `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally replaces the upstream `alloys_expenditure_megastructures` object so late-game megastructure reserves obey Director survival, recovery, prep, and commit gates.
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally replaces upstream Gigas special-resource megastructure budget objects: `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
 - `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
+- `common/technology/zzzz_staid_01_unlock_technology_technology.txt` intentionally replaces copied vanilla/Gigas/NSC3/ESC/Starbase Extended technology objects with Director route AI weights.
+- `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt` and `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` intentionally replace copied AP/tradition objects with Director route AI weights.
+- `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` intentionally replaces copied Gigas/vanilla-compatible megastructure starts for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft priority.
+- `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` intentionally replaces copied ESC starbase reactor support with Director crisis-starbase pressure.
 
 ## Expected Additive Surfaces
 
@@ -6290,8 +6591,9 @@ def conflicts_note_text() -> str:
 
 ## NSC3/ESC Design Policy
 
-- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.
-- P8 fleet-throughput economy gates provide the v1 usage path without overwriting parent ship/component design logic.
+- NSC3 and ESC unlock technologies now have copied source-object route AI weights.
+- Fleet-throughput economy gates provide the current ship-use path without guessing direct ship-design templates.
+- ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 
 ## Review Rules
 
@@ -6418,7 +6720,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "- Defensive or high-threat empires get additive starbase reserve subplans only after recovery and short-runway deficit gates are clear.",
         "- Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.",
-        "- Direct starbase module/building weights remain deferred until each parent surface can be proven safe to override.",
+        "- The generated ESC starbase reactor override adds direct crisis-starbase AI weight support; other starbase modules/buildings remain manual-review candidates.",
         "",
         "## Trade-Capacity Policy",
         "",
@@ -6435,13 +6737,13 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "## Unlock-Research Policy",
         "",
         "- The unlock-research policy is mandatory survival pressure after the opening curve, not a surplus-only luxury; it keeps physics, society, engineering, and unity pressure on until core Mega Engineering, Mega Shipyard, Gigas, NSC3, and ESC unlock paths are reachable.",
-        "- Direct technology/AP/tradition object overrides are deferred until their parent surfaces are copied with source context; generated references are limited to validator-checked technology gates.",
+        "- Direct technology/AP/tradition route overrides are emitted from copied source objects and trace back to the policy matrix and route override report.",
         "",
         "## Mega/Giga Build Priority Policy",
         "",
         "- ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.",
-        "- Direct individual megastructure/gigastructure build-weight overrides are the next replacement surface once each parent object can be copied with source context.",
-        "- Exotic or path-specific projects remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.",
+        "- Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts.",
+        "- Exotic projects outside those route starts remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.",
         "",
         "## Planetary-Capacity Policy",
         "",
@@ -6451,8 +6753,8 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "## NSC3/ESC Design Policy",
         "",
-        "- Direct NSC3/ESC ship and component design overrides remain required follow-up surfaces when observer evidence or source inspection proves parent AI cannot use the new hulls or components at crisis scale.",
-        "- Warning rows in the P11 integration audit are treated as parent-design gaps to inventory, copy with source context, and promote into replacement policy when needed.",
+        "- NSC3 and ESC unlock technologies now have copied source-object route AI weights and are paired with fleet-throughput economy gates.",
+        "- ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.",
         "",
         "## Threat-Response Policy",
         "",

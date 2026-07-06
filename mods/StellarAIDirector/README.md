@@ -49,8 +49,13 @@ Missing required Steam parents during generation: none.
   readiness economy subplan capped at alloys 7, energy 6, and naval cap 40.
 - Keeps unknown or unclassified war goals inert and does not declare wars,
   join wars, add punitive casus belli, or override diplomatic actions.
-- Leaves NSC3/ESC ship and component design weights untouched in v1 unless
-  observer evidence proves parent AI cannot use them.
+- Adds full-object route overrides for Mega Engineering, Mega Shipyard, Gigas
+  planetcraft/systemcraft unlocks, NSC3 hull unlocks, ESC high-tier component
+  unlocks, AP/tradition pressure, economy megastructures, planetcraft, war moon,
+  systemcraft, and ESC starbase reactor support.
+- Leaves ESC internal component-template `key = ...` overrides and direct NSC3
+  ship-design templates as manual-review blockers until the atlas models those
+  loader surfaces safely.
 
 ## Load Order
 

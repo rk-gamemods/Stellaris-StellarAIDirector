@@ -1,6 +1,6 @@
 {
   "collection_name": "4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity",
-  "mod_count": 120,
+  "mod_count": 119,
   "mods": [
     {
       "name": "Battle Debris - Starship Graveyards",
@@ -715,12 +715,6 @@
       "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1595876588",
       "position": 119,
       "steam_id": "1595876588"
-    },
-    {
-      "name": "Stellar AI Director",
-      "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\mods\\StellarAIDirector",
-      "position": 120,
-      "steam_id": ""
     }
   ],
   "optional_integrations": {

@@ -12,7 +12,10 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | Gigas special-resource reserves | `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` | medium | intentional full-object overrides of Gigas megastructure special-resource budgets |
 | economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |
 | fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |
-| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |
+| route unlock overrides | `common/technology/zzzz_staid_01_unlock_technology_technology.txt` | high | full-object copied source overrides add Director AI weights for Mega Engineering, Mega Shipyard, Gigas, NSC3, ESC, and starbase unlock chains |
+| AP/tradition route overrides | `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` | medium | full-object copied source overrides add Director AI weights for Gigas, planetcraft, conquest escape, economy, and crowded tall routes |
+| megastructure route overrides | `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` | high | full-object copied source overrides add Director AI weights for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft starts |
+| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt`, `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` | medium | additive economy reserves plus copied ESC starbase reactor AI weight support when crisis pressure is safe |
 | planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |
 | trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |
 | ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |
@@ -23,7 +26,7 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 ## Selected Playset
 
 - Collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-- Mod count: 120
+- Mod count: 119
 - Irony patch mod enabled: True
 
 ## Required Parent Detection
@@ -63,11 +66,11 @@ Stellaris 4.4 treats `trade` as a standard advanced resource and the market reso
 
 ## Unlock-Research Policy
 
-The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Direct technology/AP/tradition object overrides are still handled cautiously, but the economic plan no longer waits for comfortable surplus before pushing research.
+The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Full-object copied source overrides now add direct AI weights for those route unlocks and for selected AP/tradition route pressure.
 
 ## Static-Defense Policy
 
-Defensive starbase investment is expressed as additive `basic_economy_plan` subplans because vanilla economic plans explicitly merge subplans safely. The v1 policy requires no recovery mode, no short-runway core deficit, safe alloy/energy income and stockpiles, then either defensive ethics without an aggressive under-cap fleet push or high threat pressure. Direct starbase module/building weights remain deferred until a safe parent surface can be proven for each object.
+Defensive starbase investment is expressed as additive `basic_economy_plan` subplans plus a copied ESC starbase reactor override. The v1 policy requires no recovery mode, no short-runway core deficit, safe alloy/energy income and stockpiles, then either defensive ethics without an aggressive under-cap fleet push or high threat pressure.
 
 ## Planetary-Capacity Policy
 
@@ -75,7 +78,7 @@ Expanded planet and building capacity is covered in v1 through a safe country-le
 
 ## NSC3/ESC Design Policy
 
-Direct NSC3/ESC ship and component design overrides are deferred until observer evidence shows parent AI weights cannot use the new hulls or components. The P11 integration audit must have no failed rows; warning rows are tracked as parent-design gaps rather than automatic override targets.
+NSC3 and ESC unlock usage now has direct technology AI-weight overrides plus fleet-throughput economy pressure. ESC internal component-template `key = ...` entries and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 
 ## Threat-Response Policy
 
@@ -85,9 +88,9 @@ The V1 threat-response feature adds observer opinion, timed flags, and a capped 
 
 ## v1 Boundaries
 
-- Direct technology/AP/tradition object overrides are deferred until each object is copied with full source context; the replacement economy plan already treats those unlocks as mandatory targets.
-- Direct Mega Shipyard object weights remain deferred unless a safe parent object surface is proven; v1 maps the payoff through country-level economy-plan targets and source ROI evidence.
-- Direct starbase module/building weights remain deferred; v1 uses a country-level static-defense economy target rather than overriding Starbase Extended objects.
+- Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.
+- Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.
+- Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.
 - Direct planet building/job overrides are not emitted in v1; no generated building/job references are used.
-- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.
+- ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 - Exotic Gigas superprojects remain outside the main decision path until the core reserve/commit/payoff loop is observer-tested, but their special-resource budget objects are gated by Director survival/recovery state.
