@@ -5,7 +5,7 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 ## mega_engineering_core
 
 - Objects: 1269
-- Dependency edges: 3731
+- Dependency edges: 3735
 - Policy rows: 1269
 - Manual/external dependency targets: 847
 
@@ -105,7 +105,7 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 ## economy_megastructure_core
 
 - Objects: 243
-- Dependency edges: 664
+- Dependency edges: 665
 - Policy rows: 243
 - Manual/external dependency targets: 83
 
@@ -201,6 +201,56 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `sentient_metal_upkeep_ships` | ai_budget | parent_ai_partial | observe | `common/ai_budget/00_sentient_metal_budget.txt` |
 | `supertensiles_upkeep_buffer` | ai_budget | parent_ai_partial | observe | `common/ai_budget/giga_amb_budget.txt` |
 | `supertensiles_upkeep_megastructures` | ai_budget | parent_ai_partial | observe | `common/ai_budget/giga_amb_budget.txt` |
+
+## research_throughput_infrastructure
+
+- Objects: 261
+- Dependency edges: 471
+- Policy rows: 261
+- Manual/external dependency targets: 56
+
+| object | type | support | action | source |
+| --- | --- | --- | --- | --- |
+| `building_adakkaria_patriotic_institute` | building | parent_ai_absent | observe | `common/buildings/19_cosmic_storm_buildings.txt` |
+| `building_archaeostudies_faculty` | building | parent_ai_absent | observe | `common/buildings/~stellarai_research_buildings.txt` |
+| `building_archaeostudies_faculty` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
+| `building_forever_cruise_passenger_research` | building | parent_ai_absent | observe | `common/buildings/24_nomads_buildings.txt` |
+| `building_giga_aeternum_megacity_research` | building | parent_ai_absent | observe | `common/buildings/giga_aeternum_buildings.txt` |
+| `building_giga_blokkat_hyperdimensional_research` | building | parent_ai_absent | observe | `common/buildings/giga_blokkat_buildings.txt` |
+| `building_giga_institute_1` | building | parent_ai_complete | observe | `common/buildings/giga_buildings.txt` |
+| `building_giga_institute_2` | building | parent_ai_complete | observe | `common/buildings/giga_buildings.txt` |
+| `building_giga_iodizium_research` | building | parent_ai_complete | observe | `common/buildings/giga_buildings.txt` |
+| `building_giga_matrioshka_brain_uplink_research` | building | parent_ai_absent | observe | `common/buildings/giga_matrioshka_brain_uplinks.txt` |
+| `building_giga_research_lab_1` | building | parent_ai_absent | observe | `common/buildings/giga_buildings.txt` |
+| `building_giga_research_lab_2` | building | parent_ai_absent | observe | `common/buildings/giga_buildings.txt` |
+| `building_giga_supercomputer_1` | building | parent_ai_complete | observe | `common/buildings/giga_buildings.txt` |
+| `building_giga_supercomputer_2` | building | parent_ai_complete | observe | `common/buildings/giga_buildings.txt` |
+| `building_illicit_research_labs` | building | parent_ai_complete | observe | `common/buildings/14_branch_office_buildings.txt` |
+| `building_institute` | building | parent_ai_complete | observe | `common/buildings/~stellarai_research_buildings.txt` |
+| `building_institute` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
+| `building_katzen_science` | building | parent_ai_absent | observe | `common/buildings/giga_flusion_buildings.txt` |
+| `building_low_tech_research_lab` | building | parent_ai_absent | observe | `common/buildings/16_first_contact_buildings.txt` |
+| `building_primitive_research` | building | parent_ai_absent | observe | `common/buildings/11_primitive_buildings.txt` |
+| `building_private_research_initiative` | building | parent_ai_complete | observe | `common/buildings/14_branch_office_buildings.txt` |
+| `building_research_efficiency_1` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
+| `building_research_lab_1` | building | parent_ai_absent | observe | `common/buildings/~stellarai_research_buildings.txt` |
+| `building_research_lab_1` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
+| `building_research_lab_2` | building | parent_ai_absent | observe | `common/buildings/~stellarai_research_buildings.txt` |
+| `building_research_lab_2` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
+| `building_research_lab_3` | building | parent_ai_absent | observe | `common/buildings/~stellarai_research_buildings.txt` |
+| `building_research_lab_3` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
+| `building_research_upkeep_1` | building | parent_ai_complete | observe | `common/buildings/05_research_buildings.txt` |
+| `building_supercomputer` | building | parent_ai_complete | observe | `common/buildings/~stellarai_research_buildings.txt` |
+| `building_supercomputer` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
+| `esc_building_central_research_bureau` | building | parent_ai_absent | observe | `common/buildings/esc_buildings_general.txt` |
+| `esc_building_technology_institute` | building | parent_ai_absent | observe | `common/buildings/esc_buildings_general.txt` |
+| `decision_giga_pcc_science_district` | decision | parent_ai_partial | manual_review | `common/decisions/giga_ai_helpers.txt` |
+| `d_artifacts_research_1` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
+| `d_artifacts_research_2` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
+| `d_artifacts_research_3` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
+| `d_giga_job_upkeep_researchers_neg` | deposit | parent_ai_complete | observe | `common/deposits/giga_job_size_deposits.txt` |
+| `d_giga_job_upkeep_researchers_pos` | deposit | parent_ai_complete | observe | `common/deposits/giga_job_size_deposits.txt` |
+| `d_payback_habitat_research` | deposit | parent_ai_absent | observe | `common/deposits/09_first_contact_deposits.txt` |
 
 ## planetcraft_route
 
@@ -382,7 +432,7 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 ## esc_component_route
 
 - Objects: 888
-- Dependency edges: 2244
+- Dependency edges: 2275
 - Policy rows: 888
 - Manual/external dependency targets: 747
 
@@ -432,7 +482,7 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 ## crowded_tall_route
 
 - Objects: 1691
-- Dependency edges: 2884
+- Dependency edges: 2953
 - Policy rows: 1691
 - Manual/external dependency targets: 464
 
@@ -482,7 +532,7 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 ## conquest_escape_route
 
 - Objects: 637
-- Dependency edges: 1231
+- Dependency edges: 1232
 - Policy rows: 637
 - Manual/external dependency targets: 332
 

@@ -192,6 +192,7 @@ ROUTE_OBJECT_HINTS = {
     "mega_shipyard_core": ("mega_shipyard", "shipyard", "headquarters"),
     "economy_megastructure_core": ("dyson", "gigaforge", "nidavellir", "matrioshka", "strategic_factory"),
     "gigas_special_resource_core": ("sentient_metal", "negative_mass", "megaconstruction", "supertensiles", "dark_matter"),
+    "research_throughput_infrastructure": ("research_lab", "research", "institute", "supercomputer", "archaeostudies", "science"),
     "planetcraft_route": ("planetcraft", "planet_assembly", "planet_behemoth", "celestial_printing"),
     "war_moon_route": ("war_moon", "attack_moon", "lunar"),
     "systemcraft_route": ("systemcraft", "war_system", "planet_behemoth", "celestial_printing"),
@@ -206,6 +207,8 @@ GENERATED_SURFACE_FOLDERS = {
     "ai_budget": "ai_budget",
     "ascension_perks": "ascension_perk",
     "component_templates": "component_template",
+    "buildings": "building",
+    "districts": "district",
     "economic_plans": "economic_plan",
     "megastructures": "megastructure",
     "opinion_modifiers": "opinion_modifier",
@@ -282,6 +285,14 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "tr_prosperity_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "economy_megastructure_core", "weight": 85000, "file_key": "02_perks_traditions"},
     {"object_id": "tr_adaptability_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 75000, "file_key": "02_perks_traditions"},
     {"object_id": "tr_mercantile_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 65000, "file_key": "02_perks_traditions"},
+    # Direct research-throughput infrastructure for the observed low-tech/high-stockpile failure mode.
+    {"object_id": "building_research_lab_1", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 140000, "coefficient": "8", "additional_weight": "600", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_research_lab_2", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 160000, "coefficient": "10", "additional_weight": "900", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_research_lab_3", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 180000, "coefficient": "12", "additional_weight": "1200", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_institute", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 150000, "coefficient": "8", "additional_weight": "800", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_supercomputer", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 150000, "coefficient": "8", "additional_weight": "800", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_archaeostudies_faculty", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 130000, "coefficient": "6", "additional_weight": "500", "file_key": "06_research_infrastructure"},
+    {"object_id": "district_hab_science", "object_type": "district", "mod_id": "vanilla", "source_file": "common/districts/03_habitat_districts.txt", "route_id": "crowded_tall_route", "weight": 110000, "coefficient": "4", "additional_weight": "500", "file_key": "06_research_infrastructure"},
     # Concrete build-priority objects for economy multipliers, Mega Shipyard, planetcraft, war moons, and systemcraft.
     {"object_id": "dyson_sphere_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_dyson_sphere.txt", "route_id": "economy_megastructure_core", "weight": 130000, "file_key": "03_megastructures"},
     {"object_id": "mega_shipyard_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_mega_shipyard.txt", "route_id": "mega_shipyard_core", "weight": 150000, "file_key": "03_megastructures"},
@@ -3078,6 +3089,42 @@ def replace_top_level_child_block(block_text: str, child_key: str, replacement_t
     return "\n".join(output) + "\n"
 
 
+def replace_or_insert_top_level_scalar(block_text: str, child_key: str, replacement_line: str) -> str:
+    lines = block_text.rstrip().splitlines()
+    output: list[str] = []
+    depth = 0
+    replaced = False
+    child_pattern = re.compile(rf"^[ \t]*{re.escape(child_key)}[ \t]*=")
+    for line in lines:
+        if depth == 1 and child_pattern.match(line):
+            output.append(replacement_line)
+            replaced = True
+        else:
+            output.append(line)
+        depth += _brace_delta(line)
+    if replaced:
+        return "\n".join(output) + "\n"
+
+    closing_index = len(output) - 1
+    while closing_index >= 0 and not re.match(r"^[ \t]*}\s*$", output[closing_index]):
+        closing_index -= 1
+    if closing_index < 0:
+        raise ValueError(f"Generated block has no final closing brace for scalar {child_key}")
+    output[closing_index:closing_index] = [replacement_line]
+    return "\n".join(output) + "\n"
+
+
+def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> str:
+    coefficient = str(target.get("coefficient", "4"))
+    additional_weight = str(target.get("additional_weight", "400"))
+    block = replace_or_insert_top_level_scalar(block, "ai_weight_coefficient", f"\tai_weight_coefficient = {coefficient}")
+    return replace_or_insert_top_level_scalar(
+        block,
+        "additional_ai_weight",
+        f"\tadditional_ai_weight = {additional_weight}",
+    )
+
+
 ROUTE_RESEARCH_GATES = {
     "mega_engineering_core": "staid_core_unlock_research_priority_ready",
     "mega_shipyard_core": "staid_core_unlock_research_priority_ready",
@@ -3304,6 +3351,8 @@ def route_override_target_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict
             raise ValueError(f"Missing source file for route override {row['object_id']}: {source_path}")
         row["source_path"] = str(source_path)
         row["generated_folder"] = generated_common_folder_for_type(row["object_type"])
+        row.setdefault("coefficient", "")
+        row.setdefault("additional_weight", "")
         row["generated_file"] = (
             MOD_ROOT
             / "common"
@@ -3317,7 +3366,7 @@ def route_override_target_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict
 def route_override_file_header(folder: str) -> str:
     return (
         "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
-        "# Full-object override: copied parent/vanilla objects with Director-owned ai_weight.\n"
+        "# Full-object override: copied parent/vanilla objects with Director-owned AI weighting.\n"
         "# Required source-local @variables are copied into this file to preserve parent parse context.\n"
         "# Trace each object through research/stellar-ai/object-atlas/policy-matrix-2026-07-06.csv.\n\n"
         f"# Generated surface: common/{folder}\n\n"
@@ -3329,7 +3378,10 @@ def route_override_object_text(target: dict[str, Any], object_names: dict[str, s
     block = extract_top_level_object_text(source_text, target["object_id"])
     if target["object_type"] == "megastructure" and object_names is not None:
         block = strip_optional_absent_planet_classes(block, object_names)
-    block = replace_top_level_child_block(block, "ai_weight", director_ai_weight_block(target))
+    if target["object_type"] in {"building", "district"}:
+        block = director_infrastructure_weight_block(block, target)
+    else:
+        block = replace_top_level_child_block(block, "ai_weight", director_ai_weight_block(target))
     block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
     return (
         f"# policy_route = {target['route_id']}; source = {target['source_file']}; "
@@ -5106,6 +5158,8 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
     economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
     triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
     tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
+    buildings_path = repo_root / "mods/StellarAIDirector/common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt"
+    districts_path = repo_root / "mods/StellarAIDirector/common/districts/zzzz_staid_06_research_infrastructure_districts.txt"
     required_economy_terms = {
         "Stellar AI Director planetary capacity reserve",
         "staid_planetary_capacity_growth_ready = yes",
@@ -5120,22 +5174,32 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
     }
     required_note_terms = {
         "planetary-capacity policy",
-        "no generated building/job references",
+        "direct research infrastructure overrides",
     }
-    if not (economy_path.exists() and triggers_path.exists() and tuning_path.exists()):
+    if not (
+        economy_path.exists()
+        and triggers_path.exists()
+        and tuning_path.exists()
+        and buildings_path.exists()
+        and districts_path.exists()
+    ):
         return False
     try:
         parse_file(economy_path)
         parse_file(triggers_path)
+        parse_file(buildings_path)
+        parse_file(districts_path)
     except PDXParseError:
         return False
     economy = read_text(economy_path)
     triggers = read_text(triggers_path)
-    tuning = read_text(tuning_path).lower()
+    tuning = (read_text(tuning_path) + "\n" + read_text(buildings_path) + "\n" + read_text(districts_path)).lower()
     return (
         all(term in economy for term in required_economy_terms)
         and all(term in triggers for term in required_trigger_terms)
         and all(term in tuning for term in required_note_terms)
+        and "building_research_lab_3" in tuning
+        and "district_hab_science" in tuning
     )
 
 
@@ -6975,9 +7039,9 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
   their owner's space while the homeland is under wartime pressure.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
-- Adds a planetary-capacity economic subplan for safe mineral/energy-backed
-  pop and empire-size growth without direct building/job overrides or trade
-  logistics collapse.
+- Adds a planetary-capacity economic subplan plus direct research lab and
+  habitat science district construction weights for safe mineral/energy-backed
+  tall growth without broad job automation rewrites or trade logistics collapse.
 - Adds mandatory unlock-research pressure so AI empires keep pushing
   engineering/research/unity toward Mega Engineering, Mega Shipyard,
   planetcraft/systemcraft chains, NSC hulls, and ESC component tiers.
@@ -7118,7 +7182,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Planetary-Capacity Policy",
             "",
-            "Expanded planet and building capacity is covered in v1 through a safe country-level economic-plan subplan, not direct building or job references. The policy raises mineral/energy, pop, and empire-size targets only when recovery and short-runway deficit gates are clear.",
+            "Expanded planet and building capacity is covered through a safe country-level economic-plan subplan plus direct research infrastructure overrides for Stellar AI research labs and the vanilla habitat science district. The policy raises mineral/energy, pop, and empire-size targets only when recovery and short-runway deficit gates are clear, then pushes labs/habitat science with copied source objects and Director-owned coefficients.",
             "",
             "## NSC3/ESC Design Policy",
             "",
@@ -7135,7 +7199,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "- Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.",
             "- Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.",
             "- Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.",
-            "- Direct planet building/job overrides are not emitted in v1; no generated building/job references are used.",
+            "- Direct research infrastructure overrides are emitted for copied Stellar AI research labs and the habitat science district; broad job automation and generic planet-building rewrites remain deferred.",
             "- ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.",
             "- Exotic Gigas superprojects remain outside the main decision path until the core reserve/commit/payoff loop is observer-tested, but their special-resource budget objects are gated by Director survival/recovery state.",
         ]
@@ -7196,6 +7260,8 @@ def conflicts_note_text() -> str:
 - `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt` and `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` intentionally replace copied AP/tradition objects with Director route AI weights.
 - `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` intentionally replaces copied Gigas/vanilla-compatible megastructure starts for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft priority.
 - `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` intentionally replaces copied ESC starbase reactor support with Director crisis-starbase pressure.
+- `common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt` intentionally replaces copied Stellar AI research lab, institute, supercomputer, and archaeostudies objects with Director research-throughput construction coefficients while preserving parent rare-resource guards.
+- `common/districts/zzzz_staid_06_research_infrastructure_districts.txt` intentionally replaces copied vanilla `district_hab_science` with Director crowded-tall habitat research construction weight.
 
 ## Expected Additive Surfaces
 
@@ -7387,7 +7453,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.",
         "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.",
-        "- No generated building/job references are emitted in this slice; direct planet automation rewrites remain a required follow-up when a specific missing parent surface is proven.",
+        "- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.",
         "",
         "## NSC3/ESC Design Policy",
         "",

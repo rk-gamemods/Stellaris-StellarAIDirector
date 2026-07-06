@@ -44,9 +44,9 @@ Missing required Steam parents during generation: none.
   their owner's space while the homeland is under wartime pressure.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
-- Adds a planetary-capacity economic subplan for safe mineral/energy-backed
-  pop and empire-size growth without direct building/job overrides or trade
-  logistics collapse.
+- Adds a planetary-capacity economic subplan plus direct research lab and
+  habitat science district construction weights for safe mineral/energy-backed
+  tall growth without broad job automation rewrites or trade logistics collapse.
 - Adds mandatory unlock-research pressure so AI empires keep pushing
   engineering/research/unity toward Mega Engineering, Mega Shipyard,
   planetcraft/systemcraft chains, NSC hulls, and ESC component tiers.

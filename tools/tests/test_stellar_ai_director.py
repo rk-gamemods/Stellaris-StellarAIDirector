@@ -179,6 +179,34 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
+    def test_research_infrastructure_overrides_drive_labs_and_habitat_science(self):
+        buildings_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt"
+        districts_path = MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt"
+        parse_file(buildings_path)
+        parse_file(districts_path)
+        buildings_text = buildings_path.read_text(encoding="utf-8")
+        districts_text = districts_path.read_text(encoding="utf-8")
+        for marker in (
+            "# policy_route = research_throughput_infrastructure",
+            "building_research_lab_1 = {",
+            "building_research_lab_2 = {",
+            "building_research_lab_3 = {",
+            "building_institute = {",
+            "building_supercomputer = {",
+            "building_archaeostudies_faculty = {",
+            "ai_weight_coefficient = 12",
+            "additional_ai_weight = 1200",
+            "script = stellarai/rare_resource_guard_modifiers",
+        ):
+            self.assertIn(marker, buildings_text)
+        for marker in (
+            "# policy_route = crowded_tall_route",
+            "district_hab_science = {",
+            "ai_weight_coefficient = 4",
+            "additional_ai_weight = 500",
+        ):
+            self.assertIn(marker, districts_text)
+
     def test_unresolved_source_local_variables_are_reported(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             mod_root = Path(temp_dir)
@@ -208,6 +236,8 @@ class GeneratedModValidityTests(unittest.TestCase):
             "systemcraft",
             "mega_shipyard",
             "esc_tech_dark_matter_power_core_2",
+            "building_research_lab_1",
+            "district_hab_science",
         ):
             self.assertIn(marker, atlas_text)
 
@@ -239,6 +269,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "crowded_tall_route",
             "conquest_escape_route",
             "fallen_empire_benchmark_route",
+            "research_throughput_infrastructure",
         }
         self.assertTrue(required_routes.issubset(covered_routes))
         for row in rows:

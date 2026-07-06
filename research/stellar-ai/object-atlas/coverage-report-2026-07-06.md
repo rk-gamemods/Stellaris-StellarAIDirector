@@ -17,9 +17,9 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 ## Artifact Counts
 
 - Atlas rows: 30724
-- Dependency edges: 32864
+- Dependency edges: 33125
 - Parent-AI support rows: 30705
-- Policy rows: 6688
+- Policy rows: 6940
 - Parser gaps: 19
 
 ## Counts By Mod And Type

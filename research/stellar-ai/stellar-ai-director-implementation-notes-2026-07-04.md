@@ -84,7 +84,7 @@ Defensive starbase investment is expressed as additive `basic_economy_plan` subp
 
 ## Planetary-Capacity Policy
 
-Expanded planet and building capacity is covered in v1 through a safe country-level economic-plan subplan, not direct building or job references. The policy raises mineral/energy, pop, and empire-size targets only when recovery and short-runway deficit gates are clear.
+Expanded planet and building capacity is covered through a safe country-level economic-plan subplan plus direct research infrastructure overrides for Stellar AI research labs and the vanilla habitat science district. The policy raises mineral/energy, pop, and empire-size targets only when recovery and short-runway deficit gates are clear, then pushes labs/habitat science with copied source objects and Director-owned coefficients.
 
 ## NSC3/ESC Design Policy
 
@@ -101,6 +101,6 @@ The V1 threat-response feature adds observer opinion, timed flags, and a capped 
 - Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.
 - Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.
 - Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.
-- Direct planet building/job overrides are not emitted in v1; no generated building/job references are used.
+- Direct research infrastructure overrides are emitted for copied Stellar AI research labs and the habitat science district; broad job automation and generic planet-building rewrites remain deferred.
 - ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 - Exotic Gigas superprojects remain outside the main decision path until the core reserve/commit/payoff loop is observer-tested, but their special-resource budget objects are gated by Director survival/recovery state.

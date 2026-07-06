@@ -1,4 +1,11 @@
 object_type,object_name,generated_file,parent_has_object,classification,reason
+building,building_archaeostudies_faculty,common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,no,additive_director_object,generated object name is new in validated source inventory
+building,building_institute,common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,no,additive_director_object,generated object name is new in validated source inventory
+building,building_research_lab_1,common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,no,additive_director_object,generated object name is new in validated source inventory
+building,building_research_lab_2,common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,no,additive_director_object,generated object name is new in validated source inventory
+building,building_research_lab_3,common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,no,additive_director_object,generated object name is new in validated source inventory
+building,building_supercomputer,common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,no,additive_director_object,generated object name is new in validated source inventory
+district,district_hab_science,common/districts/zzzz_staid_06_research_infrastructure_districts.txt,no,additive_director_object,generated object name is new in validated source inventory
 on_action,on_game_start_country,common/on_actions/zzz_staid_load_proof_on_actions.txt,no,additive_director_object,generated object name is new in validated source inventory
 on_action,on_monthly_pulse,common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt,no,additive_director_object,generated object name is new in validated source inventory
 on_action,on_war_beginning,common/on_actions/zzz_staid_threat_response_on_actions.txt,no,additive_director_object,generated object name is new in validated source inventory

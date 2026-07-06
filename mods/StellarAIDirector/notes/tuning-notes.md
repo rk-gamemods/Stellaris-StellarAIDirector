@@ -71,7 +71,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 - Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.
 - The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.
-- No generated building/job references are emitted in this slice; direct planet automation rewrites remain a required follow-up when a specific missing parent surface is proven.
+- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.
 
 ## NSC3/ESC Design Policy
 

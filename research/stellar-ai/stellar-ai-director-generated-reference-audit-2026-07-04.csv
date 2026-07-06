@@ -404,6 +404,7 @@ technology,tech_Carrier_1,has_technology,common/technology/zzzz_staid_01_unlock_
 technology,tech_Dreadnought_1,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
 technology,tech_Dreadnought_1,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
 technology,tech_Flagship_1,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
+technology,tech_basic_science_lab_1,has_technology,common/districts/zzzz_staid_06_research_infrastructure_districts.txt,ok,reference exists in source or generated inventory
 technology,tech_ehof_sentient_tier_1,has_technology,common/economic_plans/zzzz_staid_additive_economic_plan.txt,ok,reference exists in source or generated inventory
 technology,tech_ehof_sentient_tier_1,has_technology,common/scripted_triggers/zzz_staid_decision_state_triggers.txt,ok,reference exists in source or generated inventory
 technology,tech_ehof_sentient_tier_1,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
