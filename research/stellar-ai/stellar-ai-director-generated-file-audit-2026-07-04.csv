@@ -12,7 +12,7 @@ common/on_actions/zzz_staid_threat_response_on_actions.txt,on_actions,on_action,
 common/opinion_modifiers/zzz_staid_threat_response_opinions.txt,opinion_modifiers,opinion_modifier,ok,ok,10,0,ok,valid generated PDXScript surface
 common/script_values/zzz_staid_roi_values.txt,script_values,scripted_value,ok,ok,11,0,ok,valid generated PDXScript surface
 common/script_values/zzz_staid_threat_response_values.txt,script_values,scripted_value,ok,ok,21,0,ok,valid generated PDXScript surface
-common/scripted_triggers/zzz_staid_decision_state_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,36,0,ok,valid generated PDXScript surface
+common/scripted_triggers/zzz_staid_decision_state_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,46,0,ok,valid generated PDXScript surface
 common/scripted_triggers/zzz_staid_threat_response_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,18,0,ok,valid generated PDXScript surface
 common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt,starbase_buildings,starbase_building,ok,ok,1,0,ok,valid generated PDXScript surface
 common/technology/zzzz_staid_01_unlock_technology_technology.txt,technology,technology,ok,ok,65,0,ok,valid generated PDXScript surface

@@ -232,6 +232,53 @@ staid_core_unlock_research_priority_ready = {
 	}
 }
 
+staid_phase_mega_engineering_rush = {
+	NOT = { has_technology = tech_mega_engineering }
+	staid_core_unlock_research_priority_ready = yes
+}
+
+staid_phase_galactic_wonders_entry = {
+	has_technology = tech_mega_engineering
+	NOT = { has_ascension_perk = ap_galactic_wonders }
+	OR = {
+		staid_unity_sink_priority_ready = yes
+		staid_surplus_sink_pressure = yes
+		years_passed > 79
+	}
+}
+
+staid_phase_gigastructural_constructs_rush = {
+	has_ascension_perk = ap_galactic_wonders
+	NOT = { has_ascension_perk = ap_gigastructural_constructs }
+	OR = {
+		staid_core_unlock_research_priority_ready = yes
+		staid_unity_sink_priority_ready = yes
+		years_passed > 79
+	}
+}
+
+staid_phase_planetcraft_rush = {
+	has_ascension_perk = ap_gigastructural_constructs
+	NOT = { has_technology = giga_tech_planet_assembly }
+	staid_planetcraft_research_priority_ready = yes
+}
+
+staid_phase_systemcraft_escalation = {
+	has_ascension_perk = ap_celestial_printing
+	NOT = { has_technology = giga_tech_war_system_1 }
+	staid_systemcraft_research_priority_ready = yes
+}
+
+staid_phase_fleet_conversion_repeatables = {
+	OR = {
+		has_technology = tech_Flagship_1
+		has_technology = giga_tech_war_moon_2
+		has_technology = giga_tech_war_system_1
+		has_technology = esc_tech_dark_matter_power_core_2
+	}
+	staid_modded_fleet_conversion_ready = yes
+}
+
 staid_shipyard_expansion_ready = {
 	staid_fleet_buildup_economy_safe = yes
 	has_technology = tech_mega_shipyard
@@ -248,6 +295,64 @@ staid_fleet_payoff_exploitation_ready = {
 	OR = {
 		staid_shipyard_expansion_ready = yes
 		AND = { is_at_war = yes highest_threat > 35 }
+	}
+}
+
+staid_advanced_component_resource_support_ready = {
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		has_monthly_income = { resource = volatile_motes value > 5 }
+		has_monthly_income = { resource = exotic_gases value > 5 }
+		has_monthly_income = { resource = rare_crystals value > 5 }
+		has_monthly_income = { resource = sr_dark_matter value > 1 }
+		has_monthly_income = { resource = sr_zro value > 1 }
+		has_monthly_income = { resource = nanites value > 1 }
+		has_monthly_income = { resource = giga_sr_sentient_metal value > 1 }
+		has_monthly_income = { resource = giga_sr_negative_mass value > 1 }
+		has_monthly_income = { resource = giga_sr_amb_megaconstruction value > 1 }
+		staid_resource_waste_pressure = yes
+	}
+}
+
+staid_nsc3_capital_hull_unlock_ready = {
+	is_nomadic = no
+	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		staid_phase_fleet_conversion_repeatables = yes
+		staid_fleet_buildup_economy_safe = yes
+		AND = {
+			years_passed > 79
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_esc_component_unlock_ready = {
+	is_nomadic = no
+	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	staid_advanced_component_resource_support_ready = yes
+	OR = {
+		staid_phase_fleet_conversion_repeatables = yes
+		staid_fleet_buildup_economy_safe = yes
+		AND = {
+			years_passed > 79
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_modded_fleet_conversion_ready = {
+	staid_fleet_payoff_exploitation_ready = yes
+	staid_advanced_component_resource_support_ready = yes
+	OR = {
+		has_technology = tech_Carrier_1
+		has_technology = tech_Dreadnought_1
+		has_technology = tech_Flagship_1
+		has_technology = giga_tech_war_moon_2
+		has_technology = giga_tech_war_system_1
+		has_technology = esc_tech_dark_matter_power_core_2
 	}
 }
 

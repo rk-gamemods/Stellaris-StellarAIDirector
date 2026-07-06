@@ -179,6 +179,32 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
+    def test_phase_machine_and_modded_conversion_gates_are_generated(self):
+        technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
+        trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        parse_file(trigger_path)
+        text = technology_path.read_text(encoding="utf-8") + trigger_path.read_text(encoding="utf-8")
+        for marker in (
+            "staid_phase_mega_engineering_rush = {",
+            "staid_phase_galactic_wonders_entry = {",
+            "staid_phase_gigastructural_constructs_rush = {",
+            "staid_phase_planetcraft_rush = {",
+            "staid_phase_systemcraft_escalation = {",
+            "staid_phase_fleet_conversion_repeatables = {",
+            "staid_nsc3_capital_hull_unlock_ready = {",
+            "staid_esc_component_unlock_ready = {",
+            "staid_advanced_component_resource_support_ready = {",
+            "staid_modded_fleet_conversion_ready = {",
+            "resource = sr_dark_matter value > 1",
+            "resource = giga_sr_sentient_metal value > 1",
+            "staid_nsc3_capital_hull_unlock_ready = yes",
+            "staid_esc_component_unlock_ready = yes",
+            "NOT = { staid_advanced_component_resource_support_ready = yes }",
+            "has_technology = tech_Flagship_1",
+            "has_technology = esc_tech_dark_matter_power_core_2",
+        ):
+            self.assertIn(marker, text)
+
     def test_research_infrastructure_overrides_drive_labs_and_habitat_science(self):
         buildings_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt"
         districts_path = MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt"

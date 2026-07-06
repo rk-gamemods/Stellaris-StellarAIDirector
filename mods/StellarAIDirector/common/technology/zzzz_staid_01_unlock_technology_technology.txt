@@ -1074,10 +1074,14 @@ tech_Carrier_1 = {
 		# source_object = technology:tech_Carrier_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = tech_Carrier_1 }
+		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
+		modifier = { factor = 6 has_technology = tech_Flagship_1 }
+		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 	}
 }
 
@@ -1124,10 +1128,14 @@ tech_Dreadnought_1 = {
 		# source_object = technology:tech_Dreadnought_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = tech_Carrier_1 }
+		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
+		modifier = { factor = 6 has_technology = tech_Flagship_1 }
+		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 	}
 }
 
@@ -1188,10 +1196,14 @@ tech_Flagship_1 = {
 		# source_object = technology:tech_Flagship_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = tech_Carrier_1 }
+		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
+		modifier = { factor = 6 has_technology = tech_Flagship_1 }
+		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 	}
 }
 
@@ -1248,10 +1260,14 @@ tech_heavycarrier_1 = {
 		# source_object = technology:tech_heavycarrier_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = tech_Carrier_1 }
+		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
+		modifier = { factor = 6 has_technology = tech_Flagship_1 }
+		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 	}
 }
 
@@ -1309,10 +1325,14 @@ tech_supercarrier_1 = {
 		# source_object = technology:tech_supercarrier_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = tech_Carrier_1 }
+		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
+		modifier = { factor = 6 has_technology = tech_Flagship_1 }
+		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 	}
 }
 
@@ -1383,10 +1403,14 @@ esc_tech_dark_matter_power_core_2 = {
 		# source_object = technology:esc_tech_dark_matter_power_core_2
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_esc_component_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = esc_tech_dark_matter_power_core_2 }
+		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
+		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
+		modifier = { factor = 0.25 NOT = { staid_advanced_component_resource_support_ready = yes } }
 	}
 }
 
@@ -1430,10 +1454,14 @@ esc_tech_strikecraft_5 = {
 		# source_object = technology:esc_tech_strikecraft_5
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_esc_component_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = esc_tech_dark_matter_power_core_2 }
+		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
+		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
+		modifier = { factor = 0.25 NOT = { staid_advanced_component_resource_support_ready = yes } }
 	}
 }
 
@@ -1475,10 +1503,14 @@ esc_tech_dreadnought_computer = {
 		# source_object = technology:esc_tech_dreadnought_computer
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_payoff_exploitation_ready = yes }
+		modifier = { factor = 4 staid_esc_component_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 has_technology = esc_tech_dark_matter_power_core_2 }
+		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
+		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
+		modifier = { factor = 0.25 NOT = { staid_advanced_component_resource_support_ready = yes } }
 	}
 }
 
