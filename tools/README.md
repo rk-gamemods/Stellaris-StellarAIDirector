@@ -8,6 +8,7 @@ Prefer small, documented tools with clear inputs and outputs.
 
 - Irony Mod Manager is the project-local tool for playset dependency, conflict, and load-order investigation.
 - CWTools diagnostics should be used for PDXScript syntax/schema feedback when editing gameplay scripts.
+- `python tools/build_stellar_ai_director_object_atlas.py` regenerates the Stellar AI Director object atlas, dependency edges, parent-AI support map, policy matrix, coverage report, and route report.
 - Runtime validation should inspect `error.log` first, then `game.log`.
 - Use generated script docs, current vanilla files, and source references before trusting an unfamiliar trigger, effect, modifier, scope, or folder path.
 

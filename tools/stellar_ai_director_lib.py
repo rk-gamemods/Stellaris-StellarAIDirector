@@ -67,6 +67,14 @@ INTEGRATION_POLICY_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-integration-
 INTEGRATION_POLICY_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-integration-policy-audit-2026-07-04.md"
 OBSERVER_SMOKE_SAVE_SUMMARY_JSON = RESEARCH_ROOT / "stellar-ai-director-observer-smoke-save-summary-2026-07-04.json"
 OBSERVER_SMOKE_SAVE_SUMMARY_MD = RESEARCH_ROOT / "stellar-ai-director-observer-smoke-save-summary-2026-07-04.md"
+OBJECT_ATLAS_ROOT = RESEARCH_ROOT / "object-atlas"
+OBJECT_ATLAS_SCHEMA_MD = OBJECT_ATLAS_ROOT / "schema.md"
+OBJECT_ATLAS_CSV = OBJECT_ATLAS_ROOT / "object-atlas-2026-07-06.csv"
+DEPENDENCY_EDGES_CSV = OBJECT_ATLAS_ROOT / "dependency-edges-2026-07-06.csv"
+AI_SUPPORT_MAP_CSV = OBJECT_ATLAS_ROOT / "parent-ai-support-map-2026-07-06.csv"
+POLICY_MATRIX_CSV = OBJECT_ATLAS_ROOT / "policy-matrix-2026-07-06.csv"
+OBJECT_ATLAS_COVERAGE_MD = OBJECT_ATLAS_ROOT / "coverage-report-2026-07-06.md"
+ROUTE_REPORT_MD = OBJECT_ATLAS_ROOT / "route-reports-2026-07-06.md"
 
 REQUIRED_MODS = {
     "3610149307": "Stellar AI",
@@ -137,6 +145,61 @@ INTEGRATION_SURFACE_FOLDERS = {
     "buildings": ("building", "P10"),
     "ship_sizes": ("ship_size", "P11"),
     "component_templates": ("component_template", "P11"),
+}
+
+ATLAS_COMMON_SURFACES = {
+    "technology": "technology",
+    "technologies": "technology",
+    "ascension_perks": "ascension_perk",
+    "traditions": "tradition",
+    "megastructures": "megastructure",
+    "buildings": "building",
+    "districts": "district",
+    "pop_jobs": "pop_job",
+    "resources": "resource",
+    "strategic_resources": "resource",
+    "deposits": "deposit",
+    "ship_sizes": "ship_size",
+    "component_templates": "component_template",
+    "section_templates": "section_template",
+    "starbase_modules": "starbase_module",
+    "starbase_buildings": "starbase_building",
+    "edicts": "edict",
+    "policies": "policy",
+    "decisions": "decision",
+    "scripted_triggers": "scripted_trigger",
+    "scripted_effects": "scripted_effect",
+    "script_values": "scripted_value",
+    "ai_budget": "ai_budget",
+    "economic_plans": "economic_plan",
+    "personalities": "personality",
+    "country_types": "country_type",
+}
+
+ATLAS_AI_SIGNAL_KEYS = {
+    "ai_weight",
+    "ai_weight_modifier",
+    "ai_will_do",
+    "ai_chance",
+    "ai_allow",
+    "ai_budget",
+    "ai_resource_production",
+    "weight",
+}
+
+ROUTE_OBJECT_HINTS = {
+    "mega_engineering_core": ("mega_engineering", "mega_shipyard", "megastructure"),
+    "mega_shipyard_core": ("mega_shipyard", "shipyard", "headquarters"),
+    "economy_megastructure_core": ("dyson", "gigaforge", "nidavellir", "matrioshka", "strategic_factory"),
+    "gigas_special_resource_core": ("sentient_metal", "negative_mass", "megaconstruction", "supertensiles", "dark_matter"),
+    "planetcraft_route": ("planetcraft", "planet_assembly", "planet_behemoth", "celestial_printing"),
+    "war_moon_route": ("war_moon", "attack_moon", "lunar"),
+    "systemcraft_route": ("systemcraft", "war_system", "planet_behemoth", "celestial_printing"),
+    "nsc3_capital_hull_route": ("dreadnought", "carrier", "flagship", "supercapital", "headquarters"),
+    "esc_component_route": ("esc_", "dark_matter_power_core", "strikecraft_5", "reactor", "shield"),
+    "crowded_tall_route": ("habitat", "orbital", "district", "building", "capacity"),
+    "conquest_escape_route": ("claim", "subjugation", "war", "fleet", "naval_cap"),
+    "fallen_empire_benchmark_route": ("fallen", "awakened", "crisis", "systemcraft", "planetcraft"),
 }
 
 GENERATED_SURFACE_FOLDERS = {
@@ -1432,6 +1495,644 @@ def collect_integration_surface_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> lis
                     )
     rows.sort(key=lambda row: (row["phase"], row["object_type"], row["mod_id"], row["object_name"]))
     return rows
+
+
+def atlas_source_roots(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
+    roots = [
+        {
+            "mod_id": "vanilla",
+            "mod_name": "Stellaris vanilla 4.4.4",
+            "source_root": STELLARIS_INSTALL_ROOT,
+            "coverage_status": "available" if STELLARIS_INSTALL_ROOT.exists() else "missing",
+        }
+    ]
+    manifest = read_snapshot_manifest(snapshot_root)
+    for mod_id, expected_name in REQUIRED_MODS.items():
+        row = manifest.get(mod_id)
+        path = Path(row["snapshot_path"]) if row else Path()
+        roots.append(
+            {
+                "mod_id": mod_id,
+                "mod_name": row.get("name", expected_name) if row else expected_name,
+                "source_root": path,
+                "coverage_status": "available" if path.exists() else "missing_snapshot",
+            }
+        )
+    if not any(UNIVERSAL_RESOURCE_PATCH_NAME.lower() in root["mod_name"].lower() for root in roots):
+        roots.append(
+            {
+                "mod_id": "universal_resource_patch",
+                "mod_name": UNIVERSAL_RESOURCE_PATCH_NAME,
+                "source_root": Path(),
+                "coverage_status": "missing_snapshot",
+            }
+        )
+    return roots
+
+
+def atlas_common_folder(root: Path, folder: str) -> Path:
+    return root / "common" / folder
+
+
+def atlas_events_folder(root: Path) -> Path:
+    return root / "events"
+
+
+def block_has_any_assignment(value: PDXValue, keys: set[str]) -> bool:
+    return isinstance(value, PDXBlock) and any(assignment.key in keys for assignment in iter_assignments(value))
+
+
+def assignment_atoms(value: PDXValue) -> list[str]:
+    if isinstance(value, PDXAtom):
+        return [value.value]
+    return block_atoms(value)
+
+
+def compact_list(values: Iterable[str]) -> str:
+    return ";".join(sorted({value for value in values if value}))
+
+
+def object_route_ids(object_id: str, object_type: str) -> list[str]:
+    haystack = f"{object_id} {object_type}".lower()
+    return [
+        route_id
+        for route_id, hints in ROUTE_OBJECT_HINTS.items()
+        if any(hint in haystack for hint in hints)
+    ]
+
+
+def strategic_role_for_object(object_id: str, object_type: str) -> str:
+    lowered = object_id.lower()
+    if object_type in {"technology", "ascension_perk", "tradition"}:
+        return "mandatory_unlock" if object_route_ids(object_id, object_type) else "prerequisite_only"
+    if object_type == "megastructure":
+        if any(token in lowered for token in ("dyson", "gigaforge", "nidavellir", "matrioshka")):
+            return "economy_multiplier"
+        if any(token in lowered for token in ("planetcraft", "war_moon", "attack_moon", "systemcraft")):
+            return "direct_combat_power"
+        return "prerequisite_only" if object_route_ids(object_id, object_type) else "unknown_manual_review"
+    if object_type in {"ship_size", "component_template", "section_template"}:
+        return "direct_combat_power" if object_route_ids(object_id, object_type) else "flavor_low_impact"
+    if object_type in {"starbase_module", "starbase_building"}:
+        return "defensive_infrastructure"
+    if object_type in {"building", "district", "pop_job", "deposit"}:
+        if any(token in lowered for token in ("habitat", "orbital", "capacity", "assembly", "growth")):
+            return "tall_scaling"
+        return "flavor_low_impact"
+    if object_type == "resource":
+        if any(token in lowered for token in ("sentient", "negative", "dark_matter", "megaconstruction", "supertensile")):
+            return "special_resource_producer"
+        return "flavor_low_impact"
+    if object_type in {"ai_budget", "economic_plan", "scripted_trigger", "scripted_effect", "scripted_value"}:
+        return "prerequisite_only"
+    if object_type == "event":
+        return "unknown_manual_review" if object_route_ids(object_id, object_type) else "flavor_low_impact"
+    return "unknown_manual_review"
+
+
+def strategic_tier_for_object(object_id: str, object_type: str) -> str:
+    lowered = object_id.lower()
+    if any(token in lowered for token in ("systemcraft", "war_system")):
+        return "systemcraft"
+    if any(token in lowered for token in ("planetcraft", "planet_behemoth", "war_moon", "attack_moon")):
+        return "planetcraft"
+    if any(token in lowered for token in ("mega", "giga", "shipyard", "dark_matter", "strikecraft_5")):
+        return "midgame"
+    if object_type in {"building", "district", "pop_job"}:
+        return "fallback"
+    return "manual_review" if strategic_role_for_object(object_id, object_type) == "unknown_manual_review" else "opening"
+
+
+def parent_ai_support_status(source_has_ai_weight: str, strategic_role: str) -> str:
+    if source_has_ai_weight == "yes":
+        if strategic_role in {"flavor_low_impact", "defensive_infrastructure"}:
+            return "parent_ai_complete"
+        return "parent_ai_partial"
+    if strategic_role == "unknown_manual_review":
+        return "parent_ai_unknown"
+    return "parent_ai_absent"
+
+
+def director_action_for_object(object_type: str, strategic_role: str, support_status: str) -> str:
+    if strategic_role == "flavor_low_impact":
+        return "observe"
+    if strategic_role == "unknown_manual_review":
+        return "manual_review"
+    if support_status == "parent_ai_complete":
+        return "supplement_prerequisites"
+    if object_type in {"technology", "ascension_perk", "tradition"}:
+        return "research"
+    if object_type in {"megastructure", "building", "district", "starbase_module", "starbase_building"}:
+        return "build"
+    if object_type in {"ship_size", "component_template", "section_template"}:
+        return "design_ship"
+    if object_type == "resource":
+        return "increase_income"
+    return "observe"
+
+
+def first_child_assignment(value: PDXValue, key: str) -> PDXAssignment | None:
+    if not isinstance(value, PDXBlock):
+        return None
+    assignments = block_assignments(value, key)
+    return assignments[0] if assignments else None
+
+
+def atlas_object_row(
+    *,
+    root: dict[str, Any],
+    object_type: str,
+    object_id: str,
+    source_file: str,
+    value: PDXValue,
+    load_winner: str,
+    variables: dict[str, float],
+) -> dict[str, Any]:
+    cost_assignment = first_child_assignment(value, "cost")
+    upkeep_assignment = first_child_assignment(value, "upkeep")
+    produces_assignment = first_child_assignment(value, "produces")
+    cost = resource_block_to_dict(cost_assignment.value, variables) if cost_assignment else {}
+    upkeep = resource_block_to_dict(upkeep_assignment.value, variables) if upkeep_assignment else {}
+    produces = resource_block_to_dict(produces_assignment.value, variables) if produces_assignment else {}
+    prereqs: list[str] = []
+    upgrade_from: list[str] = []
+    unlocks: list[str] = []
+    event_flags: list[str] = []
+    potential_allow_gates: list[str] = []
+    if isinstance(value, PDXBlock):
+        for assignment in iter_assignments(value):
+            if assignment.key == "prerequisites":
+                prereqs.extend(assignment_atoms(assignment.value))
+            elif assignment.key == "upgrade_from":
+                upgrade_from.extend(assignment_atoms(assignment.value))
+            elif assignment.key in {"feature_flags", "feature_flag", "show_tech_unlock_if"}:
+                unlocks.extend(assignment_atoms(assignment.value))
+            elif assignment.key in {"has_country_flag", "set_country_flag", "has_global_flag", "set_global_flag"}:
+                event_flags.extend(assignment_atoms(assignment.value))
+            elif assignment.key in {"potential", "allow", "possible", "trigger"}:
+                potential_allow_gates.append(assignment.key)
+    strategic_role = strategic_role_for_object(object_id, object_type)
+    support_status = parent_ai_support_status("yes" if block_has_any_assignment(value, ATLAS_AI_SIGNAL_KEYS) else "no", strategic_role)
+    route_ids = object_route_ids(object_id, object_type)
+    director_action = director_action_for_object(object_type, strategic_role, support_status)
+    return {
+        "object_id": object_id,
+        "object_type": object_type,
+        "mod_id": root["mod_id"],
+        "mod_name": root["mod_name"],
+        "source_file": source_file,
+        "load_winner": load_winner,
+        "source_has_ai_weight": "yes" if block_has_any_assignment(value, ATLAS_AI_SIGNAL_KEYS) else "no",
+        "ai_weight_summary": "ai_signal_present" if block_has_any_assignment(value, ATLAS_AI_SIGNAL_KEYS) else "",
+        "cost": compact_resource_map(cost),
+        "upkeep": compact_resource_map(upkeep),
+        "produces": compact_resource_map(produces),
+        "prerequisites": compact_list(prereqs),
+        "potential_allow_gates": compact_list(potential_allow_gates),
+        "event_flags": compact_list(event_flags),
+        "upgrade_from": compact_list(upgrade_from),
+        "upgrades_to": "",
+        "unlocks": compact_list(unlocks),
+        "strategic_role": strategic_role,
+        "strategic_tier": strategic_tier_for_object(object_id, object_type),
+        "route_ids": compact_list(route_ids),
+        "parent_ai_support": support_status,
+        "policy_status": "needs_route_policy" if route_ids and strategic_role != "flavor_low_impact" else "parent_ai_ok",
+        "director_action": director_action,
+        "validation_status": "ok",
+    }
+
+
+def event_object_id(value: PDXValue, fallback: str) -> str:
+    if isinstance(value, PDXBlock):
+        for assignment in block_assignments(value, "id"):
+            atom = atom_value(assignment.value)
+            if atom:
+                return atom
+    return fallback
+
+
+def collect_object_atlas_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    source_roots = [root for root in atlas_source_roots(snapshot_root) if root["coverage_status"] == "available"]
+    for root in source_roots:
+        source_root = Path(root["source_root"])
+        global_variables = collect_global_variables([source_root])
+        for folder, object_type in ATLAS_COMMON_SURFACES.items():
+            folder_path = atlas_common_folder(source_root, folder)
+            if not folder_path.exists():
+                continue
+            for file_path in iter_text_files(folder_path):
+                source_file = file_path.relative_to(source_root).as_posix()
+                try:
+                    parsed = parse_file(file_path)
+                except PDXParseError as exc:
+                    rows.append(
+                        {
+                            "object_id": file_path.stem,
+                            "object_type": f"{object_type}_parser_gap",
+                            "mod_id": root["mod_id"],
+                            "mod_name": root["mod_name"],
+                            "source_file": source_file,
+                            "load_winner": "unknown",
+                            "source_has_ai_weight": "unknown",
+                            "ai_weight_summary": "",
+                            "cost": "",
+                            "upkeep": "",
+                            "produces": "",
+                            "prerequisites": "",
+                            "potential_allow_gates": "",
+                            "event_flags": "",
+                            "upgrade_from": "",
+                            "upgrades_to": "",
+                            "unlocks": "",
+                            "strategic_role": "unknown_manual_review",
+                            "strategic_tier": "manual_review",
+                            "route_ids": "",
+                            "parent_ai_support": "parent_ai_unknown",
+                            "policy_status": "unknown",
+                            "director_action": "manual_review",
+                            "validation_status": f"parser_gap:{exc}",
+                        }
+                    )
+                    continue
+                for assignment in block_assignments(parsed):
+                    if assignment.key.startswith("@"):
+                        continue
+                    rows.append(
+                        atlas_object_row(
+                            root=root,
+                            object_type=object_type,
+                            object_id=assignment.key,
+                            source_file=source_file,
+                            value=assignment.value,
+                            load_winner="pending",
+                            variables=global_variables,
+                        )
+                    )
+        event_root = atlas_events_folder(source_root)
+        if event_root.exists():
+            for file_path in iter_text_files(event_root):
+                source_file = file_path.relative_to(source_root).as_posix()
+                try:
+                    parsed = parse_file(file_path)
+                except PDXParseError as exc:
+                    rows.append(
+                        {
+                            "object_id": file_path.stem,
+                            "object_type": "event_parser_gap",
+                            "mod_id": root["mod_id"],
+                            "mod_name": root["mod_name"],
+                            "source_file": source_file,
+                            "load_winner": "unknown",
+                            "source_has_ai_weight": "unknown",
+                            "ai_weight_summary": "",
+                            "cost": "",
+                            "upkeep": "",
+                            "produces": "",
+                            "prerequisites": "",
+                            "potential_allow_gates": "",
+                            "event_flags": "",
+                            "upgrade_from": "",
+                            "upgrades_to": "",
+                            "unlocks": "",
+                            "strategic_role": "unknown_manual_review",
+                            "strategic_tier": "manual_review",
+                            "route_ids": "",
+                            "parent_ai_support": "parent_ai_unknown",
+                            "policy_status": "unknown",
+                            "director_action": "manual_review",
+                            "validation_status": f"parser_gap:{exc}",
+                        }
+                    )
+                    continue
+                for assignment in block_assignments(parsed):
+                    if not assignment.key.endswith("_event"):
+                        continue
+                    object_id = event_object_id(assignment.value, f"{file_path.stem}:{assignment.key}")
+                    rows.append(
+                        atlas_object_row(
+                            root=root,
+                            object_type="event",
+                            object_id=object_id,
+                            source_file=source_file,
+                            value=assignment.value,
+                            load_winner="pending",
+                            variables=global_variables,
+                        )
+                    )
+    winning_signature_by_key: dict[tuple[str, str], tuple[str, str]] = {}
+    for row in rows:
+        if row["validation_status"] == "ok":
+            winning_signature_by_key[(row["object_type"], row["object_id"])] = (row["mod_id"], row["source_file"])
+    for row in rows:
+        key = (row["object_type"], row["object_id"])
+        signature = (row["mod_id"], row["source_file"])
+        if row["validation_status"] == "ok":
+            row["load_winner"] = "yes" if winning_signature_by_key.get(key) == signature else "no"
+    upgrade_edges = collect_dependency_edges(rows)
+    upgrades_by_source: dict[str, set[str]] = {}
+    for edge in upgrade_edges:
+        if edge["edge_type"] == "upgrades_to":
+            upgrades_by_source.setdefault(edge["source_id"], set()).add(edge["target_id"])
+    for row in rows:
+        row["upgrades_to"] = compact_list(upgrades_by_source.get(row["object_id"], set()))
+    rows.sort(key=lambda row: (row["object_type"], row["object_id"], row["mod_id"], row["source_file"]))
+    return rows
+
+
+def collect_dependency_edges(atlas_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    edges: list[dict[str, Any]] = []
+    valid_nodes = {(row["object_type"], row["object_id"]) for row in atlas_rows if row["validation_status"] == "ok"}
+    valid_ids = {row["object_id"] for row in atlas_rows if row["validation_status"] == "ok"}
+
+    def add_edge(row: dict[str, Any], edge_type: str, target_id: str, target_type: str, evidence: str) -> None:
+        target_status = "ok" if target_id in valid_ids or (target_type, target_id) in valid_nodes else "manual_or_external"
+        edges.append(
+            {
+                "source_id": row["object_id"],
+                "source_type": row["object_type"],
+                "edge_type": edge_type,
+                "target_id": target_id,
+                "target_type": target_type,
+                "target_status": target_status,
+                "source_file": row["source_file"],
+                "evidence": evidence,
+            }
+        )
+
+    row_by_id = {row["object_id"]: row for row in atlas_rows if row["validation_status"] == "ok"}
+    for row in atlas_rows:
+        if row["validation_status"] != "ok":
+            continue
+        for prereq in row["prerequisites"].split(";") if row["prerequisites"] else []:
+            add_edge(row, "requires_technology", prereq, "technology", "prerequisites")
+        for resource in re.findall(r"([^=;]+)=", row["cost"]):
+            add_edge(row, "requires_resource_stockpile", resource, "resource", "cost")
+        for resource in re.findall(r"([^=;]+)=", row["upkeep"]):
+            add_edge(row, "requires_resource_income", resource, "resource", "upkeep")
+        for resource in re.findall(r"([^=;]+)=", row["produces"]):
+            add_edge(row, "produces_resource", resource, "resource", "produces")
+        for upstream in row["upgrade_from"].split(";") if row["upgrade_from"] else []:
+            add_edge(row, "upgrades_from", upstream, row["object_type"], "upgrade_from")
+            upstream_row = row_by_id.get(upstream)
+            if upstream_row:
+                add_edge(upstream_row, "upgrades_to", row["object_id"], row["object_type"], "upgrade_from")
+        for flag in row["event_flags"].split(";") if row["event_flags"] else []:
+            add_edge(row, "flag_gate_or_effect", flag, "flag", "event_flags")
+        for unlocked in row["unlocks"].split(";") if row["unlocks"] else []:
+            add_edge(row, "unlocks_object", unlocked, "object", "unlocks")
+        for route_id in row["route_ids"].split(";") if row["route_ids"] else []:
+            add_edge(row, "belongs_to_route", route_id, "route", "route_hint")
+    edges.sort(key=lambda edge: (edge["edge_type"], edge["source_type"], edge["source_id"], edge["target_id"]))
+    return edges
+
+
+def collect_parent_ai_support_rows(atlas_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows = [
+        {
+            "object_id": row["object_id"],
+            "object_type": row["object_type"],
+            "mod_id": row["mod_id"],
+            "mod_name": row["mod_name"],
+            "source_file": row["source_file"],
+            "source_has_ai_weight": row["source_has_ai_weight"],
+            "parent_ai_support": row["parent_ai_support"],
+            "strategic_role": row["strategic_role"],
+            "route_ids": row["route_ids"],
+            "director_requirement": row["director_action"],
+        }
+        for row in atlas_rows
+        if row["validation_status"] == "ok"
+    ]
+    rows.sort(key=lambda row: (row["parent_ai_support"], row["object_type"], row["object_id"]))
+    return rows
+
+
+def collect_policy_matrix_rows(atlas_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for row in atlas_rows:
+        if row["validation_status"] != "ok":
+            continue
+        route_ids = row["route_ids"].split(";") if row["route_ids"] else []
+        if not route_ids and row["strategic_role"] in {"flavor_low_impact", "prerequisite_only"}:
+            continue
+        for route_id in route_ids or ["manual_review"]:
+            parent_strategy = "reuse"
+            if row["parent_ai_support"] == "parent_ai_absent":
+                parent_strategy = "override"
+            elif row["parent_ai_support"] in {"parent_ai_partial", "parent_ai_present_but_wrong_goal"}:
+                parent_strategy = "supplement"
+            priority = "high" if route_id != "manual_review" else "medium"
+            if row["strategic_role"] == "unknown_manual_review":
+                priority = "manual_review"
+            rows.append(
+                {
+                    "object_id": row["object_id"],
+                    "object_type": row["object_type"],
+                    "route_id": route_id,
+                    "priority_band": priority,
+                    "timing": row["strategic_tier"],
+                    "empire_context": "high_scale_supported_playset",
+                    "prereq_state": "see_dependency_edges",
+                    "desired_action": row["director_action"],
+                    "weight_formula": "",
+                    "safety_gates": "no_core_deficit;route_prerequisites_resolved",
+                    "parent_ai_strategy": parent_strategy,
+                    "source_file": row["source_file"],
+                    "notes": f"{row['strategic_role']} with {row['parent_ai_support']}",
+                }
+            )
+    rows.sort(key=lambda row: (row["route_id"], row["priority_band"], row["object_type"], row["object_id"]))
+    return rows
+
+
+def object_atlas_schema_text() -> str:
+    fields = [
+        "object_id",
+        "object_type",
+        "mod_id",
+        "mod_name",
+        "source_file",
+        "load_winner",
+        "source_has_ai_weight",
+        "ai_weight_summary",
+        "cost",
+        "upkeep",
+        "produces",
+        "prerequisites",
+        "potential_allow_gates",
+        "event_flags",
+        "upgrade_from",
+        "upgrades_to",
+        "unlocks",
+        "strategic_role",
+        "strategic_tier",
+        "route_ids",
+        "parent_ai_support",
+        "policy_status",
+        "director_action",
+        "validation_status",
+    ]
+    return (
+        "# Stellar AI Director Object Atlas Schema\n\n"
+        "Generated by `tools/generate_stellar_ai_director_patch.py`. The atlas is the source of truth for "
+        "dependency edges, parent-AI support classification, route policy rows, and later generated AI weights.\n\n"
+        "## Fields\n\n"
+        + "\n".join(f"- `{field}`" for field in fields)
+        + "\n\n## Rules\n\n"
+        "- Parser gaps are retained as rows with `validation_status` beginning `parser_gap`.\n"
+        "- Policy rows may reference only object IDs present in this atlas.\n"
+        "- Broad gameplay weights must not be generated from objects that lack a policy row.\n"
+    )
+
+
+def object_atlas_coverage_text(
+    atlas_rows: list[dict[str, Any]],
+    edge_rows: list[dict[str, Any]],
+    support_rows: list[dict[str, Any]],
+    policy_rows: list[dict[str, Any]],
+    snapshot_root: Path = SNAPSHOT_ROOT,
+) -> str:
+    source_roots = atlas_source_roots(snapshot_root)
+    counts: dict[tuple[str, str], int] = {}
+    parser_gaps = [row for row in atlas_rows if row["validation_status"].startswith("parser_gap")]
+    for row in atlas_rows:
+        counts[(row["mod_name"], row["object_type"])] = counts.get((row["mod_name"], row["object_type"]), 0) + 1
+    lines = [
+        "# Stellar AI Director Object Atlas Coverage",
+        "",
+        "Static coverage for the first real AI knowledge layer. This report is not runtime proof.",
+        "",
+        "## Source Coverage",
+        "",
+        "| mod | status | source root |",
+        "| --- | --- | --- |",
+    ]
+    for root in source_roots:
+        lines.append(f"| {root['mod_name']} | {root['coverage_status']} | `{root['source_root']}` |")
+    lines.extend(
+        [
+            "",
+            "## Artifact Counts",
+            "",
+            f"- Atlas rows: {len(atlas_rows)}",
+            f"- Dependency edges: {len(edge_rows)}",
+            f"- Parent-AI support rows: {len(support_rows)}",
+            f"- Policy rows: {len(policy_rows)}",
+            f"- Parser gaps: {len(parser_gaps)}",
+            "",
+            "## Counts By Mod And Type",
+            "",
+            "| mod | object type | rows |",
+            "| --- | --- | ---: |",
+        ]
+    )
+    for (mod_name, object_type), count in sorted(counts.items()):
+        lines.append(f"| {mod_name} | {object_type} | {count} |")
+    if parser_gaps:
+        lines.extend(["", "## Parser Gaps", "", "| object | type | file | status |", "| --- | --- | --- | --- |"])
+        for row in parser_gaps[:80]:
+            lines.append(
+                f"| `{row['object_id']}` | {row['object_type']} | `{row['source_file']}` | {row['validation_status']} |"
+            )
+    return "\n".join(lines) + "\n"
+
+
+def route_reports_text(
+    atlas_rows: list[dict[str, Any]],
+    edge_rows: list[dict[str, Any]],
+    policy_rows: list[dict[str, Any]],
+) -> str:
+    lines = [
+        "# Stellar AI Director Route Reports",
+        "",
+        "Generated from atlas route hints, dependency edges, and policy rows. This is a static planning report.",
+    ]
+    for route_id in ROUTE_OBJECT_HINTS:
+        route_objects = [row for row in atlas_rows if route_id in row["route_ids"].split(";")]
+        route_edges = [edge for edge in edge_rows if edge["source_id"] in {row["object_id"] for row in route_objects}]
+        route_policy = [row for row in policy_rows if row["route_id"] == route_id]
+        unresolved = [edge for edge in route_edges if edge["target_status"] != "ok" and edge["target_type"] != "route"]
+        lines.extend(
+            [
+                "",
+                f"## {route_id}",
+                "",
+                f"- Objects: {len(route_objects)}",
+                f"- Dependency edges: {len(route_edges)}",
+                f"- Policy rows: {len(route_policy)}",
+                f"- Manual/external dependency targets: {len(unresolved)}",
+                "",
+                "| object | type | support | action | source |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for row in route_objects[:40]:
+            lines.append(
+                f"| `{row['object_id']}` | {row['object_type']} | {row['parent_ai_support']} | "
+                f"{row['director_action']} | `{row['source_file']}` |"
+            )
+    return "\n".join(lines) + "\n"
+
+
+def validate_object_atlas_artifacts() -> list[str]:
+    errors: list[str] = []
+    required = [
+        OBJECT_ATLAS_SCHEMA_MD,
+        OBJECT_ATLAS_CSV,
+        DEPENDENCY_EDGES_CSV,
+        AI_SUPPORT_MAP_CSV,
+        POLICY_MATRIX_CSV,
+        OBJECT_ATLAS_COVERAGE_MD,
+        ROUTE_REPORT_MD,
+    ]
+    for path in required:
+        if not path.exists():
+            errors.append(f"Missing object atlas artifact: {path.relative_to(REPO_ROOT).as_posix()}")
+    if errors:
+        return errors
+    atlas_rows = _read_csv_rows(OBJECT_ATLAS_CSV)
+    edge_rows = _read_csv_rows(DEPENDENCY_EDGES_CSV)
+    policy_rows = _read_csv_rows(POLICY_MATRIX_CSV)
+    atlas_ids = {row["object_id"] for row in atlas_rows if row["validation_status"] == "ok"}
+    if not atlas_rows:
+        errors.append("Object atlas has no rows.")
+    if not edge_rows:
+        errors.append("Dependency edge file has no rows.")
+    missing_policy_objects = [row["object_id"] for row in policy_rows if row["object_id"] not in atlas_ids]
+    if missing_policy_objects:
+        errors.append(f"Policy rows reference unknown atlas objects: {', '.join(sorted(set(missing_policy_objects))[:20])}")
+    missing_edge_sources = [row["source_id"] for row in edge_rows if row["source_id"] not in atlas_ids]
+    if missing_edge_sources:
+        errors.append(f"Dependency edges reference unknown source nodes: {', '.join(sorted(set(missing_edge_sources))[:20])}")
+    route_policy = [row for row in policy_rows if row["route_id"] != "manual_review"]
+    if not route_policy:
+        errors.append("Policy matrix has no route-scoped rows.")
+    return errors
+
+
+def generate_object_atlas_artifacts(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, list[dict[str, Any]]]:
+    atlas_rows = collect_object_atlas_rows(snapshot_root)
+    edge_rows = collect_dependency_edges(atlas_rows)
+    support_rows = collect_parent_ai_support_rows(atlas_rows)
+    policy_rows = collect_policy_matrix_rows(atlas_rows)
+    write_text_file(OBJECT_ATLAS_SCHEMA_MD, object_atlas_schema_text())
+    write_csv(OBJECT_ATLAS_CSV, atlas_rows)
+    write_csv(DEPENDENCY_EDGES_CSV, edge_rows)
+    write_csv(AI_SUPPORT_MAP_CSV, support_rows)
+    write_csv(POLICY_MATRIX_CSV, policy_rows)
+    write_text_file(
+        OBJECT_ATLAS_COVERAGE_MD,
+        object_atlas_coverage_text(atlas_rows, edge_rows, support_rows, policy_rows, snapshot_root),
+    )
+    write_text_file(ROUTE_REPORT_MD, route_reports_text(atlas_rows, edge_rows, policy_rows))
+    return {
+        "atlas": atlas_rows,
+        "edges": edge_rows,
+        "support": support_rows,
+        "policy": policy_rows,
+    }
 
 
 def extract_megastructure_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
@@ -5773,6 +6474,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
 
 def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
     errors: list[str] = []
+    errors.extend(validate_object_atlas_artifacts())
     for row in collect_generated_file_audit_rows(MOD_ROOT):
         if row["status"] != "ok":
             errors.append(f"Generated file audit failed for {row['generated_file']}: {row['status']} ({row['reason']})")
@@ -5801,6 +6503,7 @@ def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
 
 
 def run_all() -> None:
+    generate_object_atlas_artifacts()
     rows = generate_roi_artifacts()
     generate_mod_files(rows)
     errors = validate_generated_patch()
