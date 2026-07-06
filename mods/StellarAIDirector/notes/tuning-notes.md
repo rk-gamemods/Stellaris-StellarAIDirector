@@ -20,7 +20,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | crisis starbase threat | 50 | threat floor that can activate crisis starbase reserve |
 | planetary-capacity stockpile minerals | 5000 | mineral runway before expanded planet/building capacity target activates |
 | planetary-capacity stockpile energy | 5000 | energy runway before expanded planet/building capacity target activates |
-| planetary-capacity pops target | 250000 | pop target used by safe country-level capacity subplan |
+| planetary-capacity pops target | 400000 | high-scale pop target used by the country-level tall-growth capacity subplan |
 | threat response relation flag days | 7200 | duration for observer/aggressor and observer/victim threat state |
 | threat response economy ratio cap | 20 | maximum share of fleet-throughput reserve available to third-party threat readiness |
 | threat readiness alloys cap | 7 | maximum added alloys target from third-party threat readiness |
@@ -37,7 +37,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 ## Trade-Capacity Policy
 
 - Trade is modeled as Stellaris 4.4 logistics/capacity headroom, not as a normal priced ROI resource.
-- The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object override preserves vanilla trade-income pressure.
+- The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object replacement keeps trade logistics visible while pushing beyond vanilla/Stellar AI scale.
 - Fleet, planetary, megastructure, static-defense, and surplus gates require trade income floors before adding more ship, colony, or resource-imbalance upkeep pressure.
 
 ## Fleet-Throughput Policy
@@ -48,25 +48,25 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 ## Unlock-Research Policy
 
-- Surplus empires use the unlock-research policy to keep pressure on physics, society, engineering, and unity until core Mega Engineering and Mega Shipyard gates are present.
-- Direct technology/AP/tradition object overrides are deferred in v1; generated references are limited to validator-checked technology gates.
+- The unlock-research policy is mandatory survival pressure after the opening curve, not a surplus-only luxury; it keeps physics, society, engineering, and unity pressure on until core Mega Engineering, Mega Shipyard, Gigas, NSC3, and ESC unlock paths are reachable.
+- Direct technology/AP/tradition object overrides are deferred until their parent surfaces are copied with source context; generated references are limited to validator-checked technology gates.
 
 ## Mega/Giga Build Priority Policy
 
 - ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.
-- Direct individual megastructure/gigastructure build-weight overrides are deferred unless a parent object surface is proven safe for the specific candidate.
-- Exotic or path-specific projects remain deferred until the core loop is observer-tested.
+- Direct individual megastructure/gigastructure build-weight overrides are the next replacement surface once each parent object can be copied with source context.
+- Exotic or path-specific projects remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.
 
 ## Planetary-Capacity Policy
 
 - Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.
 - The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.
-- No generated building/job references are emitted in v1; direct planet automation rewrites remain deferred until a specific missing parent surface is proven.
+- No generated building/job references are emitted in this slice; direct planet automation rewrites remain a required follow-up when a specific missing parent surface is proven.
 
 ## NSC3/ESC Design Policy
 
-- Direct NSC3/ESC ship and component design overrides are deferred until observer evidence proves parent AI cannot use the new hulls or components.
-- Warning rows in the P11 integration audit are treated as parent-design gaps to observe, not automatic v1 override targets.
+- Direct NSC3/ESC ship and component design overrides remain required follow-up surfaces when observer evidence or source inspection proves parent AI cannot use the new hulls or components at crisis scale.
+- Warning rows in the P11 integration audit are treated as parent-design gaps to inventory, copy with source context, and promote into replacement policy when needed.
 
 ## Threat-Response Policy
 

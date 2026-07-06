@@ -2,9 +2,11 @@
 
 Late-loading deterministic AI policy patch for the active Irony playset.
 
-This mod does not add runtime self-adjusting behavior. It encodes explicit
-state gates, priorities, and emergency exits around Stellar AI and the major
-late-game mods in the current 4.4 playset.
+This mod is a deterministic, full-power AI replacement policy for the current
+4.4 high-scale playset. It does not try to preserve vanilla or Stellar AI
+assumptions after the opening curve; it encodes explicit state gates,
+priorities, and emergency exits for Gigastructural Engineering, NSC3, ESC NEXT,
+Starbase Extended, and the active supporting mods.
 
 ## Required Parents
 
@@ -25,9 +27,12 @@ Missing required Steam parents during generation: none.
   prep, safe commit, surplus-sink pressure, and shipyard payoff exploitation.
 - Overrides Stellar AI's megastructure alloy budget object with explicit
   emergency exits and larger reserves for Gigas/NSC3-scale projects.
-- Adds economic-plan subplans for alloy reserves, Gigas special resources,
-  and static-defense/starbase pressure when defensive or threatened empires
-  have safe income and stockpiles.
+- Replaces the base economic plan with a mod-set-specific high-scale survival
+  plan that forces research, alloy, trade, naval-cap, tall-scaling, and
+  megastructure pressure on a mid-2300s crisis curve.
+- Adds economic-plan targets for alloy reserves, Gigas special resources,
+  and static-defense/starbase pressure when empires need to climb toward
+  Gigas/NSC3/ESC-scale economy and fleet power.
 - Adds trade-capacity recovery and reserve subplans so the Director preserves
   Stellaris 4.4 logistics/upkeep headroom instead of treating trade as a
   normal buy/sell commodity.
@@ -36,9 +41,9 @@ Missing required Steam parents during generation: none.
 - Adds a planetary-capacity economic subplan for safe mineral/energy-backed
   pop and empire-size growth without direct building/job overrides or trade
   logistics collapse.
-- Adds an unlock-research economic subplan so surplus empires keep pushing
-  engineering/research/unity until core Mega Engineering and Mega Shipyard
-  unlocks are present.
+- Adds mandatory unlock-research pressure so AI empires keep pushing
+  engineering/research/unity toward Mega Engineering, Mega Shipyard,
+  planetcraft/systemcraft chains, NSC hulls, and ESC component tiers.
 - Adds a bounded V1 threat-response layer for observed classified aggression:
   opinion modifiers, timed relation/country flags, and a third-party defensive
   readiness economy subplan capped at alloys 7, energy 6, and naval cap 40.

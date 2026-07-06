@@ -10,8 +10,8 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | unlock-research policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan extends Stellar AI research pressure into validated modded unlock gates |
 | alloy reserves | `common/ai_budget/zzz_staid_alloys_budget.txt` | medium | intentional full-object override of Stellar AI megastructure budget |
 | Gigas special-resource reserves | `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` | medium | intentional full-object overrides of Gigas megastructure special-resource budgets |
-| economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | intentional full-object override of `basic_economy_plan` with Director economy targets |
-| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan maps shipyard ROI into alloy/energy/naval-cap targets after anti-collapse gates |
+| economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |
+| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |
 | starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplans reserve alloy/energy income when defensive strategy or crisis pressure is safe |
 | planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |
 | trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |
@@ -55,7 +55,7 @@ These values are generated from rows where `data_quality = resolved` and `decisi
 
 ## Surplus Sink Policy
 
-When survival and recovery gates are clear, surplus pressure is approximated from strong monthly alloy/energy income plus a large alloy stockpile. The v1 scripted ordering is research sink first, fleet-production sink second, and unity sink third. Fleet-throughput policy now maps shipyard readiness into alloy, energy, and naval-cap economic-plan targets while blocking over-naval-cap upkeep spirals.
+Surplus is no longer treated as the only time the AI may climb. In this playset, failure to unlock and exploit Gigas/NSC3/ESC systems is itself a strategic collapse. The replacement economic plan forces research, alloy, trade, naval-cap, and megastructure pressure on time gates, while still using survival/recovery gates to prevent immediate deficit death spirals.
 
 ## Trade-Capacity Policy
 
@@ -63,7 +63,7 @@ Stellaris 4.4 treats `trade` as a standard advanced resource and the market reso
 
 ## Unlock-Research Policy
 
-Research-heavy Stellar AI behavior is preserved and extended with a country-level economic-plan subplan for core modded unlocks. Direct technology/AP/tradition object overrides are deferred in v1; every emitted technology reference is checked by the generated reference audit.
+The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Direct technology/AP/tradition object overrides are still handled cautiously, but the economic plan no longer waits for comfortable surplus before pushing research.
 
 ## Static-Defense Policy
 
@@ -85,7 +85,7 @@ The V1 threat-response feature adds observer opinion, timed flags, and a capped 
 
 ## v1 Boundaries
 
-- Direct technology/AP/tradition object overrides are deferred in v1. The unlock-research policy uses validated country-level economy-plan targets instead.
+- Direct technology/AP/tradition object overrides are deferred until each object is copied with full source context; the replacement economy plan already treats those unlocks as mandatory targets.
 - Direct Mega Shipyard object weights remain deferred unless a safe parent object surface is proven; v1 maps the payoff through country-level economy-plan targets and source ROI evidence.
 - Direct starbase module/building weights remain deferred; v1 uses a country-level static-defense economy target rather than overriding Starbase Extended objects.
 - Direct planet building/job overrides are not emitted in v1; no generated building/job references are used.

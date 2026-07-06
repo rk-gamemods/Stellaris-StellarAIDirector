@@ -130,7 +130,8 @@ Only create folders a mod actually needs.
 - Use CWTools diagnostics for PDXScript syntax/schema feedback when available.
 - Use Irony Mod Manager for dependency, conflict, and load-order investigation on real playsets.
 - Do not assume Stellaris is universally "last mod wins"; validate actual element-level conflict behavior.
-- Launch-test in Stellaris after meaningful gameplay or UI changes.
+- Do not launch Stellaris, run observer games, or run scenario simulations by default. Only do runtime/game validation when the user explicitly asks for it. Default validation is static: generated file surfaces, parser/load-safety, unresolved placeholders, and references to Stellaris/mod objects that must exist in vanilla, parent-mod, or generated inventories.
+- Keep automated tests for fast universal safety checks only: valid generated files, parseable PDXScript/localization surfaces, known override targets, and valid referenced technologies, resources, scripted triggers, scripted values, or other game/mod entities. Do not encode fast-moving AI strategy, target numbers, decision behavior, launch proof, or observer outcomes as required tests; document that intent in code comments and notes instead.
 - Record known conflicts, required DLC, and tested game version in the mod README.
 
 ## Research Expectations
