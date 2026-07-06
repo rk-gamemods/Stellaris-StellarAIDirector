@@ -26,7 +26,7 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 ## Selected Playset
 
 - Collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-- Mod count: 119
+- Mod count: 120
 - Irony patch mod enabled: True
 
 ## Required Parent Detection

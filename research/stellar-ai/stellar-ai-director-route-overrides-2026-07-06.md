@@ -2,6 +2,8 @@
 
 Generated full-object override surfaces. These are actual mod behavior changes, not atlas-only evidence.
 
+Load-safety guard: generated override files copy required source-local `@variables` from parent/vanilla scripted variables and strip optional absent `pc_magnetar` placement references from copied Gigas megastructure starts when that Real Space planet class is not present in the supported source inventory.
+
 | route | object | type | parent strategy | source AI | generated file | source |
 | --- | --- | --- | --- | --- | --- | --- |
 | mega_engineering_core | `tech_mega_engineering` | technology | parent_ai_partial | yes | `common/technology/zzzz_staid_01_unlock_technology_technology.txt` | `common/technology/00_megastructures.txt` |

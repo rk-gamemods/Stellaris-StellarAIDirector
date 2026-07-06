@@ -1270,6 +1270,7 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
         "starbase_building": set(),
         "ai_budget": set(),
         "economic_plan": set(),
+        "planet_class": set(),
     }
     folder_map = {
         "megastructures": "megastructure",
@@ -1282,6 +1283,7 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
         "starbase_buildings": "starbase_building",
         "ai_budget": "ai_budget",
         "economic_plans": "economic_plan",
+        "planet_classes": "planet_class",
     }
     for root in object_inventory_roots(snapshot_root):
         common = root / "common"
@@ -3055,6 +3057,109 @@ def director_ai_weight_block(target: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+AT_VARIABLE_RE = re.compile(r"(?<![\w])@[A-Za-z0-9_]+(?![\w])")
+AT_VARIABLE_DEFINITION_RE = re.compile(r"^[ \t]*(?P<name>@[A-Za-z0-9_]+)[ \t]*=[ \t]*(?P<value>.*)$")
+
+
+def source_file_variable_definitions(source_text: str) -> dict[str, str]:
+    variables: dict[str, str] = {}
+    for line in source_text.splitlines():
+        match = AT_VARIABLE_DEFINITION_RE.match(line.split("#", 1)[0].rstrip())
+        if not match:
+            continue
+        name = match.group("name")
+        variables.setdefault(name, line.rstrip())
+    return variables
+
+
+def used_at_variables_in_text(text: str) -> set[str]:
+    used: set[str] = set()
+    for raw_line in text.splitlines():
+        code = raw_line.split("#", 1)[0]
+        definition = AT_VARIABLE_DEFINITION_RE.match(code.rstrip())
+        if definition:
+            code = definition.group("value")
+        used.update(AT_VARIABLE_RE.findall(code))
+    return used
+
+
+def common_scripted_variable_definitions(common_root: Path) -> dict[str, str]:
+    variables: dict[str, str] = {}
+    scripted_variables = common_root / "scripted_variables"
+    if not scripted_variables.exists():
+        return variables
+    for file_path in iter_text_files(scripted_variables):
+        variables.update(source_file_variable_definitions(read_text(file_path)))
+    return variables
+
+
+def source_common_root(source_path: Path) -> Path:
+    for parent in source_path.parents:
+        if parent.name == "common":
+            return parent
+    raise ValueError(f"Could not find common/ root for {source_path}")
+
+
+def route_override_file_variables(file_rows: list[dict[str, Any]]) -> list[str]:
+    variables: dict[str, str] = {}
+    required: set[str] = set()
+    for row in file_rows:
+        source_text = read_text(Path(row["source_path"]))
+        required.update(used_at_variables_in_text(extract_top_level_object_text(source_text, row["object_id"])))
+        for definition_source in (
+            source_file_variable_definitions(source_text),
+            common_scripted_variable_definitions(source_common_root(Path(row["source_path"]))),
+            common_scripted_variable_definitions(STELLARIS_INSTALL_ROOT / "common"),
+        ):
+            for name, line in definition_source.items():
+                if name in required and name not in variables:
+                    variables[name] = line
+    missing = sorted(required - set(variables))
+    if missing:
+        raise ValueError(
+            f"Missing source-local variable definitions for generated route override file "
+            f"{file_rows[0]['generated_file']}: {', '.join(missing)}"
+        )
+    return [variables[name] for name in sorted(variables)]
+
+
+def strip_optional_absent_planet_classes(block: str, object_names: dict[str, set[str]]) -> str:
+    if "pc_magnetar" in object_names.get("planet_class", set()):
+        return block
+    # Gigastructural Engineering includes optional Real Space magnetar placement
+    # checks in some source megastructures. Director must not make that optional
+    # compatibility reference the final load-order owner when Real Space is absent.
+    return re.sub(r"[ \t]*is_planet_class[ \t]*=[ \t]*pc_magnetar", "", block)
+
+
+def generated_unresolved_at_variable_rows(mod_root: Path = MOD_ROOT) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    common = mod_root / "common"
+    if not common.exists():
+        return rows
+    for file_path in iter_text_files(common):
+        defined: set[str] = set()
+        uses: list[tuple[int, str]] = []
+        for line_number, raw_line in enumerate(read_text(file_path).splitlines(), start=1):
+            code = raw_line.split("#", 1)[0]
+            definition = AT_VARIABLE_DEFINITION_RE.match(code.rstrip())
+            if definition:
+                defined.add(definition.group("name"))
+                code = definition.group("value")
+            for variable in AT_VARIABLE_RE.findall(code):
+                uses.append((line_number, variable))
+        for line_number, variable in uses:
+            if variable not in defined:
+                rows.append(
+                    {
+                        "generated_file": file_path.relative_to(mod_root).as_posix(),
+                        "line": str(line_number),
+                        "variable": variable,
+                    }
+                )
+    return rows
+
+
 def route_override_target_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
     atlas_rows = _read_csv_rows(OBJECT_ATLAS_CSV) if OBJECT_ATLAS_CSV.exists() else collect_object_atlas_rows(snapshot_root)
     resolved: list[dict[str, Any]] = []
@@ -3093,14 +3198,17 @@ def route_override_file_header(folder: str) -> str:
     return (
         "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
         "# Full-object override: copied parent/vanilla objects with Director-owned ai_weight.\n"
+        "# Required source-local @variables are copied into this file to preserve parent parse context.\n"
         "# Trace each object through research/stellar-ai/object-atlas/policy-matrix-2026-07-06.csv.\n\n"
         f"# Generated surface: common/{folder}\n\n"
     )
 
 
-def route_override_object_text(target: dict[str, Any]) -> str:
+def route_override_object_text(target: dict[str, Any], object_names: dict[str, set[str]] | None = None) -> str:
     source_text = read_text(Path(target["source_path"]))
     block = extract_top_level_object_text(source_text, target["object_id"])
+    if target["object_type"] == "megastructure" and object_names is not None:
+        block = strip_optional_absent_planet_classes(block, object_names)
     block = replace_top_level_child_block(block, "ai_weight", director_ai_weight_block(target))
     return (
         f"# policy_route = {target['route_id']}; source = {target['source_file']}; "
@@ -3114,6 +3222,8 @@ def route_override_report_text(rows: list[dict[str, Any]]) -> str:
         "# Stellar AI Director Route Override Report",
         "",
         "Generated full-object override surfaces. These are actual mod behavior changes, not atlas-only evidence.",
+        "",
+        "Load-safety guard: generated override files copy required source-local `@variables` from parent/vanilla scripted variables and strip optional absent `pc_magnetar` placement references from copied Gigas megastructure starts when that Real Space planet class is not present in the supported source inventory.",
         "",
         "| route | object | type | parent strategy | source AI | generated file | source |",
         "| --- | --- | --- | --- | --- | --- | --- |",
@@ -3139,13 +3249,19 @@ def route_override_report_text(rows: list[dict[str, Any]]) -> str:
 
 def generate_route_override_artifacts() -> list[dict[str, Any]]:
     rows = route_override_target_rows()
+    object_names = collect_object_names()
     grouped: dict[Path, list[dict[str, Any]]] = {}
     for row in rows:
         grouped.setdefault(Path(row["generated_file"]), []).append(row)
     for file_path, file_rows in grouped.items():
         body = [route_override_file_header(file_rows[0]["generated_folder"])]
+        variables = route_override_file_variables(file_rows)
+        if variables:
+            body.append("# Source-local variables required by copied parent objects.")
+            body.extend(variables)
+            body.append("")
         for row in file_rows:
-            body.append(route_override_object_text(row))
+            body.append(route_override_object_text(row, object_names))
             body.append("")
         write_text_file(file_path, "\n".join(body))
     write_csv(RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.csv", rows)
@@ -3931,6 +4047,8 @@ def collect_generated_conflict_rows(
                 continue
             generated_file = file_path.relative_to(mod_root).as_posix()
             for assignment in block_assignments(parsed):
+                if assignment.key.startswith("@"):
+                    continue
                 parent_has_object = assignment.key in object_names.get(object_type, set())
                 if parent_has_object and "Full-object override" in text:
                     classification = "intentional_director_override"
@@ -3979,7 +4097,7 @@ def generated_top_level_objects(mod_root: Path = MOD_ROOT) -> dict[str, set[str]
                 parsed = parse_file(file_path)
             except PDXParseError:
                 continue
-            objects[object_type].update(assignment.key for assignment in block_assignments(parsed))
+            objects[object_type].update(assignment.key for assignment in block_assignments(parsed) if not assignment.key.startswith("@"))
     return objects
 
 
@@ -6742,7 +6860,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "## Mega/Giga Build Priority Policy",
         "",
         "- ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.",
-        "- Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts.",
+        "- Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts; generated files preserve parent `@variable` parse context and remove absent optional `pc_magnetar` compatibility references.",
         "- Exotic projects outside those route starts remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.",
         "",
         "## Planetary-Capacity Policy",
@@ -6790,6 +6908,10 @@ def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
             errors.append(
                 f"{MOD_ROOT / row['generated_file']}: missing {row['reference_type']} reference {row['reference_name']}"
             )
+    for row in generated_unresolved_at_variable_rows(MOD_ROOT):
+        errors.append(
+            f"{MOD_ROOT / row['generated_file']}:{row['line']}: unresolved source-local variable {row['variable']}"
+        )
     for file_path in generated_files:
         try:
             parsed = parse_file(file_path)

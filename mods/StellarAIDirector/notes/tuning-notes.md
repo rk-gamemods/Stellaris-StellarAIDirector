@@ -54,7 +54,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 ## Mega/Giga Build Priority Policy
 
 - ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.
-- Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts.
+- Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts; generated files preserve parent `@variable` parse context and remove absent optional `pc_magnetar` compatibility references.
 - Exotic projects outside those route starts remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.
 
 ## Planetary-Capacity Policy

@@ -1,4 +1,5 @@
 import csv
+import tempfile
 import unittest
 from pathlib import Path
 import sys
@@ -14,9 +15,11 @@ from stellar_ai_director_lib import (
     RESEARCH_ROOT,
     SNAPSHOT_ROOT,
     block_assignments,
+    collect_generated_conflict_rows,
     collect_generated_file_audit_rows,
     collect_generated_reference_rows,
     collect_object_names,
+    generated_unresolved_at_variable_rows,
     generate_object_atlas_artifacts,
     generate_route_override_artifacts,
     parse_file,
@@ -56,8 +59,41 @@ class GeneratedModValidityTests(unittest.TestCase):
                     unknown.append((file_path.relative_to(MOD_ROOT).as_posix(), assignment.key))
         self.assertEqual(unknown, [])
 
+    def test_generated_conflict_rows_ignore_source_local_variables(self):
+        rows = collect_generated_conflict_rows(MOD_ROOT, SNAPSHOT_ROOT)
+        variable_rows = [row for row in rows if row["object_name"].startswith("@")]
+        self.assertEqual(variable_rows, [])
+
     def test_static_validator_reports_no_invalid_references(self):
         self.assertEqual(validate_generated_patch(), [])
+
+    def test_route_overrides_carry_source_local_variables(self):
+        technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
+        megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"
+        technology_text = technology_path.read_text(encoding="utf-8")
+        megastructure_text = megastructure_path.read_text(encoding="utf-8")
+        for marker in ("@tier4cost4 = 28000", "@tier5weight3 = 20"):
+            self.assertIn(marker, technology_text)
+        for marker in ("@giga_mega_unity_cost", "@giga_giga_unity_cost"):
+            self.assertIn(marker, megastructure_text)
+        self.assertEqual(generated_unresolved_at_variable_rows(MOD_ROOT), [])
+
+    def test_unresolved_source_local_variables_are_reported(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            mod_root = Path(temp_dir)
+            common = mod_root / "common" / "technology"
+            common.mkdir(parents=True)
+            (common / "broken.txt").write_text("tech_test = { cost = @missing_cost }\n", encoding="utf-8")
+            self.assertEqual(
+                generated_unresolved_at_variable_rows(mod_root),
+                [
+                    {
+                        "generated_file": "common/technology/broken.txt",
+                        "line": "1",
+                        "variable": "@missing_cost",
+                    }
+                ],
+            )
 
     def test_object_atlas_artifacts_are_static_valid(self):
         self.assertEqual(validate_object_atlas_artifacts(), [])
