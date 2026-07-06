@@ -180,6 +180,61 @@ basic_economy_plan = {
 	}
 
 	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director capped stockpile research conversion"
+		potential = {
+			OR = {
+				staid_resource_waste_pressure = yes
+				staid_research_under_curve = yes
+			}
+		}
+		income = {
+			physics_research = 1600
+			society_research = 1600
+			engineering_research = 2200
+			trade = 250
+			unity = 350
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director 2360 physics catchup"
+		potential = {
+			years_passed > 119
+			staid_research_under_curve = yes
+			has_monthly_income = { resource = physics_research value < 1200 }
+		}
+		income = { physics_research = 1800 }
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director 2360 society catchup"
+		potential = {
+			years_passed > 119
+			staid_research_under_curve = yes
+			has_monthly_income = { resource = society_research value < 1200 }
+		}
+		income = { society_research = 1800 }
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director 2360 engineering catchup"
+		potential = {
+			years_passed > 119
+			staid_research_under_curve = yes
+			has_monthly_income = { resource = engineering_research value < 1400 }
+		}
+		income = { engineering_research = 2400 }
+	}
+
+	subplan = {
 		scaling = yes
 		set_name = "Stellar AI Director fleet throughput reserve"
 		potential = {

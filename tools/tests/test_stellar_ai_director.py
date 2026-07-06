@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from stellar_ai_director_lib import (
     AI_SUPPORT_MAP_CSV,
     DEPENDENCY_EDGES_CSV,
+    EmpireState,
     MOD_ROOT,
     OBJECT_ATLAS_CSV,
     POLICY_MATRIX_CSV,
@@ -23,6 +24,9 @@ from stellar_ai_director_lib import (
     generate_object_atlas_artifacts,
     generate_route_override_artifacts,
     parse_file,
+    resource_waste_pressure,
+    research_under_curve,
+    surplus_sink_pressure,
     validate_generated_patch,
     validate_object_atlas_artifacts,
 )
@@ -66,6 +70,70 @@ class GeneratedModValidityTests(unittest.TestCase):
 
     def test_static_validator_reports_no_invalid_references(self):
         self.assertEqual(validate_generated_patch(), [])
+
+    def test_stockpile_waste_and_low_research_activate_surplus_sink(self):
+        state = EmpireState(
+            incomes={
+                "energy": 200,
+                "alloys": 80,
+                "trade": 20,
+                "minerals": 900,
+                "food": 300,
+                "consumer_goods": 300,
+                "physics_research": 500,
+                "society_research": 500,
+                "engineering_research": 700,
+            },
+            stockpiles={
+                "minerals": 82000,
+                "food": 82000,
+                "consumer_goods": 65000,
+            },
+            research_sink_available=True,
+        )
+        self.assertTrue(resource_waste_pressure(state))
+        self.assertTrue(research_under_curve(state, years_passed=165))
+        self.assertTrue(surplus_sink_pressure(state))
+
+    def test_generated_research_and_market_safety_surfaces_cover_runtime_failures(self):
+        triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").read_text(
+            encoding="utf-8"
+        )
+        economy = (MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt").read_text(
+            encoding="utf-8"
+        )
+        market_events = (MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt").read_text(
+            encoding="utf-8"
+        )
+        for marker in (
+            "staid_resource_waste_pressure",
+            "resource_stockpile_compare = { resource = minerals value > 50000 }",
+            "resource_stockpile_compare = { resource = consumer_goods value > 30000 }",
+            "staid_research_under_curve",
+            "Stellar AI Director capped stockpile research conversion",
+            "Stellar AI Director 2360 engineering catchup",
+            "value:stellarai_market_sell_value|RESOURCE|minerals|AMOUNT|5000|",
+            "value:stellarai_market_sell_value|RESOURCE|giga_sr_sentient_metal|AMOUNT|250|",
+        ):
+            self.assertIn(marker, triggers + economy + market_events)
+
+    def test_generated_stranded_fleet_recovery_uses_guarded_vanilla_mia(self):
+        on_action_path = MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt"
+        event_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
+        parse_file(on_action_path)
+        parse_file(event_path)
+        text = event_path.read_text(encoding="utf-8")
+        for marker in (
+            "staid_homeland_under_attack = yes",
+            "can_go_mia = yes",
+            "is_fleet_idle = yes",
+            "is_in_combat = no",
+            "has_fleet_flag = staid_stranded_fleet_warning",
+            "set_timed_fleet_flag",
+            "set_mia = mia_return_home",
+            "space_owner = { NOT = { is_same_value = root } }",
+        ):
+            self.assertIn(marker, text)
 
     def test_route_overrides_carry_source_local_variables(self):
         technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"

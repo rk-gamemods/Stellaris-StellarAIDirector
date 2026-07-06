@@ -220,6 +220,33 @@ GENERATED_SURFACE_FOLDERS = {
 }
 GENERATED_AUXILIARY_COMMON_FOLDERS: set[str] = set()
 
+RESEARCH_RESOURCES = ("physics_research", "society_research", "engineering_research")
+SURPLUS_WASTE_STOCKPILE_THRESHOLDS = {
+    "minerals": 50000.0,
+    "food": 30000.0,
+    "consumer_goods": 30000.0,
+    "volatile_motes": 800.0,
+    "exotic_gases": 800.0,
+    "rare_crystals": 800.0,
+    "sr_dark_matter": 1000.0,
+    "sr_zro": 1000.0,
+    "nanites": 1000.0,
+    "giga_sr_sentient_metal": 2500.0,
+}
+
+MARKET_CAP_BREAKER_SALES = [
+    ("minerals", 50000, 5000, ""),
+    ("food", 30000, 5000, "country_uses_food = yes"),
+    ("consumer_goods", 30000, 2500, "country_uses_consumer_goods = yes"),
+    ("volatile_motes", 800, 200, ""),
+    ("exotic_gases", 800, 200, ""),
+    ("rare_crystals", 800, 200, ""),
+    ("sr_dark_matter", 1000, 100, ""),
+    ("sr_zro", 1000, 100, ""),
+    ("nanites", 1000, 100, ""),
+    ("giga_sr_sentient_metal", 2500, 250, "has_technology = tech_ehof_sentient_tier_1"),
+]
+
 ROUTE_OVERRIDE_TARGETS = [
     # Core unlock techs and high-scale research chains.
     {"object_id": "tech_mega_engineering", "object_type": "technology", "mod_id": "vanilla", "route_id": "mega_engineering_core", "weight": 200000, "file_key": "01_unlock_technology"},
@@ -2863,12 +2890,34 @@ def core_deficit_with_short_runway(state: EmpireState) -> bool:
     return False
 
 
+def resource_waste_pressure(state: EmpireState) -> bool:
+    if core_deficit_with_short_runway(state):
+        return False
+    for resource, threshold in SURPLUS_WASTE_STOCKPILE_THRESHOLDS.items():
+        if state.stockpiles.get(resource, 0.0) >= threshold and state.incomes.get(resource, 0.0) > 0:
+            return True
+    return False
+
+
+def research_under_curve(state: EmpireState, years_passed: float = 119.0) -> bool:
+    total_research = sum(state.incomes.get(resource, 0.0) for resource in RESEARCH_RESOURCES)
+    if years_passed >= 119 and total_research < 3500:
+        return True
+    if years_passed >= 79 and total_research < 2500:
+        return True
+    if years_passed >= 44 and total_research < 1200:
+        return True
+    return False
+
+
 def surplus_sink_pressure(state: EmpireState) -> bool:
     if core_deficit_with_short_runway(state):
         return False
-    if not trade_capacity_safe(state, TRADE_SURPLUS_MONTHLY_INCOME):
-        return False
     if state.incomes.get("energy", 0.0) < 0 or state.incomes.get("alloys", 0.0) < 0:
+        return False
+    if resource_waste_pressure(state) or research_under_curve(state):
+        return True
+    if not trade_capacity_safe(state, TRADE_SURPLUS_MONTHLY_INCOME):
         return False
     income_surplus = state.incomes.get("alloys", 0.0) >= 300 and state.incomes.get("energy", 0.0) >= 300
     stockpile_surplus = state.stockpiles.get("alloys", 0.0) >= 20000 or state.alloy_stockpile_near_cap
@@ -5269,6 +5318,9 @@ def decision_tree_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         "staid_fleet_payoff_exploitation_ready",
         "staid_static_defense_investment_ready",
         "staid_planetary_capacity_growth_ready",
+        "staid_resource_waste_pressure",
+        "staid_research_under_curve",
+        "staid_homeland_under_attack",
         "has_deficit = energy",
         "has_deficit = minerals",
         "has_deficit = consumer_goods",
@@ -5291,6 +5343,8 @@ def generated_surface_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         "common/ai_budget/zzz_staid_alloys_budget.txt",
         "common/ai_budget/zzz_staid_gigas_resource_budgets.txt",
         "common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+        "common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt",
+        "events/zzz_staid_market_and_fleet_safety_events.txt",
         "common/on_actions/zzz_staid_load_proof_on_actions.txt",
         "common/on_actions/zzz_staid_threat_response_on_actions.txt",
         "common/opinion_modifiers/zzz_staid_threat_response_opinions.txt",
@@ -5765,6 +5819,11 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt", ai_budget_text(thresholds))
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt", gigas_resource_budget_text())
     write_text_file(MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt", economic_plan_text())
+    write_text_file(
+        MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt",
+        market_and_fleet_safety_on_actions_text(),
+    )
+    write_text_file(MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt", market_and_fleet_safety_events_text())
     write_text_file(MOD_ROOT / "common" / "script_values" / "zzz_staid_roi_values.txt", script_values_text(thresholds))
     generate_route_override_artifacts()
     write_text_file(
@@ -5923,12 +5982,100 @@ staid_fleet_buildup_economy_safe = {
 \tused_naval_capacity_percent < 1.05
 }
 
+staid_resource_waste_pressure = {
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tOR = {
+\t\tAND = {
+\t\t\thas_monthly_income = { resource = minerals value > 0 }
+\t\t\tresource_stockpile_compare = { resource = minerals value > 50000 }
+\t\t}
+\t\tAND = {
+\t\t\tcountry_uses_food = yes
+\t\t\thas_monthly_income = { resource = food value > 0 }
+\t\t\tresource_stockpile_compare = { resource = food value > 30000 }
+\t\t}
+\t\tAND = {
+\t\t\tcountry_uses_consumer_goods = yes
+\t\t\thas_monthly_income = { resource = consumer_goods value > 0 }
+\t\t\tresource_stockpile_compare = { resource = consumer_goods value > 30000 }
+\t\t}
+\t\tAND = {
+\t\t\thas_monthly_income = { resource = volatile_motes value > 0 }
+\t\t\tresource_stockpile_compare = { resource = volatile_motes value > 800 }
+\t\t}
+\t\tAND = {
+\t\t\thas_monthly_income = { resource = exotic_gases value > 0 }
+\t\t\tresource_stockpile_compare = { resource = exotic_gases value > 800 }
+\t\t}
+\t\tAND = {
+\t\t\thas_monthly_income = { resource = rare_crystals value > 0 }
+\t\t\tresource_stockpile_compare = { resource = rare_crystals value > 800 }
+\t\t}
+\t\tAND = {
+\t\t\thas_monthly_income = { resource = sr_dark_matter value > 0 }
+\t\t\tresource_stockpile_compare = { resource = sr_dark_matter value > 1000 }
+\t\t}
+\t\tAND = {
+\t\t\thas_monthly_income = { resource = sr_zro value > 0 }
+\t\t\tresource_stockpile_compare = { resource = sr_zro value > 1000 }
+\t\t}
+\t\tAND = {
+\t\t\thas_monthly_income = { resource = nanites value > 0 }
+\t\t\tresource_stockpile_compare = { resource = nanites value > 1000 }
+\t\t}
+\t\tAND = {
+\t\t\thas_technology = tech_ehof_sentient_tier_1
+\t\t\thas_monthly_income = { resource = giga_sr_sentient_metal value > 0 }
+\t\t\tresource_stockpile_compare = { resource = giga_sr_sentient_metal value > 2500 }
+\t\t}
+\t}
+}
+
+staid_research_under_curve = {
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tOR = {
+\t\tAND = {
+\t\t\tyears_passed > 119
+\t\t\tOR = {
+\t\t\t\thas_monthly_income = { resource = physics_research value < 1000 }
+\t\t\t\thas_monthly_income = { resource = society_research value < 1000 }
+\t\t\t\thas_monthly_income = { resource = engineering_research value < 1200 }
+\t\t\t}
+\t\t}
+\t\tAND = {
+\t\t\tyears_passed > 79
+\t\t\tOR = {
+\t\t\t\thas_monthly_income = { resource = physics_research value < 750 }
+\t\t\t\thas_monthly_income = { resource = society_research value < 750 }
+\t\t\t\thas_monthly_income = { resource = engineering_research value < 900 }
+\t\t\t}
+\t\t}
+\t\tAND = {
+\t\t\tyears_passed > 44
+\t\t\tOR = {
+\t\t\t\thas_monthly_income = { resource = physics_research value < 400 }
+\t\t\t\thas_monthly_income = { resource = society_research value < 400 }
+\t\t\t\thas_monthly_income = { resource = engineering_research value < 550 }
+\t\t\t}
+\t\t}
+\t}
+}
+
 staid_surplus_sink_pressure = {
 \tNOT = { staid_recovery_mode = yes }
-\tstaid_trade_surplus_capacity_safe = yes
-\thas_monthly_income = { resource = alloys value > 300 }
-\thas_monthly_income = { resource = energy value > 300 }
-\tresource_stockpile_compare = { resource = alloys value > 20000 }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tNOT = { has_deficit = alloys }
+\tNOT = { has_deficit = energy }
+\tOR = {
+\t\tstaid_resource_waste_pressure = yes
+\t\tstaid_research_under_curve = yes
+\t\tAND = {
+\t\t\tstaid_trade_surplus_capacity_safe = yes
+\t\t\thas_monthly_income = { resource = alloys value > 300 }
+\t\t\thas_monthly_income = { resource = energy value > 300 }
+\t\t\tresource_stockpile_compare = { resource = alloys value > 20000 }
+\t\t}
+\t}
 }
 
 staid_research_sink_priority_ready = {
@@ -5936,10 +6083,14 @@ staid_research_sink_priority_ready = {
 }
 
 staid_core_unlock_research_priority_ready = {
-\tstaid_surplus_sink_pressure = yes
+\tOR = {
+\t\tstaid_surplus_sink_pressure = yes
+\t\tstaid_research_under_curve = yes
+\t}
 \tOR = {
 \t\tNOT = { has_technology = tech_mega_engineering }
 \t\tNOT = { has_technology = tech_mega_shipyard }
+\t\tstaid_research_under_curve = yes
 \t}
 }
 
@@ -6022,6 +6173,15 @@ staid_static_defense_investment_ready = {
 
 staid_unity_sink_priority_ready = {
 \tstaid_surplus_sink_pressure = yes
+}
+
+staid_homeland_under_attack = {
+\tis_at_war = yes
+\tOR = {
+\t\tany_owned_planet = { is_occupied_flag = yes }
+\t\tany_owned_planet = { has_orbital_bombardment = yes }
+\t\tAND = { highest_threat > 35 used_naval_capacity_percent < 0.85 }
+\t}
 }
 '''
     return (
@@ -6346,6 +6506,61 @@ basic_economy_plan = {
 \t}
 
 \tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director capped stockpile research conversion"
+\t\tpotential = {
+\t\t\tOR = {
+\t\t\t\tstaid_resource_waste_pressure = yes
+\t\t\t\tstaid_research_under_curve = yes
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\tphysics_research = 1600
+\t\t\tsociety_research = 1600
+\t\t\tengineering_research = 2200
+\t\t\ttrade = 250
+\t\t\tunity = 350
+\t\t}
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director 2360 physics catchup"
+\t\tpotential = {
+\t\t\tyears_passed > 119
+\t\t\tstaid_research_under_curve = yes
+\t\t\thas_monthly_income = { resource = physics_research value < 1200 }
+\t\t}
+\t\tincome = { physics_research = 1800 }
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director 2360 society catchup"
+\t\tpotential = {
+\t\t\tyears_passed > 119
+\t\t\tstaid_research_under_curve = yes
+\t\t\thas_monthly_income = { resource = society_research value < 1200 }
+\t\t}
+\t\tincome = { society_research = 1800 }
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director 2360 engineering catchup"
+\t\tpotential = {
+\t\t\tyears_passed > 119
+\t\t\tstaid_research_under_curve = yes
+\t\t\thas_monthly_income = { resource = engineering_research value < 1400 }
+\t\t}
+\t\tincome = { engineering_research = 2400 }
+\t}
+
+\tsubplan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director fleet throughput reserve"
 \t\tpotential = {
@@ -6417,6 +6632,129 @@ basic_economy_plan = {
 '''
 
 
+def market_cap_breaker_sale_text(resource: str, reserve: int, amount: int, extra_limit: str) -> str:
+    extra = f"\n\t\t\t{extra_limit}" if extra_limit else ""
+    return f'''\t\tif = {{
+\t\t\tlimit = {{{extra}
+\t\t\t\tNOT = {{ has_deficit = {resource} }}
+\t\t\t\thas_monthly_income = {{ resource = {resource} value > 0 }}
+\t\t\t\tresource_stockpile_compare = {{ resource = {resource} value > {reserve} }}
+\t\t\t}}
+\t\t\tset_variable = {{
+\t\t\t\twhich = staid_market_trade_value
+\t\t\t\tvalue = value:stellarai_market_sell_value|RESOURCE|{resource}|AMOUNT|{amount}|
+\t\t\t}}
+\t\t\tif = {{
+\t\t\t\tlimit = {{ check_variable = {{ which = staid_market_trade_value value > 0 }} }}
+\t\t\t\tadd_resource = {{ {resource} = -{amount} }}
+\t\t\t\tadd_resource = {{ trade = 1 mult = staid_market_trade_value }}
+\t\t\t}}
+\t\t\tclear_variable = staid_market_trade_value
+\t\t}}
+'''
+
+
+def market_and_fleet_safety_on_actions_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Monthly Director safety layer for market cap breaking and stranded fleet recovery.
+
+on_monthly_pulse = {
+\tevents = {
+\t\tstaid_economy_safety.1
+\t}
+}
+'''
+
+
+def market_and_fleet_safety_events_text() -> str:
+    sales = "\n".join(
+        market_cap_breaker_sale_text(resource, reserve, amount, extra_limit)
+        for resource, reserve, amount, extra_limit in MARKET_CAP_BREAKER_SALES
+    )
+    return f'''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Uses vanilla `set_mia = mia_return_home` only after a two-pulse stranded-fleet gate.
+
+namespace = staid_economy_safety
+
+event = {{
+\tid = staid_economy_safety.1
+\thide_window = yes
+\tis_triggered_only = yes
+
+\timmediate = {{
+\t\tevery_country = {{
+\t\t\tlimit = {{
+\t\t\t\tis_ai = yes
+\t\t\t\tis_nomadic = no
+\t\t\t\tOR = {{
+\t\t\t\t\tis_regular_empire = yes
+\t\t\t\t\tis_gestalt = yes
+\t\t\t\t\tis_hive_empire = yes
+\t\t\t\t\tis_virtual_empire = yes
+\t\t\t\t\tis_galvanic_empire = yes
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tcountry_event = {{ id = staid_economy_safety.2 }}
+\t\t\tcountry_event = {{ id = staid_economy_safety.3 }}
+\t\t}}
+\t}}
+}}
+
+country_event = {{
+\tid = staid_economy_safety.2
+\thide_window = yes
+\tis_triggered_only = yes
+
+\timmediate = {{
+{sales}
+\t}}
+}}
+
+country_event = {{
+\tid = staid_economy_safety.3
+\thide_window = yes
+\tis_triggered_only = yes
+
+\timmediate = {{
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\tstaid_homeland_under_attack = yes
+\t\t\t}}
+\t\t\tevery_owned_fleet = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\tcan_go_mia = yes
+\t\t\t\t\tis_fleet_idle = yes
+\t\t\t\t\tis_in_combat = no
+\t\t\t\t\tfleet_power > 1000
+\t\t\t\t\tsolar_system = {{
+\t\t\t\t\t\texists = space_owner
+\t\t\t\t\t\tspace_owner = {{ NOT = {{ is_same_value = root }} }}
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{ has_fleet_flag = staid_stranded_fleet_warning }}
+\t\t\t\t\tremove_fleet_flag = staid_stranded_fleet_warning
+\t\t\t\t\tset_mia = mia_return_home
+\t\t\t\t}}
+\t\t\t\telse = {{
+\t\t\t\t\tset_timed_fleet_flag = {{
+\t\t\t\t\t\tflag = staid_stranded_fleet_warning
+\t\t\t\t\t\tdays = 70
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t}}
+\t\t}}
+\t\telse = {{
+\t\t\tevery_owned_fleet = {{
+\t\t\t\tlimit = {{ has_fleet_flag = staid_stranded_fleet_warning }}
+\t\t\t\tremove_fleet_flag = staid_stranded_fleet_warning
+\t\t\t}}
+\t\t}}
+\t}}
+}}
+'''
+
+
 def script_values_text(thresholds: dict[str, int]) -> str:
     return f'''# Generated by tools/generate_stellar_ai_director_patch.py.
 # Numeric anchors for documentation, debug events, and future generated gates.
@@ -6475,6 +6813,12 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Adds trade-capacity recovery and reserve subplans so the Director preserves
   Stellaris 4.4 logistics/upkeep headroom instead of treating trade as a
   normal buy/sell commodity.
+- Adds a monthly market cap-breaker for AI empires that are wasting large
+  positive-income stockpiles, converting marketable overflow into trade
+  currency instead of letting storage caps void the income.
+- Adds a two-pulse stranded-fleet recovery guard that uses vanilla
+  `set_mia = mia_return_home` only for idle, MIA-eligible AI fleets outside
+  their owner's space while the homeland is under wartime pressure.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
 - Adds a planetary-capacity economic subplan for safe mineral/energy-backed
@@ -6514,8 +6858,8 @@ the active playset and the game executed the Director event/on_action surface.
 ## Surplus Sink Ordering
 
 After survival and recovery gates, the Director treats strong alloy/energy
-surplus plus a large alloy stockpile as a signal that the empire needs useful
-spending outlets. The v1 order is:
+surplus, capped marketable resources, or under-curve research as signals that
+the empire needs useful spending outlets. The v1 order is:
 
 1. research sink;
 2. fleet-production sink;
@@ -6558,6 +6902,8 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt`, `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` | medium | additive economy reserves plus copied ESC starbase reactor AI weight support when crisis pressure is safe |",
         "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
         "| trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |",
+        "| cap-breaker market safety | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | additive monthly event sells large marketable positive-income overflow using Stellar AI market value script instead of allowing capped resources to void income |",
+        "| stranded-fleet recovery | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | two-pulse guard marks idle MIA-eligible fleets outside owner space under homeland attack, then uses vanilla `set_mia = mia_return_home` if still stranded |",
         "| ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |",
         "| threat-response values/triggers | `common/script_values/zzz_staid_threat_response_values.txt`, `common/scripted_triggers/zzz_staid_threat_response_triggers.txt` | low | additive `staid_tr_` namespace with unknown-war-goal inertness and foreign-affairs safety gates |",
         "| threat-response opinions/events | `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`, `common/on_actions/zzz_staid_threat_response_on_actions.txt`, `events/zzz_staid_threat_response_events.txt` | medium | event-dispatched opinion/readiness response gated by attacker leader, awareness, participant exclusion, and forbidden-effect validation |",
@@ -6594,11 +6940,19 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Surplus Sink Policy",
             "",
-            "Surplus is no longer treated as the only time the AI may climb. In this playset, failure to unlock and exploit Gigas/NSC3/ESC systems is itself a strategic collapse. The replacement economic plan forces research, alloy, trade, naval-cap, and megastructure pressure on time gates, while still using survival/recovery gates to prevent immediate deficit death spirals.",
+            "Surplus is no longer treated as the only time the AI may climb. In this playset, capped marketable resources and under-curve research are strategic failures even when alloy reserves are not yet high. The replacement economic plan forces research, alloy, trade, naval-cap, and megastructure pressure on time gates, while still using survival/recovery gates to prevent immediate deficit death spirals.",
             "",
             "## Trade-Capacity Policy",
             "",
             "Stellaris 4.4 treats `trade` as a standard advanced resource and the market resource, but local vanilla ship-size files also use `logistics = { trade = ... }` and vanilla economic plans target trade income through intermediate, mature, and endgame stages. The Director therefore models trade as logistics/capacity headroom: it is not converted through market ROI pricing, and fleet, planet, defense, surplus, and megastructure gates require explicit trade income floors before adding more upkeep pressure.",
+            "",
+            "## Market Cap-Breaker Policy",
+            "",
+            "Stellar AI's parent monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in marketable resources: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, nanites, and verified market-priced Gigas sentient metal. Alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.",
+            "",
+            "## Stranded-Fleet Recovery Policy",
+            "",
+            "The Director does not issue normal fleet orders. Runtime evidence points to fleets stranded after access changes or war-end border changes, so the generated safety layer uses the vanilla-supported `set_mia = mia_return_home` mechanic behind a two-pulse guard. A fleet must be AI-owned, idle, out of combat, `can_go_mia = yes`, outside its owner's space, and still marked on the next monthly pulse while the country has wartime homeland pressure before forced MIA recovery fires.",
             "",
             "## Unlock-Research Policy",
             "",
@@ -6695,6 +7049,8 @@ def conflicts_note_text() -> str:
 - `common/script_values/zzz_staid_roi_values.txt`
 - `common/scripted_triggers/zzz_staid_threat_response_triggers.txt`
 - `common/script_values/zzz_staid_threat_response_values.txt`
+- `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`
+- `events/zzz_staid_market_and_fleet_safety_events.txt`
 - `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`
 - `common/on_actions/zzz_staid_threat_response_on_actions.txt`
 - `events/zzz_staid_threat_response_events.txt`
@@ -6827,6 +7183,10 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "| planetary-capacity stockpile minerals | 5000 | mineral runway before expanded planet/building capacity target activates |",
         "| planetary-capacity stockpile energy | 5000 | energy runway before expanded planet/building capacity target activates |",
         "| planetary-capacity pops target | 400000 | high-scale pop target used by the country-level tall-growth capacity subplan |",
+        "| market cap-breaker minerals reserve | 50000 | sell large positive-income mineral overflow before caps void income |",
+        "| market cap-breaker food/consumer goods reserve | 30000 | sell large positive-income food/CG overflow while preserving large buffers |",
+        "| market cap-breaker strategic reserve | 800-2500 | sell marketable strategic overflow only above high reserves |",
+        "| stranded fleet warning duration | 70 days | require a second monthly proof before forcing vanilla MIA return-home |",
         f"| threat response relation flag days | {THREAT_RELATION_FLAG_DAYS} | duration for observer/aggressor and observer/victim threat state |",
         f"| threat response economy ratio cap | {int(THREAT_ECONOMY_RATIO_CAP * 100)} | maximum share of fleet-throughput reserve available to third-party threat readiness |",
         f"| threat readiness alloys cap | {THREAT_ECONOMY_MAX['alloys']} | maximum added alloys target from third-party threat readiness |",
@@ -6845,6 +7205,12 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Trade is modeled as Stellaris 4.4 logistics/capacity headroom, not as a normal priced ROI resource.",
         "- The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object replacement keeps trade logistics visible while pushing beyond vanilla/Stellar AI scale.",
         "- Fleet, planetary, megastructure, static-defense, and surplus gates require trade income floors before adding more ship, colony, or resource-imbalance upkeep pressure.",
+        "",
+        "## Market Cap-Breaker Policy",
+        "",
+        "- Capped stockpile waste is treated as an economic emergency, not harmless savings.",
+        "- The monthly cap breaker sells only large positive-income overflow for marketable resources with verified market pricing or parent market-value support.",
+        "- Alloys, energy, unity, Gigas negative mass, and Gigas megaconstruction are excluded from forced sale because they are strategic reserves or not safely market-priced in source files.",
         "",
         "## Fleet-Throughput Policy",
         "",
@@ -6881,6 +7247,13 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Design axes such as moral outrage and regional fear remain generator-owned; runtime files consume only generated values, triggers, flags, events, and opinion modifiers.",
         "- Third-party defensive-readiness economy pressure is gated by `staid_tr_foreign_affairs_safe`, requires no survival/recovery/deficit/war state, and is capped at 20% of the existing fleet-throughput reserve.",
         "- Directly attacked empires remain owned by vanilla/Stellar AI/Director war and survival behavior, not the third-party threat economy path.",
+        "",
+        "## Stranded-Fleet Recovery Policy",
+        "",
+        "- The Director does not attempt normal movement/pathfinding orders from script.",
+        "- Idle, out-of-combat, MIA-eligible AI fleets outside their owner's space are marked only while `staid_homeland_under_attack` is true.",
+        "- A marked fleet must still satisfy the same stranded gate on a later monthly pulse before `set_mia = mia_return_home` fires.",
+        "- The gate is intended for post-war access/pocket failures where a strong fleet is trapped away from a collapsing homeland, not for active offensive fleets.",
         "",
         "## Safe Tuning Rules",
         "",

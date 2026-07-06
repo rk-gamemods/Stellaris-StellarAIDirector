@@ -120,12 +120,100 @@ staid_fleet_buildup_economy_safe = {
 	used_naval_capacity_percent < 1.05
 }
 
+staid_resource_waste_pressure = {
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		AND = {
+			has_monthly_income = { resource = minerals value > 0 }
+			resource_stockpile_compare = { resource = minerals value > 50000 }
+		}
+		AND = {
+			country_uses_food = yes
+			has_monthly_income = { resource = food value > 0 }
+			resource_stockpile_compare = { resource = food value > 30000 }
+		}
+		AND = {
+			country_uses_consumer_goods = yes
+			has_monthly_income = { resource = consumer_goods value > 0 }
+			resource_stockpile_compare = { resource = consumer_goods value > 30000 }
+		}
+		AND = {
+			has_monthly_income = { resource = volatile_motes value > 0 }
+			resource_stockpile_compare = { resource = volatile_motes value > 800 }
+		}
+		AND = {
+			has_monthly_income = { resource = exotic_gases value > 0 }
+			resource_stockpile_compare = { resource = exotic_gases value > 800 }
+		}
+		AND = {
+			has_monthly_income = { resource = rare_crystals value > 0 }
+			resource_stockpile_compare = { resource = rare_crystals value > 800 }
+		}
+		AND = {
+			has_monthly_income = { resource = sr_dark_matter value > 0 }
+			resource_stockpile_compare = { resource = sr_dark_matter value > 1000 }
+		}
+		AND = {
+			has_monthly_income = { resource = sr_zro value > 0 }
+			resource_stockpile_compare = { resource = sr_zro value > 1000 }
+		}
+		AND = {
+			has_monthly_income = { resource = nanites value > 0 }
+			resource_stockpile_compare = { resource = nanites value > 1000 }
+		}
+		AND = {
+			has_technology = tech_ehof_sentient_tier_1
+			has_monthly_income = { resource = giga_sr_sentient_metal value > 0 }
+			resource_stockpile_compare = { resource = giga_sr_sentient_metal value > 2500 }
+		}
+	}
+}
+
+staid_research_under_curve = {
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		AND = {
+			years_passed > 119
+			OR = {
+				has_monthly_income = { resource = physics_research value < 1000 }
+				has_monthly_income = { resource = society_research value < 1000 }
+				has_monthly_income = { resource = engineering_research value < 1200 }
+			}
+		}
+		AND = {
+			years_passed > 79
+			OR = {
+				has_monthly_income = { resource = physics_research value < 750 }
+				has_monthly_income = { resource = society_research value < 750 }
+				has_monthly_income = { resource = engineering_research value < 900 }
+			}
+		}
+		AND = {
+			years_passed > 44
+			OR = {
+				has_monthly_income = { resource = physics_research value < 400 }
+				has_monthly_income = { resource = society_research value < 400 }
+				has_monthly_income = { resource = engineering_research value < 550 }
+			}
+		}
+	}
+}
+
 staid_surplus_sink_pressure = {
 	NOT = { staid_recovery_mode = yes }
-	staid_trade_surplus_capacity_safe = yes
-	has_monthly_income = { resource = alloys value > 300 }
-	has_monthly_income = { resource = energy value > 300 }
-	resource_stockpile_compare = { resource = alloys value > 20000 }
+	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { has_deficit = alloys }
+	NOT = { has_deficit = energy }
+	OR = {
+		staid_resource_waste_pressure = yes
+		staid_research_under_curve = yes
+		AND = {
+			staid_trade_surplus_capacity_safe = yes
+			has_monthly_income = { resource = alloys value > 300 }
+			has_monthly_income = { resource = energy value > 300 }
+			resource_stockpile_compare = { resource = alloys value > 20000 }
+		}
+	}
 }
 
 staid_research_sink_priority_ready = {
@@ -133,10 +221,14 @@ staid_research_sink_priority_ready = {
 }
 
 staid_core_unlock_research_priority_ready = {
-	staid_surplus_sink_pressure = yes
+	OR = {
+		staid_surplus_sink_pressure = yes
+		staid_research_under_curve = yes
+	}
 	OR = {
 		NOT = { has_technology = tech_mega_engineering }
 		NOT = { has_technology = tech_mega_shipyard }
+		staid_research_under_curve = yes
 	}
 }
 
@@ -219,4 +311,13 @@ staid_static_defense_investment_ready = {
 
 staid_unity_sink_priority_ready = {
 	staid_surplus_sink_pressure = yes
+}
+
+staid_homeland_under_attack = {
+	is_at_war = yes
+	OR = {
+		any_owned_planet = { is_occupied_flag = yes }
+		any_owned_planet = { has_orbital_bombardment = yes }
+		AND = { highest_threat > 35 used_naval_capacity_percent < 0.85 }
+	}
 }

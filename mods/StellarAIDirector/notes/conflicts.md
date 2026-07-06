@@ -16,6 +16,8 @@
 - `common/script_values/zzz_staid_roi_values.txt`
 - `common/scripted_triggers/zzz_staid_threat_response_triggers.txt`
 - `common/script_values/zzz_staid_threat_response_values.txt`
+- `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`
+- `events/zzz_staid_market_and_fleet_safety_events.txt`
 - `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`
 - `common/on_actions/zzz_staid_threat_response_on_actions.txt`
 - `events/zzz_staid_threat_response_events.txt`

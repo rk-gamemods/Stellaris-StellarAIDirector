@@ -36,6 +36,12 @@ Missing required Steam parents during generation: none.
 - Adds trade-capacity recovery and reserve subplans so the Director preserves
   Stellaris 4.4 logistics/upkeep headroom instead of treating trade as a
   normal buy/sell commodity.
+- Adds a monthly market cap-breaker for AI empires that are wasting large
+  positive-income stockpiles, converting marketable overflow into trade
+  currency instead of letting storage caps void the income.
+- Adds a two-pulse stranded-fleet recovery guard that uses vanilla
+  `set_mia = mia_return_home` only for idle, MIA-eligible AI fleets outside
+  their owner's space while the homeland is under wartime pressure.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
 - Adds a planetary-capacity economic subplan for safe mineral/energy-backed
@@ -75,8 +81,8 @@ the active playset and the game executed the Director event/on_action surface.
 ## Surplus Sink Ordering
 
 After survival and recovery gates, the Director treats strong alloy/energy
-surplus plus a large alloy stockpile as a signal that the empire needs useful
-spending outlets. The v1 order is:
+surplus, capped marketable resources, or under-curve research as signals that
+the empire needs useful spending outlets. The v1 order is:
 
 1. research sink;
 2. fleet-production sink;

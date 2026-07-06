@@ -21,6 +21,10 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | planetary-capacity stockpile minerals | 5000 | mineral runway before expanded planet/building capacity target activates |
 | planetary-capacity stockpile energy | 5000 | energy runway before expanded planet/building capacity target activates |
 | planetary-capacity pops target | 400000 | high-scale pop target used by the country-level tall-growth capacity subplan |
+| market cap-breaker minerals reserve | 50000 | sell large positive-income mineral overflow before caps void income |
+| market cap-breaker food/consumer goods reserve | 30000 | sell large positive-income food/CG overflow while preserving large buffers |
+| market cap-breaker strategic reserve | 800-2500 | sell marketable strategic overflow only above high reserves |
+| stranded fleet warning duration | 70 days | require a second monthly proof before forcing vanilla MIA return-home |
 | threat response relation flag days | 7200 | duration for observer/aggressor and observer/victim threat state |
 | threat response economy ratio cap | 20 | maximum share of fleet-throughput reserve available to third-party threat readiness |
 | threat readiness alloys cap | 7 | maximum added alloys target from third-party threat readiness |
@@ -39,6 +43,12 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Trade is modeled as Stellaris 4.4 logistics/capacity headroom, not as a normal priced ROI resource.
 - The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object replacement keeps trade logistics visible while pushing beyond vanilla/Stellar AI scale.
 - Fleet, planetary, megastructure, static-defense, and surplus gates require trade income floors before adding more ship, colony, or resource-imbalance upkeep pressure.
+
+## Market Cap-Breaker Policy
+
+- Capped stockpile waste is treated as an economic emergency, not harmless savings.
+- The monthly cap breaker sells only large positive-income overflow for marketable resources with verified market pricing or parent market-value support.
+- Alloys, energy, unity, Gigas negative mass, and Gigas megaconstruction are excluded from forced sale because they are strategic reserves or not safely market-priced in source files.
 
 ## Fleet-Throughput Policy
 
@@ -75,6 +85,13 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Design axes such as moral outrage and regional fear remain generator-owned; runtime files consume only generated values, triggers, flags, events, and opinion modifiers.
 - Third-party defensive-readiness economy pressure is gated by `staid_tr_foreign_affairs_safe`, requires no survival/recovery/deficit/war state, and is capped at 20% of the existing fleet-throughput reserve.
 - Directly attacked empires remain owned by vanilla/Stellar AI/Director war and survival behavior, not the third-party threat economy path.
+
+## Stranded-Fleet Recovery Policy
+
+- The Director does not attempt normal movement/pathfinding orders from script.
+- Idle, out-of-combat, MIA-eligible AI fleets outside their owner's space are marked only while `staid_homeland_under_attack` is true.
+- A marked fleet must still satisfy the same stranded gate on a later monthly pulse before `set_mia = mia_return_home` fires.
+- The gate is intended for post-war access/pocket failures where a strong fleet is trapped away from a collapsing homeland, not for active offensive fleets.
 
 ## Safe Tuning Rules
 
