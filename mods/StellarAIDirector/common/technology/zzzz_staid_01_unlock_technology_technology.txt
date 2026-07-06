@@ -14,13 +14,27 @@
 @ESC_TECH_tier6_weight1							= 14
 @ai_ship_types_factor = 5 # bonus chance for ai to pick new ship techs
 @best_megastructure_ai_tech_factor = 100 # Extra AI chance for picking certain Megastructure techs. Late game, so can afford very high weight - not picking Mega-Engineering first time is a bug!
+@ehof_tier6cost1 = 64000
+@ehof_tier7weight1 = 15
 @federation_perk_factor = 2
 @giga_50_000_cost = 50000
 @giga_aiweight_multiplier_insane = 1000			#The Meta/Multi-stage
+@giga_aiweight_multiplier_questionable = 0.1	#STOP RESEARCHING DUMB TECHS THAT DON'T EXIST ANYMORE!
+@giga_aiweight_multiplier_strong = 100			#Strong
+@giga_amb_flag = giga_buildcap_j # menu option variable name, checked for feature activation
+@giga_tier6cost1 = 32000
+@giga_tier6cost2 = 40000
+@giga_tier6cost3 = 48000
+@giga_tier6weight1 = 18
+@giga_tier6weight2 = 16
+@giga_tier6weight3 = 14
 @giga_tier7cost1 = 64000
 @giga_tier7cost2 = 80000
 @giga_tier7cost3 = 96000
 @giga_tier7weight1 = 12
+@giga_tier8cost1 = 128000
+@tier3cost1 = 4000
+@tier3weight1 = 65
 @tier4cost1 = 8000
 @tier4cost2 = 10000
 @tier4cost3 = 12000
@@ -343,10 +357,10 @@ tech_mega_shipyard = {
 		# source_object = technology:tech_mega_shipyard
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_shipyard_expansion_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_core_unlock_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
 	}
 }
 
@@ -390,10 +404,206 @@ giga_tech_planet_assembly = {
 		# source_object = technology:giga_tech_planet_assembly
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_planetcraft_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_planet_assembly }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+	}
+}
+
+
+# policy_route = war_moon_route; source = common/technology/giga_01_physics.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_lunar_assembly = {
+	cost = @giga_tier6cost3
+	area = physics
+	tier = 5
+	category = { particles }
+	is_rare = yes
+	weight = 0
+
+	modifier = { megastructure_build_speed_mult = 0.05 }			# Incase this tech's megastructure is disabled
+
+	potential = {
+		NOT = { has_global_flag = giga_celestial_printing_moon_disabled }
+		has_ascension_perk = ap_celestial_printing
+	}
+	prereqfor_desc = {
+		custom = { title = "allow_lunar_assembly"	desc = "allow_lunar_assembly_desc" }
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/shipbuilding_tech_weight_bonus
+	}
+
+
+	ai_weight = {
+		factor = 135000
+
+		# policy_route = war_moon_route
+		# source_object = technology:giga_tech_lunar_assembly
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
+		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
+	}
+}
+
+
+# policy_route = war_moon_route; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_war_moon_1 = {
+	cost = @giga_tier6cost1
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	prerequisites = { "tech_mega_engineering" "tech_thrusters_4" "giga_tech_asteroid_artillery" }
+	weight = @giga_tier6weight1
+	modifier = { ship_base_speed_mult = 0.10 }
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		custom = { title = "giga_mobile_planet_quest_chain" desc = "giga_mobile_planet_quest_chain" }
+	}
+
+	potential = {
+		NOT = {
+			AND = {
+				has_global_flag = warmoon_disabled
+				has_global_flag = warplanet_disabled
+				has_global_flag = systemcraft_disabled
+			}
+		}
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/militarist_tech_weight_bonus
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_war_moon_1
+		}
+	}
+
+
+	ai_weight = {
+		factor = 155000
+
+		# policy_route = war_moon_route
+		# source_object = technology:giga_tech_war_moon_1
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
+		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
+	}
+}
+
+
+# policy_route = war_moon_route; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_war_moon_2 = {
+	cost = @giga_tier6cost2
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	prerequisites = { "giga_tech_war_moon_1" }
+	weight = @giga_tier6weight2
+	prereqfor_desc = {
+		custom = { title = "allow_war_moon"	desc = "desc_war_moons" }
+		custom = { title = "giga_mobile_planet_quest_chain" desc = "giga_mobile_planet_quest_chain" }
+	}
+
+	modifier = { command_limit_add = 100 }
+
+	potential = {
+		NOT = {
+			AND = {
+				has_global_flag = warmoon_disabled
+				has_global_flag = warplanet_disabled
+				has_global_flag = systemcraft_disabled
+			}
+		}
+		has_galactic_wonders = yes
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/militarist_tech_weight_bonus
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_war_moon_2
+		}
+	}
+
+
+	ai_weight = {
+		factor = 180000
+
+		# policy_route = war_moon_route
+		# source_object = technology:giga_tech_war_moon_2
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
+		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
+	}
+}
+
+
+# policy_route = war_moon_route; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_war_moon_sections = {
+	cost = @giga_tier6cost1
+	area = engineering
+	tier = 5
+	category = { propulsion }
+	is_rare = yes
+	prerequisites = { "giga_tech_war_moon_2" }
+	weight = @giga_tier6weight1
+
+	prereqfor_desc = {
+		custom = { title = "allow_attack_moon_specialization"	desc = "allow_attack_moon_specialization" }
+	}
+
+	potential = {
+		has_galactic_wonders = yes
+		NOT = { has_global_flag = warmoon_disabled }
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/militarist_tech_weight_bonus
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_war_moon_sections
+		}
+	}
+
+
+	ai_weight = {
+		factor = 150000
+
+		# policy_route = war_moon_route
+		# source_object = technology:giga_tech_war_moon_sections
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
+		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
 	}
 }
 
@@ -432,10 +642,15 @@ giga_tech_war_system_1 = {
 		# source_object = technology:giga_tech_war_system_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_surplus_sink_pressure = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
+		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
+		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
+		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
 	}
 }
 
@@ -474,10 +689,15 @@ giga_tech_war_system_2 = {
 		# source_object = technology:giga_tech_war_system_2
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_surplus_sink_pressure = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
+		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
+		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
+		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
 	}
 }
 
@@ -516,10 +736,298 @@ giga_tech_war_system_3 = {
 		# source_object = technology:giga_tech_war_system_3
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_surplus_sink_pressure = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
+		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
+		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
+		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+	}
+}
+
+
+# policy_route = systemcraft_route; source = common/technology/giga_01_physics.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_war_system_4 = {
+	cost = @giga_tier7cost2
+	area = physics
+	tier = 5
+	category = { field_manipulation }
+	is_rare = yes
+	prerequisites = { "giga_tech_war_system_3" }
+	weight = @ehof_tier7weight1
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = { title = "allow_systemcraft_p3"	desc = "desc_systemcraft_p3" }
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_war_system_4
+		}
+	}
+
+
+	ai_weight = {
+		factor = 210000
+
+		# policy_route = systemcraft_route
+		# source_object = technology:giga_tech_war_system_4
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
+		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
+		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
+		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+	}
+}
+
+
+# policy_route = systemcraft_route; source = common/technology/giga_01_physics.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_war_system_5 = {
+	cost = @giga_tier7cost3
+	area = physics
+	tier = 5
+	category = { particles }
+	is_rare = yes
+	prerequisites = { "giga_tech_war_system_4" }
+	weight = @giga_tier7weight1
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = { title = "allow_systemcraft_p4"	desc = "desc_systemcraft_p4" }
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/militarist_tech_weight_bonus
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_war_system_5
+		}
+	}
+
+
+	ai_weight = {
+		factor = 230000
+
+		# policy_route = systemcraft_route
+		# source_object = technology:giga_tech_war_system_5
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
+		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
+		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
+		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+	}
+}
+
+
+# policy_route = systemcraft_route; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_war_system_6 = {
+	cost = @giga_tier8cost1
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	prerequisites = { "giga_tech_war_system_5" }
+	weight = @giga_tier7weight1
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = { title = "header_03_insane"	desc = "header_03_insane_desc" }
+		custom = { title = "allow_systemcraft_p5"	desc = "desc_systemcraft_p5" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = systemcraft_disabled }
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/militarist_tech_weight_bonus
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_war_system_6
+		}
+	}
+
+
+	ai_weight = {
+		factor = 250000
+
+		# policy_route = systemcraft_route
+		# source_object = technology:giga_tech_war_system_6
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
+		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
+		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
+		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+	}
+}
+
+
+# policy_route = gigas_special_resource_core; source = common/technology/giga_06_special_project_tech.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_ehof_sentient_tier_1 = {
+	area = engineering
+	cost = @tier5cost3
+	weight = 0
+	tier = 5
+	category = { industry }
+	is_rare = yes
+	ai_update_type = all
+	modifier = {
+		planet_engineers_produces_mult = 0.025
+		planet_engineers_upkeep_mult = 0.025
+	}
+	potential = {
+		NOT = { has_global_flag = ehof_disabled }
+		OR = {
+			AND = {
+				any_country = {
+					has_technology = tech_ehof_sentient_tier_4
+				}
+			}
+			has_country_flag = ehof_level_1_possible
+		}
+	}
+
+	ai_weight = {
+		factor = 140000
+
+		# policy_route = gigas_special_resource_core
+		# source_object = technology:tech_ehof_sentient_tier_1
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_gigas_special_resource_unlock_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 4 has_technology = tech_ehof_sentient_tier_1 }
+		modifier = { factor = 4 has_technology = tech_nm_utilization_1 }
+		modifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }
+	}
+}
+
+
+# policy_route = gigas_special_resource_core; source = common/technology/giga_09_ehof_other.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_nm_utilization_1 = {
+	area = physics
+	cost = @ehof_tier6cost1
+	weight = @giga_tier6weight3
+	tier = 5
+	is_rare = yes
+    category = { particles }
+    prerequisites = {
+		"tech_u_r_e_t"
+		"tech_ssn_det"
+		"tech_negative_e_s"
+	}
+
+	gateway = ehof
+
+	weight_modifier = {
+		modifier = { factor = 0.1	years_passed < 50 }
+		modifier = { factor = 2		years_passed > 60 }
+		modifier = { factor = 3		years_passed > 70 }
+		modifier = { factor = 4		years_passed > 80 }
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = tech_nm_utilization_1
+		}
+	}
+
+
+	ai_weight = {
+		factor = 140000
+
+		# policy_route = gigas_special_resource_core
+		# source_object = technology:tech_nm_utilization_1
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_gigas_special_resource_unlock_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 4 has_technology = tech_ehof_sentient_tier_1 }
+		modifier = { factor = 4 has_technology = tech_nm_utilization_1 }
+		modifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }
+	}
+}
+
+
+# policy_route = gigas_special_resource_core; source = common/technology/giga_17_alternative_mega_build.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_amb_supertensiles = {
+	cost = @tier3cost1
+	area = physics
+	tier = 1 # we need to be able to draw this potentially from the very start
+	category = { field_manipulation }
+	prerequisites = {} # notionally behind mega-engineering but prereqs are handled in weights because we need this earlier depending on setup
+	weight = @tier3weight1
+
+	potential = { has_global_flag = @giga_amb_flag }
+
+	modifier = {
+		country_base_giga_sr_amb_megaconstruction_produces_add = 10
+	}
+
+	weight_modifier = {
+		# do not draw if
+		modifier = { factor = 0
+			# none of these are true
+			nor = {
+				has_technology = tech_starbase_3 # requirement for vanilla early megas
+				count_owned_megastructure = { count > 0 limit = { giga_is_wrecked_ship = no } } # if we have any megas we probably need this to upgrade
+				has_country_flag = giga_sr_amb_megaconstruction_found # if we found some in the wild we should be able to research it
+			}
+		}
+
+		modifier = { factor = 0 not = { has_global_flag = @giga_amb_flag }}
+	}
+
+
+	ai_weight = {
+		factor = 140000
+
+		# policy_route = gigas_special_resource_core
+		# source_object = technology:giga_tech_amb_supertensiles
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 4 staid_gigas_special_resource_unlock_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 4 has_technology = tech_ehof_sentient_tier_1 }
+		modifier = { factor = 4 has_technology = tech_nm_utilization_1 }
+		modifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }
 	}
 }
 
@@ -536,7 +1044,7 @@ tech_Carrier_1 = {
 	potential = {
 		country_uses_bio_ships = no
 	}
-	
+
 	gateway = ship
 
 	prereqfor_desc = {
@@ -545,19 +1053,19 @@ tech_Carrier_1 = {
 			desc = "TECH_UNLOCK_CARRIER_CONSTRUCTION_DESC"
 		}
 	}
-	
+
 	modifier = {
 		command_limit_add = 10
 		country_naval_cap_add = 20
 	}
-	
+
 	weight_modifier = {
 		modifier = {
 			factor = 10
 			any_neighbor_country = { has_technology = tech_Carrier_1 }
 		}
 	}
-	
+
 
 	ai_weight = {
 		factor = 125000
@@ -586,7 +1094,7 @@ tech_Dreadnought_1 = {
 	potential = {
 		country_uses_bio_ships = no
 	}
-	
+
 	gateway = ship
 
 	prereqfor_desc = {
@@ -595,19 +1103,19 @@ tech_Dreadnought_1 = {
 			desc = "TECH_UNLOCK_DREADNOUGHT_CONSTRUCTION_DESC"
 		}
 	}
-	
+
 	modifier = {
 		command_limit_add = 10
 		country_naval_cap_add = 20
 	}
-	
+
 	weight_modifier = {
 		modifier = {
 			factor = 10
 			any_neighbor_country = { has_technology = tech_Dreadnought_1 }
 		}
 	}
-	
+
 
 	ai_weight = {
 		factor = 150000
@@ -646,7 +1154,7 @@ tech_Flagship_1 = {
             }
         }
     }
-	
+
 	gateway = ship
 
 	prereqfor_desc = {
@@ -655,12 +1163,12 @@ tech_Flagship_1 = {
 			desc = "TECH_UNLOCK_FLAGSHIP_CONSTRUCTION_DESC"
 		}
 	}
-	
+
 	modifier = {
 		command_limit_add = 50
 		country_naval_cap_add = 200
 	}
-	
+
 	weight_modifier = {
 		modifier = {
 			factor = 10
@@ -671,7 +1179,7 @@ tech_Flagship_1 = {
 			TECHNOLOGY = tech_Flagship_1
 		}
 	}
-	
+
 
 	ai_weight = {
 		factor = 170000
@@ -700,23 +1208,23 @@ tech_heavycarrier_1 = {
 	potential = {
 		country_uses_bio_ships = no
 	}
-	
+
 	gateway = ship
-	
+
 	prereqfor_desc = {
 		ship = {
 			title = "TECH_UNLOCK_HEAVYCARRIER_CONSTRUCTION_TITLE"
 			desc = "TECH_UNLOCK_HEAVYCARRIER_CONSTRUCTION_DESC"
 		}
 	}
-	
+
 	weight_modifier = {
 		modifier = {
 			factor = 10
 			any_neighbor_country = { has_technology = tech_heavycarrier_1 }
 		}
 	}
-	
+
 
 	technology_swap = {
 		name = tech_nsc_space_fauna_strikecraft_2
@@ -760,9 +1268,9 @@ tech_supercarrier_1 = {
 	potential = {
 		country_uses_bio_ships = no
 	}
-	
+
 	gateway = ship
-	
+
 	prereqfor_desc = {
 		hide_prereq_for_desc = component
 		ship = {
@@ -770,14 +1278,14 @@ tech_supercarrier_1 = {
 			desc = "TECH_UNLOCK_SUPERCARRIER_CONSTRUCTION_DESC"
 		}
 	}
-	
+
 	weight_modifier = {
 		modifier = {
 			factor = 10
 			any_neighbor_country = { has_technology = tech_supercarrier_1 }
 		}
 	}
-	
+
 
 	technology_swap = {
 		name = tech_nsc_space_fauna_strikecraft_3
@@ -982,16 +1490,16 @@ tech_starbase_6 = {
 	tier = 5
 	category = { voidcraft }
 	prerequisites = { "tech_starbase_5" }
-	weight = @tier5weight2		
+	weight = @tier5weight2
 	prereqfor_desc = {
 		ship = {
 			title = "TECH_UNLOCK_STRONGHOLD_CONSTRUCTION_TITLE"
 			desc = "TECH_UNLOCK_STRONGHOLD_CONSTRUCTION_DESC"
 		}
 	}
-	weight_modifier = {	
+	weight_modifier = {
 		modifier = { factor = 10 any_neighbor_country = { has_technology = tech_starbase_6 } }
-	}	
+	}
 
 	potential = {
 		is_nomadic = no

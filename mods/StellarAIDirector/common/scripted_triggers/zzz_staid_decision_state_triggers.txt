@@ -262,6 +262,88 @@ staid_planetary_capacity_growth_ready = {
 	resource_stockpile_compare = { resource = energy value > 5000 }
 }
 
+staid_economy_megastructure_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	OR = {
+		years_passed > 79
+		staid_resource_waste_pressure = yes
+		staid_research_under_curve = yes
+	}
+}
+
+staid_mega_shipyard_build_priority_ready = {
+	staid_shipyard_expansion_ready = yes
+	has_technology = tech_mega_shipyard
+}
+
+staid_planetcraft_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	has_technology = tech_mega_engineering
+	OR = {
+		years_passed > 79
+		staid_research_under_curve = yes
+		staid_surplus_sink_pressure = yes
+	}
+}
+
+staid_planetcraft_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = giga_tech_planet_assembly
+	has_monthly_income = { resource = alloys value > 300 }
+	resource_stockpile_compare = { resource = alloys value > 25000 }
+}
+
+staid_war_moon_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	has_technology = tech_mega_engineering
+	OR = {
+		years_passed > 79
+		has_technology = giga_tech_planet_assembly
+		staid_fleet_buildup_economy_safe = yes
+	}
+}
+
+staid_war_moon_build_priority_ready = {
+	staid_fleet_buildup_economy_safe = yes
+	has_technology = giga_tech_war_moon_2
+	has_monthly_income = { resource = alloys value > 350 }
+	resource_stockpile_compare = { resource = alloys value > 30000 }
+}
+
+staid_systemcraft_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		years_passed > 119
+		has_technology = giga_tech_war_moon_2
+		staid_surplus_sink_pressure = yes
+	}
+}
+
+staid_systemcraft_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_ascension_perk = ap_celestial_printing
+	has_technology = giga_tech_war_system_1
+	has_monthly_income = { resource = alloys value > 500 }
+	resource_stockpile_compare = { resource = alloys value > 50000 }
+}
+
+staid_gigas_special_resource_unlock_ready = {
+	is_nomadic = no
+	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		years_passed > 79
+		staid_planetcraft_research_priority_ready = yes
+		staid_systemcraft_research_priority_ready = yes
+	}
+}
+
 staid_defensive_starbase_strategy = {
 	is_nomadic = no
 	OR = {

@@ -22,10 +22,10 @@ ap_gigastructural_constructs = {
 	}
 
 	possible = {
-		custom_tooltip = { 
-			fail_text = "requires_built_or_repaired_gigastructure"	
+		custom_tooltip = {
+			fail_text = "requires_built_or_repaired_gigastructure"
 			or = {
-				has_country_flag = has_built_or_repaired_gigastructure 
+				has_country_flag = has_built_or_repaired_gigastructure
 				and = {
 					is_ai = yes
 					or = {
@@ -58,10 +58,10 @@ ap_gigastructural_constructs = {
 		# source_object = ascension_perk:ap_gigastructural_constructs
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_megastructure_commit_safe = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_core_unlock_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
 	}
 }
 
@@ -96,13 +96,13 @@ ap_celestial_printing = {
 	}
 
 	potential = {
-		NOR = { 
+		NOR = {
 			has_ascension_perk = ap_celestial_printing
 			AND = {
 				has_global_flag = giga_celestial_printing_moon_disabled
 				has_global_flag = giga_celestial_printing_planet_disabled
 				has_global_flag = systemcraft_disabled
-			} 
+			}
 		}
 		is_nomadic = no
 	}
@@ -114,10 +114,12 @@ ap_celestial_printing = {
 		# source_object = ascension_perk:ap_celestial_printing
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_planetcraft_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_planet_assembly }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 	}
 }
 

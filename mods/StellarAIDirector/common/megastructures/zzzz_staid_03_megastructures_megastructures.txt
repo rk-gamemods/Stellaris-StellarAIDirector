@@ -29,7 +29,7 @@ dyson_sphere_0 = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
 	build_time = 1800
 	resources = {
 		category = giga_dyson_sphere
@@ -209,10 +209,10 @@ dyson_sphere_0 = {
 		# source_object = megastructure:dyson_sphere_0
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_megastructure_commit_safe = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
 	}
 }
 
@@ -231,7 +231,7 @@ mega_shipyard_0 = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
 	build_time = 1800
 	resources = {
 		category = giga_mega_shipyard
@@ -317,10 +317,10 @@ mega_shipyard_0 = {
 		# source_object = megastructure:mega_shipyard_0
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_shipyard_expansion_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_mega_shipyard_build_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
 	}
 }
 
@@ -338,7 +338,7 @@ neutronium_gigaforge_0 = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
 	build_time = 1800
 	resources = {
 		category = giga_neutronium_gigaforge
@@ -432,10 +432,10 @@ neutronium_gigaforge_0 = {
 		# source_object = megastructure:neutronium_gigaforge_0
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_megastructure_commit_safe = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
 	}
 }
 
@@ -448,12 +448,12 @@ nidavellir_forge_0 = {
 	portrait = "GFX_megastructure_construction_background"
 	place_entity_on_planet_plane = no
 	prerequisites = { giga_tech_nidavellir }
-	
+
 	outliner_trigger = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
 	build_time = 1800
 	resources = {
 		category = giga_nidavellir_forge
@@ -559,10 +559,10 @@ nidavellir_forge_0 = {
 		# source_object = megastructure:nidavellir_forge_0
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_megastructure_commit_safe = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
 	}
 }
 
@@ -580,7 +580,7 @@ matrioshka_brain_0_g_star = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
     build_time = 500
     resources = {
         category = giga_matrioshka_brain
@@ -696,10 +696,10 @@ matrioshka_brain_0_g_star = {
 		# source_object = megastructure:matrioshka_brain_0_g_star
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_megastructure_commit_safe = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
 	}
 }
 
@@ -717,7 +717,7 @@ planetcraft_printer_0 = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
 	build_time = 1800
 	resources = {
 		category = giga_gigastructures
@@ -778,10 +778,12 @@ planetcraft_printer_0 = {
 		# source_object = megastructure:planetcraft_printer_0
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_planetcraft_build_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_planet_assembly }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 	}
 }
 
@@ -799,7 +801,7 @@ war_moon_0 = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
 	build_time = 1800
 	resources = {
 		category = giga_attack_moon
@@ -916,10 +918,12 @@ war_moon_0 = {
 		# source_object = megastructure:war_moon_0
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_fleet_buildup_economy_safe = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_war_moon_build_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
+		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
 	}
 }
 
@@ -932,12 +936,12 @@ war_system_0 = {
 	portrait = "GFX_megastructure_construction_background"
 	place_entity_on_planet_plane = no
 	prerequisites = { giga_tech_war_system_1 }
-	
+
 	outliner_trigger = {
 		exists = owner
 		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
 	}
-	
+
 	build_time = 1800
 	resources = {
 		category = giga_gigastructures
@@ -988,8 +992,8 @@ war_system_0 = {
 			custom_tooltip = { fail_text = "requires_no_existing_megastructure"				planet_has_no_megastructure = yes }
 			custom_tooltip = { fail_text = "must_build_around_star"							is_star = yes }
 			custom_tooltip = { fail_text = "requires_no_anomaly"							has_anomaly = no }
-			custom_tooltip = { 
-				fail_text = "requires_standard_planet_class"			
+			custom_tooltip = {
+				fail_text = "requires_standard_planet_class"
 				giga_is_standard_star = yes
 				NOT = {
 					giga_is_bitrinary = yes
@@ -1020,10 +1024,15 @@ war_system_0 = {
 		# source_object = megastructure:war_system_0
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_surplus_sink_pressure = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 staid_systemcraft_build_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
+		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
+		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
+		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
 	}
 }
 

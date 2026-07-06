@@ -146,6 +146,39 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn(marker, megastructure_text)
         self.assertEqual(generated_unresolved_at_variable_rows(MOD_ROOT), [])
 
+    def test_route_research_weights_do_not_self_gate_unlock_targets(self):
+        technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
+        technology_text = technology_path.read_text(encoding="utf-8")
+        mega_shipyard_block = technology_text[
+            technology_text.index("tech_mega_shipyard = {") : technology_text.index("giga_tech_planet_assembly = {")
+        ]
+        self.assertIn("# policy_route = mega_shipyard_core", mega_shipyard_block)
+        self.assertIn("staid_core_unlock_research_priority_ready = yes", mega_shipyard_block)
+        self.assertNotIn("staid_shipyard_expansion_ready = yes", mega_shipyard_block)
+
+    def test_gigas_progression_overrides_cover_deep_unlocks_and_build_gates(self):
+        technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
+        megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"
+        trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        text = (
+            technology_path.read_text(encoding="utf-8")
+            + megastructure_path.read_text(encoding="utf-8")
+            + trigger_path.read_text(encoding="utf-8")
+        )
+        for marker in (
+            "giga_tech_war_moon_1 = {",
+            "giga_tech_war_moon_2 = {",
+            "giga_tech_war_system_6 = {",
+            "tech_nm_utilization_1 = {",
+            "staid_war_moon_research_priority_ready = yes",
+            "staid_systemcraft_research_priority_ready = yes",
+            "staid_gigas_special_resource_unlock_ready = yes",
+            "staid_war_moon_build_priority_ready = yes",
+            "staid_systemcraft_build_priority_ready = yes",
+            "has_ascension_perk = ap_celestial_printing",
+        ):
+            self.assertIn(marker, text)
+
     def test_unresolved_source_local_variables_are_reported(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             mod_root = Path(temp_dir)

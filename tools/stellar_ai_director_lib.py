@@ -252,9 +252,19 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "tech_mega_engineering", "object_type": "technology", "mod_id": "vanilla", "route_id": "mega_engineering_core", "weight": 200000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_mega_shipyard", "object_type": "technology", "mod_id": "vanilla", "route_id": "mega_shipyard_core", "weight": 180000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_planet_assembly", "object_type": "technology", "mod_id": "1121692237", "route_id": "planetcraft_route", "weight": 160000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_lunar_assembly", "object_type": "technology", "mod_id": "1121692237", "route_id": "war_moon_route", "weight": 135000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_moon_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "war_moon_route", "weight": 155000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_moon_2", "object_type": "technology", "mod_id": "1121692237", "route_id": "war_moon_route", "weight": 180000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_moon_sections", "object_type": "technology", "mod_id": "1121692237", "route_id": "war_moon_route", "weight": 150000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_war_system_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 150000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_war_system_2", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 170000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_war_system_3", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 190000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_system_4", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 210000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_system_5", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 230000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_war_system_6", "object_type": "technology", "mod_id": "1121692237", "route_id": "systemcraft_route", "weight": 250000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_ehof_sentient_tier_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "gigas_special_resource_core", "weight": 140000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_nm_utilization_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "gigas_special_resource_core", "weight": 140000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_amb_supertensiles", "object_type": "technology", "mod_id": "1121692237", "route_id": "gigas_special_resource_core", "weight": 140000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_Carrier_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 125000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_Dreadnought_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 150000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_Flagship_1", "object_type": "technology", "mod_id": "683230077", "route_id": "nsc3_capital_hull_route", "weight": 170000, "file_key": "01_unlock_technology"},
@@ -3068,29 +3078,90 @@ def replace_top_level_child_block(block_text: str, child_key: str, replacement_t
     return "\n".join(output) + "\n"
 
 
-def route_weight_modifiers(route_id: str) -> list[str]:
-    route_gate = {
-        "mega_engineering_core": "staid_core_unlock_research_priority_ready",
-        "mega_shipyard_core": "staid_shipyard_expansion_ready",
-        "economy_megastructure_core": "staid_megastructure_commit_safe",
-        "gigas_special_resource_core": "staid_megastructure_commit_safe",
-        "planetcraft_route": "staid_planetary_capacity_growth_ready",
-        "war_moon_route": "staid_fleet_buildup_economy_safe",
-        "systemcraft_route": "staid_surplus_sink_pressure",
-        "nsc3_capital_hull_route": "staid_fleet_payoff_exploitation_ready",
-        "esc_component_route": "staid_fleet_payoff_exploitation_ready",
-        "crowded_tall_route": "staid_planetary_capacity_growth_ready",
-        "conquest_escape_route": "staid_aggressive_fleet_pressure",
-        "fallen_empire_benchmark_route": "staid_crisis_starbase_pressure",
-    }.get(route_id, "staid_surplus_sink_pressure")
-    return [
+ROUTE_RESEARCH_GATES = {
+    "mega_engineering_core": "staid_core_unlock_research_priority_ready",
+    "mega_shipyard_core": "staid_core_unlock_research_priority_ready",
+    "economy_megastructure_core": "staid_core_unlock_research_priority_ready",
+    "gigas_special_resource_core": "staid_gigas_special_resource_unlock_ready",
+    "planetcraft_route": "staid_planetcraft_research_priority_ready",
+    "war_moon_route": "staid_war_moon_research_priority_ready",
+    "systemcraft_route": "staid_systemcraft_research_priority_ready",
+    "nsc3_capital_hull_route": "staid_fleet_payoff_exploitation_ready",
+    "esc_component_route": "staid_fleet_payoff_exploitation_ready",
+    "crowded_tall_route": "staid_planetary_capacity_growth_ready",
+    "conquest_escape_route": "staid_aggressive_fleet_pressure",
+    "fallen_empire_benchmark_route": "staid_crisis_starbase_pressure",
+}
+
+ROUTE_BUILD_GATES = {
+    "mega_engineering_core": "staid_core_unlock_research_priority_ready",
+    "mega_shipyard_core": "staid_mega_shipyard_build_priority_ready",
+    "economy_megastructure_core": "staid_economy_megastructure_build_priority_ready",
+    "gigas_special_resource_core": "staid_megastructure_commit_safe",
+    "planetcraft_route": "staid_planetcraft_build_priority_ready",
+    "war_moon_route": "staid_war_moon_build_priority_ready",
+    "systemcraft_route": "staid_systemcraft_build_priority_ready",
+    "nsc3_capital_hull_route": "staid_fleet_payoff_exploitation_ready",
+    "esc_component_route": "staid_fleet_payoff_exploitation_ready",
+    "crowded_tall_route": "staid_planetary_capacity_growth_ready",
+    "conquest_escape_route": "staid_aggressive_fleet_pressure",
+    "fallen_empire_benchmark_route": "staid_crisis_starbase_pressure",
+}
+
+ROUTE_TIMING_FACTORS = {
+    "mega_shipyard_core": (3, 5, 8),
+    "economy_megastructure_core": (3, 5, 8),
+    "gigas_special_resource_core": (3, 5, 8),
+    "planetcraft_route": (3, 6, 10),
+    "war_moon_route": (3, 6, 10),
+    "systemcraft_route": (4, 8, 12),
+}
+
+ROUTE_EXTRA_MODIFIERS = {
+    "planetcraft_route": [
+        "\tmodifier = { factor = 4 has_technology = giga_tech_planet_assembly }",
+        "\tmodifier = { factor = 3 has_ascension_perk = ap_celestial_printing }",
+    ],
+    "war_moon_route": [
+        "\tmodifier = { factor = 4 has_technology = giga_tech_war_moon_1 }",
+        "\tmodifier = { factor = 6 has_technology = giga_tech_war_moon_2 }",
+    ],
+    "systemcraft_route": [
+        "\tmodifier = { factor = 3 has_ascension_perk = ap_celestial_printing }",
+        "\tmodifier = { factor = 4 has_technology = giga_tech_war_system_1 }",
+        "\tmodifier = { factor = 5 has_technology = giga_tech_war_system_2 }",
+        "\tmodifier = { factor = 6 has_technology = giga_tech_war_system_3 }",
+        "\tmodifier = { factor = 8 has_technology = giga_tech_war_system_6 }",
+    ],
+    "gigas_special_resource_core": [
+        "\tmodifier = { factor = 4 has_technology = tech_ehof_sentient_tier_1 }",
+        "\tmodifier = { factor = 4 has_technology = tech_nm_utilization_1 }",
+        "\tmodifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }",
+    ],
+}
+
+
+def route_gate_for_target(target: dict[str, Any]) -> str:
+    route_id = str(target["route_id"])
+    if target["object_type"] in {"technology", "ascension_perk", "tradition"}:
+        return ROUTE_RESEARCH_GATES.get(route_id, "staid_surplus_sink_pressure")
+    return ROUTE_BUILD_GATES.get(route_id, "staid_surplus_sink_pressure")
+
+
+def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
+    route_id = str(target["route_id"])
+    route_gate = route_gate_for_target(target)
+    mid_factor, late_factor, crisis_factor = ROUTE_TIMING_FACTORS.get(route_id, (2, 3, 5))
+    lines = [
         "\tmodifier = { factor = 0 staid_survival_mode = yes }",
         "\tmodifier = { factor = 0.35 staid_recovery_mode = yes }",
         f"\tmodifier = {{ factor = 4 {route_gate} = yes }}",
-        "\tmodifier = { factor = 2 years_passed > 44 }",
-        "\tmodifier = { factor = 3 years_passed > 79 }",
-        "\tmodifier = { factor = 5 years_passed > 119 }",
+        f"\tmodifier = {{ factor = {mid_factor} years_passed > 44 }}",
+        f"\tmodifier = {{ factor = {late_factor} years_passed > 79 }}",
+        f"\tmodifier = {{ factor = {crisis_factor} years_passed > 119 }}",
     ]
+    lines.extend(ROUTE_EXTRA_MODIFIERS.get(route_id, []))
+    return lines
 
 
 def director_ai_weight_block(target: dict[str, Any]) -> str:
@@ -3101,7 +3172,7 @@ def director_ai_weight_block(target: dict[str, Any]) -> str:
         f"\t\t# policy_route = {target['route_id']}",
         f"\t\t# source_object = {target['object_type']}:{target['object_id']}",
     ]
-    lines.extend(line.replace("\t", "\t\t", 1) for line in route_weight_modifiers(str(target["route_id"])))
+    lines.extend(line.replace("\t", "\t\t", 1) for line in route_weight_modifiers(target))
     lines.append("\t}")
     return "\n".join(lines) + "\n"
 
@@ -3259,6 +3330,7 @@ def route_override_object_text(target: dict[str, Any], object_names: dict[str, s
     if target["object_type"] == "megastructure" and object_names is not None:
         block = strip_optional_absent_planet_classes(block, object_names)
     block = replace_top_level_child_block(block, "ai_weight", director_ai_weight_block(target))
+    block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
     return (
         f"# policy_route = {target['route_id']}; source = {target['source_file']}; "
         f"parent_ai = {target['parent_ai_support']}; source_ai_weight = {target['source_has_ai_weight']}\n"
@@ -6122,6 +6194,88 @@ staid_planetary_capacity_growth_ready = {
 \thas_monthly_income = { resource = energy value > 100 }
 \tresource_stockpile_compare = { resource = minerals value > 5000 }
 \tresource_stockpile_compare = { resource = energy value > 5000 }
+}
+
+staid_economy_megastructure_build_priority_ready = {
+\tstaid_megastructure_commit_safe = yes
+\tOR = {
+\t\tyears_passed > 79
+\t\tstaid_resource_waste_pressure = yes
+\t\tstaid_research_under_curve = yes
+\t}
+}
+
+staid_mega_shipyard_build_priority_ready = {
+\tstaid_shipyard_expansion_ready = yes
+\thas_technology = tech_mega_shipyard
+}
+
+staid_planetcraft_research_priority_ready = {
+\tis_nomadic = no
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\thas_technology = tech_mega_engineering
+\tOR = {
+\t\tyears_passed > 79
+\t\tstaid_research_under_curve = yes
+\t\tstaid_surplus_sink_pressure = yes
+\t}
+}
+
+staid_planetcraft_build_priority_ready = {
+\tstaid_megastructure_commit_safe = yes
+\thas_technology = giga_tech_planet_assembly
+\thas_monthly_income = { resource = alloys value > 300 }
+\tresource_stockpile_compare = { resource = alloys value > 25000 }
+}
+
+staid_war_moon_research_priority_ready = {
+\tis_nomadic = no
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\thas_technology = tech_mega_engineering
+\tOR = {
+\t\tyears_passed > 79
+\t\thas_technology = giga_tech_planet_assembly
+\t\tstaid_fleet_buildup_economy_safe = yes
+\t}
+}
+
+staid_war_moon_build_priority_ready = {
+\tstaid_fleet_buildup_economy_safe = yes
+\thas_technology = giga_tech_war_moon_2
+\thas_monthly_income = { resource = alloys value > 350 }
+\tresource_stockpile_compare = { resource = alloys value > 30000 }
+}
+
+staid_systemcraft_research_priority_ready = {
+\tis_nomadic = no
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tOR = {
+\t\tyears_passed > 119
+\t\thas_technology = giga_tech_war_moon_2
+\t\tstaid_surplus_sink_pressure = yes
+\t}
+}
+
+staid_systemcraft_build_priority_ready = {
+\tstaid_megastructure_commit_safe = yes
+\thas_ascension_perk = ap_celestial_printing
+\thas_technology = giga_tech_war_system_1
+\thas_monthly_income = { resource = alloys value > 500 }
+\tresource_stockpile_compare = { resource = alloys value > 50000 }
+}
+
+staid_gigas_special_resource_unlock_ready = {
+\tis_nomadic = no
+\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tOR = {
+\t\tyears_passed > 79
+\t\tstaid_planetcraft_research_priority_ready = yes
+\t\tstaid_systemcraft_research_priority_ready = yes
+\t}
 }
 
 staid_defensive_starbase_strategy = {
