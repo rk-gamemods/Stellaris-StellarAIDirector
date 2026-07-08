@@ -1,0 +1,101 @@
+[
+  {
+    "category": "00_foundation",
+    "title": "Foundation and task routing",
+    "description": "Small routing skills that prevent Codex from loading implementation knowledge before it knows the task, repository, and evidence requirements.",
+    "skill_count": 8,
+    "must_have": 6,
+    "should_have": 2,
+    "later": 0
+  },
+  {
+    "category": "01_schema_and_research",
+    "title": "Schema and research lookup",
+    "description": "Narrow research skills for CWTools, vanilla diffs, trigger/effect docs, and unresolved semantics.",
+    "skill_count": 8,
+    "must_have": 5,
+    "should_have": 3,
+    "later": 0
+  },
+  {
+    "category": "02_script_surfaces",
+    "title": "Script surfaces",
+    "description": "Implementation and validation skills for repeatable Paradox-script surfaces such as scripted triggers, effects, values, events, and on_actions.",
+    "skill_count": 12,
+    "must_have": 7,
+    "should_have": 4,
+    "later": 1
+  },
+  {
+    "category": "03_ai_economy_planets",
+    "title": "AI, economy, planets, and workforce",
+    "description": "AI economy and planet-development skills split by actual control surface.",
+    "skill_count": 14,
+    "must_have": 9,
+    "should_have": 4,
+    "later": 1
+  },
+  {
+    "category": "04_gameplay_domains",
+    "title": "Gameplay domains",
+    "description": "Discrete gameplay-domain skills for technologies, empire setup, diplomacy, war, crises, and 4.x-specific concepts.",
+    "skill_count": 11,
+    "must_have": 1,
+    "should_have": 6,
+    "later": 4
+  },
+  {
+    "category": "05_ships_war_starbases",
+    "title": "Ships, warfare, and starbases",
+    "description": "Ship graph, component, behavior, fleet, starbase, and army skills kept separate from generic combat balance.",
+    "skill_count": 9,
+    "must_have": 5,
+    "should_have": 2,
+    "later": 2
+  },
+  {
+    "category": "06_megastructures",
+    "title": "Megastructures",
+    "description": "Megastructure implementation, AI planning, and high-power megastructure safety.",
+    "skill_count": 4,
+    "must_have": 1,
+    "should_have": 2,
+    "later": 1
+  },
+  {
+    "category": "07_ui_localization_assets",
+    "title": "UI, localization, and assets",
+    "description": "Player-facing text, GUI, sprites, resources, portraits, audio, map/system asset, and DDS pipeline skills.",
+    "skill_count": 9,
+    "must_have": 3,
+    "should_have": 1,
+    "later": 5
+  },
+  {
+    "category": "08_validation_diagnostics",
+    "title": "Validation and diagnostics",
+    "description": "Static validation, runtime-log review, active-playset inspection, observer testing, regression reports, and custom audit tooling.",
+    "skill_count": 13,
+    "must_have": 8,
+    "should_have": 5,
+    "later": 0
+  },
+  {
+    "category": "09_compatibility",
+    "title": "Active-stack compatibility",
+    "description": "Compatibility skills for major live-stack mods, separated from vanilla/schema skills.",
+    "skill_count": 13,
+    "must_have": 9,
+    "should_have": 1,
+    "later": 3
+  },
+  {
+    "category": "10_packaging_release",
+    "title": "Packaging, release, and porting",
+    "description": "Release, Workshop, compatibility-patch, and version-porting workflow skills.",
+    "skill_count": 5,
+    "must_have": 3,
+    "should_have": 2,
+    "later": 0
+  }
+]

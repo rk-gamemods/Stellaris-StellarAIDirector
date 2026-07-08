@@ -94,7 +94,7 @@ Avoid mixing live and beta UI tracks: **UI Overhaul Dynamic Beta** is for the **
 - **One AI overhaul only:** Stellar AI warns against AI overhauls replacing the same definitions; StarNet/StarTech are stale. [M19, M30, M31]
 - **Gigas + Real Space System Scale:** Gigas known issues flag Real Space System Scale as causing clipping/exploded ringworlds. [M15]
 - **Total conversions:** STNC, STNH, LoToR, and New Dawn should be separate playsets, not mixed with standard vanilla+ stacks unless their docs explicitly say so. [M33, M34, M36, M37]
-- **Beta branch mod mixing:** UIOD Beta targets 4.4.5 beta and should not be used as a stable 4.4.4 mod unless a current live crash forces a temporary test in a disposable save. [M02, S02]
+- **UI track mixing:** UIOD Beta targeted the 4.4.5 beta when this packet was written. As of 2026-07-08, 4.4.5 is the live target; re-check UIOD main/beta page guidance before using a beta UI track in the current playset. [M02, S02]
 
 ## Safe-default shortlist
 

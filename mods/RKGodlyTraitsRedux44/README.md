@@ -1,6 +1,6 @@
 # RK Godly Traits Redux 4.4
 
-Local Stellaris 4.4.4 compatibility copy of Steam Workshop mod `Godly Traits Redux 4.0` (`2945430513`).
+Local Stellaris 4.4.5/current 4.4-line compatibility copy of Steam Workshop mod `Godly Traits Redux 4.0` (`2945430513`).
 
 This preserves the source mod's powerful species traits, point-granting traits, leader traits, civics, events, localization, and icons. The local copy updates metadata to `v4.4.*` and fixes compatibility issues found in the installed 4.0 source:
 

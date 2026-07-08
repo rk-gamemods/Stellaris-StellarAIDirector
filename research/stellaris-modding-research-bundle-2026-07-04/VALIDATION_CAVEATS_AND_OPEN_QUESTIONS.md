@@ -2,7 +2,7 @@
 
 ## What is high confidence
 
-- 4.4.4 stable patch status and checksum 5505. `[S002]`
+- Historical bundle anchor: 4.4.4 stable patch status and checksum 5505. `[S002]` Current work should use 4.4.5 unless explicitly targeting rollback.
 - 4.4.5 open beta exists on `stellaris_test`. `[S003] [S004]`
 - 4.5 pop/faction/ethics refactor is breaking and save-incompatible according to official notes. `[S004]`
 - Local mod descriptor pair and Windows placement. `[S007]`
@@ -32,6 +32,6 @@
 
 - Build a complete FIOS/LIOS folder rule table for 4.4.4 by inspecting Irony game definitions and vanilla loader behavior.
 - Generate current `trigger_docs`, effects docs, modifiers docs, and scopes logs from a 4.4.4 installation.
-- Diff 4.4.4 vs 4.4.5 beta vanilla files for all folders touched by the target mod.
+- Diff current 4.4.5 vanilla files against any 4.4.4-derived assumptions for all folders touched by the target mod.
 - Diff 4.4.4 vs 4.5 beta for pop/faction/ethics/job code.
 - Run Galactic Conclave / Overmind / Companion in a disposable environment and record actual capabilities.

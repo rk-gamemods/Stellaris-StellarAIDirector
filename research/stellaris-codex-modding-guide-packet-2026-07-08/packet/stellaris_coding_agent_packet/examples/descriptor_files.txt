@@ -1,0 +1,36 @@
+# descriptor.mod inside the mod folder:
+version="1.0.0"
+tags={
+    "Gameplay"
+    "Fixes"
+}
+name="My Stellaris AI Compatibility Patch"
+supported_version="4.4.*"
+path="mod/my_stellaris_ai_compat_patch"
+dependencies={
+    "Gigastructural Engineering & More"
+    "NSC3 Season 1"
+}
+
+# Launcher .mod file beside the mod folder, commonly in the user's Stellaris mod directory:
+version="1.0.0"
+tags={
+    "Gameplay"
+    "Fixes"
+}
+name="My Stellaris AI Compatibility Patch"
+supported_version="4.4.*"
+path="mod/my_stellaris_ai_compat_patch"
+dependencies={
+    "Gigastructural Engineering & More"
+    "NSC3 Season 1"
+}
+
+# Workshop-uploaded/generated launcher descriptors may include:
+# remote_file_id="1234567890"
+#
+# Rules:
+# - `supported_version` mostly informs launcher compatibility display; it is not a script gate.
+# - Load order still matters even with dependencies.
+# - DLC availability is separate; use script gates such as host_has_dlc where vanilla/mod source does.
+# - Do not depend on `remote_file_id` for local source resolution.

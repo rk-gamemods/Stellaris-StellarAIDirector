@@ -3,7 +3,7 @@
 Date checked: 2026-07-04  
 Collection: [4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity](https://steamcommunity.com/sharedfiles/filedetails/?id=2473560875)  
 Target assumed by collection author: latest Stellaris 4.4.x, with all DLC recommended  
-Project target: Stellaris PC 4.4.4 stable unless explicitly changed
+Project target: Stellaris PC 4.4.5 stable/current local install unless explicitly changed
 
 ## Bottom Line
 

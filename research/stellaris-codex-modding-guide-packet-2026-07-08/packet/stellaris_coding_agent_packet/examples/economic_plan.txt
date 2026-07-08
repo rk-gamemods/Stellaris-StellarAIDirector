@@ -1,0 +1,34 @@
+# common/economic_plans/my_mod_economic_plan_overrides.txt
+#
+# IMPORTANT: economic_plan schema is highly version-sensitive and must be copied from
+# local Stellaris 4.4.4 `common/economic_plans/` and any active AI mod.
+# This file is a PATCH WORKFLOW TEMPLATE, not a drop-in object.
+
+# Workflow:
+# 1. Resolve active load-order winner for the target plan ID.
+# 2. Copy the entire winning plan object.
+# 3. Preserve all triggers, phase gates, resource goals, and comments.
+# 4. Change only the locally verified numeric resource targets/weights needed.
+# 5. Add provenance comments and a diff summary.
+# 6. Validate with CWTools and runtime logs before claiming AI behavior changed.
+
+# PROVENANCE:
+# object_id: <existing_economic_plan_id>
+# source: <winning file path>
+# source_mod: <vanilla/Stellar AI/other AI mod>
+# source_hash: <sha256>
+# reason: reduce catastrophic alloy/CG deficit under heavy playset
+# changed_fields:
+#   - <resource goal or weight block copied from local 4.4.4 source>
+
+# <existing_economic_plan_id> = {
+#     <copy full winning object from local source>
+#
+#     # Example edit style only:
+#     # <locally_verified_resource_goal_block> = {
+#     #     <preserved keys>
+#     #     <numeric target/weight> = <adjusted value>
+#     # }
+# }
+#
+# Never invent economic_plan keys from memory.

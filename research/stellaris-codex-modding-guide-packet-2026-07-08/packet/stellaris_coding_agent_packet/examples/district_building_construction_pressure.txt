@@ -1,0 +1,56 @@
+# common/buildings/my_mod_building_ai_overrides.txt
+# common/districts/my_mod_district_ai_overrides.txt
+#
+# Pattern: nudge construction by resource production hints and planet-scope weights.
+# CWTools public schema clue: building/district object body and ai_weight are usually
+# planet scope; country checks should go through `owner = { ... }`.
+# Verify exact schema and current scope in local 4.4.4 before shipping.
+
+# Building full-object override pattern:
+# <existing_building_id> = {
+#     <copy full winning object>
+#
+#     # AI economic hint; preserve original if present and adjust carefully.
+#     # Use locally verified keys/resource names only.
+#     ai_resource_production = {
+#         alloys = 4
+#     }
+#
+#     ai_weight = {
+#         weight = 1
+#
+#         modifier = {
+#             factor = 2
+#             owner = {
+#                 my_mod_country_is_ai_and_safe_to_spend = yes
+#             }
+#         }
+#
+#         modifier = {
+#             factor = 0
+#             owner = {
+#                 has_country_flag = my_mod_ai_no_more_alloy_buildings
+#             }
+#         }
+#     }
+# }
+
+# District full-object override pattern:
+# <existing_district_id> = {
+#     <copy full winning object>
+#
+#     ai_resource_production = {
+#         minerals = 6
+#     }
+#
+#     ai_weight = {
+#         weight = 1
+#         modifier = {
+#             factor = 1.5
+#             owner = { is_ai = yes }
+#         }
+#     }
+# }
+#
+# Do not force-build through events unless you can prove the event will not bankrupt,
+# block, or deadlock AI planets.

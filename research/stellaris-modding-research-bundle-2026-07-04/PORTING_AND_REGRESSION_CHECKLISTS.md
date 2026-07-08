@@ -2,7 +2,7 @@
 
 ## 4.4.x release checklist
 
-- [ ] Confirm target: 4.4.4 stable or 4.4.5 beta.
+- [ ] Confirm target: 4.4.5 stable/current local install, 4.4.4 rollback, or 4.5 beta.
 - [ ] Use descriptor `supported_version="v4.4.*"` for stable 4.4.
 - [ ] Verify no local + Workshop duplicate of same mod.
 - [ ] Run with only this mod enabled.

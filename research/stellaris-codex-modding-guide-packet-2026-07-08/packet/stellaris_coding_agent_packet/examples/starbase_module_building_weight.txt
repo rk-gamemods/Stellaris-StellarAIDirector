@@ -1,0 +1,36 @@
+# common/starbase_modules/my_mod_starbase_module_overrides.txt
+# common/starbase_buildings/my_mod_starbase_building_overrides.txt
+#
+# Pattern: starbase module/building AI weighting.
+# CWTools public schema clue: current scope is starbase; country is usually available as `from`.
+# Verify exact scope in local 4.4.4 and active Starbase Extended/NSC3 source before shipping.
+
+# BAD: this assumes current scope is country.
+# ai_weight = {
+#     weight = 10
+#     modifier = {
+#         factor = 3
+#         is_ai = yes
+#     }
+# }
+
+# CORRECT PATTERN inside a full copied starbase module/building object:
+# <existing_starbase_module_or_building_id> = {
+#     <full winning object copied here>
+#
+#     ai_weight = {
+#         weight = 10
+#
+#         modifier = {
+#             factor = 3
+#             from = {
+#                 my_mod_country_is_ai_and_safe_to_spend = yes
+#             }
+#         }
+#     }
+# }
+#
+# Notes:
+# - If patching Starbase Extended, first find the winning object from the active load order.
+# - Preserve prerequisites, potential/possible, resources, component_sets, and DLC gates.
+# - Do not add `ai_weight` to a starbase file unless local schema/examples support it.

@@ -1,0 +1,8 @@
+check,status,exit_code,detail
+where.exe cwtools,not_found_or_failed,1,INFO: Could not find files for the given pattern(s).
+where.exe cwtools-cli,not_found_or_failed,1,INFO: Could not find files for the given pattern(s).
+dotnet tool list -g,pass,0,"Package Id      Version         Commands
+----------------------------------------
+ilspycmd        9.1.0.7988      ilspycmd"
+VS Code/Cursor CWTools extension directories,not_found,,
+PDX parser diagnostics for requested active-stack surfaces,pass,,parse_error_count=0; see pdx-parse-diagnostics-2026-07-08.csv

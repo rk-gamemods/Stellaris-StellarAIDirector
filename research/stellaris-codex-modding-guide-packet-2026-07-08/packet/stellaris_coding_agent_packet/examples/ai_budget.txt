@@ -1,0 +1,28 @@
+# common/ai_budget/my_mod_ai_budget_overrides.txt
+#
+# IMPORTANT: ai_budget schema is version-sensitive and needs local 4.4.4 proof.
+# Public modifier documentation links economic categories to AI budget use, but the
+# exact `common/ai_budget` object syntax must be copied from local vanilla/active AI mods.
+# This is a PATCH WORKFLOW TEMPLATE, not a drop-in object.
+
+# Workflow:
+# 1. Inspect vanilla `common/ai_budget/` and active AI mods.
+# 2. Identify the budget object/category controlling the target behavior.
+# 3. Copy the exact winning object if overriding.
+# 4. Preserve all gates and non-target budget priorities.
+# 5. Tune small numeric weights first; avoid global spending floods.
+# 6. Validate references and logs, then require runtime proof for actual spending behavior.
+
+# PROVENANCE:
+# object_id: <existing_ai_budget_id>
+# source: <winning source path>
+# source_hash: <sha256>
+# changed_fields:
+#   - <locally verified budget weight/value>
+
+# <existing_ai_budget_id> = {
+#     <copy full winning object from local 4.4.4 or winning AI mod>
+#     # <locally verified spending category> = <small adjusted value>
+# }
+#
+# AI-budget patches are often more effective than raising object-level ai_weight.

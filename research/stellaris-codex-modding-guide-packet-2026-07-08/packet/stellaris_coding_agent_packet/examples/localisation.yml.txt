@@ -1,0 +1,13 @@
+﻿l_english:
+ my_mod_ai_spending_emergency_lockout:0 "AI Spending Emergency Lockout"
+ my_mod_ai_logistics:0 "AI Logistics"
+ tech_my_mod_ai_logistics:0 "AI Logistics"
+ tech_my_mod_ai_logistics_desc:0 "Coordination protocols for safer automated fleet and starbase investment."
+
+# Localisation rules:
+# - File extension in real mod must be `.yml`, not `.txt`.
+# - Use UTF-8 with BOM.
+# - First non-comment line is the language header.
+# - Keys are not normal PDXScript; do not use braces.
+# - Missing localisation usually does not crash but creates ugly `$KEY$` display text.
+# - Use `localisation/replace/` only when intentionally replacing keys.

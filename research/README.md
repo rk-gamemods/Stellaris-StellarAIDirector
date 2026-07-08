@@ -10,6 +10,9 @@ Keep notes source-backed when possible. Include file paths, game version, DLC as
 | --- | --- |
 | `stellaris-modding-guide-2026-07-04.md` | Fast-start operational guide for Stellaris 4.4.x mod work. |
 | `stellaris-modding-research-bundle-2026-07-04/` | Full attached research bundle with source IDs, reports, matrices, templates, and validation notes. |
+| `stellaris-codex-modding-guide-packet-2026-07-08/` | Versioned supplement for the attached Codex modding guide packet, verified against local Stellaris 4.4.5 vanilla files and the active 120-mod playset. |
+| `stellaris-codex-skills-roadmap-2026-07-08/` | Preserved consolidated roadmap bundle and indexed source package for creating small, topic-based Stellaris Codex skills. |
+| `stellar-ai/war-mechanics-reference-2026-07-08/` | Focused external AI war-mechanics packet for claims, CBs, war goals, declaration gates, personality war fields, war defines, fleet-use separation, and passive-galaxy diagnosis. Use as a research reference, then verify against local vanilla and active-stack files before code changes. |
 | `local-stellaris-environment-2026-07-04.md` | Local install, Workshop, launcher, and Irony paths verified on this machine. |
 | `stellaris-30-day-research-2026-07-04.md` | Recent modding and game-state research rollup. |
 | `stellaris-preferred-collections-2026-07-04.md` | User-preferred collection and compatibility research notes. |

@@ -8,7 +8,7 @@
 
 ## Goal
 
-Build confidence in modern Stellaris before committing to a long modded campaign. The plan assumes Steam, live 4.4.4 stable, and a preference for Steam Workshop mods. [S01, S05]
+Build confidence in modern Stellaris before committing to a long modded campaign. This July 4 plan originally assumed Steam live 4.4.4 stable; as of 2026-07-08, use 4.4.5 stable/current local install as the live target and re-check affected mod pages before following the plan. [S01, S05]
 
 ## Stage 0 — setup and vanilla reacclimation checklist
 

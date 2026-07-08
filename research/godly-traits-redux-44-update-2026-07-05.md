@@ -1,6 +1,6 @@
 # Godly Traits Redux 4.4 Local Update
 
-Target game version: Stellaris PC 4.4.4 stable.
+Target game version: Stellaris PC 4.4.5 stable/current local install.
 
 Source: local Steam Workshop mod `Godly Traits Redux 4.0`, ID `2945430513`, from `C:\Steam\steamapps\workshop\content\281990\2945430513`. The Workshop page is still branded for 4.0, is Steam-flagged incompatible, and has recent comments discussing current-version issues, so this repo keeps a local 4.4 compatibility copy instead of relying on the Workshop item.
 

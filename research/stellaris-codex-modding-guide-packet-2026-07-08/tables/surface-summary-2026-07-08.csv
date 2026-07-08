@@ -1,0 +1,19 @@
+surface,folder,merge_model,definition_count,unique_object_count,conflict_or_merge_count,source_root_count_with_folder,source_root_count_with_objects,ai_weight_definition_count,parse_error_count,focus_source_object_count
+economic_plans,economic_plans,additive_object_merge,15,7,4,5,5,12,0,9
+ai_budget,ai_budget,top_level_duplicate_unproven; category/resource duplicates allowed,294,245,45,4,4,0,0,95
+ai_planet_specialization,ai_planet_specialization,folder_absent_in_local_4.4.5,0,0,0,0,0,0,0,0
+colony_types,colony_types,last_definition_wins_by_object_id,148,124,24,4,4,0,0,37
+colony_automation,colony_automation,last_definition_wins_by_object_id,31,31,0,2,2,0,0,4
+colony_automation_categories,colony_automation_categories,last_definition_wins_by_object_id,13,13,0,1,1,0,0,0
+on_actions,on_actions,additive_object_merge,1423,549,161,27,27,0,0,582
+megastructures,megastructures,last_definition_wins_by_object_id,1254,967,229,10,10,436,0,1032
+starbase_modules,starbase_modules,last_definition_wins_by_object_id,253,187,58,7,7,252,0,159
+starbase_buildings,starbase_buildings,last_definition_wins_by_object_id,236,207,24,11,11,230,0,113
+ship_sizes,ship_sizes,last_definition_wins_by_object_id,631,502,86,9,9,0,0,221
+section_templates,section_templates,last_definition_wins_by_section_key,1509,1342,154,18,17,474,0,924
+component_templates,component_templates,last_definition_wins_by_object_id,4967,3532,1072,14,14,3621,0,3383
+component_sets,component_sets,last_definition_wins_by_object_id,1257,1253,4,12,12,0,0,790
+global_ship_designs,global_ship_designs,last_definition_wins_by_design_name,843,659,183,8,8,0,0,294
+districts,districts,last_definition_wins_by_object_id,399,286,99,5,5,81,0,250
+zones,zones,last_definition_wins_by_object_id,361,261,100,8,7,0,0,189
+zone_slots,zone_slots,last_definition_wins_by_object_id,103,103,0,4,3,0,0,70

@@ -2,6 +2,11 @@
 
 ## Summary
 
+2026-07-08 update: this brief is now historical for the July 4 research
+window. Stellaris 4.4.5 "Pegasus" is live on the stable 4.4 branch and is the
+current local target for new work; use `research/stellar-ai/stellar-ai-director-4-4-5-compatibility-triage-2026-07-08.md`
+for the current 4.4.5 compatibility posture.
+
 Stellaris is currently in the 4.4 "Pegasus" / Nomads cycle. The stable version identified during this research window is 4.4.4, checksum 5505, released June 24, 2026. A 4.4.5 Pegasus open beta is also active, so the game is still in a hotfix-and-beta tail after the June 15 Nomads launch.
 
 For a returning Steam player, the safest path is: reacclimate on current vanilla first, add UI-only/QoL mods next, then add medium content mods one at a time. Treat large ship/megastructure/ethics overhauls as new-save projects that need Irony Mod Manager and compatibility patch review.
@@ -61,7 +66,7 @@ Irony is the clear tool winner. Its docs say it understands game structures and 
 ## Recommended Returning-Player Plan
 
 1. Vanilla reacclimation:
-   - Play one small/medium 4.4.4 game or 4.4.5 beta test without mods.
+   - For an explicitly approved runtime check, play one small/medium 4.4.5 game without mods.
    - Learn Nomads, Arkships, waylines/contracts, new job/UI/situation behavior, and base-game DLC changes.
 
 2. Light QoL setup:

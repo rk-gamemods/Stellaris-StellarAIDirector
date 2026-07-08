@@ -1,0 +1,24 @@
+# common/scripted_triggers/my_mod_ai_triggers.txt
+# Pattern: add a new, mod-prefixed scripted trigger instead of editing many AI weights.
+# Expected caller scope: country.
+# Reliability: pattern confirmed by common scripted-trigger practice; every trigger used here
+# must be checked against local Stellaris 4.4.4/CWTools before shipping.
+
+my_mod_country_is_ai_and_safe_to_spend = {
+    # Current scope at call site must be country.
+    is_ai = yes
+
+    # Prefer durable guardrails. Do not over-gate AI into never spending.
+    # Replace/add only with locally verified country-scope triggers.
+    exists = capital_scope
+    NOT = { has_country_flag = my_mod_ai_spending_emergency_lockout }
+
+    # Use `always = yes` / `always = no` only for coarse testing, never as a hidden TODO.
+    # always = yes
+}
+
+# Example call sites:
+# - technology ai_weight/weight_modifier: current scope is country, call directly.
+# - megastructure ai_weight: current scope is system; call through `from = { ... }`.
+# - starbase module/building ai_weight: current scope is starbase; call through `from = { ... }`.
+# - planet building/district ai_weight: current scope is planet; call through `owner = { ... }`.

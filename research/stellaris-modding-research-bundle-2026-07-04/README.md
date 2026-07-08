@@ -1,7 +1,7 @@
 # Stellaris modding research bundle for Codex
 
 Generated: 2026-07-04
-Target game: Stellaris PC 4.4.x, with explicit notes for 4.4.5 beta and 4.5 beta hazards.
+Target game: Stellaris PC 4.4.x. This bundle was collected on 2026-07-04 when 4.4.4 was live and 4.4.5 was beta; as of 2026-07-08, treat 4.4.5 stable/current local install as the active target and keep 4.4.4 content as historical evidence.
 Primary consumer: Codex / coding agent / mod developer.
 
 ## Contents
@@ -27,4 +27,4 @@ Markdown reports cite sources with IDs such as `[S007]`. Resolve those IDs in `s
 
 ## High-confidence bottom line
 
-For public 4.4 releases, develop against **Stellaris 4.4.4 stable** and declare `supported_version="v4.4.*"` unless intentionally targeting the 4.4.5 beta. The main 4.4 modding hazard is Nomads/Arkships/Waylines/Contracts: scripts and modifiers that assume normal settled colonies or normal starbase/planet relationships need explicit tests. The next major porting hazard is 4.5's pop-ethics/faction refactor, which Paradox explicitly describes as a breaking, save-incompatible change.
+For public 4.4 releases, develop against **Stellaris 4.4.5 stable/current local install** and declare `supported_version="v4.4.*"` unless intentionally targeting 4.4.4 rollback or 4.5 beta. The main 4.4 modding hazard is Nomads/Arkships/Waylines/Contracts: scripts and modifiers that assume normal settled colonies or normal starbase/planet relationships need explicit tests. The next major porting hazard is 4.5's pop-ethics/faction refactor, which Paradox explicitly describes as a breaking, save-incompatible change.

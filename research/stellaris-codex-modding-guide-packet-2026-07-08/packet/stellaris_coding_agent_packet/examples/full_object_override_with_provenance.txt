@@ -1,0 +1,35 @@
+# Pattern: full-object override with provenance.
+# Path must match the original object's surface, for example:
+# common/technology/my_mod_compat_technology_overrides.txt
+#
+# Only use this after resolving the active load-order winner.
+# Do not partially define an object with the same ID and expect a field-level merge.
+
+# PROVENANCE:
+# object_id: tech_example_parent_object
+# source: <absolute or repo-relative path to winning vanilla/mod file>
+# source_mod: <vanilla or Workshop/local mod name>
+# source_version: Stellaris 4.4.4 / mod version as inspected
+# source_hash: <sha256 of original object or file>
+# reason: AI weight compatibility patch for heavy playset
+# local_verification_date: YYYY-MM-DD
+# changed_fields:
+#   - ai_weight modifier: added my_mod scripted trigger guard
+#
+# FULL OBJECT COPY STARTS HERE.
+# tech_example_parent_object = {
+#     <copy every field from the winning source object>
+#
+#     ai_weight = {
+#         <original ai_weight if present, preserved unless intentionally changed>
+#         modifier = {
+#             factor = 1.25
+#             my_mod_country_is_ai_and_safe_to_spend = yes
+#         }
+#     }
+# }
+#
+# FULL OBJECT COPY ENDS HERE.
+#
+# Audit command pattern:
+# rg -n "^\s*tech_example_parent_object\s*=" "<vanilla>" "<enabled_mod_dirs>"

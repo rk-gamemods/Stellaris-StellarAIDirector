@@ -1,0 +1,46 @@
+# common/megastructures/my_mod_megastructure_ai_overrides.txt
+#
+# Pattern: megastructure AI weighting with country-scope checks.
+# CWTools public schema clue for megastructures: ai_weight current scope is system,
+# with `from = country` and `fromfrom = megastructure` available.
+# Verify against local 4.4.4 and Gigastructural Engineering source before shipping.
+
+# BAD PATCH: country trigger directly in system scope.
+# <existing_megastructure_id> = {
+#     <full winning object copied here>
+#     ai_weight = {
+#         weight = 20
+#         modifier = {
+#             factor = 5
+#             is_ai = yes
+#         }
+#     }
+# }
+
+# CORRECT PATTERN:
+# <existing_megastructure_id> = {
+#     <full winning object copied here>
+#
+#     ai_weight = {
+#         weight = 20
+#
+#         modifier = {
+#             factor = 5
+#             from = {
+#                 my_mod_country_is_ai_and_safe_to_spend = yes
+#             }
+#         }
+#
+#         modifier = {
+#             factor = 0
+#             from = {
+#                 has_country_flag = my_mod_ai_megastructure_pause
+#             }
+#         }
+#     }
+# }
+#
+# Implementation rule:
+# - Prefer editing AI weighting/prerequisite pressure over event-forcing construction.
+# - For Gigastructural Engineering, do not copy huge megastructure objects until the active
+#   winner and required scripted triggers/effects are proven.

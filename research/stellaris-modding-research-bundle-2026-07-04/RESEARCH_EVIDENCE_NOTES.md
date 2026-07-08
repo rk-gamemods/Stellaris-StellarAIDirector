@@ -31,7 +31,7 @@ Observed facts:
 
 Modding implications:
 
-- Stable target is 4.4.4 unless 4.4.5 beta is explicitly requested.
+- Stable target is 4.4.5 as of 2026-07-08; 4.4.4 is historical/rollback evidence unless explicitly requested.
 - The patch notes expose regression targets for mods touching planets, Arkships, UI, wars, modifiers, or Waylines.
 
 ## S003 — 4.4.5 early beta

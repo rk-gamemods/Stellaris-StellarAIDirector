@@ -60,7 +60,7 @@ Early after 4.4.1/Nomads, Paradox reported many crash reports, especially from l
 
 ### Still-current or watchlist pain points
 
-The active beta cycle itself is a signal that some Nomads economy and balance rough edges remain. 4.4.5 beta notes add a Resource Abundance slider, rework Operational Reserves, adjust Forever Cruise starting conditions/upkeep, add fallback logic for Champion’s Forge Live, adjust fauna/Waystation behavior, and include multiple Nomad economy/ship-order fixes. [S02]
+Historical July 4 posture: the then-active beta cycle was a signal that some Nomads economy and balance rough edges remained. As of 2026-07-08, 4.4.5 is live; its notes add a Resource Abundance slider, rework Operational Reserves, adjust Forever Cruise starting conditions/upkeep, add fallback logic for Champion's Forge Live, adjust fauna/Waystation behavior, and include multiple Nomad economy/ship-order fixes. [S02]
 
 Player and press sentiment converges around **Nomads being fresh but not fully frictionless**. PC Gamer praised the Battlestar/Arkship fantasy and new galaxy feel but criticized Wayline logistics and Operational Reserves as confusing or rough. Output Lag rated Nomads 7.8/10 and praised it as a conceptually daring expansion that rewards mobility/adaptation. [S09, S10]
 
@@ -87,7 +87,7 @@ Community/press sentiment is mixed-positive. The positive side centers on Arkshi
 1. **Start on stable 4.4.4, not beta.** Use betas only for test saves and beta-specific mod branches. [S01, S02, S03]
 2. **Play 2–4 hours vanilla before subscribing to heavy mods.** The 4.3/4.4 economy, fleet, UI, job, and Nomad systems changed enough that an old 2.x/3.x intuition will mislead you. [S07, S04, S01]
 3. **Use a new save for major mods.** Official patch notes warn save compatibility is not guaranteed between versions, and NSC3/Gigas/ship/AI/tradition mods each affect core systems. [S01, M14, M17, M19, M28]
-4. **Do not mix beta-targeting UI mods into live.** UIOD Beta targets 4.4.5 beta, while UIOD main targets 4.4 live. [M01, M02, S02]
+4. **Do not mix UI tracks blindly.** UIOD Beta targeted 4.4.5 beta when this packet was written; because 4.4.5 is now live, re-check UIOD main/beta page guidance before using a beta UI track. [M01, M02, S02]
 5. **Treat total conversions as separate games.** STNC is current for 4.4.4; STNH, LoToR, and New Dawn are currently 4.3.7-targeted and require rollback or waiting. [M33, M34, M36, M37]
 
 ## Source ID appendix

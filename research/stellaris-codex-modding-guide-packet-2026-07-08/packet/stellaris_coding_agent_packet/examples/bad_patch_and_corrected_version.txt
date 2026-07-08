@@ -1,0 +1,31 @@
+# Bad patch: assumes every object-level ai_weight is country scope.
+# Actual example surface: common/megastructures/*.txt, where public CWTools schema
+# indicates `ai_weight` current scope is system and country is `from`.
+
+# BAD:
+# ai_weight = {
+#     weight = 100
+#     modifier = {
+#         factor = 10
+#         is_ai = yes
+#         has_country_flag = wants_megastructures
+#     }
+# }
+
+# CORRECTED PATTERN:
+# ai_weight = {
+#     weight = 100
+#     modifier = {
+#         factor = 10
+#         from = {
+#             is_ai = yes
+#             has_country_flag = wants_megastructures
+#         }
+#     }
+# }
+
+# Why this matters:
+# - Wrong-scope triggers can silently fail, log errors, or make weights ineffective.
+# - Codex must identify current scope before adding AI logic.
+# - Use wrapper triggers with documented expected scope.
+# - Do not report "implemented" until generated files and validation logs prove the patch exists.

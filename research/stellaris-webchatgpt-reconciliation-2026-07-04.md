@@ -48,7 +48,7 @@ The packet clarifies the Tiny Outliner fork split:
 - Use `UI Overhaul Dynamic` plus `UI Overhaul Dynamic - Tiny Outliner` if using UIOD.
 - Use `Full Tiny Outliner` only if not using UIOD.
 - Do not mix UIOD with Full Tiny Outliner.
-- Do not use `UI Overhaul Dynamic Beta` on live 4.4.4; it targets the 4.4.5 beta branch.
+- Historical July 4 note: `UI Overhaul Dynamic Beta` targeted the then-4.4.5 beta branch. As of 2026-07-08, 4.4.5 is the current stable/local target; re-check UIOD main/beta page guidance before mixing UI tracks.
 
 Decision impact: the default UI set should be UIOD plus its own Tiny Outliner submod, not a generic Tiny Outliner stack.
 
