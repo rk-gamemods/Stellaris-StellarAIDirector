@@ -21,10 +21,19 @@ tr_supremacy_adopt = {
 		# source_object = tradition:tr_supremacy_adopt
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_aggressive_fleet_pressure = yes } }
 		modifier = { factor = 4 staid_aggressive_fleet_pressure = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 7 years_passed > 79 }
+		modifier = { factor = 11 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 10 staid_site_limited_expansion_ready = yes }
+		modifier = { factor = 5 staid_fleet_buildup_economy_safe = yes }
+		modifier = { factor = 8 staid_militarist_conquest_strategy = yes }
+		modifier = { factor = 6 has_ethic = ethic_militarist }
+		modifier = { factor = 12 has_ethic = ethic_fanatic_militarist }
 	}
 }
 
@@ -79,10 +88,13 @@ tr_prosperity_adopt = {
 		# source_object = tradition:tr_prosperity_adopt
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_core_unlock_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_core_unlock_research_priority_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 5 years_passed > 79 }
 		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 	}
 }
 
@@ -111,10 +123,14 @@ tr_adaptability_adopt = {
 		# source_object = tradition:tr_adaptability_adopt
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_planetary_capacity_growth_ready = yes } }
 		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 	}
 }
 
@@ -149,10 +165,13 @@ tr_mercantile_adopt = {
 		# source_object = tradition:tr_mercantile_adopt
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_planetary_capacity_growth_ready = yes } }
 		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 	}
 }
-

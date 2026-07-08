@@ -2,15 +2,15 @@
 
 Late-loading deterministic AI policy patch for the active Irony playset.
 
-This mod is a deterministic, full-power AI replacement policy for the current
-4.4 high-scale playset. It does not try to preserve vanilla or Stellar AI
-assumptions after the opening curve; it encodes explicit state gates,
-priorities, and emergency exits for Gigastructural Engineering, NSC3, ESC NEXT,
-Starbase Extended, and the active supporting mods.
+This mod is a deterministic standalone AI replacement baseline for the current
+4.4 high-scale playset. It no longer declares or requires Stellar AI at launch.
+Stellar AI remains a private parity reference for local development provenance:
+the Director absorbs or reimplements the high-value AI budget, economic-plan,
+research/economy/fleet conversion, construction-pressure, and war-support
+surfaces needed for a viable single-AI baseline before deeper enhancements.
 
 ## Required Parents
 
-- Stellar AI
 - Gigastructural Engineering & More (4.4)
 - NSC3
 - Extra Ship Components NEXT
@@ -21,12 +21,26 @@ Detected selected collection: `4.4 Stellaris Mod Collection w/Load Order: NSC3, 
 
 Missing required Steam parents during generation: none.
 
+## Stellar AI Parity Reference
+
+- Stellar AI source was used as private local parity evidence, not as a launch
+  dependency.
+- Reference present during generation: True.
+- Reference load position during generation: 115.
+- Absorbed/reimplemented baseline surfaces: `common/ai_budget`,
+  `common/economic_plans`, construction-pressure defines and budgets,
+  research/economy/fleet conversion, market/runway safety, claim/war-support
+  reserves, and high-scale modded progression hooks.
+- Deferred standalone enhancements: broad personality rewrites, diplomatic
+  action overrides, direct NSC3/ESC ship-design handling, advanced war chain
+  behavior, and runtime observer proof.
+
 ## Scope
 
 - Adds scripted decision-state triggers for survival, recovery, megastructure
   prep, safe commit, surplus-sink pressure, and shipyard payoff exploitation.
-- Overrides Stellar AI's megastructure alloy budget object with explicit
-  emergency exits and larger reserves for Gigas/NSC3-scale projects.
+- Reimplements the megastructure alloy budget object with explicit emergency
+  exits and larger reserves for Gigas/NSC3-scale projects.
 - Replaces the base economic plan with a mod-set-specific high-scale survival
   plan that forces research, alloy, trade, naval-cap, tall-scaling, and
   megastructure pressure on a mid-2300s crisis curve.
@@ -65,12 +79,13 @@ Missing required Steam parents during generation: none.
 
 ## Load Order
 
-Place Stellar AI Director after all required parents and after parent
-compatibility patches that the Director must supersede. In the current selected
-collection, the latest required parent is at load position
-115.
-The Director should be below Stellar AI so its megastructure alloy reserve
-override wins intentionally.
+Place Stellar AI Director after all required content parents and after parent
+compatibility patches that the Director must supersede. Stellar AI is not a
+required parent and should not be needed for the standalone baseline. In the
+current selected collection, the latest required parent is at load position
+72.
+The Director may still be compared against Stellar AI for private parity review,
+but the descriptor intentionally omits a Stellar AI dependency.
 
 ## Load Proof
 

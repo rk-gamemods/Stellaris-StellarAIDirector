@@ -12,6 +12,10 @@ basic_economy_plan = {
 		society_research = 400
 		engineering_research = 600
 		alloys = 120
+		consumer_goods = 150
+		food = 60
+		energy = 150
+		minerals = 150
 		unity = 120
 		trade = 75
 	}
@@ -23,11 +27,99 @@ basic_economy_plan = {
 	}
 
 	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director opening direct research route"
+		potential = {
+			staid_opening_direct_research = yes
+		}
+		income = {
+			physics_research = 450
+			society_research = 450
+			engineering_research = 650
+			consumer_goods = 180
+			energy = 180
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director opening trade to research route"
+		potential = {
+			staid_opening_trade_to_research = yes
+		}
+		income = {
+			trade = 300
+			consumer_goods = 180
+			physics_research = 300
+			society_research = 300
+			engineering_research = 450
+		}
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director opening growth to research route"
+		potential = {
+			OR = {
+				staid_opening_hive_growth_research = yes
+				staid_opening_machine_growth_research = yes
+				staid_opening_military_to_pops = yes
+				staid_opening_nomad_arkship_research = yes
+			}
+		}
+		income = {
+			alloys = 180
+			minerals = 260
+			energy = 220
+			physics_research = 250
+			society_research = 250
+			engineering_research = 400
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director consumer goods runway repair"
+		potential = {
+			country_uses_consumer_goods = yes
+			NOT = { staid_consumer_goods_runway_safe = yes }
+		}
+		income = {
+			consumer_goods = 500
+			minerals = 350
+			energy = 250
+			trade = 200
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director food break-even repair"
+		potential = {
+			country_uses_food = yes
+			NOT = { staid_food_runway_safe = yes }
+		}
+		income = {
+			food = 300
+			energy = 100
+			trade = 75
+		}
+	}
+
+	subplan = {
 		scaling = yes
 		set_name = "Stellar AI Director early modded research rush"
 		potential = {
 			years_passed < 50
-			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			OR = {
+				staid_research_input_runway_safe = yes
+				staid_high_scale_snowball_pressure = yes
+				staid_construction_spenddown_pressure = yes
+			}
 		}
 		income = {
 			physics_research = 350
@@ -42,7 +134,12 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director midgame megastructure rush"
 		potential = {
 			years_passed > 44
-			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			OR = {
+				staid_research_input_runway_safe = yes
+				staid_high_scale_snowball_pressure = yes
+				staid_construction_spenddown_pressure = yes
+			}
 		}
 		income = {
 			physics_research = 1500
@@ -62,7 +159,12 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director crisis-scale giga rush"
 		potential = {
 			years_passed > 79
-			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			OR = {
+				staid_research_input_runway_safe = yes
+				staid_high_scale_snowball_pressure = yes
+				staid_construction_spenddown_pressure = yes
+			}
 		}
 		income = {
 			physics_research = 4500
@@ -82,7 +184,12 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director planetcraft survival curve"
 		potential = {
 			years_passed > 119
-			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			OR = {
+				staid_research_input_runway_safe = yes
+				staid_high_scale_snowball_pressure = yes
+				staid_construction_spenddown_pressure = yes
+			}
 		}
 		income = {
 			physics_research = 10000
@@ -95,6 +202,165 @@ basic_economy_plan = {
 			trade = 400
 		}
 		naval_cap = 3500
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director pathological snowball reserve"
+		potential = {
+			staid_high_scale_snowball_pressure = yes
+		}
+		income = {
+			physics_research = 20000
+			society_research = 20000
+			engineering_research = 30000
+			alloys = 10000
+			energy = 10000
+			minerals = 8000
+			consumer_goods = 2500
+			food = 1500
+			unity = 2500
+			trade = 1500
+		}
+		naval_cap = 8000
+		pops = 1000000
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director construction spenddown reserve"
+		potential = {
+			staid_construction_spenddown_pressure = yes
+		}
+		income = {
+			minerals = 30000
+			energy = 18000
+			consumer_goods = 6000
+			alloys = 8000
+			food = 2000
+			physics_research = 12000
+			society_research = 12000
+			engineering_research = 18000
+			unity = 5000
+			trade = 3000
+		}
+		naval_cap = 5000
+		pops = 1000000
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director unemployed pop construction catch-up"
+		potential = {
+			any_owned_planet = {
+				num_unemployed > 0
+				free_jobs < 1
+			}
+		}
+		income = {
+			minerals = 12000
+			energy = 8000
+			consumer_goods = 2500
+			alloys = 3000
+			food = 1200
+			physics_research = 6000
+			society_research = 6000
+			engineering_research = 9000
+			unity = 2000
+			trade = 1200
+		}
+		pops = 1000000
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director open slot construction catch-up"
+		potential = {
+			any_owned_planet = {
+				free_building_slots > 0
+				num_unemployed > 0
+			}
+		}
+		income = {
+			minerals = 16000
+			energy = 10000
+			consumer_goods = 3000
+			alloys = 4000
+			physics_research = 8000
+			society_research = 8000
+			engineering_research = 12000
+			unity = 2500
+			trade = 1500
+		}
+		pops = 1000000
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director rich empire spend-down construction"
+		potential = {
+			resource_stockpile_compare = { resource = minerals value > 10000 }
+			any_owned_planet = {
+				OR = {
+					num_unemployed > 0
+					free_building_slots > 0
+				}
+			}
+		}
+		income = {
+			minerals = 25000
+			energy = 16000
+			consumer_goods = 5000
+			alloys = 7000
+			physics_research = 12000
+			society_research = 12000
+			engineering_research = 18000
+			unity = 4000
+			trade = 2500
+		}
+		naval_cap = 5000
+		pops = 1000000
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director megastructure spam reserve"
+		potential = {
+			OR = {
+				staid_megastructure_commit_safe = yes
+				staid_high_scale_snowball_pressure = yes
+			}
+		}
+		income = {
+			alloys = 8000
+			energy = 8000
+			minerals = 5000
+			giga_sr_sentient_metal = 10
+			giga_sr_negative_mass = 10
+			giga_sr_amb_megaconstruction = 10
+			trade = 1000
+		}
+		naval_cap = 4000
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director habitat and terraforming expansion reserve"
+		potential = {
+			OR = {
+				staid_planetary_capacity_growth_ready = yes
+				staid_high_scale_snowball_pressure = yes
+			}
+		}
+		income = {
+			minerals = 5000
+			energy = 5000
+			consumer_goods = 1200
+			food = 800
+			unity = 1000
+			trade = 800
+		}
+		pops = 1000000
 	}
 
 	subplan = {
@@ -140,7 +406,7 @@ basic_economy_plan = {
 				has_technology = tech_nm_utilization_1
 				has_technology = giga_tech_amb_supertensiles
 			}
-			NOT = { staid_recovery_mode = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
 		}
 		income = {
 			giga_sr_sentient_metal = 5
@@ -163,9 +429,59 @@ basic_economy_plan = {
 	}
 
 	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director militarist conquest fleet reserve"
+		potential = {
+			staid_militarist_conquest_strategy = yes
+		}
+		income = {
+			alloys = 6000
+			energy = 3500
+			minerals = 2500
+			unity = 1000
+			trade = 800
+		}
+		naval_cap = 6000
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director raiding pop acquisition reserve"
+		potential = {
+			staid_raiding_pop_growth_strategy = yes
+		}
+		income = {
+			alloys = 4500
+			energy = 3000
+			minerals = 1800
+			unity = 800
+			trade = 700
+		}
+		naval_cap = 4500
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director hostile fauna clearance reserve"
+		potential = {
+			staid_hostile_fauna_clearance_strategy = yes
+		}
+		income = {
+			alloys = 220
+			energy = 160
+			minerals = 90
+		}
+		naval_cap = 250
+	}
+
+	subplan = {
 		scaling = yes
 		set_name = "Stellar AI Director modded unlock research reserve"
 		potential = {
+			staid_research_input_runway_safe = yes
 			OR = {
 				staid_core_unlock_research_priority_ready = yes
 				years_passed > 44
@@ -184,6 +500,7 @@ basic_economy_plan = {
 		scaling = yes
 		set_name = "Stellar AI Director capped stockpile research conversion"
 		potential = {
+			staid_research_input_runway_safe = yes
 			OR = {
 				staid_resource_waste_pressure = yes
 				staid_research_under_curve = yes
@@ -204,6 +521,7 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director 2360 physics catchup"
 		potential = {
 			years_passed > 119
+			staid_research_input_runway_safe = yes
 			staid_research_under_curve = yes
 			has_monthly_income = { resource = physics_research value < 1200 }
 		}
@@ -216,6 +534,7 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director 2360 society catchup"
 		potential = {
 			years_passed > 119
+			staid_research_input_runway_safe = yes
 			staid_research_under_curve = yes
 			has_monthly_income = { resource = society_research value < 1200 }
 		}
@@ -228,6 +547,7 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director 2360 engineering catchup"
 		potential = {
 			years_passed > 119
+			staid_research_input_runway_safe = yes
 			staid_research_under_curve = yes
 			has_monthly_income = { resource = engineering_research value < 1400 }
 		}
@@ -272,9 +592,29 @@ basic_economy_plan = {
 		income = {
 			minerals = 500
 			energy = 400
+			consumer_goods = 250
+			food = 150
 			trade = 150
 		}
 		pops = 400000
+	}
+
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director Planetary Diversity outpost reserve"
+		potential = {
+			staid_planetary_diversity_outpost_investment_ready = yes
+		}
+		income = {
+			minerals = 800
+			energy = 500
+			consumer_goods = 250
+			physics_research = 400
+			society_research = 400
+			engineering_research = 600
+			trade = 150
+		}
 	}
 
 	subplan = {
@@ -284,10 +624,12 @@ basic_economy_plan = {
 			staid_static_defense_investment_ready = yes
 		}
 		income = {
-			alloys = 18
-			energy = 25
-			trade = 25
+			alloys = 2200
+			energy = 1400
+			minerals = 1200
+			trade = 500
 		}
+		naval_cap = 1000
 	}
 
 	subplan = {
@@ -297,9 +639,11 @@ basic_economy_plan = {
 			staid_crisis_starbase_pressure = yes
 		}
 		income = {
-			alloys = 30
-			energy = 40
-			trade = 50
+			alloys = 3500
+			energy = 2200
+			minerals = 1800
+			trade = 800
 		}
+		naval_cap = 2000
 	}
 }

@@ -1,0 +1,53 @@
+{
+  "artifacts": {
+    "checkpoints": "checkpoints.csv",
+    "manual_notes": "manual-notes.md",
+    "metrics": "metrics.json",
+    "summary_json": "summary.json",
+    "summary_md": "summary.md"
+  },
+  "benchmark_intent": "Top one or two AI empires plausibly crisis-ready by 2350 without hidden bonuses.",
+  "created_at_utc": "2026-07-07T09:02:09.373105+00:00",
+  "hidden_economic_bonuses": false,
+  "launcher": "Irony Mod Manager",
+  "run_id": "observer-20260707T090209Z",
+  "settings": {
+    "advanced_ai_starts": "off",
+    "ai_empires": 12,
+    "crisis_strength": "25x",
+    "crisis_type": "Random",
+    "difficulty": "Ensign",
+    "difficulty_adjusted_ai_modifiers": "disabled",
+    "galaxy_size": "Tiny (200 stars)",
+    "gigastructures_preset": "Giga-Experience",
+    "gulli_planet_modifiers": "defaults/start",
+    "hidden_economic_bonuses": false,
+    "player_bonuses": "off",
+    "scaling": "off"
+  },
+  "startup_proof": {
+    "game_version_screenshot": "screenshots/current-stellaris-state.jpg",
+    "irony_playset_screenshot": "screenshots/irony-selected-stellar-ai-director.jpg",
+    "observer_mode_screenshot": "screenshots/after-pause-click-advance.jpg",
+    "stellar_ai_director_loaded_screenshot": "screenshots/after-stellar-ai-confirm-gulli-start.jpg"
+  },
+  "data_indexes": {
+    "checkpoints_csv": "stellar_ai_observer_20260707T090209Z_checkpoints"
+  },
+  "latest_checkpoint": {
+    "checkpoint_year": 2350,
+    "date": "2350.01.01",
+    "eligible_regular_country_count": 13,
+    "save": "saves/checkpoint-2350-autosave_2350.01.01.sav",
+    "screenshot": "screenshots/checkpoint-2350-exact-or-near.jpg"
+  },
+  "standard_checkpoints": [
+    2250,
+    2300,
+    2325,
+    2350
+  ],
+  "status": "shipyard_payoff_threshold_patch_applied_pending_rerun",
+  "target_game_version": "Stellaris 4.4.4 stable",
+  "target_mod": "Stellar AI Director"
+}

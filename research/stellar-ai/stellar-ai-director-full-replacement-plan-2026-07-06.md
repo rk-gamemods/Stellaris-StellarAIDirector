@@ -1,7 +1,7 @@
 # Stellar AI Director Full Replacement Plan
 
 Date: 2026-07-06
-Target: Stellaris 4.4.4 stable, for the user's fixed high-power modded playset.
+Target when written: Stellaris 4.4.4 stable, for the user's fixed high-power modded playset. Current target as of 2026-07-08 is Stellaris 4.4.5 stable/current local install; revalidate this plan's implementation assumptions against 4.4.5 before further use.
 Status: Planning document. This is the required roadmap before more AI-weight tuning.
 
 ## Purpose
@@ -36,7 +36,7 @@ The initial full-replacement scope is the active high-scale AI playset:
 
 | mod | workshop/source id | role in the plan |
 | --- | --- | --- |
-| Stellaris vanilla 4.4.4 | local Steam install | baseline object model, valid script surfaces, vanilla AI patterns |
+| Stellaris vanilla 4.4.5 | local Steam install | current baseline object model, valid script surfaces, vanilla AI patterns |
 | Stellar AI | `3610149307` | early-game reference only, not late-game strategy baseline |
 | Gigastructural Engineering & More (4.4) | `1121692237` | primary high-scale megastructure/planetcraft/systemcraft target |
 | NSC3 | `683230077` | ship classes, Mega Shipyard support, military scaling |

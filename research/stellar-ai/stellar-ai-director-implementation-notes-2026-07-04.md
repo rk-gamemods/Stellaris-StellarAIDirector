@@ -7,8 +7,8 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | surface | file | risk | reason |
 | --- | --- | --- | --- |
 | state gates | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt` | low | additive namespaced triggers |
-| unlock-research policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan extends Stellar AI research pressure into validated modded unlock gates |
-| alloy reserves | `common/ai_budget/zzz_staid_alloys_budget.txt` | medium | intentional full-object override of Stellar AI megastructure budget |
+| unlock-research policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan reimplements parity-reference research pressure into validated modded unlock gates |
+| alloy reserves | `common/ai_budget/zzz_staid_alloys_budget.txt` | medium | Director-owned standalone megastructure budget reimplemented from private Stellar AI parity evidence |
 | Gigas special-resource reserves | `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` | medium | intentional full-object overrides of Gigas megastructure special-resource budgets |
 | economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |
 | fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |
@@ -35,11 +35,22 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 
 | mod | present | load position |
 | --- | --- | ---: |
-| Stellar AI | True | 115 |
 | Gigastructural Engineering & More (4.4) | True | 62 |
 | NSC3 | True | 71 |
 | Extra Ship Components NEXT | True | 70 |
 | Starbase Extended 3.0 | True | 72 |
+
+## Standalone Stellar AI Parity Reference
+
+Stellar AI is no longer a required launch dependency. Its current local source remains private parity evidence for this standalone baseline; copied or reimplemented surfaces must keep provenance notes and should not be prepared for redistribution without a later permission or rewrite pass.
+
+| reference mod | present | load position | role |
+| --- | --- | ---: | --- |
+| Stellar AI | True | 115 | private parity/reference source, not descriptor dependency |
+
+Baseline absorbed/reimplemented surfaces: AI budgets, `basic_economy_plan`, construction pressure, research/economy/fleet conversion, market/runway safety, claim/war support reserves, and high-scale modded progression hooks.
+
+Deferred non-baseline surfaces: broad personality rewrites, diplomatic-action overrides, direct ship-design/component/section handling for NSC3/ESC, advanced war-chain behavior, and runtime observer proof.
 
 ## Generated ROI Thresholds
 
@@ -68,7 +79,7 @@ Stellaris 4.4 treats `trade` as a standard advanced resource and the market reso
 
 ## Market Cap-Breaker Policy
 
-Stellar AI's parent monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in marketable resources: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, nanites, and verified market-priced Gigas sentient metal. Alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.
+The Stellar AI parity-reference monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in marketable resources: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, nanites, and verified market-priced Gigas sentient metal. Alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.
 
 ## Stranded-Fleet Recovery Policy
 

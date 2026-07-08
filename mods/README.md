@@ -2,7 +2,7 @@
 
 Create one folder per Stellaris mod here.
 
-Default to Stellaris PC 4.4.4 stable unless the mod README says otherwise. Use `supported_version="v4.4.*"` for stable 4.4 descriptors.
+Default to Stellaris PC 4.4.5 stable/current local install unless the mod README says otherwise. Use `supported_version="v4.4.*"` for stable 4.4 descriptors, including 4.4.5.
 
 Each mod should include its own `README.md` with:
 

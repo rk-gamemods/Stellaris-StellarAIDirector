@@ -43,12 +43,147 @@ esc_starbase_reactor = {
 
 		# policy_route = fallen_empire_benchmark_route
 		# source_object = starbase_building:esc_starbase_reactor
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_crisis_starbase_pressure = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 1.5 owner = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 owner = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 owner = { NOT = { staid_static_defense_investment_ready = yes } } }
+		modifier = { factor = 4 owner = { staid_static_defense_investment_ready = yes } }
+		modifier = { factor = 2 owner = { years_passed > 44 } }
+		modifier = { factor = 3 owner = { years_passed > 79 } }
+		modifier = { factor = 5 owner = { years_passed > 119 } }
+		modifier = { factor = 3 owner = { years_passed < 30 } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 59 years_passed < 100 } } }
 	}
 }
 
+
+# policy_route = fallen_empire_benchmark_route; source = common/starbase_buildings/nsc_starbase_buildings.txt; parent_ai = parent_ai_complete; source_ai_weight = yes
+adv_starbase_defenses = {
+	icon = "GFX_starbase_adv_starbase"
+	construction_days = 1000
+	resources = {
+		category = starbase_buildings
+		cost = { alloys = 200 }
+		upkeep = { energy = 2 }
+	}
+
+	station_modifier = {
+		ship_armor_add = 3000
+		ship_fire_rate_mult = 0.1
+		ship_weapon_range_mult = 0.15
+	}
+	potential = {
+		is_normal_starbase = yes
+		is_orbital_ring = no
+		has_starbase_size >= starbase_citadel
+	}
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	show_in_tech = "tech_starbase_5"
+
+	ai_weight = {
+		factor = 110000
+
+		# policy_route = fallen_empire_benchmark_route
+		# source_object = starbase_building:adv_starbase_defenses
+		modifier = { factor = 1.5 owner = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 owner = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 owner = { NOT = { staid_static_defense_investment_ready = yes } } }
+		modifier = { factor = 4 owner = { staid_static_defense_investment_ready = yes } }
+		modifier = { factor = 2 owner = { years_passed > 44 } }
+		modifier = { factor = 3 owner = { years_passed > 79 } }
+		modifier = { factor = 5 owner = { years_passed > 119 } }
+		modifier = { factor = 3 owner = { years_passed < 30 } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 59 years_passed < 100 } } }
+	}
+}
+
+
+# policy_route = fallen_empire_benchmark_route; source = common/starbase_buildings/sbx_3_0_buildings.txt; parent_ai = parent_ai_complete; source_ai_weight = yes
+reinforced_defenses = {
+	icon = "GFX_starbase_reinforced_defenses"
+	construction_days = 400
+	resources = {
+		category = starbase_buildings
+		cost = { alloys = 150 }
+		upkeep = { energy = 1 }
+	}
+	station_modifier = {
+		ship_shield_add = 6000
+		ship_shield_mult = 0.1
+		ship_shield_regen_add_perc = 1.0
+		ship_armor_add = 10000
+		ship_armor_mult = 0.1
+		ship_armor_regen_add_perc = 1.0
+	}
+	potential = { has_starbase_size >= starbase_starport }#not for outposts
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
+
+	ai_weight = {
+		factor = 105000
+
+		# policy_route = fallen_empire_benchmark_route
+		# source_object = starbase_building:reinforced_defenses
+		modifier = { factor = 1.5 owner = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 owner = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 owner = { NOT = { staid_static_defense_investment_ready = yes } } }
+		modifier = { factor = 4 owner = { staid_static_defense_investment_ready = yes } }
+		modifier = { factor = 2 owner = { years_passed > 44 } }
+		modifier = { factor = 3 owner = { years_passed > 79 } }
+		modifier = { factor = 5 owner = { years_passed > 119 } }
+		modifier = { factor = 3 owner = { years_passed < 30 } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 59 years_passed < 100 } } }
+	}
+}
+
+
+# policy_route = fallen_empire_benchmark_route; source = common/starbase_buildings/sbx_3_0_buildings.txt; parent_ai = parent_ai_complete; source_ai_weight = yes
+strategic_defenses = {
+	icon = "GFX_starbase_strategic_defenses"
+	construction_days = 650
+	resources = {
+		category = starbase_buildings
+		cost = { alloys = 150 }
+		upkeep = { energy = 1 }
+	}
+	station_modifier = {
+		ship_shield_add = 6000
+		ship_shield_mult = 0.1
+		ship_shield_regen_add_perc = 1.0
+		ship_fire_rate_mult = 0.25
+	}
+	potential = { has_starbase_size >= starbase_starfortress }
+	ai_build_at_chokepoint = no
+	ai_build_outside_chokepoint = yes
+	show_in_tech = "tech_starbase_4"
+
+	show_tech_unlock_if = {
+		is_nomadic = no
+	}
+
+
+	ai_weight = {
+		factor = 120000
+
+		# policy_route = fallen_empire_benchmark_route
+		# source_object = starbase_building:strategic_defenses
+		modifier = { factor = 1.5 owner = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 owner = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 owner = { NOT = { staid_static_defense_investment_ready = yes } } }
+		modifier = { factor = 4 owner = { staid_static_defense_investment_ready = yes } }
+		modifier = { factor = 2 owner = { years_passed > 44 } }
+		modifier = { factor = 3 owner = { years_passed > 79 } }
+		modifier = { factor = 5 owner = { years_passed > 119 } }
+		modifier = { factor = 3 owner = { years_passed < 30 } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 owner = { AND = { years_passed > 59 years_passed < 100 } } }
+	}
+}

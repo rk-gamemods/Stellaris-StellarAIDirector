@@ -7,12 +7,25 @@
 
 
 # Source-local variables required by copied parent objects.
+@central_orbital_alloy_cost = 1500
+@central_orbital_build_time = 1800
+@central_orbital_influence_cost = 200
 @giga_big_mega_start_unity_cost		= 5000
+@giga_big_mega_unity_cost			= 5000
 @giga_giga_unity_cost				= 10000
 @giga_mega_unity_cost				= 2500
+@giga_small_mega_unity_cost			= 1000
 @giga_tera_start_unity_cost			= 20000
 @matrioshka_p5_upkeep_alloys_g_star				= 200		# 100% Vanilla
 @matrioskha_brain_1_bm_cost = 50
+@ring_world_2_intermediate_bm_cost = 100
+@ring_world_3_intermediate_bm_cost = 0
+@science_kilo_alloys_3 		= 1500
+@science_kilo_alloys_4 		= 2000
+@science_kilo_cost_1 		= 500
+@science_kilo_cost_2 		= 1000
+@science_kilo_unity_3 		= 2000
+@science_kilo_unity_4 		= 4000
 
 # policy_route = economy_megastructure_core; source = common/megastructures/zz_e_dyson_sphere.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
 dyson_sphere_0 = {
@@ -207,12 +220,4027 @@ dyson_sphere_0 = {
 
 		# policy_route = economy_megastructure_core
 		# source_object = megastructure:dyson_sphere_0
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 5 years_passed > 79 }
-		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_economy_megastructure_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_economy_megastructure_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 5 from = { years_passed > 79 } }
+		modifier = { factor = 8 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+	}
+}
+
+
+# policy_route = early_kilo_economy_core; source = common/megastructures/zz_c_orbital_arc_furnace.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+orbital_arc_furnace_1 = {
+    entity = "arc_crucible_stage_1_entity"
+    construction_entity = "arc_crucible_stage_1_entity"
+    construction_scale = 1.02 #to avoid z-fighting of consrucion entity with the base entity
+    portrait = "GFX_megastructure_arc_furnace_background"
+    place_entity_on_planet_plane = yes
+    entity_offset = { x = 0 y = 0 }
+    rotate_to_center = no
+    scale_offset = yes
+    #show_in_outliner = no
+    use_planet_resource = yes
+    scales_with_planet = yes
+    build_time = 360 # 1 year
+    resources = {
+		category = giga_kilostructures
+        cost = {
+            unity = 500
+        }
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+            alloys = 500
+        }
+
+        upkeep = {
+            energy = 20
+        }
+    }
+
+    construction_blocks_and_blocked_by = self_type
+
+	prerequisites = { "tech_orbital_arc_furnace" }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_system_tooltip = giga_arc_furnace_tooltip
+    tooltip_system_score = {
+        base = 0
+        complex_trigger_modifier = {
+            trigger = count_system_planet
+            parameters = {
+                limit = {
+                    NOT = { has_deposit_for = shipclass_research_station }
+                    is_star = no
+                    is_astral_scar = no
+                    colonizable_planet = no
+                }
+            }
+            mode = add
+        }
+    }
+    tooltip_system_score_low_threshold = 10
+    tooltip_system_score_high_threshold = 16
+    tooltip_best_systems_header = "MEGASTRUCTURE_ARC_FURNACE_BEST_SYSTEMS_TOOLTIP_HEADER"
+    tooltip_system_filter = {
+        system_has_arc_furnace = no
+    }
+
+	potential = {
+		has_machine_age_dlc = yes
+		OR = {
+			check_variable = {
+				which = arc_furnace_counter
+				value < value:arc_furnace_limit
+			}
+			has_global_flag = vanilla_furnace_capped_u
+		}
+	}
+
+    possible = {
+        inline_script = megastructures/system_ownership_or_waystation_check
+        custom_tooltip = {
+            fail_text = "requires_surveyed_system"
+            NOT = {
+                any_system_planet = {
+                    is_surveyed = {
+                        who = prev.from
+                        status = no
+                    }
+                }
+            }
+        }
+        custom_tooltip = {
+            fail_text = "requires_no_dyson_sphere"
+            system_has_dyson_sphere = no
+        }
+        custom_tooltip = {
+            fail_text = "requires_no_dyson_sphere_construction"
+            if = {
+                limit = {
+                    system_has_dyson_sphere = no
+                }
+                NOT = {
+                    solar_system = {
+                        has_star_flag = dyson_sphere_construction
+                    }
+                }
+            }
+        }
+        custom_tooltip = {
+            fail_text = "requires_no_arc_furnace"
+            system_has_arc_furnace = no
+        }
+		custom_tooltip = {
+			fail_text = "requires_no_planetary_seeder_nexus"
+			giga_system_has_planetary_seeder_nexus = no
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_macro_test_site"
+			giga_system_has_macro_test = no
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_atmosphere_shredder"
+			giga_system_has_atmosphere_shredder = no
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_orb_eco_arc"
+			giga_system_has_artificial_eco = no
+		}
+
+        custom_tooltip = {
+            fail_text = "requires_less_than_x_arc_furnaces"
+            from = {
+				OR = {
+					check_variable = {
+						which = arc_furnace_counter
+						value < value:arc_furnace_limit
+					}
+					has_global_flag = vanilla_furnace_capped_u
+				}
+
+			}
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 500
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = tech_orbital_arc_furnace
+		}
+	}
+
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				has_modifier = orbital_arc_furnace_1_mod
+			}
+			dismantle_arc_furnace_effect = yes
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_arc_furnace
+			}
+			set_planet_entity = { entity = pc_molten }
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_arc_furnace
+		}
+		from = {
+			add_resource = {
+				alloys = 500
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+                check_variable = {
+                    which = arc_furnace_counter
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = arc_furnace_counter
+					value = -1
+                }
+            }
+        }
+    }
+
+    placement_rules = {
+        planet_possible = {
+            custom_tooltip = {
+                fail_text = "requires_no_anomaly"
+				NOT = { has_anomaly = yes }
+            }
+            is_planet_class = pc_molten
+            custom_tooltip = {
+                fail_text = "requires_no_existing_megastructure"
+                NOR = {
+                    has_carrier_flag = megastructure
+                    has_carrier_flag = has_megastructure
+                }
+            }
+            if = {
+                limit = {
+					from = { is_ai = yes }
+                }
+                solar_system = {
+                    count_system_planet = {
+                        count >= 8
+                        limit = {
+							NOT = { has_deposit_for = shipclass_research_station }
+                            is_star = no
+                            is_astral_scar = no
+                            colonizable_planet = no
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    country_modifier = {
+        custom_tooltip = orbital_arc_furnace_1_mod_tooltip
+    }
+
+    # root = system
+    # from = country
+
+    on_build_start = {
+        set_star_flag = arc_furnace_construction
+            from = {
+			set_country_flag = is_currently_building_orbital_arc_furnace
+        }
+    }
+    on_build_cancel = {
+        remove_star_flag = arc_furnace_construction
+            from = {
+			remove_country_flag = is_currently_building_orbital_arc_furnace
+        }
+    }
+    on_build_complete = {
+        remove_star_flag = arc_furnace_construction
+        fromfrom.planet = {
+            set_carrier_flag = has_megastructure
+            set_carrier_flag = has_arc_furnace
+            if = {
+                limit = {
+                    has_orbital_station = yes
+                }
+                orbital_station = {
+                    dismantle = yes
+                }
+            }
+			set_planet_entity = { entity = invisible_turret_entity }
+        }
+        from = {
+			remove_country_flag = is_currently_building_orbital_arc_furnace
+			set_timed_country_flag = { flag = has_recently_built_orbital_arc_furnace years = 3 }
+            country_event = {
+                id = cybernetics.1000
+            }
+            country_event = {
+                id = machine_age.3405 #2nd Arc Furnace built
+            }
+			change_variable = {
+				which = arc_furnace_counter
+				value = 1
+        }
+    }
+
+	}
+
+	ai_weight = {
+		factor = 130000
+
+		# policy_route = early_kilo_economy_core
+		# source_object = megastructure:orbital_arc_furnace_1
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_early_kilo_economy_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_early_kilo_economy_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 6 from = { years_passed > 79 } }
+		modifier = { factor = 8 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 3 from = { has_technology = tech_orbital_arc_furnace } }
+		modifier = { factor = 3 from = { has_technology = giga_tech_asteroid_manufactory } }
+		modifier = { factor = 6 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 8 from = { staid_high_scale_snowball_pressure = yes } }
+	}
+}
+
+
+# policy_route = early_kilo_economy_core; source = common/megastructures/zz_c_asteroid_manufactory.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+asteroid_manufactory_0 = {
+	inline_script = {
+		script = megastructures/asteroid_industry/asteroid_industry_construction
+		type = player
+		potential = "is_ai = no"
+		ai_weight = ""
+		on_build_complete = "
+			from = {
+				country_event = {
+					id = giga_asteroid_industry.001
+					scopes = {
+						from = this # might seem a bit odd but we use the same trigger in placement rules and this event so it is necessary
+						fromfrom = root.fromfrom # mega scope
+					}
+				}
+			}
+		"
+	}
+	show_prereqs = yes
+
+	ai_weight = {
+		factor = 125000
+
+		# policy_route = early_kilo_economy_core
+		# source_object = megastructure:asteroid_manufactory_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_early_kilo_economy_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_early_kilo_economy_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 6 from = { years_passed > 79 } }
+		modifier = { factor = 8 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 3 from = { has_technology = tech_orbital_arc_furnace } }
+		modifier = { factor = 3 from = { has_technology = giga_tech_asteroid_manufactory } }
+		modifier = { factor = 6 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 8 from = { staid_high_scale_snowball_pressure = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_macroengineering_test_site.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+macro_test_site_0 = {
+	entity = "giga_test_site_1"
+	construction_entity = "giga_test_site_stage_1_entity_con"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = yes
+	scales_with_planet = yes
+	prerequisites = { giga_tech_engineering_test_site }
+	use_planet_resource = yes
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	construction_blocks_and_blocked_by = none
+
+	build_time = 360
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_cost_1
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_cost_1
+		}
+		upkeep = {
+			energy = 10
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 5
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 15
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 10
+		}
+	}
+
+	build_system_tooltip = giga_science_candidate_count
+	tooltip_system_score = {
+		base = 0
+		complex_trigger_modifier = {
+			trigger = count_system_planet
+			parameters = {
+				limit = {
+					NOT = { has_deposit_for = shipclass_mining_station }
+					is_star = no
+					is_astral_scar = no
+					colonizable_planet = no
+				}
+			}
+			mode = add
+		}
+	}
+	tooltip_system_score_low_threshold = 10
+	tooltip_system_score_high_threshold = 16
+	tooltip_best_systems_header = "MEGASTRUCTURE_SCIENCE_KILO_BEST_SYSTEMS_TOOLTIP_HEADER"
+	tooltip_system_filter = {
+		solar_system = {
+			giga_system_has_macro_test = no
+		}
+		system_has_arc_furnace = no
+	}
+
+	potential = {
+		has_technology = giga_tech_engineering_test_site
+		NOT = { has_global_flag = megabase_disabled }
+		OR = {
+			has_global_flag = megabase_capped_u
+			check_variable = {
+				which = giga_current_megabase
+				value < value:giga_megabase_limit
+			}
+		}
+	}
+	country_modifier = {
+		custom_tooltip = orbital_test_site_1_mod_tooltip
+	}
+	possible = {
+        inline_script = megastructures/system_ownership_or_waystation_check
+		custom_tooltip = { fail_text = "requires_no_anomaly" 				NOT = { any_system_planet = { has_anomaly = yes } } }
+		custom_tooltip = { fail_text = "requires_no_arc_furnace" 			system_has_arc_furnace = no }
+		custom_tooltip = { fail_text = "requires_no_macro_test_site"		NOT = { any_system_megastructure = { ehof_giga_new_is_macrotest = yes } } }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = megabase_capped_u
+					check_variable = {
+						which = giga_current_megabase
+						value < value:giga_megabase_limit
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly"				has_anomaly = no }
+			custom_tooltip = { fail_text = "requires_no_existing_megastructure"	planet_has_no_megastructure = yes }
+			custom_tooltip = { fail_text = "requires_survey_not_habitable"		is_surveyed = { who = prev.from status = yes } is_planet_habitable = no }
+			custom_tooltip = { fail_text = "requires_not_star"					is_star = no }
+			custom_tooltip = { fail_text = "must_build_around_frozen" 			giga_is_frozen = yes }
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			OR = {
+				from = { is_ai = no }
+				solar_system = {
+					count_system_planet = {
+						count >= 8
+						limit = {
+							giga_is_science_candidate = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_build_start = {
+		from = {
+			set_country_flag = is_currently_building_macro_test_site
+		}
+		set_star_flag = mega_base_construction
+	}
+	on_build_cancel = {
+		from = {
+			remove_country_flag = is_currently_building_macro_test_site
+		}
+		remove_star_flag = mega_base_construction
+	}
+	on_build_complete = {
+		save_event_target_as = giga_system
+		remove_star_flag = mega_base_construction
+		fromfrom.planet = {
+			set_planet_flag = has_test_site
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+			set_planet_entity = {
+				entity = invisible_turret_entity
+			}
+		}
+		fromfrom = {
+			set_megastructure_flag = giga_dismantle_ready
+		}
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_macro_test_site years = 10 }
+			remove_country_flag = is_currently_building_macro_test_site
+			create_message = {
+				type = MEGASTRUCTURE_BUILT
+				localization = MESSAGE_MEGASTRUCTURE_BUILT
+				days = 30
+				target = from # the Go To
+				variable = {
+					type = name
+					localization = MEGASTRUCTURE
+					scope = from
+				}
+				variable = {
+					type = name
+					localization = SYSTEM
+					scope = root
+				}
+			}
+			change_variable = { which = giga_current_megabase value = 1 }
+		}
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			remove_trade_deposits = yes
+			set_planet_flag = giga_test_site_stage_1
+			save_event_target_as = target_planet
+			add_deposit = d_engineering_2
+			science_kilo_update_orbital_effect = yes
+			# add_modifier = {
+			# 	modifier = orbital_atmosphere_shredder_1_mod
+			# 	days = -1
+			# }
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 500
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_engineering_test_site
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_not_old_update"
+		# 	has_megastructure_flag = giga_dismantle_ready
+		# }
+	}
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_test_site_stage_1 }
+			}
+			set_planet_flag = giga_test_site_stage_1
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_test_site
+		}
+	}
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = test_site
+				TYPE = engineering
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_test_site
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_test_site
+			set_planet_entity = { entity = giga_test_site_devastated_planet_entity }
+		}
+		from = {
+			add_resource = {
+				alloys = 500
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_megabase
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_megabase
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 145000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:macro_test_site_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_macroengineering_test_site.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+macro_test_site_1 = {
+	entity = "giga_test_site_2"
+	construction_entity = "giga_planet_frame_test_site_2"
+	portrait = "GFX_megastructure_cybernetics"
+	place_entity_on_planet_plane = yes
+	scales_with_planet = yes
+	use_planet_resource = yes
+	construction_blocks_and_blocked_by = none
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	# Test Model settings
+	# entity_offset = { x = 0 y = 0 }
+	# scales_with_planet = yes
+	upgrade_from = { macro_test_site_0 }
+	country_modifier = {
+		custom_tooltip = orbital_test_site_2_mod_tooltip
+	}
+	build_time = 1080
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_cost_2
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_cost_2
+		}
+		upkeep = {
+			energy = 20
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 10
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 30
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 20
+		}
+	}
+
+	potential = { NOT = { has_global_flag = megabase_disabled } }
+	possible = { from = { has_technology = giga_tech_engineering_test_site } }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		remove_star_flag = mega_base_construction
+		fromfrom.planet = {
+			set_planet_flag = has_test_site
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+		}
+
+		fromfrom = {
+			if = {
+				limit = {
+					NOT = { has_megastructure_flag = giga_dismantle_ready }
+				}
+				set_megastructure_flag = giga_dismantle_ready
+			}
+		}
+
+		# from = { country_event = { id = giga_dialog.402 } }# Notification
+
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			set_planet_flag = giga_test_site_stage_2
+			remove_planet_flag = giga_test_site_stage_1
+			save_event_target_as = target_planet
+			add_deposit = d_engineering_2
+			science_kilo_update_orbital_effect = yes
+			# add_modifier = {
+			# 	modifier = orbital_atmosphere_shredder_1_mod
+			# 	days = -1
+			# }
+		}
+	}
+
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 1000
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_engineering_test_site
+		}
+		custom_tooltip = {
+			fail_text = "requires_not_old_update"
+			has_megastructure_flag = giga_dismantle_ready
+		}
+	}
+
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_test_site_stage_2 }
+			}
+			set_planet_flag = giga_test_site_stage_2
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_test_site
+		}
+	}
+
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = test_site
+				TYPE = engineering
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_test_site
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_test_site
+			set_planet_entity = { entity = giga_test_site_devastated_planet_entity }
+		}
+		from = {
+			add_resource = {
+				alloys = 1000
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_megabase
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_megabase
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 160000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:macro_test_site_1
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_macroengineering_test_site.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+macro_test_site_2 = {
+	entity = "giga_test_site_3"
+	construction_entity = "giga_test_site_stage_3_entity_con"
+	portrait = "GFX_megastructure_cybernetics"
+	place_entity_on_planet_plane = yes
+	scales_with_planet = yes
+	use_planet_resource = yes
+	construction_blocks_and_blocked_by = none
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	# Test Model settings
+	# entity_offset = { x = 0 y = 0 }
+	# scales_with_planet = yes
+	upgrade_from = { macro_test_site_1 }
+	country_modifier = {
+		custom_tooltip = orbital_test_site_3_mod_tooltip
+	}
+	build_time = 1080
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_unity_3
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_alloys_3
+		}
+		upkeep = {
+			energy = 40
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 20
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 60
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 40
+		}
+	}
+
+	potential = { NOT = { has_global_flag = megabase_disabled } }
+	possible = { from = { has_technology = giga_tech_engineering_test_site } }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		fromfrom = {
+			if = {
+				limit = {
+					NOT = { has_megastructure_flag = giga_dismantle_ready }
+				}
+				set_megastructure_flag = giga_dismantle_ready
+			}
+		}
+		from = {
+			create_message = {
+				type = MEGASTRUCTURE_UPGRADED
+				localization = MESSAGE_MEGASTRUCTURE_UPGRADED
+				days = 30
+				target = from # the Go To
+				variable = {
+					type = name
+					localization = MEGASTRUCTURE
+					scope = from
+				}
+				variable = {
+					type = name
+					localization = SYSTEM
+					scope = root
+				}
+			}
+		}
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			remove_planet_flag = giga_test_site_stage_2
+			set_planet_flag = giga_test_site_stage_3
+			save_event_target_as = target_planet
+			add_deposit = d_engineering_1
+			science_kilo_update_orbital_effect = yes
+			add_modifier = {
+				modifier = orbital_test_site_3_mod
+				days = -1
+			}
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 1500
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_engineering_test_site
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_not_old_update"
+		# 	has_megastructure_flag = giga_dismantle_ready
+		# }
+	}
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_test_site_stage_3 }
+			}
+			set_planet_flag = giga_test_site_stage_3
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_test_site
+		}
+	}
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = test_site
+				TYPE = engineering
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_test_site
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_test_site
+			set_planet_entity = { entity = giga_test_site_devastated_planet_entity }
+		}
+		from = {
+			add_resource = {
+				alloys = 1500
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_megabase
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_megabase
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 175000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:macro_test_site_2
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_macroengineering_test_site.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+macro_test_site_3 = {
+	entity = "giga_test_site_4"
+	construction_entity = "giga_test_site_stage_4_entity_con"
+	portrait = "GFX_megastructure_cybernetics"
+	place_entity_on_planet_plane = yes
+	scales_with_planet = yes
+	use_planet_resource = yes
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = yes
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	# Test Model settings
+	# entity_offset = { x = 0 y = 0 }
+	# scales_with_planet = yes
+	upgrade_from = { macro_test_site_2 }
+	country_modifier = {
+		custom_tooltip = orbital_test_site_4_mod_tooltip
+	}
+	build_time = 1080 # 3 years
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_unity_4
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_alloys_4
+		}
+		upkeep = {
+			energy = 50
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 25
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 75
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 50
+		}
+	}
+	potential = { NOT = { has_global_flag = megabase_disabled } }
+	possible = { from = { has_technology = giga_tech_engineering_test_site } }
+
+	on_build_complete = {
+		fromfrom = { set_megastructure_flag = giga_outliner_hidden_by_@owner }
+		save_event_target_as = giga_system
+		from = {
+			create_message = {
+				type = MEGASTRUCTURE_UPGRADED
+				localization = MESSAGE_MEGASTRUCTURE_UPGRADED
+				days = 30
+				target = from # the Go To
+				variable = {
+					type = name
+					localization = MEGASTRUCTURE
+					scope = from
+				}
+				variable = {
+					type = name
+					localization = SYSTEM
+					scope = root
+				}
+			}
+			if = {
+				limit = {
+					NOR = {
+						has_global_flag = giga_achievements_disabled
+						has_country_flag = giga_achievement_55
+					}
+				}
+				set_country_flag = giga_achievement_55
+				set_timed_country_flag = { flag = giga_achievement_55_notification days = 30 }
+				giga_achievement_sound = yes
+			}
+		}
+		fromfrom = {
+			set_name = "name_eng_test_site"
+			if = {
+				limit = {
+					NOT = { has_megastructure_flag = giga_dismantle_ready }
+				}
+				set_megastructure_flag = giga_dismantle_ready
+			}
+		}
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			remove_planet_flag = giga_test_site_stage_3
+			set_planet_flag = giga_test_site_stage_4
+			save_event_target_as = target_planet
+			add_deposit = d_engineering_1
+			science_kilo_update_orbital_effect = yes
+			add_modifier = {
+				modifier = orbital_test_site_4_mod
+				days = -1
+			}
+			if = {
+				limit = {
+					has_modifier = orbital_test_site_3_mod
+				}
+				remove_modifier = orbital_test_site_3_mod
+			}
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 2000
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_engineering_test_site
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_not_old_update"
+		# 	has_megastructure_flag = giga_dismantle_ready
+		# }
+	}
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_test_site_stage_4 }
+			}
+			set_planet_flag = giga_test_site_stage_4
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_test_site
+		}
+	}
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = test_site
+				TYPE = engineering
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_test_site
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_test_site
+			set_planet_entity = { entity = giga_test_site_devastated_planet_entity }
+		}
+		from = {
+			add_resource = {
+				alloys = 2000
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_megabase
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_megabase
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 190000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:macro_test_site_3
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_atmospheric_storm_observatory.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+atmosphere_shredder_0 = {
+	entity = "giga_storm_observatory_1"
+	construction_entity = "giga_storm_observatory_1_con"
+	portrait = "GFX_megastructure_gas_giant"
+	place_entity_on_planet_plane = yes
+	use_planet_resource = yes
+	entity_offset = { x = 0 y = 0 }
+	scales_with_planet = yes
+	construction_blocks_and_blocked_by = none
+
+	prerequisites = { giga_tech_macro_scale_weather_manipulation }
+
+	build_time = 360
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_cost_1
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_cost_1
+		}
+		upkeep = {
+			energy = 10
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 5
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 15
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 10
+		}
+	}
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_system_tooltip = giga_science_candidate_count
+	tooltip_system_score = {
+		base = 0
+		complex_trigger_modifier = {
+			trigger = count_system_planet
+			parameters = {
+				limit = {
+					NOT = { has_deposit_for = shipclass_mining_station }
+					is_star = no
+					is_astral_scar = no
+					colonizable_planet = no
+				}
+			}
+			mode = add
+		}
+	}
+	tooltip_system_score_low_threshold = 10
+	tooltip_system_score_high_threshold = 16
+	tooltip_best_systems_header = "MEGASTRUCTURE_SCIENCE_KILO_BEST_SYSTEMS_TOOLTIP_HEADER"
+	tooltip_system_filter = {
+		solar_system = {
+			giga_system_has_atmosphere_shredder = no
+		}
+		system_has_arc_furnace = no
+	}
+
+	potential = {
+		has_technology = giga_tech_macro_scale_weather_manipulation
+		NOT = { has_global_flag = storm_observatory_disabled }
+		OR = {
+			has_global_flag = storm_observatory_capped_u
+			check_variable = {
+				which = giga_current_storm_observatory
+				value < value:giga_storm_observatory_limit
+			}
+		}
+	}
+
+	possible = {
+        inline_script = megastructures/system_ownership_or_waystation_check
+		custom_tooltip = { fail_text = "requires_no_anomaly" 				NOT = { any_system_planet = { has_anomaly = yes } } }
+		custom_tooltip = { fail_text = "requires_no_arc_furnace" 			system_has_arc_furnace = no }
+		custom_tooltip = { fail_text = "requires_no_atmosphere_shredder"	giga_system_has_atmosphere_shredder = no }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = storm_observatory_capped_u
+					check_variable = {
+						which = giga_current_storm_observatory
+						value < value:giga_storm_observatory_limit
+					}
+				}
+			}
+		}
+	}
+
+	country_modifier = {
+		custom_tooltip = orbital_atmosphere_shredder_1_mod_tooltip
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly"				has_anomaly = no }
+			custom_tooltip = { fail_text = "requires_no_existing_megastructure"	planet_has_no_megastructure = yes }
+			custom_tooltip = { fail_text = "requires_survey_not_habitable"		is_surveyed = { who = prev.from status = yes } is_planet_habitable = no }
+			custom_tooltip = { fail_text = "requires_not_star"					is_star = no }
+			custom_tooltip = { fail_text = "must_build_around_gas" 				giga_is_gas_giant = yes }
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			OR = {
+				from = { is_ai = no }
+				solar_system = {
+					count_system_planet = {
+						count >= 8
+						limit = {
+							giga_is_science_candidate = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_build_start = {
+		from = {
+			set_country_flag = is_currently_building_atmosphere_shredder
+		}
+		set_star_flag = atmosphere_shredder_construction
+	}
+	on_build_cancel = {
+		from = {
+			remove_country_flag = is_currently_building_atmosphere_shredder
+		}
+		remove_star_flag = atmosphere_shredder_construction
+	}
+	on_build_complete = {
+		save_event_target_as = giga_system
+		remove_star_flag = atmosphere_shredder_construction
+		fromfrom.planet = {
+			set_planet_flag = has_atmosphere_shredder
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+			set_planet_entity = {
+				entity = storm_gas_giant_01_entity
+			}
+		}
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_atmosphere_shredder years = 20 }
+			remove_country_flag = is_currently_building_atmosphere_shredder
+			create_message = {
+				type = MEGASTRUCTURE_BUILT
+				localization = MESSAGE_MEGASTRUCTURE_BUILT
+				days = 30
+				target = from # the Go To
+				variable = {
+					type = name
+					localization = MEGASTRUCTURE
+					scope = from
+				}
+				variable = {
+					type = name
+					localization = SYSTEM
+					scope = root
+				}
+			}
+			change_variable = { which = giga_current_storm_observatory value = 1 }
+		}
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			remove_trade_deposits = yes
+			set_planet_flag = giga_atmosphere_shredder_stage_1
+			save_event_target_as = target_planet
+			add_deposit = d_physics_2
+			science_kilo_update_orbital_effect = yes
+			# add_modifier = {
+			# 	modifier = orbital_atmosphere_shredder_1_mod
+			# 	days = -1
+			# }
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 500
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_macro_scale_weather_manipulation
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_not_old_update"
+		# 	has_megastructure_flag = giga_dismantle_ready
+		# }
+	}
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_atmosphere_shredder_stage_1 }
+			}
+			set_planet_flag = giga_atmosphere_shredder_stage_1
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_atmosphere_shredder
+		}
+	}
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = atmosphere_shredder
+				TYPE = physics
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_atmosphere_shredder
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_atmosphere_shredder
+			set_planet_entity = {
+				entity = pc_gas_giant
+			}
+		}
+		from = {
+			add_resource = {
+				alloys = 500
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_storm_observatory
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_storm_observatory
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 150000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:atmosphere_shredder_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_atmospheric_storm_observatory.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+atmosphere_shredder_1 = {
+	entity = "giga_storm_observatory_2"
+	construction_entity = "giga_storm_observatory_2_con"
+	portrait = "GFX_megastructure_gas_giant"
+	place_entity_on_planet_plane = yes
+	use_planet_resource = yes
+	entity_offset = { x = 0 y = 0 }
+	scales_with_planet = yes
+	upgrade_from = { atmosphere_shredder_0 }
+	construction_blocks_and_blocked_by = none
+
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1080
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_cost_2
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_cost_2
+		}
+		upkeep = {
+			energy = 20
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 10
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 30
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 20
+		}
+	}
+
+	potential = { NOT = { has_global_flag = storm_observatory_disabled } }
+	possible = { from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+	country_modifier = {
+		custom_tooltip = orbital_atmosphere_shredder_2_mod_tooltip
+	}
+	on_build_complete = {
+		save_event_target_as = giga_system
+		fromfrom.planet = {
+			set_planet_entity = {
+				entity = storm_gas_giant_01_entity
+			}
+		}
+		from = {
+			create_message = {
+				type = MEGASTRUCTURE_UPGRADED
+				localization = MESSAGE_MEGASTRUCTURE_UPGRADED
+				days = 30
+				target = from # the Go To
+				variable = {
+					type = name
+					localization = MEGASTRUCTURE
+					scope = from
+				}
+				variable = {
+					type = name
+					localization = SYSTEM
+					scope = root
+				}
+			}
+		}
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			remove_planet_flag = giga_atmosphere_shredder_stage_1
+			set_planet_flag = giga_atmosphere_shredder_stage_2
+			save_event_target_as = target_planet
+			add_deposit = d_physics_2
+			science_kilo_update_orbital_effect = yes
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 1000
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_macro_scale_weather_manipulation
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_not_old_update"
+		# 	has_megastructure_flag = giga_dismantle_ready
+		# }
+	}
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_atmosphere_shredder_stage_2 }
+			}
+			set_planet_flag = giga_atmosphere_shredder_stage_2
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_atmosphere_shredder
+		}
+	}
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = atmosphere_shredder
+				TYPE = physics
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_atmosphere_shredder
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_atmosphere_shredder
+			set_planet_entity = {
+				entity = pc_gas_giant
+			}
+		}
+		from = {
+			add_resource = {
+				alloys = 1000
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_storm_observatory
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_storm_observatory
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 165000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:atmosphere_shredder_1
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_atmospheric_storm_observatory.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+atmosphere_shredder_2 = {
+	entity = "giga_storm_observatory_3"
+	construction_entity = "giga_storm_observatory_3_con"
+	portrait = "GFX_megastructure_gas_giant"
+	place_entity_on_planet_plane = yes
+	use_planet_resource = yes
+	entity_offset = { x = 0 y = 0 }
+	scales_with_planet = yes
+	upgrade_from = { atmosphere_shredder_1 }
+	construction_blocks_and_blocked_by = none
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	country_modifier = {
+		custom_tooltip = orbital_atmosphere_shredder_3_mod_tooltip
+	}
+	build_time = 1080
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_unity_3
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_alloys_3
+		}
+		upkeep = {
+			energy = 40
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 20
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 60
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 40
+		}
+	}
+
+	potential = { NOT = { has_global_flag = storm_observatory_disabled } }
+	possible = { from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		fromfrom.planet = {
+			set_planet_entity = {
+				entity = storm_gas_giant_01_entity
+			}
+		}
+		from = {
+			create_message = {
+				type = MEGASTRUCTURE_UPGRADED
+				localization = MESSAGE_MEGASTRUCTURE_UPGRADED
+				days = 30
+				target = from # the Go To
+				variable = {
+					type = name
+					localization = MEGASTRUCTURE
+					scope = from
+				}
+				variable = {
+					type = name
+					localization = SYSTEM
+					scope = root
+				}
+			}
+		}
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			remove_planet_flag = giga_atmosphere_shredder_stage_2
+			set_planet_flag = giga_atmosphere_shredder_stage_3
+			save_event_target_as = target_planet
+			add_deposit = d_physics_1
+			science_kilo_update_orbital_effect = yes
+			add_modifier = {
+				modifier = orbital_atmosphere_shredder_3_mod
+				days = -1
+			}
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 1500
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_macro_scale_weather_manipulation
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_not_old_update"
+		# 	has_megastructure_flag = giga_dismantle_ready
+		# }
+	}
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_atmosphere_shredder_stage_3 }
+			}
+			set_planet_flag = giga_atmosphere_shredder_stage_3
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_atmosphere_shredder
+		}
+	}
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = atmosphere_shredder
+				TYPE = physics
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_atmosphere_shredder
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_atmosphere_shredder
+			set_planet_entity = {
+				entity = pc_gas_giant
+			}
+		}
+		from = {
+			add_resource = {
+				alloys = 1500
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_storm_observatory
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_storm_observatory
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 180000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:atmosphere_shredder_2
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/megastructures/zz_c_atmospheric_storm_observatory.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+atmosphere_shredder_3 = {
+	entity = "giga_storm_observatory_4"
+	construction_entity = "giga_storm_observatory_4_con"
+	portrait = "GFX_megastructure_gas_giant"
+	place_entity_on_planet_plane = yes
+	use_planet_resource = yes
+	entity_offset = { x = 0 y = 0 }
+	scales_with_planet = yes
+	upgrade_from = { atmosphere_shredder_2 }
+	construction_blocks_and_blocked_by = none
+	show_in_outliner = yes
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+	country_modifier = {
+		custom_tooltip = orbital_atmosphere_shredder_4_mod_tooltip
+	}
+	build_time = 1080 # 3 years
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @science_kilo_unity_4
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = @science_kilo_alloys_4
+		}
+
+		upkeep = {
+			energy = 50
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Standard empire
+					is_gestalt = no
+				}
+			}
+			consumer_goods = 25
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Hivemind / default
+					is_gestalt = yes
+					is_machine_empire = no
+				}
+			}
+			minerals = 75
+		}
+		upkeep = {
+			trigger = {
+				exists = owner
+				owner = { # Robot upkeep
+					is_gestalt = yes
+					is_machine_empire = yes
+				}
+			}
+			energy = 50
+		}
+	}
+
+	potential = { NOT = { has_global_flag = storm_observatory_disabled } }
+	possible = { from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+
+	on_build_complete = {
+		fromfrom = {
+			set_megastructure_flag = giga_outliner_hidden_by_@owner
+		}
+		save_event_target_as = giga_system
+		fromfrom.planet = {
+			set_planet_entity = {
+				entity = storm_gas_giant_02_entity
+			}
+		}
+		from = {
+			create_message = {
+				type = MEGASTRUCTURE_UPGRADED
+				localization = MESSAGE_MEGASTRUCTURE_UPGRADED
+				days = 30
+				target = from # the Go To
+				variable = {
+					type = name
+					localization = MEGASTRUCTURE
+					scope = from
+				}
+				variable = {
+					type = name
+					localization = SYSTEM
+					scope = root
+				}
+			}
+			if = {
+				limit = {
+					NOR = {
+						has_global_flag = giga_achievements_disabled
+						has_country_flag = giga_achievement_53
+					}
+				}
+				set_country_flag = giga_achievement_53
+				set_timed_country_flag = { flag = giga_achievement_53_notification days = 30 }
+				giga_achievement_sound = yes
+			}
+		}
+		fromfrom = {
+			set_name = "atmosphere_shredder_complete_name"
+		}
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			remove_planet_flag = giga_atmosphere_shredder_stage_3
+			set_planet_flag = giga_atmosphere_shredder_stage_4
+			save_event_target_as = target_planet
+			add_deposit = d_physics_1
+			science_kilo_update_orbital_effect = yes
+			add_modifier = {
+				modifier = orbital_atmosphere_shredder_4_mod
+				days = -1
+			}
+			if = {
+				limit = {
+					has_modifier = orbital_atmosphere_shredder_3_mod
+				}
+				remove_modifier = orbital_atmosphere_shredder_3_mod
+			}
+		}
+	}
+
+	dismantle_cost = {
+		category = giga_kilostructures
+		cost = {
+			energy = 2000
+		}
+	}
+
+	dismantle_time = 360
+
+	dismantle_potential = {
+		always = yes
+	}
+
+	dismantle_possible = {
+		can_dismantle_megastructure = {
+			TECH = giga_tech_macro_scale_weather_manipulation
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_not_old_update"
+		# 	has_megastructure_flag = giga_dismantle_ready
+		# }
+	}
+	on_dismantle_start = { # Catch for old variants of the mega where it hadn't set the proper flags
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+				NOT = { has_planet_flag = giga_atmosphere_shredder_stage_4 }
+			}
+			set_planet_flag = giga_atmosphere_shredder_stage_4
+		}
+		fromfrom.planet = {
+			set_planet_flag = has_atmosphere_shredder
+		}
+	}
+	on_dismantle_complete = {
+		every_system_planet = {
+			limit = {
+				giga_is_science_candidate = yes
+			}
+			giga_dismantle_science_kilo_effect = {
+				FLAG = atmosphere_shredder
+				TYPE = physics
+			}
+		}
+		random_system_planet = {
+			limit = {
+				has_planet_flag = has_atmosphere_shredder
+			}
+			remove_carrier_flag = has_megastructure
+			remove_planet_flag = has_atmosphere_shredder
+			set_planet_entity = {
+				entity = pc_gas_giant
+			}
+		}
+		from = {
+			add_resource = {
+				alloys = 2000
+				mult = modifier:megastructure_dismantle_refund_mult
+			}
+			if = {
+				limit = {
+					check_variable = {
+						which = giga_current_storm_observatory
+						value >= 1
+					}
+				}
+				change_variable = {
+					which = giga_current_storm_observatory
+					value = -1
+				}
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 195000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = megastructure:atmosphere_shredder_3
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_kilo_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_kilo_build_priority_ready = yes } }
+		modifier = { factor = 5 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 11 from = { years_passed > 119 } }
+		modifier = { factor = 4 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = research_megastructure_core; source = common/megastructures/zz_e_science_nexus.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+think_tank_0 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = 0 y = -20 }
+	prerequisites = { "tech_science_nexus" }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_science_nexus
+		cost = {
+			unity = @giga_big_mega_start_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 5000
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|5000| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_big_mega_start_unity_cost| }
+		upkeep = { energy = 5 }
+	}
+
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 5000 }
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_big_mega_start_unity_cost }
+	}
+	on_build_cancel = {
+		giga_ai_savings_refund = { CATEGORY = important RESOURCE = alloys }
+		giga_ai_savings_refund = { CATEGORY = important RESOURCE = unity }
+	}
+
+	potential = {
+		NOT = { has_global_flag = vanilla_nexus_disabled }
+		OR = {
+			has_global_flag = vanilla_nexus_capped_u
+			check_variable = {
+				which = giga_current_vanilla_nexus
+				value < value:giga_vanilla_nexus_limit
+			}
+		}
+	}
+
+	possible = {
+		hidden_trigger = {
+			exists = starbase
+		}
+		custom_tooltip = { fail_text = "requires_inside_border"						is_inside_border = from }
+		custom_tooltip = { fail_text = "requires_surveyed_system"					giga_system_is_surveyed = yes }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = vanilla_nexus_capped_u
+					check_variable = {
+						which = giga_current_vanilla_nexus
+						value < value:giga_vanilla_nexus_limit
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_survey_not_habitable"		is_surveyed = { who = prev.from status = yes } is_planet_habitable = no }
+			custom_tooltip = { fail_text = "requires_no_anomaly"				has_anomaly = no }
+			custom_tooltip = { fail_text = "requires_no_existing_megastructure"	planet_has_no_megastructure = yes }
+			custom_tooltip = { fail_text = "requires_not_star"					is_star = no }
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = { fail_text = "requires_not_ring_world"			is_ringworld = no }
+		}
+	}
+
+
+	on_build_complete = {
+		set_star_flag = think_tank_built
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_think_tank years = 20 }
+			set_country_flag = built_think_tank
+			change_variable = { which = giga_current_vanilla_nexus value = 1 }
+		}
+		fromfrom.planet = {
+			giga_set_has_mega_flag = yes
+		}
+	}
+
+	ai_weight = {
+		factor = 155000
+
+		# policy_route = research_megastructure_core
+		# source_object = megastructure:think_tank_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_nexus_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_nexus_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 4 from = { has_technology = tech_science_nexus } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = research_megastructure_core; source = common/megastructures/zz_e_science_nexus.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+think_tank_1 = {
+	entity = "thinktank_phase_01_entity"
+	construction_entity = "thinktank_phase_01_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = 0 y = -20 }
+	upgrade_from = { think_tank_0 }
+	prerequisites = { "tech_science_nexus" }
+	country_modifier = { all_technology_research_speed = 0.05 }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 3600
+	resources = {
+		category = giga_megastructures
+		cost = {
+			unity = @giga_big_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 15000
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|15000| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_big_mega_unity_cost| }
+		upkeep = { energy = 25 }
+		produces = {
+			society_research = 100
+			engineering_research = 100
+			physics_research = 100
+		}
+	}
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 15000 }
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_big_mega_unity_cost }
+	}
+
+	ai_weight = {
+		factor = 170000
+
+		# policy_route = research_megastructure_core
+		# source_object = megastructure:think_tank_1
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_nexus_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_nexus_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = tech_science_nexus } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = research_megastructure_core; source = common/megastructures/zz_e_science_nexus.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+think_tank_2 = {
+	entity = "thinktank_phase_02_entity"
+	construction_entity = "thinktank_phase_02_entity"
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = 0 y = -20 }
+	upgrade_from = { think_tank_1 }
+	prerequisites = { "tech_science_nexus" }
+	country_modifier = { all_technology_research_speed = 0.10 }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 3600
+	resources = {
+		category = giga_megastructures
+		cost = {
+			unity = @giga_big_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 15000
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|15000| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_big_mega_unity_cost| }
+		upkeep = { energy = 50 }
+		produces = {
+			society_research = 200
+			engineering_research = 200
+			physics_research = 200
+		}
+	}
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 15000 }
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_big_mega_unity_cost }
+	}
+
+	ai_weight = {
+		factor = 185000
+
+		# policy_route = research_megastructure_core
+		# source_object = megastructure:think_tank_2
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_nexus_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_nexus_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = tech_science_nexus } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = research_megastructure_core; source = common/megastructures/zz_e_science_nexus.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+think_tank_3 = {
+	entity = "thinktank_phase_03_entity"
+	construction_entity = "thinktank_phase_03_entity"
+	portrait = "GFX_megastructure_think_tank_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = 0 y = -20 }
+	upgrade_from = { think_tank_2 }
+	prerequisites = { "tech_science_nexus" }
+	show_prereqs = yes
+	country_modifier = { all_technology_research_speed = 0.15 }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 3600
+	resources = {
+		category = giga_megastructures
+		cost = {
+			unity = @giga_big_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 15000
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|15000| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_big_mega_unity_cost| }
+		upkeep = { energy = 75 }
+		produces = {
+			society_research = 300
+			engineering_research = 300
+			physics_research = 300
+		}
+	}
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 15000 }
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_big_mega_unity_cost }
+	}
+
+	on_build_complete = { from = { set_country_flag = has_built_or_repaired_megastructure } }
+
+	ai_weight = {
+		factor = 200000
+
+		# policy_route = research_megastructure_core
+		# source_object = megastructure:think_tank_3
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_science_nexus_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_science_nexus_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = tech_science_nexus } }
+		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
+	}
+}
+
+
+# policy_route = ring_world_growth_core; source = common/megastructures/zz_e_ring_world.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+ring_world_1 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = yes
+	prerequisites = { "tech_ring_world" }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_megastructures
+		cost = {
+			influence = 300
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 5000
+		}
+		upkeep = { energy = 5 }
+	}
+
+	custom_tooltip_requirements = "MEGASTRUCTURE_TOOLTIP_REQUIREMENTS_RING_WORLD"
+
+	potential = {
+		NOT = { has_global_flag = vanilla_ringworld_disabled }
+		giga_can_use_habitables = yes
+		OR = {
+			has_global_flag = vanilla_ringworld_capped_u
+			check_variable = {
+				which = giga_current_vanilla_ringworld
+				value < value:giga_vanilla_ringworld_limit
+			}
+		}
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_inside_border"						is_inside_border = from }
+		custom_tooltip = { fail_text = "requires_surveyed_system"					giga_system_is_surveyed = yes }
+		custom_tooltip = { fail_text = "requires_no_habitable_planets"				giga_any_hab_planets = no }
+		custom_tooltip = { fail_text = "requires_no_binary_trinary"					giga_is_bitrinary = no }
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			if = {
+				limit = {
+					star = {
+						has_carrier_flag = has_stabilised_penrose_sphere
+					}
+				}
+				giga_has_normal_ringworld = no
+			}
+			else = { has_no_non_gate_megastructure = yes }
+		}
+		if = { limit = { star = { has_carrier_flag = has_stabilised_penrose_sphere } } from = { has_technology = giga_tech_penrose_sphere_3 } }
+		custom_tooltip = {
+			fail_text = "requires_no_existing_megastructure"
+			NOT = {
+				any_system_planet = {
+					OR = {
+						is_planet_class = pc_ringworld_habitable_damaged
+						is_planet_class = pc_ringworld_tech_damaged
+						is_planet_class = pc_ringworld_seam_damaged
+						is_planet_class = pc_shattered_ring_habitable
+						is_planet_class = pc_ringworld_habitable
+					}
+				}
+			}
+		} # Shattered Ring System
+		custom_tooltip = { fail_text = "requires_no_crisis_system"					NOT = { any_system_planet = { has_planet_flag = crisis_vital_planet } } }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = vanilla_ringworld_capped_u
+					check_variable = {
+						which = giga_current_vanilla_ringworld
+						value < value:giga_vanilla_ringworld_limit
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "must_build_around_star"					is_star = yes }
+			custom_tooltip = { fail_text = "requires_no_anomaly"					has_anomaly = no }
+			# custom_tooltip = { fail_text = "requires_planets_for_material"			hidden:solar_system = { any_system_planet = { NOT = { is_star = yes } } } }
+			custom_tooltip = {
+				fail_text = "requires_standard_planet_class"
+				OR = {
+					giga_is_standard_star = yes
+					AND = {
+						giga_is_standard_black_hole = yes
+						has_carrier_flag = has_stabilised_penrose_sphere
+					}
+				}
+			}
+		}
+	}
+
+
+    on_build_start = {
+        set_star_flag = giga_forbid_planet_dismantlement
+    }
+
+    on_build_cancel = {
+        remove_star_flag = giga_forbid_planet_dismantlement
+    }
+
+	on_build_complete = {
+		set_variable = { which = ring_segments value = 0 }
+
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_bulk_matter_calculations
+			giga_system_bm_cost = @ring_world_2_intermediate_bm_cost
+		}
+
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_vanilla_ring years = 20 }
+			set_country_flag = giga_started_ringworld
+			change_variable = { which = giga_current_vanilla_ringworld value = 1 }
+		}
+
+		fromfrom.planet = {
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+		}
+	}
+
+	ai_weight = {
+		factor = 145000
+
+		# policy_route = ring_world_growth_core
+		# source_object = megastructure:ring_world_1
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_ring_world_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_ring_world_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 6 from = { years_passed > 79 } }
+		modifier = { factor = 9 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 4 from = { has_technology = tech_ring_world } }
+		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
+	}
+}
+
+
+# policy_route = ring_world_growth_core; source = common/megastructures/zz_e_ring_world.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+ring_world_2_intermediate = {
+	entity = ""
+	construction_entity = "vanilla_full_entity"
+	portrait = "GFX_megastructure_construction_background"
+	upgrade_from = { ring_world_1 }
+	prerequisites = { "tech_ring_world" }
+	show_in_outliner = no
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 4800
+	resources = {
+		category = giga_megastructures
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 10000
+		}
+	}
+
+
+	possible = {
+		has_enough_bm = yes
+	}
+
+	on_build_start = {
+		remove_bm_cost_from_stockpile = yes
+		if = {
+			limit = {
+				from = {
+					NOR = {
+						graphical_culture = arthropoid_01
+						graphical_culture = avian_01
+						graphical_culture = fungoid_01
+						graphical_culture = humanoid_01
+						graphical_culture = mammalian_01
+						graphical_culture = molluscoid_01
+						graphical_culture = plantoid_01
+						graphical_culture = reptilian_01
+						graphical_culture = lithoid_01
+						graphical_culture = necroid_01
+					}
+				}
+			}
+			fromfrom = { set_graphical_culture = mammalian_01 }
+		}
+		else = { fromfrom = { set_graphical_culture = root.from } }
+		set_variable = { which = ring_segments value = 0 }
+	}
+
+	on_build_complete = {
+		giga_remove_system_planets = yes
+		giga_remove_system_debris = yes
+		set_asteroid_belt = { radius = 0 }
+		remove_megastructure = fromfrom
+		generate_bulk_matter_cache = yes
+
+		spawn_megastructure = { name = "Ring Section A" type = "ring_world_2" orbit_angle = 0	orbit_distance = 45 owner = from graphical_culture = fromfrom }
+		spawn_megastructure = { name = "Ring Section B" type = "ring_world_2" orbit_angle = 90	orbit_distance = 45 owner = from graphical_culture = fromfrom }
+		spawn_megastructure = { name = "Ring Section C" type = "ring_world_2" orbit_angle = 180	orbit_distance = 45 owner = from graphical_culture = fromfrom }
+		spawn_megastructure = { name = "Ring Section D" type = "ring_world_2" orbit_angle = 270	orbit_distance = 45 owner = from graphical_culture = fromfrom }
+	}
+
+	ai_weight = {
+		factor = 160000
+
+		# policy_route = ring_world_growth_core
+		# source_object = megastructure:ring_world_2_intermediate
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_ring_world_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_ring_world_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 6 from = { years_passed > 79 } }
+		modifier = { factor = 9 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = tech_ring_world } }
+		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
+	}
+}
+
+
+# policy_route = ring_world_growth_core; source = common/megastructures/zz_e_ring_world.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+ring_world_3_intermediate = {
+	entity = ""
+	construction_entity = "vanilla_quarter_construction_entity"
+	portrait = "GFX_megastructure_construction_background"
+	upgrade_from = { ring_world_2 }
+	prerequisites = { "tech_ring_world" }
+	#show_prereqs = yes # needs to be a fake entry instead for tech swaps :(
+	prereq_name = "RING_WORLD_SHOW_NAME"
+	show_in_outliner = no
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 3600
+	resources = {
+		category = giga_megastructures
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 10000
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_bulk_matter_cost
+			giga_sr_bulk_matter = @ring_world_3_intermediate_bm_cost
+		}
+	}
+
+	on_build_complete = {
+		from = { set_country_flag = has_built_or_repaired_megastructure }
+
+		change_variable = { which = ring_segments value = 1 }
+		if = {
+			limit = { check_variable = { which = ring_segments value >= 4 } }
+			set_variable = { which = ring_segments value = 0 }
+			from = {
+				remove_country_flag = giga_started_ringworld
+				change_variable = { which = completed_ringworlds value = 1 }
+			}
+			set_star_flag = ring_world_built
+		}
+
+		spawn_planet = {
+			class = "pc_ringworld_tech"
+			location = fromfrom
+			orbit_angle_offset = 30
+			init_effect = {
+				set_name = "Ring Section"
+				giga_set_ringworld_graphical_culture = {
+					TARGET = this
+					SOURCE = prev.from
+					SIZE = vanilla
+					TYPE = tech
+					VANILLA_TYPE = tech
+				}
+				set_surveyed = { surveyed = yes surveyor = from }
+				set_all_comms_surveyed = yes
+				set_planet_flag = forbid_guillis_planet_modifiers
+				set_carrier_flag = megastructure
+				set_carrier_flag = colony_event			# Vanilla uses to prevent unwanted events on planets
+			}
+		}
+		spawn_planet = {
+			class = "pc_ringworld_seam"
+			location = fromfrom
+			init_effect = {
+				set_name = "Ring Section"
+				giga_set_ringworld_graphical_culture = {
+					TARGET = this
+					SOURCE = prev.from
+					SIZE = vanilla
+					TYPE = seam
+					VANILLA_TYPE = seam
+				}
+				set_surveyed = { surveyed = yes surveyor = from }
+				set_all_comms_surveyed = yes
+				set_planet_flag = forbid_guillis_planet_modifiers
+				set_carrier_flag = megastructure
+			}
+		}
+		spawn_planet = {
+			class = "pc_ringworld_habitable"
+			location = fromfrom
+			orbit_angle_offset = -30
+			init_effect = {
+				giga_set_ringworld_graphical_culture = {
+					TARGET = this
+					SOURCE = prev.from
+					SIZE = vanilla
+					TYPE = gaia_habitable
+					VANILLA_TYPE = habitable
+				}
+				set_surveyed = { surveyed = yes surveyor = from }
+				set_all_comms_surveyed = yes
+				clear_blockers = yes
+				save_event_target_as = ring_section
+				trigger_megastructure_icon = yes
+				set_planet_flag = forbid_guillis_planet_modifiers
+				set_carrier_flag = megastructure
+				set_carrier_flag = colony_event			# Vanilla uses to prevent unwanted events on planets
+				set_planet_flag = giga_ringworld_van
+
+				giga_start_ai_colony_if_safe = yes
+			}
+		}
+		if = {		limit = { NOT = { has_star_flag = ring_01 } } set_star_flag = ring_01 event_target:ring_section = { set_name = "Habitable Section A" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_02 } } set_star_flag = ring_02 event_target:ring_section = { set_name = "Habitable Section B" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_03 } } set_star_flag = ring_03 event_target:ring_section = { set_name = "Habitable Section C" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_04 } } set_star_flag = ring_04 event_target:ring_section = { set_name = "Habitable Section D" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_05 } } set_star_flag = ring_05 event_target:ring_section = { set_name = "Habitable Section E" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_06 } } set_star_flag = ring_06 event_target:ring_section = { set_name = "Habitable Section F" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_07 } } set_star_flag = ring_07 event_target:ring_section = { set_name = "Habitable Section G" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_08 } } set_star_flag = ring_08 event_target:ring_section = { set_name = "Habitable Section H" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_09 } } set_star_flag = ring_09 event_target:ring_section = { set_name = "Habitable Section I" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_10 } } set_star_flag = ring_10 event_target:ring_section = { set_name = "Habitable Section J" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_11 } } set_star_flag = ring_11 event_target:ring_section = { set_name = "Habitable Section K" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_12 } } set_star_flag = ring_12 event_target:ring_section = { set_name = "Habitable Section L" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_13 } } set_star_flag = ring_13 event_target:ring_section = { set_name = "Habitable Section M" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_14 } } set_star_flag = ring_14 event_target:ring_section = { set_name = "Habitable Section N" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_15 } } set_star_flag = ring_15 event_target:ring_section = { set_name = "Habitable Section O" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_16 } } set_star_flag = ring_16 event_target:ring_section = { set_name = "Habitable Section P" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_17 } } set_star_flag = ring_17 event_target:ring_section = { set_name = "Habitable Section Q" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_18 } } set_star_flag = ring_18 event_target:ring_section = { set_name = "Habitable Section R" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_19 } } set_star_flag = ring_19 event_target:ring_section = { set_name = "Habitable Section S" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_20 } } set_star_flag = ring_20 event_target:ring_section = { set_name = "Habitable Section T" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_21 } } set_star_flag = ring_21 event_target:ring_section = { set_name = "Habitable Section U" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_22 } } set_star_flag = ring_22 event_target:ring_section = { set_name = "Habitable Section V" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_23 } } set_star_flag = ring_23 event_target:ring_section = { set_name = "Habitable Section W" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_24 } } set_star_flag = ring_24 event_target:ring_section = { set_name = "Habitable Section X" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_25 } } set_star_flag = ring_25 event_target:ring_section = { set_name = "Habitable Section Y" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_26 } } set_star_flag = ring_26 event_target:ring_section = { set_name = "Habitable Section Z" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_27 } } set_star_flag = ring_27 event_target:ring_section = { set_name = "Habitable Section Aa" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_28 } } set_star_flag = ring_28 event_target:ring_section = { set_name = "Habitable Section Ab" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_29 } } set_star_flag = ring_29 event_target:ring_section = { set_name = "Habitable Section Ac" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_30 } } set_star_flag = ring_30 event_target:ring_section = { set_name = "Habitable Section Ad" } }
+		else_if = {	limit = { NOT = { has_star_flag = ring_31 } } set_star_flag = ring_31 event_target:ring_section = { set_name = "Habitable Section Ae" } }
+		else_if = {
+			limit = { NOT = { has_star_flag = ring_32 } }
+			set_star_flag = ring_32
+			event_target:ring_section = { set_name = "Habitable Section Af" }
+			remove_star_flag = ring_01
+			remove_star_flag = ring_02
+			remove_star_flag = ring_03
+			remove_star_flag = ring_04
+			remove_star_flag = ring_05
+			remove_star_flag = ring_06
+			remove_star_flag = ring_07
+			remove_star_flag = ring_08
+			remove_star_flag = ring_09
+			remove_star_flag = ring_10
+			remove_star_flag = ring_11
+			remove_star_flag = ring_12
+			remove_star_flag = ring_13
+			remove_star_flag = ring_14
+			remove_star_flag = ring_15
+			remove_star_flag = ring_16
+			remove_star_flag = ring_17
+			remove_star_flag = ring_18
+			remove_star_flag = ring_19
+			remove_star_flag = ring_20
+			remove_star_flag = ring_21
+			remove_star_flag = ring_22
+			remove_star_flag = ring_23
+			remove_star_flag = ring_24
+			remove_star_flag = ring_25
+			remove_star_flag = ring_26
+			remove_star_flag = ring_27
+			remove_star_flag = ring_28
+			remove_star_flag = ring_29
+			remove_star_flag = ring_30
+			remove_star_flag = ring_31
+			remove_star_flag = ring_32
+		}
+		remove_megastructure = fromfrom
+	}
+
+	ai_weight = {
+		factor = 175000
+
+		# policy_route = ring_world_growth_core
+		# source_object = megastructure:ring_world_3_intermediate
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_ring_world_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_ring_world_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 6 from = { years_passed > 79 } }
+		modifier = { factor = 9 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = tech_ring_world } }
+		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
+	}
+}
+
+
+# policy_route = storage_cap_core; source = common/megastructures/zz_c_kugelblitz.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+kugelblitz_0 = {
+	entity = "kugelblitz_new_empty_entity"
+	construction_entity = "kugelblitz_new_empty_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { giga_tech_kugelblitz }
+	construction_blocks_and_blocked_by = none
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			unity = @giga_small_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 5000
+		}
+		upkeep = {
+			alloys = 5
+		}
+	}
+
+	potential = {
+		has_technology = giga_tech_kugelblitz
+		NOT = { has_global_flag = kugel_disabled }
+		OR = {
+			has_global_flag = kugel_capped_u
+			check_variable = {
+				which = giga_current_kugel
+				value < value:giga_kugel_limit
+			}
+		}
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_inside_border" is_inside_border = from }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = kugel_capped_u
+					check_variable = {
+						which = giga_current_kugel
+						value < value:giga_kugel_limit
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_existing_megastructure"	planet_has_no_megastructure = yes }
+			custom_tooltip = { fail_text = "requires_no_anomaly"				has_anomaly = no }
+			custom_tooltip = { fail_text = "requires_not_star"					is_star = no }
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+		}
+	}
+
+
+	on_build_start = {
+		from = {
+			set_country_flag = is_currently_building_kugelblitz
+		}
+	}
+	on_build_cancel = {
+		from = {
+			remove_country_flag = is_currently_building_kugelblitz
+		}
+	}
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		fromfrom.planet = {
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+		}
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_kugelblitz years = 20 }
+			remove_country_flag = is_currently_building_kugelblitz
+			# country_event = { id = giga_dialog.101 }	# Notification
+			# country_event = { id = giga_dialog.102 }	# Notification
+			change_variable = { which = giga_current_kugel value = 1 }
+		}
+	}
+
+	ai_weight = {
+		factor = 125000
+
+		# policy_route = storage_cap_core
+		# source_object = megastructure:kugelblitz_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_kugelblitz_new_start_budget_ready = yes } } }
+		modifier = { factor = 4 from = { staid_kugelblitz_new_start_budget_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		# kugelblitz_start_budget = empty_silos_are_capped_storage_not_income
+		modifier = { factor = 0 from = { has_country_flag = is_currently_building_kugelblitz } }
+		modifier = { factor = 0 from = { staid_unfinished_kugelblitz_exists = yes } }
+		modifier = { factor = 0 from = { check_variable = { which = giga_current_kugel value >= 10 } } }
+		modifier = { factor = 0.03 from = { has_country_flag = has_recently_built_kugelblitz } }
+		modifier = { factor = 0.02 from = { check_variable = { which = giga_current_kugel value >= 9 } } }
+		modifier = { factor = 0.04 from = { check_variable = { which = giga_current_kugel value >= 8 } } }
+		modifier = { factor = 0.08 from = { check_variable = { which = giga_current_kugel value >= 7 } } }
+		modifier = { factor = 0.15 from = { check_variable = { which = giga_current_kugel value >= 6 } } }
+		modifier = { factor = 0.25 from = { check_variable = { which = giga_current_kugel value >= 5 } } }
+		modifier = { factor = 0.4 from = { check_variable = { which = giga_current_kugel value >= 4 } } }
+		modifier = { factor = 0.6 from = { check_variable = { which = giga_current_kugel value >= 3 } } }
+	}
+}
+
+
+# policy_route = storage_cap_core; source = common/megastructures/zz_c_kugelblitz.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+kugelblitz_1 = {
+	entity = "kugelblitz_new_entity"
+	portrait = "GFX_megastructure_black_hole"
+	place_entity_on_planet_plane = no
+	construction_blocks_and_blocked_by = none
+	upgrade_from = { kugelblitz_0 kugelblitz_restored }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_kilostructures
+		cost = {
+			energy = 25000
+			unity = @giga_small_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 1000
+		}
+		upkeep = {
+			alloys = 15
+			energy = 50
+		}
+	}
+
+	potential = { NOT = { has_global_flag = kugel_disabled } }
+	possible = { from = { has_technology = giga_tech_kugelblitz } }
+
+	country_modifier = { country_resource_max_add = 50000 }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		from = {
+			country_event = { id = giga_dialog.103 }	# Notification
+			if = {
+				limit = {
+					NOR = {
+						has_global_flag = giga_achievements_disabled
+						has_country_flag = giga_achievement_64
+					}
+				}
+				set_country_flag = giga_achievement_64
+				set_timed_country_flag = { flag = giga_achievement_64_notification days = 30 }
+				giga_achievement_sound = yes
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 150000
+
+		# policy_route = storage_cap_core
+		# source_object = megastructure:kugelblitz_1
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_storage_cap_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_storage_cap_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_kugelblitz } }
+		modifier = { factor = 10 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 14 from = { staid_high_scale_snowball_pressure = yes } }
+	}
+}
+
+
+# policy_route = storage_cap_core; source = common/megastructures/zz_c_kugelblitz.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+kugelblitz_2 = { # Megastructur
+	entity = "kugelblitz_mega_entity"
+	portrait = "GFX_megastructure_black_hole"
+	place_entity_on_planet_plane = no
+	upgrade_from = { kugelblitz_1 }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 3600
+	resources = {
+		category = giga_megastructures
+		cost = {
+			energy = 37500
+			unity = @giga_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 2500
+		}
+		upkeep = {
+			alloys = 20
+			energy = 75
+		}
+	}
+
+	potential = { NOT = { has_global_flag = kugel_disabled } }
+	possible = { from = { has_technology = giga_tech_kugelblitz has_technology = tech_mega_engineering } }
+
+	country_modifier = { country_resource_max_add = 150000 }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		from = {
+			save_event_target_as = giga_system_owner
+			set_country_flag = has_built_or_repaired_megastructure
+			country_event = { id = giga_dialog.106 }	# Notification
+			if = {
+				limit = {
+					NOR = {
+						has_global_flag = giga_achievements_disabled
+						has_country_flag = giga_achievement_64
+					}
+				}
+				set_country_flag = giga_achievement_64
+				set_timed_country_flag = { flag = giga_achievement_64_notification days = 30 }
+				giga_achievement_sound = yes
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 170000
+
+		# policy_route = storage_cap_core
+		# source_object = megastructure:kugelblitz_2
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_storage_cap_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_storage_cap_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_kugelblitz } }
+		modifier = { factor = 10 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 14 from = { staid_high_scale_snowball_pressure = yes } }
+	}
+}
+
+
+# policy_route = storage_cap_core; source = common/megastructures/zz_c_kugelblitz.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+kugelblitz_3 = { # Gigastructur
+	entity = "kugelblitz_giga_entity"
+	portrait = "GFX_megastructure_black_hole"
+	place_entity_on_planet_plane = no
+	upgrade_from = { kugelblitz_2 }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 5400
+	resources = {
+		category = giga_gigastructures
+		cost = {
+			energy = 75000
+			unity = @giga_big_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 5000
+		}
+		upkeep = {
+			alloys = 25
+			energy = 100
+		}
+	}
+
+	potential = { NOT = { has_global_flag = kugel_disabled } }
+	possible = { from = { has_technology = giga_tech_kugelblitz has_technology = giga_tech_tetradimensional_engineering } }
+
+	country_modifier = { country_resource_max_add = 500000 }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		from = {
+			set_country_flag = has_built_or_repaired_megastructure
+			country_event = { id = giga_dialog.107 }	# Notification
+			if = {
+				limit = {
+					NOR = {
+						has_global_flag = giga_achievements_disabled
+						has_country_flag = giga_achievement_64
+					}
+				}
+				set_country_flag = giga_achievement_64
+				set_timed_country_flag = { flag = giga_achievement_64_notification days = 30 }
+				giga_achievement_sound = yes
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 190000
+
+		# policy_route = storage_cap_core
+		# source_object = megastructure:kugelblitz_3
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_storage_cap_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_storage_cap_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 7 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_kugelblitz } }
+		modifier = { factor = 10 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 14 from = { staid_high_scale_snowball_pressure = yes } }
+	}
+}
+
+
+# policy_route = crowded_tall_route; source = common/megastructures/zz_b_habitats.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+habitat_central_complex = {
+    entity = "habitat_phase_03_entity"
+    construction_entity = "habitat_phase_03_entity"
+    portrait = "GFX_megastructure_habitat_background"
+    place_entity_on_planet_plane = no
+    show_galactic_map_icon = no
+    hide_name = yes
+    show_in_outliner = no
+    entity_offset = { x = 7 y = -7 }
+    build_time = @central_orbital_build_time
+
+    resources = {
+        category = megastructures_habitat
+        cost = {
+            influence = @central_orbital_influence_cost
+        }
+        inline_script = {
+            script = megastructures/generic_parts/giga_mega_alloy_cost
+            alloys = @central_orbital_alloy_cost
+        }
+    }
+
+    construction_blocks_and_blocked_by = self_type
+    custom_tooltip_requirements = "MEGASTRUCTURE_TOOLTIP_REQUIREMENTS_HABITAT_CENTRAL_COMPLEX"
+    build_system_tooltip = habitat_tooltip
+    tooltip_system_score = {
+        base = 0
+        add = value:max_habitat_districts_value
+    }
+    tooltip_best_systems_header = "MEGASTRUCTURE_HABITAT_BEST_SYSTEMS_TOOLTIP_HEADER"
+    tooltip_system_filter = {
+        NOT = {
+            OR = {
+                any_system_planet = {
+                    OR = {
+                        has_planet_flag = habitat
+                        has_planet_flag = hold_the_line_habitat
+                    }
+                }
+                has_megastructure = habitat_central_complex_ruined
+            }
+        }
+    }
+    tooltip_system_score_low_threshold = 10
+    tooltip_system_score_high_threshold = 16
+
+    potential = {
+        giga_are_habitats_available = yes
+    }
+
+    possible = {
+        hidden_trigger = { exists = starbase }
+        custom_tooltip = {
+            fail_text = "requires_inside_border"
+            is_inside_border = from
+        }
+        custom_tooltip = {
+            fail_text = "requires_not_habitat_central_complex"
+            NOT = {
+                OR = {
+                    any_system_planet = {
+                        OR = {
+                            has_carrier_flag = habitat
+                            has_carrier_flag = hold_the_line_habitat
+                        }
+                    }
+                    has_megastructure = habitat_central_complex_ruined
+                }
+            }
+        }
+        custom_tooltip = {
+            fail_text = "requires_no_orbital_debris"
+            NOT = {
+                any_system_planet = {
+                    has_carrier_flag = has_orbital_debris
+                }
+            }
+        }
+
+        # The AI has a hard cap on number of habitats scaling with galaxy size and difficulty (vanilla)
+        hidden_trigger = {
+            from = {
+                if = {
+                    limit = {
+                        is_ai = yes
+                    }
+                    count_planet_within_border = {
+                        count <= value:ai_habitat_cap
+                        limit = {
+                            is_planet_class = pc_habitat
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    placement_rules = {
+        planet_possible = {
+            custom_tooltip = {
+                fail_text = "requires_surveyed_planet"
+                is_surveyed = {			# prevent leaking habitability information
+                    who = prev.from
+                    status = yes
+                }
+            }
+            custom_tooltip = {
+                fail_text = "requires_no_anomaly"
+                NOT = { has_anomaly = yes }
+            }
+            custom_tooltip = {
+                fail_text = "requires_no_existing_megastructure"
+                #can_build_megastructure_on_planet = yes
+                NOR = {
+                    has_carrier_flag = megastructure
+                    has_carrier_flag = has_megastructure
+                    solar_system = {
+                        OR = {
+                            has_star_flag = ring_world_built
+                            has_star_flag = ithomes_gate
+                        }
+                    }
+                    is_planet_class = pc_ringworld_habitable
+                    is_planet_class = pc_ringworld_habitable_damaged
+                    is_planet_class = pc_ringworld_tech
+                    is_planet_class = pc_ringworld_tech_damaged
+                    is_planet_class = pc_ringworld_seam
+                    is_planet_class = pc_ringworld_seam_damaged
+                    is_planet_class = pc_habitat
+                    is_planet_class = pc_cosmogenesis_world
+                }
+            }
+            custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+            # balance for habitats
+            custom_tooltip = {
+                fail_text = "requires_not_minor_planetary_body"
+                NOR = {
+                    is_asteroid = yes
+                    is_moon = yes
+                }
+            }
+            custom_tooltip = {
+                fail_text = "requires_not_solarpunk"
+                NOT = {
+                    solar_system = {
+                        has_star_flag = solarpunk_system_02
+                    }
+                }
+            }
+            if = {
+                limit = {
+                    from = { is_ai = yes }
+                }
+                or = {
+                    has_deposit_for = shipclass_mining_station
+                    has_deposit_for = shipclass_research_station
+                }
+            }
+        } # use these for all non-star megastructures
+    }
+
+    # root = system
+    # from = country
+
+    on_build_queued = {
+        from = {
+            set_timed_country_flag = { flag = has_recently_built_habitat years = 30 }
+        }
+    }
+    on_build_unqueued = {
+        from = {
+            remove_country_flag = has_recently_built_habitat
+        }
+    }
+    on_build_cancel = {
+        from = {
+            remove_country_flag = has_recently_built_habitat
+        }
+    }
+
+    on_build_complete = {
+        fromfrom.planet = {
+            save_event_target_as = target_planet
+        }
+        if = {
+            limit = {
+                fromfrom.planet = {
+                    is_star = yes
+                }
+            }
+            spawn_habitat_effect = {
+                HABITAT_OWNER = root
+                TARGET_PLANET = event_target:target_planet
+                DISTANCE = 19.798
+            }
+        }
+        else = {
+            spawn_habitat_effect = {
+                HABITAT_OWNER = root
+                TARGET_PLANET = event_target:target_planet
+                DISTANCE = 9.899
+            }
+        }
+        fromfrom.solar_system = {
+            set_star_flag = has_habitat
+        }
+        from = {
+            save_event_target_as = habitat_owner
+        }
+        remove_megastructure = fromfrom
+        from = {
+            country_event = { id = megastructures.10 }
+        }
+    }
+
+	ai_weight = {
+		factor = 125000
+
+		# policy_route = crowded_tall_route
+		# source_object = megastructure:habitat_central_complex
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_planetary_capacity_growth_ready = yes } } }
+		modifier = { factor = 4 from = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 2 from = { years_passed > 44 } }
+		modifier = { factor = 3 from = { years_passed > 79 } }
+		modifier = { factor = 5 from = { years_passed > 119 } }
+		modifier = { factor = 5 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+	}
+}
+
+
+# policy_route = crowded_tall_route; source = common/megastructures/zz_e_interstellar_habitat.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+interstellar_habitat_0 = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	show_galactic_map_icon = yes
+	prerequisites = { giga_tech_interstellar_habitat }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_megastructures
+		cost = {
+			influence = 75
+			unity = @giga_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 2500
+		}
+		upkeep = { energy = 5 }
+	}
+
+	potential = {
+		always = no #disabled 4.0 rework
+		has_technology = giga_tech_interstellar_habitat
+		NOT = { has_global_flag = stellarhabitat_disabled }
+		giga_can_use_habitables = yes
+		OR = {
+			has_global_flag = stellarhabitat_capped_u
+			check_variable = {
+				which = giga_current_stellarhabitat
+				value < value:giga_stellarhabitat_limit
+			}
+		}
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_inside_border"			is_inside_border = from }
+		custom_tooltip = { fail_text = "requires_surveyed_system"		NOT = { any_system_planet = { is_surveyed = { who = prev.from status = no } } } }
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_existing_megastructure"			planet_has_no_megastructure = yes }
+			custom_tooltip = { fail_text = "must_build_around_star"						is_star = yes }
+			custom_tooltip = { fail_text = "requires_no_anomaly"						has_anomaly = no }
+			custom_tooltip = { fail_text = "cant_build_on_interstellar_habitat"			NOT = { solar_system = { has_star_flag = habitat_system } } }
+			custom_tooltip = {
+				fail_text = "requires_not_capped"
+				from = {
+					OR = {
+						has_global_flag = stellarhabitat_capped_u
+						check_variable = {
+							which = giga_current_stellarhabitat
+							value < value:giga_stellarhabitat_limit
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	on_build_complete = {
+		set_star_flag = habitat_system
+		set_star_flag = habitat_hyperlane_needed
+		save_event_target_as = giga_system
+		set_variable = { which = i_ring_segments value = 0 }
+		save_event_target_as = interstellar_system
+		fromfrom.planet = {
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+		}
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_interstellar_habitat years = 20 }
+			set_country_flag = giga_started_i_ringworld
+			change_variable = { which = giga_current_stellarhabitat value = 1 }
+			country_event = { id = giga_dialog.2901 }	# Notification + Choose where
+		}
+		remove_megastructure = fromfrom
+	}
+
+	ai_weight = {
+		factor = 145000
+
+		# policy_route = crowded_tall_route
+		# source_object = megastructure:interstellar_habitat_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_planetary_capacity_growth_ready = yes } } }
+		modifier = { factor = 4 from = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 2 from = { years_passed > 44 } }
+		modifier = { factor = 3 from = { years_passed > 79 } }
+		modifier = { factor = 5 from = { years_passed > 119 } }
+		modifier = { factor = 5 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+	}
+}
+
+
+# policy_route = crowded_tall_route; source = common/megastructures/zz_e_stellar_ring_habitat.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+stellar_ring_habitat_0 = {
+	entity = construction_platform_entity
+	construction_entity = construction_platform_entity
+	construction_blocks_and_blocked_by = multi_stage_type
+	portrait = GFX_megastructure_construction_background
+	place_entity_on_planet_plane = no
+	entity_offset = { x = 0 y = -20 }
+	prerequisites = { giga_tech_stellar_ring_habitat }
+
+	build_time = 1800
+	resources = {
+		category = giga_megastructures
+		cost = {
+			alloys = 5000
+			unity = @giga_big_mega_start_unity_cost
+			influence = 200
+		}
+		upkeep = { energy = 5 }
+	}
+
+	# potential = {
+	# 	always = no #disabled 4.0 rework
+	# }
+
+	possible = {
+		hidden_trigger = {
+			exists = starbase
+		}
+		custom_tooltip = { fail_text = "requires_inside_border"						is_inside_border = from }
+		custom_tooltip = { fail_text = "requires_surveyed_system"					giga_system_is_surveyed = yes }
+
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "must_build_around_asteroid"			is_asteroid = yes is_moon = no }
+			custom_tooltip = { fail_text = "requires_no_anomaly"				has_anomaly = no }
+			custom_tooltip = { fail_text = "requires_no_existing_megastructure"	planet_has_no_megastructure = yes }
+			custom_tooltip = { fail_text = "requires_survey_not_habitable"		is_surveyed = { who = prev.from status = yes } is_planet_habitable = no is_colony = no }
+			custom_tooltip = { fail_text = "requires_no_existing_orbital"		solar_system = { not = { has_star_flag = has_giga_stellar_ring_habitat } } }
+		}
+	}
+
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+
+		fromfrom.planet = {
+			giga_set_has_mega_flag = yes
+			save_event_target_as = giga_planet
+		}
+
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_stellar_ring_habitat years = 20 }
+			country_event = { id = giga_dialog.13601 }	# Notification
+			change_variable = { which = giga_current_stellar_ring value = 1 }
+		}
+	}
+
+	ai_weight = {
+		factor = 145000
+
+		# policy_route = crowded_tall_route
+		# source_object = megastructure:stellar_ring_habitat_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_planetary_capacity_growth_ready = yes } } }
+		modifier = { factor = 4 from = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 2 from = { years_passed > 44 } }
+		modifier = { factor = 3 from = { years_passed > 79 } }
+		modifier = { factor = 5 from = { years_passed > 119 } }
+		modifier = { factor = 5 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+	}
+}
+
+
+# policy_route = planetary_computer_research_core; source = common/megastructures/zz_e_planetary_computer.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+planetary_computer_0 = {
+	entity = "giga_consite_5_5_entity"
+	construction_entity = "giga_consite_5_5_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { giga_tech_planetary_computer }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_planetary_computer
+		cost = {
+			influence = 150
+			unity = @giga_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 2500
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|resource|RESOURCE|alloys|AMOUNT|2500| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|resource|RESOURCE|unity|AMOUNT|@giga_mega_unity_cost| }
+		upkeep = { energy = 5 }
+	}
+
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = resource RESOURCE = alloys AMOUNT = 2500 }
+		giga_ai_savings_withdraw = { CATEGORY = resource RESOURCE = unity  AMOUNT = @giga_mega_unity_cost }
+	}
+	on_build_cancel = {
+		giga_ai_savings_refund = { CATEGORY = resource RESOURCE = alloys }
+		giga_ai_savings_refund = { CATEGORY = resource RESOURCE = unity }
+	}
+
+	potential = {
+		has_technology = giga_tech_planetary_computer
+		NOT = { has_global_flag = planetary_computer_disabled }
+		OR = {
+			has_global_flag = planetary_computer_capped_u
+			check_variable = {
+				which = giga_current_planetary_computer
+				value < value:giga_planetary_computer_limit
+			}
+		}
+		is_wilderness_empire = no #Wilderness can get a swap of the tech but can't build the mega
+        is_nomadic = no
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_inside_border"		is_inside_border = from }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = planetary_computer_capped_u
+					check_variable = {
+						which = giga_current_planetary_computer
+						value < value:giga_planetary_computer_limit
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly"				has_anomaly = no }
+			custom_tooltip = { fail_text = "requires_not_asteroid"				is_asteroid = no }
+			custom_tooltip = { fail_text = "requires_not_star"					is_star = no }
+			custom_tooltip = {
+				fail_text = "requires_not_astral_scar"
+				is_astral_scar = no
+			}
+			custom_tooltip = {
+				fail_text = "requires_no_colonized_planets"
+				NOT = { is_colony = yes }
+			}
+			custom_tooltip = { fail_text = "requires_no_crisis_planet"			NOT = { has_planet_flag = crisis_vital_planet } }
+			custom_tooltip = {
+				fail_text = "requires_habitable"
+				NOR = {
+					is_planet_class = pc_giga_planetary_computer
+					has_planet_flag = has_planet_pc_mega
+				}
+				habitable_structure = no
+				is_planet_habitable = yes
+			}
+			custom_tooltip = {
+				fail_text = "requires_surveyed_planet"
+				OR = {
+					AND = {
+						is_surveyed = { who = prev.from status = yes }
+						prev.from = { is_ai = no }
+					}
+					AND = {
+						is_surveyed = { who = prev.from status = yes }
+						prev.from = { is_ai = yes }
+						is_planet_habitable = no
+					}
+				}
+			}
+			custom_tooltip = {
+				fail_text = "requires_owned_colony"
+				OR = {
+					NOT = { exists = owner }
+					owner = {
+						is_same_value = prev.space_owner
+					}
+				}
+			}
+		}
+	}
+
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		fromfrom.planet = {
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+			set_planet_flag = has_planet_pc_mega
+		}
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_planetary_computer years = 230 }
+			country_event = { id = giga_dialog.1301 }	# Notification
+			change_variable = { which = giga_current_planetary_computer value = 1 }
+		}
+	}
+
+	ai_weight = {
+		factor = 175000
+
+		# policy_route = planetary_computer_research_core
+		# source_object = megastructure:planetary_computer_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_planetary_computer_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_planetary_computer_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 12 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 5 from = { has_technology = giga_tech_planetary_computer } }
+		modifier = { factor = 4 from = { staid_research_under_curve = yes } }
+		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
+	}
+}
+
+
+# policy_route = planetary_computer_research_core; source = common/megastructures/zz_e_planetary_computer.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+planetary_computer_1 = {
+	entity = ""
+	portrait = "GFX_megastructure_construction_background"
+	upgrade_from = { planetary_computer_0 }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 2500
+	resources = {
+		category = giga_megastructures
+		cost = {
+			energy = 5000
+			unity = @giga_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 5000
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|resource|RESOURCE|alloys|AMOUNT|5000| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|resource|RESOURCE|unity|AMOUNT|@giga_mega_unity_cost| }
+		upkeep = {
+			energy = 10
+			alloys = 10
+		}
+	}
+
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = resource RESOURCE = alloys AMOUNT = 5000 }
+		giga_ai_savings_withdraw = { CATEGORY = resource RESOURCE = unity  AMOUNT = @giga_mega_unity_cost }
+	}
+
+	potential = { NOT = { has_global_flag = planetary_computer_disabled } }
+	possible = { from = { has_technology = giga_tech_planetary_computer } }
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		if = { limit = { exists = fromfrom.planet } fromfrom.planet = { save_event_target_as = giga_planet } }
+		from = { country_event = { id = giga_dialog.1302 } }	# Notification
+	}
+
+	ai_weight = {
+		factor = 190000
+
+		# policy_route = planetary_computer_research_core
+		# source_object = megastructure:planetary_computer_1
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_planetary_computer_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_planetary_computer_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 12 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 5 from = { has_technology = giga_tech_planetary_computer } }
+		modifier = { factor = 4 from = { staid_research_under_curve = yes } }
+		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
 	}
 }
 
@@ -315,254 +4343,16 @@ mega_shipyard_0 = {
 
 		# policy_route = mega_shipyard_core
 		# source_object = megastructure:mega_shipyard_0
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_mega_shipyard_build_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 5 years_passed > 79 }
-		modifier = { factor = 8 years_passed > 119 }
-	}
-}
-
-
-# policy_route = economy_megastructure_core; source = common/megastructures/zz_e_neutronium_gigaforge.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
-neutronium_gigaforge_0 = {
-	entity = "giga_consite_7_7_entity"
-	construction_entity = "giga_consite_7_7_entity"
-	# construction_blocks_and_blocked_by = none # BLOCKING TEST
-	portrait = "GFX_megastructure_construction_background"
-	place_entity_on_planet_plane = no
-	prerequisites = { giga_tech_neutronium_gigaforge }
-
-	outliner_trigger = {
-		exists = owner
-		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
-	}
-
-	build_time = 1800
-	resources = {
-		category = giga_neutronium_gigaforge
-		cost = {
-			unity = @giga_mega_unity_cost
-		}
-		inline_script = {
-			script = megastructures/generic_parts/giga_mega_alloy_cost
-			alloys = 3500
-		}
-		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|3500| }
-		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_mega_unity_cost| }
-		upkeep = { energy = 5 }
-	}
-
-	on_build_start = {
-		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 3500 }
-		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_mega_unity_cost }
-	}
-	on_build_cancel = {
-		giga_ai_savings_refund = { CATEGORY = important RESOURCE = alloys }
-		giga_ai_savings_refund = { CATEGORY = important RESOURCE = unity }
-	}
-
-	potential = {
-		has_technology = giga_tech_neutronium_gigaforge
-		NOT = { has_global_flag = gigaforge_disabled }
-		OR = {
-			has_global_flag = gigaforge_capped_u
-			check_variable = {
-				which = giga_current_gigaforge
-				value < value:giga_gigaforge_limit
-			}
-		}
-	}
-
-	possible = {
-		custom_tooltip = { fail_text = "requires_inside_border"				is_inside_border = from }
-		custom_tooltip = { fail_text = "requires_surveyed_system"			NOT = { any_system_planet = { is_surveyed = { who = prev.from status = no } } } }
-		custom_tooltip = {
-			fail_text = "requires_not_capped"
-			from = {
-				OR = {
-					has_global_flag = gigaforge_capped_u
-					check_variable = {
-						which = giga_current_gigaforge
-						value < value:giga_gigaforge_limit
-					}
-				}
-			}
-		}
-	}
-
-	placement_rules = {
-		planet_possible = {
-			custom_tooltip = { fail_text = "requires_no_anomaly"					has_anomaly = no }
-			custom_tooltip = { fail_text = "must_build_around_neutron_star"			OR = { is_planet_class = pc_neutron_star is_planet_class = pc_pulsar } }
-			custom_tooltip = {
-				fail_text = "requires_no_existing_megastructure"
-				OR = {
-					planet_has_no_megastructure = yes
-					AND = {
-						has_planet_flag = has_nidavellir
-						NOT = { has_planet_flag = has_gigaforge }
-					}
-				}
-			}
-		}
-	}
-
-
-	on_build_complete = {
-		save_event_target_as = giga_system
-		fromfrom.planet = {
-			save_event_target_as = giga_planet
-			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
-			giga_set_has_mega_flag = yes
-			set_planet_flag = has_gigaforge
-		}
-		from = {
-			set_timed_country_flag = { flag = has_recently_built_neutronium_gigaforge years = 20 }
-			country_event = { id = giga_dialog.701 }	# Notification
-			change_variable = { which = giga_current_gigaforge value = 1 }
-		}
-	}
-
-	ai_weight = {
-		factor = 135000
-
-		# policy_route = economy_megastructure_core
-		# source_object = megastructure:neutronium_gigaforge_0
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 5 years_passed > 79 }
-		modifier = { factor = 8 years_passed > 119 }
-	}
-}
-
-
-# policy_route = economy_megastructure_core; source = common/megastructures/zz_i_nidavellir_forge.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
-nidavellir_forge_0 = {
-	entity = "giga_consite_7_7_entity"
-	construction_entity = "giga_consite_7_7_entity"
-	# construction_blocks_and_blocked_by = none # BLOCKING TEST
-	portrait = "GFX_megastructure_construction_background"
-	place_entity_on_planet_plane = no
-	prerequisites = { giga_tech_nidavellir }
-
-	outliner_trigger = {
-		exists = owner
-		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
-	}
-
-	build_time = 1800
-	resources = {
-		category = giga_nidavellir_forge
-		cost = {
-			influence = 150
-			unity = @giga_giga_unity_cost
-		}
-		inline_script = {
-			script = megastructures/generic_parts/giga_mega_alloy_cost
-			alloys = 3500
-		}
-		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|3500| }
-		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_giga_unity_cost| }
-		upkeep = { energy = 5 }
-	}
-
-	on_build_start = {
-		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 3500 }
-		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_giga_unity_cost }
-	}
-	on_build_cancel = {
-		giga_ai_savings_refund = { CATEGORY = important RESOURCE = alloys }
-		giga_ai_savings_refund = { CATEGORY = important RESOURCE = unity }
-	}
-
-	potential = {
-		has_gigastructural_constructs = yes
-		has_technology = giga_tech_nidavellir
-		NOT = { has_global_flag = nidavellir_disabled }
-		OR = {
-			has_global_flag = nidavellir_capped_u
-			check_variable = {
-				which = giga_current_nidavellir
-				value < value:giga_nidavellir_limit
-			}
-		}
-	}
-
-	possible = {
-		custom_tooltip = { fail_text = "requires_inside_border"						is_inside_border = from }
-		custom_tooltip = { fail_text = "requires_surveyed_system"					giga_system_is_surveyed = yes }
-		custom_tooltip = { fail_text = "requires_no_colonized_planets"				NOT = { any_system_planet = { is_colony = yes } } }
-		custom_tooltip = { fail_text = "requires_no_crisis_system"					NOT = { any_system_planet = { has_planet_flag = crisis_vital_planet } } }
-		custom_tooltip = {
-			fail_text = "requires_not_capped"
-			from = {
-				OR = {
-					has_global_flag = nidavellir_capped_u
-					check_variable = {
-						which = giga_current_nidavellir
-						value < value:giga_nidavellir_limit
-					}
-				}
-			}
-		}
-		custom_tooltip = {
-			fail_text = "requires_no_binary_trinary"
-			NOR = {
-				is_trinary_star = yes
-				is_binary_star = yes
-			}
-		}
-	}
-
-	placement_rules = {
-		planet_possible = {
-			custom_tooltip = { fail_text = "requires_larger_star"					planet_size >= 10 }
-			custom_tooltip = { fail_text = "must_build_around_neutron_star"			OR = { is_planet_class = pc_neutron_star is_planet_class = pc_pulsar } }
-			custom_tooltip = { fail_text = "requires_no_anomaly"					has_anomaly = no }
-			custom_tooltip = {
-				fail_text = "requires_no_existing_megastructure"
-				OR = {
-					planet_has_no_megastructure = yes
-					AND = {
-						has_planet_flag = has_gigaforge
-						NOT = { has_planet_flag = has_nidavellir }
-					}
-				}
-			}
-		}
-	}
-
-
-	on_build_complete = {
-		save_event_target_as = giga_system
-		fromfrom.planet = {
-			save_event_target_as = giga_planet
-			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
-			giga_set_has_mega_flag = yes
-			set_planet_flag = has_nidavellir
-		}
-		from = {
-			set_timed_country_flag = { flag = has_recently_built_nidavellir_forge years = 20 }
-			country_event = { id = giga_dialog.801 }	# Notification
-			change_variable = { which = giga_current_nidavellir value = 1 }
-		}
-	}
-
-	ai_weight = {
-		factor = 140000
-
-		# policy_route = economy_megastructure_core
-		# source_object = megastructure:nidavellir_forge_0
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 5 years_passed > 79 }
-		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_mega_shipyard_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_mega_shipyard_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 5 from = { years_passed > 79 } }
+		modifier = { factor = 8 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
 	}
 }
 
@@ -694,12 +4484,345 @@ matrioshka_brain_0_g_star = {
 
 		# policy_route = economy_megastructure_core
 		# source_object = megastructure:matrioshka_brain_0_g_star
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_economy_megastructure_build_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 5 years_passed > 79 }
-		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_economy_megastructure_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_economy_megastructure_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 5 from = { years_passed > 79 } }
+		modifier = { factor = 8 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+	}
+}
+
+
+# policy_route = apex_site_preservation_core; source = common/megastructures/zz_i_matrioshka_brain_revised.txt; parent_ai = parent_ai_absent; source_ai_weight = no
+matrioshka_brain_0_o_star = {
+    inline_script = megastructures/matrioshka_brain/matrioshka_brain_0
+
+	ai_weight = {
+		factor = 230000
+
+		# policy_route = apex_site_preservation_core
+		# source_object = megastructure:matrioshka_brain_0_o_star
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
+		modifier = { factor = 4 from = { staid_apex_site_preservation_ready = yes } }
+		modifier = { factor = 2 from = { years_passed > 44 } }
+		modifier = { factor = 5 from = { years_passed > 79 } }
+		modifier = { factor = 9 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 8 from = { has_technology = giga_tech_matrioshka_brain_1 } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_neutronium_gigaforge } }
+		modifier = { factor = 0.15 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
+	}
+}
+
+
+# policy_route = apex_site_preservation_core; source = common/megastructures/zz_e_dyson_sphere_o_star.txt; parent_ai = parent_ai_absent; source_ai_weight = no
+dyson_sphere_0_o_star = {
+	entity = "construction_platform_entity"
+	construction_entity = "construction_platform_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	entity_offset = { x = -40 y = -40 }
+	potential = { always = no }
+
+	upgrade_from = { dyson_sphere_0 }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	resources = {
+		category = giga_dyson_sphere
+		upkeep = { energy = 5 }
+	}
+
+	ai_weight = {
+		factor = 45000
+
+		# policy_route = apex_site_preservation_core
+		# source_object = megastructure:dyson_sphere_0_o_star
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
+		modifier = { factor = 4 from = { staid_apex_site_preservation_ready = yes } }
+		modifier = { factor = 2 from = { years_passed > 44 } }
+		modifier = { factor = 5 from = { years_passed > 79 } }
+		modifier = { factor = 9 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		# megastructure_continuation_priority = finish_existing_before_new_start
+		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
+		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 8 from = { has_technology = giga_tech_matrioshka_brain_1 } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_neutronium_gigaforge } }
+		modifier = { factor = 0.15 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
+	}
+}
+
+
+# policy_route = apex_site_preservation_core; source = common/megastructures/zz_e_neutronium_gigaforge.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+neutronium_gigaforge_0 = {
+	entity = "giga_consite_7_7_entity"
+	construction_entity = "giga_consite_7_7_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { giga_tech_neutronium_gigaforge }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_neutronium_gigaforge
+		cost = {
+			unity = @giga_mega_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 3500
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|3500| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_mega_unity_cost| }
+		upkeep = { energy = 5 }
+	}
+
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 3500 }
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_mega_unity_cost }
+	}
+	on_build_cancel = {
+		giga_ai_savings_refund = { CATEGORY = important RESOURCE = alloys }
+		giga_ai_savings_refund = { CATEGORY = important RESOURCE = unity }
+	}
+
+	potential = {
+		has_technology = giga_tech_neutronium_gigaforge
+		NOT = { has_global_flag = gigaforge_disabled }
+		OR = {
+			has_global_flag = gigaforge_capped_u
+			check_variable = {
+				which = giga_current_gigaforge
+				value < value:giga_gigaforge_limit
+			}
+		}
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_inside_border"				is_inside_border = from }
+		custom_tooltip = { fail_text = "requires_surveyed_system"			NOT = { any_system_planet = { is_surveyed = { who = prev.from status = no } } } }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = gigaforge_capped_u
+					check_variable = {
+						which = giga_current_gigaforge
+						value < value:giga_gigaforge_limit
+					}
+				}
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_no_anomaly"					has_anomaly = no }
+			custom_tooltip = { fail_text = "must_build_around_neutron_star"			OR = { is_planet_class = pc_neutron_star is_planet_class = pc_pulsar } }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				OR = {
+					planet_has_no_megastructure = yes
+					AND = {
+						has_planet_flag = has_nidavellir
+						NOT = { has_planet_flag = has_gigaforge }
+					}
+				}
+			}
+		}
+	}
+
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		fromfrom.planet = {
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+			set_planet_flag = has_gigaforge
+		}
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_neutronium_gigaforge years = 20 }
+			country_event = { id = giga_dialog.701 }	# Notification
+			change_variable = { which = giga_current_gigaforge value = 1 }
+		}
+	}
+
+	ai_weight = {
+		factor = 210000
+
+		# policy_route = apex_site_preservation_core
+		# source_object = megastructure:neutronium_gigaforge_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
+		modifier = { factor = 4 from = { staid_apex_site_preservation_ready = yes } }
+		modifier = { factor = 2 from = { years_passed > 44 } }
+		modifier = { factor = 5 from = { years_passed > 79 } }
+		modifier = { factor = 9 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 8 from = { has_technology = giga_tech_matrioshka_brain_1 } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_neutronium_gigaforge } }
+		modifier = { factor = 0.15 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
+	}
+}
+
+
+# policy_route = apex_site_preservation_core; source = common/megastructures/zz_i_nidavellir_forge.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+nidavellir_forge_0 = {
+	entity = "giga_consite_7_7_entity"
+	construction_entity = "giga_consite_7_7_entity"
+	# construction_blocks_and_blocked_by = none # BLOCKING TEST
+	portrait = "GFX_megastructure_construction_background"
+	place_entity_on_planet_plane = no
+	prerequisites = { giga_tech_nidavellir }
+
+	outliner_trigger = {
+		exists = owner
+		NOT = { has_megastructure_flag = giga_outliner_hidden_by_@owner }
+	}
+
+	build_time = 1800
+	resources = {
+		category = giga_nidavellir_forge
+		cost = {
+			influence = 150
+			unity = @giga_giga_unity_cost
+		}
+		inline_script = {
+			script = megastructures/generic_parts/giga_mega_alloy_cost
+			alloys = 3500
+		}
+		cost = { alloys = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|alloys|AMOUNT|3500| }
+		cost = { unity = -1 multiplier = value:giga_ai_savings_cost|CATEGORY|important|RESOURCE|unity|AMOUNT|@giga_giga_unity_cost| }
+		upkeep = { energy = 5 }
+	}
+
+	on_build_start = {
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = alloys AMOUNT = 3500 }
+		giga_ai_savings_withdraw = { CATEGORY = important RESOURCE = unity  AMOUNT = @giga_giga_unity_cost }
+	}
+	on_build_cancel = {
+		giga_ai_savings_refund = { CATEGORY = important RESOURCE = alloys }
+		giga_ai_savings_refund = { CATEGORY = important RESOURCE = unity }
+	}
+
+	potential = {
+		has_gigastructural_constructs = yes
+		has_technology = giga_tech_nidavellir
+		NOT = { has_global_flag = nidavellir_disabled }
+		OR = {
+			has_global_flag = nidavellir_capped_u
+			check_variable = {
+				which = giga_current_nidavellir
+				value < value:giga_nidavellir_limit
+			}
+		}
+	}
+
+	possible = {
+		custom_tooltip = { fail_text = "requires_inside_border"						is_inside_border = from }
+		custom_tooltip = { fail_text = "requires_surveyed_system"					giga_system_is_surveyed = yes }
+		custom_tooltip = { fail_text = "requires_no_colonized_planets"				NOT = { any_system_planet = { is_colony = yes } } }
+		custom_tooltip = { fail_text = "requires_no_crisis_system"					NOT = { any_system_planet = { has_planet_flag = crisis_vital_planet } } }
+		custom_tooltip = {
+			fail_text = "requires_not_capped"
+			from = {
+				OR = {
+					has_global_flag = nidavellir_capped_u
+					check_variable = {
+						which = giga_current_nidavellir
+						value < value:giga_nidavellir_limit
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			fail_text = "requires_no_binary_trinary"
+			NOR = {
+				is_trinary_star = yes
+				is_binary_star = yes
+			}
+		}
+	}
+
+	placement_rules = {
+		planet_possible = {
+			custom_tooltip = { fail_text = "requires_larger_star"					planet_size >= 10 }
+			custom_tooltip = { fail_text = "must_build_around_neutron_star"			OR = { is_planet_class = pc_neutron_star is_planet_class = pc_pulsar } }
+			custom_tooltip = { fail_text = "requires_no_anomaly"					has_anomaly = no }
+			custom_tooltip = {
+				fail_text = "requires_no_existing_megastructure"
+				OR = {
+					planet_has_no_megastructure = yes
+					AND = {
+						has_planet_flag = has_gigaforge
+						NOT = { has_planet_flag = has_nidavellir }
+					}
+				}
+			}
+		}
+	}
+
+
+	on_build_complete = {
+		save_event_target_as = giga_system
+		fromfrom.planet = {
+			save_event_target_as = giga_planet
+			if = { limit = { exists = orbital_station } orbital_station = { dismantle = yes } }
+			giga_set_has_mega_flag = yes
+			set_planet_flag = has_nidavellir
+		}
+		from = {
+			set_timed_country_flag = { flag = has_recently_built_nidavellir_forge years = 20 }
+			country_event = { id = giga_dialog.801 }	# Notification
+			change_variable = { which = giga_current_nidavellir value = 1 }
+		}
+	}
+
+	ai_weight = {
+		factor = 220000
+
+		# policy_route = apex_site_preservation_core
+		# source_object = megastructure:nidavellir_forge_0
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
+		modifier = { factor = 4 from = { staid_apex_site_preservation_ready = yes } }
+		modifier = { factor = 2 from = { years_passed > 44 } }
+		modifier = { factor = 5 from = { years_passed > 79 } }
+		modifier = { factor = 9 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 8 from = { has_technology = giga_tech_matrioshka_brain_1 } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_neutronium_gigaforge } }
+		modifier = { factor = 0.15 from = { NOT = { staid_apex_site_preservation_ready = yes } } }
 	}
 }
 
@@ -776,14 +4899,18 @@ planetcraft_printer_0 = {
 
 		# policy_route = planetcraft_route
 		# source_object = megastructure:planetcraft_printer_0
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_planetcraft_build_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 6 years_passed > 79 }
-		modifier = { factor = 10 years_passed > 119 }
-		modifier = { factor = 4 has_technology = giga_tech_planet_assembly }
-		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_planetcraft_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_planetcraft_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 6 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_planet_assembly } }
+		modifier = { factor = 3 from = { has_ascension_perk = ap_celestial_printing } }
 	}
 }
 
@@ -916,14 +5043,17 @@ war_moon_0 = {
 
 		# policy_route = war_moon_route
 		# source_object = megastructure:war_moon_0
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_war_moon_build_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 6 years_passed > 79 }
-		modifier = { factor = 10 years_passed > 119 }
-		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
-		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_war_moon_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_war_moon_build_priority_ready = yes } }
+		modifier = { factor = 3 from = { years_passed > 44 } }
+		modifier = { factor = 6 from = { years_passed > 79 } }
+		modifier = { factor = 10 from = { years_passed > 119 } }
+		modifier = { factor = 2 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_war_moon_1 } }
+		modifier = { factor = 6 from = { has_technology = giga_tech_war_moon_2 } }
 	}
 }
 
@@ -1022,17 +5152,19 @@ war_system_0 = {
 
 		# policy_route = systemcraft_route
 		# source_object = megastructure:war_system_0
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_systemcraft_build_priority_ready = yes }
-		modifier = { factor = 4 years_passed > 44 }
-		modifier = { factor = 8 years_passed > 79 }
-		modifier = { factor = 12 years_passed > 119 }
-		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
-		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
-		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
-		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
-		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+		modifier = { factor = 0 from = { staid_survival_mode = yes } }
+		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
+		modifier = { factor = 0 from = { NOT = { staid_systemcraft_build_priority_ready = yes } } }
+		modifier = { factor = 4 from = { staid_systemcraft_build_priority_ready = yes } }
+		modifier = { factor = 4 from = { years_passed > 44 } }
+		modifier = { factor = 8 from = { years_passed > 79 } }
+		modifier = { factor = 12 from = { years_passed > 119 } }
+		modifier = { factor = 3 from = { years_passed < 30 } }
+		modifier = { factor = 2 from = { AND = { years_passed > 29 years_passed < 60 } } }
+		modifier = { factor = 3 from = { has_ascension_perk = ap_celestial_printing } }
+		modifier = { factor = 4 from = { has_technology = giga_tech_war_system_1 } }
+		modifier = { factor = 5 from = { has_technology = giga_tech_war_system_2 } }
+		modifier = { factor = 6 from = { has_technology = giga_tech_war_system_3 } }
+		modifier = { factor = 8 from = { has_technology = giga_tech_war_system_6 } }
 	}
 }
-

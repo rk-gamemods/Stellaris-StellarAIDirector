@@ -15,6 +15,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | planetary trade capacity income floor | 50 | minimum monthly trade before planetary-capacity and megastructure-prep gates add logistics pressure |
 | surplus trade capacity income floor | 100 | minimum monthly trade before surplus sink pressure can activate |
 | fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |
+| strategic value horizon year | 2350 | long-lived economic, military, and modifier payoffs are weighted by remaining months before this goal date |
 | static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |
 | static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |
 | crisis starbase threat | 50 | threat floor that can activate crisis starbase reserve |
@@ -55,6 +56,10 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, trade income, alloy stockpile, and energy stockpile are all safe.
 - Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).
 - Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.
+- Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.
+- User-directed 2026-07-08 aggression tuning keeps local war aggression above vanilla (`AI_AGGRESSIVENESS_BASE = 50`) but restores vanilla distance penalty (`WAR_DECLARATION_MALUS = 0.05`) and caps war declaration range at 200 jumps to avoid inefficient galaxy-crossing wars.
+- Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.
+- Hostile space fauna clearance is tracked as a dedicated follow-up lane: cheap crystalline/amoeba/drone-style blockers should be cleared early for territory, resources, and event research, while high-risk leviathan targets need separate classification.
 
 ## Unlock-Research Policy
 
@@ -70,8 +75,12 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 ## Planetary-Capacity Policy
 
 - Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.
-- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.
+- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.5 rejects in active economic-plan files.
 - Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.
+- Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.
+- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.
+- Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.
+- Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.
 
 ## NSC3/ESC Design Policy
 

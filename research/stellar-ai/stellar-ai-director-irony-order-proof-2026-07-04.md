@@ -24,4 +24,4 @@ Latest dependency position: 119
 
 ## Dependency Status Counts
 
-- ok: 6
+- ok: 5

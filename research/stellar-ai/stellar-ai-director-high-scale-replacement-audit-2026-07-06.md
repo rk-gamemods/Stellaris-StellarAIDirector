@@ -1,7 +1,7 @@
 # Stellar AI Director High-Scale Replacement Audit
 
 Date: 2026-07-06
-Target game/mod context: Stellaris 4.4.4 stable with Gigastructural Engineering & More (4.4), NSC3, Extra Ship Components NEXT, Starbase Extended 3.0, Universal Resource Patch, and Stellar AI loaded before the local Director patch.
+Target game/mod context when written: Stellaris 4.4.4 stable with Gigastructural Engineering & More (4.4), NSC3, Extra Ship Components NEXT, Starbase Extended 3.0, Universal Resource Patch, and Stellar AI loaded before the local Director patch. Current target as of 2026-07-08 is Stellaris 4.4.5 stable/current local install; revalidate this audit's implementation assumptions against 4.4.5 before further use.
 
 ## User-Observed Failure
 

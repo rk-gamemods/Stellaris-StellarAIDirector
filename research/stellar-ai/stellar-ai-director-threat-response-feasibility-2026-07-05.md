@@ -1,6 +1,6 @@
 # Stellar AI Director Threat Response Feasibility
 
-Target game version: Stellaris PC 4.4.4 stable.
+Target game version: Stellaris PC 4.4.5 stable/current local install.
 Local install inspected: `C:/Steam/steamapps/common/Stellaris`.
 
 ## Verified Primitives

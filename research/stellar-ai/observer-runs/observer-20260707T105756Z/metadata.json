@@ -1,0 +1,33 @@
+{
+  "artifacts": {
+    "checkpoints": "checkpoints.csv",
+    "manual_notes": "manual-notes.md",
+    "metrics": "metrics.json",
+    "summary_json": "summary.json",
+    "summary_md": "summary.md"
+  },
+  "benchmark_intent": "Top one or two AI empires plausibly 25x-crisis-ready by 2350 without hidden bonuses; minimum research-scale target is roughly 6000+ monthly research by 2350, with eventual crisis fleet preparation in the tens of millions.",
+  "created_at_utc": "2026-07-07T10:57:56.511146+00:00",
+  "hidden_economic_bonuses": false,
+  "launcher": "Irony Mod Manager",
+  "patch_under_test": "staid_shipyard_payoff_ready monthly alloys threshold lowered from >150 to >100 after observer-20260707T090209Z 2350 evidence showed mid-tier empires with >100 alloys and very low fleets.",
+  "run_id": "observer-20260707T105756Z",
+  "settings": {
+    "advanced_ai_starts": "off",
+    "difficulty": "Ensign",
+    "ai_empires": 12,
+    "difficulty_adjusted_ai_modifiers": "off",
+    "galaxy_size": "Tiny 200 stars",
+    "player_bonuses": "off",
+    "scaling": "off"
+  },
+  "standard_checkpoints": [
+    2250,
+    2300,
+    2325,
+    2350
+  ],
+  "status": "2325_stopped_for_research_snowball_failure",
+  "target_game_version": "Stellaris 4.4.4 stable",
+  "target_mod": "Stellar AI Director"
+}

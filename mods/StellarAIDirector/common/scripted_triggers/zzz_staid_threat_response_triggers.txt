@@ -2,15 +2,15 @@
 # Source of truth: tools/stellar_ai_director_lib.py threat-response tables.
 
 staid_tr_is_conquest_war_goal = {
-	from = { using_war_goal = wg_conquest }
+	from = { using_war_goal = { type = wg_conquest owner = root } }
 }
 
 staid_tr_is_subjugation_war_goal = {
-	from = { using_war_goal = wg_subjugation }
+	from = { using_war_goal = { type = wg_subjugation owner = root } }
 }
 
 staid_tr_is_humiliation_war_goal = {
-	from = { using_war_goal = wg_humiliation }
+	from = { using_war_goal = { type = wg_humiliation owner = root } }
 }
 staid_tr_war_goal_classified = {
 	OR = {

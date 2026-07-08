@@ -730,6 +730,13 @@
     "Spacefleet Tactica": true,
     "Universal Resource Patch": true
   },
+  "parity_reference_mods": {
+    "3610149307": {
+      "load_position": 115,
+      "name": "Stellar AI",
+      "present": true
+    }
+  },
   "patch_mod_enabled": true,
   "required_mods": {
     "1121692237": {
@@ -745,11 +752,6 @@
     "3250900527": {
       "load_position": 72,
       "name": "Starbase Extended 3.0",
-      "present": true
-    },
-    "3610149307": {
-      "load_position": 115,
-      "name": "Stellar AI",
       "present": true
     },
     "683230077": {

@@ -12,6 +12,18 @@ country_event = {
 		staid_tr_war_goal_classified = yes
 	}
 	immediate = {
+		if = {
+			limit = { staid_tr_is_subjugation_war_goal = yes }
+			set_timed_country_flag = { flag = staid_tr_war_goal_subjugation days = 7200 }
+		}
+		else_if = {
+			limit = { staid_tr_is_conquest_war_goal = yes }
+			set_timed_country_flag = { flag = staid_tr_war_goal_conquest days = 7200 }
+		}
+		else_if = {
+			limit = { staid_tr_is_humiliation_war_goal = yes }
+			set_timed_country_flag = { flag = staid_tr_war_goal_humiliation days = 7200 }
+		}
 		from = {
 			random_defender = {
 				save_event_target_as = staid_tr_victim
@@ -45,17 +57,17 @@ country_event = {
 		remove_opinion_modifier = { who = from modifier = staid_tr_alignment_medium }
 		remove_opinion_modifier = { who = from modifier = staid_tr_alignment_high }
 		if = {
-			limit = { staid_tr_is_subjugation_war_goal = yes }
+			limit = { from = { has_country_flag = staid_tr_war_goal_subjugation } }
 			add_opinion_modifier = { who = from modifier = staid_tr_anti_aggressor_high }
 			set_timed_relation_flag = { who = from flag = staid_tr_anti_aggressor_high days = 7200 }
 		}
 		else_if = {
-			limit = { staid_tr_is_conquest_war_goal = yes }
+			limit = { from = { has_country_flag = staid_tr_war_goal_conquest } }
 			add_opinion_modifier = { who = from modifier = staid_tr_anti_aggressor_medium }
 			set_timed_relation_flag = { who = from flag = staid_tr_anti_aggressor_medium days = 7200 }
 		}
 		else_if = {
-			limit = { staid_tr_is_humiliation_war_goal = yes }
+			limit = { from = { has_country_flag = staid_tr_war_goal_humiliation } }
 			add_opinion_modifier = { who = from modifier = staid_tr_anti_aggressor_low }
 			set_timed_relation_flag = { who = from flag = staid_tr_anti_aggressor_low days = 7200 }
 		}

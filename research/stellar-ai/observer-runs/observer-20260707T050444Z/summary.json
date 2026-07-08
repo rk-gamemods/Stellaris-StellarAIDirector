@@ -1,0 +1,36 @@
+{
+  "checkpoint_row_count": 48,
+  "checkpoint_year_counts": {
+    "2250": 12,
+    "2300": 12,
+    "2325": 12,
+    "2350": 12
+  },
+  "empire_rank_counts": {
+    "1": 4,
+    "10": 4,
+    "11": 4,
+    "12": 4,
+    "2": 4,
+    "3": 4,
+    "4": 4,
+    "5": 4,
+    "6": 4,
+    "7": 4,
+    "8": 4,
+    "9": 4
+  },
+  "evidence_file_counts": {
+    "exports": 16,
+    "logs": 18,
+    "saves": 4,
+    "screenshots": 5
+  },
+  "has_patch_hypothesis_table": true,
+  "hidden_economic_bonuses": false,
+  "manual_notes_bytes": 14069,
+  "run_id": "observer-20260707T050444Z",
+  "status": "2350_captured_diagnosis_pending",
+  "summary_generated_at_utc": "2026-07-07T07:26:25.267240+00:00",
+  "target_game_version": "Stellaris 4.4.4 stable"
+}

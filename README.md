@@ -15,8 +15,8 @@ Starter workspace for Stellaris modding and mod preparation.
 
 ## Current Modding Baseline
 
-- Default target is Stellaris PC 4.4.4 stable unless a task explicitly says 4.4.5 beta, 4.5 beta, or another version.
-- Use `supported_version="v4.4.*"` for stable 4.4 descriptors, while remembering this is launcher-facing metadata only.
+- Default target is Stellaris PC 4.4.5 stable/current local install unless a task explicitly says 4.4.4 rollback, 4.5 beta, or another version.
+- Use `supported_version="v4.4.*"` for stable 4.4 descriptors, including 4.4.5, while remembering this is launcher-facing metadata only.
 - Treat 4.5 as a separate porting branch for pop, faction, ethic, job, species, workforce, UI, and AI-economy work.
 - Treat Nomads, Arkships, Waystations, Waylines, Contracts, and the 4.4 Situation Log as required compatibility cases when touched by a mod.
 
@@ -36,7 +36,7 @@ Start with `research/stellaris-modding-guide-2026-07-04.md` for the operational 
 - Check current vanilla files before using unfamiliar triggers, effects, modifiers, scopes, or folder paths.
 - Use CWTools diagnostics for syntax/schema feedback when editing PDXScript.
 - Use Irony Mod Manager for dependency, conflict, and load-order investigation on real playsets.
-- Launch-test with only the mod, then with the target playset.
+- For explicitly approved runtime validation, launch-test with only the mod, then with the target playset.
 - Record `error.log`, `game.log`, known conflicts, required DLC, and tested game version in the mod README.
 
 ## Current Status

@@ -25,3 +25,14 @@ exports/
 vanilla-dumps/
 local/
 *.local.*
+
+# Stellaris observer-run bulky artifacts
+# Keep small run metadata/checkpoints/summaries trackable, but do not make Git
+# account for copied raw logs, savegames, screenshots, or extracted save dumps.
+research/stellar-ai/observer-runs/**/logs/*.log
+research/stellar-ai/observer-runs/**/saves/*.sav
+research/stellar-ai/observer-runs/**/screenshots/*.png
+research/stellar-ai/observer-runs/**/screenshots/*.jpg
+research/stellar-ai/observer-runs/**/screenshots/*.jpeg
+research/stellar-ai/observer-runs/**/exports/
+research/stellar-ai/observer-runs/**/commands_at_date.txt

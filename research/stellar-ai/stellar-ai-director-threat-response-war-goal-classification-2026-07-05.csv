@@ -1,4 +1,4 @@
 war_goal,classification,severity,source,source_path,mod_or_vanilla,punitive_outputs_allowed,readiness_outputs_allowed,forced_war_allowed,status,notes
-wg_conquest,conquest,2,Stellaris 4.4.4 vanilla,C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt,vanilla,yes,yes,no,classified,Initial V1 allowlist aggressive conquest goal.
-wg_subjugation,subjugation,3,Stellaris 4.4.4 vanilla,C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt,vanilla,yes,yes,no,classified,Initial V1 allowlist aggressive subjugation goal.
-wg_humiliation,humiliation,1,Stellaris 4.4.4 vanilla,C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt,vanilla,yes,yes,no,classified,Initial V1 allowlist lower-severity humiliation goal.
+wg_conquest,conquest,2,Stellaris 4.4.5 vanilla,C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt,vanilla,yes,yes,no,classified,Initial V1 allowlist aggressive conquest goal.
+wg_subjugation,subjugation,3,Stellaris 4.4.5 vanilla,C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt,vanilla,yes,yes,no,classified,Initial V1 allowlist aggressive subjugation goal.
+wg_humiliation,humiliation,1,Stellaris 4.4.5 vanilla,C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt,vanilla,yes,yes,no,classified,Initial V1 allowlist lower-severity humiliation goal.

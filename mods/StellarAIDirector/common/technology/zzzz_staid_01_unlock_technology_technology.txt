@@ -19,9 +19,14 @@
 @federation_perk_factor = 2
 @giga_50_000_cost = 50000
 @giga_aiweight_multiplier_insane = 1000			#The Meta/Multi-stage
+@giga_aiweight_multiplier_medium = 10			#Okay/basic resources
 @giga_aiweight_multiplier_questionable = 0.1	#STOP RESEARCHING DUMB TECHS THAT DON'T EXIST ANYMORE!
 @giga_aiweight_multiplier_strong = 100			#Strong
+@giga_aiweight_multiplier_weak = 1				#Bad/requires advanced thought to use
 @giga_amb_flag = giga_buildcap_j # menu option variable name, checked for feature activation
+@giga_tech_weight_boost_large = 2		# vanilla uses 2x boost for maniacal/spark of genius, non galwonders structures when you get galwonders,
+@giga_tech_weight_boost_massive = 6 	# vanilla uses 6x boost for master builders, directly related perks, like one vision for unity, enigmatic engineering for sentry array
+@giga_tech_weight_malus_large = 0.5		# vanilla uses half to cut for example military tech weights for pacifists
 @giga_tier6cost1 = 32000
 @giga_tier6cost2 = 40000
 @giga_tier6cost3 = 48000
@@ -33,8 +38,18 @@
 @giga_tier7cost3 = 96000
 @giga_tier7weight1 = 12
 @giga_tier8cost1 = 128000
+@pop_growth_tech_ai_factor = 3 # Extra chance for AI to pick pop growth techs
+@robots_ai_tech_factor = 2 	# Extra AI chance for robot-related techs.
+@tier1cost3 = 1500
+@tier1weight3 = 90
+@tier2cost2 = 2500
+@tier2cost3 = 3000
+@tier2weight2 = 75
+@tier2weight3 = 70
 @tier3cost1 = 4000
+@tier3cost2 = 5000
 @tier3weight1 = 65
+@tier3weight2 = 60
 @tier4cost1 = 8000
 @tier4cost2 = 10000
 @tier4cost3 = 12000
@@ -282,10 +297,14 @@ tech_mega_engineering = {
 		# source_object = technology:tech_mega_engineering
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_core_unlock_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_core_unlock_research_priority_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 	}
 }
 
@@ -357,10 +376,1157 @@ tech_mega_shipyard = {
 		# source_object = technology:tech_mega_shipyard
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_core_unlock_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_core_unlock_research_priority_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 5 years_passed > 79 }
 		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+	}
+}
+
+
+# policy_route = research_megastructure_core; source = common/technology/00_megastructures.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_science_nexus = {
+	area = physics
+	cost = @tier5cost3
+	tier = 5
+	category = { computing }
+	ai_update_type = all
+	prerequisites = { "tech_mega_engineering" }
+	weight = @tier5weight3
+	is_rare = yes
+
+	potential = {
+		is_nomadic = no
+	}
+
+	weight_modifier = {
+		factor = 0.25
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait_in_council = { TRAIT = leader_trait_maniacal }
+				has_trait_in_council = { TRAIT = leader_trait_maniacal_2 }
+				has_trait_in_council = { TRAIT = leader_trait_maniacal_3 }
+			}
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_trait_in_council = { TRAIT = leader_trait_spark_of_genius }
+				has_trait_in_council = { TRAIT = leader_trait_spark_of_genius_2 }
+			}
+		}
+		modifier = {
+			factor = 2
+			has_galactic_wonders = yes
+		}
+		modifier = {
+			factor = 6
+			has_ascension_perk = ap_master_builders
+		}
+		modifier = {
+			factor = 9
+			has_ascension_perk = ap_technological_ascendancy
+		}
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = tech_science_nexus
+		}
+	}
+
+
+	ai_weight = {
+		factor = 185000
+
+		# policy_route = research_megastructure_core
+		# source_object = technology:tech_science_nexus
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_science_nexus_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_science_nexus_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 7 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 4 has_technology = tech_science_nexus }
+		modifier = { factor = 3 staid_research_under_curve = yes }
+	}
+}
+
+
+# policy_route = ring_world_growth_core; source = common/technology/zz_giga_tech_overwrites.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_ring_world = {
+    area = engineering
+    cost = @tier5cost3
+    tier = 5
+    category = { voidcraft }
+    ai_update_type = all
+    prerequisites = { "tech_mega_engineering" }
+    weight = @tier5weight3
+    is_rare = yes
+    potential = { always = yes } # curse tech overwrite weirdness and its potential inheritance jank
+
+    # name change from the vanilla "Ring Segment"
+    technology_swap = {
+        name = giga_tech_ring_world_swap
+        inherit_icon = yes
+        inherit_effects = yes
+
+        trigger = {
+            giga_can_use_habitables = yes
+        }
+
+        prereqfor_desc = {
+            custom = {
+                title = allow_ring_world
+                desc = ring_world_1_MEGASTRUCTURE_DETAILS
+            }
+        }
+
+        # just so I don't need to repeat the same thing 3 times...
+        # it's this way around instead of in the main tech so the ring unlock appears first
+        inline_script = technology/giga_ring_world_overwrite
+    }
+
+    # swap for non-bioship empires which can't build the ring (e.g. frame with a regular set)
+    technology_swap = {
+        name = giga_tech_ring_world_swap_no_habitables
+        inherit_icon = no
+        inherit_effects = no
+
+        trigger = {
+            giga_can_use_habitables = no
+            country_uses_bio_ships = no
+        }
+
+        inline_script = technology/giga_ring_world_overwrite
+
+        category = { industry }
+    }
+
+    # swap for bioship empires which can't build the ring (e.g. wilderness, frame with a bio set)
+    technology_swap = {
+        name = giga_tech_ring_world_swap_no_habitables_bio
+        inherit_icon = no
+        inherit_effects = no
+
+        trigger = {
+            giga_can_use_habitables = no
+            country_uses_bio_ships = yes
+        }
+
+        inline_script = technology/giga_ring_world_overwrite
+
+        area = society
+        category = { biology }
+    }
+
+    weight_modifier = {
+        factor = 0
+    }
+
+
+	ai_weight = {
+		factor = 175000
+
+		# policy_route = ring_world_growth_core
+		# source_object = technology:tech_ring_world
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_ring_world_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_ring_world_research_priority_ready = yes }
+		modifier = { factor = 3 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 9 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 4 has_technology = tech_ring_world }
+		modifier = { factor = 2 staid_planetary_capacity_growth_ready = yes }
+	}
+}
+
+
+# policy_route = early_kilo_economy_core; source = common/technology/00_machine_age_tech.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_orbital_arc_furnace = {
+    area = engineering
+    cost = @tier2cost3
+    tier = 2
+    category = { materials }
+    ai_update_type = all
+    weight = 0
+    is_rare = yes
+    is_reverse_engineerable = no
+    weight = @tier2weight3
+
+    potential = {
+        has_machine_age_dlc = yes
+    }
+
+    modifier = {
+        arc_furnace_limit_add = 3
+    }
+
+    weight_modifier = {
+        factor = 0.5
+
+        modifier = {
+            factor = 0.2
+            NOR = {
+                has_trait_in_council = { TRAIT = leader_trait_expertise_materials }
+                has_trait_in_council = { TRAIT = leader_trait_curator }
+                has_trait_in_council = { TRAIT = leader_trait_spark_of_genius }
+                has_trait_in_council = { TRAIT = leader_trait_spark_of_genius_2 }
+                has_trait_in_council = { TRAIT = leader_trait_maniacal }
+                has_trait_in_council = { TRAIT = leader_trait_maniacal_2 }
+                has_trait_in_council = { TRAIT = leader_trait_maniacal_3 }
+            }
+        }
+        modifier = {
+            factor = 2
+            OR = {
+                has_megastructure = orbital_arc_furnace_1
+                has_megastructure = orbital_arc_furnace_2
+                has_megastructure = orbital_arc_furnace_3
+                has_megastructure = orbital_arc_furnace_4
+            }
+        }
+    }
+    prereqfor_desc = {
+        ship = {
+            title = "allow_arc_furnace"
+            desc = "orbital_arc_furnace_1_MEGASTRUCTURE_DETAILS"
+        }
+    }
+
+
+	ai_weight = {
+		factor = 165000
+
+		# policy_route = early_kilo_economy_core
+		# source_object = technology:tech_orbital_arc_furnace
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_early_kilo_economy_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_early_kilo_economy_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 3 has_technology = tech_orbital_arc_furnace }
+		modifier = { factor = 3 has_technology = giga_tech_asteroid_manufactory }
+		modifier = { factor = 6 staid_resource_waste_pressure = yes }
+		modifier = { factor = 8 staid_high_scale_snowball_pressure = yes }
+	}
+}
+
+
+# policy_route = early_kilo_economy_core; source = common/technology/giga_02_society.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_asteroid_manufactory = {
+	cost = @tier3cost2
+	area = society
+	tier = 3
+	category = { new_worlds }
+	prerequisites = {
+		OR = {
+			tech_waystation_2
+			tech_starbase_3
+		}
+		tech_space_mining_2
+	}
+
+	weight = @tier3weight2
+
+	potential = {
+		NOT = { has_global_flag = asteroid_manufactory_disabled }
+	}
+
+	modifier = {
+		giga_asteroid_manufactory_limit_add = 3
+	}
+
+	weight_modifier = {
+		modifier = {
+			factor = 0.1
+			NOT = { years_passed > 50 }
+		}
+
+		inline_script = {
+			script = technology/tech_weight_boni/neighbor_spread_tech_weight_bonus
+			TECHNOLOGY = giga_tech_asteroid_manufactory
+		}
+
+		inline_script = technology/tech_weight_boni/expansionist_tech_weight_bonus
+		inline_script = technology/tech_weight_boni/exploitative_tech_weight_bonus
+
+		modifier = {
+			factor = 1.25
+			has_tradition = tr_macroengineering_adopt
+		}
+		modifier = {
+			factor = 1.25
+			has_tradition = tr_macroengineering_finish
+		}
+	}
+
+
+	ai_weight = {
+		factor = 160000
+
+		# policy_route = early_kilo_economy_core
+		# source_object = technology:giga_tech_asteroid_manufactory
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_early_kilo_economy_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_early_kilo_economy_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 6 years_passed > 79 }
+		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 3 has_technology = tech_orbital_arc_furnace }
+		modifier = { factor = 3 has_technology = giga_tech_asteroid_manufactory }
+		modifier = { factor = 6 staid_resource_waste_pressure = yes }
+		modifier = { factor = 8 staid_high_scale_snowball_pressure = yes }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_engineering_test_site = {
+	cost = @tier3cost2
+	area = engineering
+	tier = 3
+	category = { materials }
+	prerequisites = {
+        OR = {
+            tech_starbase_4
+            tech_waystation_3
+        }
+		OR = {
+			tech_cruisers
+			tech_harbingers
+		}
+	}
+	weight = @tier3weight2
+	is_rare = no
+	prereqfor_desc = {
+		custom = { title = "allow_eng_test_site"	desc = "desc_eng_test_site" }
+	}
+	modifier = {
+		country_resource_max_add = 2500
+		ship_armor_mult = 0.05
+		giga_megabase_limit_add = 3
+	}
+
+	potential = {
+		NOT = {
+			AND = {
+				has_global_flag = megabase_disabled
+				has_global_flag = lifters_disabled
+				has_global_flag = compressor_disabled
+			}
+		}
+	}
+
+	weight_modifier = {
+		# militarists get this, scientists get physics kilo, other empires get society kilo
+		inline_script = technology/tech_weight_boni/militarist_tech_weight_bonus
+
+		inline_script = {
+			script = technology/tech_weight_boni/neighbor_spread_tech_weight_bonus
+			TECHNOLOGY = giga_tech_engineering_test_site
+		}
+	}
+
+
+	ai_weight = {
+		factor = 165000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = technology:giga_tech_engineering_test_site
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_science_kilo_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_science_kilo_research_priority_ready = yes }
+		modifier = { factor = 5 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 11 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 4 has_technology = giga_tech_engineering_test_site }
+		modifier = { factor = 4 has_technology = giga_tech_macro_scale_weather_manipulation }
+		modifier = { factor = 3 staid_research_under_curve = yes }
+	}
+}
+
+
+# policy_route = science_kilo_snowball_core; source = common/technology/giga_01_physics.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_macro_scale_weather_manipulation = {
+	cost = @tier3cost2
+	area = physics
+	tier = 3
+	category = { field_manipulation }
+	is_rare = no
+	prerequisites = {
+		tech_sensors_3
+		OR = {
+			tech_cruisers
+			tech_harbingers
+		}
+	}
+	weight = @tier3weight2
+	prereqfor_desc = {
+		custom = { title = "allow_atmosphere_shredder"	desc = "desc_atmosphere_shredder" }
+	}
+	modifier = {
+		country_resource_max_add = 2500
+		ship_shield_mult = 0.05
+		giga_storm_observatory_limit_add = 3
+	}
+
+	potential = {
+		NOT = {
+			AND = {
+				has_global_flag = storm_observatory_disabled
+				# keep tech if prereqs are on
+				has_global_flag = suppressor_disabled
+				has_global_flag = compressor_disabled
+				has_global_flag = ndb_disabled
+				has_global_flag = penrose_sphere_disabled
+				has_global_flag = planetary_computer_disabled
+				has_global_flag = lifters_disabled
+				# yes the entire terraform line relies on this tech, apparently
+				has_global_flag = terraform_barren_disabled
+				has_global_flag = terraform_toxic_disabled
+				has_global_flag = terraform_gasgiant_disabled
+				has_global_flag = geothermal_disabled
+				has_global_flag = glue_disabled
+			}
+		}
+	}
+
+	weight_modifier = {
+		# materialists -> physics
+		inline_script = technology/tech_weight_boni/scientist_tech_weight_bonus
+
+		inline_script = {
+			script = technology/tech_weight_boni/neighbor_spread_tech_weight_bonus
+			TECHNOLOGY = giga_tech_macro_scale_weather_manipulation
+		}
+	}
+
+
+	ai_weight = {
+		factor = 170000
+
+		# policy_route = science_kilo_snowball_core
+		# source_object = technology:giga_tech_macro_scale_weather_manipulation
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_science_kilo_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_science_kilo_research_priority_ready = yes }
+		modifier = { factor = 5 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 11 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 4 has_technology = giga_tech_engineering_test_site }
+		modifier = { factor = 4 has_technology = giga_tech_macro_scale_weather_manipulation }
+		modifier = { factor = 3 staid_research_under_curve = yes }
+	}
+}
+
+
+# policy_route = planetary_computer_research_core; source = common/technology/giga_02_society.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_planetary_computer = {
+	cost = @tier5cost3
+	area = society
+	tier = 5
+	category = { new_worlds }
+	is_rare = yes
+	prerequisites = { "tech_ecological_adaptation" "tech_self_aware_logic" "tech_power_plant_3" "giga_tech_macro_scale_weather_manipulation" }
+	weight = @tier5weight3
+
+	#everyone who isn't Wilderness technically gets a swap so Wilderness doesn't get the "Unlocks Megastructure" desc
+	technology_swap = {
+		name = giga_tech_planetary_computer
+		inherit_icon = yes
+		inherit_effects = yes
+
+		prereqfor_desc = {
+			custom = { title = "allow_planetary_computer"	desc = "desc_planetary_computer" }
+		}
+
+		trigger = {
+			is_wilderness_empire = no
+		}
+	}
+
+	technology_swap = {
+		name = giga_tech_planetary_computer_wilderness_swap
+		inherit_icon = yes
+		inherit_effects = yes
+
+		trigger = {
+			is_wilderness_empire = yes
+		}
+	}
+
+	modifier = {			# Incase this tech's megastructure is disabled or inaccessible to your empire type
+		planet_researchers_produces_mult = 0.05
+		planet_researchers_upkeep_mult = 0.05
+	}
+
+	potential = {
+		has_galactic_wonders = yes
+		NOT = { has_global_flag = planetary_computer_disabled }
+		is_nomadic = no
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/scientist_tech_weight_bonus
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_planetary_computer
+		}
+	}
+
+
+	ai_weight = {
+		factor = 190000
+
+		# policy_route = planetary_computer_research_core
+		# source_object = technology:giga_tech_planetary_computer
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_planetary_computer_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_planetary_computer_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 8 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 5 has_technology = giga_tech_planetary_computer }
+		modifier = { factor = 4 staid_research_under_curve = yes }
+		modifier = { factor = 2 staid_planetary_capacity_growth_ready = yes }
+	}
+}
+
+
+# policy_route = pop_assembly_snowball_core; source = common/technology/00_eng_tech.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_robotic_workers = {
+	cost = @tier1cost3
+	area = engineering
+	tier = 1
+	category = { industry }
+	prerequisites = { "tech_powered_exoskeletons" }
+	weight = @tier1weight3
+
+	gateway = robotics
+
+	feature_flags = { robots }
+
+	potential = {
+		NOR = {
+			has_ethic = "ethic_gestalt_consciousness"
+			is_individual_machine = yes
+		}
+	}
+
+	weight_modifier = {
+		factor = 1.5
+		modifier = {
+			factor = 0
+			has_policy_flag = robots_outlawed
+		}
+		modifier = {
+			factor = 0.5
+			OR = {
+				has_ethic = "ethic_spiritualist"
+				has_ethic = "ethic_fanatic_spiritualist"
+			}
+		}
+		modifier = {
+			factor = 2
+			is_materialist = yes
+		}
+
+	}
+
+
+	ai_weight = {
+		factor = 145000
+
+		# policy_route = pop_assembly_snowball_core
+		# source_object = technology:tech_robotic_workers
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_pop_assembly_snowball_ready = yes } }
+		modifier = { factor = 4 staid_pop_assembly_snowball_ready = yes }
+		modifier = { factor = 6 years_passed > 44 }
+		modifier = { factor = 9 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 4 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 3 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 3 staid_research_under_curve = yes }
+		modifier = { factor = 2 years_passed < 80 }
+	}
+}
+
+
+# policy_route = pop_assembly_snowball_core; source = common/technology/00_eng_tech.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_robot_assembly_complex = {
+	icon = "tech_mega_assembly"
+	cost = @tier4cost1
+	area = engineering
+	tier = 4
+	category = { industry }
+	prerequisites = { "tech_robomodding" "tech_galactic_administration" }
+	is_rare = yes
+	weight = @tier4weight1
+
+	potential = {
+		NOT = { has_ethic = "ethic_gestalt_consciousness" }
+	}
+
+
+	weight_modifier = {
+		factor = 0.5
+		modifier = {
+			factor = 0.20
+			NOR = {
+				has_trait_in_council = { TRAIT = leader_trait_maniacal }
+				has_trait_in_council = { TRAIT = leader_trait_maniacal_2 }
+				has_trait_in_council = { TRAIT = leader_trait_maniacal_3 }
+				has_trait_in_council = { TRAIT = leader_trait_spark_of_genius }
+				has_trait_in_council = { TRAIT = leader_trait_spark_of_genius_2 }
+				has_trait_in_council = { TRAIT = leader_trait_curator }
+				has_trait_in_council = { TRAIT = leader_trait_expertise_industry }
+			}
+		}
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = tech_robot_assembly_complex
+		}
+	}
+
+
+	ai_weight = {
+		factor = 165000
+
+		# policy_route = pop_assembly_snowball_core
+		# source_object = technology:tech_robot_assembly_complex
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_pop_assembly_snowball_ready = yes } }
+		modifier = { factor = 4 staid_pop_assembly_snowball_ready = yes }
+		modifier = { factor = 6 years_passed > 44 }
+		modifier = { factor = 9 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 4 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 3 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 3 staid_research_under_curve = yes }
+		modifier = { factor = 2 years_passed < 80 }
+	}
+}
+
+
+# policy_route = pop_assembly_snowball_core; source = common/technology/00_synthetic_dawn_tech.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_mega_assembly = {
+	cost = @tier4cost1
+	area = engineering
+	tier = 4
+	category = { industry }
+	prerequisites = { "tech_binary_motivators" "tech_galactic_administration" }
+	is_rare = yes
+	weight = @tier4weight1
+
+	potential = {
+		OR = {
+			is_machine_empire = yes
+			is_individual_machine = yes
+		}
+	}
+
+	weight_modifier = {
+		factor = 0.5
+		modifier = {
+			factor = 0.20
+			NOR = {
+				has_trait_in_council = { TRAIT = leader_trait_maniacal }
+				has_trait_in_council = { TRAIT = leader_trait_maniacal_2 }
+				has_trait_in_council = { TRAIT = leader_trait_maniacal_3 }
+				has_trait_in_council = { TRAIT = leader_trait_spark_of_genius }
+				has_trait_in_council = { TRAIT = leader_trait_spark_of_genius_2 }
+				has_trait_in_council = { TRAIT = leader_trait_curator }
+				has_trait_in_council = { TRAIT = leader_trait_expertise_industry }
+			}
+		}
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = tech_mega_assembly
+		}
+	}
+
+
+	ai_weight = {
+		factor = 175000
+
+		# policy_route = pop_assembly_snowball_core
+		# source_object = technology:tech_mega_assembly
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_pop_assembly_snowball_ready = yes } }
+		modifier = { factor = 4 staid_pop_assembly_snowball_ready = yes }
+		modifier = { factor = 6 years_passed > 44 }
+		modifier = { factor = 9 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 4 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 3 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 3 staid_research_under_curve = yes }
+		modifier = { factor = 2 years_passed < 80 }
+	}
+}
+
+
+# policy_route = pop_assembly_snowball_core; source = common/technology/00_soc_tech.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tech_cloning = {
+	cost = @tier2cost2
+	area = society
+	tier = 2
+	category = { biology }
+	prerequisites = { "tech_genome_mapping" }
+	weight = @tier2weight2
+
+	potential = {
+		OR = {
+			is_machine_empire = no
+			has_civic = civic_machine_assimilator
+		}
+		is_wilderness_empire = no
+		is_natural_design_empire = no
+	}
+
+	weight_modifier = {
+		factor = 1.5	# genetech needs to be a bit more common
+		modifier = {
+			factor = 1.25
+			is_hive_empire = yes
+		}
+		modifier = {
+			factor = 1.25
+			has_tradition = tr_supremacy_adopt
+		}
+		modifier = {
+			factor = 2
+			has_relic = r_pox_sample
+		}
+		modifier = {
+			factor = 0.5
+			is_individual_machine = yes
+		}
+		modifier = {
+			factor = 0.5
+			has_origin = origin_synthetic_fertility
+		}
+		modifier = {
+			factor = 2
+			AND = {
+				is_individual_machine = yes
+				any_owned_species = {
+					is_organic_species = yes
+				}
+			}
+		}
+	}
+
+
+	ai_weight = {
+		factor = 150000
+
+		# policy_route = pop_assembly_snowball_core
+		# source_object = technology:tech_cloning
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_pop_assembly_snowball_ready = yes } }
+		modifier = { factor = 4 staid_pop_assembly_snowball_ready = yes }
+		modifier = { factor = 6 years_passed > 44 }
+		modifier = { factor = 9 years_passed > 79 }
+		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 4 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 3 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 3 staid_research_under_curve = yes }
+		modifier = { factor = 2 years_passed < 80 }
+	}
+}
+
+
+# policy_route = storage_cap_core; source = common/technology/giga_01_physics.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_kugelblitz = {
+	cost = @tier4cost2
+	area = physics
+	tier = 4
+	category = { particles }
+	is_rare = no
+	prerequisites = { "tech_starbase_5" "tech_zero_point_power" }
+	weight = @tier4weight2
+	prereqfor_desc = {
+		custom = { title = "allow_kugelblitz"	desc = "desc_kugelblitz" }
+	}
+	modifier = {
+        country_resource_max_add = 5000
+        giga_kugel_limit_add = 3
+    }
+
+	potential = {
+		NOT = { has_global_flag = kugel_disabled }
+	}
+
+	weight_modifier = {
+		inline_script = {
+			inline_script = technology/tech_weight_boni/expansionist_tech_weight_bonus
+
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_kugelblitz
+		}
+	}
+
+
+	ai_weight = {
+		factor = 160000
+
+		# policy_route = storage_cap_core
+		# source_object = technology:giga_tech_kugelblitz
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_storage_cap_research_priority_ready = yes } }
+		modifier = { factor = 4 staid_storage_cap_research_priority_ready = yes }
+		modifier = { factor = 4 years_passed > 44 }
+		modifier = { factor = 7 years_passed > 79 }
+		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 4 has_technology = giga_tech_kugelblitz }
+		modifier = { factor = 10 staid_resource_waste_pressure = yes }
+		modifier = { factor = 14 staid_high_scale_snowball_pressure = yes }
+	}
+}
+
+
+# policy_route = apex_site_preservation_core; source = common/technology/giga_05_weightless.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_matrioshka_brain_1 = {
+	cost = @giga_tier7cost1
+	area = physics
+	tier = 5
+	category = { field_manipulation }
+	weight = 0
+	is_rare = yes
+
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = {
+			title = "header_01_gigac"
+			desc = "header_01_gigac_desc"
+		}
+		custom = {
+			title = "allow_matrioshka_brain"
+			desc = "desc_matrioshka_brain"
+		}
+	}
+	potential = {
+		has_gigastructural_constructs = yes
+		NOT = { has_global_flag = matrioshka_brain_disabled }
+	}
+
+	ai_weight = {
+		factor = 210000
+
+		# policy_route = apex_site_preservation_core
+		# source_object = technology:giga_tech_matrioshka_brain_1
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_apex_site_preservation_ready = yes } }
+		modifier = { factor = 4 staid_apex_site_preservation_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 9 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 8 has_technology = giga_tech_matrioshka_brain_1 }
+		modifier = { factor = 4 has_technology = giga_tech_neutronium_gigaforge }
+		modifier = { factor = 0.15 NOT = { staid_apex_site_preservation_ready = yes } }
+	}
+}
+
+
+# policy_route = apex_site_preservation_core; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_neutronium_gigaforge = {
+	cost = @giga_tier6cost2
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	prerequisites = {
+		tech_starbase_5
+		OR = {
+			tech_battleships
+			tech_stingers
+		}
+		tech_ship_armor_5
+	}
+	weight = @giga_tier6weight2
+	prereqfor_desc = {
+		custom = { title = "allow_neut_gigaforge"	desc = "desc_neut_gigaforge" }
+	}
+	modifier = {
+		country_resource_max_add = 10000
+		ship_armor_mult = 0.05
+	}
+
+	potential = {
+		NOT = {
+			AND = {
+				has_global_flag = gigaforge_disabled
+				has_global_flag = nidavellir_disabled
+			}
+		}
+		has_galactic_wonders = yes
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_neutronium_gigaforge
+		}
+	}
+
+
+	ai_weight = {
+		factor = 185000
+
+		# policy_route = apex_site_preservation_core
+		# source_object = technology:giga_tech_neutronium_gigaforge
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_apex_site_preservation_ready = yes } }
+		modifier = { factor = 4 staid_apex_site_preservation_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 9 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 8 has_technology = giga_tech_matrioshka_brain_1 }
+		modifier = { factor = 4 has_technology = giga_tech_neutronium_gigaforge }
+		modifier = { factor = 0.15 NOT = { staid_apex_site_preservation_ready = yes } }
+	}
+}
+
+
+# policy_route = apex_site_preservation_core; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_nidavellir = {
+	cost = @giga_tier7cost3
+	area = engineering
+	tier = 5
+	category = { voidcraft }
+	is_rare = yes
+	weight = @giga_tier7weight1
+	prerequisites = { "giga_tech_tetradimensional_engineering" }
+	prereqfor_desc = {
+		hide_prereq_for_desc = ship
+		hide_prereq_for_desc = component
+		hide_prereq_for_desc = feature
+		hide_prereq_for_desc = resource
+		custom = { title = "header_02_tetra"	desc = "header_02_tetra_desc" }
+		custom = { title = "allow_nidavellir"	desc = "desc_nidavellir" }
+	}
+
+	potential = {
+		NOT = { has_global_flag = nidavellir_disabled }
+		has_gigastructural_constructs = yes
+	}
+
+	weight_modifier = {
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_nidavellir
+		}
+	}
+
+
+	ai_weight = {
+		factor = 195000
+
+		# policy_route = apex_site_preservation_core
+		# source_object = technology:giga_tech_nidavellir
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_apex_site_preservation_ready = yes } }
+		modifier = { factor = 4 staid_apex_site_preservation_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 5 years_passed > 79 }
+		modifier = { factor = 9 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 8 has_technology = giga_tech_matrioshka_brain_1 }
+		modifier = { factor = 4 has_technology = giga_tech_neutronium_gigaforge }
+		modifier = { factor = 0.15 NOT = { staid_apex_site_preservation_ready = yes } }
+	}
+}
+
+
+# policy_route = crowded_tall_route; source = common/technology/giga_03_engineering.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_interstellar_habitat = {
+	cost = @tier4cost3
+	area = engineering
+	tier = 4
+	category = { voidcraft }
+	is_rare = yes
+	prerequisites = { "tech_mega_engineering" "tech_gateway_construction" "tech_habitat_1" }
+	weight = @tier4weight3
+	prereqfor_desc = {
+		custom = { title = "allow_interstellar_hab"	desc = "desc_interstellar_hab" }
+	}
+	modifier = { megastructure_build_speed_mult = 0.05 }			# Incase this tech's megastructure is disabled
+
+	potential = {
+		NOT = {
+			AND = {
+				has_global_flag = stellarhabitat_disabled
+				# what's that? nothing to see here
+				has_global_flag = svalinn_disabled
+			}
+		}
+		is_void_dweller_empire = yes
+		giga_can_use_habitables = yes
+	}
+
+	weight_modifier = {
+		inline_script = technology/tech_weight_boni/expansionist_tech_weight_bonus
+
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_interstellar_habitat
+		}
+	}
+
+
+	ai_weight = {
+		factor = 155000
+
+		# policy_route = crowded_tall_route
+		# source_object = technology:giga_tech_interstellar_habitat
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+	}
+}
+
+
+# policy_route = crowded_tall_route; source = common/technology/giga_02_society.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+giga_tech_stellar_ring_habitat = {
+	area = society
+	cost = @tier5cost3
+	tier = 5
+	category = { new_worlds }
+	ai_update_type = all
+	prerequisites = { tech_mega_engineering tech_habitat_2 }
+	weight = @tier5weight3
+	is_rare = yes
+
+	prereqfor_desc = {
+		custom = { title = allow_giga_orbital	desc = desc_giga_orbital }
+	}
+
+	potential = {
+		always = no # 3.9 made this mega obsolete, pending rework
+		#
+		#is_void_dweller_empire = yes
+		# is_nomadic = no
+	}
+
+	weight_modifier = {
+		factor = 0.25
+
+		modifier = {
+			factor = @giga_tech_weight_malus_large
+			is_militarist = yes
+		}
+		modifier = {
+			factor = @giga_tech_weight_boost_large
+			is_pacifist = yes
+		}
+		modifier = {
+			factor = @giga_tech_weight_boost_large
+			has_valid_civic = civic_machine_servitor
+		}
+
+		inline_script = technology/tech_weight_boni/maniacal_or_spark_tech_weight_bonus
+
+		modifier = {
+			factor = @giga_tech_weight_boost_large
+			has_galactic_wonders = yes
+		}
+		modifier = {
+			factor = @giga_tech_weight_boost_massive
+			has_ascension_perk = ap_master_builders
+		}
+		inline_script = {
+			script = technologies/rare_technologies_weight_modifiers
+			TECHNOLOGY = giga_tech_stellar_ring_habitat
+		}
+
+		modifier = { factor = 0	giga_can_use_habitables = no	}
+	}
+
+
+	ai_weight = {
+		factor = 150000
+
+		# policy_route = crowded_tall_route
+		# source_object = technology:giga_tech_stellar_ring_habitat
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 5 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 	}
 }
 
@@ -404,10 +1570,14 @@ giga_tech_planet_assembly = {
 		# source_object = technology:giga_tech_planet_assembly
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_planetcraft_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_planetcraft_research_priority_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 6 years_passed > 79 }
 		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 4 has_technology = giga_tech_planet_assembly }
 		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 	}
@@ -445,10 +1615,13 @@ giga_tech_lunar_assembly = {
 		# source_object = technology:giga_tech_lunar_assembly
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_war_moon_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 6 years_passed > 79 }
 		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 2 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
 		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
 	}
@@ -498,10 +1671,13 @@ giga_tech_war_moon_1 = {
 		# source_object = technology:giga_tech_war_moon_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_war_moon_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 6 years_passed > 79 }
 		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 2 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
 		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
 	}
@@ -552,10 +1728,13 @@ giga_tech_war_moon_2 = {
 		# source_object = technology:giga_tech_war_moon_2
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_war_moon_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 6 years_passed > 79 }
 		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 2 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
 		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
 	}
@@ -598,10 +1777,13 @@ giga_tech_war_moon_sections = {
 		# source_object = technology:giga_tech_war_moon_sections
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_war_moon_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_war_moon_research_priority_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 6 years_passed > 79 }
 		modifier = { factor = 10 years_passed > 119 }
+		modifier = { factor = 2 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
 		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
 	}
@@ -642,10 +1824,13 @@ giga_tech_war_system_1 = {
 		# source_object = technology:giga_tech_war_system_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_systemcraft_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
 		modifier = { factor = 4 years_passed > 44 }
 		modifier = { factor = 8 years_passed > 79 }
 		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
@@ -689,10 +1874,13 @@ giga_tech_war_system_2 = {
 		# source_object = technology:giga_tech_war_system_2
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_systemcraft_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
 		modifier = { factor = 4 years_passed > 44 }
 		modifier = { factor = 8 years_passed > 79 }
 		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
@@ -736,10 +1924,13 @@ giga_tech_war_system_3 = {
 		# source_object = technology:giga_tech_war_system_3
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_systemcraft_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
 		modifier = { factor = 4 years_passed > 44 }
 		modifier = { factor = 8 years_passed > 79 }
 		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
@@ -781,10 +1972,13 @@ giga_tech_war_system_4 = {
 		# source_object = technology:giga_tech_war_system_4
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_systemcraft_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
 		modifier = { factor = 4 years_passed > 44 }
 		modifier = { factor = 8 years_passed > 79 }
 		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
@@ -828,10 +2022,13 @@ giga_tech_war_system_5 = {
 		# source_object = technology:giga_tech_war_system_5
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_systemcraft_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
 		modifier = { factor = 4 years_passed > 44 }
 		modifier = { factor = 8 years_passed > 79 }
 		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
@@ -881,10 +2078,13 @@ giga_tech_war_system_6 = {
 		# source_object = technology:giga_tech_war_system_6
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_systemcraft_research_priority_ready = yes } }
 		modifier = { factor = 4 staid_systemcraft_research_priority_ready = yes }
 		modifier = { factor = 4 years_passed > 44 }
 		modifier = { factor = 8 years_passed > 79 }
 		modifier = { factor = 12 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 3 has_ascension_perk = ap_celestial_printing }
 		modifier = { factor = 4 has_technology = giga_tech_war_system_1 }
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
@@ -926,10 +2126,13 @@ tech_ehof_sentient_tier_1 = {
 		# source_object = technology:tech_ehof_sentient_tier_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_gigas_special_resource_unlock_ready = yes } }
 		modifier = { factor = 4 staid_gigas_special_resource_unlock_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 5 years_passed > 79 }
 		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = tech_ehof_sentient_tier_1 }
 		modifier = { factor = 4 has_technology = tech_nm_utilization_1 }
 		modifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }
@@ -973,10 +2176,13 @@ tech_nm_utilization_1 = {
 		# source_object = technology:tech_nm_utilization_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_gigas_special_resource_unlock_ready = yes } }
 		modifier = { factor = 4 staid_gigas_special_resource_unlock_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 5 years_passed > 79 }
 		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = tech_ehof_sentient_tier_1 }
 		modifier = { factor = 4 has_technology = tech_nm_utilization_1 }
 		modifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }
@@ -1021,10 +2227,13 @@ giga_tech_amb_supertensiles = {
 		# source_object = technology:giga_tech_amb_supertensiles
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_gigas_special_resource_unlock_ready = yes } }
 		modifier = { factor = 4 staid_gigas_special_resource_unlock_ready = yes }
 		modifier = { factor = 3 years_passed > 44 }
 		modifier = { factor = 5 years_passed > 79 }
 		modifier = { factor = 8 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = tech_ehof_sentient_tier_1 }
 		modifier = { factor = 4 has_technology = tech_nm_utilization_1 }
 		modifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }
@@ -1074,10 +2283,14 @@ tech_Carrier_1 = {
 		# source_object = technology:tech_Carrier_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = tech_Carrier_1 }
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
@@ -1128,10 +2341,14 @@ tech_Dreadnought_1 = {
 		# source_object = technology:tech_Dreadnought_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = tech_Carrier_1 }
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
@@ -1196,10 +2413,14 @@ tech_Flagship_1 = {
 		# source_object = technology:tech_Flagship_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = tech_Carrier_1 }
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
@@ -1260,10 +2481,14 @@ tech_heavycarrier_1 = {
 		# source_object = technology:tech_heavycarrier_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = tech_Carrier_1 }
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
@@ -1325,10 +2550,14 @@ tech_supercarrier_1 = {
 		# source_object = technology:tech_supercarrier_1
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
 		modifier = { factor = 4 staid_nsc3_capital_hull_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = tech_Carrier_1 }
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
@@ -1403,10 +2632,14 @@ esc_tech_dark_matter_power_core_2 = {
 		# source_object = technology:esc_tech_dark_matter_power_core_2
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_esc_component_unlock_ready = yes } }
 		modifier = { factor = 4 staid_esc_component_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = esc_tech_dark_matter_power_core_2 }
 		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
 		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
@@ -1454,10 +2687,14 @@ esc_tech_strikecraft_5 = {
 		# source_object = technology:esc_tech_strikecraft_5
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_esc_component_unlock_ready = yes } }
 		modifier = { factor = 4 staid_esc_component_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = esc_tech_dark_matter_power_core_2 }
 		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
 		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
@@ -1503,10 +2740,14 @@ esc_tech_dreadnought_computer = {
 		# source_object = technology:esc_tech_dreadnought_computer
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_esc_component_unlock_ready = yes } }
 		modifier = { factor = 4 staid_esc_component_unlock_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 4 years_passed < 30 }
+		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 3 has_technology = esc_tech_dark_matter_power_core_2 }
 		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
 		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
@@ -1545,10 +2786,13 @@ tech_starbase_6 = {
 		# source_object = technology:tech_starbase_6
 		modifier = { factor = 0 staid_survival_mode = yes }
 		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 4 staid_crisis_starbase_pressure = yes }
+		modifier = { factor = 0 NOT = { staid_static_defense_investment_ready = yes } }
+		modifier = { factor = 4 staid_static_defense_investment_ready = yes }
 		modifier = { factor = 2 years_passed > 44 }
 		modifier = { factor = 3 years_passed > 79 }
 		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 3 years_passed < 30 }
+		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
+		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 	}
 }
-

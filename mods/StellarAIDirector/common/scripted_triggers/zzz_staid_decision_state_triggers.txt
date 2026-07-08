@@ -25,7 +25,70 @@ staid_core_deficit_short_runway = {
 			NOT = { has_monthly_income = { resource = trade value > 0 } }
 			resource_stockpile_compare = { resource = trade value < 2400 }
 		}
+		AND = {
+			country_uses_consumer_goods = yes
+			NOT = { has_monthly_income = { resource = consumer_goods value > 0 } }
+			resource_stockpile_compare = { resource = consumer_goods value < 2400 }
+		}
+		AND = {
+			country_uses_food = yes
+			NOT = { has_monthly_income = { resource = food value > 0 } }
+			resource_stockpile_compare = { resource = food value < 2400 }
+		}
 	}
+}
+
+staid_consumer_goods_runway_safe = {
+	OR = {
+		NOT = { country_uses_consumer_goods = yes }
+		AND = {
+			NOT = { has_deficit = consumer_goods }
+			has_monthly_income = { resource = consumer_goods value > 75 }
+			resource_stockpile_compare = { resource = consumer_goods value > 1500 }
+		}
+	}
+}
+
+staid_food_runway_safe = {
+	OR = {
+		NOT = { country_uses_food = yes }
+		AND = {
+			NOT = { has_deficit = food }
+			has_monthly_income = { resource = food value > 25 }
+			resource_stockpile_compare = { resource = food value > 1500 }
+		}
+	}
+}
+
+staid_research_input_runway_safe = {
+	staid_consumer_goods_runway_safe = yes
+	NOT = { has_deficit = energy }
+	has_monthly_income = { resource = energy value > 100 }
+	resource_stockpile_compare = { resource = energy value > 3000 }
+}
+
+staid_research_diplomacy_priority_ready = {
+	NOT = { staid_survival_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		staid_science_nexus_research_priority_ready = yes
+		staid_research_input_runway_safe = yes
+		has_ethic = ethic_materialist
+		has_ethic = ethic_fanatic_materialist
+		has_authority = auth_machine_intelligence
+		has_active_tradition = tr_discovery_federations_finish
+	}
+}
+
+staid_basic_economy_runway_safe = {
+	staid_research_input_runway_safe = yes
+	staid_food_runway_safe = yes
+	NOT = { has_deficit = minerals }
+	NOT = { has_deficit = alloys }
+	has_monthly_income = { resource = minerals value > 100 }
+	has_monthly_income = { resource = alloys value > 75 }
+	resource_stockpile_compare = { resource = minerals value > 3000 }
+	resource_stockpile_compare = { resource = alloys value > 3000 }
 }
 
 staid_trade_capacity_safe = {
@@ -48,94 +111,199 @@ staid_trade_surplus_capacity_safe = {
 	has_monthly_income = { resource = trade value > 100 }
 }
 
+staid_high_scale_snowball_pressure = {
+	is_nomadic = no
+	OR = {
+		resource_stockpile_compare = { resource = minerals value > 25000 }
+		resource_stockpile_compare = { resource = energy value > 50000 }
+		resource_stockpile_compare = { resource = alloys value > 15000 }
+		AND = {
+			years_passed > 79
+			has_monthly_income = { resource = minerals value > 500 }
+			has_monthly_income = { resource = energy value > 500 }
+			has_monthly_income = { resource = alloys value > 500 }
+		}
+		AND = {
+			years_passed > 119
+			resource_stockpile_compare = { resource = minerals value > 12000 }
+			resource_stockpile_compare = { resource = energy value > 12000 }
+		}
+	}
+}
+
+staid_catastrophic_collapse_mode = {
+	is_nomadic = no
+	OR = {
+		AND = { has_deficit = energy resource_stockpile_compare = { resource = energy value < 600 } }
+		AND = { has_deficit = minerals resource_stockpile_compare = { resource = minerals value < 600 } }
+		AND = { has_deficit = alloys resource_stockpile_compare = { resource = alloys value < 600 } }
+		AND = { country_uses_consumer_goods = yes has_deficit = consumer_goods resource_stockpile_compare = { resource = consumer_goods value < 400 } }
+		AND = { country_uses_food = yes has_deficit = food resource_stockpile_compare = { resource = food value < 400 } }
+		AND = { is_at_war = yes highest_threat > 50 used_naval_capacity_percent < 0.45 }
+		AND = { recently_lost_war = yes used_naval_capacity_percent < 0.35 }
+	}
+}
+
 staid_survival_mode = {
 	is_nomadic = no
 	OR = {
-		staid_core_deficit_short_runway = yes
-		AND = { recently_lost_war = yes used_naval_capacity_percent < 0.60 }
-		AND = { is_at_war = yes highest_threat > 35 used_naval_capacity_percent < 0.75 }
+		staid_catastrophic_collapse_mode = yes
+		AND = { recently_lost_war = yes used_naval_capacity_percent < 0.45 }
+		AND = { is_at_war = yes highest_threat > 60 used_naval_capacity_percent < 0.55 }
 	}
 }
 
 staid_recovery_mode = {
 	is_nomadic = no
 	OR = {
-		staid_survival_mode = yes
-		stellarai_basic_econ_recovery_needed = yes
-		AND = { recently_lost_war = yes used_naval_capacity_percent < 0.80 }
+		staid_catastrophic_collapse_mode = yes
+		AND = { recently_lost_war = yes used_naval_capacity_percent < 0.50 }
 	}
 }
 
 staid_megastructure_prep_ready = {
 	is_nomadic = no
 	can_build_megastructures = yes
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
-	staid_trade_planetary_capacity_safe = yes
-	resource_stockpile_compare = { resource = alloys value > 15000 }
-	has_monthly_income = { resource = alloys value > 130 }
-	has_monthly_income = { resource = energy value > 80 }
-	has_monthly_income = { resource = minerals value > 60 }
+	OR = {
+		NOT = { staid_recovery_mode = yes }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		staid_basic_economy_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		staid_trade_planetary_capacity_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
+	resource_stockpile_compare = { resource = alloys value > 8000 }
+	has_monthly_income = { resource = alloys value > 80 }
+	has_monthly_income = { resource = energy value > 40 }
+	has_monthly_income = { resource = minerals value > 40 }
 	OR = {
 		is_at_war = no
-		used_naval_capacity_percent > 0.90
+		used_naval_capacity_percent > 0.70
+		staid_high_scale_snowball_pressure = yes
 	}
 }
 
 staid_megastructure_commit_safe = {
 	is_nomadic = no
 	can_build_megastructures = yes
-	NOT = { staid_core_deficit_short_runway = yes }
-	staid_trade_planetary_capacity_safe = yes
+	OR = {
+		NOT = { staid_core_deficit_short_runway = yes }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		staid_basic_economy_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		staid_trade_planetary_capacity_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
 	OR = {
 		is_at_war = no
-		used_naval_capacity_percent > 0.85
+		used_naval_capacity_percent > 0.65
+		staid_high_scale_snowball_pressure = yes
+	}
+}
+
+staid_megastructure_continuation_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	OR = {
+		NOT = { staid_survival_mode = yes }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		staid_surplus_sink_pressure = yes
+		staid_resource_waste_pressure = yes
+		staid_high_scale_snowball_pressure = yes
 	}
 }
 
 staid_pause_new_megastructure = {
+	NOT = { staid_high_scale_snowball_pressure = yes }
 	OR = {
 		staid_survival_mode = yes
-		AND = { is_at_war = yes used_naval_capacity_percent < 0.85 }
-		AND = { highest_threat > 45 used_naval_capacity_percent < 0.90 }
+		AND = { is_at_war = yes used_naval_capacity_percent < 0.55 }
+		AND = { highest_threat > 75 used_naval_capacity_percent < 0.65 }
 	}
 }
 
 staid_shipyard_payoff_ready = {
-	NOT = { staid_recovery_mode = yes }
-	has_monthly_income = { resource = alloys value > 150 }
-	has_monthly_income = { resource = energy value > 100 }
-	staid_trade_fleet_capacity_safe = yes
-	resource_stockpile_compare = { resource = alloys value > 12000 }
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		has_monthly_income = { resource = alloys value > 80 }
+		resource_stockpile_compare = { resource = alloys value > 5000 }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		has_monthly_income = { resource = energy value > 80 }
+		resource_stockpile_compare = { resource = energy value > 5000 }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		resource_stockpile_compare = { resource = alloys value > 12000 }
+		AND = {
+			used_naval_capacity_percent < 1.60
+			has_monthly_income = { resource = alloys value > 80 }
+		}
+		AND = {
+			used_naval_capacity_percent < 1.40
+			has_monthly_income = { resource = alloys value > 80 }
+		}
+	}
 }
 
 staid_fleet_buildup_economy_safe = {
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
-	staid_trade_fleet_capacity_safe = yes
-	has_monthly_income = { resource = alloys value > 200 }
-	has_monthly_income = { resource = energy value > 150 }
-	resource_stockpile_compare = { resource = alloys value > 15000 }
-	resource_stockpile_compare = { resource = energy value > 8000 }
-	used_naval_capacity_percent < 1.05
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	used_naval_capacity_percent < 1.85
+	OR = {
+		has_monthly_income = { resource = alloys value > 40 }
+		resource_stockpile_compare = { resource = alloys value > 1500 }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		has_monthly_income = { resource = energy value > 40 }
+		resource_stockpile_compare = { resource = energy value > 1500 }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		AND = {
+			resource_stockpile_compare = { resource = alloys value > 15000 }
+			resource_stockpile_compare = { resource = energy value > 8000 }
+		}
+		AND = {
+			used_naval_capacity_percent < 1.25
+			has_monthly_income = { resource = alloys value > 40 }
+			has_monthly_income = { resource = energy value > 40 }
+		}
+		AND = {
+			used_naval_capacity_percent < 1.25
+			has_monthly_income = { resource = alloys value > 40 }
+			has_monthly_income = { resource = energy value > 40 }
+		}
+		staid_high_scale_snowball_pressure = yes
+	}
 }
 
 staid_resource_waste_pressure = {
-	NOT = { staid_core_deficit_short_runway = yes }
 	OR = {
 		AND = {
 			has_monthly_income = { resource = minerals value > 0 }
-			resource_stockpile_compare = { resource = minerals value > 50000 }
+			resource_stockpile_compare = { resource = minerals value > 25000 }
 		}
 		AND = {
 			country_uses_food = yes
 			has_monthly_income = { resource = food value > 0 }
-			resource_stockpile_compare = { resource = food value > 30000 }
+			resource_stockpile_compare = { resource = food value > 18000 }
 		}
 		AND = {
 			country_uses_consumer_goods = yes
 			has_monthly_income = { resource = consumer_goods value > 0 }
-			resource_stockpile_compare = { resource = consumer_goods value > 30000 }
+			resource_stockpile_compare = { resource = consumer_goods value > 18000 }
 		}
 		AND = {
 			has_monthly_income = { resource = volatile_motes value > 0 }
@@ -169,8 +337,24 @@ staid_resource_waste_pressure = {
 	}
 }
 
+staid_construction_spenddown_pressure = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_high_scale_snowball_pressure = yes
+		staid_resource_waste_pressure = yes
+		any_owned_planet = { num_unemployed > 0 free_jobs < 1 }
+		any_owned_planet = { free_building_slots > 0 num_unemployed > 0 }
+		resource_stockpile_compare = { resource = minerals value > 10000 }
+	}
+}
+
 staid_research_under_curve = {
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_input_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
 	OR = {
 		AND = {
 			years_passed > 119
@@ -200,13 +384,22 @@ staid_research_under_curve = {
 }
 
 staid_surplus_sink_pressure = {
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
-	NOT = { has_deficit = alloys }
-	NOT = { has_deficit = energy }
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_input_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		NOT = { has_deficit = alloys }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		NOT = { has_deficit = energy }
+		staid_high_scale_snowball_pressure = yes
+	}
 	OR = {
 		staid_resource_waste_pressure = yes
-		staid_research_under_curve = yes
+		staid_high_scale_snowball_pressure = yes
 		AND = {
 			staid_trade_surplus_capacity_safe = yes
 			has_monthly_income = { resource = alloys value > 300 }
@@ -232,9 +425,245 @@ staid_core_unlock_research_priority_ready = {
 	}
 }
 
+staid_early_kilo_economy_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		years_passed > 29
+		staid_resource_waste_pressure = yes
+		staid_research_under_curve = yes
+	}
+}
+
+staid_early_kilo_economy_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	OR = {
+		has_technology = tech_orbital_arc_furnace
+		has_technology = giga_tech_asteroid_manufactory
+	}
+	OR = {
+		staid_resource_waste_pressure = yes
+		AND = {
+			has_monthly_income = { resource = alloys value > 130 }
+			resource_stockpile_compare = { resource = alloys value > 5000 }
+		}
+	}
+}
+
+staid_science_kilo_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			years_passed > 24
+			staid_early_kilo_economy_research_priority_ready = yes
+		}
+	}
+}
+
+staid_science_kilo_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	OR = {
+		has_technology = giga_tech_engineering_test_site
+		has_technology = giga_tech_macro_scale_weather_manipulation
+	}
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			has_monthly_income = { resource = alloys value > 90 }
+			resource_stockpile_compare = { resource = alloys value > 3000 }
+		}
+	}
+}
+
+staid_pop_assembly_snowball_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_basic_economy_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+		staid_construction_spenddown_pressure = yes
+	}
+	OR = {
+		years_passed > 4
+		staid_planetary_capacity_growth_ready = yes
+		staid_research_under_curve = yes
+	}
+}
+
+staid_planetary_computer_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			years_passed > 69
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_planetary_computer_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = giga_tech_planetary_computer
+	OR = {
+		staid_research_under_curve = yes
+		staid_planetary_capacity_growth_ready = yes
+		resource_stockpile_compare = { resource = alloys value > 12000 }
+	}
+}
+
+staid_science_nexus_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			years_passed > 44
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_science_nexus_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = tech_science_nexus
+	OR = {
+		staid_research_under_curve = yes
+		resource_stockpile_compare = { resource = alloys value > 15000 }
+	}
+}
+
+staid_ring_world_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_planetary_capacity_growth_ready = yes
+		AND = {
+			years_passed > 79
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_ring_world_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = tech_ring_world
+	OR = {
+		staid_planetary_capacity_growth_ready = yes
+		resource_stockpile_compare = { resource = alloys value > 20000 }
+	}
+}
+
+staid_storage_cap_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_resource_waste_pressure = yes
+		AND = {
+			years_passed > 44
+			staid_surplus_sink_pressure = yes
+		}
+	}
+}
+
+staid_storage_cap_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = giga_tech_kugelblitz
+	OR = {
+		staid_resource_waste_pressure = yes
+		staid_high_scale_snowball_pressure = yes
+		resource_stockpile_compare = { resource = energy value > 25000 }
+	}
+}
+
+staid_unfinished_kugelblitz_exists = {
+	any_owned_megastructure = {
+		OR = {
+			is_megastructure_type = kugelblitz_0
+			is_megastructure_type = kugelblitz_1
+			is_megastructure_type = kugelblitz_2
+			is_megastructure_type = kugelblitz_restored
+		}
+	}
+}
+
+staid_kugelblitz_new_start_budget_ready = {
+	staid_storage_cap_build_priority_ready = yes
+	NOT = { has_country_flag = is_currently_building_kugelblitz }
+	NOT = { staid_unfinished_kugelblitz_exists = yes }
+	NOT = { check_variable = { which = giga_current_kugel value >= 10 } }
+	OR = {
+		check_variable = { which = giga_current_kugel value < 4 }
+		AND = {
+			staid_resource_waste_pressure = yes
+			check_variable = { which = giga_current_kugel value < 6 }
+		}
+		AND = {
+			staid_high_scale_snowball_pressure = yes
+			check_variable = { which = giga_current_kugel value < 8 }
+		}
+	}
+}
+
 staid_phase_mega_engineering_rush = {
 	NOT = { has_technology = tech_mega_engineering }
 	staid_core_unlock_research_priority_ready = yes
+}
+
+staid_phase_early_kilo_economy = {
+	OR = {
+		NOT = { has_technology = tech_orbital_arc_furnace }
+		NOT = { has_technology = giga_tech_asteroid_manufactory }
+	}
+	staid_early_kilo_economy_research_priority_ready = yes
+}
+
+staid_phase_science_kilo_snowball = {
+	OR = {
+		NOT = { has_technology = giga_tech_engineering_test_site }
+		NOT = { has_technology = giga_tech_macro_scale_weather_manipulation }
+	}
+	staid_science_kilo_research_priority_ready = yes
+}
+
+staid_phase_pop_assembly_snowball = {
+	staid_pop_assembly_snowball_ready = yes
+	OR = {
+		NOT = { has_technology = tech_robotic_workers }
+		NOT = { has_technology = tech_cloning }
+		NOT = { has_technology = tech_robot_assembly_complex }
+	}
+}
+
+staid_phase_science_nexus_rush = {
+	NOT = { has_technology = tech_science_nexus }
+	staid_science_nexus_research_priority_ready = yes
+}
+
+staid_phase_planetary_computer_research = {
+	NOT = { has_technology = giga_tech_planetary_computer }
+	staid_planetary_computer_research_priority_ready = yes
+}
+
+staid_phase_ring_world_growth = {
+	NOT = { has_technology = tech_ring_world }
+	staid_ring_world_research_priority_ready = yes
+}
+
+staid_phase_storage_cap_expansion = {
+	NOT = { has_technology = giga_tech_kugelblitz }
+	staid_storage_cap_research_priority_ready = yes
+}
+
+staid_phase_boxed_tall_habitat_escape = {
+	staid_planetary_capacity_growth_ready = yes
+	OR = {
+		NOT = { has_technology = tech_habitat_1 }
+		NOT = { has_technology = giga_tech_interstellar_habitat }
+		NOT = { has_technology = giga_tech_stellar_ring_habitat }
+	}
 }
 
 staid_phase_galactic_wonders_entry = {
@@ -271,17 +700,24 @@ staid_phase_systemcraft_escalation = {
 
 staid_phase_fleet_conversion_repeatables = {
 	OR = {
+		has_technology = tech_Carrier_1
+		has_technology = tech_Dreadnought_1
 		has_technology = tech_Flagship_1
 		has_technology = giga_tech_war_moon_2
 		has_technology = giga_tech_war_system_1
 		has_technology = esc_tech_dark_matter_power_core_2
 	}
-	staid_modded_fleet_conversion_ready = yes
 }
 
 staid_shipyard_expansion_ready = {
-	staid_fleet_buildup_economy_safe = yes
 	has_technology = tech_mega_shipyard
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	used_naval_capacity_percent < 1.85
+	OR = {
+		has_monthly_income = { resource = alloys value > 80 }
+		resource_stockpile_compare = { resource = alloys value > 5000 }
+		staid_high_scale_snowball_pressure = yes
+	}
 	OR = {
 		staid_surplus_sink_pressure = yes
 		AND = { is_at_war = yes highest_threat > 35 used_naval_capacity_percent > 0.80 }
@@ -289,17 +725,17 @@ staid_shipyard_expansion_ready = {
 }
 
 staid_fleet_payoff_exploitation_ready = {
-	staid_shipyard_payoff_ready = yes
-	NOT = { staid_core_deficit_short_runway = yes }
-	used_naval_capacity_percent < 1.05
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	used_naval_capacity_percent < 1.85
 	OR = {
-		staid_shipyard_expansion_ready = yes
 		AND = { is_at_war = yes highest_threat > 35 }
+		AND = { used_naval_capacity_percent < 1.25 has_monthly_income = { resource = alloys value > 80 } }
+		AND = { resource_stockpile_compare = { resource = alloys value > 12000 } resource_stockpile_compare = { resource = energy value > 5000 } }
 	}
 }
 
 staid_advanced_component_resource_support_ready = {
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		has_monthly_income = { resource = volatile_motes value > 5 }
 		has_monthly_income = { resource = exotic_gases value > 5 }
@@ -316,35 +752,37 @@ staid_advanced_component_resource_support_ready = {
 
 staid_nsc3_capital_hull_unlock_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		staid_phase_fleet_conversion_repeatables = yes
-		staid_fleet_buildup_economy_safe = yes
 		AND = {
 			years_passed > 79
-			staid_core_unlock_research_priority_ready = yes
+			OR = {
+				resource_stockpile_compare = { resource = alloys value > 5000 }
+				has_monthly_income = { resource = alloys value > 80 }
+			}
 		}
 	}
 }
 
 staid_esc_component_unlock_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	staid_advanced_component_resource_support_ready = yes
 	OR = {
 		staid_phase_fleet_conversion_repeatables = yes
-		staid_fleet_buildup_economy_safe = yes
 		AND = {
 			years_passed > 79
-			staid_core_unlock_research_priority_ready = yes
+			OR = {
+				resource_stockpile_compare = { resource = alloys value > 5000 }
+				has_monthly_income = { resource = engineering_research value > 600 }
+			}
 		}
 	}
 }
 
 staid_modded_fleet_conversion_ready = {
-	staid_fleet_payoff_exploitation_ready = yes
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	staid_advanced_component_resource_support_ready = yes
 	OR = {
 		has_technology = tech_Carrier_1
@@ -358,13 +796,41 @@ staid_modded_fleet_conversion_ready = {
 
 staid_planetary_capacity_growth_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_basic_economy_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		has_monthly_income = { resource = minerals value > 40 }
+		resource_stockpile_compare = { resource = minerals value > 2500 }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		has_monthly_income = { resource = energy value > 40 }
+		resource_stockpile_compare = { resource = energy value > 2500 }
+		staid_high_scale_snowball_pressure = yes
+	}
+}
+
+staid_planetary_diversity_outpost_investment_ready = {
+	is_nomadic = no
+	NOT = { staid_survival_mode = yes }
 	NOT = { staid_core_deficit_short_runway = yes }
-	staid_trade_planetary_capacity_safe = yes
-	has_monthly_income = { resource = minerals value > 100 }
-	has_monthly_income = { resource = energy value > 100 }
-	resource_stockpile_compare = { resource = minerals value > 5000 }
-	resource_stockpile_compare = { resource = energy value > 5000 }
+	NOT = { has_deficit = minerals }
+	NOT = { has_deficit = energy }
+	has_monthly_income = { resource = minerals value > 20 }
+	has_monthly_income = { resource = energy value > 20 }
+	resource_stockpile_compare = { resource = minerals value > 1200 }
+	resource_stockpile_compare = { resource = energy value > 1000 }
+}
+
+staid_pd_research_outpost_priority_ready = {
+	staid_planetary_diversity_outpost_investment_ready = yes
+	OR = {
+		staid_research_under_curve = yes
+		staid_research_input_runway_safe = yes
+	}
 }
 
 staid_economy_megastructure_build_priority_ready = {
@@ -383,8 +849,7 @@ staid_mega_shipyard_build_priority_ready = {
 
 staid_planetcraft_research_priority_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	has_technology = tech_mega_engineering
 	OR = {
 		years_passed > 79
@@ -402,8 +867,7 @@ staid_planetcraft_build_priority_ready = {
 
 staid_war_moon_research_priority_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	has_technology = tech_mega_engineering
 	OR = {
 		years_passed > 79
@@ -421,8 +885,7 @@ staid_war_moon_build_priority_ready = {
 
 staid_systemcraft_research_priority_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		years_passed > 119
 		has_technology = giga_tech_war_moon_2
@@ -440,8 +903,7 @@ staid_systemcraft_build_priority_ready = {
 
 staid_gigas_special_resource_unlock_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		years_passed > 79
 		staid_planetcraft_research_priority_ready = yes
@@ -454,12 +916,17 @@ staid_defensive_starbase_strategy = {
 	OR = {
 		has_ethic = ethic_pacifist
 		has_ethic = ethic_fanatic_pacifist
+		has_ethic = ethic_militarist
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_xenophobe
+		has_ethic = ethic_fanatic_xenophobe
+		has_valid_civic = civic_barbaric_despoilers
 	}
 }
 
 staid_crisis_starbase_pressure = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	highest_threat > 50
 	has_monthly_income = { resource = alloys value > 80 }
 	has_monthly_income = { resource = energy value > 60 }
@@ -467,31 +934,122 @@ staid_crisis_starbase_pressure = {
 }
 
 staid_aggressive_fleet_pressure = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		has_ethic = ethic_militarist
 		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_xenophobe
+		has_ethic = ethic_fanatic_xenophobe
+		has_valid_civic = civic_barbaric_despoilers
+		AND = {
+			NOT = { has_ethic = ethic_pacifist }
+			NOT = { has_ethic = ethic_fanatic_pacifist }
+			used_naval_capacity_percent < 1.10
+		}
 	}
-	used_naval_capacity_percent < 0.95
+	used_naval_capacity_percent < 1.90
+}
+
+staid_militarist_conquest_strategy = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		has_ethic = ethic_militarist
+		has_ethic = ethic_fanatic_militarist
+		has_valid_civic = civic_barbaric_despoilers
+		has_ethic = ethic_xenophobe
+		has_ethic = ethic_fanatic_xenophobe
+		AND = {
+			NOT = { has_ethic = ethic_pacifist }
+			NOT = { has_ethic = ethic_fanatic_pacifist }
+			years_passed > 9
+			used_naval_capacity_percent < 1.15
+		}
+	}
+	used_naval_capacity_percent < 1.95
+}
+
+staid_raiding_pop_growth_strategy = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		has_ascension_perk = ap_nihilistic_acquisition
+		has_valid_civic = civic_barbaric_despoilers
+		has_origin = origin_slavers
+		has_origin = origin_khan_successor
+	}
+	used_naval_capacity_percent < 2.00
+}
+
+staid_raiding_pop_acquisition_priority = {
+	OR = {
+		staid_raiding_pop_growth_strategy = yes
+		AND = {
+			staid_opening_military_to_pops = yes
+			years_passed < 75
+		}
+	}
+}
+
+staid_hostile_fauna_clearance_strategy = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	used_naval_capacity_percent < 1.50
+	OR = {
+		staid_opening_hostile_fauna_clearance = yes
+		AND = {
+			years_passed < 60
+			has_monthly_income = { resource = alloys value > 45 }
+		}
+	}
+}
+
+staid_site_limited_expansion_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	staid_fleet_buildup_economy_safe = yes
+	OR = {
+		staid_planetary_capacity_growth_ready = yes
+		staid_resource_waste_pressure = yes
+		staid_research_under_curve = yes
+		years_passed > 79
+	}
+}
+
+staid_apex_site_preservation_ready = {
+	is_nomadic = no
+	staid_megastructure_commit_safe = yes
+	OR = {
+		has_technology = giga_tech_matrioshka_brain_1
+		has_technology = giga_tech_neutronium_gigaforge
+		has_technology = giga_tech_nidavellir
+		years_passed > 119
+	}
 }
 
 staid_starbase_defense_economy_safe = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
-	staid_trade_capacity_safe = yes
-	has_monthly_income = { resource = alloys value > 60 }
-	has_monthly_income = { resource = energy value > 50 }
-	resource_stockpile_compare = { resource = alloys value > 3000 }
-	resource_stockpile_compare = { resource = energy value > 3000 }
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		has_monthly_income = { resource = alloys value > 35 }
+		resource_stockpile_compare = { resource = alloys value > 1200 }
+		staid_high_scale_snowball_pressure = yes
+	}
+	OR = {
+		has_monthly_income = { resource = energy value > 35 }
+		resource_stockpile_compare = { resource = energy value > 1200 }
+		staid_high_scale_snowball_pressure = yes
+	}
 }
 
 staid_static_defense_investment_ready = {
 	staid_starbase_defense_economy_safe = yes
 	OR = {
-		AND = {
-			staid_defensive_starbase_strategy = yes
-			NOT = { staid_aggressive_fleet_pressure = yes }
-		}
+		staid_defensive_starbase_strategy = yes
+		staid_aggressive_fleet_pressure = yes
+		staid_militarist_conquest_strategy = yes
+		staid_high_scale_snowball_pressure = yes
 		staid_crisis_starbase_pressure = yes
 	}
 }

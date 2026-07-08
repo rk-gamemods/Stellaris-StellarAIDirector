@@ -1,7 +1,7 @@
 # Stellar AI Director Trade Capacity Audit
 
 Date: 2026-07-05
-Target game version: Stellaris PC 4.4.4 stable
+Target game version when written: Stellaris PC 4.4.4 stable. Current target as of 2026-07-08 is Stellaris PC 4.4.5 stable/current local install.
 Mod scope: `mods/StellarAIDirector`
 
 ## Finding

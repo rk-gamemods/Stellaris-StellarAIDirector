@@ -7,7 +7,6 @@ tags={
 name="Stellar AI Director"
 supported_version="v4.4.*"
 dependencies={
-	"Stellar AI"
 	"Gigastructural Engineering & More (4.4)"
 	"NSC3"
 	"Extra Ship Components NEXT"

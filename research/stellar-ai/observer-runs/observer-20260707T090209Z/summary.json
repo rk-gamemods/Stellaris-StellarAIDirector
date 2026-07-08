@@ -1,0 +1,36 @@
+{
+  "checkpoint_row_count": 47,
+  "checkpoint_year_counts": {
+    "2250": 12,
+    "2300": 11,
+    "2325": 12,
+    "2350": 12
+  },
+  "empire_rank_counts": {
+    "1": 4,
+    "10": 4,
+    "11": 4,
+    "12": 3,
+    "2": 4,
+    "3": 4,
+    "4": 4,
+    "5": 4,
+    "6": 4,
+    "7": 4,
+    "8": 4,
+    "9": 4
+  },
+  "evidence_file_counts": {
+    "exports": 9,
+    "logs": 8,
+    "saves": 4,
+    "screenshots": 53
+  },
+  "has_patch_hypothesis_table": true,
+  "hidden_economic_bonuses": false,
+  "manual_notes_bytes": 10323,
+  "run_id": "observer-20260707T090209Z",
+  "status": "shipyard_payoff_threshold_patch_applied_pending_rerun",
+  "summary_generated_at_utc": "2026-07-07T10:54:39.955594+00:00",
+  "target_game_version": "Stellaris 4.4.4 stable"
+}

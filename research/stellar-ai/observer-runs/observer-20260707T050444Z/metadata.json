@@ -1,0 +1,36 @@
+{
+  "artifacts": {
+    "checkpoints": "checkpoints.csv",
+    "manual_notes": "manual-notes.md",
+    "metrics": "metrics.json",
+    "summary_json": "summary.json",
+    "summary_md": "summary.md"
+  },
+  "benchmark_intent": "Top one or two AI empires plausibly crisis-ready by 2350 without hidden bonuses.",
+  "created_at_utc": "2026-07-07T05:04:44.011487+00:00",
+  "hidden_economic_bonuses": false,
+  "launcher": "Irony Mod Manager",
+  "run_id": "observer-20260707T050444Z",
+  "settings": {
+    "advanced_ai_starts": "off",
+    "ai_empires": "12",
+    "crisis_strength": "25x",
+    "crisis_type": "Random",
+    "difficulty_adjusted_ai_modifiers": "disabled",
+    "difficulty": "Ensign",
+    "galaxy_size": "Tiny (200 Stars)",
+    "ironman": "disabled",
+    "player_bonuses": "off",
+    "scaling": "off"
+  },
+  "standard_checkpoints": [
+    2250,
+    2300,
+    2325,
+    2350
+  ],
+  "status": "2350_captured_fleet_gate_patch_pending_rerun",
+  "status_note": "Full 2250/2300/2325/2350 observer run captured. Fleet conversion/naval deployment bottleneck diagnosed and patched by adding under-naval-cap monthly income lanes to shipyard and fleet buildup gates; rerun needed to measure 2300/2325/2350 fleet movement.",
+  "target_game_version": "Stellaris 4.4.4 stable",
+  "target_mod": "Stellar AI Director"
+}

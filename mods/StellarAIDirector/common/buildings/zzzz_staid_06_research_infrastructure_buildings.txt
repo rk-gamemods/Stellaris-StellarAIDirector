@@ -121,6 +121,10 @@ building_research_lab_1 = {
 		"building_research_lab_2"
 	}
 	additional_ai_weight = 600
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+	}
 }
 
 
@@ -189,6 +193,10 @@ building_research_lab_2 = {
 
 	ai_weight_coefficient = 10
 	additional_ai_weight = 900
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+	}
 }
 
 
@@ -253,6 +261,10 @@ building_research_lab_3 = {
 
 	ai_weight_coefficient = 12
 	additional_ai_weight = 1200
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+	}
 }
 
 
@@ -385,6 +397,7 @@ building_institute = {
 			PLANET_FLAG = stellarai_invalid_for_research_to_build
 		}
 
+		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
 	}
 	additional_ai_weight = 800
 }
@@ -521,6 +534,7 @@ building_supercomputer = {
 			PLANET_FLAG = stellarai_invalid_for_research_to_build
 		}
 
+		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
 	}
 	additional_ai_weight = 800
 }
@@ -707,5 +721,8 @@ building_archaeostudies_faculty = {
 		AMOUNT = 5
 	}
 	additional_ai_weight = 500
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+	}
 }
-

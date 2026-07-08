@@ -1,0 +1,39 @@
+{
+  "artifacts": {
+    "checkpoints": "checkpoints.csv",
+    "manual_notes": "manual-notes.md",
+    "metrics": "metrics.json",
+    "summary_json": "summary.json",
+    "summary_md": "summary.md"
+  },
+  "benchmark_intent": "Top one or two AI empires plausibly crisis-ready by 2350 without hidden bonuses.",
+  "created_at_utc": "2026-07-07T07:37:06.353113+00:00",
+  "hidden_economic_bonuses": false,
+  "launcher": "Irony Mod Manager",
+  "run_id": "observer-20260707T073706Z",
+  "settings": {
+    "advanced_ai_starts": "off",
+    "ai_empires": "12",
+    "crisis_strength": "25x",
+    "crisis_type": "Random",
+    "difficulty_adjusted_ai_modifiers": "disabled",
+    "difficulty": "Ensign",
+    "gigastructures_style": "Giga-Experience",
+    "gullis_planet_modifiers": "default/recommended options",
+    "galaxy_size": "Tiny (200 Stars)",
+    "ironman": "disabled",
+    "player_empire": "random built-in Zacan Hierarchy",
+    "player_bonuses": "off",
+    "scaling": "off"
+  },
+  "standard_checkpoints": [
+    2250,
+    2300,
+    2325,
+    2350
+  ],
+  "status": "2325_stopped_for_threshold_patch",
+  "status_note": "Patched rerun launched through Irony. Startup modals cleared with Giga-Experience and Gulli default/recommended options. Stellar AI Director startup proof saved, commands_at_date.txt advanced the game to observer-like zero-resource state at Fastest speed by 2200.09.27. The 2250, 2300, and 2325 checkpoint pauses fired; autosave_2250.01.01.sav, autosave_2300.01.01.sav, and autosave_2325.01.01.sav were preserved and parsed. The 2325 aggregate economy/research/fleet track was far behind observer-20260707T050444Z, and the prior run was already weak by 2350, so this run was stopped early. Save evidence showed plausible midgame builders around +123 to +127 alloys/month were still blocked by a +200 alloy income gate; the generated Director patch was updated and validated to lower the under-cap fleet income lane to +100 alloys/month. Fresh rerun required before runtime claims.",
+  "target_game_version": "Stellaris 4.4.4 stable",
+  "target_mod": "Stellar AI Director"
+}

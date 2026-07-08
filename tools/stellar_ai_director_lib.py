@@ -14,6 +14,7 @@ import json
 import math
 import os
 import re
+import time
 import zipfile
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -25,6 +26,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT_ROOT = REPO_ROOT / "research" / "mod-source-snapshots" / "2026-07-04"
 IRONY_DATA_ROOT = Path(r"C:\Users\Admin\AppData\Roaming\Mario")
 STELLARIS_INSTALL_ROOT = Path(r"C:\Steam\steamapps\common\Stellaris")
+PLANETARY_DIVERSITY_WORKSHOP_ROOT = Path(r"C:\Steam\steamapps\workshop\content\281990\819148835")
 STELLARIS_LOG_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\logs")
 STELLARIS_SAVE_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\save games")
 PARADOX_MOD_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\mod")
@@ -73,15 +75,37 @@ OBJECT_ATLAS_CSV = OBJECT_ATLAS_ROOT / "object-atlas-2026-07-06.csv"
 DEPENDENCY_EDGES_CSV = OBJECT_ATLAS_ROOT / "dependency-edges-2026-07-06.csv"
 AI_SUPPORT_MAP_CSV = OBJECT_ATLAS_ROOT / "parent-ai-support-map-2026-07-06.csv"
 POLICY_MATRIX_CSV = OBJECT_ATLAS_ROOT / "policy-matrix-2026-07-06.csv"
+GENERATED_VERSION_INVENTORY_MD = RESEARCH_ROOT / "STAID_GENERATED_VERSION_INVENTORY.md"
+MOD_STACK_COMPATIBILITY_MD = RESEARCH_ROOT / "STAID_MOD_STACK_COMPATIBILITY.md"
+MANUAL_STATIC_VALIDATION_MD = RESEARCH_ROOT / "STAID_MANUAL_STATIC_VALIDATION.md"
+STANDALONE_PARITY_INVENTORY_CSV = RESEARCH_ROOT / "stellar-ai-director-standalone-parity-inventory-2026-07-08.csv"
+STANDALONE_PARITY_INVENTORY_MD = RESEARCH_ROOT / "stellar-ai-director-standalone-parity-inventory-2026-07-08.md"
+ECONOMIC_VALUATION_DATASET_CSV = RESEARCH_ROOT / "stellar-ai-director-economic-valuation-2026-07-07.csv"
+ECONOMIC_VALUATION_DATASET_MD = RESEARCH_ROOT / "stellar-ai-director-economic-valuation-2026-07-07.md"
+NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV = (
+    RESEARCH_ROOT / "stellar-ai-director-nonconstruction-economic-valuation-2026-07-07.csv"
+)
+NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD = (
+    RESEARCH_ROOT / "stellar-ai-director-nonconstruction-economic-valuation-2026-07-07.md"
+)
+ECONOMIC_VALUATION_EVIDENCE_MD = RESEARCH_ROOT / "stellar-ai-director-economic-valuation-evidence-2026-07-07.md"
 OBJECT_ATLAS_COVERAGE_MD = OBJECT_ATLAS_ROOT / "coverage-report-2026-07-06.md"
 ROUTE_REPORT_MD = OBJECT_ATLAS_ROOT / "route-reports-2026-07-06.md"
 
 REQUIRED_MODS = {
-    "3610149307": "Stellar AI",
     "1121692237": "Gigastructural Engineering & More (4.4)",
     "683230077": "NSC3",
     "2648658105": "Extra Ship Components NEXT",
     "3250900527": "Starbase Extended 3.0",
+}
+
+PARITY_REFERENCE_MODS = {
+    "3610149307": "Stellar AI",
+}
+
+ATLAS_SOURCE_MODS = {
+    **REQUIRED_MODS,
+    **PARITY_REFERENCE_MODS,
 }
 
 UNIVERSAL_RESOURCE_PATCH_NAME = "!!!Universal Resource Patch [2.4+]"
@@ -113,6 +137,41 @@ RESOURCE_VALUES = {
     "giga_sr_negative_mass": 10.0,
     "giga_sr_amb_megaconstruction": 10.0,
     "giga_sr_iodizium": 10.0,
+}
+
+DIRECTOR_CAMPAIGN_START_YEAR = 2200
+DIRECTOR_ENDGAME_VALUE_HORIZON_YEAR = 2350
+LONG_TERM_VALUE_BANDS = (
+    (None, 30, 15),
+    (30, 60, 45),
+    (60, 100, 80),
+    (100, 150, 125),
+)
+
+ROUTE_LONG_TERM_VALUE_PROFILES = {
+    "mega_engineering_core": (900.0, 25000.0, 0.0),
+    "mega_shipyard_core": (700.0, 20000.0, 15.0),
+    "economy_megastructure_core": (1000.0, 30000.0, 20.0),
+    "early_kilo_economy_core": (260.0, 6000.0, 10.0),
+    "science_kilo_snowball_core": (320.0, 7000.0, 10.0),
+    "research_megastructure_core": (850.0, 25000.0, 15.0),
+    "planetary_computer_research_core": (1200.0, 30000.0, 25.0),
+    "pop_assembly_snowball_core": (75.0, 1200.0, 8.0),
+    "ring_world_growth_core": (900.0, 25000.0, 20.0),
+    "storage_cap_core": (0.0, 6000.0, 25.0),
+    "gigas_special_resource_core": (400.0, 12000.0, 10.0),
+    "research_throughput_infrastructure": (75.0, 900.0, 6.0),
+    "planetcraft_route": (2200.0, 60000.0, 60.0),
+    "war_moon_route": (1300.0, 45000.0, 45.0),
+    "systemcraft_route": (3000.0, 90000.0, 90.0),
+    "nsc3_capital_hull_route": (500.0, 12000.0, 25.0),
+    "esc_component_route": (450.0, 10000.0, 20.0),
+    "crowded_tall_route": (160.0, 3000.0, 8.0),
+    "conquest_escape_route": (350.0, 8000.0, 20.0),
+    "raiding_pop_acquisition_route": (650.0, 8000.0, 18.0),
+    "hostile_space_fauna_clearance_route": (180.0, 2500.0, 5.0),
+    "apex_site_preservation_core": (1600.0, 45000.0, 40.0),
+    "fallen_empire_benchmark_route": (900.0, 25000.0, 35.0),
 }
 
 VANILLA_COMMON_ROOT = Path(r"C:\Steam\steamapps\common\Stellaris\common")
@@ -172,6 +231,7 @@ ATLAS_COMMON_SURFACES = {
     "script_values": "scripted_value",
     "ai_budget": "ai_budget",
     "economic_plans": "economic_plan",
+    "federation_types": "federation_type",
     "personalities": "personality",
     "country_types": "country_type",
 }
@@ -191,8 +251,16 @@ ROUTE_OBJECT_HINTS = {
     "mega_engineering_core": ("mega_engineering", "mega_shipyard", "megastructure"),
     "mega_shipyard_core": ("mega_shipyard", "shipyard", "headquarters"),
     "economy_megastructure_core": ("dyson", "gigaforge", "nidavellir", "matrioshka", "strategic_factory"),
+    "early_kilo_economy_core": ("arc_furnace", "asteroid_manufactory", "storm_observatory", "kilostructure"),
+    "science_kilo_snowball_core": ("macro_test_site", "atmosphere_shredder", "engineering_test_site", "science_kilo"),
+    "research_megastructure_core": ("science_nexus", "think_tank", "research_speed", "research"),
+    "planetary_computer_research_core": ("planetary_computer", "pcc_science", "giga_pcc", "computing"),
+    "pop_assembly_snowball_core": ("pop_assembly", "robot_assembly", "clone_vats", "spawning_pool", "growth"),
+    "ring_world_growth_core": ("ring_world", "segment", "build_surface", "population"),
+    "storage_cap_core": ("kugelblitz", "storage", "resource_max", "stockpile"),
     "gigas_special_resource_core": ("sentient_metal", "negative_mass", "megaconstruction", "supertensiles", "dark_matter"),
     "research_throughput_infrastructure": ("research_lab", "research", "institute", "supercomputer", "archaeostudies", "science"),
+    "research_diplomacy_core": ("research_federation", "research_agreement", "diplomacy", "technology_sharing"),
     "planetcraft_route": ("planetcraft", "planet_assembly", "planet_behemoth", "celestial_printing"),
     "war_moon_route": ("war_moon", "attack_moon", "lunar"),
     "systemcraft_route": ("systemcraft", "war_system", "planet_behemoth", "celestial_printing"),
@@ -200,6 +268,9 @@ ROUTE_OBJECT_HINTS = {
     "esc_component_route": ("esc_", "dark_matter_power_core", "strikecraft_5", "reactor", "shield"),
     "crowded_tall_route": ("habitat", "orbital", "district", "building", "capacity"),
     "conquest_escape_route": ("claim", "subjugation", "war", "fleet", "naval_cap"),
+    "raiding_pop_acquisition_route": ("nihilistic", "raiding", "abduct", "pops", "bombardment"),
+    "hostile_space_fauna_clearance_route": ("crystal", "amoeba", "mining_drone", "space_fauna", "leviathan"),
+    "apex_site_preservation_core": ("o_star", "matrioshka", "neutronium_gigaforge", "nidavellir", "magnetar"),
     "fallen_empire_benchmark_route": ("fallen", "awakened", "crisis", "systemcraft", "planetcraft"),
 }
 
@@ -207,12 +278,19 @@ GENERATED_SURFACE_FOLDERS = {
     "ai_budget": "ai_budget",
     "ascension_perks": "ascension_perk",
     "component_templates": "component_template",
+    "bombardment_stances": "bombardment_stance",
     "buildings": "building",
+    "decisions": "decision",
+    "defines": "define",
     "districts": "district",
+    "edicts": "edict",
     "economic_plans": "economic_plan",
+    "federation_types": "federation_type",
     "megastructures": "megastructure",
     "opinion_modifiers": "opinion_modifier",
     "on_actions": "on_action",
+    "policies": "policy",
+    "scripted_effects": "scripted_effect",
     "scripted_triggers": "scripted_trigger",
     "script_values": "scripted_value",
     "ship_sizes": "ship_size",
@@ -220,14 +298,182 @@ GENERATED_SURFACE_FOLDERS = {
     "starbase_modules": "starbase_module",
     "technology": "technology",
     "traditions": "tradition",
+    "zones": "zone",
 }
 GENERATED_AUXILIARY_COMMON_FOLDERS: set[str] = set()
 
+GIGAS_HABITAT_ZONE_SLOT_DISTRICTS = {
+    "district_giga_hab_city": ("slot_city_government", "slot_habitat_01", "slot_habitat_02"),
+    "district_giga_hab_hive": ("slot_city_government", "slot_habitat_01", "slot_habitat_02"),
+    "district_giga_hab_nexus": ("slot_city_government", "slot_habitat_01", "slot_habitat_02"),
+    "district_giga_hab_science": ("slot_habitat_research",),
+    "district_giga_hab_scavenger": ("slot_habitat_minerals",),
+    "district_giga_orbital_farming": ("slot_city_01",),
+    "district_giga_orbital_sanctuary": ("slot_city_government", "slot_city_01", "slot_city_02"),
+    "district_giga_orbital_preserve": ("slot_city_01",),
+    "district_giga_orbital_logistics": ("slot_city_government", "slot_city_01", "slot_city_02"),
+}
+
+GIGAS_HABITAT_ZONE_SLOT_SOURCE_FILES = {
+    "giga_habitats.txt": (
+        "district_giga_hab_city",
+        "district_giga_hab_hive",
+        "district_giga_hab_nexus",
+        "district_giga_hab_science",
+        "district_giga_hab_scavenger",
+    ),
+    "giga_orbital.txt": (
+        "district_giga_orbital_farming",
+        "district_giga_orbital_sanctuary",
+        "district_giga_orbital_preserve",
+        "district_giga_orbital_logistics",
+    ),
+}
+
+PLANETARY_DIVERSITY_OUTPOST_DECISION_SOURCE = "common/decisions/pd_domed_base_decisions.txt"
+
+PLANETARY_DIVERSITY_OUTPOST_DECISION_POLICY = [
+    {
+        "decision_id": "decision_build_pd_moon_base",
+        "role": "moon_network_hub",
+        "base_weight": 9000,
+        "modifiers": [
+            (5, "owner = { staid_planetary_diversity_outpost_investment_ready = yes }"),
+            (4, "is_capital = yes"),
+            (3, "owner = { staid_planetary_capacity_growth_ready = yes }"),
+        ],
+    },
+    {
+        "decision_id": "decision_build_pd_moon_base_moon_colony",
+        "role": "moon_colony_network_hub",
+        "base_weight": 9000,
+        "modifiers": [
+            (5, "owner = { staid_planetary_diversity_outpost_investment_ready = yes }"),
+            (4, "is_capital = yes"),
+            (3, "owner = { staid_planetary_capacity_growth_ready = yes }"),
+        ],
+    },
+    *[
+        {
+            "decision_id": decision_id,
+            "role": "mining_outpost",
+            "base_weight": 11000,
+            "modifiers": [
+                (6, "owner = { staid_planetary_diversity_outpost_investment_ready = yes }"),
+                (5, "owner = { has_monthly_income = { resource = minerals value < 250 } }"),
+                (3, "owner = { staid_resource_waste_pressure = yes }"),
+            ],
+        }
+        for decision_id in (
+            "decision_build_pd_mining_base",
+            "decision_build_pd_mining_base_2",
+            "decision_build_pd_mining_base_3",
+        )
+    ],
+    *[
+        {
+            "decision_id": decision_id,
+            "role": "food_outpost",
+            "base_weight": 10000,
+            "modifiers": [
+                (0, "owner = { NOT = { country_uses_food = yes } }"),
+                (6, "owner = { staid_planetary_diversity_outpost_investment_ready = yes }"),
+                (5, "owner = { country_uses_food = yes NOT = { staid_food_runway_safe = yes } }"),
+                (3, "owner = { staid_planetary_capacity_growth_ready = yes }"),
+            ],
+        }
+        for decision_id in (
+            "decision_build_pd_food_base",
+            "decision_build_pd_food_base_2",
+            "decision_build_pd_food_base_3",
+        )
+    ],
+    *[
+        {
+            "decision_id": decision_id,
+            "role": "energy_outpost",
+            "base_weight": 11000,
+            "modifiers": [
+                (6, "owner = { staid_planetary_diversity_outpost_investment_ready = yes }"),
+                (5, "owner = { has_monthly_income = { resource = energy value < 250 } }"),
+                (3, "owner = { staid_planetary_capacity_growth_ready = yes }"),
+            ],
+        }
+        for decision_id in (
+            "decision_build_pd_energy_base",
+            "decision_build_pd_energy_base_2",
+            "decision_build_pd_energy_base_3",
+        )
+    ],
+    *[
+        {
+            "decision_id": decision_id,
+            "role": "capital_research_outpost",
+            "base_weight": 15000,
+            "modifiers": [
+                (8, "owner = { staid_pd_research_outpost_priority_ready = yes }"),
+                (7, "is_capital = yes"),
+                (5, "owner = { staid_research_under_curve = yes }"),
+                (4, "owner = { staid_research_input_runway_safe = yes }"),
+                (3, "owner = { staid_planetary_capacity_growth_ready = yes }"),
+            ],
+        }
+        for decision_id in (
+            "decision_build_pd_research_base",
+            "decision_build_pd_research_base_2",
+            "decision_build_pd_research_base_3",
+        )
+    ],
+]
+
+PLANETARY_DIVERSITY_OUTPOST_VALUE_PROFILES = {
+    "moon_network_hub": (80.0, 350.0, 0.75),
+    "moon_colony_network_hub": (80.0, 350.0, 0.75),
+    "mining_outpost": (35.0, 350.0, 0.75),
+    "food_outpost": (28.0, 350.0, 0.75),
+    "energy_outpost": (25.0, 350.0, 0.75),
+    "capital_research_outpost": (90.0, 350.0, 0.75),
+}
+
+PD_ECONOMIC_ROLE_KEYWORDS = {
+    "research": ("research", "physicist", "biologist", "engineer", "researcher", "calculator", "science"),
+    "minerals": ("minerals", "mining", "miner", "mine"),
+    "energy": ("energy", "generator", "technician", "grid"),
+    "food": ("food", "farming", "farmer", "agriculture"),
+    "alloys": ("alloys", "foundry", "metallurgist", "forge"),
+    "consumer_goods": ("consumer_goods", "artisan", "factory"),
+    "trade": ("trade", "clerk", "merchant"),
+    "unity": ("unity", "priest", "bureaucrat", "culture_worker"),
+    "growth": ("pop_growth", "pop_assembly", "habitability", "housing", "immigration"),
+    "defense": ("stability", "crime", "defense", "army", "orbital_bombardment"),
+}
+
+PD_ROLE_VALUE_PROFILES = {
+    "research": (90.0, 350.0, 0.75),
+    "minerals": (35.0, 350.0, 0.75),
+    "energy": (25.0, 350.0, 0.75),
+    "food": (28.0, 350.0, 0.75),
+    "alloys": (120.0, 500.0, 1.0),
+    "consumer_goods": (70.0, 450.0, 1.0),
+    "trade": (45.0, 350.0, 0.5),
+    "unity": (55.0, 350.0, 0.5),
+    "growth": (150.0, 500.0, 1.0),
+    "defense": (35.0, 350.0, 0.5),
+}
+
+PD_BUILDING_SOURCE_FILES = (
+    "pd_buildings_overwrites.txt",
+    "pd_gaia_buildings.txt",
+    "pd_planetary_infesters_buildings.txt",
+    "pd_rare_buildings.txt",
+    "pd_uncommon_buildings.txt",
+)
+
 RESEARCH_RESOURCES = ("physics_research", "society_research", "engineering_research")
 SURPLUS_WASTE_STOCKPILE_THRESHOLDS = {
-    "minerals": 50000.0,
-    "food": 30000.0,
-    "consumer_goods": 30000.0,
+    "minerals": 25000.0,
+    "food": 18000.0,
+    "consumer_goods": 18000.0,
     "volatile_motes": 800.0,
     "exotic_gases": 800.0,
     "rare_crystals": 800.0,
@@ -254,6 +500,23 @@ ROUTE_OVERRIDE_TARGETS = [
     # Core unlock techs and high-scale research chains.
     {"object_id": "tech_mega_engineering", "object_type": "technology", "mod_id": "vanilla", "route_id": "mega_engineering_core", "weight": 200000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_mega_shipyard", "object_type": "technology", "mod_id": "vanilla", "route_id": "mega_shipyard_core", "weight": 180000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_science_nexus", "object_type": "technology", "mod_id": "vanilla", "route_id": "research_megastructure_core", "weight": 185000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_ring_world", "object_type": "technology", "mod_id": "1121692237", "source_file": "common/technology/zz_giga_tech_overwrites.txt", "route_id": "ring_world_growth_core", "weight": 175000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_orbital_arc_furnace", "object_type": "technology", "mod_id": "vanilla", "route_id": "early_kilo_economy_core", "weight": 165000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_asteroid_manufactory", "object_type": "technology", "mod_id": "1121692237", "route_id": "early_kilo_economy_core", "weight": 160000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_engineering_test_site", "object_type": "technology", "mod_id": "1121692237", "route_id": "science_kilo_snowball_core", "weight": 165000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_macro_scale_weather_manipulation", "object_type": "technology", "mod_id": "1121692237", "route_id": "science_kilo_snowball_core", "weight": 170000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_planetary_computer", "object_type": "technology", "mod_id": "1121692237", "route_id": "planetary_computer_research_core", "weight": 190000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_robotic_workers", "object_type": "technology", "mod_id": "vanilla", "route_id": "pop_assembly_snowball_core", "weight": 145000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_robot_assembly_complex", "object_type": "technology", "mod_id": "vanilla", "route_id": "pop_assembly_snowball_core", "weight": 165000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_mega_assembly", "object_type": "technology", "mod_id": "vanilla", "route_id": "pop_assembly_snowball_core", "weight": 175000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_cloning", "object_type": "technology", "mod_id": "vanilla", "route_id": "pop_assembly_snowball_core", "weight": 150000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_kugelblitz", "object_type": "technology", "mod_id": "1121692237", "route_id": "storage_cap_core", "weight": 160000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_matrioshka_brain_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "apex_site_preservation_core", "weight": 210000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_neutronium_gigaforge", "object_type": "technology", "mod_id": "1121692237", "route_id": "apex_site_preservation_core", "weight": 185000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_nidavellir", "object_type": "technology", "mod_id": "1121692237", "route_id": "apex_site_preservation_core", "weight": 195000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_interstellar_habitat", "object_type": "technology", "mod_id": "1121692237", "route_id": "crowded_tall_route", "weight": 155000, "file_key": "01_unlock_technology"},
+    {"object_id": "giga_tech_stellar_ring_habitat", "object_type": "technology", "mod_id": "1121692237", "route_id": "crowded_tall_route", "weight": 150000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_planet_assembly", "object_type": "technology", "mod_id": "1121692237", "route_id": "planetcraft_route", "weight": 160000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_lunar_assembly", "object_type": "technology", "mod_id": "1121692237", "route_id": "war_moon_route", "weight": 135000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_war_moon_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "war_moon_route", "weight": 155000, "file_key": "01_unlock_technology"},
@@ -281,10 +544,14 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "ap_gigastructural_constructs", "object_type": "ascension_perk", "mod_id": "1121692237", "route_id": "economy_megastructure_core", "weight": 120000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_celestial_printing", "object_type": "ascension_perk", "mod_id": "1121692237", "route_id": "planetcraft_route", "weight": 180000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_lord_of_war", "object_type": "ascension_perk", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 80000, "file_key": "02_perks_traditions"},
+    {"object_id": "ap_nihilistic_acquisition", "object_type": "ascension_perk", "mod_id": "vanilla", "route_id": "raiding_pop_acquisition_route", "weight": 170000, "file_key": "02_perks_traditions"},
     {"object_id": "tr_supremacy_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 90000, "file_key": "02_perks_traditions"},
     {"object_id": "tr_prosperity_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "economy_megastructure_core", "weight": 85000, "file_key": "02_perks_traditions"},
     {"object_id": "tr_adaptability_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 75000, "file_key": "02_perks_traditions"},
     {"object_id": "tr_mercantile_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 65000, "file_key": "02_perks_traditions"},
+    {"object_id": "influence_expenditure_claims", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 145000, "file_key": "08_site_limited_expansion"},
+    {"object_id": "influence_expenditure_claims_militarist", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 165000, "file_key": "08_site_limited_expansion"},
+    {"object_id": "influence_expenditure_claims_fanatic_militarist", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 185000, "file_key": "08_site_limited_expansion"},
     # Direct research-throughput infrastructure for the observed low-tech/high-stockpile failure mode.
     {"object_id": "building_research_lab_1", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 140000, "coefficient": "8", "additional_weight": "600", "file_key": "06_research_infrastructure"},
     {"object_id": "building_research_lab_2", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 160000, "coefficient": "10", "additional_weight": "900", "file_key": "06_research_infrastructure"},
@@ -293,12 +560,49 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "building_supercomputer", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 150000, "coefficient": "8", "additional_weight": "800", "file_key": "06_research_infrastructure"},
     {"object_id": "building_archaeostudies_faculty", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 130000, "coefficient": "6", "additional_weight": "500", "file_key": "06_research_infrastructure"},
     {"object_id": "district_hab_science", "object_type": "district", "mod_id": "vanilla", "source_file": "common/districts/03_habitat_districts.txt", "route_id": "crowded_tall_route", "weight": 110000, "coefficient": "4", "additional_weight": "500", "file_key": "06_research_infrastructure"},
+    # Compounding-growth infrastructure: population and science capacity pay off over the full game clock.
+    {"object_id": "building_robot_assembly_plant", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 155000, "coefficient": "8", "additional_weight": "900", "file_key": "07_pop_assembly"},
+    {"object_id": "building_robot_assembly_complex", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 175000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
+    {"object_id": "building_machine_assembly_plant", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 155000, "coefficient": "8", "additional_weight": "900", "file_key": "07_pop_assembly"},
+    {"object_id": "building_machine_assembly_complex", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 175000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
+    {"object_id": "building_clone_vats", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 170000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
+    {"object_id": "building_spawning_pool", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 160000, "coefficient": "9", "additional_weight": "1000", "file_key": "07_pop_assembly"},
+    {"object_id": "building_offspring_nest", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 150000, "coefficient": "7", "additional_weight": "800", "file_key": "07_pop_assembly"},
+    {"object_id": "district_giga_pcc_science", "object_type": "district", "mod_id": "1121692237", "source_file": "common/districts/giga_planetary_computer.txt", "route_id": "planetary_computer_research_core", "weight": 190000, "coefficient": "12", "additional_weight": "1800", "file_key": "06_research_infrastructure"},
     # Concrete build-priority objects for economy multipliers, Mega Shipyard, planetcraft, war moons, and systemcraft.
     {"object_id": "dyson_sphere_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_dyson_sphere.txt", "route_id": "economy_megastructure_core", "weight": 130000, "file_key": "03_megastructures"},
+    {"object_id": "orbital_arc_furnace_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_orbital_arc_furnace.txt", "route_id": "early_kilo_economy_core", "weight": 130000, "file_key": "03_megastructures"},
+    {"object_id": "asteroid_manufactory_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_asteroid_manufactory.txt", "route_id": "early_kilo_economy_core", "weight": 125000, "file_key": "03_megastructures"},
+    {"object_id": "macro_test_site_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_macroengineering_test_site.txt", "route_id": "science_kilo_snowball_core", "weight": 145000, "file_key": "03_megastructures"},
+    {"object_id": "macro_test_site_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_macroengineering_test_site.txt", "route_id": "science_kilo_snowball_core", "weight": 160000, "file_key": "03_megastructures"},
+    {"object_id": "macro_test_site_2", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_macroengineering_test_site.txt", "route_id": "science_kilo_snowball_core", "weight": 175000, "file_key": "03_megastructures"},
+    {"object_id": "macro_test_site_3", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_macroengineering_test_site.txt", "route_id": "science_kilo_snowball_core", "weight": 190000, "file_key": "03_megastructures"},
+    {"object_id": "atmosphere_shredder_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_atmospheric_storm_observatory.txt", "route_id": "science_kilo_snowball_core", "weight": 150000, "file_key": "03_megastructures"},
+    {"object_id": "atmosphere_shredder_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_atmospheric_storm_observatory.txt", "route_id": "science_kilo_snowball_core", "weight": 165000, "file_key": "03_megastructures"},
+    {"object_id": "atmosphere_shredder_2", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_atmospheric_storm_observatory.txt", "route_id": "science_kilo_snowball_core", "weight": 180000, "file_key": "03_megastructures"},
+    {"object_id": "atmosphere_shredder_3", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_atmospheric_storm_observatory.txt", "route_id": "science_kilo_snowball_core", "weight": 195000, "file_key": "03_megastructures"},
+    {"object_id": "think_tank_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_science_nexus.txt", "route_id": "research_megastructure_core", "weight": 155000, "file_key": "03_megastructures"},
+    {"object_id": "think_tank_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_science_nexus.txt", "route_id": "research_megastructure_core", "weight": 170000, "file_key": "03_megastructures"},
+    {"object_id": "think_tank_2", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_science_nexus.txt", "route_id": "research_megastructure_core", "weight": 185000, "file_key": "03_megastructures"},
+    {"object_id": "think_tank_3", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_science_nexus.txt", "route_id": "research_megastructure_core", "weight": 200000, "file_key": "03_megastructures"},
+    {"object_id": "ring_world_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_ring_world.txt", "route_id": "ring_world_growth_core", "weight": 145000, "file_key": "03_megastructures"},
+    {"object_id": "ring_world_2_intermediate", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_ring_world.txt", "route_id": "ring_world_growth_core", "weight": 160000, "file_key": "03_megastructures"},
+    {"object_id": "ring_world_3_intermediate", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_ring_world.txt", "route_id": "ring_world_growth_core", "weight": 175000, "file_key": "03_megastructures"},
+    {"object_id": "kugelblitz_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_kugelblitz.txt", "route_id": "storage_cap_core", "weight": 125000, "file_key": "03_megastructures"},
+    {"object_id": "kugelblitz_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_kugelblitz.txt", "route_id": "storage_cap_core", "weight": 150000, "file_key": "03_megastructures"},
+    {"object_id": "kugelblitz_2", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_kugelblitz.txt", "route_id": "storage_cap_core", "weight": 170000, "file_key": "03_megastructures"},
+    {"object_id": "kugelblitz_3", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_kugelblitz.txt", "route_id": "storage_cap_core", "weight": 190000, "file_key": "03_megastructures"},
+    {"object_id": "habitat_central_complex", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_b_habitats.txt", "route_id": "crowded_tall_route", "weight": 125000, "file_key": "03_megastructures"},
+    {"object_id": "interstellar_habitat_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_interstellar_habitat.txt", "route_id": "crowded_tall_route", "weight": 145000, "file_key": "03_megastructures"},
+    {"object_id": "stellar_ring_habitat_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_stellar_ring_habitat.txt", "route_id": "crowded_tall_route", "weight": 145000, "file_key": "03_megastructures"},
+    {"object_id": "planetary_computer_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_planetary_computer.txt", "route_id": "planetary_computer_research_core", "weight": 175000, "file_key": "03_megastructures"},
+    {"object_id": "planetary_computer_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_planetary_computer.txt", "route_id": "planetary_computer_research_core", "weight": 190000, "file_key": "03_megastructures"},
     {"object_id": "mega_shipyard_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_mega_shipyard.txt", "route_id": "mega_shipyard_core", "weight": 150000, "file_key": "03_megastructures"},
-    {"object_id": "neutronium_gigaforge_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_neutronium_gigaforge.txt", "route_id": "economy_megastructure_core", "weight": 135000, "file_key": "03_megastructures"},
-    {"object_id": "nidavellir_forge_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_nidavellir_forge.txt", "route_id": "economy_megastructure_core", "weight": 140000, "file_key": "03_megastructures"},
     {"object_id": "matrioshka_brain_0_g_star", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_matrioshka_brain_revised.txt", "route_id": "economy_megastructure_core", "weight": 145000, "file_key": "03_megastructures"},
+    {"object_id": "matrioshka_brain_0_o_star", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_matrioshka_brain_revised.txt", "route_id": "apex_site_preservation_core", "weight": 230000, "file_key": "03_megastructures"},
+    {"object_id": "dyson_sphere_0_o_star", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_dyson_sphere_o_star.txt", "route_id": "apex_site_preservation_core", "weight": 45000, "file_key": "03_megastructures"},
+    {"object_id": "neutronium_gigaforge_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_neutronium_gigaforge.txt", "route_id": "apex_site_preservation_core", "weight": 210000, "file_key": "03_megastructures"},
+    {"object_id": "nidavellir_forge_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_nidavellir_forge.txt", "route_id": "apex_site_preservation_core", "weight": 220000, "file_key": "03_megastructures"},
     {"object_id": "planetcraft_printer_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_behemoth_assembly_plant.txt", "route_id": "planetcraft_route", "weight": 180000, "file_key": "03_megastructures"},
     {"object_id": "war_moon_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_attack_moon.txt", "route_id": "war_moon_route", "weight": 165000, "file_key": "03_megastructures"},
     {"object_id": "war_system_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_i_stellar_systemcraft.txt", "route_id": "systemcraft_route", "weight": 200000, "file_key": "03_megastructures"},
@@ -307,6 +611,22 @@ ROUTE_OVERRIDE_TARGETS = [
     # and starbase support here because the current atlas does not model ESC internal `key =`
     # component-template entries as top-level load-order objects.
     {"object_id": "esc_starbase_reactor", "object_type": "starbase_building", "mod_id": "2648658105", "route_id": "fallen_empire_benchmark_route", "weight": 75000, "file_key": "05_starbase_defense"},
+    {"object_id": "adv_starbase_defenses", "object_type": "starbase_building", "mod_id": "683230077", "source_file": "common/starbase_buildings/nsc_starbase_buildings.txt", "route_id": "fallen_empire_benchmark_route", "weight": 110000, "file_key": "05_starbase_defense"},
+    {"object_id": "reinforced_defenses", "object_type": "starbase_building", "mod_id": "3250900527", "source_file": "common/starbase_buildings/sbx_3_0_buildings.txt", "route_id": "fallen_empire_benchmark_route", "weight": 105000, "file_key": "05_starbase_defense"},
+    {"object_id": "strategic_defenses", "object_type": "starbase_building", "mod_id": "3250900527", "source_file": "common/starbase_buildings/sbx_3_0_buildings.txt", "route_id": "fallen_empire_benchmark_route", "weight": 120000, "file_key": "05_starbase_defense"},
+    {"object_id": "gun_battery", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_starbase_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 90000, "file_key": "05_starbase_defense"},
+    {"object_id": "missile_battery", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_starbase_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 90000, "file_key": "05_starbase_defense"},
+    {"object_id": "hangar_bay", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_starbase_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 95000, "file_key": "05_starbase_defense"},
+    {"object_id": "large_battery", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_starbase_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 105000, "file_key": "05_starbase_defense"},
+    {"object_id": "armor_module", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_starbase_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 80000, "file_key": "05_starbase_defense"},
+    {"object_id": "orbital_ring_gun_battery", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_orbital_ring_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 80000, "file_key": "05_starbase_defense"},
+    {"object_id": "orbital_ring_missile_battery", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_orbital_ring_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 80000, "file_key": "05_starbase_defense"},
+    {"object_id": "orbital_ring_hangar_bay", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_orbital_ring_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 85000, "file_key": "05_starbase_defense"},
+    {"object_id": "orbital_ring_large_gun_battery", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_orbital_ring_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 90000, "file_key": "05_starbase_defense"},
+    {"object_id": "orbital_ring_armor_module", "object_type": "starbase_module", "mod_id": "3250900527", "source_file": "common/starbase_modules/sbx_3_0_orbital_ring_modules.txt", "route_id": "fallen_empire_benchmark_route", "weight": 75000, "file_key": "05_starbase_defense"},
+    # Verified diplomacy lever: federation type ai_weight is safe to copy and patch.
+    # Diplomatic actions, personalities, and federation law rewrites remain gated high-risk work.
+    {"object_id": "research_federation", "object_type": "federation_type", "mod_id": "vanilla", "source_file": "common/federation_types/00_federation_types.txt", "route_id": "research_diplomacy_core", "weight": 0, "file_key": "15_research_diplomacy"},
 ]
 
 THREAT_RESPONSE_AXES = (
@@ -383,7 +703,7 @@ WAR_GOAL_THREAT_CLASSES = {
         "war_goal": "wg_conquest",
         "classification": "conquest",
         "severity": 2,
-        "source": "Stellaris 4.4.4 vanilla",
+        "source": "Stellaris 4.4.5 vanilla",
         "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
         "mod_or_vanilla": "vanilla",
         "punitive_outputs_allowed": "yes",
@@ -396,7 +716,7 @@ WAR_GOAL_THREAT_CLASSES = {
         "war_goal": "wg_subjugation",
         "classification": "subjugation",
         "severity": 3,
-        "source": "Stellaris 4.4.4 vanilla",
+        "source": "Stellaris 4.4.5 vanilla",
         "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
         "mod_or_vanilla": "vanilla",
         "punitive_outputs_allowed": "yes",
@@ -409,7 +729,7 @@ WAR_GOAL_THREAT_CLASSES = {
         "war_goal": "wg_humiliation",
         "classification": "humiliation",
         "severity": 1,
-        "source": "Stellaris 4.4.4 vanilla",
+        "source": "Stellaris 4.4.5 vanilla",
         "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
         "mod_or_vanilla": "vanilla",
         "punitive_outputs_allowed": "yes",
@@ -607,7 +927,7 @@ class PDXAssignment:
 
 @dataclass(slots=True)
 class PDXBlock:
-    items: list[PDXAssignment | PDXAtom] = field(default_factory=list)
+    items: list[PDXAssignment | PDXAtom | PDXBlock] = field(default_factory=list)
 
 
 PDXValue = PDXAtom | PDXBlock
@@ -675,6 +995,8 @@ def parse_pdx(text: str) -> PDXBlock:
                     key = tokens[index]
                     index += 2
                     block.items.append(PDXAssignment(key, parse_value()))
+                elif tokens[index] == "{":
+                    block.items.append(parse_value())
                 else:
                     block.items.append(PDXAtom(tokens[index]))
                     index += 1
@@ -1025,6 +1347,14 @@ def build_active_playset_snapshot() -> dict[str, Any]:
             }
             for mod_id, name in REQUIRED_MODS.items()
         },
+        "parity_reference_mods": {
+            mod_id: {
+                "name": name,
+                "present": mod_id in present_ids,
+                "load_position": mod_ids.index(mod_id) + 1 if mod_id in present_ids else None,
+            }
+            for mod_id, name in PARITY_REFERENCE_MODS.items()
+        },
         "optional_integrations": {
             label: any(marker.lower() in name for name in present_names)
             for marker, label in OPTIONAL_MOD_NAME_MARKERS.items()
@@ -1303,7 +1633,10 @@ def iter_text_files(root: Path) -> Iterable[Path]:
 
 def object_inventory_roots(snapshot_root: Path = SNAPSHOT_ROOT) -> list[Path]:
     manifest = read_snapshot_manifest(snapshot_root)
-    return [Path(row["snapshot_path"]) for row in manifest.values() if Path(row["snapshot_path"]).exists()]
+    roots = [Path(row["snapshot_path"]) for row in manifest.values() if Path(row["snapshot_path"]).exists()]
+    if PLANETARY_DIVERSITY_WORKSHOP_ROOT.exists() and PLANETARY_DIVERSITY_WORKSHOP_ROOT not in roots:
+        roots.append(PLANETARY_DIVERSITY_WORKSHOP_ROOT)
+    return roots
 
 
 def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[str]]:
@@ -1311,6 +1644,8 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
         "megastructure": set(),
         "technology": set(),
         "ascension_perk": set(),
+        "bombardment_stance": set(),
+        "decision": set(),
         "scripted_trigger": set(),
         "scripted_value": set(),
         "resource": set(),
@@ -1319,11 +1654,14 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
         "ai_budget": set(),
         "economic_plan": set(),
         "planet_class": set(),
+        "pop_job": set(),
     }
     folder_map = {
         "megastructures": "megastructure",
         "technology": "technology",
         "ascension_perks": "ascension_perk",
+        "bombardment_stances": "bombardment_stance",
+        "decisions": "decision",
         "scripted_triggers": "scripted_trigger",
         "script_values": "scripted_value",
         "strategic_resources": "resource",
@@ -1332,6 +1670,7 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
         "ai_budget": "ai_budget",
         "economic_plans": "economic_plan",
         "planet_classes": "planet_class",
+        "pop_jobs": "pop_job",
     }
     for root in object_inventory_roots(snapshot_root):
         common = root / "common"
@@ -1342,6 +1681,8 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
             if not folder_path.exists():
                 continue
             for file_path in iter_text_files(folder_path):
+                if file_path.name.startswith(DATASET_JOB_PRESSURE_FILE_PREFIX):
+                    continue
                 try:
                     parsed = parse_file(file_path)
                 except PDXParseError:
@@ -1356,6 +1697,8 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
             if not folder_path.exists():
                 continue
             for file_path in iter_text_files(folder_path):
+                if file_path.name.startswith(DATASET_JOB_PRESSURE_FILE_PREFIX):
+                    continue
                 try:
                     parsed = parse_file(file_path)
                 except PDXParseError:
@@ -1364,6 +1707,1103 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
                     if not assignment.key.startswith("@"):
                         buckets[bucket].add(assignment.key)
     return buckets
+
+
+ECONOMIC_VALUATION_FOLDERS = {
+    "buildings": "building",
+    "zones": "zone",
+    "districts": "district",
+}
+ECONOMIC_VALUATION_SOURCE_FOLDERS = {
+    "ascension_perk": "ascension_perks",
+    "building": "buildings",
+    "colony_type": "colony_types",
+    "decision": "decisions",
+    "deposit": "deposits",
+    "district": "districts",
+    "edict": "edicts",
+    "policy": "policies",
+    "pop_job": "pop_jobs",
+    "resource": "strategic_resources",
+    "starbase_building": "starbase_buildings",
+    "starbase_module": "starbase_modules",
+    "technology": "technology",
+    "tradition": "traditions",
+    "zone": "zones",
+}
+DATASET_JOB_PRESSURE_FILE_PREFIX = "zzzz_staid_13_dataset_job_pressure_"
+
+ECONOMIC_VALUATION_RESOURCE_KEYS = set(RESOURCE_VALUES) | {
+    "food",
+    "trade",
+    "influence",
+    "amenities",
+    "stability",
+    "crime",
+    "naval_cap",
+    "mod_country_naval_cap_add",
+    "pop_growth_speed",
+}
+GENERIC_JOB_MONTHLY_VALUE = 6.0
+GENERIC_BUILDING_SLOT_VALUE = 12.0
+GENERIC_MODIFIER_KEY_VALUE = 3.0
+
+
+def _json_dump(value: Any) -> str:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"))
+
+
+def _normalized_number(value: float) -> int | float:
+    rounded = round(float(value), 6)
+    return int(rounded) if rounded.is_integer() else rounded
+
+
+def _source_numeric_facts(value: PDXValue, variables: dict[str, float]) -> list[dict[str, Any]]:
+    facts: list[dict[str, Any]] = []
+
+    def walk(current: PDXValue, path: tuple[str, ...]) -> None:
+        if isinstance(current, PDXAtom):
+            token = current.value.strip('"')
+            if token in variables:
+                facts.append(
+                    {
+                        "path": ".".join(path),
+                        "source": "variable",
+                        "token": token,
+                        "value": _normalized_number(variables[token]),
+                    }
+                )
+                return
+            try:
+                number = float(token)
+            except ValueError:
+                return
+            facts.append(
+                {
+                    "path": ".".join(path),
+                    "source": "literal",
+                    "token": token,
+                    "value": _normalized_number(number),
+                }
+            )
+            return
+        for item in current.items:
+            if isinstance(item, PDXAssignment):
+                walk(item.value, (*path, item.key.strip('"')))
+            elif isinstance(item, PDXAtom):
+                walk(item, (*path, "$atom"))
+            elif isinstance(item, PDXBlock):
+                walk(item, (*path, "$block"))
+
+    walk(value, ())
+    return facts
+
+
+def _source_numeric_fact_columns(value: PDXValue, variables: dict[str, float]) -> dict[str, str]:
+    facts_json = _json_dump(_source_numeric_facts(value, variables))
+    return {
+        "source_numeric_facts_json": facts_json,
+        "source_numeric_facts_hash": hashlib.sha256(facts_json.encode("utf-8")).hexdigest(),
+    }
+
+
+def _pdx_to_plain(value: PDXValue) -> Any:
+    if isinstance(value, PDXAtom):
+        return value.value.strip('"')
+    rows: list[Any] = []
+    for item in value.items:
+        if isinstance(item, PDXAssignment):
+            rows.append({item.key: _pdx_to_plain(item.value)})
+        elif isinstance(item, PDXAtom):
+            rows.append(item.value.strip('"'))
+        elif isinstance(item, PDXBlock):
+            rows.append(_pdx_to_plain(item))
+    return rows
+
+
+def _numeric_atom(value: PDXValue, variables: dict[str, float]) -> tuple[float, str | None]:
+    atom = atom_value(value)
+    if atom is None:
+        return (0.0, None)
+    if atom in variables:
+        return (variables[atom], None)
+    try:
+        return (float(atom), None)
+    except ValueError:
+        return (0.0, atom if atom.startswith("@") else None)
+
+
+def _collect_resource_amounts(value: PDXValue, variables: dict[str, float]) -> tuple[dict[str, float], set[str]]:
+    amounts: dict[str, float] = {}
+    unresolved: set[str] = set()
+    for assignment in iter_assignments(value):
+        key = assignment.key.strip('"')
+        if key not in ECONOMIC_VALUATION_RESOURCE_KEYS:
+            continue
+        amount, unresolved_variable = _numeric_atom(assignment.value, variables)
+        if unresolved_variable:
+            unresolved.add(unresolved_variable)
+        amounts[key] = amounts.get(key, 0.0) + amount
+    return amounts, unresolved
+
+
+def _resource_value(amounts: dict[str, float]) -> float:
+    return sum(amount * RESOURCE_VALUES.get(resource, 0.25) for resource, amount in amounts.items())
+
+
+def _collect_job_adds(value: PDXValue, variables: dict[str, float]) -> tuple[dict[str, float], set[str]]:
+    jobs: dict[str, float] = {}
+    unresolved: set[str] = set()
+    for assignment in iter_assignments(value):
+        key = assignment.key.strip('"')
+        if not re.fullmatch(r"job_[A-Za-z0-9_]+_add", key):
+            continue
+        amount, unresolved_variable = _numeric_atom(assignment.value, variables)
+        if unresolved_variable:
+            unresolved.add(unresolved_variable)
+        jobs[key.removesuffix("_add")] = jobs.get(key.removesuffix("_add"), 0.0) + amount
+    return jobs, unresolved
+
+
+def _assignment_plain(value: PDXBlock, keys: set[str]) -> dict[str, Any]:
+    rows: dict[str, Any] = {}
+    for assignment in block_assignments(value):
+        if assignment.key in keys:
+            rows[assignment.key] = _pdx_to_plain(assignment.value)
+    return rows
+
+
+def _top_level_ai_state(value: PDXBlock, variables: dict[str, float]) -> tuple[dict[str, Any], set[str]]:
+    ai_keys = {
+        "ai_weight",
+        "ai_weight_coefficient",
+        "additional_ai_weight",
+        "ai_priority",
+        "ai_resource_production",
+        "ai_estimate_without_unemployment",
+    }
+    state = _assignment_plain(value, ai_keys)
+    unresolved: set[str] = set()
+    for key in ("ai_weight_coefficient", "ai_priority"):
+        for assignment in block_assignments(value, key):
+            amount, unresolved_variable = _numeric_atom(assignment.value, variables)
+            state[f"{key}_numeric"] = amount
+            if unresolved_variable:
+                unresolved.add(unresolved_variable)
+    return state, unresolved
+
+
+def _collect_modifier_keys(value: PDXValue) -> list[str]:
+    keys: set[str] = set()
+    for assignment in iter_assignments(value):
+        key = assignment.key.strip('"')
+        if key.startswith("planet_") or key.startswith("pop_") or key.startswith("job_") or key.startswith("mod_"):
+            keys.add(key)
+    return sorted(keys)
+
+
+def _collect_upgrade_ids(value: PDXBlock) -> list[str]:
+    upgrades: set[str] = set()
+    for key in ("upgrades", "upgrades_to", "upgrade"):
+        for assignment in block_assignments(value, key):
+            if isinstance(assignment.value, PDXBlock):
+                upgrades.update(atom for atom in block_atoms(assignment.value) if not atom.startswith("@"))
+            else:
+                atom = atom_value(assignment.value)
+                if atom and not atom.startswith("@"):
+                    upgrades.add(atom)
+    return sorted(upgrades)
+
+
+def _count_nested_assignment_blocks(value: PDXValue, key: str) -> int:
+    return sum(1 for assignment in iter_assignments(value) if assignment.key == key and isinstance(assignment.value, PDXBlock))
+
+
+def _serialized_value_tokens(value: PDXValue) -> set[str]:
+    serialized = _json_dump(_pdx_to_plain(value))
+    return set(re.findall(r"[A-Za-z_][A-Za-z0-9_]*", serialized))
+
+
+def _economic_structural_reference_columns(value: PDXBlock, modifier_keys: list[str]) -> dict[str, Any]:
+    tokens = _serialized_value_tokens(value)
+    referenced_unlocks = sorted(
+        token
+        for token in tokens
+        if token.endswith("_unlocked") or token.startswith("unlock_") or token.startswith("allow_")
+    )
+    referenced_technologies = sorted(token for token in tokens if token.startswith("tech_") or token.startswith("giga_tech_"))
+    referenced_deposits = sorted(token for token in tokens if token.startswith("d_"))
+    job_or_modifier_tokens = sorted(
+        token
+        for token in tokens | set(modifier_keys)
+        if token.startswith("job_") or token.startswith("planet_") or token.startswith("pop_") or token.startswith("mod_")
+    )
+    return {
+        "top_level_keys": "|".join(sorted({assignment.key for assignment in block_assignments(value)})),
+        "nested_resources_blocks": _count_nested_assignment_blocks(value, "resources"),
+        "nested_ai_weight_blocks": _count_nested_assignment_blocks(value, "ai_weight"),
+        "nested_modifier_blocks": _count_nested_assignment_blocks(value, "modifier"),
+        "referenced_unlocks_or_flags": "|".join(referenced_unlocks),
+        "referenced_technologies": "|".join(referenced_technologies),
+        "referenced_deposits": "|".join(referenced_deposits),
+        "referenced_jobs_or_modifiers": "|".join(job_or_modifier_tokens),
+    }
+
+
+def _valuation_stack_roots(playset: dict[str, Any]) -> list[dict[str, Any]]:
+    roots = [
+        {
+            "load_position": 0,
+            "steam_id": "vanilla",
+            "name": "Stellaris vanilla",
+            "root": STELLARIS_INSTALL_ROOT,
+        }
+    ]
+    for mod in playset.get("mods", []):
+        path = Path(str(mod.get("path", "")))
+        if path.exists():
+            roots.append(
+                {
+                    "load_position": int(mod.get("position", 0) or 0),
+                    "steam_id": safe_mod_id(mod.get("steam_id")),
+                    "name": str(mod.get("name", "")),
+                    "root": path,
+                }
+            )
+    return roots
+
+
+def _collect_economic_definitions(playset: dict[str, Any]) -> list[dict[str, Any]]:
+    definitions: list[dict[str, Any]] = []
+    for root_info in _valuation_stack_roots(playset):
+        root = Path(root_info["root"])
+        common = root / "common"
+        if not common.exists():
+            continue
+        for folder, object_type in ECONOMIC_VALUATION_FOLDERS.items():
+            folder_path = common / folder
+            if not folder_path.exists():
+                continue
+            for file_path in iter_text_files(folder_path):
+                if file_path.name.startswith(DATASET_JOB_PRESSURE_FILE_PREFIX):
+                    continue
+                try:
+                    parsed = parse_file(file_path)
+                except PDXParseError as exc:
+                    definitions.append(
+                        {
+                            **root_info,
+                            "object_type": object_type,
+                            "object_id": "",
+                            "source_file": str(file_path),
+                            "relative_file": str(file_path.relative_to(root)),
+                            "parse_error": str(exc),
+                            "value": None,
+                        }
+                    )
+                    continue
+                for assignment in block_assignments(parsed):
+                    if assignment.key.startswith("@") or not isinstance(assignment.value, PDXBlock):
+                        continue
+                    definitions.append(
+                        {
+                            **root_info,
+                            "object_type": object_type,
+                            "object_id": assignment.key,
+                            "source_file": str(file_path),
+                            "relative_file": str(file_path.relative_to(root)),
+                            "parse_error": "",
+                            "value": assignment.value,
+                        }
+                    )
+    return definitions
+
+
+def _collect_nonconstruction_resource_definitions(playset: dict[str, Any]) -> list[dict[str, Any]]:
+    definitions: list[dict[str, Any]] = []
+    for root_info in _valuation_stack_roots(playset):
+        root = Path(root_info["root"])
+        folder_path = root / "common" / "strategic_resources"
+        if not folder_path.exists():
+            continue
+        for file_path in iter_text_files(folder_path):
+            try:
+                parsed = parse_file(file_path)
+            except PDXParseError:
+                continue
+            for assignment in block_assignments(parsed):
+                if assignment.key.startswith("@") or not isinstance(assignment.value, PDXBlock):
+                    continue
+                definitions.append(
+                    {
+                        **root_info,
+                        "object_type": "resource",
+                        "object_id": assignment.key,
+                        "source_file": str(file_path),
+                        "relative_file": str(file_path.relative_to(root)),
+                        "parse_error": "",
+                        "value": assignment.value,
+                    }
+                )
+    return definitions
+
+
+def _winning_economic_definitions(definitions: list[dict[str, Any]]) -> dict[tuple[str, str], dict[str, Any]]:
+    winners: dict[tuple[str, str], dict[str, Any]] = {}
+    for definition in definitions:
+        object_id = definition.get("object_id")
+        value = definition.get("value")
+        if not object_id or value is None:
+            continue
+        key = (str(definition["object_type"]), str(object_id))
+        current = winners.get(key)
+        if current is None or int(definition["load_position"]) >= int(current["load_position"]):
+            winners[key] = definition
+    return winners
+
+
+def _economic_source_summary(definitions: list[dict[str, Any]]) -> dict[tuple[str, str], dict[str, Any]]:
+    summaries: dict[tuple[str, str], dict[str, Any]] = {}
+    for definition in definitions:
+        object_id = definition.get("object_id")
+        if not object_id:
+            continue
+        key = (str(definition["object_type"]), str(object_id))
+        summary = summaries.setdefault(key, {"source_count": 0, "source_mods": [], "source_files": []})
+        summary["source_count"] += 1
+        summary["source_mods"].append(str(definition.get("name", "")))
+        summary["source_files"].append(str(definition.get("relative_file", "")))
+    return summaries
+
+
+def _economic_object_row(
+    key: tuple[str, str],
+    winner: dict[str, Any],
+    source_summary: dict[str, Any],
+    variables: dict[str, float],
+) -> dict[str, Any]:
+    value = winner["value"]
+    assert isinstance(value, PDXBlock)
+    flags: set[str] = set()
+    cost: dict[str, float] = {}
+    upkeep: dict[str, float] = {}
+    output: dict[str, float] = {}
+    unresolved: set[str] = set()
+    for resources in block_assignments(value, "resources"):
+        if not isinstance(resources.value, PDXBlock):
+            continue
+        for assignment in block_assignments(resources.value):
+            if assignment.key == "cost":
+                amounts, missing = _collect_resource_amounts(assignment.value, variables)
+                cost.update({resource: cost.get(resource, 0.0) + amount for resource, amount in amounts.items()})
+                unresolved.update(missing)
+            elif assignment.key == "upkeep":
+                amounts, missing = _collect_resource_amounts(assignment.value, variables)
+                upkeep.update({resource: upkeep.get(resource, 0.0) + amount for resource, amount in amounts.items()})
+                unresolved.update(missing)
+            elif assignment.key in {"produces", "produced_resources"}:
+                amounts, missing = _collect_resource_amounts(assignment.value, variables)
+                output.update({resource: output.get(resource, 0.0) + amount for resource, amount in amounts.items()})
+                unresolved.update(missing)
+    for ai_production in block_assignments(value, "ai_resource_production"):
+        amounts, missing = _collect_resource_amounts(ai_production.value, variables)
+        output.update({resource: output.get(resource, 0.0) + amount for resource, amount in amounts.items()})
+        unresolved.update(missing)
+    jobs, missing_jobs = _collect_job_adds(value, variables)
+    unresolved.update(missing_jobs)
+    ai_state, missing_ai = _top_level_ai_state(value, variables)
+    unresolved.update(missing_ai)
+    modifier_keys = _collect_modifier_keys(value)
+    top_level = _assignment_plain(
+        value,
+        {
+            "potential",
+            "allow",
+            "possible",
+            "prerequisites",
+            "show_tech_unlock_if",
+            "planet_modifier",
+            "triggered_planet_modifier",
+            "triggered_district_planet_modifier",
+            "country_modifier",
+            "resources",
+            "building_sets",
+            "zone_sets",
+            "district_set",
+            "category",
+        },
+    )
+    if jobs:
+        flags.add("has_jobs")
+    if output:
+        flags.add("has_ai_or_direct_output")
+    if cost:
+        flags.add("has_build_cost")
+    if upkeep:
+        flags.add("has_upkeep")
+    if any(assignment.key == "inline_script" for assignment in iter_assignments(value)):
+        flags.add("uses_inline_script")
+    if unresolved:
+        flags.add("unresolved_variables")
+    if "ai_weight" not in ai_state:
+        flags.add("ai_weight_absent")
+    elif re.search(r"weight[^A-Za-z0-9_]*0", _json_dump(ai_state.get("ai_weight", ""))):
+        flags.add("ai_weight_zero_or_gated_zero")
+    if int(source_summary["source_count"]) > 1:
+        flags.add("overridden_in_stack")
+    jobs_total = sum(max(0.0, amount) for amount in jobs.values())
+    output_value = _resource_value(output)
+    job_value = jobs_total * GENERIC_JOB_MONTHLY_VALUE
+    modifier_value = len([key for key in modifier_keys if "produces" in key or "output" in key or "add" in key]) * GENERIC_MODIFIER_KEY_VALUE
+    if "zone_building_slots_add" in modifier_keys:
+        modifier_value += GENERIC_BUILDING_SLOT_VALUE
+    cost_value = _resource_value(cost)
+    upkeep_value = _resource_value(upkeep)
+    gross_monthly_value = output_value + job_value + modifier_value
+    net_monthly_value = gross_monthly_value - upkeep_value
+    structural_columns = _economic_structural_reference_columns(value, modifier_keys)
+    row = {
+        "object_type": key[0],
+        "object_id": key[1],
+        "winning_load_position": winner["load_position"],
+        "winning_mod_id": winner["steam_id"],
+        "winning_mod_name": winner["name"],
+        "winning_file": winner["relative_file"],
+        "definition_count": source_summary["source_count"],
+        "source_mods": "|".join(dict.fromkeys(source_summary["source_mods"])),
+        "source_files": "|".join(dict.fromkeys(source_summary["source_files"])),
+        "category": atom_value(block_assignments(value, "category")[0].value) if block_assignments(value, "category") else "",
+        "build_cost_json": _json_dump(cost),
+        "build_cost_value_estimate": round(cost_value, 3),
+        "upkeep_json": _json_dump(upkeep),
+        "monthly_upkeep_value_estimate": round(upkeep_value, 3),
+        "jobs_created_json": _json_dump(jobs),
+        "jobs_created_total_estimate": round(jobs_total, 3),
+        "direct_monthly_output_json": _json_dump(output),
+        "direct_monthly_output_value_estimate": round(output_value, 3),
+        "modifier_keys": "|".join(modifier_keys),
+        "modifier_monthly_value_estimate": round(modifier_value, 3),
+        "gross_monthly_value_estimate": round(gross_monthly_value, 3),
+        "net_monthly_value_estimate": round(net_monthly_value, 3),
+        "roi_2200_to_2350_estimate": round(net_monthly_value * 150 * 12 - cost_value, 3),
+        "roi_2250_to_2350_estimate": round(net_monthly_value * 100 * 12 - cost_value, 3),
+        "roi_2300_to_2350_estimate": round(net_monthly_value * 50 * 12 - cost_value, 3),
+        "roi_2325_to_2350_estimate": round(net_monthly_value * 25 * 12 - cost_value, 3),
+        "upgrades_json": _json_dump(_collect_upgrade_ids(value)),
+        "ai_state_json": _json_dump(ai_state),
+        "prerequisites_json": _json_dump(
+            {key: top_level[key] for key in ("potential", "allow", "possible", "prerequisites", "show_tech_unlock_if") if key in top_level}
+        ),
+        "modifiers_json": _json_dump(
+            {key: top_level[key] for key in ("planet_modifier", "triggered_planet_modifier", "triggered_district_planet_modifier", "country_modifier") if key in top_level}
+        ),
+        "building_zone_district_sets_json": _json_dump(
+            {key: top_level[key] for key in ("building_sets", "zone_sets", "district_set") if key in top_level}
+        ),
+        "data_quality_flags": "|".join(sorted(flags)),
+        "unresolved_variables": "|".join(sorted(unresolved)),
+        **_source_numeric_fact_columns(value, variables),
+        **structural_columns,
+    }
+    return row
+
+
+def _nonconstruction_resource_row(
+    object_key: tuple[str, str],
+    winner: dict[str, Any],
+    source_summary: dict[str, Any],
+    variables: dict[str, float],
+) -> dict[str, Any]:
+    value = winner["value"]
+    assert isinstance(value, PDXBlock)
+    modifier_keys = _collect_modifier_keys(value)
+    ai_state, _ = _top_level_ai_state(value, {})
+    top_level = _assignment_plain(value, {"potential", "modifier"})
+    flags = {"cost_absent_or_indirect", "direct_output_absent_or_indirect", "strategic_classification_needed"}
+    if not ai_state:
+        flags.add("ai_weight_absent")
+    if int(source_summary["source_count"]) > 1:
+        flags.add("overridden_in_stack")
+    return normalize_economic_valuation_rows(
+        [
+            {
+                "object_type": object_key[0],
+                "object_id": object_key[1],
+                "winning_load_position": winner["load_position"],
+                "winning_mod_id": winner["steam_id"],
+                "winning_mod_name": winner["name"],
+                "winning_file": winner["relative_file"],
+                "definition_count": source_summary["source_count"],
+                "source_mods": "|".join(dict.fromkeys(source_summary["source_mods"])),
+                "source_files": "|".join(dict.fromkeys(source_summary["source_files"])),
+                "category": "resource",
+                "build_cost_json": "{}",
+                "build_cost_value_estimate": 0,
+                "upkeep_json": "{}",
+                "monthly_upkeep_value_estimate": 0,
+                "jobs_created_json": "{}",
+                "jobs_created_total_estimate": 0,
+                "direct_monthly_output_json": "{}",
+                "direct_monthly_output_value_estimate": 0,
+                "modifier_keys": "|".join(modifier_keys),
+                "modifier_monthly_value_estimate": 0,
+                "gross_monthly_value_estimate": 0,
+                "net_monthly_value_estimate": 0,
+                "roi_2200_to_2350_estimate": 0,
+                "roi_2250_to_2350_estimate": 0,
+                "roi_2300_to_2350_estimate": 0,
+                "roi_2325_to_2350_estimate": 0,
+                "upgrades_json": "[]",
+                "ai_state_json": _json_dump(ai_state),
+                "prerequisites_json": _json_dump({field: top_level[field] for field in ("potential",) if field in top_level}),
+                "modifiers_json": _json_dump({field: top_level[field] for field in ("modifier",) if field in top_level}),
+                "building_zone_district_sets_json": "{}",
+                "data_quality_flags": "|".join(sorted(flags)),
+                "unresolved_variables": "none",
+                **_source_numeric_fact_columns(value, variables),
+                **_economic_structural_reference_columns(value, modifier_keys),
+            }
+        ]
+    )[0]
+
+
+def build_nonconstruction_resource_rows(playset: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    playset = build_active_playset_snapshot() if playset is None else playset
+    roots = [Path(item["root"]) for item in _valuation_stack_roots(playset)]
+    variables = collect_global_variables(roots)
+    definitions = _collect_nonconstruction_resource_definitions(playset)
+    winners = _winning_economic_definitions(definitions)
+    summaries = _economic_source_summary(definitions)
+    return [
+        _nonconstruction_resource_row(object_key, winner, summaries[object_key], variables)
+        for object_key, winner in sorted(winners.items(), key=lambda item: (item[0][0], item[0][1]))
+    ]
+
+
+def build_economic_valuation_rows(playset: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    playset = build_active_playset_snapshot() if playset is None else playset
+    roots = [Path(item["root"]) for item in _valuation_stack_roots(playset)]
+    variables = collect_global_variables(roots)
+    definitions = _collect_economic_definitions(playset)
+    winners = _winning_economic_definitions(definitions)
+    summaries = _economic_source_summary(definitions)
+    rows = [
+        _economic_object_row(key, winner, summaries[key], variables)
+        for key, winner in sorted(winners.items(), key=lambda item: (item[0][0], item[0][1]))
+    ]
+    parse_errors = [definition for definition in definitions if definition.get("parse_error")]
+    for parse_error in parse_errors:
+        rows.append(
+            {
+                "object_type": "parse_error",
+                "object_id": "",
+                "winning_load_position": parse_error["load_position"],
+                "winning_mod_id": parse_error["steam_id"],
+                "winning_mod_name": parse_error["name"],
+                "winning_file": parse_error["relative_file"],
+                "definition_count": 0,
+                "source_mods": parse_error["name"],
+                "source_files": parse_error["relative_file"],
+                "category": "",
+                "build_cost_json": "{}",
+                "build_cost_value_estimate": 0,
+                "upkeep_json": "{}",
+                "monthly_upkeep_value_estimate": 0,
+                "jobs_created_json": "{}",
+                "jobs_created_total_estimate": 0,
+                "direct_monthly_output_json": "{}",
+                "direct_monthly_output_value_estimate": 0,
+                "modifier_keys": "",
+                "modifier_monthly_value_estimate": 0,
+                "gross_monthly_value_estimate": 0,
+                "net_monthly_value_estimate": 0,
+                "roi_2200_to_2350_estimate": 0,
+                "roi_2250_to_2350_estimate": 0,
+                "roi_2300_to_2350_estimate": 0,
+                "roi_2325_to_2350_estimate": 0,
+                "upgrades_json": "[]",
+                "ai_state_json": "{}",
+                "prerequisites_json": "{}",
+                "modifiers_json": "{}",
+                "building_zone_district_sets_json": "{}",
+                "data_quality_flags": "parse_error",
+                "unresolved_variables": str(parse_error["parse_error"]),
+            }
+        )
+    return rows
+
+
+def _economic_valuation_default(column: str) -> Any:
+    if column in ECONOMIC_VALUATION_NUMERIC_COLUMNS:
+        return 0
+    if column in {"upgrades_json", "source_numeric_facts_json"}:
+        return "[]"
+    if column in ECONOMIC_VALUATION_JSON_COLUMNS:
+        return "{}"
+    return "none"
+
+
+def normalize_economic_valuation_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    normalized: list[dict[str, Any]] = []
+    for row in rows:
+        normalized_row: dict[str, Any] = {}
+        for column in ECONOMIC_VALUATION_CANONICAL_COLUMNS:
+            value = row.get(column, _economic_valuation_default(column))
+            if value is None or value == "":
+                value = _economic_valuation_default(column)
+            normalized_row[column] = value
+        normalized.append(normalized_row)
+    return normalized
+
+
+ECONOMIC_VALUATION_SOURCE_FACT_COLUMNS = (
+    "winning_load_position",
+    "winning_mod_id",
+    "winning_mod_name",
+    "winning_file",
+    "definition_count",
+    "source_mods",
+    "source_files",
+    "source_numeric_facts_json",
+    "source_numeric_facts_hash",
+)
+
+
+def fresh_economic_valuation_source_facts(
+    rows: list[dict[str, Any]],
+    playset: dict[str, Any] | None = None,
+) -> dict[tuple[str, str], dict[str, Any]]:
+    playset = build_active_playset_snapshot() if playset is None else playset
+    roots = [Path(item["root"]) for item in _valuation_stack_roots(playset)]
+    variables = collect_global_variables(roots)
+    wanted: dict[str, set[str]] = {}
+    for row in rows:
+        object_type = str(row.get("object_type", ""))
+        object_id = str(row.get("object_id", ""))
+        if object_type in ECONOMIC_VALUATION_SOURCE_FOLDERS and object_id:
+            wanted.setdefault(object_type, set()).add(object_id)
+    definitions: list[dict[str, Any]] = []
+    for root_info in _valuation_stack_roots(playset):
+        root = Path(root_info["root"])
+        common = root / "common"
+        if not common.exists():
+            continue
+        for object_type, folder in ECONOMIC_VALUATION_SOURCE_FOLDERS.items():
+            wanted_ids = wanted.get(object_type)
+            if not wanted_ids:
+                continue
+            folder_path = common / folder
+            if not folder_path.exists():
+                continue
+            for file_path in iter_text_files(folder_path):
+                if file_path.name.startswith(DATASET_JOB_PRESSURE_FILE_PREFIX):
+                    continue
+                try:
+                    parsed = parse_file(file_path)
+                except PDXParseError:
+                    continue
+                for assignment in block_assignments(parsed):
+                    if assignment.key not in wanted_ids or not isinstance(assignment.value, PDXBlock):
+                        continue
+                    definitions.append(
+                        {
+                            **root_info,
+                            "object_type": object_type,
+                            "object_id": assignment.key,
+                            "source_file": str(file_path),
+                            "relative_file": str(file_path.relative_to(root)),
+                            "parse_error": "",
+                            "value": assignment.value,
+                        }
+                    )
+    winners = _winning_economic_definitions(definitions)
+    summaries = _economic_source_summary(definitions)
+    facts: dict[tuple[str, str], dict[str, Any]] = {}
+    for object_key, winner in winners.items():
+        value = winner["value"]
+        assert isinstance(value, PDXBlock)
+        summary = summaries[object_key]
+        fact_row = {
+            "object_type": object_key[0],
+            "object_id": object_key[1],
+            "winning_load_position": winner["load_position"],
+            "winning_mod_id": winner["steam_id"],
+            "winning_mod_name": winner["name"],
+            "winning_file": winner["relative_file"],
+            "definition_count": summary["source_count"],
+            "source_mods": "|".join(dict.fromkeys(summary["source_mods"])),
+            "source_files": "|".join(dict.fromkeys(summary["source_files"])),
+            **_source_numeric_fact_columns(value, variables),
+        }
+        normalized_fact_row = normalize_economic_valuation_rows([fact_row])[0]
+        facts[object_key] = {
+            column: normalized_fact_row[column] for column in ECONOMIC_VALUATION_SOURCE_FACT_COLUMNS
+        }
+    return facts
+
+
+def enrich_economic_valuation_rows_with_source_facts(
+    rows: list[dict[str, Any]],
+    playset: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    facts = fresh_economic_valuation_source_facts(rows, playset)
+    enriched: list[dict[str, Any]] = []
+    for row in rows:
+        updated = dict(row)
+        row_facts = facts.get((str(row.get("object_type", "")), str(row.get("object_id", ""))))
+        if row_facts:
+            updated.update(row_facts)
+        enriched.append(updated)
+    return normalize_economic_valuation_rows(enriched)
+
+
+def economic_valuation_dataset_summary(rows: list[dict[str, Any]], playset: dict[str, Any]) -> str:
+    by_type: dict[str, int] = {}
+    flagged: dict[str, int] = {}
+    top_roi = sorted(
+        [row for row in rows if row["object_type"] != "parse_error"],
+        key=lambda row: float(row["roi_2250_to_2350_estimate"]),
+        reverse=True,
+    )[:25]
+    for row in rows:
+        by_type[row["object_type"]] = by_type.get(row["object_type"], 0) + 1
+        for flag in str(row["data_quality_flags"]).split("|"):
+            if flag:
+                flagged[flag] = flagged.get(flag, 0) + 1
+    type_lines = "\n".join(f"- {key}: {value}" for key, value in sorted(by_type.items()))
+    flag_lines = "\n".join(f"- {key}: {value}" for key, value in sorted(flagged.items()))
+    top_lines = "\n".join(
+        f"- {row['object_type']} `{row['object_id']}` from {row['winning_mod_name']}: "
+        f"ROI@2250={row['roi_2250_to_2350_estimate']}, jobs={row['jobs_created_total_estimate']}, "
+        f"flags={row['data_quality_flags'] or 'none'}"
+        for row in top_roi
+    )
+    return f"""# Stellar AI Director Economic Valuation Dataset
+
+Generated: {datetime.now(timezone.utc).isoformat()}
+
+This dataset is the required evidence gate before generating new late-game unemployment or construction-pressure weights. It mines the active Irony stack plus vanilla for planet `buildings`, `zones`, and `districts`, records the top-level load winner, and computes rough long-horizon ROI against the 2350 target end date.
+
+Important limitations:
+
+- ROI is a rough planning number, not a game simulation.
+- Explicit `ai_resource_production` and direct production are valued directly.
+- Job-only objects use `{GENERIC_JOB_MONTHLY_VALUE}` value per job per month because final job output depends on empire, species, designation, buildings, and modifiers.
+- Modifier-only objects use a conservative key-count proxy and are flagged for review.
+- Inline scripts and unresolved variables are flagged so later weight generation can prefer high-confidence rows or require manual review.
+
+Active collection: {playset.get('collection_name', '')}
+Active mod count: {playset.get('mod_count', 0)}
+
+## Row Counts
+
+{type_lines}
+
+## Data Quality Flags
+
+{flag_lines}
+
+## Highest Rough ROI At 2250 Horizon
+
+{top_lines}
+"""
+
+
+def generate_economic_valuation_dataset() -> list[dict[str, Any]]:
+    playset = build_active_playset_snapshot()
+    rows = enrich_economic_valuation_rows_with_source_facts(build_economic_valuation_rows(playset), playset)
+    write_csv(ECONOMIC_VALUATION_DATASET_CSV, rows)
+    write_text_file(ECONOMIC_VALUATION_DATASET_MD, economic_valuation_dataset_summary(rows, playset))
+    return rows
+
+
+def normalize_economic_valuation_dataset_file(path: Path) -> None:
+    rows, _ = _read_economic_valuation_csv_rows(path)
+    if rows:
+        write_csv(path, enrich_economic_valuation_rows_with_source_facts(rows))
+
+
+def normalize_nonconstruction_economic_valuation_dataset_file(path: Path) -> None:
+    rows, _ = _read_economic_valuation_csv_rows(path)
+    if not rows:
+        return
+    rows = [row for row in rows if row.get("object_type") != "resource"]
+    rows.extend(build_nonconstruction_resource_rows())
+    facts = fresh_economic_valuation_source_facts(rows)
+    current_rows = [
+        row
+        for row in rows
+        if row.get("object_type") not in ECONOMIC_VALUATION_SOURCE_FOLDERS
+        or (str(row.get("object_type", "")), str(row.get("object_id", ""))) in facts
+    ]
+    enriched: list[dict[str, Any]] = []
+    for row in current_rows:
+        updated = dict(row)
+        updated.update(facts.get((str(row.get("object_type", "")), str(row.get("object_id", ""))), {}))
+        enriched.append(updated)
+    write_csv(path, normalize_economic_valuation_rows(enriched))
+
+
+def normalize_economic_valuation_dataset_pair() -> None:
+    normalize_economic_valuation_dataset_file(ECONOMIC_VALUATION_DATASET_CSV)
+    normalize_nonconstruction_economic_valuation_dataset_file(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV)
+
+
+def economic_valuation_dataset_passes(repo_root: Path = REPO_ROOT) -> bool:
+    csv_path = repo_root / ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT)
+    if not csv_path.exists():
+        return False
+    with csv_path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        rows = list(reader)
+    required_columns = {
+        "object_type",
+        "object_id",
+        "winning_mod_name",
+        "winning_file",
+        "build_cost_json",
+        "upkeep_json",
+        "jobs_created_json",
+        "direct_monthly_output_json",
+        "modifier_keys",
+        "ai_state_json",
+        "prerequisites_json",
+        "data_quality_flags",
+        "roi_2250_to_2350_estimate",
+    }
+    fieldnames = set(reader.fieldnames or [])
+    if not rows or not required_columns.issubset(fieldnames):
+        return False
+    if fieldnames != set(ECONOMIC_VALUATION_CANONICAL_COLUMNS):
+        return False
+    if any(any(row.get(column, "") == "" for column in ECONOMIC_VALUATION_CANONICAL_COLUMNS) for row in rows):
+        return False
+    object_types = {row["object_type"] for row in rows}
+    if object_types - CONSTRUCTION_ECONOMIC_OBJECT_TYPES:
+        return False
+    if not CONSTRUCTION_ECONOMIC_OBJECT_TYPES.issubset(object_types):
+        return False
+    if not any(row["winning_mod_id"] == "1121692237" and row["object_type"] in {"building", "district"} for row in rows):
+        return False
+    if not any(row["winning_mod_id"] == "2648658105" and row["object_type"] == "building" for row in rows):
+        return False
+    if not any(float(row["jobs_created_total_estimate"] or 0) > 0 for row in rows):
+        return False
+    if not any(float(row["roi_2250_to_2350_estimate"] or 0) > 0 for row in rows):
+        return False
+    return True
+
+
+CONSTRUCTION_ECONOMIC_OBJECT_TYPES = {"building", "zone", "district"}
+NONCONSTRUCTION_ECONOMIC_OBJECT_TYPES = {
+    "ascension_perk",
+    "colony_type",
+    "decision",
+    "deposit",
+    "edict",
+    "policy",
+    "pop_job",
+    "resource",
+    "starbase_building",
+    "starbase_module",
+    "technology",
+    "tradition",
+}
+EXCLUDED_NONCONSTRUCTION_OBJECT_TYPES = CONSTRUCTION_ECONOMIC_OBJECT_TYPES | {"megastructure"}
+SHARED_ECONOMIC_VALUATION_COLUMNS = {
+    "object_type",
+    "object_id",
+    "winning_mod_name",
+    "winning_file",
+    "build_cost_json",
+    "upkeep_json",
+    "direct_monthly_output_json",
+    "modifier_keys",
+    "ai_state_json",
+    "data_quality_flags",
+    "roi_2250_to_2350_estimate",
+}
+ECONOMIC_VALUATION_EXTRA_COLUMNS = (
+    "source_numeric_facts_json",
+    "source_numeric_facts_hash",
+    "top_level_keys",
+    "nested_resources_blocks",
+    "nested_ai_weight_blocks",
+    "nested_modifier_blocks",
+    "referenced_unlocks_or_flags",
+    "referenced_technologies",
+    "referenced_deposits",
+    "referenced_jobs_or_modifiers",
+)
+ECONOMIC_VALUATION_CANONICAL_COLUMNS = (
+    "object_type",
+    "object_id",
+    "winning_load_position",
+    "winning_mod_id",
+    "winning_mod_name",
+    "winning_file",
+    "definition_count",
+    "source_mods",
+    "source_files",
+    "category",
+    "build_cost_json",
+    "build_cost_value_estimate",
+    "upkeep_json",
+    "monthly_upkeep_value_estimate",
+    "jobs_created_json",
+    "jobs_created_total_estimate",
+    "direct_monthly_output_json",
+    "direct_monthly_output_value_estimate",
+    "modifier_keys",
+    "modifier_monthly_value_estimate",
+    "gross_monthly_value_estimate",
+    "net_monthly_value_estimate",
+    "roi_2200_to_2350_estimate",
+    "roi_2250_to_2350_estimate",
+    "roi_2300_to_2350_estimate",
+    "roi_2325_to_2350_estimate",
+    "upgrades_json",
+    "ai_state_json",
+    "prerequisites_json",
+    "modifiers_json",
+    "building_zone_district_sets_json",
+    "data_quality_flags",
+    "unresolved_variables",
+    *ECONOMIC_VALUATION_EXTRA_COLUMNS,
+)
+ECONOMIC_VALUATION_JSON_COLUMNS = {
+    "build_cost_json",
+    "upkeep_json",
+    "jobs_created_json",
+    "direct_monthly_output_json",
+    "source_numeric_facts_json",
+    "ai_state_json",
+    "prerequisites_json",
+    "modifiers_json",
+    "building_zone_district_sets_json",
+}
+ECONOMIC_VALUATION_NUMERIC_COLUMNS = {
+    "winning_load_position",
+    "definition_count",
+    "build_cost_value_estimate",
+    "monthly_upkeep_value_estimate",
+    "jobs_created_total_estimate",
+    "direct_monthly_output_value_estimate",
+    "modifier_monthly_value_estimate",
+    "gross_monthly_value_estimate",
+    "net_monthly_value_estimate",
+    "roi_2200_to_2350_estimate",
+    "roi_2250_to_2350_estimate",
+    "roi_2300_to_2350_estimate",
+    "roi_2325_to_2350_estimate",
+    "nested_resources_blocks",
+    "nested_ai_weight_blocks",
+    "nested_modifier_blocks",
+}
+
+
+def _read_economic_valuation_csv_rows(path: Path) -> tuple[list[dict[str, str]], set[str]]:
+    if not path.exists():
+        return ([], set())
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        reader = csv.DictReader(handle)
+        return (list(reader), set(reader.fieldnames or []))
+
+
+def nonconstruction_economic_valuation_dataset_passes(repo_root: Path = REPO_ROOT) -> bool:
+    csv_path = repo_root / NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT)
+    rows, fieldnames = _read_economic_valuation_csv_rows(csv_path)
+    if not rows or not SHARED_ECONOMIC_VALUATION_COLUMNS.issubset(fieldnames):
+        return False
+    if fieldnames != set(ECONOMIC_VALUATION_CANONICAL_COLUMNS):
+        return False
+    if any(any(row.get(column, "") == "" for column in ECONOMIC_VALUATION_CANONICAL_COLUMNS) for row in rows):
+        return False
+    object_types = {row["object_type"] for row in rows}
+    if object_types & EXCLUDED_NONCONSTRUCTION_OBJECT_TYPES:
+        return False
+    if not object_types.issubset(NONCONSTRUCTION_ECONOMIC_OBJECT_TYPES):
+        return False
+    required_present = {
+        "pop_job",
+        "decision",
+        "edict",
+        "deposit",
+        "resource",
+        "starbase_building",
+        "starbase_module",
+        "technology",
+        "colony_type",
+        "policy",
+        "ascension_perk",
+        "tradition",
+    }
+    if not required_present.issubset(object_types):
+        return False
+    if not any(float(row["roi_2250_to_2350_estimate"] or 0) > 0 for row in rows):
+        return False
+    return True
+
+
+def economic_valuation_evidence_passes(repo_root: Path = REPO_ROOT) -> bool:
+    return economic_valuation_dataset_passes(repo_root) and nonconstruction_economic_valuation_dataset_passes(repo_root)
+
+
+def economic_valuation_evidence_summary(repo_root: Path = REPO_ROOT) -> str:
+    construction_rows, _ = _read_economic_valuation_csv_rows(
+        repo_root / ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT)
+    )
+    nonconstruction_rows, _ = _read_economic_valuation_csv_rows(
+        repo_root / NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT)
+    )
+
+    def counts(rows: list[dict[str, str]]) -> dict[str, int]:
+        result: dict[str, int] = {}
+        for row in rows:
+            object_type = row.get("object_type", "")
+            result[object_type] = result.get(object_type, 0) + 1
+        return result
+
+    construction_counts = counts(construction_rows)
+    nonconstruction_counts = counts(nonconstruction_rows)
+    combined_counts = counts([*construction_rows, *nonconstruction_rows])
+    missing_nonconstruction_types = sorted(NONCONSTRUCTION_ECONOMIC_OBJECT_TYPES - set(nonconstruction_counts))
+    construction_lines = "\n".join(f"- {key}: {value}" for key, value in sorted(construction_counts.items()))
+    nonconstruction_lines = "\n".join(f"- {key}: {value}" for key, value in sorted(nonconstruction_counts.items()))
+    combined_lines = "\n".join(f"- {key}: {value}" for key, value in sorted(combined_counts.items()))
+    missing_line = ", ".join(missing_nonconstruction_types) if missing_nonconstruction_types else "none"
+    return f"""# Stellar AI Director Economic Valuation Evidence
+
+Generated: {datetime.now(timezone.utc).isoformat()}
+
+This is the merged evidence index for economic AI decisions. The construction dataset owns planet-local construction surfaces. The companion nonconstruction dataset owns the rest of the economy-facing AI surfaces and intentionally does not duplicate buildings, zones, districts, or megastructures.
+
+Validation contract:
+
+- Construction dataset: `{ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT).as_posix()}`
+- Nonconstruction dataset: `{NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT).as_posix()}`
+- Both datasets must expose the shared source, cost/upkeep/output, AI-state, data-quality, and 2350-horizon ROI columns.
+- The nonconstruction dataset must not include `building`, `zone`, `district`, or `megastructure` rows.
+- Future economic weight generation should query both datasets together, then choose eligible objects by `object_type`, ROI horizon, affordability, AI-state gap, and data-quality flags.
+
+## Construction Dataset Counts
+
+{construction_lines}
+
+## Nonconstruction Dataset Counts
+
+{nonconstruction_lines}
+
+Configured nonconstruction object types not present in the current file: {missing_line}
+
+## Combined Counts
+
+{combined_lines}
+"""
+
+
+def write_economic_valuation_evidence_summary() -> None:
+    write_text_file(ECONOMIC_VALUATION_EVIDENCE_MD, economic_valuation_evidence_summary())
 
 
 def block_has_assignment(value: PDXValue, key: str) -> bool:
@@ -1553,7 +2993,7 @@ def generate_integration_policy_audit_artifacts(
 def collect_integration_surface_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
     manifest = read_snapshot_manifest(snapshot_root)
     rows: list[dict[str, Any]] = []
-    for mod_id, expected_name in REQUIRED_MODS.items():
+    for mod_id, expected_name in ATLAS_SOURCE_MODS.items():
         mod_row = manifest.get(mod_id)
         if not mod_row:
             continue
@@ -1600,13 +3040,13 @@ def atlas_source_roots(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, An
     roots = [
         {
             "mod_id": "vanilla",
-            "mod_name": "Stellaris vanilla 4.4.4",
+            "mod_name": "Stellaris vanilla 4.4.5",
             "source_root": STELLARIS_INSTALL_ROOT,
             "coverage_status": "available" if STELLARIS_INSTALL_ROOT.exists() else "missing",
         }
     ]
     manifest = read_snapshot_manifest(snapshot_root)
-    for mod_id, expected_name in REQUIRED_MODS.items():
+    for mod_id, expected_name in ATLAS_SOURCE_MODS.items():
         row = manifest.get(mod_id)
         path = Path(row["snapshot_path"]) if row else Path()
         roots.append(
@@ -2912,8 +4352,6 @@ def core_deficit_with_short_runway(state: EmpireState) -> bool:
 
 
 def resource_waste_pressure(state: EmpireState) -> bool:
-    if core_deficit_with_short_runway(state):
-        return False
     for resource, threshold in SURPLUS_WASTE_STOCKPILE_THRESHOLDS.items():
         if state.stockpiles.get(resource, 0.0) >= threshold and state.incomes.get(resource, 0.0) > 0:
             return True
@@ -2932,8 +4370,6 @@ def research_under_curve(state: EmpireState, years_passed: float = 119.0) -> boo
 
 
 def surplus_sink_pressure(state: EmpireState) -> bool:
-    if core_deficit_with_short_runway(state):
-        return False
     if state.incomes.get("energy", 0.0) < 0 or state.incomes.get("alloys", 0.0) < 0:
         return False
     if resource_waste_pressure(state) or research_under_curve(state):
@@ -2984,10 +4420,19 @@ def choose_decision_state(state: EmpireState) -> str:
 def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = list(rows[0].keys()) if rows else []
-    with path.open("w", encoding="utf-8", newline="") as handle:
+    temp_path = path.with_name(f"{path.name}.tmp.{os.getpid()}")
+    with temp_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
+    for attempt in range(5):
+        try:
+            temp_path.replace(path)
+            return
+        except PermissionError:
+            if attempt == 4:
+                raise
+            time.sleep(0.25 * (attempt + 1))
 
 
 def write_json(path: Path, data: Any) -> None:
@@ -2997,7 +4442,8 @@ def write_json(path: Path, data: Any) -> None:
 
 def write_text_file(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8", newline="\n")
+    normalized = "\n".join(line.rstrip() for line in text.splitlines()).rstrip("\n") + "\n"
+    path.write_text(normalized, encoding="utf-8", newline="\n")
 
 
 def mod_source_root_for_id(mod_id: str, snapshot_root: Path = SNAPSHOT_ROOT) -> Path:
@@ -3005,9 +4451,12 @@ def mod_source_root_for_id(mod_id: str, snapshot_root: Path = SNAPSHOT_ROOT) -> 
         return STELLARIS_INSTALL_ROOT
     manifest = read_snapshot_manifest(snapshot_root)
     row = manifest.get(mod_id)
-    if not row:
-        raise ValueError(f"No source snapshot found for mod id {mod_id}")
-    return Path(row["snapshot_path"])
+    if row:
+        return Path(row["snapshot_path"])
+    workshop_root = Path(r"C:\Steam\steamapps\workshop\content\281990") / mod_id
+    if workshop_root.exists():
+        return workshop_root
+    raise ValueError(f"No source snapshot or live Workshop folder found for mod id {mod_id}")
 
 
 def generated_common_folder_for_type(object_type: str) -> str:
@@ -3089,6 +4538,65 @@ def replace_top_level_child_block(block_text: str, child_key: str, replacement_t
     return "\n".join(output) + "\n"
 
 
+def remove_top_level_child_block(block_text: str, child_key: str) -> str:
+    lines = block_text.rstrip().splitlines()
+    output: list[str] = []
+    depth = 0
+    index = 0
+    child_pattern = re.compile(rf"^[ \t]*{re.escape(child_key)}[ \t]*=")
+    while index < len(lines):
+        line = lines[index]
+        if depth == 1 and child_pattern.match(line):
+            depth += _brace_delta(line)
+            index += 1
+            while index < len(lines) and depth > 1:
+                depth += _brace_delta(lines[index])
+                index += 1
+            continue
+        output.append(line)
+        depth += _brace_delta(line)
+        index += 1
+    return "\n".join(output) + "\n"
+
+
+def merge_duplicate_top_level_child_blocks(block_text: str, child_key: str) -> str:
+    lines = block_text.rstrip().splitlines()
+    output: list[str] = []
+    blocks: list[list[str]] = []
+    depth = 0
+    index = 0
+    child_pattern = re.compile(rf"^[ \t]*{re.escape(child_key)}[ \t]*=")
+    while index < len(lines):
+        line = lines[index]
+        if depth == 1 and child_pattern.match(line):
+            block_lines = [line]
+            depth += _brace_delta(line)
+            index += 1
+            while index < len(lines) and depth > 1:
+                block_lines.append(lines[index])
+                depth += _brace_delta(lines[index])
+                index += 1
+            blocks.append(block_lines)
+            continue
+        output.append(line)
+        depth += _brace_delta(line)
+        index += 1
+    if len(blocks) <= 1:
+        return block_text
+
+    merged = [f"\t{child_key} = {{"]
+    for block_lines in blocks:
+        merged.extend(block_lines[1:-1])
+    merged.append("\t}")
+    closing_index = len(output) - 1
+    while closing_index >= 0 and not re.match(r"^[ \t]*}\s*$", output[closing_index]):
+        closing_index -= 1
+    if closing_index < 0:
+        raise ValueError("Generated block has no final closing brace")
+    output[closing_index:closing_index] = ["", *merged]
+    return "\n".join(output) + "\n"
+
+
 def replace_or_insert_top_level_scalar(block_text: str, child_key: str, replacement_line: str) -> str:
     lines = block_text.rstrip().splitlines()
     output: list[str] = []
@@ -3114,21 +4622,522 @@ def replace_or_insert_top_level_scalar(block_text: str, child_key: str, replacem
     return "\n".join(output) + "\n"
 
 
+def insert_top_level_ai_weight_modifier(block_text: str, modifier_line: str) -> str:
+    if modifier_line in block_text:
+        return block_text
+    lines = block_text.rstrip().splitlines()
+    output: list[str] = []
+    depth = 0
+    index = 0
+    ai_weight_pattern = re.compile(r"^[ \t]*ai_weight[ \t]*=")
+    inserted = False
+    while index < len(lines):
+        line = lines[index]
+        if depth == 1 and ai_weight_pattern.match(line):
+            output.append(line)
+            depth += _brace_delta(line)
+            index += 1
+            ai_lines: list[str] = []
+            while index < len(lines) and depth > 1:
+                current = lines[index]
+                next_depth = depth + _brace_delta(current)
+                if next_depth == 1 and current.strip() == "}":
+                    ai_lines.append(modifier_line)
+                    inserted = True
+                ai_lines.append(current)
+                depth = next_depth
+                index += 1
+            output.extend(ai_lines)
+            continue
+        output.append(line)
+        depth += _brace_delta(line)
+        index += 1
+    if inserted:
+        return "\n".join(output) + "\n"
+
+    closing_index = len(output) - 1
+    while closing_index >= 0 and not re.match(r"^[ \t]*}\s*$", output[closing_index]):
+        closing_index -= 1
+    if closing_index < 0:
+        raise ValueError("Generated block has no final closing brace for ai_weight insertion")
+    output[closing_index:closing_index] = [
+        "\tai_weight = {",
+        "\t\tfactor = 1",
+        modifier_line,
+        "\t}",
+    ]
+    return "\n".join(output) + "\n"
+
+
+def insert_top_level_ai_weight_modifiers(block_text: str, modifier_lines: list[str]) -> str:
+    for modifier_line in modifier_lines:
+        block_text = insert_top_level_ai_weight_modifier(block_text, modifier_line)
+    return block_text
+
+
+def research_federation_weight_block(block_text: str) -> str:
+    modifiers = [
+        "\t\t# staid_research_diplomacy_core = verified Research Cooperative preference",
+        "\t\tmodifier = { add = 250 desc = staid_research_diplomacy_core from = { staid_research_diplomacy_priority_ready = yes } }",
+        "\t\tmodifier = { add = 175 desc = staid_science_snowball from = { staid_science_nexus_research_priority_ready = yes } }",
+        "\t\tmodifier = { add = 125 desc = staid_research_runway from = { staid_research_input_runway_safe = yes } }",
+        "\t\tmodifier = { add = 90 desc = staid_materialist_research from = { OR = { has_ethic = ethic_materialist has_ethic = ethic_fanatic_materialist has_authority = auth_machine_intelligence } } }",
+        "\t\tmodifier = { add = 70 desc = staid_discovery_federation from = { has_active_tradition = tr_discovery_federations_finish } }",
+        "\t\tmodifier = { add = -80 desc = staid_conquest_route_prefers_other_federation from = { staid_aggressive_fleet_pressure = yes NOT = { staid_research_diplomacy_priority_ready = yes } } }",
+        "\t\tmodifier = { add = -60 desc = staid_spiritualist_research_federation_drift from = { OR = { has_ethic = ethic_spiritualist has_ethic = ethic_fanatic_spiritualist } NOT = { staid_research_diplomacy_priority_ready = yes } } }",
+    ]
+    return insert_top_level_ai_weight_modifiers(block_text, modifiers)
+
+
+def find_verified_source_object_block(common_folder: str, object_id: str, mod_id: str = "vanilla") -> str:
+    source_root = mod_source_root_for_id(mod_id)
+    folder_root = source_root / "common" / common_folder
+    if not folder_root.exists():
+        raise ValueError(f"Missing source folder for {mod_id}:{common_folder}")
+    object_pattern = re.compile(rf"(?m)^[ \t]*{re.escape(object_id)}[ \t]*=[ \t]*\{{")
+    for path in iter_text_files(folder_root):
+        text = read_text(path)
+        if not object_pattern.search(text):
+            continue
+        block = extract_top_level_object_text(text, object_id)
+        parse_pdx(block)
+        return block
+    raise ValueError(f"Could not find verified source object {object_id} in {mod_id}:{common_folder}")
+
+
+def insert_policy_option_ai_weight_modifier(block_text: str, option_name: str, modifier_line: str) -> str:
+    if modifier_line in block_text:
+        return block_text
+    lines = block_text.rstrip().splitlines()
+    output: list[str] = []
+    depth = 0
+    index = 0
+    option_pattern = re.compile(r"^[ \t]*option[ \t]*=[ \t]*\{")
+    name_pattern = re.compile(rf'^[ \t]*name[ \t]*=[ \t]*"?{re.escape(option_name)}"?[ \t]*(?:#.*)?$')
+    inserted = False
+    while index < len(lines):
+        line = lines[index]
+        if depth == 1 and option_pattern.match(line):
+            option_lines = [line]
+            option_depth = depth + _brace_delta(line)
+            index += 1
+            while index < len(lines) and option_depth > 1:
+                current = lines[index]
+                option_lines.append(current)
+                option_depth += _brace_delta(current)
+                index += 1
+            option_text = "\n".join(option_lines) + "\n"
+            if any(name_pattern.match(option_line) for option_line in option_lines):
+                option_text = insert_top_level_ai_weight_modifier(option_text, modifier_line)
+                inserted = True
+            output.extend(option_text.rstrip().splitlines())
+            depth = 1
+            continue
+        output.append(line)
+        depth += _brace_delta(line)
+        index += 1
+    if not inserted:
+        raise ValueError(f"Could not find policy option {option_name}")
+    return "\n".join(output) + "\n"
+
+
+def replace_policy_option_ai_weight(block_text: str, option_name: str, ai_weight_text: str) -> str:
+    lines = block_text.rstrip().splitlines()
+    output: list[str] = []
+    depth = 0
+    index = 0
+    option_pattern = re.compile(r"^[ \t]*option[ \t]*=[ \t]*\{")
+    name_pattern = re.compile(rf'^[ \t]*name[ \t]*=[ \t]*"?{re.escape(option_name)}"?[ \t]*(?:#.*)?$')
+    replaced = False
+    while index < len(lines):
+        line = lines[index]
+        if depth == 1 and option_pattern.match(line):
+            option_lines = [line]
+            option_depth = depth + _brace_delta(line)
+            index += 1
+            while index < len(lines) and option_depth > 1:
+                current = lines[index]
+                option_lines.append(current)
+                option_depth += _brace_delta(current)
+                index += 1
+            option_text = "\n".join(option_lines) + "\n"
+            if any(name_pattern.match(option_line) for option_line in option_lines):
+                option_text = replace_top_level_child_block(option_text, "ai_weight", ai_weight_text)
+                replaced = True
+            output.extend(option_text.rstrip().splitlines())
+            depth = 1
+            continue
+        output.append(line)
+        depth += _brace_delta(line)
+        index += 1
+    if not replaced:
+        raise ValueError(f"Could not find policy option {option_name}")
+    return "\n".join(output) + "\n"
+
+
 def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> str:
     coefficient = str(target.get("coefficient", "4"))
     additional_weight = str(target.get("additional_weight", "400"))
     block = replace_or_insert_top_level_scalar(block, "ai_weight_coefficient", f"\tai_weight_coefficient = {coefficient}")
-    return replace_or_insert_top_level_scalar(
+    block = replace_or_insert_top_level_scalar(
         block,
         "additional_ai_weight",
         f"\tadditional_ai_weight = {additional_weight}",
     )
+    route_gate = route_gate_for_target(target)
+    return insert_top_level_ai_weight_modifier(
+        block,
+        f"\t\tmodifier = {{ factor = 0 owner = {{ NOT = {{ {route_gate} = yes }} }} }}",
+    )
+
+
+DATASET_JOB_PRESSURE_OBJECT_LIMIT = 1200
+DATASET_JOB_PRESSURE_REPAIR_FAMILY_LIMIT = 35
+DATASET_JOB_PRESSURE_UNSAFE_TEXT_MARKERS = (
+    "has_unemployed_pop_of_category",
+    "district_giga_frameworld_fortress_bunker",
+    "district_generator_uncapped",
+)
+
+AI_RESOURCE_PRODUCTION_FAMILY_DEFAULTS = {
+    "consumer_goods_repair": ("consumer_goods",),
+    "alloy_scaling": ("alloys",),
+    "research_scaling": ("physics_research", "society_research", "engineering_research"),
+    "energy_scaling": ("energy",),
+    "mineral_scaling": ("minerals",),
+    "strategic_resource_scaling": (
+        "volatile_motes",
+        "exotic_gases",
+        "rare_crystals",
+        "sr_dark_matter",
+        "sr_zro",
+        "nanites",
+    ),
+    "general_job_pressure": ("energy", "minerals"),
+}
+
+AI_RESOURCE_PRODUCTION_RESOURCE_HINTS = (
+    "energy",
+    "minerals",
+    "food",
+    "alloys",
+    "consumer_goods",
+    "unity",
+    "physics_research",
+    "society_research",
+    "engineering_research",
+    "trade",
+    "volatile_motes",
+    "exotic_gases",
+    "rare_crystals",
+    "sr_dark_matter",
+    "sr_zro",
+    "nanites",
+    "giga_sr_sentient_metal",
+    "giga_sr_negative_mass",
+    "giga_sr_amb_megaconstruction",
+    "giga_sr_supertensiles",
+)
+
+
+def dataset_job_pressure_family(row: dict[str, Any]) -> str:
+    text = " ".join(
+        str(row.get(key, "")).lower()
+        for key in (
+            "object_id",
+            "jobs_created_json",
+            "direct_monthly_output_json",
+            "modifier_keys",
+            "category",
+        )
+    )
+    if any(token in text for token in ("consumer_goods", "artisan", "factory", "industrial", "goods")):
+        return "consumer_goods_repair"
+    if any(token in text for token in ("alloys", "foundry", "forge", "metallurg")):
+        return "alloy_scaling"
+    if any(token in text for token in ("physics_research", "society_research", "engineering_research", "research", "scientist")):
+        return "research_scaling"
+    if any(token in text for token in ("energy", "technician", "generator")):
+        return "energy_scaling"
+    if any(token in text for token in ("minerals", "miner", "mining")):
+        return "mineral_scaling"
+    if any(token in text for token in ("volatile_motes", "exotic_gases", "rare_crystals", "sr_dark_matter", "sr_zro", "nanites")):
+        return "strategic_resource_scaling"
+    return "general_job_pressure"
+
+
+def dataset_job_pressure_runtime_safety_issues(
+    row: dict[str, Any],
+    block: str,
+    known_jobs: set[str],
+) -> list[str]:
+    text = "\n".join(
+        str(row.get(key, ""))
+        for key in (
+            "ai_state_json",
+            "prerequisites_json",
+            "modifiers_json",
+            "modifier_keys",
+        )
+    )
+    text = f"{text}\n{block}"
+    issues: list[str] = []
+    for marker in DATASET_JOB_PRESSURE_UNSAFE_TEXT_MARKERS:
+        if marker in text:
+            issues.append(marker)
+    if re.search(r"\$[A-Za-z0-9_]+\$", text):
+        issues.append("unresolved_dollar_placeholder")
+    if "TODO_CD" in text:
+        issues.append("unresolved_todo_placeholder")
+    if row.get("object_type") == "district" and re.search(r"\btrade_value_add\b", text):
+        issues.append("district_trade_value_add")
+    if re.search(r"\bbuilding_[a-z0-9_]+_max\b", text):
+        issues.append("building_max_modifier")
+    valid_job_modifiers = {f"job_{job}_add" for job in known_jobs} | {f"{job}_add" for job in known_jobs}
+    missing_jobs = sorted(
+        {
+            match.removesuffix("_add")
+            for match in re.findall(r"\bjob_[A-Za-z0-9_]+_add\b", text)
+            if match not in valid_job_modifiers
+        }
+    )
+    if missing_jobs:
+        issues.extend(f"missing_job:{job}" for job in missing_jobs[:8])
+    return issues
+
+
+def dataset_job_pressure_weight_block(block: str, row: dict[str, Any]) -> str:
+    jobs = max(1.0, float(row["jobs_created_total_estimate"] or 1))
+    roi = max(1.0, float(row["roi_2250_to_2350_estimate"] or 1))
+    family = str(row.get("pressure_family") or dataset_job_pressure_family(row))
+    coefficient = max(4, min(36, int(round(math.log10(roi) * 4))))
+    additional = max(500, min(15000, int(round(jobs * 8 + math.log10(roi) * 300))))
+    block = replace_or_insert_top_level_scalar(block, "ai_weight_coefficient", f"\tai_weight_coefficient = {coefficient}")
+    block = replace_or_insert_top_level_scalar(block, "additional_ai_weight", f"\tadditional_ai_weight = {additional}")
+    modifiers = [
+        "\t\tmodifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }",
+        "\t\tmodifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }",
+        "\t\tmodifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }",
+        "\t\tmodifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }",
+        "\t\tmodifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }",
+        "\t\tmodifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }",
+        "\t\tmodifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }",
+        "\t\tmodifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }",
+        "\t\tmodifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }",
+        "\t\tmodifier = { factor = 3 years_passed > 79 }",
+        "\t\tmodifier = { factor = 5 years_passed > 119 }",
+    ]
+    family_modifiers = {
+        "consumer_goods_repair": "\t\tmodifier = { factor = 18 owner = { country_uses_consumer_goods = yes NOT = { staid_consumer_goods_runway_safe = yes } } }",
+        "alloy_scaling": "\t\tmodifier = { factor = 8 owner = { has_monthly_income = { resource = alloys value < 500 } } }",
+        "research_scaling": "\t\tmodifier = { factor = 8 owner = { staid_research_under_curve = yes } }",
+        "energy_scaling": "\t\tmodifier = { factor = 8 owner = { has_monthly_income = { resource = energy value < 500 } } }",
+        "mineral_scaling": "\t\tmodifier = { factor = 8 owner = { has_monthly_income = { resource = minerals value < 500 } } }",
+        "strategic_resource_scaling": "\t\tmodifier = { factor = 8 owner = { staid_advanced_component_resource_support_ready = yes } }",
+    }
+    if family in family_modifiers:
+        modifiers.append(family_modifiers[family])
+    for modifier in modifiers:
+        block = insert_top_level_ai_weight_modifier(block, modifier)
+    block = replace_top_level_child_block(block, "ai_resource_production", dataset_ai_resource_production_block(row))
+    return (
+        f"# staid_dataset_job_pressure = family:{family} jobs:{row['jobs_created_total_estimate']} "
+        f"roi2250:{row['roi_2250_to_2350_estimate']} flags:{row['data_quality_flags']}\n"
+        + block
+    )
+
+
+def _json_object_amounts(value: str) -> dict[str, float]:
+    if not value or value == "{}":
+        return {}
+    try:
+        parsed = json.loads(value)
+    except json.JSONDecodeError:
+        return {}
+    if not isinstance(parsed, dict):
+        return {}
+    amounts: dict[str, float] = {}
+    for key, amount in parsed.items():
+        try:
+            numeric = float(amount)
+        except (TypeError, ValueError):
+            continue
+        if numeric > 0:
+            amounts[str(key)] = amounts.get(str(key), 0.0) + numeric
+    return amounts
+
+
+def dataset_ai_resource_production_amounts(row: dict[str, Any]) -> dict[str, int]:
+    amounts = _json_object_amounts(str(row.get("direct_monthly_output_json", "")))
+    modifier_text = str(row.get("modifier_keys", ""))
+    for resource in AI_RESOURCE_PRODUCTION_RESOURCE_HINTS:
+        if re.search(rf"(?:^|\|)[^|]*_{re.escape(resource)}_produces_(?:add|mult)(?:\||$)", modifier_text):
+            amounts[resource] = max(amounts.get(resource, 0.0), 1.0)
+    family = str(row.get("pressure_family") or dataset_job_pressure_family(row))
+    job_units = max(1.0, float(row.get("jobs_created_total_estimate") or 0) / 100.0)
+    if not amounts:
+        for resource in AI_RESOURCE_PRODUCTION_FAMILY_DEFAULTS.get(family, ("energy", "minerals")):
+            amounts[resource] = max(amounts.get(resource, 0.0), job_units)
+    elif float(row.get("jobs_created_total_estimate") or 0) > 0:
+        for resource in AI_RESOURCE_PRODUCTION_FAMILY_DEFAULTS.get(family, ()):
+            amounts.setdefault(resource, job_units)
+    normalized: dict[str, int] = {}
+    for resource, amount in amounts.items():
+        if resource not in AI_RESOURCE_PRODUCTION_RESOURCE_HINTS:
+            continue
+        normalized[resource] = max(1, min(5000, int(round(amount))))
+    if not normalized:
+        normalized["energy"] = max(1, min(5000, int(round(job_units))))
+    return dict(sorted(normalized.items()))
+
+
+def dataset_ai_resource_production_block(row: dict[str, Any]) -> str:
+    amounts = dataset_ai_resource_production_amounts(row)
+    lines = ["\tai_resource_production = {"]
+    for resource, amount in amounts.items():
+        lines.append(f"\t\t{resource} = {amount}")
+    lines.append("\t}")
+    return "\n".join(lines)
+
+
+def dataset_job_pressure_override_rows(limit: int = DATASET_JOB_PRESSURE_OBJECT_LIMIT) -> list[dict[str, Any]]:
+    rows = _read_csv_rows(ECONOMIC_VALUATION_DATASET_CSV)
+    known_jobs = collect_object_names(SNAPSHOT_ROOT).get("pop_job", set())
+    candidates: list[dict[str, Any]] = []
+    for row in rows:
+        if row.get("object_type") not in {"building", "district"}:
+            continue
+        if row.get("winning_mod_name") == "Stellar AI Director":
+            continue
+        if float(row.get("jobs_created_total_estimate") or 0) <= 0:
+            continue
+        if float(row.get("roi_2250_to_2350_estimate") or 0) <= 0:
+            continue
+        mod_id = row.get("winning_mod_id", "")
+        if mod_id in {"", "none"}:
+            continue
+        try:
+            source_root = mod_source_root_for_id(mod_id)
+        except ValueError:
+            continue
+        source_path = source_root / row["winning_file"]
+        if not source_path.exists():
+            continue
+        source_text = read_text(source_path)
+        try:
+            source_block = extract_top_level_object_text(source_text, row["object_id"])
+        except ValueError:
+            continue
+        safety_issues = dataset_job_pressure_runtime_safety_issues(row, source_block, known_jobs)
+        if safety_issues:
+            continue
+        folder = {
+            "building": "buildings",
+            "district": "districts",
+        }[row["object_type"]]
+        generated_file = MOD_ROOT / "common" / folder / f"zzzz_staid_13_dataset_job_pressure_{folder}.txt"
+        family = dataset_job_pressure_family(row)
+        candidates.append(
+            {
+                **row,
+                "pressure_family": family,
+                "source_path": str(source_path),
+                "generated_folder": folder,
+                "generated_file": generated_file.as_posix(),
+            }
+        )
+    candidates.sort(
+        key=lambda item: (
+            float(item["roi_2250_to_2350_estimate"]),
+            float(item["jobs_created_total_estimate"]),
+            item["object_id"],
+        ),
+        reverse=True,
+    )
+    selected: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+
+    def add_rows(rows_to_add: Iterable[dict[str, Any]], row_limit: int | None = None) -> None:
+        added = 0
+        for candidate in rows_to_add:
+            key = (candidate["object_type"], candidate["object_id"])
+            if key in seen:
+                continue
+            selected.append(candidate)
+            seen.add(key)
+            added += 1
+            if row_limit is not None and added >= row_limit:
+                break
+
+    repair_families = (
+        "consumer_goods_repair",
+        "alloy_scaling",
+        "research_scaling",
+        "strategic_resource_scaling",
+        "energy_scaling",
+        "mineral_scaling",
+    )
+    for family in repair_families:
+        add_rows(
+            [candidate for candidate in candidates if candidate["pressure_family"] == family],
+            DATASET_JOB_PRESSURE_REPAIR_FAMILY_LIMIT,
+        )
+    add_rows(candidates, limit)
+    return selected[:limit]
+
+
+def dataset_job_pressure_override_artifacts() -> list[dict[str, Any]]:
+    rows = dataset_job_pressure_override_rows()
+    grouped: dict[Path, list[dict[str, Any]]] = {}
+    for row in rows:
+        grouped.setdefault(Path(row["generated_file"]), []).append(row)
+    stale_zone_file = MOD_ROOT / "common" / "zones" / "zzzz_staid_13_dataset_job_pressure_zones.txt"
+    if stale_zone_file not in grouped and stale_zone_file.exists():
+        stale_zone_file.unlink()
+    for file_path, file_rows in grouped.items():
+        folder = file_rows[0]["generated_folder"]
+        body = [
+            "# Generated by tools/generate_stellar_ai_director_patch.py.",
+            "# Full-object overrides copied from active-stack construction winners.",
+            "# Dataset-driven job pressure: if a planet has unemployed pops and no free jobs, build economically viable job providers instead of leaving pops idle.",
+            "# Source potential/allow/possible blocks still own prerequisites and legality.",
+            f"# Source dataset: {ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT).as_posix()}",
+            "",
+        ]
+        variables = route_override_file_variables(file_rows)
+        if variables:
+            body.append("# Source-local variables required by copied construction objects.")
+            body.extend(variables)
+            body.append("")
+        for row in file_rows:
+            source_text = read_text(Path(row["source_path"]))
+            block = extract_top_level_object_text(source_text, row["object_id"])
+            block = dataset_job_pressure_weight_block(block, row)
+            block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
+            body.append(
+                f"# object = {row['object_type']}:{row['object_id']}; "
+                f"source = {row['winning_mod_name']}::{row['winning_file']}"
+            )
+            body.append(block.rstrip())
+            body.append("")
+        text = "\n".join(body).rstrip() + "\n"
+        parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+        write_text_file(file_path, text)
+    write_csv(RESEARCH_ROOT / "stellar-ai-director-dataset-job-pressure-overrides-2026-07-07.csv", rows)
+    return rows
 
 
 ROUTE_RESEARCH_GATES = {
     "mega_engineering_core": "staid_core_unlock_research_priority_ready",
     "mega_shipyard_core": "staid_core_unlock_research_priority_ready",
     "economy_megastructure_core": "staid_core_unlock_research_priority_ready",
+    "early_kilo_economy_core": "staid_early_kilo_economy_research_priority_ready",
+    "science_kilo_snowball_core": "staid_science_kilo_research_priority_ready",
+    "research_megastructure_core": "staid_science_nexus_research_priority_ready",
+    "planetary_computer_research_core": "staid_planetary_computer_research_priority_ready",
+    "pop_assembly_snowball_core": "staid_pop_assembly_snowball_ready",
+    "ring_world_growth_core": "staid_ring_world_research_priority_ready",
+    "storage_cap_core": "staid_storage_cap_research_priority_ready",
     "gigas_special_resource_core": "staid_gigas_special_resource_unlock_ready",
     "planetcraft_route": "staid_planetcraft_research_priority_ready",
     "war_moon_route": "staid_war_moon_research_priority_ready",
@@ -3137,13 +5146,24 @@ ROUTE_RESEARCH_GATES = {
     "esc_component_route": "staid_esc_component_unlock_ready",
     "crowded_tall_route": "staid_planetary_capacity_growth_ready",
     "conquest_escape_route": "staid_aggressive_fleet_pressure",
-    "fallen_empire_benchmark_route": "staid_crisis_starbase_pressure",
+    "raiding_pop_acquisition_route": "staid_raiding_pop_acquisition_priority",
+    "apex_site_preservation_core": "staid_apex_site_preservation_ready",
+    "fallen_empire_benchmark_route": "staid_static_defense_investment_ready",
+    "research_throughput_infrastructure": "staid_research_input_runway_safe",
+    "research_diplomacy_core": "staid_research_diplomacy_priority_ready",
 }
 
 ROUTE_BUILD_GATES = {
     "mega_engineering_core": "staid_core_unlock_research_priority_ready",
     "mega_shipyard_core": "staid_mega_shipyard_build_priority_ready",
     "economy_megastructure_core": "staid_economy_megastructure_build_priority_ready",
+    "early_kilo_economy_core": "staid_early_kilo_economy_build_priority_ready",
+    "science_kilo_snowball_core": "staid_science_kilo_build_priority_ready",
+    "research_megastructure_core": "staid_science_nexus_build_priority_ready",
+    "planetary_computer_research_core": "staid_planetary_computer_build_priority_ready",
+    "pop_assembly_snowball_core": "staid_pop_assembly_snowball_ready",
+    "ring_world_growth_core": "staid_ring_world_build_priority_ready",
+    "storage_cap_core": "staid_storage_cap_build_priority_ready",
     "gigas_special_resource_core": "staid_megastructure_commit_safe",
     "planetcraft_route": "staid_planetcraft_build_priority_ready",
     "war_moon_route": "staid_war_moon_build_priority_ready",
@@ -3152,16 +5172,30 @@ ROUTE_BUILD_GATES = {
     "esc_component_route": "staid_modded_fleet_conversion_ready",
     "crowded_tall_route": "staid_planetary_capacity_growth_ready",
     "conquest_escape_route": "staid_aggressive_fleet_pressure",
-    "fallen_empire_benchmark_route": "staid_crisis_starbase_pressure",
+    "raiding_pop_acquisition_route": "staid_raiding_pop_acquisition_priority",
+    "apex_site_preservation_core": "staid_apex_site_preservation_ready",
+    "fallen_empire_benchmark_route": "staid_static_defense_investment_ready",
+    "research_throughput_infrastructure": "staid_research_input_runway_safe",
+    "research_diplomacy_core": "staid_research_diplomacy_priority_ready",
 }
 
 ROUTE_TIMING_FACTORS = {
     "mega_shipyard_core": (3, 5, 8),
     "economy_megastructure_core": (3, 5, 8),
+    "early_kilo_economy_core": (4, 6, 8),
+    "science_kilo_snowball_core": (5, 8, 11),
+    "research_megastructure_core": (4, 7, 10),
+    "planetary_computer_research_core": (4, 8, 12),
+    "pop_assembly_snowball_core": (6, 9, 12),
+    "ring_world_growth_core": (3, 6, 9),
+    "storage_cap_core": (4, 7, 10),
     "gigas_special_resource_core": (3, 5, 8),
     "planetcraft_route": (3, 6, 10),
     "war_moon_route": (3, 6, 10),
     "systemcraft_route": (4, 8, 12),
+    "conquest_escape_route": (4, 7, 11),
+    "raiding_pop_acquisition_route": (6, 10, 14),
+    "apex_site_preservation_core": (2, 5, 9),
 }
 
 ROUTE_EXTRA_MODIFIERS = {
@@ -3185,6 +5219,58 @@ ROUTE_EXTRA_MODIFIERS = {
         "\tmodifier = { factor = 4 has_technology = tech_nm_utilization_1 }",
         "\tmodifier = { factor = 4 has_technology = giga_tech_amb_supertensiles }",
     ],
+    "early_kilo_economy_core": [
+        "\tmodifier = { factor = 3 has_technology = tech_orbital_arc_furnace }",
+        "\tmodifier = { factor = 3 has_technology = giga_tech_asteroid_manufactory }",
+        "\tmodifier = { factor = 6 staid_resource_waste_pressure = yes }",
+        "\tmodifier = { factor = 8 staid_high_scale_snowball_pressure = yes }",
+    ],
+    "science_kilo_snowball_core": [
+        "\tmodifier = { factor = 4 has_technology = giga_tech_engineering_test_site }",
+        "\tmodifier = { factor = 4 has_technology = giga_tech_macro_scale_weather_manipulation }",
+        "\tmodifier = { factor = 3 staid_research_under_curve = yes }",
+    ],
+    "research_megastructure_core": [
+        "\tmodifier = { factor = 4 has_technology = tech_science_nexus }",
+        "\tmodifier = { factor = 3 staid_research_under_curve = yes }",
+    ],
+    "planetary_computer_research_core": [
+        "\tmodifier = { factor = 5 has_technology = giga_tech_planetary_computer }",
+        "\tmodifier = { factor = 4 staid_research_under_curve = yes }",
+        "\tmodifier = { factor = 2 staid_planetary_capacity_growth_ready = yes }",
+    ],
+    "pop_assembly_snowball_core": [
+        "\tmodifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }",
+        "\tmodifier = { factor = 3 staid_research_under_curve = yes }",
+        "\tmodifier = { factor = 2 years_passed < 80 }",
+    ],
+    "ring_world_growth_core": [
+        "\tmodifier = { factor = 4 has_technology = tech_ring_world }",
+        "\tmodifier = { factor = 2 staid_planetary_capacity_growth_ready = yes }",
+    ],
+    "storage_cap_core": [
+        "\tmodifier = { factor = 4 has_technology = giga_tech_kugelblitz }",
+        "\tmodifier = { factor = 10 staid_resource_waste_pressure = yes }",
+        "\tmodifier = { factor = 14 staid_high_scale_snowball_pressure = yes }",
+    ],
+    "conquest_escape_route": [
+        "\tmodifier = { factor = 10 staid_site_limited_expansion_ready = yes }",
+        "\tmodifier = { factor = 5 staid_fleet_buildup_economy_safe = yes }",
+        "\tmodifier = { factor = 8 staid_militarist_conquest_strategy = yes }",
+        "\tmodifier = { factor = 6 has_ethic = ethic_militarist }",
+        "\tmodifier = { factor = 12 has_ethic = ethic_fanatic_militarist }",
+    ],
+    "raiding_pop_acquisition_route": [
+        "\tmodifier = { factor = 14 staid_raiding_pop_growth_strategy = yes }",
+        "\tmodifier = { factor = 8 staid_opening_military_to_pops = yes }",
+        "\tmodifier = { factor = 5 has_ethic = ethic_militarist }",
+        "\tmodifier = { factor = 10 has_ethic = ethic_fanatic_militarist }",
+    ],
+    "apex_site_preservation_core": [
+        "\tmodifier = { factor = 8 has_technology = giga_tech_matrioshka_brain_1 }",
+        "\tmodifier = { factor = 4 has_technology = giga_tech_neutronium_gigaforge }",
+        "\tmodifier = { factor = 0.15 NOT = { staid_apex_site_preservation_ready = yes } }",
+    ],
     "nsc3_capital_hull_route": [
         "\tmodifier = { factor = 3 has_technology = tech_Carrier_1 }",
         "\tmodifier = { factor = 4 has_technology = tech_Dreadnought_1 }",
@@ -3200,26 +5286,160 @@ ROUTE_EXTRA_MODIFIERS = {
 }
 
 
+def route_modifier_line(factor: int | float | str, condition: str, *, country_scope: str | None = None) -> str:
+    if country_scope:
+        return f"\tmodifier = {{ factor = {factor} {country_scope} = {{ {condition} }} }}"
+    return f"\tmodifier = {{ factor = {factor} {condition} }}"
+
+
+def long_term_net_value(
+    monthly_value: float,
+    upfront_cost_value: float,
+    monthly_upkeep_value: float,
+    years_passed: int | float,
+) -> float:
+    current_year = DIRECTOR_CAMPAIGN_START_YEAR + years_passed
+    remaining_months = max(0.0, (DIRECTOR_ENDGAME_VALUE_HORIZON_YEAR - current_year) * 12.0)
+    return max(0.0, monthly_value - monthly_upkeep_value) * remaining_months - upfront_cost_value
+
+
+def long_term_roi_ratio(
+    monthly_value: float,
+    upfront_cost_value: float,
+    monthly_upkeep_value: float,
+    years_passed: int | float,
+) -> float:
+    denominator = max(1.0, upfront_cost_value)
+    return long_term_net_value(monthly_value, upfront_cost_value, monthly_upkeep_value, years_passed) / denominator
+
+
+def long_term_year_band_condition(lower: int | None, upper: int) -> str:
+    if lower is None:
+        return f"years_passed < {upper}"
+    return f"AND = {{ years_passed > {lower - 1} years_passed < {upper} }}"
+
+
+def long_term_value_factor_pairs(
+    monthly_value: float,
+    upfront_cost_value: float,
+    monthly_upkeep_value: float,
+    *,
+    divisor: float = 25.0,
+    maximum: int = 30,
+) -> list[tuple[int, str]]:
+    pairs: list[tuple[int, str]] = []
+    for lower, upper, representative_year in LONG_TERM_VALUE_BANDS:
+        roi = long_term_roi_ratio(monthly_value, upfront_cost_value, monthly_upkeep_value, representative_year)
+        factor = max(1, min(maximum, int(round(max(0.0, roi) / divisor))))
+        if factor > 1:
+            pairs.append((factor, long_term_year_band_condition(lower, upper)))
+    return pairs
+
+
+def route_lifetime_value_modifiers(target: dict[str, Any]) -> list[str]:
+    profile = ROUTE_LONG_TERM_VALUE_PROFILES.get(str(target["route_id"]))
+    if not profile:
+        return []
+    country_scope = route_country_scope_for_target(target)
+    monthly_value, upfront_cost_value, monthly_upkeep_value = profile
+    return [
+        route_modifier_line(factor, condition, country_scope=country_scope)
+        for factor, condition in long_term_value_factor_pairs(
+            monthly_value,
+            upfront_cost_value,
+            monthly_upkeep_value,
+            divisor=18.0,
+            maximum=35,
+        )
+    ]
+
+
+def route_country_scope_for_target(target: dict[str, Any]) -> str | None:
+    if target["object_type"] == "megastructure":
+        return "from"
+    if target["object_type"] in {"starbase_building", "starbase_module"}:
+        return "owner"
+    return None
+
+
+def scope_route_modifier_for_target(target: dict[str, Any], modifier_line: str) -> str:
+    country_scope = route_country_scope_for_target(target)
+    if not country_scope:
+        return modifier_line
+    stripped = modifier_line.strip()
+    prefix = "modifier = { factor = "
+    suffix = " }"
+    if not stripped.startswith(prefix) or not stripped.endswith(suffix):
+        return modifier_line
+    body = stripped[len(prefix) : -len(suffix)].strip()
+    factor, separator, condition = body.partition(" ")
+    if not separator or not condition:
+        return modifier_line
+    return route_modifier_line(factor, condition, country_scope=country_scope)
+
+
 def route_gate_for_target(target: dict[str, Any]) -> str:
+    if target["object_type"] == "megastructure" and target["object_id"] == "kugelblitz_0":
+        return "staid_kugelblitz_new_start_budget_ready"
     route_id = str(target["route_id"])
     if target["object_type"] in {"technology", "ascension_perk", "tradition"}:
         return ROUTE_RESEARCH_GATES.get(route_id, "staid_surplus_sink_pressure")
     return ROUTE_BUILD_GATES.get(route_id, "staid_surplus_sink_pressure")
 
 
+def kugelblitz_start_budget_modifiers(target: dict[str, Any]) -> list[str]:
+    if target["object_type"] != "megastructure" or target["object_id"] != "kugelblitz_0":
+        return []
+    country_scope = route_country_scope_for_target(target)
+    return [
+        "\t# kugelblitz_start_budget = empty_silos_are_capped_storage_not_income",
+        route_modifier_line(0, "has_country_flag = is_currently_building_kugelblitz", country_scope=country_scope),
+        route_modifier_line(0, "staid_unfinished_kugelblitz_exists = yes", country_scope=country_scope),
+        route_modifier_line(0, "check_variable = { which = giga_current_kugel value >= 10 }", country_scope=country_scope),
+        route_modifier_line(0.03, "has_country_flag = has_recently_built_kugelblitz", country_scope=country_scope),
+        route_modifier_line(0.02, "check_variable = { which = giga_current_kugel value >= 9 }", country_scope=country_scope),
+        route_modifier_line(0.04, "check_variable = { which = giga_current_kugel value >= 8 }", country_scope=country_scope),
+        route_modifier_line(0.08, "check_variable = { which = giga_current_kugel value >= 7 }", country_scope=country_scope),
+        route_modifier_line(0.15, "check_variable = { which = giga_current_kugel value >= 6 }", country_scope=country_scope),
+        route_modifier_line(0.25, "check_variable = { which = giga_current_kugel value >= 5 }", country_scope=country_scope),
+        route_modifier_line(0.40, "check_variable = { which = giga_current_kugel value >= 4 }", country_scope=country_scope),
+        route_modifier_line(0.60, "check_variable = { which = giga_current_kugel value >= 3 }", country_scope=country_scope),
+    ]
+
+
+def route_extra_modifiers_for_target(target: dict[str, Any]) -> list[str]:
+    if target["object_type"] == "megastructure" and target["object_id"] == "kugelblitz_0":
+        return []
+    return ROUTE_EXTRA_MODIFIERS.get(str(target["route_id"]), [])
+
+
 def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
     route_id = str(target["route_id"])
     route_gate = route_gate_for_target(target)
     mid_factor, late_factor, crisis_factor = ROUTE_TIMING_FACTORS.get(route_id, (2, 3, 5))
+    country_scope = route_country_scope_for_target(target)
+    survival_factor = 1.5 if target["object_type"] in {"starbase_building", "starbase_module"} else 0
     lines = [
-        "\tmodifier = { factor = 0 staid_survival_mode = yes }",
-        "\tmodifier = { factor = 0.35 staid_recovery_mode = yes }",
-        f"\tmodifier = {{ factor = 4 {route_gate} = yes }}",
-        f"\tmodifier = {{ factor = {mid_factor} years_passed > 44 }}",
-        f"\tmodifier = {{ factor = {late_factor} years_passed > 79 }}",
-        f"\tmodifier = {{ factor = {crisis_factor} years_passed > 119 }}",
+        route_modifier_line(survival_factor, "staid_survival_mode = yes", country_scope=country_scope),
+        route_modifier_line(0.35, "staid_recovery_mode = yes", country_scope=country_scope),
+        route_modifier_line(0, f"NOT = {{ {route_gate} = yes }}", country_scope=country_scope),
+        route_modifier_line(4, f"{route_gate} = yes", country_scope=country_scope),
+        route_modifier_line(mid_factor, "years_passed > 44", country_scope=country_scope),
+        route_modifier_line(late_factor, "years_passed > 79", country_scope=country_scope),
+        route_modifier_line(crisis_factor, "years_passed > 119", country_scope=country_scope),
     ]
-    lines.extend(ROUTE_EXTRA_MODIFIERS.get(route_id, []))
+    lines.extend(route_lifetime_value_modifiers(target))
+    lines.extend(kugelblitz_start_budget_modifiers(target))
+    if target.get("megastructure_stage_kind") == "upgrade":
+        lines.extend(
+            [
+                "\t# megastructure_continuation_priority = finish_existing_before_new_start",
+                route_modifier_line(35, "staid_megastructure_continuation_priority_ready = yes", country_scope=country_scope),
+                route_modifier_line(8, "staid_resource_waste_pressure = yes", country_scope=country_scope),
+                route_modifier_line(6, "staid_high_scale_snowball_pressure = yes", country_scope=country_scope),
+            ]
+        )
+    lines.extend(scope_route_modifier_for_target(target, line) for line in route_extra_modifiers_for_target(target))
     return lines
 
 
@@ -3339,6 +5559,66 @@ def generated_unresolved_at_variable_rows(mod_root: Path = MOD_ROOT) -> list[dic
     return rows
 
 
+def validate_staid_scripted_trigger_cycles(mod_root: Path = MOD_ROOT) -> list[str]:
+    trigger_path = mod_root / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+    if not trigger_path.exists():
+        return []
+    trigger_text = trigger_path.read_text(encoding="utf-8")
+    starts = list(re.finditer(r"(?m)^(staid_[A-Za-z0-9_]+)\s*=\s*\{", trigger_text))
+    blocks: dict[str, str] = {}
+    for index, match in enumerate(starts):
+        end = starts[index + 1].start() if index + 1 < len(starts) else len(trigger_text)
+        blocks[match.group(1)] = trigger_text[match.end() : end]
+
+    graph = {
+        name: {
+            ref
+            for ref in re.findall(r"\b(staid_[A-Za-z0-9_]+)\s*=", body)
+            if ref in blocks and ref != name
+        }
+        for name, body in blocks.items()
+    }
+    errors: list[str] = []
+    visiting: list[str] = []
+    visited: set[str] = set()
+
+    def visit(node: str) -> None:
+        if node in visiting:
+            cycle = visiting[visiting.index(node) :] + [node]
+            errors.append("Cyclic staid scripted trigger references: " + " -> ".join(cycle))
+            return
+        if node in visited:
+            return
+        visiting.append(node)
+        for child in sorted(graph[node]):
+            visit(child)
+        visiting.pop()
+        visited.add(node)
+
+    for node in sorted(graph):
+        visit(node)
+
+    max_chain_depth = 7
+    path: list[str] = []
+
+    def walk_depth(node: str) -> None:
+        if node in path:
+            return
+        path.append(node)
+        if len(path) > max_chain_depth:
+            errors.append(
+                "Deep staid scripted trigger chain exceeds load-safe depth: " + " -> ".join(path)
+            )
+        else:
+            for child in sorted(graph[node]):
+                walk_depth(child)
+        path.pop()
+
+    for node in sorted(graph):
+        walk_depth(node)
+    return errors
+
+
 def route_override_target_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, Any]]:
     atlas_rows = _read_csv_rows(OBJECT_ATLAS_CSV) if OBJECT_ATLAS_CSV.exists() else collect_object_atlas_rows(snapshot_root)
     resolved: list[dict[str, Any]] = []
@@ -3385,14 +5665,90 @@ def route_override_file_header(folder: str) -> str:
     )
 
 
+def repair_gigas_habitat_spawn_effect_params(block: str, target: dict[str, Any]) -> str:
+    if target["object_id"] != "habitat_central_complex" or "HABITAT_OWNER" in block:
+        return block
+    return block.replace(
+        "spawn_habitat_effect = {\n                DISTANCE =",
+        "spawn_habitat_effect = {\n                HABITAT_OWNER = root\n"
+        "                TARGET_PLANET = event_target:target_planet\n"
+        "                DISTANCE =",
+    )
+
+
+def strip_unsupported_district_keys(block: str) -> str:
+    return "\n".join(
+        line
+        for line in block.splitlines()
+        if not re.match(r"^\s*is_capped_by_modifier\s*=", line)
+    )
+
+
+def inject_zone_slots(block: str, slots: tuple[str, ...]) -> str:
+    if re.search(r"(?m)^\s*zone_slots\s*=", block):
+        return block
+    lines = block.splitlines()
+    if not lines:
+        return block
+    slot_lines = ["\tzone_slots = {", *(f"\t\t{slot}" for slot in slots), "\t}"]
+    return "\n".join([lines[0], *slot_lines, *lines[1:]])
+
+
+def gigas_habitat_zone_slot_compat_districts_text() -> str:
+    source_root = SNAPSHOT_ROOT / "1121692237-gigastructural-engineering-more-44" / "common" / "districts"
+    compat_rows = [
+        {
+            "source_path": str(source_root / source_file),
+            "object_id": object_id,
+            "generated_file": (MOD_ROOT / "common" / "districts" / "zzzz_staid_09_gigas_habitat_zone_slot_compat_districts.txt").as_posix(),
+        }
+        for source_file, object_ids in GIGAS_HABITAT_ZONE_SLOT_SOURCE_FILES.items()
+        for object_id in object_ids
+    ]
+    lines = [
+        "# Generated by tools/generate_stellar_ai_director_patch.py.",
+        "# Full-object compatibility override for Gigas habitat/orbital districts exposed by Director's crowded-tall route.",
+        "# Stellaris 4.4 district objects require zone_slots; the parent Gigas 4.4 files omit them for these districts.",
+        "",
+    ]
+    variables = route_override_file_variables(compat_rows)
+    if variables:
+        lines.append("# Source-local variables required by copied parent district objects.")
+        lines.extend(variables)
+        lines.append("")
+    for source_file, object_ids in GIGAS_HABITAT_ZONE_SLOT_SOURCE_FILES.items():
+        source_path = source_root / source_file
+        source_text = read_text(source_path)
+        lines.append(f"# Source: common/districts/{source_file}")
+        for object_id in object_ids:
+            block = extract_top_level_object_text(source_text, object_id)
+            block = strip_unsupported_district_keys(block)
+            block = inject_zone_slots(block, GIGAS_HABITAT_ZONE_SLOT_DISTRICTS[object_id])
+            lines.append(block.rstrip())
+            lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def route_override_object_text(target: dict[str, Any], object_names: dict[str, set[str]] | None = None) -> str:
     source_text = read_text(Path(target["source_path"]))
     block = extract_top_level_object_text(source_text, target["object_id"])
+    if target["object_type"] == "megastructure":
+        target = {
+            **target,
+            "megastructure_stage_kind": "upgrade" if re.search(r"(?m)^\s*upgrade_from\s*=", block) else "start",
+        }
     if target["object_type"] == "megastructure" and object_names is not None:
         block = strip_optional_absent_planet_classes(block, object_names)
+        block = repair_gigas_habitat_spawn_effect_params(block, target)
     if target["object_type"] in {"building", "district"}:
         block = director_infrastructure_weight_block(block, target)
+    elif target["object_type"] == "ai_budget":
+        block = remove_top_level_child_block(block, "ai_weight")
+    elif target["object_type"] == "federation_type" and target["object_id"] == "research_federation":
+        block = research_federation_weight_block(block)
     else:
+        if target["object_type"] == "starbase_module":
+            block = merge_duplicate_top_level_child_blocks(block, "potential")
         block = replace_top_level_child_block(block, "ai_weight", director_ai_weight_block(target))
     block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
     return (
@@ -3400,6 +5756,34 @@ def route_override_object_text(target: dict[str, Any], object_names: dict[str, s
         f"parent_ai = {target['parent_ai_support']}; source_ai_weight = {target['source_has_ai_weight']}\n"
         + block
     )
+
+
+def gigas_habitat_compat_scripted_effects_text() -> str:
+    source_root = SNAPSHOT_ROOT / "1121692237-gigastructural-engineering-more-44" / "common" / "scripted_effects"
+    source_objects = [
+        (source_root / "giga_habitat_effects.txt", "science_kilo_update_orbital_effect"),
+        (source_root / "giga_dismantle_effects.txt", "giga_dismantle_science_kilo_effect"),
+    ]
+    blocks = [
+        "# Generated by tools/generate_stellar_ai_director_patch.py.",
+        "# Full-object scripted-effect compatibility override for Gigas 4.4 habitat orbitals.",
+        "# The copied Gigas effects probe removed *_orbital_resource ship-size keys.",
+        "# No active 4.4 source defines a replacement orbital ship_size key, so fail that probe closed.",
+        "",
+    ]
+    for source_path, object_id in source_objects:
+        block = extract_top_level_object_text(read_text(source_path), object_id)
+        block = block.replace(
+            "is_ship_size = major_orbital_resource",
+            "always = no # removed stale major_orbital_resource ship-size probe",
+        )
+        block = block.replace(
+            "is_ship_size = minor_orbital_resource",
+            "always = no # removed stale minor_orbital_resource ship-size probe",
+        )
+        blocks.append(block.rstrip())
+        blocks.append("")
+    return "\n".join(blocks).rstrip() + "\n"
 
 
 def route_override_report_text(rows: list[dict[str, Any]]) -> str:
@@ -3455,6 +5839,278 @@ def generate_route_override_artifacts() -> list[dict[str, Any]]:
         route_override_report_text(rows),
     )
     return rows
+
+
+def planetary_diversity_outpost_value_profile(policy: dict[str, Any]) -> tuple[float, float, float]:
+    return PLANETARY_DIVERSITY_OUTPOST_VALUE_PROFILES[str(policy["role"])]
+
+
+def planetary_diversity_outpost_base_weight(policy: dict[str, Any]) -> int:
+    monthly_value, upfront_cost_value, monthly_upkeep_value = planetary_diversity_outpost_value_profile(policy)
+    roi = long_term_roi_ratio(monthly_value, upfront_cost_value, monthly_upkeep_value, 0)
+    formula_weight = int(max(1000.0, min(400000.0, round(1000.0 * max(1.0, roi)))))
+    return max(int(policy["base_weight"]), formula_weight)
+
+
+def planetary_diversity_outpost_ai_weight_block(policy: dict[str, Any]) -> str:
+    monthly_value, upfront_cost_value, monthly_upkeep_value = planetary_diversity_outpost_value_profile(policy)
+    lines = [
+        "\tai_weight = {",
+        f"\t\tfactor = {planetary_diversity_outpost_base_weight(policy)}",
+        "",
+        f"\t\t# policy_route = planetary_diversity_{policy['role']}",
+        "\t\t# Availability owns prerequisites: copied parent potential/allow already gate tech, sites, and resources.",
+        "\t\t# Lifetime value formula: (monthly value - upkeep) * months remaining before 2350 - upfront mineral cost value.",
+        "\t\tmodifier = { factor = 0 owner = { staid_survival_mode = yes } }",
+        "\t\tmodifier = { factor = 0 owner = { staid_core_deficit_short_runway = yes } }",
+        "\t\tmodifier = { factor = 0.35 owner = { staid_recovery_mode = yes } }",
+    ]
+    for factor, condition in long_term_value_factor_pairs(
+        monthly_value,
+        upfront_cost_value,
+        monthly_upkeep_value,
+        divisor=25.0,
+        maximum=35,
+    ):
+        lines.append(f"\t\tmodifier = {{ factor = {factor} {condition} }}")
+    for factor, condition in policy["modifiers"]:
+        lines.append(f"\t\tmodifier = {{ factor = {factor} {condition} }}")
+    lines.append("\t}")
+    return "\n".join(lines) + "\n"
+
+
+def planetary_diversity_outpost_decisions_text() -> str:
+    source_path = PLANETARY_DIVERSITY_WORKSHOP_ROOT / PLANETARY_DIVERSITY_OUTPOST_DECISION_SOURCE
+    if not source_path.exists():
+        raise ValueError(f"Missing Planetary Diversity outpost decision source: {source_path}")
+    source_text = read_text(source_path)
+    lines = [
+        "# Generated by tools/generate_stellar_ai_director_patch.py.",
+        "# Full-object override: copied Planetary Diversity outpost decisions with Director-owned AI weighting.",
+        "# The copied parent potential/allow blocks decide whether a button exists; Director does not duplicate PD tech/site prerequisite checks.",
+        "",
+        f"# Source: {PLANETARY_DIVERSITY_OUTPOST_DECISION_SOURCE}",
+        "",
+    ]
+    for policy in PLANETARY_DIVERSITY_OUTPOST_DECISION_POLICY:
+        block = extract_top_level_object_text(source_text, policy["decision_id"])
+        block = replace_top_level_child_block(block, "ai_weight", planetary_diversity_outpost_ai_weight_block(policy))
+        block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
+        lines.append(f"# planetary_diversity_role = {policy['role']}")
+        lines.append(block.rstrip())
+        lines.append("")
+    text = "\n".join(lines).rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def classify_pd_economic_roles(text: str) -> list[str]:
+    lowered = text.lower()
+    roles = [
+        role
+        for role, keywords in PD_ECONOMIC_ROLE_KEYWORDS.items()
+        if any(keyword in lowered for keyword in keywords)
+    ]
+    return roles or ["general"]
+
+
+def pd_top_level_rows(folder: str, source_files: Iterable[str] | None = None) -> list[dict[str, Any]]:
+    folder_root = PLANETARY_DIVERSITY_WORKSHOP_ROOT / "common" / folder
+    rows: list[dict[str, Any]] = []
+    files = [folder_root / name for name in source_files] if source_files else sorted(folder_root.glob("*.txt"))
+    for source_path in files:
+        if not source_path.exists():
+            continue
+        parsed = parse_file(source_path)
+        source_text = read_text(source_path)
+        for assignment in block_assignments(parsed):
+            if assignment.key.startswith("@"):
+                continue
+            try:
+                block = extract_top_level_object_text(source_text, assignment.key)
+            except ValueError:
+                block = f"{assignment.key} = {{}}\n"
+            rows.append(
+                {
+                    "folder": folder,
+                    "source_file": source_path.name,
+                    "object_id": assignment.key,
+                    "roles": classify_pd_economic_roles(block),
+                    "has_planet_modifier_block": "planet_modifier" in block,
+                }
+            )
+    return rows
+
+
+def planetary_diversity_modifier_profile_rows() -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for row in pd_top_level_rows("static_modifiers"):
+        row["trigger_kind"] = "has_modifier"
+        rows.append(row)
+    for row in pd_top_level_rows("deposits"):
+        row["trigger_kind"] = "has_deposit"
+        rows.append(row)
+    for row in pd_top_level_rows("buildings", PD_BUILDING_SOURCE_FILES):
+        row["trigger_kind"] = "has_building"
+        rows.append(row)
+    return rows
+
+
+def planetary_diversity_role_triggers_text() -> str:
+    rows = planetary_diversity_modifier_profile_rows()
+    role_rows: dict[str, list[dict[str, Any]]] = {role: [] for role in PD_ROLE_VALUE_PROFILES}
+    for row in rows:
+        if row["trigger_kind"] not in {"has_modifier", "has_deposit"}:
+            continue
+        for role in row["roles"]:
+            if role in role_rows:
+                role_rows[role].append(row)
+    lines = [
+        "# Generated by tools/generate_stellar_ai_director_patch.py.",
+        "# Planet-scope Planetary Diversity value classifiers.",
+        "# These triggers let the Director route planet roles/buildings from actual PD modifiers and deposits.",
+        "",
+    ]
+    for role, role_items in role_rows.items():
+        lines.append(f"staid_pd_planet_{role}_value = {{")
+        if role_items:
+            lines.append("\tOR = {")
+            for row in sorted(role_items, key=lambda item: (item["trigger_kind"], item["object_id"])):
+                lines.append(f"\t\t{row['trigger_kind']} = {row['object_id']}")
+            lines.append("\t}")
+        else:
+            lines.append("\talways = no")
+        lines.append("}")
+        lines.append("")
+    text = "\n".join(lines)
+    parse_pdx(text)
+    return text
+
+
+def pd_building_primary_role(block: str) -> str:
+    roles = classify_pd_economic_roles(block)
+    for preferred in ("research", "alloys", "minerals", "energy", "food", "consumer_goods", "growth", "trade", "unity", "defense"):
+        if preferred in roles:
+            return preferred
+    return roles[0]
+
+
+def pd_building_ai_weighted_block(block: str, object_id: str) -> str:
+    role = pd_building_primary_role(block)
+    monthly_value, upfront_cost_value, monthly_upkeep_value = PD_ROLE_VALUE_PROFILES.get(role, (35.0, 350.0, 0.75))
+    roi = long_term_roi_ratio(monthly_value, upfront_cost_value, monthly_upkeep_value, 0)
+    coefficient = max(4, min(16, int(round(max(1.0, roi) / 20.0))))
+    additional = max(400, min(4000, int(round(max(1.0, roi) * 20.0))))
+    block = replace_or_insert_top_level_scalar(block, "ai_weight_coefficient", f"\tai_weight_coefficient = {coefficient}")
+    block = replace_or_insert_top_level_scalar(block, "additional_ai_weight", f"\tadditional_ai_weight = {additional}")
+    modifiers = [
+        "\t\tmodifier = { factor = 0 owner = { staid_survival_mode = yes } }",
+        "\t\tmodifier = { factor = 0 owner = { staid_core_deficit_short_runway = yes } }",
+        f"\t\tmodifier = {{ factor = 8 staid_pd_planet_{role}_value = yes }}",
+    ]
+    for factor, condition in long_term_value_factor_pairs(
+        monthly_value,
+        upfront_cost_value,
+        monthly_upkeep_value,
+        divisor=25.0,
+        maximum=30,
+    ):
+        modifiers.append(f"\t\tmodifier = {{ factor = {factor} {condition} }}")
+    if role == "research":
+        modifiers.append("\t\tmodifier = { factor = 5 owner = { staid_research_under_curve = yes } }")
+    elif role == "alloys":
+        modifiers.append("\t\tmodifier = { factor = 5 owner = { staid_militarist_conquest_strategy = yes } }")
+    elif role == "growth":
+        modifiers.append("\t\tmodifier = { factor = 5 owner = { staid_planetary_capacity_growth_ready = yes } }")
+    for modifier in modifiers:
+        block = insert_top_level_ai_weight_modifier(block, modifier)
+    return "# pd_economic_role = " + role + "\n" + block
+
+
+def planetary_diversity_buildings_text() -> str:
+    source_root = PLANETARY_DIVERSITY_WORKSHOP_ROOT / "common" / "buildings"
+    variable_rows: list[dict[str, Any]] = []
+    for source_file in PD_BUILDING_SOURCE_FILES:
+        source_path = source_root / source_file
+        if not source_path.exists():
+            continue
+        parsed = parse_file(source_path)
+        for assignment in block_assignments(parsed):
+            if assignment.key.startswith("@"):
+                continue
+            variable_rows.append(
+                {
+                    "source_path": str(source_path),
+                    "object_id": assignment.key,
+                    "generated_file": (MOD_ROOT / "common" / "buildings" / "zzzz_staid_12_planetary_diversity_buildings.txt").as_posix(),
+                }
+            )
+    lines = [
+        "# Generated by tools/generate_stellar_ai_director_patch.py.",
+        "# Full-object override: copied Planetary Diversity buildings with Director-owned economic ROI weights.",
+        "# Availability owns PD prerequisites; weights classify the planet modifier/deposit role and the 2350 horizon payoff.",
+        "",
+    ]
+    variables = route_override_file_variables(variable_rows)
+    if variables:
+        lines.append("# Source-local variables required by copied Planetary Diversity building objects.")
+        lines.extend(variables)
+        lines.append("")
+    for source_file in PD_BUILDING_SOURCE_FILES:
+        source_path = source_root / source_file
+        if not source_path.exists():
+            continue
+        source_text = read_text(source_path)
+        parsed = parse_file(source_path)
+        lines.append(f"# Source: common/buildings/{source_file}")
+        for assignment in block_assignments(parsed):
+            if assignment.key.startswith("@"):
+                continue
+            block = extract_top_level_object_text(source_text, assignment.key)
+            block = pd_building_ai_weighted_block(block, assignment.key)
+            block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
+            lines.append(block.rstrip())
+            lines.append("")
+    text = "\n".join(lines).rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def write_planetary_diversity_profile_artifacts() -> None:
+    rows = planetary_diversity_modifier_profile_rows()
+    flat_rows = [
+        {
+            **{key: value for key, value in row.items() if key != "roles"},
+            "roles": ",".join(row["roles"]),
+        }
+        for row in rows
+    ]
+    write_csv(RESEARCH_ROOT / "stellar-ai-director-planetary-diversity-profile-2026-07-07.csv", flat_rows)
+    role_counts: dict[str, int] = {}
+    for row in rows:
+        for role in row["roles"]:
+            role_counts[role] = role_counts.get(role, 0) + 1
+    lines = [
+        "# Stellar AI Director Planetary Diversity Profile",
+        "",
+        "Generated from the active Planetary Diversity workshop source.",
+        "",
+        "| role | object count |",
+        "| --- | ---: |",
+    ]
+    for role, count in sorted(role_counts.items()):
+        lines.append(f"| {role} | {count} |")
+    lines.extend(
+        [
+            "",
+            "## Follow-Up Task: Hostile Space Fauna Clearance",
+            "",
+            "- Inventory crystalline entities, amoebas, mining drones, void clouds, leviathans, and modded equivalents by expected fleet power and rewards.",
+            "- Add early fleet reserve pressure for cheap 1k-2k fleet-power clearance targets so AI empires can open blocked hyperlanes, claim guarded systems, and unlock event research instead of idling fleets.",
+            "- Keep high-risk leviathan-style targets separate from cheap early blockers; do not make the AI suicide fleets into oversized guardians.",
+        ]
+    )
+    write_text_file(RESEARCH_ROOT / "stellar-ai-director-planetary-diversity-profile-2026-07-07.md", "\n".join(lines) + "\n")
 
 
 def axis_vector(values: tuple[int, ...]) -> dict[str, int]:
@@ -3580,7 +6236,9 @@ def threat_response_script_values_text() -> str:
 
 def threat_response_triggers_text() -> str:
     war_goal_checks = "\n".join(
-        f"staid_tr_is_{row['classification']}_war_goal = {{\n\tfrom = {{ using_war_goal = {row['war_goal']} }}\n}}\n"
+        f"staid_tr_is_{row['classification']}_war_goal = {{\n"
+        f"\tfrom = {{ using_war_goal = {{ type = {row['war_goal']} owner = root }} }}\n"
+        f"}}\n"
         for row in WAR_GOAL_THREAT_CLASSES.values()
     )
     return (
@@ -3683,6 +6341,18 @@ country_event = {{
 \t\tstaid_tr_war_goal_classified = yes
 \t}}
 \timmediate = {{
+\t\tif = {{
+\t\t\tlimit = {{ staid_tr_is_subjugation_war_goal = yes }}
+\t\t\tset_timed_country_flag = {{ flag = staid_tr_war_goal_subjugation days = {THREAT_COUNTRY_FLAG_DAYS} }}
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{ staid_tr_is_conquest_war_goal = yes }}
+\t\t\tset_timed_country_flag = {{ flag = staid_tr_war_goal_conquest days = {THREAT_COUNTRY_FLAG_DAYS} }}
+\t\t}}
+\t\telse_if = {{
+\t\t\tlimit = {{ staid_tr_is_humiliation_war_goal = yes }}
+\t\t\tset_timed_country_flag = {{ flag = staid_tr_war_goal_humiliation days = {THREAT_COUNTRY_FLAG_DAYS} }}
+\t\t}}
 \t\tfrom = {{
 \t\t\trandom_defender = {{
 \t\t\t\tsave_event_target_as = staid_tr_victim
@@ -3716,17 +6386,17 @@ country_event = {{
 \t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_alignment_medium }}
 \t\tremove_opinion_modifier = {{ who = from modifier = staid_tr_alignment_high }}
 \t\tif = {{
-\t\t\tlimit = {{ staid_tr_is_subjugation_war_goal = yes }}
+\t\t\tlimit = {{ from = {{ has_country_flag = staid_tr_war_goal_subjugation }} }}
 \t\t\tadd_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_high }}
 \t\t\tset_timed_relation_flag = {{ who = from flag = staid_tr_anti_aggressor_high days = {THREAT_RELATION_FLAG_DAYS} }}
 \t\t}}
 \t\telse_if = {{
-\t\t\tlimit = {{ staid_tr_is_conquest_war_goal = yes }}
+\t\t\tlimit = {{ from = {{ has_country_flag = staid_tr_war_goal_conquest }} }}
 \t\t\tadd_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_medium }}
 \t\t\tset_timed_relation_flag = {{ who = from flag = staid_tr_anti_aggressor_medium days = {THREAT_RELATION_FLAG_DAYS} }}
 \t\t}}
 \t\telse_if = {{
-\t\t\tlimit = {{ staid_tr_is_humiliation_war_goal = yes }}
+\t\t\tlimit = {{ from = {{ has_country_flag = staid_tr_war_goal_humiliation }} }}
 \t\t\tadd_opinion_modifier = {{ who = from modifier = staid_tr_anti_aggressor_low }}
 \t\t\tset_timed_relation_flag = {{ who = from flag = staid_tr_anti_aggressor_low days = {THREAT_RELATION_FLAG_DAYS} }}
 \t\t}}
@@ -3767,7 +6437,7 @@ def threat_response_localisation_text() -> str:
 def threat_response_feasibility_note_text() -> str:
     return """# Stellar AI Director Threat Response Feasibility
 
-Target game version: Stellaris PC 4.4.4 stable.
+Target game version: Stellaris PC 4.4.5 stable/current local install.
 Local install inspected: `C:/Steam/steamapps/common/Stellaris`.
 
 ## Verified Primitives
@@ -4492,13 +7162,14 @@ def generate_dependency_audit_artifacts() -> list[dict[str, Any]]:
     return rows
 
 
-def unresolved_template_placeholder_count(text: str) -> int:
+def unresolved_template_placeholder_count(text: str, *, allow_scripted_effect_parameters: bool = False) -> int:
     patterns = [
-        r"\$[A-Za-z0-9_.:-]+\$",
         r"__PLACEHOLDER_[A-Za-z0-9_]+__",
         r"\bTODO\b",
         r"\bPLACEHOLDER\b",
     ]
+    if not allow_scripted_effect_parameters:
+        patterns.append(r"\$[A-Za-z0-9_.:-]+\$")
     return sum(len(re.findall(pattern, text)) for pattern in patterns)
 
 
@@ -4536,7 +7207,10 @@ def collect_generated_file_audit_rows(mod_root: Path = MOD_ROOT) -> list[dict[st
         path_status, folder = generated_file_path_status(file_path, mod_root)
         object_type = GENERATED_SURFACE_FOLDERS.get(folder, folder if folder in {"events", "localisation"} else "")
         text = read_text(file_path)
-        placeholder_count = unresolved_template_placeholder_count(text)
+        placeholder_count = unresolved_template_placeholder_count(
+            text,
+            allow_scripted_effect_parameters=folder == "scripted_effects",
+        )
         parse_status = "not_checked"
         top_level_object_count = 0
         if folder == "localisation":
@@ -5172,9 +7846,12 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
     tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
     buildings_path = repo_root / "mods/StellarAIDirector/common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt"
     districts_path = repo_root / "mods/StellarAIDirector/common/districts/zzzz_staid_06_research_infrastructure_districts.txt"
+    decisions_path = repo_root / "mods/StellarAIDirector/common/decisions/zzzz_staid_12_planetary_diversity_outpost_decisions.txt"
     required_economy_terms = {
         "Stellar AI Director planetary capacity reserve",
+        "Stellar AI Director Planetary Diversity outpost reserve",
         "staid_planetary_capacity_growth_ready = yes",
+        "staid_planetary_diversity_outpost_investment_ready = yes",
         "pops = 400000",
         "minerals = 500",
     }
@@ -5183,10 +7860,13 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
         "staid_core_deficit_short_runway = yes",
         "resource_stockpile_compare = { resource = minerals value > 5000 }",
         "has_monthly_income = { resource = minerals value > 100 }",
+        "staid_pd_research_outpost_priority_ready",
+        "resource_stockpile_compare = { resource = minerals value > 1200 }",
     }
     required_note_terms = {
         "planetary-capacity policy",
         "direct research infrastructure overrides",
+        "planetary diversity outpost decisions",
     }
     if not (
         economy_path.exists()
@@ -5194,6 +7874,7 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
         and tuning_path.exists()
         and buildings_path.exists()
         and districts_path.exists()
+        and decisions_path.exists()
     ):
         return False
     try:
@@ -5201,17 +7882,28 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
         parse_file(triggers_path)
         parse_file(buildings_path)
         parse_file(districts_path)
+        parse_file(decisions_path)
     except PDXParseError:
         return False
     economy = read_text(economy_path)
     triggers = read_text(triggers_path)
-    tuning = (read_text(tuning_path) + "\n" + read_text(buildings_path) + "\n" + read_text(districts_path)).lower()
+    tuning = (
+        read_text(tuning_path)
+        + "\n"
+        + read_text(buildings_path)
+        + "\n"
+        + read_text(districts_path)
+        + "\n"
+        + read_text(decisions_path)
+    ).lower()
     return (
         all(term in economy for term in required_economy_terms)
         and all(term in triggers for term in required_trigger_terms)
         and all(term in tuning for term in required_note_terms)
         and "building_research_lab_3" in tuning
         and "district_hab_science" in tuning
+        and "decision_build_pd_research_base" in tuning
+        and "availability owns prerequisites" in tuning
     )
 
 
@@ -5953,31 +8645,783 @@ def generate_roi_artifacts() -> list[dict[str, Any]]:
     return rows
 
 
+def opening_strategy_triggers_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Computed opening classifier for the first 75-year strategy kernel.
+
+staid_opening_direct_research = {
+\tstaid_is_opening_phase = yes
+\tstaid_can_afford_research_push = yes
+\tOR = {
+\t\thas_ethic = ethic_materialist
+\t\thas_ethic = ethic_fanatic_materialist
+\t\thas_authority = auth_machine_intelligence
+\t\thas_civic = civic_technocracy
+\t}
+}
+
+staid_opening_unity_to_research = {
+\tstaid_is_opening_phase = yes
+\tstaid_has_safe_basic_stockpiles = yes
+\tOR = {
+\t\thas_ethic = ethic_spiritualist
+\t\thas_ethic = ethic_fanatic_spiritualist
+\t\thas_civic = civic_exalted_priesthood
+\t\thas_civic = civic_death_cult
+\t}
+}
+
+staid_opening_military_to_pops = {
+\tstaid_is_opening_phase = yes
+\tstaid_has_safe_basic_stockpiles = yes
+\tNOT = { has_deficit = alloys }
+\tOR = {
+\t\thas_ethic = ethic_militarist
+\t\thas_ethic = ethic_fanatic_militarist
+\t\thas_ethic = ethic_authoritarian
+\t\thas_ethic = ethic_fanatic_authoritarian
+\t}
+}
+
+staid_opening_hostile_fauna_clearance = {
+\tstaid_is_opening_phase = yes
+\tstaid_has_safe_basic_stockpiles = yes
+\tNOT = { has_deficit = alloys }
+\tOR = {
+\t\thas_ethic = ethic_militarist
+\t\thas_ethic = ethic_fanatic_militarist
+\t\thas_ethic = ethic_xenophobe
+\t\thas_ethic = ethic_fanatic_xenophobe
+\t\thas_authority = auth_machine_intelligence
+\t}
+}
+
+staid_opening_defensive_tall_research = {
+\tstaid_is_opening_phase = yes
+\tstaid_can_afford_research_push = yes
+\tOR = {
+\t\thas_ethic = ethic_pacifist
+\t\thas_ethic = ethic_fanatic_pacifist
+\t\thas_ethic = ethic_xenophobe
+\t\thas_ethic = ethic_fanatic_xenophobe
+\t}
+}
+
+staid_opening_trade_to_research = {
+\tstaid_is_opening_phase = yes
+\tstaid_has_safe_basic_stockpiles = yes
+\tOR = {
+\t\thas_ethic = ethic_xenophile
+\t\thas_ethic = ethic_fanatic_xenophile
+\t\thas_civic = civic_merchant_guilds
+\t\thas_civic = civic_corporate_dominion
+\t}
+}
+
+staid_opening_hive_growth_research = {
+\tstaid_is_opening_phase = yes
+\tstaid_has_safe_basic_stockpiles = yes
+\thas_authority = auth_hive_mind
+}
+
+staid_opening_machine_growth_research = {
+\tstaid_is_opening_phase = yes
+\tstaid_has_safe_basic_stockpiles = yes
+\thas_authority = auth_machine_intelligence
+}
+
+staid_opening_nomad_arkship_research = {
+\tstaid_is_opening_phase = yes
+\tis_nomadic = yes
+\tstaid_has_safe_basic_stockpiles = yes
+}
+
+staid_opening_any_research_route = {
+\tOR = {
+\t\tstaid_opening_direct_research = yes
+\t\tstaid_opening_unity_to_research = yes
+\t\tstaid_opening_defensive_tall_research = yes
+\t\tstaid_opening_trade_to_research = yes
+\t\tstaid_opening_hive_growth_research = yes
+\t\tstaid_opening_machine_growth_research = yes
+\t\tstaid_opening_nomad_arkship_research = yes
+\t}
+}
+'''
+
+
+def strategy_kernel_triggers_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Computed strategic state shared by economy, policy, edict, technology, and fleet weights.
+
+staid_is_opening_phase = {
+\tyears_passed < 75
+}
+
+staid_is_midgame_scaling_phase = {
+\tyears_passed > 44
+\tyears_passed < 120
+}
+
+staid_is_crisis_scaling_phase = {
+\tyears_passed > 119
+}
+
+staid_has_safe_basic_stockpiles = {
+\tNOT = { has_deficit = energy }
+\tNOT = { has_deficit = minerals }
+\tNOT = { has_deficit = food }
+\tNOT = { has_deficit = consumer_goods }
+\tresource_stockpile_percent = { resource = energy value > 0.10 }
+\tresource_stockpile_percent = { resource = minerals value > 0.10 }
+}
+
+staid_can_afford_research_push = {
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\tstaid_has_safe_basic_stockpiles = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t\tstaid_construction_spenddown_pressure = yes
+\t}
+\tOR = {
+\t\tstaid_research_input_runway_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t\tstaid_construction_spenddown_pressure = yes
+\t}
+}
+
+staid_security_threatened = {
+\tOR = {
+\t\thas_country_flag = staid_tr_defensive_readiness_low
+\t\tstaid_crisis_starbase_pressure = yes
+\t}
+}
+
+staid_security_existential = {
+\tOR = {
+\t\tstaid_crisis_starbase_pressure = yes
+\t\tAND = {
+\t\t\tstaid_security_threatened = yes
+\t\t\tNOT = { staid_shipyard_payoff_ready = yes }
+\t\t}
+\t}
+}
+
+staid_megastructure_prereq_release = {
+\tstaid_megastructure_prep_ready = yes
+\tstaid_can_afford_research_push = yes
+}
+
+staid_megastructure_alloy_release = {
+\tstaid_megastructure_commit_safe = yes
+\tNOT = { staid_security_existential = yes }
+}
+
+staid_fleet_defensive_minimum_mode = {
+\tOR = {
+\t\tstaid_security_threatened = yes
+\t\tstaid_shipyard_expansion_ready = yes
+\t}
+}
+
+staid_fleet_strategic_aggression_mode = {
+\tOR = {
+\t\tstaid_fleet_payoff_exploitation_ready = yes
+\t\tAND = {
+\t\t\tused_naval_capacity_percent < 1.40
+\t\t\thas_monthly_income = { resource = alloys value > 80 }
+\t\t}
+\t\tstaid_hostile_fauna_clearance_strategy = yes
+\t}
+\tNOT = { staid_security_existential = yes }
+}
+
+staid_fleet_survival_emergency_mode = {
+\tstaid_security_existential = yes
+}
+
+staid_opening_route_research_priority = {
+\tOR = {
+\t\tstaid_opening_any_research_route = yes
+\t\tstaid_research_under_curve = yes
+\t}
+}
+'''
+
+
+def fleet_doctrine_triggers_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Fleet doctrine classifiers for tech and spend weights. These do not force ship designs.
+
+staid_fleet_energy_shield_doctrine = {
+\tstaid_fleet_defensive_minimum_mode = yes
+\tOR = {
+\t\thas_ethic = ethic_materialist
+\t\thas_ethic = ethic_fanatic_materialist
+\t\thas_technology = tech_lasers_2
+\t\thas_technology = tech_shields_2
+\t}
+}
+
+staid_fleet_kinetic_armor_doctrine = {
+\tstaid_fleet_defensive_minimum_mode = yes
+\tOR = {
+\t\thas_ethic = ethic_militarist
+\t\thas_ethic = ethic_fanatic_militarist
+\t\thas_technology = tech_mass_drivers_2
+\t\thas_technology = tech_ship_armor_2
+\t}
+}
+
+staid_fleet_missile_evasion_doctrine = {
+\tstaid_fleet_strategic_aggression_mode = yes
+\tOR = {
+\t\thas_technology = tech_missiles_2
+\t\thas_technology = tech_afterburners_1
+\t\thas_technology = tech_thrusters_2
+\t}
+}
+
+staid_fleet_carrier_strikecraft_doctrine = {
+\tOR = {
+\t\tstaid_fleet_strategic_aggression_mode = yes
+\t\tstaid_is_midgame_scaling_phase = yes
+\t}
+\tOR = {
+\t\thas_technology = tech_space_whale_weapon_1
+\t\thas_technology = tech_strike_craft_1
+\t\thas_technology = tech_starbase_3
+\t}
+}
+
+staid_fleet_balanced_filler_doctrine = {
+\tNOT = { staid_fleet_energy_shield_doctrine = yes }
+\tNOT = { staid_fleet_kinetic_armor_doctrine = yes }
+\tNOT = { staid_fleet_missile_evasion_doctrine = yes }
+\tNOT = { staid_fleet_carrier_strikecraft_doctrine = yes }
+}
+'''
+
+
+def opening_growth_policies_text() -> str:
+    diplomatic_block = find_verified_source_object_block("policies", "diplomatic_stance")
+    bombardment_block = find_verified_source_object_block("policies", "orbital_bombardment")
+    surrender_block = find_verified_source_object_block("policies", "orbital_bombardment_accept_surrender")
+    cooperative_modifier = "\t\t\tmodifier = { factor = 12 staid_opening_route_research_priority = yes NOT = { staid_security_existential = yes } }"
+    mercantile_modifier = "\t\t\tmodifier = { factor = 5 staid_opening_trade_to_research = yes }"
+    expansionist_modifier = "\t\t\tmodifier = { factor = 4 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }"
+    supremacist_modifier = "\t\t\tmodifier = { factor = 18 staid_militarist_conquest_strategy = yes }"
+    conquest_bombardment_modifier = "\t\t\tmodifier = { factor = 18 staid_militarist_conquest_strategy = yes }"
+    opening_bombardment_modifier = "\t\t\tmodifier = { factor = 8 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }"
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_cooperative", cooperative_modifier)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_cooperative_nomad", cooperative_modifier)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_modifier)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_modifier)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_supremacist", supremacist_modifier)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_supremacist_nomad", supremacist_modifier)
+    bombardment_block = insert_policy_option_ai_weight_modifier(
+        bombardment_block, "orbital_bombardment_indiscriminate", conquest_bombardment_modifier
+    )
+    bombardment_block = insert_policy_option_ai_weight_modifier(
+        bombardment_block, "orbital_bombardment_indiscriminate", opening_bombardment_modifier
+    )
+    forbidden_ai_weight = """		ai_weight = {
+			base = 1
+			modifier = { factor = 80 staid_raiding_pop_growth_strategy = yes }
+			modifier = { factor = 20 staid_militarist_conquest_strategy = yes }
+			modifier = { factor = 8 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }
+			modifier = {
+				factor = 0.01
+				NOT = { staid_raiding_pop_growth_strategy = yes }
+				NOT = { staid_militarist_conquest_strategy = yes }
+				NOT = { staid_opening_military_to_pops = yes }
+			}
+		}"""
+    surrender_block = replace_policy_option_ai_weight(
+        surrender_block, "orbital_bombardment_surrender_forbidden", forbidden_ai_weight
+    )
+
+    text = "\n".join(block.rstrip() for block in (diplomatic_block, bombardment_block, surrender_block)) + "\n"
+    parse_pdx(text)
+    return (
+        "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
+        "# Verified full-object policy overrides from installed vanilla diplomatic and orbital bombardment policies.\n\n"
+        + text
+    )
+
+
+def militarist_bombardment_stances_text() -> str:
+    block = find_verified_source_object_block("bombardment_stances", "raiding")
+    ai_weight = """\tai_weight = {
+\t\tweight = 80
+\t\tmodifier = {
+\t\t\tfactor = 0
+\t\t\texists = from
+\t\t\tfrom = {
+\t\t\t\tOR = {
+\t\t\t\t\tpop_amount < 200
+\t\t\t\t\towner = { NOT = { is_hostile = root.owner } }
+\t\t\t\t}
+\t\t\t}
+\t\t}
+\t\tmodifier = { factor = 60 owner = { staid_raiding_pop_growth_strategy = yes } }
+\t\tmodifier = { factor = 25 owner = { staid_militarist_conquest_strategy = yes } }
+\t\tmodifier = { factor = 8 owner = { staid_opening_military_to_pops = yes } }
+\t\tmodifier = {
+\t\t\tfactor = 0.25
+\t\t\texists = from
+\t\t\tfrom = { owner = { has_claim = root.solar_system } }
+\t\t}
+\t}"""
+    block = replace_top_level_child_block(block, "ai_weight", ai_weight)
+    parse_pdx(block)
+    return (
+        "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
+        "# Full-object override: vanilla raiding bombardment stance with Director-owned abduct-pop AI weighting.\n\n"
+        + block
+    )
+
+
+def opening_growth_edicts_text() -> str:
+    targets = {
+        "research_subsidies": "\t\tmodifier = { factor = 12 staid_opening_route_research_priority = yes staid_can_afford_research_push = yes }",
+        "encourage_free_thought": "\t\tmodifier = { factor = 8 staid_opening_route_research_priority = yes staid_can_afford_research_push = yes }",
+        "map_the_stars": "\t\tmodifier = { factor = 5 staid_is_opening_phase = yes staid_has_safe_basic_stockpiles = yes }",
+        "capacity_subsidies": "\t\tmodifier = { factor = 6 staid_is_opening_phase = yes NOT = { has_deficit = energy } }",
+        "mining_subsidies": "\t\tmodifier = { factor = 6 staid_is_opening_phase = yes NOT = { has_deficit = minerals } }",
+        "farming_subsidies": "\t\tmodifier = { factor = 4 staid_is_opening_phase = yes NOT = { has_deficit = food } }",
+        "fortify_the_border": "\t\tmodifier = { factor = 6 staid_security_threatened = yes }",
+    }
+    blocks = [
+        "# Generated by tools/generate_stellar_ai_director_patch.py.",
+        "# Verified full-object edict overrides from installed vanilla edicts.",
+        "# Required source-local @variables are copied into this file to preserve vanilla parse context.",
+        "@Edict1Cost = 10",
+        "@Edict2Cost = 20",
+        "@Edict3Cost = 30",
+        "@EdictPerpetual = -1",
+        "@EdictHighPrio = 100",
+        "@EdictMedPrio = 10",
+        "",
+    ]
+    for object_id, modifier in targets.items():
+        block = find_verified_source_object_block("edicts", object_id)
+        block = insert_top_level_ai_weight_modifier(block, modifier)
+        parse_pdx(block)
+        blocks.append(block.rstrip())
+        blocks.append("")
+    return "\n".join(blocks).rstrip() + "\n"
+
+
+def standalone_parity_inventory_rows() -> list[dict[str, str]]:
+    return [
+        {
+            "surface": "descriptor_dependencies",
+            "classification": "reimplement",
+            "baseline_status": "implemented",
+            "director_evidence": "mods/StellarAIDirector/descriptor.mod",
+            "stellar_ai_reference": "Stellar AI is private parity evidence only; descriptor dependency intentionally omitted.",
+            "parity_note": "Director can launch without declaring Stellar AI once static validation passes.",
+        },
+        {
+            "surface": "common/ai_budget",
+            "classification": "absorb_reimplement",
+            "baseline_status": "implemented",
+            "director_evidence": "common/ai_budget/zzz_staid_alloys_budget.txt; common/ai_budget/zzz_staid_gigas_resource_budgets.txt; common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt",
+            "stellar_ai_reference": "Stellar AI budget behavior used as private reference for alloy/construction reserve policy.",
+            "parity_note": "Director-owned budgets cover megastructure reserves, Gigas resources, and construction pressure without a Stellar AI runtime dependency.",
+        },
+        {
+            "surface": "common/economic_plans",
+            "classification": "absorb_reimplement",
+            "baseline_status": "implemented",
+            "director_evidence": "common/economic_plans/zzzz_staid_additive_economic_plan.txt",
+            "stellar_ai_reference": "Stellar AI basic economy plan used as private parity source for high-scale AI economy spine.",
+            "parity_note": "Director replaces basic_economy_plan with survival, research, construction, trade, fleet-throughput, static-defense, and high-scale reserve subplans.",
+        },
+        {
+            "surface": "buildings/districts/jobs/zones",
+            "classification": "targeted_reimplement",
+            "baseline_status": "implemented_for_baseline",
+            "director_evidence": "common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt; common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt; generated dataset job-pressure audit",
+            "stellar_ai_reference": "Parent AI support and active-stack valuation datasets preserve source provenance.",
+            "parity_note": "Baseline covers safe building, district, and zone construction pressure through ai_resource_production; broad job automation remains deferred.",
+        },
+        {
+            "surface": "colony_types_designations_planet_roles",
+            "classification": "targeted_reimplement",
+            "baseline_status": "implemented_for_baseline",
+            "director_evidence": "common/scripted_triggers/zzzz_staid_12_planetary_diversity_value_triggers.txt; common/decisions/zzzz_staid_12_planetary_diversity_outpost_decisions.txt; common/buildings/zzzz_staid_12_planetary_diversity_buildings.txt",
+            "stellar_ai_reference": "Stellar AI/active-stack planet automation was used as parity context, but no broad colony_type rewrite is emitted.",
+            "parity_note": "Director supports high-value planetary diversity/outpost and capacity pressure while deferring broad colony-type/personality-style rewrites.",
+        },
+        {
+            "surface": "personalities_diplomacy_war",
+            "classification": "defer_except_safe_war_support",
+            "baseline_status": "partial_baseline",
+            "director_evidence": "common/scripted_triggers/zzz_staid_threat_response_triggers.txt; events/zzz_staid_threat_response_events.txt; common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt; economic-plan war support reserves",
+            "stellar_ai_reference": "Stellar AI personality/diplomacy behavior remains reference-only; direct personality and diplomatic-action overrides are high-risk gated.",
+            "parity_note": "Baseline covers defensive readiness, conquest/raiding reserves, and threat response without direct war declarations, diplomatic actions, or personality rewrites.",
+        },
+        {
+            "surface": "policies_edicts_defines",
+            "classification": "reimplement",
+            "baseline_status": "implemented",
+            "director_evidence": "common/policies/zzzz_staid_10_opening_growth_policies.txt; common/edicts/zzzz_staid_10_opening_growth_edicts.txt; common/defines/zzzz_staid_14_high_scale_ai_defines.txt",
+            "stellar_ai_reference": "Stellar AI opening/growth pressure informed parity goals; Director emits standalone policy/edict/define AI weights.",
+            "parity_note": "Baseline covers growth, research conversion, diplomacy stance pressure, construction scoring, and high-scale AI refresh/target tuning.",
+        },
+        {
+            "surface": "research_economy_fleet_conversion",
+            "classification": "reimplement",
+            "baseline_status": "implemented",
+            "director_evidence": "common/technology/zzzz_staid_01_unlock_technology_technology.txt; common/traditions/zzzz_staid_02_perks_traditions_traditions.txt; common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt; fleet-throughput economic subplans",
+            "stellar_ai_reference": "Stellar AI research/economy spine used as parity reference for mandatory unlock and fleet payoff routing.",
+            "parity_note": "Director pushes Mega Engineering, Mega Shipyard, Gigas, NSC3, ESC, AP/tradition, and fleet-throughput routes directly.",
+        },
+        {
+            "surface": "generated_conflict_winners",
+            "classification": "validate_preserve_or_intentional_override",
+            "baseline_status": "implemented",
+            "director_evidence": "stellar-ai-director-generated-conflicts-2026-07-04.csv; stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+            "stellar_ai_reference": "Stellar AI copied/reimplemented objects retain source provenance in generated audits.",
+            "parity_note": "Static validation must show generated references resolve and intentional winners are documented before standalone readiness is claimed.",
+        },
+        {
+            "surface": "advanced_ship_design_nsc3_esc_gigas_runtime",
+            "classification": "defer",
+            "baseline_status": "non_baseline_gap",
+            "director_evidence": "mods/StellarAIDirector/notes/tuning-notes.md; research/stellar-ai/stellar-ai-director-open-roadmap-2026-07-07.md",
+            "stellar_ai_reference": "Stellar AI does not settle these active-stack direct ship/Gigas runtime proof questions.",
+            "parity_note": "Direct ship-design/component/section handling, advanced Gigas optimization, personalities, diplomatic actions, and observer proof remain roadmap items.",
+        },
+    ]
+
+
+def standalone_parity_inventory_text(rows: list[dict[str, str]]) -> str:
+    lines = [
+        "# Stellar AI Director Standalone Parity Inventory",
+        "",
+        "Generated 2026-07-08. Stellar AI is a private local parity reference, not a launch dependency. This inventory records the fastest Pareto baseline: which high-value Stellar AI-style AI surfaces are absorbed, reimplemented, deferred, or intentionally not copied before the descriptor drops the hard dependency.",
+        "",
+        "| surface | classification | baseline status | Director evidence | parity note |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['surface']} | {row['classification']} | {row['baseline_status']} | `{row['director_evidence']}` | {row['parity_note']} |"
+        )
+    lines.extend(
+        [
+            "",
+            "Redistribution note: current Stellar AI source is used for private local development provenance only. Any copied third-party content needs explicit permission or a later replacement/rewrite pass before redistribution.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def generate_standalone_parity_inventory_artifacts() -> list[dict[str, str]]:
+    rows = standalone_parity_inventory_rows()
+    write_csv(STANDALONE_PARITY_INVENTORY_CSV, rows)
+    write_text_file(STANDALONE_PARITY_INVENTORY_MD, standalone_parity_inventory_text(rows))
+    return rows
+
+
+def generated_version_inventory_text(playset: dict[str, Any]) -> str:
+    required_lines = [
+        f"- {mod_id}: {row['name']} present={row['present']} load_position={row['load_position']}"
+        for mod_id, row in sorted(playset.get("required_mods", {}).items())
+    ]
+    optional_lines = [
+        f"- {label}: {present}"
+        for label, present in sorted(playset.get("optional_integrations", {}).items())
+    ]
+    return f"""# Stellar AI Director Generated Version Inventory
+
+Generated by `tools/generate_stellar_ai_director_patch.py`.
+
+- Target live strategy version: Stellaris PC 4.4.5 stable/current local install; launcher metadata remains `v4.4.*` for the stable 4.4 line.
+- Static validation scope: no Stellaris launch, observer game, benchmark scenario, screenshot, or save checkpoint is required by this generated pass.
+- Launcher descriptor support line: `supported_version="v4.4.*"`.
+- Active Irony collection: `{playset.get('collection_name', '')}`.
+- Active mod count: {playset.get('mod_count', 0)}.
+- Patch mod enabled in Irony collection: {playset.get('patch_mod_enabled')}.
+
+## Required Mod Presence
+
+{chr(10).join(required_lines) if required_lines else "- No required mod inventory rows were found."}
+
+## Optional Integration Signals
+
+{chr(10).join(optional_lines) if optional_lines else "- No optional integration rows were found."}
+
+## Generated July 7 Surfaces
+
+- `common/scripted_triggers/zzzz_staid_10_opening_strategy_triggers.txt`
+- `common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt`
+- `common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt`
+- `common/policies/zzzz_staid_10_opening_growth_policies.txt`
+- `common/edicts/zzzz_staid_10_opening_growth_edicts.txt`
+
+Policy and edict artifacts are generated from locally extracted, parse-verified installed objects. Missing IDs or missing policy options fail generation.
+"""
+
+
+def mod_stack_compatibility_text(playset: dict[str, Any]) -> str:
+    mod_rows = playset.get("mods", [])
+    top_mods = [
+        f"- {row.get('position')}: {row.get('name')} ({row.get('steam_id') or row.get('path')})"
+        for row in mod_rows[:40]
+    ]
+    return f"""# Stellar AI Director Mod Stack Compatibility
+
+Generated by `tools/generate_stellar_ai_director_patch.py`.
+
+## Compatibility Contract
+
+- Target: current live 4.4.5 launcher surface, with `v4.4.*` descriptor compatibility retained for the stable 4.4 line.
+- Strategy style: computed scripted triggers and AI weights first; persistent flags or event forcing are reserved for verified cooldowns and runtime memory only.
+- Policy scope: this pass modifies `diplomatic_stance` AI weights only, because that object extracts and parses cleanly from the installed vanilla policy file.
+- Edict scope: this pass modifies installed vanilla edict AI weights for research, exploration, energy, mineral, food, and border-defense pressure.
+- High-risk deferred surfaces: diplomatic actions, personalities, federation laws, species rights, forced ship designs, and direct Gigas megastructure object rewrites require separate full-object review.
+
+## Active Stack Snapshot
+
+Collection: `{playset.get('collection_name', '')}`
+
+{chr(10).join(top_mods) if top_mods else "- No active mod rows were found."}
+"""
+
+
+def manual_static_validation_text() -> str:
+    return """# Stellar AI Director Static Validation Notes
+
+Generated by `tools/generate_stellar_ai_director_patch.py`.
+
+This implementation pass is intentionally static-only. It provides no Stellaris launch, observer-run, benchmark, screenshot, or save-checkpoint proof.
+
+Required local checks for this pass:
+
+- Python compile of generator, entrypoint, and validator.
+- Generator run.
+- Static validator run.
+- Unit test discovery under `tools/tests`.
+- Generated PDXScript parse/load-safety audit.
+- Generated reference audit.
+- `git diff --check`.
+- Live launcher descriptor and `dlc_load.json` inclusion check before claiming live-launch readiness.
+
+Manual runtime questions left out of scope:
+
+- Whether the computed route classifier reaches the intended empirical 2270-2280 and 2350 research breakpoints in a full game.
+- Whether research-pact and Research Federation behavior emerges strongly enough from diplomatic stance weights alone.
+- Whether NSC3/ESC doctrine technology weights need direct component or ship-size overrides after runtime observation.
+"""
+
+
+def high_scale_ai_defines_text() -> str:
+    return """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Full-object define override: removes vanilla construction and war hesitation
+# that assumes a much smaller economy than the active Gigas/NSC3/ESC mod stack.
+# User-directed 2026-07-08 tuning: keep local war aggression high, but do not
+# encourage long-distance wars or galaxy-crossing fleet commitments.
+
+NAI = {
+	AI_FREE_JOBS_DISTRICT_BUILD_CAP = 2000
+	AI_FREE_JOBS_BUILDING_BUILD_CAP = 5000
+	AI_DEFICIT_SCORE_MULT = 500
+	AI_FOCUS_SCORE_MULT = 12
+	AI_RESOURCE_PRODUCTION_SCORE_MULT = 8
+	AI_AMENITIES_SCORE_MULT = 8
+	AI_HOUSING_SCORE_MULT = 8
+	AI_CRIME_REDUCTION_SCORE_MULT = 4
+	AI_ADMIN_CAP_SCORE_MULT = 6
+	AI_POPS_SCORE_MULT = 0.25
+	AI_NAVAL_CAP_SCORE_MULT = 25
+	AI_UPGRADE_SCORE_MULT = 10
+	AI_RESOURCE_TARGET_EXPIRATION_MONTHS = 6
+	AI_RESOURCE_TARGET_VALID_THRESHOLD = 0.90
+	AI_DISTRICT_MAX_OPPORTUNITY_COST_FACTOR = 0.05
+	AI_DISTRICT_OPPORTUNITY_COST_FALLOFF = 0.25
+	AI_BUILDING_MAX_OPPORTUNITY_COST_FACTOR = 0.05
+	AI_BUILDING_OPPORTUNITY_COST_FALLOFF = 0.25
+	AI_BUILDING_MIN_HYPOTHETICAL_WEIGHT = 5
+	AI_DISTRICT_MIN_HYPOTHETICAL_WEIGHT = 5
+	BUILDING_BUILD_THRESHOLD = 0.1
+	BUILDING_EXISTS_DIV_SCORE = 0.2
+	UNDERDEVELOPED_PLANET_LIMIT = 999
+	AI_UNBUILT_DISTRICT_BOOST_POP_THRESHOLD = 250
+	AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 8.0
+	AI_STORAGE_BUILDING_CAPPED_RESOURCE_BOOST = 1000
+	AI_WAR_PREPARATION_MIN_MONTHS = 1
+	AI_WAR_PREPARATION_MAX_MONTHS = 4
+	AI_AGGRESSIVENESS_BASE = 50
+	AI_AGGRESSIVENESS_BOXED_IN_MULT = 18
+	AI_AGGRESSIVENESS_NO_COLONY_TARGET_MULT = 12
+	ENEMY_FLEET_POWER_MULT = 0.55
+	WAR_DECLARATION_MINIMUM_SCORE = 0.05
+	WAR_DECLARATION_MALUS = 0.05
+	WAR_DECLARATION_MAX_DISTANCE = 200
+	OFFENSE_VS_DEFENSE_STRATEGY_ALLOTMENT = 3.0
+}
+"""
+
+
+def minerals_planet_construction_budget_text() -> str:
+    def object_text(name: str, base_weight: float, stockpile_gate: str) -> str:
+        return f"""
+{name} = {{
+	resource = minerals
+	type = expenditure
+	category = planets
+
+	potential = {{
+		is_country_type = default
+{stockpile_gate}
+	}}
+
+	weight = {{
+		weight = {base_weight}
+		modifier = {{ factor = 12 staid_planetary_capacity_growth_ready = yes }}
+		modifier = {{ factor = 12 staid_core_deficit_short_runway = yes }}
+		modifier = {{ factor = 35 staid_construction_spenddown_pressure = yes }}
+		modifier = {{ factor = 18 staid_resource_waste_pressure = yes }}
+		modifier = {{ factor = 24 staid_high_scale_snowball_pressure = yes }}
+		modifier = {{ factor = 40 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
+		modifier = {{ factor = 30 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
+		modifier = {{ factor = 20 resource_stockpile_compare = {{ resource = minerals value > 10000 }} }}
+		modifier = {{ factor = 30 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
+	}}
+
+	desired_min = {{
+		base = 2000
+		modifier = {{ add = 5000 staid_core_deficit_short_runway = yes }}
+		modifier = {{ add = 10000 staid_planetary_capacity_growth_ready = yes }}
+		modifier = {{ add = 150000 staid_construction_spenddown_pressure = yes }}
+		modifier = {{ add = 25000 staid_high_scale_snowball_pressure = yes }}
+		modifier = {{ add = 100000 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
+		modifier = {{ add = 100000 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
+		modifier = {{ add = 75000 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
+	}}
+
+	desired_max = {{
+		base = 10000
+		modifier = {{ add = 20000 staid_core_deficit_short_runway = yes }}
+		modifier = {{ add = 40000 staid_planetary_capacity_growth_ready = yes }}
+		modifier = {{ add = 500000 staid_construction_spenddown_pressure = yes }}
+		modifier = {{ add = 100000 staid_high_scale_snowball_pressure = yes }}
+		modifier = {{ add = 300000 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
+		modifier = {{ add = 300000 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
+		modifier = {{ add = 250000 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
+	}}
+}}
+"""
+
+    return (
+        "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
+        "# Full-object override: vanilla makes planet mineral spending less attractive as stockpiles grow.\n"
+        "# The Director reverses that for high-scale modded economies so idle pops and empty slots become spend pressure.\n"
+        + object_text(
+            "minerals_expenditure_planets_low",
+            8.0,
+            "\t\tresource_stockpile_compare = { resource = minerals value < 1000 }",
+        )
+        + object_text(
+            "minerals_expenditure_planets_med",
+            14.0,
+            "\t\tresource_stockpile_compare = { resource = minerals value >= 1000 }\n\t\tresource_stockpile_compare = { resource = minerals value < 2000 }",
+        )
+        + object_text(
+            "minerals_expenditure_planets_high",
+            28.0,
+            "\t\tresource_stockpile_compare = { resource = minerals value >= 2000 }",
+        )
+    )
+
+
 def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     rows = rows or extract_megastructure_rows()
     thresholds = generated_thresholds(rows)
     playset = build_active_playset_snapshot()
     write_json(RESEARCH_ROOT / "stellar-ai-director-active-playset-2026-07-04.json", playset)
+    generate_economic_valuation_dataset()
+    normalize_economic_valuation_dataset_pair()
+    write_economic_valuation_evidence_summary()
     write_text_file(MOD_ROOT / "descriptor.mod", descriptor_text())
     write_text_file(MOD_ROOT / "README.md", readme_text(playset))
     write_text_file(
         MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt",
         triggers_text(thresholds),
     )
+    write_text_file(
+        MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_10_opening_strategy_triggers.txt",
+        opening_strategy_triggers_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_20_strategy_kernel_triggers.txt",
+        strategy_kernel_triggers_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_11_fleet_doctrine_triggers.txt",
+        fleet_doctrine_triggers_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_12_planetary_diversity_value_triggers.txt",
+        planetary_diversity_role_triggers_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt",
+        opening_growth_policies_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "edicts" / "zzzz_staid_10_opening_growth_edicts.txt",
+        opening_growth_edicts_text(),
+    )
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt", ai_budget_text(thresholds))
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt", gigas_resource_budget_text())
+    write_text_file(MOD_ROOT / "common" / "defines" / "zzzz_staid_14_high_scale_ai_defines.txt", high_scale_ai_defines_text())
+    write_text_file(
+        MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_minerals_planet_construction_budget.txt",
+        minerals_planet_construction_budget_text(),
+    )
     write_text_file(MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt", economic_plan_text())
+    write_text_file(
+        MOD_ROOT / "common" / "scripted_effects" / "zzz_staid_gigas_habitat_compat_effects.txt",
+        gigas_habitat_compat_scripted_effects_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "districts" / "zzzz_staid_09_gigas_habitat_zone_slot_compat_districts.txt",
+        gigas_habitat_zone_slot_compat_districts_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "buildings" / "zzzz_staid_12_planetary_diversity_buildings.txt",
+        planetary_diversity_buildings_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "decisions" / "zzzz_staid_12_planetary_diversity_outpost_decisions.txt",
+        planetary_diversity_outpost_decisions_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "bombardment_stances" / "zzzz_staid_12_militarist_raiding_bombardment.txt",
+        militarist_bombardment_stances_text(),
+    )
     write_text_file(
         MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt",
         market_and_fleet_safety_on_actions_text(),
     )
     write_text_file(MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt", market_and_fleet_safety_events_text())
     write_text_file(MOD_ROOT / "common" / "script_values" / "zzz_staid_roi_values.txt", script_values_text(thresholds))
+    write_planetary_diversity_profile_artifacts()
     generate_route_override_artifacts()
+    dataset_job_pressure_override_artifacts()
     write_text_file(
         RESEARCH_ROOT / "stellar-ai-director-implementation-notes-2026-07-04.md",
         implementation_notes_text(playset, thresholds),
     )
+    write_text_file(GENERATED_VERSION_INVENTORY_MD, generated_version_inventory_text(playset))
+    write_text_file(MOD_STACK_COMPATIBILITY_MD, mod_stack_compatibility_text(playset))
+    write_text_file(MANUAL_STATIC_VALIDATION_MD, manual_static_validation_text())
+    generate_standalone_parity_inventory_artifacts()
     notes_root = MOD_ROOT / "notes"
     write_text_file(notes_root / "load-order.md", load_order_note_text(playset))
     write_text_file(notes_root / "conflicts.md", conflicts_note_text())
@@ -6035,7 +9479,70 @@ staid_core_deficit_short_runway = {
 \t\t\tNOT = { has_monthly_income = { resource = trade value > 0 } }
 \t\t\tresource_stockpile_compare = { resource = trade value < 2400 }
 \t\t}
+\t\tAND = {
+\t\t\tcountry_uses_consumer_goods = yes
+\t\t\tNOT = { has_monthly_income = { resource = consumer_goods value > 0 } }
+\t\t\tresource_stockpile_compare = { resource = consumer_goods value < 2400 }
+\t\t}
+\t\tAND = {
+\t\t\tcountry_uses_food = yes
+\t\t\tNOT = { has_monthly_income = { resource = food value > 0 } }
+\t\t\tresource_stockpile_compare = { resource = food value < 2400 }
+\t\t}
 \t}
+}
+
+staid_consumer_goods_runway_safe = {
+\tOR = {
+\t\tNOT = { country_uses_consumer_goods = yes }
+\t\tAND = {
+\t\t\tNOT = { has_deficit = consumer_goods }
+\t\t\thas_monthly_income = { resource = consumer_goods value > 75 }
+\t\t\tresource_stockpile_compare = { resource = consumer_goods value > 1500 }
+\t\t}
+\t}
+}
+
+staid_food_runway_safe = {
+\tOR = {
+\t\tNOT = { country_uses_food = yes }
+\t\tAND = {
+\t\t\tNOT = { has_deficit = food }
+\t\t\thas_monthly_income = { resource = food value > 25 }
+\t\t\tresource_stockpile_compare = { resource = food value > 1500 }
+\t\t}
+\t}
+}
+
+staid_research_input_runway_safe = {
+\tstaid_consumer_goods_runway_safe = yes
+\tNOT = { has_deficit = energy }
+\thas_monthly_income = { resource = energy value > 100 }
+\tresource_stockpile_compare = { resource = energy value > 3000 }
+}
+
+staid_research_diplomacy_priority_ready = {
+\tNOT = { staid_survival_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tOR = {
+\t\tstaid_science_nexus_research_priority_ready = yes
+\t\tstaid_research_input_runway_safe = yes
+\t\thas_ethic = ethic_materialist
+\t\thas_ethic = ethic_fanatic_materialist
+\t\thas_authority = auth_machine_intelligence
+\t\thas_active_tradition = tr_discovery_federations_finish
+\t}
+}
+
+staid_basic_economy_runway_safe = {
+\tstaid_research_input_runway_safe = yes
+\tstaid_food_runway_safe = yes
+\tNOT = { has_deficit = minerals }
+\tNOT = { has_deficit = alloys }
+\thas_monthly_income = { resource = minerals value > 100 }
+\thas_monthly_income = { resource = alloys value > 75 }
+\tresource_stockpile_compare = { resource = minerals value > 3000 }
+\tresource_stockpile_compare = { resource = alloys value > 3000 }
 }
 
 staid_trade_capacity_safe = {
@@ -6058,94 +9565,199 @@ staid_trade_surplus_capacity_safe = {
 \thas_monthly_income = { resource = trade value > 100 }
 }
 
+staid_high_scale_snowball_pressure = {
+\tis_nomadic = no
+\tOR = {
+\t\tresource_stockpile_compare = { resource = minerals value > 25000 }
+\t\tresource_stockpile_compare = { resource = energy value > 50000 }
+\t\tresource_stockpile_compare = { resource = alloys value > 15000 }
+\t\tAND = {
+\t\t\tyears_passed > 79
+\t\t\thas_monthly_income = { resource = minerals value > 500 }
+\t\t\thas_monthly_income = { resource = energy value > 500 }
+\t\t\thas_monthly_income = { resource = alloys value > 500 }
+\t\t}
+\t\tAND = {
+\t\t\tyears_passed > 119
+\t\t\tresource_stockpile_compare = { resource = minerals value > 12000 }
+\t\t\tresource_stockpile_compare = { resource = energy value > 12000 }
+\t\t}
+\t}
+}
+
+staid_catastrophic_collapse_mode = {
+\tis_nomadic = no
+\tOR = {
+\t\tAND = { has_deficit = energy resource_stockpile_compare = { resource = energy value < 600 } }
+\t\tAND = { has_deficit = minerals resource_stockpile_compare = { resource = minerals value < 600 } }
+\t\tAND = { has_deficit = alloys resource_stockpile_compare = { resource = alloys value < 600 } }
+\t\tAND = { country_uses_consumer_goods = yes has_deficit = consumer_goods resource_stockpile_compare = { resource = consumer_goods value < 400 } }
+\t\tAND = { country_uses_food = yes has_deficit = food resource_stockpile_compare = { resource = food value < 400 } }
+\t\tAND = { is_at_war = yes highest_threat > 50 used_naval_capacity_percent < 0.45 }
+\t\tAND = { recently_lost_war = yes used_naval_capacity_percent < 0.35 }
+\t}
+}
+
 staid_survival_mode = {
 \tis_nomadic = no
 \tOR = {
-\t\tstaid_core_deficit_short_runway = yes
-\t\tAND = { recently_lost_war = yes used_naval_capacity_percent < 0.60 }
-\t\tAND = { is_at_war = yes highest_threat > 35 used_naval_capacity_percent < 0.75 }
+\t\tstaid_catastrophic_collapse_mode = yes
+\t\tAND = { recently_lost_war = yes used_naval_capacity_percent < 0.45 }
+\t\tAND = { is_at_war = yes highest_threat > 60 used_naval_capacity_percent < 0.55 }
 \t}
 }
 
 staid_recovery_mode = {
 \tis_nomadic = no
 \tOR = {
-\t\tstaid_survival_mode = yes
-\t\tstellarai_basic_econ_recovery_needed = yes
-\t\tAND = { recently_lost_war = yes used_naval_capacity_percent < 0.80 }
+\t\tstaid_catastrophic_collapse_mode = yes
+\t\tAND = { recently_lost_war = yes used_naval_capacity_percent < 0.50 }
 \t}
 }
 
 staid_megastructure_prep_ready = {
 \tis_nomadic = no
 \tcan_build_megastructures = yes
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
-\tstaid_trade_planetary_capacity_safe = yes
-\tresource_stockpile_compare = { resource = alloys value > 15000 }
-\thas_monthly_income = { resource = alloys value > 120 }
-\thas_monthly_income = { resource = energy value > 80 }
-\thas_monthly_income = { resource = minerals value > 60 }
+\tOR = {
+\t\tNOT = { staid_recovery_mode = yes }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tstaid_basic_economy_runway_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tstaid_trade_planetary_capacity_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tresource_stockpile_compare = { resource = alloys value > 8000 }
+\thas_monthly_income = { resource = alloys value > 80 }
+\thas_monthly_income = { resource = energy value > 40 }
+\thas_monthly_income = { resource = minerals value > 40 }
 \tOR = {
 \t\tis_at_war = no
-\t\tused_naval_capacity_percent > 0.90
+\t\tused_naval_capacity_percent > 0.70
+\t\tstaid_high_scale_snowball_pressure = yes
 \t}
 }
 
 staid_megastructure_commit_safe = {
 \tis_nomadic = no
 \tcan_build_megastructures = yes
-\tNOT = { staid_core_deficit_short_runway = yes }
-\tstaid_trade_planetary_capacity_safe = yes
+\tOR = {
+\t\tNOT = { staid_core_deficit_short_runway = yes }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tstaid_basic_economy_runway_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tstaid_trade_planetary_capacity_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
 \tOR = {
 \t\tis_at_war = no
-\t\tused_naval_capacity_percent > 0.85
+\t\tused_naval_capacity_percent > 0.65
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+}
+
+staid_megastructure_continuation_priority_ready = {
+\tstaid_megastructure_commit_safe = yes
+\tOR = {
+\t\tNOT = { staid_survival_mode = yes }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tstaid_surplus_sink_pressure = yes
+\t\tstaid_resource_waste_pressure = yes
+\t\tstaid_high_scale_snowball_pressure = yes
 \t}
 }
 
 staid_pause_new_megastructure = {
+\tNOT = { staid_high_scale_snowball_pressure = yes }
 \tOR = {
 \t\tstaid_survival_mode = yes
-\t\tAND = { is_at_war = yes used_naval_capacity_percent < 0.85 }
-\t\tAND = { highest_threat > 45 used_naval_capacity_percent < 0.90 }
+\t\tAND = { is_at_war = yes used_naval_capacity_percent < 0.55 }
+\t\tAND = { highest_threat > 75 used_naval_capacity_percent < 0.65 }
 \t}
 }
 
 staid_shipyard_payoff_ready = {
-\tNOT = { staid_recovery_mode = yes }
-\thas_monthly_income = { resource = alloys value > 150 }
-\thas_monthly_income = { resource = energy value > 100 }
-\tstaid_trade_fleet_capacity_safe = yes
-\tresource_stockpile_compare = { resource = alloys value > 10000 }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\thas_monthly_income = { resource = alloys value > 80 }
+\t\tresource_stockpile_compare = { resource = alloys value > 5000 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\thas_monthly_income = { resource = energy value > 80 }
+\t\tresource_stockpile_compare = { resource = energy value > 5000 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tresource_stockpile_compare = { resource = alloys value > 10000 }
+\t\tAND = {
+\t\t\tused_naval_capacity_percent < 1.60
+\t\t\thas_monthly_income = { resource = alloys value > 80 }
+\t\t}
+\t\tAND = {
+\t\t\tused_naval_capacity_percent < 1.40
+\t\t\thas_monthly_income = { resource = alloys value > 80 }
+\t\t}
+\t}
 }
 
 staid_fleet_buildup_economy_safe = {
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
-\tstaid_trade_fleet_capacity_safe = yes
-\thas_monthly_income = { resource = alloys value > 200 }
-\thas_monthly_income = { resource = energy value > 150 }
-\tresource_stockpile_compare = { resource = alloys value > 15000 }
-\tresource_stockpile_compare = { resource = energy value > 8000 }
-\tused_naval_capacity_percent < 1.05
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tused_naval_capacity_percent < 1.85
+\tOR = {
+\t\thas_monthly_income = { resource = alloys value > 40 }
+\t\tresource_stockpile_compare = { resource = alloys value > 1500 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\thas_monthly_income = { resource = energy value > 40 }
+\t\tresource_stockpile_compare = { resource = energy value > 1500 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tAND = {
+\t\t\tresource_stockpile_compare = { resource = alloys value > 15000 }
+\t\t\tresource_stockpile_compare = { resource = energy value > 8000 }
+\t\t}
+\t\tAND = {
+\t\t\tused_naval_capacity_percent < 1.25
+\t\t\thas_monthly_income = { resource = alloys value > 40 }
+\t\t\thas_monthly_income = { resource = energy value > 40 }
+\t\t}
+\t\tAND = {
+\t\t\tused_naval_capacity_percent < 1.25
+\t\t\thas_monthly_income = { resource = alloys value > 40 }
+\t\t\thas_monthly_income = { resource = energy value > 40 }
+\t\t}
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
 }
 
 staid_resource_waste_pressure = {
-\tNOT = { staid_core_deficit_short_runway = yes }
 \tOR = {
 \t\tAND = {
 \t\t\thas_monthly_income = { resource = minerals value > 0 }
-\t\t\tresource_stockpile_compare = { resource = minerals value > 50000 }
+\t\t\tresource_stockpile_compare = { resource = minerals value > 25000 }
 \t\t}
 \t\tAND = {
 \t\t\tcountry_uses_food = yes
 \t\t\thas_monthly_income = { resource = food value > 0 }
-\t\t\tresource_stockpile_compare = { resource = food value > 30000 }
+\t\t\tresource_stockpile_compare = { resource = food value > 18000 }
 \t\t}
 \t\tAND = {
 \t\t\tcountry_uses_consumer_goods = yes
 \t\t\thas_monthly_income = { resource = consumer_goods value > 0 }
-\t\t\tresource_stockpile_compare = { resource = consumer_goods value > 30000 }
+\t\t\tresource_stockpile_compare = { resource = consumer_goods value > 18000 }
 \t\t}
 \t\tAND = {
 \t\t\thas_monthly_income = { resource = volatile_motes value > 0 }
@@ -6179,8 +9791,24 @@ staid_resource_waste_pressure = {
 \t}
 }
 
+staid_construction_spenddown_pressure = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\tstaid_high_scale_snowball_pressure = yes
+\t\tstaid_resource_waste_pressure = yes
+\t\tany_owned_planet = { num_unemployed > 0 free_jobs < 1 }
+\t\tany_owned_planet = { free_building_slots > 0 num_unemployed > 0 }
+\t\tresource_stockpile_compare = { resource = minerals value > 10000 }
+\t}
+}
+
 staid_research_under_curve = {
-\tNOT = { staid_core_deficit_short_runway = yes }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\tstaid_research_input_runway_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
 \tOR = {
 \t\tAND = {
 \t\t\tyears_passed > 119
@@ -6210,13 +9838,22 @@ staid_research_under_curve = {
 }
 
 staid_surplus_sink_pressure = {
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
-\tNOT = { has_deficit = alloys }
-\tNOT = { has_deficit = energy }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\tstaid_research_input_runway_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tNOT = { has_deficit = alloys }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\tNOT = { has_deficit = energy }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
 \tOR = {
 \t\tstaid_resource_waste_pressure = yes
-\t\tstaid_research_under_curve = yes
+\t\tstaid_high_scale_snowball_pressure = yes
 \t\tAND = {
 \t\t\tstaid_trade_surplus_capacity_safe = yes
 \t\t\thas_monthly_income = { resource = alloys value > 300 }
@@ -6242,9 +9879,245 @@ staid_core_unlock_research_priority_ready = {
 \t}
 }
 
+staid_early_kilo_economy_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		years_passed > 29
+		staid_resource_waste_pressure = yes
+		staid_research_under_curve = yes
+	}
+}
+
+staid_early_kilo_economy_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	OR = {
+		has_technology = tech_orbital_arc_furnace
+		has_technology = giga_tech_asteroid_manufactory
+	}
+	OR = {
+		staid_resource_waste_pressure = yes
+		AND = {
+			has_monthly_income = { resource = alloys value > 120 }
+			resource_stockpile_compare = { resource = alloys value > 5000 }
+		}
+	}
+}
+
+staid_science_kilo_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			years_passed > 24
+			staid_early_kilo_economy_research_priority_ready = yes
+		}
+	}
+}
+
+staid_science_kilo_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	OR = {
+		has_technology = giga_tech_engineering_test_site
+		has_technology = giga_tech_macro_scale_weather_manipulation
+	}
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			has_monthly_income = { resource = alloys value > 90 }
+			resource_stockpile_compare = { resource = alloys value > 3000 }
+		}
+	}
+}
+
+staid_pop_assembly_snowball_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_basic_economy_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+		staid_construction_spenddown_pressure = yes
+	}
+	OR = {
+		years_passed > 4
+		staid_planetary_capacity_growth_ready = yes
+		staid_research_under_curve = yes
+	}
+}
+
+staid_planetary_computer_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			years_passed > 69
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_planetary_computer_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = giga_tech_planetary_computer
+	OR = {
+		staid_research_under_curve = yes
+		staid_planetary_capacity_growth_ready = yes
+		resource_stockpile_compare = { resource = alloys value > 12000 }
+	}
+}
+
+staid_science_nexus_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_under_curve = yes
+		AND = {
+			years_passed > 44
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_science_nexus_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = tech_science_nexus
+	OR = {
+		staid_research_under_curve = yes
+		resource_stockpile_compare = { resource = alloys value > 15000 }
+	}
+}
+
+staid_ring_world_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_planetary_capacity_growth_ready = yes
+		AND = {
+			years_passed > 79
+			staid_core_unlock_research_priority_ready = yes
+		}
+	}
+}
+
+staid_ring_world_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = tech_ring_world
+	OR = {
+		staid_planetary_capacity_growth_ready = yes
+		resource_stockpile_compare = { resource = alloys value > 20000 }
+	}
+}
+
+staid_storage_cap_research_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_resource_waste_pressure = yes
+		AND = {
+			years_passed > 44
+			staid_surplus_sink_pressure = yes
+		}
+	}
+}
+
+staid_storage_cap_build_priority_ready = {
+	staid_megastructure_commit_safe = yes
+	has_technology = giga_tech_kugelblitz
+	OR = {
+		staid_resource_waste_pressure = yes
+		staid_high_scale_snowball_pressure = yes
+		resource_stockpile_compare = { resource = energy value > 25000 }
+	}
+}
+
+staid_unfinished_kugelblitz_exists = {
+	any_owned_megastructure = {
+		OR = {
+			is_megastructure_type = kugelblitz_0
+			is_megastructure_type = kugelblitz_1
+			is_megastructure_type = kugelblitz_2
+			is_megastructure_type = kugelblitz_restored
+		}
+	}
+}
+
+staid_kugelblitz_new_start_budget_ready = {
+	staid_storage_cap_build_priority_ready = yes
+	NOT = { has_country_flag = is_currently_building_kugelblitz }
+	NOT = { staid_unfinished_kugelblitz_exists = yes }
+	NOT = { check_variable = { which = giga_current_kugel value >= 10 } }
+	OR = {
+		check_variable = { which = giga_current_kugel value < 4 }
+		AND = {
+			staid_resource_waste_pressure = yes
+			check_variable = { which = giga_current_kugel value < 6 }
+		}
+		AND = {
+			staid_high_scale_snowball_pressure = yes
+			check_variable = { which = giga_current_kugel value < 8 }
+		}
+	}
+}
+
 staid_phase_mega_engineering_rush = {
 	NOT = { has_technology = tech_mega_engineering }
 	staid_core_unlock_research_priority_ready = yes
+}
+
+staid_phase_early_kilo_economy = {
+	OR = {
+		NOT = { has_technology = tech_orbital_arc_furnace }
+		NOT = { has_technology = giga_tech_asteroid_manufactory }
+	}
+	staid_early_kilo_economy_research_priority_ready = yes
+}
+
+staid_phase_science_kilo_snowball = {
+	OR = {
+		NOT = { has_technology = giga_tech_engineering_test_site }
+		NOT = { has_technology = giga_tech_macro_scale_weather_manipulation }
+	}
+	staid_science_kilo_research_priority_ready = yes
+}
+
+staid_phase_pop_assembly_snowball = {
+	staid_pop_assembly_snowball_ready = yes
+	OR = {
+		NOT = { has_technology = tech_robotic_workers }
+		NOT = { has_technology = tech_cloning }
+		NOT = { has_technology = tech_robot_assembly_complex }
+	}
+}
+
+staid_phase_science_nexus_rush = {
+	NOT = { has_technology = tech_science_nexus }
+	staid_science_nexus_research_priority_ready = yes
+}
+
+staid_phase_planetary_computer_research = {
+	NOT = { has_technology = giga_tech_planetary_computer }
+	staid_planetary_computer_research_priority_ready = yes
+}
+
+staid_phase_ring_world_growth = {
+	NOT = { has_technology = tech_ring_world }
+	staid_ring_world_research_priority_ready = yes
+}
+
+staid_phase_storage_cap_expansion = {
+	NOT = { has_technology = giga_tech_kugelblitz }
+	staid_storage_cap_research_priority_ready = yes
+}
+
+staid_phase_boxed_tall_habitat_escape = {
+	staid_planetary_capacity_growth_ready = yes
+	OR = {
+		NOT = { has_technology = tech_habitat_1 }
+		NOT = { has_technology = giga_tech_interstellar_habitat }
+		NOT = { has_technology = giga_tech_stellar_ring_habitat }
+	}
 }
 
 staid_phase_galactic_wonders_entry = {
@@ -6281,17 +10154,24 @@ staid_phase_systemcraft_escalation = {
 
 staid_phase_fleet_conversion_repeatables = {
 	OR = {
+		has_technology = tech_Carrier_1
+		has_technology = tech_Dreadnought_1
 		has_technology = tech_Flagship_1
 		has_technology = giga_tech_war_moon_2
 		has_technology = giga_tech_war_system_1
 		has_technology = esc_tech_dark_matter_power_core_2
 	}
-	staid_modded_fleet_conversion_ready = yes
 }
 
 staid_shipyard_expansion_ready = {
-\tstaid_fleet_buildup_economy_safe = yes
 \thas_technology = tech_mega_shipyard
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tused_naval_capacity_percent < 1.85
+\tOR = {
+\t\thas_monthly_income = { resource = alloys value > 80 }
+\t\tresource_stockpile_compare = { resource = alloys value > 5000 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
 \tOR = {
 \t\tstaid_surplus_sink_pressure = yes
 \t\tAND = { is_at_war = yes highest_threat > 35 used_naval_capacity_percent > 0.80 }
@@ -6299,17 +10179,17 @@ staid_shipyard_expansion_ready = {
 }
 
 staid_fleet_payoff_exploitation_ready = {
-\tstaid_shipyard_payoff_ready = yes
-\tNOT = { staid_core_deficit_short_runway = yes }
-\tused_naval_capacity_percent < 1.05
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tused_naval_capacity_percent < 1.85
 \tOR = {
-\t\tstaid_shipyard_expansion_ready = yes
 \t\tAND = { is_at_war = yes highest_threat > 35 }
+\t\tAND = { used_naval_capacity_percent < 1.25 has_monthly_income = { resource = alloys value > 80 } }
+\t\tAND = { resource_stockpile_compare = { resource = alloys value > 10000 } resource_stockpile_compare = { resource = energy value > 5000 } }
 \t}
 }
 
 staid_advanced_component_resource_support_ready = {
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		has_monthly_income = { resource = volatile_motes value > 5 }
 		has_monthly_income = { resource = exotic_gases value > 5 }
@@ -6326,35 +10206,37 @@ staid_advanced_component_resource_support_ready = {
 
 staid_nsc3_capital_hull_unlock_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		staid_phase_fleet_conversion_repeatables = yes
-		staid_fleet_buildup_economy_safe = yes
 		AND = {
 			years_passed > 79
-			staid_core_unlock_research_priority_ready = yes
+			OR = {
+				resource_stockpile_compare = { resource = alloys value > 5000 }
+				has_monthly_income = { resource = alloys value > 80 }
+			}
 		}
 	}
 }
 
 staid_esc_component_unlock_ready = {
 	is_nomadic = no
-	NOT = { staid_recovery_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	staid_advanced_component_resource_support_ready = yes
 	OR = {
 		staid_phase_fleet_conversion_repeatables = yes
-		staid_fleet_buildup_economy_safe = yes
 		AND = {
 			years_passed > 79
-			staid_core_unlock_research_priority_ready = yes
+			OR = {
+				resource_stockpile_compare = { resource = alloys value > 5000 }
+				has_monthly_income = { resource = engineering_research value > 600 }
+			}
 		}
 	}
 }
 
 staid_modded_fleet_conversion_ready = {
-	staid_fleet_payoff_exploitation_ready = yes
+	NOT = { staid_catastrophic_collapse_mode = yes }
 	staid_advanced_component_resource_support_ready = yes
 	OR = {
 		has_technology = tech_Carrier_1
@@ -6368,13 +10250,41 @@ staid_modded_fleet_conversion_ready = {
 
 staid_planetary_capacity_growth_ready = {
 \tis_nomadic = no
-\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\tstaid_basic_economy_runway_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\thas_monthly_income = { resource = minerals value > 40 }
+\t\tresource_stockpile_compare = { resource = minerals value > 2500 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\thas_monthly_income = { resource = energy value > 40 }
+\t\tresource_stockpile_compare = { resource = energy value > 2500 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+}
+
+staid_planetary_diversity_outpost_investment_ready = {
+\tis_nomadic = no
+\tNOT = { staid_survival_mode = yes }
 \tNOT = { staid_core_deficit_short_runway = yes }
-\tstaid_trade_planetary_capacity_safe = yes
-\thas_monthly_income = { resource = minerals value > 100 }
-\thas_monthly_income = { resource = energy value > 100 }
-\tresource_stockpile_compare = { resource = minerals value > 5000 }
-\tresource_stockpile_compare = { resource = energy value > 5000 }
+\tNOT = { has_deficit = minerals }
+\tNOT = { has_deficit = energy }
+\thas_monthly_income = { resource = minerals value > 20 }
+\thas_monthly_income = { resource = energy value > 20 }
+\tresource_stockpile_compare = { resource = minerals value > 1200 }
+\tresource_stockpile_compare = { resource = energy value > 1000 }
+}
+
+staid_pd_research_outpost_priority_ready = {
+\tstaid_planetary_diversity_outpost_investment_ready = yes
+\tOR = {
+\t\tstaid_research_under_curve = yes
+\t\tstaid_research_input_runway_safe = yes
+\t}
 }
 
 staid_economy_megastructure_build_priority_ready = {
@@ -6393,8 +10303,7 @@ staid_mega_shipyard_build_priority_ready = {
 
 staid_planetcraft_research_priority_ready = {
 \tis_nomadic = no
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
 \thas_technology = tech_mega_engineering
 \tOR = {
 \t\tyears_passed > 79
@@ -6412,8 +10321,7 @@ staid_planetcraft_build_priority_ready = {
 
 staid_war_moon_research_priority_ready = {
 \tis_nomadic = no
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
 \thas_technology = tech_mega_engineering
 \tOR = {
 \t\tyears_passed > 79
@@ -6431,8 +10339,7 @@ staid_war_moon_build_priority_ready = {
 
 staid_systemcraft_research_priority_ready = {
 \tis_nomadic = no
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
 \tOR = {
 \t\tyears_passed > 119
 \t\thas_technology = giga_tech_war_moon_2
@@ -6450,8 +10357,7 @@ staid_systemcraft_build_priority_ready = {
 
 staid_gigas_special_resource_unlock_ready = {
 \tis_nomadic = no
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
 \tOR = {
 \t\tyears_passed > 79
 \t\tstaid_planetcraft_research_priority_ready = yes
@@ -6464,12 +10370,17 @@ staid_defensive_starbase_strategy = {
 \tOR = {
 \t\thas_ethic = ethic_pacifist
 \t\thas_ethic = ethic_fanatic_pacifist
+\t\thas_ethic = ethic_militarist
+\t\thas_ethic = ethic_fanatic_militarist
+\t\thas_ethic = ethic_xenophobe
+\t\thas_ethic = ethic_fanatic_xenophobe
+\t\thas_valid_civic = civic_barbaric_despoilers
 \t}
 }
 
 staid_crisis_starbase_pressure = {
 \tis_nomadic = no
-\tNOT = { staid_recovery_mode = yes }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
 \thighest_threat > 50
 \thas_monthly_income = { resource = alloys value > 80 }
 \thas_monthly_income = { resource = energy value > 60 }
@@ -6477,31 +10388,122 @@ staid_crisis_starbase_pressure = {
 }
 
 staid_aggressive_fleet_pressure = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
 \tOR = {
 \t\thas_ethic = ethic_militarist
 \t\thas_ethic = ethic_fanatic_militarist
+\t\thas_ethic = ethic_xenophobe
+\t\thas_ethic = ethic_fanatic_xenophobe
+\t\thas_valid_civic = civic_barbaric_despoilers
+\t\tAND = {
+\t\t\tNOT = { has_ethic = ethic_pacifist }
+\t\t\tNOT = { has_ethic = ethic_fanatic_pacifist }
+\t\t\tused_naval_capacity_percent < 1.10
+\t\t}
 \t}
-\tused_naval_capacity_percent < 0.95
+\tused_naval_capacity_percent < 1.90
+}
+
+staid_militarist_conquest_strategy = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\thas_ethic = ethic_militarist
+\t\thas_ethic = ethic_fanatic_militarist
+\t\thas_valid_civic = civic_barbaric_despoilers
+\t\thas_ethic = ethic_xenophobe
+\t\thas_ethic = ethic_fanatic_xenophobe
+\t\tAND = {
+\t\t\tNOT = { has_ethic = ethic_pacifist }
+\t\t\tNOT = { has_ethic = ethic_fanatic_pacifist }
+\t\t\tyears_passed > 9
+\t\t\tused_naval_capacity_percent < 1.15
+\t\t}
+\t}
+\tused_naval_capacity_percent < 1.95
+}
+
+staid_raiding_pop_growth_strategy = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\thas_ascension_perk = ap_nihilistic_acquisition
+\t\thas_valid_civic = civic_barbaric_despoilers
+\t\thas_origin = origin_slavers
+\t\thas_origin = origin_khan_successor
+\t}
+\tused_naval_capacity_percent < 2.00
+}
+
+staid_raiding_pop_acquisition_priority = {
+\tOR = {
+\t\tstaid_raiding_pop_growth_strategy = yes
+\t\tAND = {
+\t\t\tstaid_opening_military_to_pops = yes
+\t\t\tyears_passed < 75
+\t\t}
+\t}
+}
+
+staid_hostile_fauna_clearance_strategy = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tused_naval_capacity_percent < 1.50
+\tOR = {
+\t\tstaid_opening_hostile_fauna_clearance = yes
+\t\tAND = {
+\t\t\tyears_passed < 60
+\t\t\thas_monthly_income = { resource = alloys value > 45 }
+\t\t}
+\t}
+}
+
+staid_site_limited_expansion_ready = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tstaid_fleet_buildup_economy_safe = yes
+\tOR = {
+\t\tstaid_planetary_capacity_growth_ready = yes
+\t\tstaid_resource_waste_pressure = yes
+\t\tstaid_research_under_curve = yes
+\t\tyears_passed > 79
+\t}
+}
+
+staid_apex_site_preservation_ready = {
+\tis_nomadic = no
+\tstaid_megastructure_commit_safe = yes
+\tOR = {
+\t\thas_technology = giga_tech_matrioshka_brain_1
+\t\thas_technology = giga_tech_neutronium_gigaforge
+\t\thas_technology = giga_tech_nidavellir
+\t\tyears_passed > 119
+\t}
 }
 
 staid_starbase_defense_economy_safe = {
 \tis_nomadic = no
-\tNOT = { staid_recovery_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
-\tstaid_trade_capacity_safe = yes
-\thas_monthly_income = { resource = alloys value > 60 }
-\thas_monthly_income = { resource = energy value > 50 }
-\tresource_stockpile_compare = { resource = alloys value > 3000 }
-\tresource_stockpile_compare = { resource = energy value > 3000 }
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\thas_monthly_income = { resource = alloys value > 35 }
+\t\tresource_stockpile_compare = { resource = alloys value > 1200 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
+\tOR = {
+\t\thas_monthly_income = { resource = energy value > 35 }
+\t\tresource_stockpile_compare = { resource = energy value > 1200 }
+\t\tstaid_high_scale_snowball_pressure = yes
+\t}
 }
 
 staid_static_defense_investment_ready = {
 \tstaid_starbase_defense_economy_safe = yes
 \tOR = {
-\t\tAND = {
-\t\t\tstaid_defensive_starbase_strategy = yes
-\t\t\tNOT = { staid_aggressive_fleet_pressure = yes }
-\t\t}
+\t\tstaid_defensive_starbase_strategy = yes
+\t\tstaid_aggressive_fleet_pressure = yes
+\t\tstaid_militarist_conquest_strategy = yes
+\t\tstaid_high_scale_snowball_pressure = yes
 \t\tstaid_crisis_starbase_pressure = yes
 \t}
 }
@@ -6673,6 +10675,10 @@ basic_economy_plan = {
 \t\tsociety_research = 400
 \t\tengineering_research = 600
 \t\talloys = 120
+\t\tconsumer_goods = 150
+\t\tfood = 60
+\t\tenergy = 150
+\t\tminerals = 150
 \t\tunity = 120
 \t\ttrade = 75
 \t}
@@ -6684,11 +10690,99 @@ basic_economy_plan = {
 \t}
 
 \tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director opening direct research route"
+\t\tpotential = {
+\t\t\tstaid_opening_direct_research = yes
+\t\t}
+\t\tincome = {
+\t\t\tphysics_research = 450
+\t\t\tsociety_research = 450
+\t\t\tengineering_research = 650
+\t\t\tconsumer_goods = 180
+\t\t\tenergy = 180
+\t\t}
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director opening trade to research route"
+\t\tpotential = {
+\t\t\tstaid_opening_trade_to_research = yes
+\t\t}
+\t\tincome = {
+\t\t\ttrade = 300
+\t\t\tconsumer_goods = 180
+\t\t\tphysics_research = 300
+\t\t\tsociety_research = 300
+\t\t\tengineering_research = 450
+\t\t}
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director opening growth to research route"
+\t\tpotential = {
+\t\t\tOR = {
+\t\t\t\tstaid_opening_hive_growth_research = yes
+\t\t\t\tstaid_opening_machine_growth_research = yes
+\t\t\t\tstaid_opening_military_to_pops = yes
+\t\t\t\tstaid_opening_nomad_arkship_research = yes
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\talloys = 180
+\t\t\tminerals = 260
+\t\t\tenergy = 220
+\t\t\tphysics_research = 250
+\t\t\tsociety_research = 250
+\t\t\tengineering_research = 400
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director consumer goods runway repair"
+\t\tpotential = {
+\t\t\tcountry_uses_consumer_goods = yes
+\t\t\tNOT = { staid_consumer_goods_runway_safe = yes }
+\t\t}
+\t\tincome = {
+\t\t\tconsumer_goods = 500
+\t\t\tminerals = 350
+\t\t\tenergy = 250
+\t\t\ttrade = 200
+\t\t}
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director food break-even repair"
+\t\tpotential = {
+\t\t\tcountry_uses_food = yes
+\t\t\tNOT = { staid_food_runway_safe = yes }
+\t\t}
+\t\tincome = {
+\t\t\tfood = 300
+\t\t\tenergy = 100
+\t\t\ttrade = 75
+\t\t}
+\t}
+
+\tsubplan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director early modded research rush"
 \t\tpotential = {
 \t\t\tyears_passed < 50
-\t\t\tNOT = { staid_core_deficit_short_runway = yes }
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tOR = {
+\t\t\t\tstaid_research_input_runway_safe = yes
+\t\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\t\tstaid_construction_spenddown_pressure = yes
+\t\t\t}
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 350
@@ -6703,7 +10797,12 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director midgame megastructure rush"
 \t\tpotential = {
 \t\t\tyears_passed > 44
-\t\t\tNOT = { staid_core_deficit_short_runway = yes }
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tOR = {
+\t\t\t\tstaid_research_input_runway_safe = yes
+\t\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\t\tstaid_construction_spenddown_pressure = yes
+\t\t\t}
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 1500
@@ -6723,7 +10822,12 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director crisis-scale giga rush"
 \t\tpotential = {
 \t\t\tyears_passed > 79
-\t\t\tNOT = { staid_core_deficit_short_runway = yes }
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tOR = {
+\t\t\t\tstaid_research_input_runway_safe = yes
+\t\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\t\tstaid_construction_spenddown_pressure = yes
+\t\t\t}
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 4500
@@ -6743,7 +10847,12 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director planetcraft survival curve"
 \t\tpotential = {
 \t\t\tyears_passed > 119
-\t\t\tNOT = { staid_core_deficit_short_runway = yes }
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tOR = {
+\t\t\t\tstaid_research_input_runway_safe = yes
+\t\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\t\tstaid_construction_spenddown_pressure = yes
+\t\t\t}
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 10000
@@ -6756,6 +10865,165 @@ basic_economy_plan = {
 \t\t\ttrade = 400
 \t\t}
 \t\tnaval_cap = 3500
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director pathological snowball reserve"
+\t\tpotential = {
+\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t}
+\t\tincome = {
+\t\t\tphysics_research = 20000
+\t\t\tsociety_research = 20000
+\t\t\tengineering_research = 30000
+\t\t\talloys = 10000
+\t\t\tenergy = 10000
+\t\t\tminerals = 8000
+\t\t\tconsumer_goods = 2500
+\t\t\tfood = 1500
+\t\t\tunity = 2500
+\t\t\ttrade = 1500
+\t\t}
+\t\tnaval_cap = 8000
+\t\tpops = 1000000
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director construction spenddown reserve"
+\t\tpotential = {
+\t\t\tstaid_construction_spenddown_pressure = yes
+\t\t}
+\t\tincome = {
+\t\t\tminerals = 30000
+\t\t\tenergy = 18000
+\t\t\tconsumer_goods = 6000
+\t\t\talloys = 8000
+\t\t\tfood = 2000
+\t\t\tphysics_research = 12000
+\t\t\tsociety_research = 12000
+\t\t\tengineering_research = 18000
+\t\t\tunity = 5000
+\t\t\ttrade = 3000
+\t\t}
+\t\tnaval_cap = 5000
+\t\tpops = 1000000
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director unemployed pop construction catch-up"
+\t\tpotential = {
+\t\t\tany_owned_planet = {
+\t\t\t\tnum_unemployed > 0
+\t\t\t\tfree_jobs < 1
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\tminerals = 12000
+\t\t\tenergy = 8000
+\t\t\tconsumer_goods = 2500
+\t\t\talloys = 3000
+\t\t\tfood = 1200
+\t\t\tphysics_research = 6000
+\t\t\tsociety_research = 6000
+\t\t\tengineering_research = 9000
+\t\t\tunity = 2000
+\t\t\ttrade = 1200
+\t\t}
+\t\tpops = 1000000
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director open slot construction catch-up"
+\t\tpotential = {
+\t\t\tany_owned_planet = {
+\t\t\t\tfree_building_slots > 0
+\t\t\t\tnum_unemployed > 0
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\tminerals = 16000
+\t\t\tenergy = 10000
+\t\t\tconsumer_goods = 3000
+\t\t\talloys = 4000
+\t\t\tphysics_research = 8000
+\t\t\tsociety_research = 8000
+\t\t\tengineering_research = 12000
+\t\t\tunity = 2500
+\t\t\ttrade = 1500
+\t\t}
+\t\tpops = 1000000
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director rich empire spend-down construction"
+\t\tpotential = {
+\t\t\tresource_stockpile_compare = { resource = minerals value > 10000 }
+\t\t\tany_owned_planet = {
+\t\t\t\tOR = {
+\t\t\t\t\tnum_unemployed > 0
+\t\t\t\t\tfree_building_slots > 0
+\t\t\t\t}
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\tminerals = 25000
+\t\t\tenergy = 16000
+\t\t\tconsumer_goods = 5000
+\t\t\talloys = 7000
+\t\t\tphysics_research = 12000
+\t\t\tsociety_research = 12000
+\t\t\tengineering_research = 18000
+\t\t\tunity = 4000
+\t\t\ttrade = 2500
+\t\t}
+\t\tnaval_cap = 5000
+\t\tpops = 1000000
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director megastructure spam reserve"
+\t\tpotential = {
+\t\t\tOR = {
+\t\t\t\tstaid_megastructure_commit_safe = yes
+\t\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\talloys = 8000
+\t\t\tenergy = 8000
+\t\t\tminerals = 5000
+\t\t\tgiga_sr_sentient_metal = 10
+\t\t\tgiga_sr_negative_mass = 10
+\t\t\tgiga_sr_amb_megaconstruction = 10
+\t\t\ttrade = 1000
+\t\t}
+\t\tnaval_cap = 4000
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director habitat and terraforming expansion reserve"
+\t\tpotential = {
+\t\t\tOR = {
+\t\t\t\tstaid_planetary_capacity_growth_ready = yes
+\t\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\tminerals = 5000
+\t\t\tenergy = 5000
+\t\t\tconsumer_goods = 1200
+\t\t\tfood = 800
+\t\t\tunity = 1000
+\t\t\ttrade = 800
+\t\t}
+\t\tpops = 1000000
 \t}
 
 \tsubplan = {
@@ -6801,7 +11069,7 @@ basic_economy_plan = {
 \t\t\t\thas_technology = tech_nm_utilization_1
 \t\t\t\thas_technology = giga_tech_amb_supertensiles
 \t\t\t}
-\t\t\tNOT = { staid_recovery_mode = yes }
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
 \t\t}
 \t\tincome = {
 \t\t\tgiga_sr_sentient_metal = 5
@@ -6824,9 +11092,59 @@ basic_economy_plan = {
 \t}
 
 \tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director militarist conquest fleet reserve"
+\t\tpotential = {
+\t\t\tstaid_militarist_conquest_strategy = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 6000
+\t\t\tenergy = 3500
+\t\t\tminerals = 2500
+\t\t\tunity = 1000
+\t\t\ttrade = 800
+\t\t}
+\t\tnaval_cap = 6000
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director raiding pop acquisition reserve"
+\t\tpotential = {
+\t\t\tstaid_raiding_pop_growth_strategy = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 4500
+\t\t\tenergy = 3000
+\t\t\tminerals = 1800
+\t\t\tunity = 800
+\t\t\ttrade = 700
+\t\t}
+\t\tnaval_cap = 4500
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director hostile fauna clearance reserve"
+\t\tpotential = {
+\t\t\tstaid_hostile_fauna_clearance_strategy = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 220
+\t\t\tenergy = 160
+\t\t\tminerals = 90
+\t\t}
+\t\tnaval_cap = 250
+\t}
+
+\tsubplan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director modded unlock research reserve"
 \t\tpotential = {
+\t\t\tstaid_research_input_runway_safe = yes
 \t\t\tOR = {
 \t\t\t\tstaid_core_unlock_research_priority_ready = yes
 \t\t\t\tyears_passed > 44
@@ -6845,6 +11163,7 @@ basic_economy_plan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director capped stockpile research conversion"
 \t\tpotential = {
+\t\t\tstaid_research_input_runway_safe = yes
 \t\t\tOR = {
 \t\t\t\tstaid_resource_waste_pressure = yes
 \t\t\t\tstaid_research_under_curve = yes
@@ -6865,6 +11184,7 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director 2360 physics catchup"
 \t\tpotential = {
 \t\t\tyears_passed > 119
+\t\t\tstaid_research_input_runway_safe = yes
 \t\t\tstaid_research_under_curve = yes
 \t\t\thas_monthly_income = { resource = physics_research value < 1200 }
 \t\t}
@@ -6877,6 +11197,7 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director 2360 society catchup"
 \t\tpotential = {
 \t\t\tyears_passed > 119
+\t\t\tstaid_research_input_runway_safe = yes
 \t\t\tstaid_research_under_curve = yes
 \t\t\thas_monthly_income = { resource = society_research value < 1200 }
 \t\t}
@@ -6889,6 +11210,7 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director 2360 engineering catchup"
 \t\tpotential = {
 \t\t\tyears_passed > 119
+\t\t\tstaid_research_input_runway_safe = yes
 \t\t\tstaid_research_under_curve = yes
 \t\t\thas_monthly_income = { resource = engineering_research value < 1400 }
 \t\t}
@@ -6933,9 +11255,29 @@ basic_economy_plan = {
 \t\tincome = {
 \t\t\tminerals = 500
 \t\t\tenergy = 400
+\t\t\tconsumer_goods = 250
+\t\t\tfood = 150
 \t\t\ttrade = 150
 \t\t}
 \t\tpops = 400000
+\t}
+
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director Planetary Diversity outpost reserve"
+\t\tpotential = {
+\t\t\tstaid_planetary_diversity_outpost_investment_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\tminerals = 800
+\t\t\tenergy = 500
+\t\t\tconsumer_goods = 250
+\t\t\tphysics_research = 400
+\t\t\tsociety_research = 400
+\t\t\tengineering_research = 600
+\t\t\ttrade = 150
+\t\t}
 \t}
 
 \tsubplan = {
@@ -6945,10 +11287,12 @@ basic_economy_plan = {
 \t\t\tstaid_static_defense_investment_ready = yes
 \t\t}
 \t\tincome = {
-\t\t\talloys = 18
-\t\t\tenergy = 25
-\t\t\ttrade = 25
+\t\t\talloys = 2200
+\t\t\tenergy = 1400
+\t\t\tminerals = 1200
+\t\t\ttrade = 500
 \t\t}
+\t\tnaval_cap = 1000
 \t}
 
 \tsubplan = {
@@ -6958,10 +11302,12 @@ basic_economy_plan = {
 \t\t\tstaid_crisis_starbase_pressure = yes
 \t\t}
 \t\tincome = {
-\t\t\talloys = 30
-\t\t\tenergy = 40
-\t\t\ttrade = 50
+\t\t\talloys = 3500
+\t\t\tenergy = 2200
+\t\t\tminerals = 1800
+\t\t\ttrade = 800
 \t\t}
+\t\tnaval_cap = 2000
 \t}
 }
 '''
@@ -7110,19 +11456,20 @@ staid_safe_deficit_runway_months = 24
 
 def readme_text(playset: dict[str, Any]) -> str:
     missing = [info["name"] for info in playset["required_mods"].values() if not info["present"]]
+    parity_reference = playset.get("parity_reference_mods", {}).get("3610149307", {})
     return f'''# Stellar AI Director
 
 Late-loading deterministic AI policy patch for the active Irony playset.
 
-This mod is a deterministic, full-power AI replacement policy for the current
-4.4 high-scale playset. It does not try to preserve vanilla or Stellar AI
-assumptions after the opening curve; it encodes explicit state gates,
-priorities, and emergency exits for Gigastructural Engineering, NSC3, ESC NEXT,
-Starbase Extended, and the active supporting mods.
+This mod is a deterministic standalone AI replacement baseline for the current
+4.4 high-scale playset. It no longer declares or requires Stellar AI at launch.
+Stellar AI remains a private parity reference for local development provenance:
+the Director absorbs or reimplements the high-value AI budget, economic-plan,
+research/economy/fleet conversion, construction-pressure, and war-support
+surfaces needed for a viable single-AI baseline before deeper enhancements.
 
 ## Required Parents
 
-- Stellar AI
 - Gigastructural Engineering & More (4.4)
 - NSC3
 - Extra Ship Components NEXT
@@ -7133,12 +11480,26 @@ Detected selected collection: `{playset["collection_name"]}`.
 
 Missing required Steam parents during generation: {", ".join(missing) if missing else "none"}.
 
+## Stellar AI Parity Reference
+
+- Stellar AI source was used as private local parity evidence, not as a launch
+  dependency.
+- Reference present during generation: {parity_reference.get("present", False)}.
+- Reference load position during generation: {parity_reference.get("load_position")}.
+- Absorbed/reimplemented baseline surfaces: `common/ai_budget`,
+  `common/economic_plans`, construction-pressure defines and budgets,
+  research/economy/fleet conversion, market/runway safety, claim/war-support
+  reserves, and high-scale modded progression hooks.
+- Deferred standalone enhancements: broad personality rewrites, diplomatic
+  action overrides, direct NSC3/ESC ship-design handling, advanced war chain
+  behavior, and runtime observer proof.
+
 ## Scope
 
 - Adds scripted decision-state triggers for survival, recovery, megastructure
   prep, safe commit, surplus-sink pressure, and shipyard payoff exploitation.
-- Overrides Stellar AI's megastructure alloy budget object with explicit
-  emergency exits and larger reserves for Gigas/NSC3-scale projects.
+- Reimplements the megastructure alloy budget object with explicit emergency
+  exits and larger reserves for Gigas/NSC3-scale projects.
 - Replaces the base economic plan with a mod-set-specific high-scale survival
   plan that forces research, alloy, trade, naval-cap, tall-scaling, and
   megastructure pressure on a mid-2300s crisis curve.
@@ -7177,12 +11538,13 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 
 ## Load Order
 
-Place Stellar AI Director after all required parents and after parent
-compatibility patches that the Director must supersede. In the current selected
-collection, the latest required parent is at load position
+Place Stellar AI Director after all required content parents and after parent
+compatibility patches that the Director must supersede. Stellar AI is not a
+required parent and should not be needed for the standalone baseline. In the
+current selected collection, the latest required parent is at load position
 {max((info["load_position"] or 0) for info in playset["required_mods"].values())}.
-The Director should be below Stellar AI so its megastructure alloy reserve
-override wins intentionally.
+The Director may still be compared against Stellar AI for private parity review,
+but the descriptor intentionally omits a Stellar AI dependency.
 
 ## Load Proof
 
@@ -7226,8 +11588,8 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| surface | file | risk | reason |",
         "| --- | --- | --- | --- |",
         "| state gates | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt` | low | additive namespaced triggers |",
-        "| unlock-research policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan extends Stellar AI research pressure into validated modded unlock gates |",
-        "| alloy reserves | `common/ai_budget/zzz_staid_alloys_budget.txt` | medium | intentional full-object override of Stellar AI megastructure budget |",
+        "| unlock-research policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan reimplements parity-reference research pressure into validated modded unlock gates |",
+        "| alloy reserves | `common/ai_budget/zzz_staid_alloys_budget.txt` | medium | Director-owned standalone megastructure budget reimplemented from private Stellar AI parity evidence |",
         "| Gigas special-resource reserves | `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` | medium | intentional full-object overrides of Gigas megastructure special-resource budgets |",
         "| economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |",
         "| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |",
@@ -7260,6 +11622,29 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
     lines.extend(
         [
             "",
+            "## Standalone Stellar AI Parity Reference",
+            "",
+            "Stellar AI is no longer a required launch dependency. Its current local source remains private parity evidence for this standalone baseline; copied or reimplemented surfaces must keep provenance notes and should not be prepared for redistribution without a later permission or rewrite pass.",
+            "",
+            "| reference mod | present | load position | role |",
+            "| --- | --- | ---: | --- |",
+        ]
+    )
+    for info in playset.get("parity_reference_mods", {}).values():
+        lines.append(
+            f"| {info['name']} | {info['present']} | {info['load_position']} | private parity/reference source, not descriptor dependency |"
+        )
+    lines.extend(
+        [
+            "",
+            "Baseline absorbed/reimplemented surfaces: AI budgets, `basic_economy_plan`, construction pressure, research/economy/fleet conversion, market/runway safety, claim/war support reserves, and high-scale modded progression hooks.",
+            "",
+            "Deferred non-baseline surfaces: broad personality rewrites, diplomatic-action overrides, direct ship-design/component/section handling for NSC3/ESC, advanced war-chain behavior, and runtime observer proof.",
+        ]
+    )
+    lines.extend(
+        [
+            "",
             "## Generated ROI Thresholds",
             "",
             "These values are generated from rows where `data_quality = resolved` and `decision_eligible = yes`.",
@@ -7283,7 +11668,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Market Cap-Breaker Policy",
             "",
-            "Stellar AI's parent monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in marketable resources: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, nanites, and verified market-priced Gigas sentient metal. Alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.",
+            "The Stellar AI parity-reference monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in marketable resources: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, nanites, and verified market-priced Gigas sentient metal. Alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.",
             "",
             "## Stranded-Fleet Recovery Policy",
             "",
@@ -7331,20 +11716,20 @@ def load_order_note_text(playset: dict[str, Any]) -> str:
         "# Stellar AI Director Load Order",
         "",
         f"Selected collection: {playset['collection_name']}",
-        f"Required parent maximum load position: {latest_parent}",
+        f"Required compatibility-mod maximum load position: {latest_parent}",
         "",
         "## Required Position",
         "",
-        "- Load after Stellar AI.",
         "- Load after Gigastructural Engineering & More (4.4).",
         "- Load after NSC3.",
         "- Load after Extra Ship Components NEXT.",
         "- Load after Starbase Extended 3.0.",
         "- Load after !!!Universal Resource Patch [2.4+].",
-        "- Load after parent compatibility patches whose AI/economy behavior the Director intentionally coordinates.",
+        "- Load after compatibility patches whose AI/economy behavior the Director intentionally coordinates.",
+        "- Stellar AI is not a required parent for the standalone baseline; keep it only as private parity/reference evidence when comparing behavior during development.",
         "- Load before any future local patch that intentionally overrides the Director.",
         "",
-        "## Required Parent Evidence",
+        "## Required Compatibility Evidence",
         "",
         "| mod | present | load position |",
         "| --- | --- | ---: |",
@@ -7354,9 +11739,24 @@ def load_order_note_text(playset: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
-        "## Current Intentional Supersession",
+            "## Stellar AI Standalone Parity",
             "",
-            "- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally overrides Stellar AI's `alloys_expenditure_megastructures` budget.",
+            "The Director descriptor intentionally omits Stellar AI. Current Stellar AI source is a private local parity reference only; its high-value AI budget, economic-plan, construction-pressure, research/economy/fleet conversion, and war-support surfaces are absorbed or reimplemented by Director-owned generated files.",
+            "",
+            "| reference mod | present | load position | role |",
+            "| --- | --- | ---: | --- |",
+        ]
+    )
+    for info in playset.get("parity_reference_mods", {}).values():
+        lines.append(
+            f"| {info['name']} | {info['present']} | {info['load_position']} | private parity/reference source, not descriptor dependency |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Current Intentional Supersession",
+            "",
+            "- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally defines the Director-owned `alloys_expenditure_megastructures` budget using Stellar AI parity evidence without requiring Stellar AI to load.",
             "- `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally overrides Gigas `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures` budgets.",
             "- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets.",
             "- Additive scripted triggers, script values, and economic-plan subplans use the `staid_` namespace and should not conflict with parent object IDs.",
@@ -7514,6 +11914,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "| planetary trade capacity income floor | 50 | minimum monthly trade before planetary-capacity and megastructure-prep gates add logistics pressure |",
         "| surplus trade capacity income floor | 100 | minimum monthly trade before surplus sink pressure can activate |",
         "| fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |",
+        "| strategic value horizon year | 2350 | long-lived economic, military, and modifier payoffs are weighted by remaining months before this goal date |",
         "| static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |",
         "| static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |",
         "| crisis starbase threat | 50 | threat floor that can activate crisis starbase reserve |",
@@ -7554,6 +11955,10 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Mega Shipyard readiness becomes an economic-plan subplan only when alloy income, energy income, trade income, alloy stockpile, and energy stockpile are all safe.",
         "- Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).",
         "- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.",
+        "- Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.",
+        "- User-directed 2026-07-08 aggression tuning keeps local war aggression above vanilla (`AI_AGGRESSIVENESS_BASE = 50`) but restores vanilla distance penalty (`WAR_DECLARATION_MALUS = 0.05`) and caps war declaration range at 200 jumps to avoid inefficient galaxy-crossing wars.",
+        "- Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.",
+        "- Hostile space fauna clearance is tracked as a dedicated follow-up lane: cheap crystalline/amoeba/drone-style blockers should be cleared early for territory, resources, and event research, while high-risk leviathan targets need separate classification.",
         "",
         "## Unlock-Research Policy",
         "",
@@ -7569,8 +11974,12 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "## Planetary-Capacity Policy",
         "",
         "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.",
-        "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.4 rejects in active economic-plan files.",
+        "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.5 rejects in active economic-plan files.",
         "- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.",
+        "- Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.",
+        "- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.",
+        "- Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.",
+        "- Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.",
         "",
         "## NSC3/ESC Design Policy",
         "",
@@ -7605,6 +12014,12 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
 def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
     errors: list[str] = []
     errors.extend(validate_object_atlas_artifacts())
+    if not economic_valuation_evidence_passes():
+        errors.append(
+            "Economic valuation evidence gate failed: regenerate/validate "
+            f"{ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT)} and "
+            f"{NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT)} before emitting economic AI weights."
+        )
     for row in collect_generated_file_audit_rows(MOD_ROOT):
         if row["status"] != "ok":
             errors.append(f"Generated file audit failed for {row['generated_file']}: {row['status']} ({row['reason']})")
@@ -7622,6 +12037,7 @@ def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
         errors.append(
             f"{MOD_ROOT / row['generated_file']}:{row['line']}: unresolved source-local variable {row['variable']}"
         )
+    errors.extend(validate_staid_scripted_trigger_cycles(MOD_ROOT))
     for file_path in generated_files:
         try:
             parsed = parse_file(file_path)

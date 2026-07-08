@@ -8,7 +8,7 @@ Generated from required parent source snapshots. Rows are evidence for P6-P11 po
 | --- | --- | ---: |
 | P10 | building | 211 |
 | P11 | component_template | 2056 |
-| P11 | ship_size | 162 |
+| P11 | ship_size | 221 |
 | P6 | ascension_perk | 12 |
 | P6 | technology | 661 |
 | P6 | tradition | 31 |
