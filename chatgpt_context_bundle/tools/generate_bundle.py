@@ -32,7 +32,6 @@ EXCLUDE_DIRS = {
     ".vscode",
     "__pycache__",
     "build",
-    "chatgpt_context_bundle",
     "dist",
     "exports",
     "node_modules",
@@ -44,7 +43,6 @@ EXCLUDE_DIRS = {
 
 EXCLUDE_PATH_PREFIXES = {
     "research/mod-source-snapshots/",
-    "research/stellar-ai/observer-runs/",
 }
 
 BINARY_EXTS = {
@@ -133,6 +131,10 @@ def is_excluded_path(path: Path) -> bool:
         value = rel(path)
         parts = set(path.relative_to(ROOT).parts)
     except ValueError:
+        return True
+    if value.startswith("chatgpt_context_bundle/") and value != "chatgpt_context_bundle/tools/generate_bundle.py":
+        return True
+    if value.startswith("research/stellar-ai/observer-runs/") and path.name == "commands_at_date.txt":
         return True
     if parts & EXCLUDE_DIRS:
         return True
@@ -288,6 +290,30 @@ def exact_existing(paths: list[str]) -> list[str]:
     return [item for item in paths if (ROOT / item).is_file()]
 
 
+def unique_paths(paths: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for path in paths:
+        if path in seen:
+            continue
+        seen.add(path)
+        result.append(path)
+    return result
+
+
+def files_directly_under(
+    files: list[Path],
+    directory: str,
+    suffixes: tuple[str, ...] | None = (".md",),
+) -> list[str]:
+    base = directory.strip("/")
+    return [
+        rel(path)
+        for path in files
+        if rel(path.parent) == base and (suffixes is None or path.suffix.lower() in suffixes)
+    ]
+
+
 def repo_tree(files: list[Path]) -> str:
     notes = {
         ".": "Project entrypoints, global repo guidance, and root metadata.",
@@ -371,7 +397,7 @@ Repository state:
 - Commit: `{commit}`
 - Working tree: `{dirty}`
 - Packed text/source candidates: {len(files)}
-- Excluded large evidence roots: `research/mod-source-snapshots/`, `research/stellar-ai/observer-runs/`
+- Excluded large evidence roots: raw `research/mod-source-snapshots/`, generated bundle outputs, and raw observer-run logs/saves/screenshots/exports/command schedules.
 
 Language/file counts:
 {lang_table}
@@ -403,10 +429,10 @@ Checklist result:
 - Under 40 files: yes, {len(bundle_files)} generated files.
 - Total bundle size before final manifest write: {total_bytes} bytes.
 - Generated/vendor/cache files: excluded by directory filters and Git ignore discovery.
-- Raw mod-source snapshots and observer-run artifacts: excluded from inline bundle output; use local repo/Munch indexes for exact retrieval.
+- Raw mod-source snapshots and bulky observer-run artifacts: excluded from inline bundle output; small tracked observer summaries, metadata, checkpoints, and manual notes are included.
 - Original source paths: preserved as `## path/to/file` headings before each included source block.
 - Sensitive-looking paths: excluded; secret-like key/value lines are redacted inside copied text.
-- Major surfaces represented: project rules, mod source, Stellar AI Director implementation/research, modding guides, research bundles, tabular evidence catalog, scripts, validators, and tests.
+- Major surfaces represented: project rules, goals/plans, mod source, Stellar AI Director implementation/research, modding guides, research bundles, tabular evidence catalog, current generator/script state, scripts, validators, and tests.
 - Online ChatGPT readiness: yes. Upload the generated Markdown files in the recommended order from `00_INDEX.md`.
 
 ## Omitted Files
@@ -446,46 +472,72 @@ def main() -> None:
     if SCRIPT_PATH.resolve() != generator_output.resolve():
         shutil.copy2(SCRIPT_PATH, generator_output)
 
-    control_paths = exact_existing(
-        [
-            ".gitignore",
-            "AGENTS.md",
-            "README.md",
-            "mods/README.md",
-            "research/README.md",
-        ]
-    ) + files_under(files, "notes", suffixes=None) + files_under(files, "plans", suffixes=None)
-
-    mod_paths = files_under(files, "mods", suffixes=None)
-    stellar_ai_paths = files_under(files, "mods/StellarAIDirector", suffixes=None) + files_under(
-        files,
-        "research/stellar-ai",
-        suffixes=(".md", ".txt", ".json"),
-        exclude_contains=("/observer-runs/",),
+    control_paths = unique_paths(
+        exact_existing(
+            [
+                ".gitignore",
+                "AGENTS.md",
+                "README.md",
+                "mods/README.md",
+                "research/README.md",
+            ]
+        )
+        + files_under(files, "notes", suffixes=None)
     )
-    research_paths = (
-        exact_existing(["research/stellaris-modding-guide-2026-07-04.md"])
+    goal_paths = unique_paths(
+        files_under(files, "plans", suffixes=(".md", ".txt", ".json"))
+        + [
+            rel(path)
+            for path in files
+            if rel(path).startswith("research/")
+            and path.suffix.lower() in {".md", ".json", ".txt"}
+            and any(
+                marker in rel(path).lower()
+                for marker in ("goal", "plan", "roadmap", "status", "cleanup", "handoff", "acceptance")
+            )
+        ]
+    )
+    research_top_level_paths = files_directly_under(files, "research", suffixes=(".md", ".json", ".txt"))
+
+    mod_paths = unique_paths(files_under(files, "mods", suffixes=None))
+    stellar_ai_paths = unique_paths(
+        files_under(files, "mods/StellarAIDirector", suffixes=None)
+        + files_under(
+            files,
+            "research/stellar-ai",
+            suffixes=(".md", ".txt", ".json", ".csv"),
+        )
+    )
+    research_paths = unique_paths(
+        research_top_level_paths
+        + exact_existing(["research/stellaris-modding-guide-2026-07-04.md"])
         + files_under(files, "research/stellaris-modding-research-bundle-2026-07-04", suffixes=(".md", ".json", ".txt"))
         + files_under(files, "research/webchatgpt", suffixes=(".md", ".json", ".txt"))
         + files_under(files, "research/last30days", suffixes=(".md", ".json", ".txt"))
         + files_under(files, "research/stellaris-codex-modding-guide-packet-2026-07-08", suffixes=(".md", ".json", ".txt"))
         + files_under(files, "research/stellaris-codex-skills-roadmap-2026-07-08", suffixes=(".md", ".json", ".txt"))
     )
-    report_paths = [
-        rel(path)
-        for path in files
-        if rel(path).startswith("research/")
-        and path.suffix.lower() in {".md", ".json"}
-        and (
-            "object-atlas" in rel(path)
-            or "compatibility" in rel(path)
-            or "audit" in rel(path)
-            or "validation" in rel(path)
-            or "route" in rel(path)
-            or "war-mechanics" in rel(path)
-        )
-    ]
-    tool_paths = files_under(files, "tools", suffixes=(".py", ".md", ".ps1", ".json", ".yaml", ".yml"))
+    report_paths = unique_paths(
+        [
+            rel(path)
+            for path in files
+            if rel(path).startswith("research/")
+            and path.suffix.lower() in {".md", ".json"}
+            and (
+                "object-atlas" in rel(path)
+                or "compatibility" in rel(path)
+                or "audit" in rel(path)
+                or "validation" in rel(path)
+                or "route" in rel(path)
+                or "war-mechanics" in rel(path)
+                or "observer-runs" in rel(path)
+            )
+        ]
+    )
+    tool_paths = unique_paths(
+        files_under(files, "tools", suffixes=(".py", ".md", ".ps1", ".json", ".yaml", ".yml"))
+        + files_under(files, "chatgpt_context_bundle/tools", suffixes=(".py",))
+    )
 
     write(
         "00_INDEX.md",
@@ -535,7 +587,9 @@ Generated bundle file count: {len(generated_files)}
         section(
             "Project Control And Guidance",
             "Read these files before interpreting mod source, research packets, generated evidence, or validation claims.\n\n"
-            + include(control_paths, max_bytes=MAX_DOC_INLINE_BYTES),
+            + include(control_paths, max_bytes=MAX_DOC_INLINE_BYTES)
+            + "\n\n## Project Goals, Plans, Status, And Handoffs\n\n"
+            + include(goal_paths, max_bytes=MAX_DOC_INLINE_BYTES),
         ),
     )
     write(
