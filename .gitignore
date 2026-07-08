@@ -13,6 +13,11 @@ temp/
 __pycache__/
 *.py[cod]
 
+# Generated ChatGPT context bundle outputs
+chatgpt_context_bundle/*
+!chatgpt_context_bundle/tools/
+!chatgpt_context_bundle/tools/generate_bundle.py
+
 # Stellaris/generated packaging outputs
 *.zip
 *.7z
