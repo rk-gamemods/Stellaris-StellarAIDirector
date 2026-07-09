@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import datetime as dt
+import csv
+import json
 import os
 import re
 import shutil
@@ -22,6 +24,10 @@ BUNDLE = Path(os.environ.get("STELLARIS_MODS_BUNDLE_OUTPUT", DEFAULT_BUNDLE_OUTP
 
 MAX_INLINE_BYTES = 220_000
 MAX_DOC_INLINE_BYTES = 160_000
+MODELING_HANDOFF_INLINE_BYTES = int(os.environ.get("STELLARIS_MODELING_HANDOFF_INLINE_BYTES", "2_500_000"))
+STELLARIS_INSTALL_ROOT = Path(
+    os.environ.get("STELLARIS_INSTALL_ROOT", r"C:\Steam\steamapps\common\Stellaris")
+).resolve()
 
 EXCLUDE_DIRS = {
     ".git",
@@ -214,6 +220,18 @@ def language_for(path: Path) -> str:
     }.get(path.suffix.lower(), path.suffix.lower().lstrip(".") or "text")
 
 
+def read_redacted_external(path: Path) -> str:
+    text = path.read_text(encoding="utf-8", errors="replace")
+    redacted_lines: list[str] = []
+    for line in text.splitlines():
+        if SECRET_LINE.search(line):
+            key = re.split(r"[:=]", line, maxsplit=1)[0].rstrip()
+            redacted_lines.append(f"{key}=<REDACTED>")
+        else:
+            redacted_lines.append(URL_CREDENTIALS.sub(r"\1:<REDACTED>@", line))
+    return "\n".join(redacted_lines) + ("\n" if text.endswith("\n") else "")
+
+
 def fence(path: Path, max_bytes: int = MAX_INLINE_BYTES) -> str:
     value = rel(path)
     size = path.stat().st_size
@@ -225,6 +243,19 @@ def fence(path: Path, max_bytes: int = MAX_INLINE_BYTES) -> str:
             "JDataMunch/JDocMunch/JCodeMunch for exact retrieval._\n\n"
         )
     return f"## {value}\n\n```{language_for(path)}\n{read_redacted(path)}```\n\n"
+
+
+def fence_external(label: str, path: Path, max_bytes: int = MODELING_HANDOFF_INLINE_BYTES) -> str:
+    if not path.exists() or not path.is_file():
+        return f"## {label}\n\n_Missing source file: `{path}`._\n\n"
+    size = path.stat().st_size
+    if size > max_bytes:
+        return (
+            f"## {label}\n\n"
+            f"_Omitted inline because this source file is {size} bytes, over the {max_bytes} byte handoff cap. "
+            f"Path: `{path}`._\n\n"
+        )
+    return f"## {label}\n\nSource path: `{path}`\n\n```{language_for(path)}\n{read_redacted_external(path)}```\n\n"
 
 
 def section(title: str, body: str) -> str:
@@ -268,6 +299,10 @@ def include(paths: list[str], max_bytes: int = MAX_INLINE_BYTES) -> str:
             continue
         out.append(fence(path, max_bytes=max_bytes))
     return "".join(out) or "_No matching files found._\n\n"
+
+
+def include_modeling_handoff_files(paths: list[str]) -> str:
+    return include(paths, max_bytes=MODELING_HANDOFF_INLINE_BYTES)
 
 
 def files_under(
@@ -422,6 +457,122 @@ Largest included source candidates:
 """
 
 
+def load_active_playset_roots() -> dict[str, Path]:
+    roots: dict[str, Path] = {
+        "Stellaris vanilla": STELLARIS_INSTALL_ROOT,
+        "vanilla": STELLARIS_INSTALL_ROOT,
+        "Stellar AI Director": ROOT / "mods" / "StellarAIDirector",
+    }
+    playset_path = ROOT / "research/stellar-ai/stellar-ai-director-active-playset-2026-07-04.json"
+    if not playset_path.is_file():
+        return roots
+    try:
+        data = json.loads(playset_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return roots
+    for mod in data.get("mods", []):
+        name = str(mod.get("name", "")).strip()
+        path = str(mod.get("path", "")).strip()
+        if name and path:
+            roots[name] = Path(path)
+    return roots
+
+
+def blocker_source_references() -> list[tuple[str, str]]:
+    blocker_path = ROOT / "research/stellar-ai/stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv"
+    if not blocker_path.is_file():
+        return []
+    references: set[tuple[str, str]] = set()
+    with blocker_path.open("r", encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            source_mod = (row.get("source_mod") or "").strip()
+            source_file = (row.get("source_file") or "").strip().replace("\\", "/")
+            if source_mod and source_file:
+                references.add((source_mod, source_file))
+    return sorted(references)
+
+
+def resolve_under_root(root: Path, source_file: str) -> Path | None:
+    candidate = (root / Path(source_file)).resolve()
+    try:
+        candidate.relative_to(root.resolve())
+    except ValueError:
+        return None
+    return candidate
+
+
+def modeling_external_source_sections() -> str:
+    roots = load_active_playset_roots()
+    refs = blocker_source_references()
+    if not refs:
+        return "_No blocker source references found._\n\n"
+
+    sections: list[str] = [
+        "These are the exact active-playset source files referenced by the current modeling blocker queue. "
+        "They are included so WebChatGPT can inspect orphaned definitions, stale references, inactive jobs, and source-backed formulas instead of guessing from generated rows alone.",
+        "",
+        "| Source mod | Source file | Bundle status |",
+        "| --- | --- | --- |",
+    ]
+    source_blocks: list[str] = []
+    missing_blocks: list[str] = []
+    for source_mod, source_file in refs:
+        root = roots.get(source_mod)
+        label = f"external_source/{source_mod}/{source_file}".replace("\\", "/")
+        if root is None:
+            sections.append(f"| `{source_mod}` | `{source_file}` | missing active-playset root |")
+            missing_blocks.append(f"- `{source_mod}` / `{source_file}`: source mod was not found in the active playset inventory.")
+            continue
+        path = resolve_under_root(root, source_file)
+        if path is None:
+            sections.append(f"| `{source_mod}` | `{source_file}` | rejected path outside source root |")
+            missing_blocks.append(f"- `{source_mod}` / `{source_file}`: resolved outside root `{root}`.")
+            continue
+        exists = path.is_file()
+        size = path.stat().st_size if exists else 0
+        status = f"inlined, {size} bytes" if exists and size <= MODELING_HANDOFF_INLINE_BYTES else "missing or over cap"
+        sections.append(f"| `{source_mod}` | `{source_file}` | {status} |")
+        source_blocks.append(fence_external(label, path))
+
+    if missing_blocks:
+        sections.extend(["", "## Missing Or Unsafe Source References", "", *missing_blocks, ""])
+    sections.extend(["", "## Inlined Source Files", "", *source_blocks])
+    return "\n".join(sections)
+
+
+def modeling_handoff_content() -> str:
+    modeling_paths = exact_existing(
+        [
+            "research/webchatgpt/stellar-ai-modeling-completion-webchatgpt-prompt-2026-07-09.md",
+            "plans/stellar-ai-director-strategic-v2/MODELING_COMPLETION_LEDGER.md",
+            "research/stellar-ai/stellar-ai-director-build-plan-consumer-contract-2026-07-09.md",
+            "research/stellar-ai/stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-research-capacity-buildings-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-research-capacity-development-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-research-capacity-jobs-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-research-capacity-plan-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-research-capacity-tech-modifiers-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-build-plan-readiness-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-colony-role-targets-2026-07-09.csv",
+            "research/stellar-ai/stellar-ai-director-active-playset-2026-07-04.json",
+            "tools/build_stellar_ai_research_capacity_dataset.py",
+            "tools/stellar_ai_director_lib.py",
+            "tools/tests/test_stellar_ai_director.py",
+        ]
+    )
+    return (
+        "This file is a self-contained high-context handoff for WebChatGPT Pro to finish the Stellar AI Director modeling audit. "
+        "It exists because the standard bundle files intentionally omit very large datasets and source files behind upload-friendly inline caps. "
+        "Use this file alongside `00_INDEX.md`; it contains the prompt, current work queue, key modeling artifacts, generator code, tests, and active-playset source files referenced by the blocker rows.\n\n"
+        "## WebChatGPT Prompt And Modeling Artifacts\n\n"
+        + include_modeling_handoff_files(modeling_paths)
+        + "\n\n## Active-Playset Source Evidence Referenced By Current Blocker Rows\n\n"
+        + modeling_external_source_sections()
+    )
+
+
 def upload_quality_review(bundle_files: list[str], total_bytes: int, omitted_text: str) -> str:
     return f"""## Upload Quality Review
 
@@ -464,6 +615,7 @@ def main() -> None:
         "07_TOOLS_AND_VALIDATORS.md",
         "08_SOURCE_FILE_MANIFEST_AND_UPLOAD_REVIEW.md",
         "09_CHATGPT_STELLARIS_MODDING_BRIEF.md",
+        "10_STELLAR_AI_MODELING_HANDOFF.md",
         "tools/generate_bundle.py",
     ]
 
@@ -561,20 +713,22 @@ Warning: this bundle is a point-in-time snapshot for online ChatGPT sources. The
 | `07_TOOLS_AND_VALIDATORS.md` | Deterministic helper scripts, validators, observer helpers, and tests. |
 | `08_SOURCE_FILE_MANIFEST_AND_UPLOAD_REVIEW.md` | Complete candidate source manifest, data catalog, TODO scan, upload checks, and omissions. |
 | `09_CHATGPT_STELLARIS_MODDING_BRIEF.md` | Concise instruction brief for online ChatGPT after these files are uploaded as sources. |
+| `10_STELLAR_AI_MODELING_HANDOFF.md` | Self-contained WebChatGPT Pro handoff for the Stellar AI Director modeling completion audit, including the refined prompt, blocker queue, large modeling artifacts, and active-playset source evidence. |
 | `tools/generate_bundle.py` | Generator script used to produce this snapshot. Rerun from repo root with `python chatgpt_context_bundle/tools/generate_bundle.py`. |
 
 Recommended upload order for ChatGPT Projects:
 
 1. `00_INDEX.md`
-2. `09_CHATGPT_STELLARIS_MODDING_BRIEF.md`
-3. `01_REPO_TREE.md`
-4. `02_PROJECT_CONTROL_AND_GUIDANCE.md`
-5. `03_MOD_SOURCE_AND_DESCRIPTORS.md`
-6. `04_STELLAR_AI_DIRECTOR_CONTEXT.md`
-7. `05_RESEARCH_AND_EVIDENCE_GUIDES.md`
-8. `06_DATASETS_AND_VALIDATION_REPORTS.md`
-9. `07_TOOLS_AND_VALIDATORS.md`
-10. `08_SOURCE_FILE_MANIFEST_AND_UPLOAD_REVIEW.md`
+2. `10_STELLAR_AI_MODELING_HANDOFF.md`
+3. `09_CHATGPT_STELLARIS_MODDING_BRIEF.md`
+4. `01_REPO_TREE.md`
+5. `02_PROJECT_CONTROL_AND_GUIDANCE.md`
+6. `03_MOD_SOURCE_AND_DESCRIPTORS.md`
+7. `04_STELLAR_AI_DIRECTOR_CONTEXT.md`
+8. `05_RESEARCH_AND_EVIDENCE_GUIDES.md`
+9. `06_DATASETS_AND_VALIDATION_REPORTS.md`
+10. `07_TOOLS_AND_VALIDATORS.md`
+11. `08_SOURCE_FILE_MANIFEST_AND_UPLOAD_REVIEW.md`
 
 Generated bundle file count: {len(generated_files)}
 """,
@@ -665,6 +819,8 @@ Generated bundle file count: {len(generated_files)}
 
 ## Best Starting Files
 
+For the current Stellar AI Director modeling-completion handoff, start with `10_STELLAR_AI_MODELING_HANDOFF.md`; it contains the refined prompt, large artifacts that standard bundle sections omit, and active-playset source evidence referenced by the current blocker rows.
+
 1. `02_PROJECT_CONTROL_AND_GUIDANCE.md` for repo rules, final-status reporting, source order, and user preferences.
 2. `03_MOD_SOURCE_AND_DESCRIPTORS.md` for current source mod files under `mods/`.
 3. `04_STELLAR_AI_DIRECTOR_CONTEXT.md` for the active AI/economy/compatibility mod lane.
@@ -673,6 +829,10 @@ Generated bundle file count: {len(generated_files)}
 6. `08_SOURCE_FILE_MANIFEST_AND_UPLOAD_REVIEW.md` for coverage, omissions, and the full candidate manifest.
 """,
         ),
+    )
+    write(
+        "10_STELLAR_AI_MODELING_HANDOFF.md",
+        section("Stellar AI Modeling Completion Handoff", modeling_handoff_content()),
     )
 
     with (BUNDLE / "00_INDEX.md").open("a", encoding="utf-8") as handle:
