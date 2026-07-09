@@ -11309,6 +11309,34 @@ basic_economy_plan = {
 \t}
 
 \tsubplan = {
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director ESC component resource readiness"
+\t\tpotential = {
+\t\t\tstaid_research_input_runway_safe = yes
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tNOT = { staid_advanced_component_resource_support_ready = yes }
+\t\t\tOR = {
+\t\t\t\thas_technology = tech_dark_matter_power_core
+\t\t\t\thas_technology = esc_tech_dark_matter_power_core_2
+\t\t\t\tstaid_phase_fleet_conversion_repeatables = yes
+\t\t\t\tyears_passed > 79
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\tvolatile_motes = 12
+\t\t\texotic_gases = 12
+\t\t\trare_crystals = 12
+\t\t\tsr_dark_matter = 3
+\t\t\tsr_zro = 3
+\t\t\tnanites = 3
+\t\t\tengineering_research = 600
+\t\t\tenergy = 500
+\t\t\tminerals = 400
+\t\t\ttrade = 150
+\t\t}
+\t}
+
+\tsubplan = {
 \t\toptional = yes
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director capped stockpile research conversion"
