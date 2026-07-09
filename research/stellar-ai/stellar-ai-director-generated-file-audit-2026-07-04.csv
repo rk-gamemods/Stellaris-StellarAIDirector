@@ -8,7 +8,7 @@ common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt,bomb
 common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,buildings,building,ok,ok,29,0,ok,valid generated PDXScript surface
 common/buildings/zzzz_staid_07_pop_assembly_buildings.txt,buildings,building,ok,ok,24,0,ok,valid generated PDXScript surface
 common/buildings/zzzz_staid_12_planetary_diversity_buildings.txt,buildings,building,ok,ok,85,0,ok,valid generated PDXScript surface
-common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt,buildings,building,ok,ok,255,0,ok,valid generated PDXScript surface
+common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt,buildings,building,ok,ok,257,0,ok,valid generated PDXScript surface
 common/decisions/zzzz_staid_12_planetary_diversity_outpost_decisions.txt,decisions,decision,ok,ok,14,0,ok,valid generated PDXScript surface
 common/defines/zzzz_staid_14_high_scale_ai_defines.txt,defines,define,ok,ok,1,0,ok,valid generated PDXScript surface
 common/districts/zzzz_staid_06_research_infrastructure_districts.txt,districts,district,ok,ok,13,0,ok,valid generated PDXScript surface

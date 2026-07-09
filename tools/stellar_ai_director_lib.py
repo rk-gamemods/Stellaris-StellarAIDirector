@@ -27,6 +27,7 @@ SNAPSHOT_ROOT = REPO_ROOT / "research" / "mod-source-snapshots" / "2026-07-04"
 IRONY_DATA_ROOT = Path(r"C:\Users\Admin\AppData\Roaming\Mario")
 STELLARIS_INSTALL_ROOT = Path(r"C:\Steam\steamapps\common\Stellaris")
 PLANETARY_DIVERSITY_WORKSHOP_ROOT = Path(r"C:\Steam\steamapps\workshop\content\281990\819148835")
+PLANETARY_DIVERSITY_MORE_ARCOLOGIES_WORKSHOP_ROOT = Path(r"C:\Steam\steamapps\workshop\content\281990\1732447147")
 STELLARIS_LOG_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\logs")
 STELLARIS_SAVE_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\save games")
 PARADOX_MOD_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\mod")
@@ -1640,8 +1641,9 @@ def iter_text_files(root: Path) -> Iterable[Path]:
 def object_inventory_roots(snapshot_root: Path = SNAPSHOT_ROOT) -> list[Path]:
     manifest = read_snapshot_manifest(snapshot_root)
     roots = [Path(row["snapshot_path"]) for row in manifest.values() if Path(row["snapshot_path"]).exists()]
-    if PLANETARY_DIVERSITY_WORKSHOP_ROOT.exists() and PLANETARY_DIVERSITY_WORKSHOP_ROOT not in roots:
-        roots.append(PLANETARY_DIVERSITY_WORKSHOP_ROOT)
+    for root in (PLANETARY_DIVERSITY_WORKSHOP_ROOT, PLANETARY_DIVERSITY_MORE_ARCOLOGIES_WORKSHOP_ROOT):
+        if root.exists() and root not in roots:
+            roots.append(root)
     return roots
 
 
@@ -4872,6 +4874,9 @@ DATASET_JOB_PRESSURE_UNSAFE_TEXT_MARKERS = (
     "district_giga_frameworld_fortress_bunker",
     "district_generator_uncapped",
 )
+DATASET_JOB_PRESSURE_FORBIDDEN_OBJECT_IDS = {
+    "building_pd_rogue_council",
+}
 
 AI_RESOURCE_PRODUCTION_FAMILY_DEFAULTS = {
     "consumer_goods_repair": ("consumer_goods",),
@@ -4967,6 +4972,8 @@ def dataset_job_pressure_runtime_safety_issues(
         issues.append("district_trade_value_add")
     if re.search(r"\bbuilding_[a-z0-9_]+_max\b", text):
         issues.append("building_max_modifier")
+    if row.get("object_id") in DATASET_JOB_PRESSURE_FORBIDDEN_OBJECT_IDS:
+        issues.append("forbidden_object")
     valid_job_modifiers = {f"job_{job}_add" for job in known_jobs} | {f"{job}_add" for job in known_jobs}
     missing_jobs = sorted(
         {

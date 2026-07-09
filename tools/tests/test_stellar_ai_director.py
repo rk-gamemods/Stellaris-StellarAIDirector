@@ -331,10 +331,15 @@ class GeneratedModValidityTests(unittest.TestCase):
 
     def test_dataset_job_pressure_overrides_use_live_valuation_rows(self):
         rows = dataset_job_pressure_override_rows()
+        row_ids = {row["object_id"] for row in rows}
         self.assertGreaterEqual(len(rows), 50)
         self.assertTrue(all(float(row["jobs_created_total_estimate"]) > 0 for row in rows))
         self.assertTrue(all(float(row["roi_2250_to_2350_estimate"]) > 0 for row in rows))
         self.assertIn("consumer_goods_repair", {row["pressure_family"] for row in rows})
+        self.assertIn("building_navel_base", row_ids)
+        self.assertIn("building_navel_command", row_ids)
+        self.assertNotIn("building_pd_rogue_council", row_ids)
+        self.assertTrue(all(row["object_type"] != "zone" for row in rows))
 
         generated_files = [
             MOD_ROOT / "common" / "buildings" / "zzzz_staid_13_dataset_job_pressure_buildings.txt",
@@ -351,6 +356,9 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn("ai_weight_coefficient", text)
             parse_file(file_path)
         self.assertIn("family:consumer_goods_repair", combined_text)
+        self.assertIn("building_navel_base", combined_text)
+        self.assertIn("building_navel_command", combined_text)
+        self.assertNotIn("building_pd_rogue_council", combined_text)
         self.assertIn("staid_high_scale_snowball_pressure", combined_text)
         self.assertIn(
             "owner = { country_uses_consumer_goods = yes NOT = { staid_consumer_goods_runway_safe = yes } }",
