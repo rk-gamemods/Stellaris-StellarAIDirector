@@ -1,0 +1,34 @@
+option,goal_served,implementation_cost,compatibility_risk,validation_difficulty,expected_impact,prerequisites,recommended_priority,rationale
+Stabilize 4.4.5 standalone baseline first,Prevent regressions before new behavior,low-medium,low,low,high,Current source read; generator/validator pass,P0,Avoids implementing against stale 4.4.4 or old dependency assumptions.
+Add stale Stellar AI dependency validator,Standalone independence,low,low,low,medium-high,Current docs and descriptor,P0,Cheap guardrail prevents recurring launch dependency confusion.
+Add forbidden surface gate,Compatibility safety,low,low,low,high,Technical contracts,P0,Blocks unsafe diplomatic/personality/ship overrides until researched.
+Build 4.4.5 log-risk classifier,Load/freeze triage,medium,low,medium,high,Latest error/log summaries,P0,Separates Director-owned defects from parent-mod warnings.
+Strengthen early research construction pressure,Research scaling,medium,medium,medium,very high,Support economy gate review,P0,Early research is the clearest bottleneck for high-scale play.
+Pop assembly active-pressure pass,Economy snowball,medium,medium,medium,high,Empire-type object verification,P0,Pop growth/assembly compounds every later route.
+Support economy bridge tuning,Prevent collapse while scaling,medium,medium,medium,high,Trade/resource audits,P0,Research/fleet pressure fails without CG/energy/trade/special-resource runway.
+Unity-to-research route pass,Research tempo,medium,medium,medium,high,AP/tradition route evidence,P1,Turns unity into earlier research/megastructure payoff.
+Preserve Research Federation weighting,Research diplomacy,low,low-medium,low,medium,Existing static validation,P1,Safe already-implemented route; preserve and refine only with evidence.
+Research agreement direct formation,Research diplomacy,high,high,high,medium-high,Action/personality source study,Research only,"Likely useful, but direct implementation is unsafe without proof."
+Broad personality rewrites,War/diplomacy,high,very high,high,uncertain,Active-stack personality merge report,Defer,Full-object conflicts and campaign-feel changes are high-risk.
+Diplomatic action overrides,Research agreements/war,high,very high,high,uncertain,Exact winning action/source proof,Defer,Can easily force invalid or unwanted behavior.
+Gigas route blocker refresh,High-scale progression,medium,medium,medium,high,Atlas/dependency refresh,P1,Prerequisite/resource route gaps can block all late payoff.
+Gigas queue continuation report,Megastructure proof,medium-high,medium,high,high,Static chain graph; optional save evidence,P1,Static weights do not prove queues continue or upgrade.
+Broad Gigas object rewrites,High-scale optimization,high,high,high,uncertain,Parser/conflict/queue proof,Defer,Potentially powerful but dangerous without source and runtime evidence.
+NSC3/ESC ship-stack lane report,Fleet compatibility,medium-high,low,medium-high,high,Ship graph source inspection,P1,Required before direct ship handling.
+Direct NSC3 ship designs,Fleet quality,high,very high,very high,uncertain,Ship-stack lane report and loader proof,Defer,High conflict risk; current tech/resource lane is safer.
+ESC component-template direct handling,Fleet components,high,very high,very high,uncertain,Component-template loader proof,Defer,Current atlas cannot safely model `key = ...` internals.
+ESC tech/resource readiness support,Fleet components,medium,medium,medium,medium-high,ESC lane report,P1,Improves component access without direct template risk.
+NSC3 hull readiness support,Fleet scaling,medium,medium,medium,medium-high,NSC3 lane report,P1,Improves fleet path through safe tech/economy levers.
+Hostile fauna clearance inventory,Expansion/economy,medium,low-medium,medium,medium,Entity/reward source inspection,P1,Can unlock blocked systems without suicide if classified well.
+Hostile fauna reserve tuning,Expansion/fleet payoff,medium,medium,medium,medium,Clearance inventory,P2,Useful after safe target classifications exist.
+Fleet payoff route tuning,War/economy,medium,medium-high,medium,high,War/economy source review,P1/P2,Prevents fleet hoarding with no economic return.
+Advanced war-chain implementation,War behavior,high,very high,very high,uncertain,"War-chain research, user approval if aggressive",Defer,Forced war/CB/join-war behavior can destabilize campaigns.
+Starbase Extended defense study,Defense compatibility,medium,medium,medium,medium-high,Starbase scope/conflict report,P1,Defense expansion requires verified scopes and conflicts.
+Defense/crisis readiness tuning,Crisis survival,medium,medium-high,medium-high,high,Starbase/crisis source study,P2,Important for high-scale crises but can starve economy if unconditional.
+Planetary Diversity targeted expansion,Planet economy,medium,medium,medium,medium-high,PD profile and valuation rows,P2,High ROI if targeted; risky if broad.
+Broad colony/designation rewrites,Planet automation,high,high,high,uncertain,Winning object/designation inventory,Defer,Can fight vanilla automation and modded planet types.
+Nomad/Arkship compatibility audit,4.4.x compatibility,medium,medium,medium,high,Touched-surface review,P1,4.4.x compatibility cases are first-class when economy/planet/war surfaces touched.
+Optional observer benchmark,Runtime proof,high runtime cost,low code risk,high,very high evidence value,User approval; static gates pass,Approval-gated,"Only way to prove behavior trajectory, but not default Codex validation."
+Hidden AI bonus mode,Power level,medium,medium,medium,high impact but philosophical risk,User approval,User decision,May solve crisis parity but changes product philosophy.
+Live launcher update/check,Release readiness,low,low,low,medium,Source validation pass,P0 before live claim,Source changes are not automatically live.
+Commit/push packaging,Repo hygiene,low-medium,low,low,medium,Validation pass and coherent diff,User/implementation dependent,Prevents unrelated artifacts and raw observer files from polluting repo.
