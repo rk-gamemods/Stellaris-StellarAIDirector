@@ -46,6 +46,7 @@ OUT_INFRA = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-target
 OUT_RESOURCE_COVERAGE = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
 OUT_READINESS = RESEARCH_ROOT / "stellar-ai-director-build-plan-readiness-2026-07-09.csv"
 OUT_BENEFITS = RESEARCH_ROOT / "stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv"
+OUT_BLOCKERS = RESEARCH_ROOT / "stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
@@ -1770,6 +1771,164 @@ def strategic_benefit_taxonomy_rows(strategic_rows: list[dict[str, Any]]) -> lis
     return sorted(rows, key=lambda item: (str(item["benefit_class"]), str(item["object_type"]), str(item["object_id"])))
 
 
+def add_blocker_row(
+    rows: list[dict[str, Any]],
+    source_artifact: str,
+    object_type: str,
+    object_id: str,
+    issue_type: str,
+    issue_key: str,
+    accounting_status: str,
+    next_action: str,
+    source_mod: str = "",
+    source_file: str = "",
+) -> None:
+    rows.append(
+        {
+            "source_artifact": source_artifact,
+            "object_type": object_type,
+            "object_id": object_id,
+            "issue_type": issue_type,
+            "issue_key": issue_key,
+            "accounting_status": accounting_status,
+            "next_action": next_action,
+            "source_mod": source_mod,
+            "source_file": source_file,
+        }
+    )
+
+
+def modeling_blocker_accounting_rows(
+    buildings: list[dict[str, Any]],
+    development_rows: list[dict[str, Any]],
+    strategic_rows: list[dict[str, Any]],
+    resource_coverage_rows: list[dict[str, Any]],
+    benefit_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for row in buildings:
+        for job_id in cell_items(row.get("unknown_jobs")):
+            add_blocker_row(
+                rows,
+                "buildings",
+                "building",
+                str(row["building_id"]),
+                "unknown_job",
+                job_id,
+                "source_reference_unresolved",
+                "Resolve job alias/source or record a source-backed exclusion before build-plan consumption.",
+                str(row["winning_mod_name"]),
+                str(row["winning_file"]),
+            )
+        for variable in cell_items(row.get("unresolved_variables")):
+            add_blocker_row(
+                rows,
+                "buildings",
+                "building",
+                str(row["building_id"]),
+                "unresolved_variable",
+                variable,
+                "variable_value_unresolved",
+                "Resolve global/local variable value or preserve as conservative blocker.",
+                str(row["winning_mod_name"]),
+                str(row["winning_file"]),
+            )
+        for flag in cell_items(row.get("data_quality_flags")):
+            add_blocker_row(
+                rows,
+                "buildings",
+                "building",
+                str(row["building_id"]),
+                "data_quality_flag",
+                flag,
+                "tracked_quality_flag",
+                "Review before using this row for final build-plan scoring.",
+                str(row["winning_mod_name"]),
+                str(row["winning_file"]),
+            )
+    for row in development_rows:
+        for job_id in cell_items(row.get("unknown_jobs")):
+            add_blocker_row(
+                rows,
+                "development",
+                str(row["object_type"]),
+                str(row["object_id"]),
+                "unknown_job",
+                job_id,
+                "source_reference_unresolved",
+                "Resolve job alias/source or record a source-backed exclusion before build-plan consumption.",
+                str(row["winning_mod_name"]),
+                str(row["winning_file"]),
+            )
+        for variable in cell_items(row.get("unresolved_variables")):
+            add_blocker_row(
+                rows,
+                "development",
+                str(row["object_type"]),
+                str(row["object_id"]),
+                "unresolved_variable",
+                variable,
+                "variable_value_unresolved",
+                "Resolve global/local variable value or preserve as conservative blocker.",
+                str(row["winning_mod_name"]),
+                str(row["winning_file"]),
+            )
+        for flag in cell_items(row.get("data_quality_flags")):
+            add_blocker_row(
+                rows,
+                "development",
+                str(row["object_type"]),
+                str(row["object_id"]),
+                "data_quality_flag",
+                flag,
+                "tracked_quality_flag",
+                "Review before using this row for final build-plan scoring.",
+                str(row["winning_mod_name"]),
+                str(row["winning_file"]),
+            )
+    for row in strategic_rows:
+        for variable in cell_items(row.get("unresolved_variables")):
+            add_blocker_row(
+                rows,
+                "strategic_infrastructure",
+                str(row["object_type"]),
+                str(row["object_id"]),
+                "unresolved_variable",
+                variable,
+                "variable_value_unresolved",
+                "Resolve global/local variable value or preserve as conservative blocker.",
+                str(row["winning_mod_name"]),
+                str(row["winning_file"]),
+            )
+    for row in resource_coverage_rows:
+        if row.get("normal_column_status") == "unsupported":
+            add_blocker_row(
+                rows,
+                "resource_coverage",
+                "resource",
+                str(row["resource_key"]),
+                "unsupported_resource",
+                str(row["resource_key"]),
+                "unsupported_resource_detected",
+                str(row.get("unsupported_reason", "")),
+            )
+    for row in benefit_rows:
+        if row.get("valuation_status") in {"detected_unvalued", "not_observed"}:
+            add_blocker_row(
+                rows,
+                "benefit_taxonomy",
+                str(row.get("object_type", "")),
+                str(row.get("object_id", "")),
+                "benefit_formula_status",
+                str(row["benefit_class"]),
+                str(row["valuation_status"]),
+                "Define formula/consumer policy or keep source-backed detected-only status.",
+                str(row.get("winning_mod_name", "")),
+                str(row.get("winning_file", "")),
+            )
+    return sorted(rows, key=lambda item: (str(item["issue_type"]), str(item["source_artifact"]), str(item["object_id"]), str(item["issue_key"])))
+
+
 def modeling_resource_coverage_rows(
     job_rows: list[dict[str, Any]],
     buildings: list[dict[str, Any]],
@@ -1847,6 +2006,7 @@ def write_summary(
     resource_coverage_rows: list[dict[str, Any]],
     readiness_rows: list[dict[str, Any]],
     benefit_rows: list[dict[str, Any]],
+    blocker_rows: list[dict[str, Any]],
 ) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
     best = sorted(research_buildings, key=lambda row: float(row["total_research"]), reverse=True)[:20]
@@ -1874,6 +2034,7 @@ def write_summary(
         f"- Resource coverage rows: {len(resource_coverage_rows)}",
         f"- Build-plan readiness rows: {len(readiness_rows)}",
         f"- Strategic benefit taxonomy rows: {len(benefit_rows)}",
+        f"- Modeling blocker accounting rows: {len(blocker_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
         "- Jobs, buildings, development rows, and plan rows preserve base, triggered, conservative, and optimistic resource scenarios where applicable.",
@@ -1881,6 +2042,7 @@ def write_summary(
         "- Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.",
         "- Build-plan readiness rows classify building gate phases and same-role fallback candidates before unlocks.",
         "- Strategic benefit taxonomy rows classify detected non-resource benefits and record no-evidence classes for active-stack gaps.",
+        "- Modeling blocker accounting rows normalize unknown jobs, unresolved variables, quality flags, unsupported resources, and unvalued benefit formulas.",
         "",
         "## Top Research Buildings",
         "",
@@ -1972,6 +2134,7 @@ def main() -> None:
     resource_coverage_rows = modeling_resource_coverage_rows(job_rows, buildings, development_rows, strategic_rows)
     readiness_rows = build_plan_readiness_rows(buildings)
     benefit_rows = strategic_benefit_taxonomy_rows(strategic_rows)
+    blocker_rows = modeling_blocker_accounting_rows(buildings, development_rows, strategic_rows, resource_coverage_rows, benefit_rows)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
     write_csv(OUT_DEVELOPMENT, development_rows)
@@ -1982,6 +2145,7 @@ def main() -> None:
     write_csv(OUT_RESOURCE_COVERAGE, resource_coverage_rows)
     write_csv(OUT_READINESS, readiness_rows)
     write_csv(OUT_BENEFITS, benefit_rows)
+    write_csv(OUT_BLOCKERS, blocker_rows)
     write_summary(
         jobs,
         buildings,
@@ -1993,6 +2157,7 @@ def main() -> None:
         resource_coverage_rows,
         readiness_rows,
         benefit_rows,
+        blocker_rows,
     )
     print(
         f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
@@ -2001,7 +2166,8 @@ def main() -> None:
         f"{len(strategic_rows)} strategic infrastructure rows, "
         f"{len(resource_coverage_rows)} resource coverage rows, "
         f"{len(readiness_rows)} readiness rows, "
-        f"{len(benefit_rows)} benefit taxonomy rows"
+        f"{len(benefit_rows)} benefit taxonomy rows, "
+        f"{len(blocker_rows)} blocker rows"
     )
 
 

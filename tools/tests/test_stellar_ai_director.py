@@ -127,6 +127,7 @@ RESEARCH_CAPACITY_INFRASTRUCTURE_CSV = RESEARCH_ROOT / "stellar-ai-director-stra
 RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
 RESEARCH_CAPACITY_READINESS_CSV = RESEARCH_ROOT / "stellar-ai-director-build-plan-readiness-2026-07-09.csv"
 RESEARCH_CAPACITY_BENEFITS_CSV = RESEARCH_ROOT / "stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv"
+RESEARCH_CAPACITY_BLOCKERS_CSV = RESEARCH_ROOT / "stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv"
 RESEARCH_CAPACITY_ROLES_CSV = RESEARCH_ROOT / "stellar-ai-director-colony-role-targets-2026-07-09.csv"
 GIGAS_MODELED_RESOURCE_KEYS = {
     "giga_sr_negative_mass",
@@ -610,6 +611,33 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(
             [row for row in role_rows if row["role"] == "ring_world" and row["source_scope"].startswith("development_family")]
         )
+
+    def test_research_capacity_model_generates_blocker_accounting(self):
+        with RESEARCH_CAPACITY_BLOCKERS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            blocker_reader = csv.DictReader(handle)
+            blocker_rows = list(blocker_reader)
+            blocker_columns = set(blocker_reader.fieldnames or [])
+
+        expected_columns = {
+            "source_artifact",
+            "object_type",
+            "object_id",
+            "issue_type",
+            "issue_key",
+            "accounting_status",
+            "next_action",
+            "source_mod",
+            "source_file",
+        }
+        self.assertTrue(expected_columns.issubset(blocker_columns))
+        self.assertTrue(blocker_rows)
+        issue_types = {row["issue_type"] for row in blocker_rows}
+        self.assertIn("unknown_job", issue_types)
+        self.assertIn("unresolved_variable", issue_types)
+        self.assertIn("data_quality_flag", issue_types)
+        self.assertIn("benefit_formula_status", issue_types)
+        self.assertFalse([row for row in blocker_rows if not row["accounting_status"]])
+        self.assertFalse([row for row in blocker_rows if not row["next_action"]])
 
     def test_nonconstruction_economic_valuation_dataset_extends_without_duplicate_construction_surfaces(self):
         self.assertTrue(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.exists())
