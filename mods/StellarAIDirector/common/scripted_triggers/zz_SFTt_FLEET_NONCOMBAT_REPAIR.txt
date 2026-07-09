@@ -1,0 +1,8 @@
+
+SFTt_NONCOMBAT_REPAIR_POSSIBLE = {
+
+    is_scope_type = fleet
+	is_in_combat = no
+	any_owned_ship = { has_component = SFT_COMP_W_REP_RAY }
+
+}

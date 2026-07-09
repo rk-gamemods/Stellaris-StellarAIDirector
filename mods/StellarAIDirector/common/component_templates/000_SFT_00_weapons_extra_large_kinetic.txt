@@ -1,0 +1,143 @@
+# ####################
+# Mass Accelerator
+# ####################
+
+# ## Mass Accelerator 1
+weapon_component_template = {
+	type = instant
+
+	key = "MASS_ACCELERATOR_1"
+	size = extra_large
+
+	icon = "GFX_ship_part_mass_accelerator_1"
+	icon_frame = 1
+
+	firing_arc = 25.0
+	min_range = @SFTz_RANGE_0045	##### 45.0
+	use_ship_main_target = no
+
+	prerequisites = { "tech_mass_accelerator_1" }
+	potential = {
+		OR = {
+			from = {
+				country_uses_bio_ships = no
+			}
+			is_arkship_ship = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = no
+	}
+	component_set = "MASS_ACCELERATOR_1"
+	projectile_gfx = "kinetic_xl_1"						##### projectile_gfx = "kinetic_artillery"
+	tags = { weapon_type_kinetic weapon_role_artillery x_slot }
+	ai_tags = { weapon_role_artillery artillery }
+	ai_tag_weight = 0
+	upgrades_to = "MASS_ACCELERATOR_2"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @xl_t5_cost
+			volatile_motes = @xl_t5_rare
+		}
+		upkeep = {
+			energy = @xl_t5_upkeep_energy
+			alloys = @xl_t5_upkeep_alloys
+		}
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 1.5
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+		modifier = {
+			factor = @cosmic_storm_gravity_ai_weight_factor
+			has_country_flag = affected_by_gravity_storm
+		}
+	}
+}
+
+# ## Mass Accelerator 2
+weapon_component_template = {
+	type = instant
+
+	key = "MASS_ACCELERATOR_2"
+	size = extra_large
+
+	icon = "GFX_ship_part_mass_accelerator_2"
+	icon_frame = 1
+
+	firing_arc = 25.0
+	min_range = @SFTz_RANGE_0045	##### 45.0
+	use_ship_main_target = no
+
+	prerequisites = { "tech_mass_accelerator_2" }
+	potential = {
+		OR = {
+			from = {
+				country_uses_bio_ships = no
+			}
+			is_arkship_ship = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = no
+	}
+	component_set = "MASS_ACCELERATOR_2"
+	projectile_gfx = "kinetic_xl_2"						##### projectile_gfx = "adv_kinetic_artillery"
+	upgrades_to = "ESC_MASS_ACCELERATOR_3"				##### ESC NEXT CP
+	tags = { weapon_type_kinetic weapon_role_artillery x_slot }
+	ai_tags = { weapon_role_artillery artillery }
+	ai_tag_weight = 0
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @xl_t6_cost
+			volatile_motes = @xl_t6_rare
+		}
+		upkeep = {
+			energy = @xl_t6_upkeep_energy
+			alloys = @xl_t6_upkeep_alloys
+		}
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 1.5
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+		modifier = {
+			factor = @cosmic_storm_gravity_ai_weight_factor
+			has_country_flag = affected_by_gravity_storm
+		}
+	}
+}

@@ -1,0 +1,3 @@
+
+remove_country_flag = SFTf_DESIGN_ST_XL
+remove_country_flag = SFTf_DESIGN_ST_LL

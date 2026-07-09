@@ -1,0 +1,627 @@
+# ## Quill Battery 1
+weapon_component_template = {
+	type = instant
+
+	key = "SMALL_BIO_AUTOCANNON_1"
+	size = small
+
+	icon = "GFX_ship_part_bio_autocannon_1"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_1" }
+	component_set = "BIO_AUTOCANNON_1"
+	projectile_gfx = "auto_cannons_s"
+	tags = { weapon_type_kinetic s_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "SMALL_BIO_AUTOCANNON_2"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @s_t3_cost
+		}
+		upkeep = {
+			food = @s_t3_upkeep_energy
+			alloys = @s_t3_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+		modifier = {
+			factor = 10
+			from = {
+				ship_uses_mauler_components = yes
+			}
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "MEDIUM_BIO_AUTOCANNON_1"
+	size = medium
+
+	icon = "GFX_ship_part_bio_autocannon_1"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_1" }
+	component_set = "BIO_AUTOCANNON_1"
+	projectile_gfx = "auto_cannons_m"
+	tags = { weapon_type_kinetic m_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "MEDIUM_BIO_AUTOCANNON_2"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t3_cost
+		}
+		upkeep = {
+			food = @m_t3_upkeep_energy
+			alloys = @m_t3_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "LARGE_BIO_AUTOCANNON_1"
+	size = large
+
+	icon = "GFX_ship_part_bio_autocannon_1"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_1" }
+	component_set = "BIO_AUTOCANNON_1"
+	projectile_gfx = "auto_cannons_l"
+	tags = { weapon_type_kinetic l_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "LARGE_BIO_AUTOCANNON_2"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @l_t3_cost
+		}
+		upkeep = {
+			food = @l_t3_upkeep_energy
+			alloys = @l_t3_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+	}
+}
+
+# ## Quill Battery 2
+weapon_component_template = {
+	type = instant
+
+	key = "SMALL_BIO_AUTOCANNON_2"
+	size = small
+
+	icon = "GFX_ship_part_bio_autocannon_2"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_2" }
+	component_set = "BIO_AUTOCANNON_2"
+	projectile_gfx = "ripper_auto_cannons_s"
+	tags = { weapon_type_kinetic s_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "SMALL_BIO_AUTOCANNON_3"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @s_t4_cost
+			volatile_motes = @s_t4_rare
+		}
+		upkeep = {
+			food = @s_t4_upkeep_energy
+			alloys = @s_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+		modifier = {
+			factor = 10
+			from = {
+				ship_uses_mauler_components = yes
+			}
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "MEDIUM_BIO_AUTOCANNON_2"
+	size = medium
+
+	icon = "GFX_ship_part_bio_autocannon_2"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_2" }
+	component_set = "BIO_AUTOCANNON_2"
+	projectile_gfx = "ripper_auto_cannons_m"
+	tags = { weapon_type_kinetic m_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "MEDIUM_BIO_AUTOCANNON_3"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t4_cost
+			volatile_motes = @m_t4_rare
+		}
+		upkeep = {
+			food = @m_t4_upkeep_energy
+			alloys = @m_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "LARGE_BIO_AUTOCANNON_2"
+	size = large
+
+	icon = "GFX_ship_part_bio_autocannon_2"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_2" }
+	component_set = "BIO_AUTOCANNON_2"
+	projectile_gfx = "ripper_auto_cannons_l"
+	tags = { weapon_type_kinetic l_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "LARGE_BIO_AUTOCANNON_3"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @l_t4_cost
+			volatile_motes = @l_t4_rare
+		}
+		upkeep = {
+			food = @l_t4_upkeep_energy
+			alloys = @l_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+	}
+}
+
+# ## Quill Battery 3
+weapon_component_template = {
+	type = instant
+
+	key = "SMALL_BIO_AUTOCANNON_3"
+	size = small
+
+	icon = "GFX_ship_part_bio_autocannon_3"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_3" }
+	component_set = "BIO_AUTOCANNON_3"
+	projectile_gfx = "stormfire_auto_cannons_s"
+	tags = { weapon_type_kinetic s_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "SMALL_BIO_AUTOCANNON_4"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @s_t5_cost
+			volatile_motes = @s_t5_rare
+		}
+		upkeep = {
+			food = @s_t5_upkeep_energy
+			alloys = @s_t5_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+		modifier = {
+			factor = 10
+			from = {
+				ship_uses_mauler_components = yes
+			}
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "MEDIUM_BIO_AUTOCANNON_3"
+	size = medium
+
+	icon = "GFX_ship_part_bio_autocannon_3"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_3" }
+	component_set = "BIO_AUTOCANNON_3"
+	projectile_gfx = "stormfire_auto_cannons_m"
+	tags = { weapon_type_kinetic m_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "MEDIUM_BIO_AUTOCANNON_4"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t5_cost
+			volatile_motes = @m_t5_rare
+		}
+		upkeep = {
+			food = @m_t5_upkeep_energy
+			alloys = @m_t5_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "LARGE_BIO_AUTOCANNON_3"
+	size = large
+
+	icon = "GFX_ship_part_bio_autocannon_3"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_autocannons_3" }
+	component_set = "BIO_AUTOCANNON_3"
+	projectile_gfx = "stormfire_auto_cannons_l"
+	tags = { weapon_type_kinetic l_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	upgrades_to = "LARGE_BIO_AUTOCANNON_4"
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @l_t5_cost
+			volatile_motes = @l_t5_rare
+		}
+		upkeep = {
+			food = @l_t5_upkeep_energy
+			alloys = @l_t5_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+		modifier = {
+			factor = @cosmic_storm_shroud_ai_weight_factor
+			has_country_flag = affected_by_shroud_storm
+		}
+	}
+}
+
+# ## Quill Battery 4
+weapon_component_template = {
+	type = instant
+
+	key = "SMALL_BIO_AUTOCANNON_4"
+	size = small
+
+	icon = "GFX_ship_part_bio_autocannon_4"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_nanite_autocannon" }
+	component_set = "BIO_AUTOCANNON_4"
+	projectile_gfx = "stormfire_auto_cannons_s"
+	tags = { weapon_type_kinetic }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @s_t6_cost
+			nanites = @s_t6_rare
+		}
+		upkeep = {
+			food = @s_t6_upkeep_energy
+			alloys = @s_t6_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = nanites }
+		}
+		modifier = {
+			factor = 0.0
+			is_ai = yes
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "MEDIUM_BIO_AUTOCANNON_4"
+	size = medium
+
+	icon = "GFX_ship_part_bio_autocannon_4"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_nanite_autocannon" }
+	component_set = "BIO_AUTOCANNON_4"
+	projectile_gfx = "stormfire_auto_cannons_m"
+	tags = { weapon_type_kinetic m_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t6_cost
+			nanites = @m_t6_rare
+		}
+		upkeep = {
+			food = @m_t6_upkeep_energy
+			alloys = @m_t6_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = nanites }
+		}
+		modifier = {
+			factor = 0.0
+			is_ai = yes
+		}
+	}
+}
+
+weapon_component_template = {
+	type = instant
+
+	key = "LARGE_BIO_AUTOCANNON_4"
+	size = large
+
+	icon = "GFX_ship_part_bio_autocannon_4"
+	icon_frame = 1
+
+	potential = {
+		is_arkship_ship = no
+		from = {
+			country_uses_bio_ships = yes
+		}
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = yes
+	}
+
+	prerequisites = { "tech_nanite_autocannon" }
+	component_set = "BIO_AUTOCANNON_4"
+	projectile_gfx = "stormfire_auto_cannons_l"
+	tags = { weapon_type_kinetic l_slot }
+	ai_tags = { weapon_role_anti_shield brawler brawler_stealth }
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @l_t6_cost
+			nanites = @l_t6_rare
+		}
+		upkeep = {
+			food = @l_t6_upkeep_energy
+			alloys = @l_t6_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_autocannon
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = nanites }
+		}
+		modifier = {
+			factor = 0.0
+			is_ai = yes
+		}
+	}
+}

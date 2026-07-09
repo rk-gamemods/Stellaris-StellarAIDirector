@@ -1,6 +1,6 @@
 {
   "collection_name": "4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity",
-  "mod_count": 120,
+  "mod_count": 119,
   "mods": [
     {
       "name": "Battle Debris - Starship Graveyards",
@@ -687,39 +687,33 @@
       "steam_id": "3657869155"
     },
     {
-      "name": "Stellar AI",
-      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3610149307",
-      "position": 115,
-      "steam_id": "3610149307"
-    },
-    {
       "name": "Spacefleet Tactica",
       "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3696204283",
-      "position": 116,
+      "position": 115,
       "steam_id": "3696204283"
     },
     {
       "name": "SFT ADD-ON : Disable New Ship Sections",
       "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3703611846",
-      "position": 117,
+      "position": 116,
       "steam_id": "3703611846"
     },
     {
       "name": "SFT ADD-ON : Combat Computer Restriction Removal",
       "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3726506420",
-      "position": 118,
+      "position": 117,
       "steam_id": "3726506420"
     },
     {
       "name": "!!!Universal Resource Patch [2.4+]",
       "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1595876588",
-      "position": 119,
+      "position": 118,
       "steam_id": "1595876588"
     },
     {
       "name": "Stellar AI Director",
       "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\mods\\StellarAIDirector",
-      "position": 120,
+      "position": 119,
       "steam_id": ""
     }
   ],
@@ -732,8 +726,13 @@
   },
   "parity_reference_mods": {
     "3610149307": {
-      "load_position": 115,
+      "load_position": null,
       "name": "Stellar AI",
+      "present": false
+    },
+    "3696204283": {
+      "load_position": 115,
+      "name": "Spacefleet Tactica",
       "present": true
     }
   },

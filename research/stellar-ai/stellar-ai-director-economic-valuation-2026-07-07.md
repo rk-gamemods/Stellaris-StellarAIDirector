@@ -1,6 +1,6 @@
 # Stellar AI Director Economic Valuation Dataset
 
-Generated: 2026-07-08T22:18:15.698290+00:00
+Generated: 2026-07-09T14:13:53.728148+00:00
 
 This dataset is the required evidence gate before generating new late-game unemployment or construction-pressure weights. It mines the active Irony stack plus vanilla for planet `buildings`, `zones`, and `districts`, records the top-level load winner, and computes rough long-horizon ROI against the 2350 target end date.
 
@@ -13,7 +13,7 @@ Important limitations:
 - Inline scripts and unresolved variables are flagged so later weight generation can prefer high-confidence rows or require manual review.
 
 Active collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-Active mod count: 120
+Active mod count: 119
 
 ## Row Counts
 
@@ -23,14 +23,14 @@ Active mod count: 120
 
 ## Data Quality Flags
 
-- ai_weight_absent: 1128
+- ai_weight_absent: 1163
 - ai_weight_zero_or_gated_zero: 34
 - has_ai_or_direct_output: 214
 - has_build_cost: 616
 - has_jobs: 363
 - has_upkeep: 758
 - none: 1
-- overridden_in_stack: 294
+- overridden_in_stack: 201
 - unresolved_variables: 116
 - uses_inline_script: 1037
 

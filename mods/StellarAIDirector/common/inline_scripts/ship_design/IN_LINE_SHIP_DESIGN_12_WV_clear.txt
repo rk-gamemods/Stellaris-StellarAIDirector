@@ -1,0 +1,3 @@
+
+remove_country_flag = SFTf_DESIGN_WV_BF
+remove_country_flag = SFTf_DESIGN_WV_DB

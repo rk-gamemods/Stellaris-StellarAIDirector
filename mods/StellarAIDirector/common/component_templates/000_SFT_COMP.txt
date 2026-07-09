@@ -1,0 +1,659 @@
+
+weapon_component_template = {
+	key = "SFT_COMP_W_DRP_P_1"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_DRP_P_1"
+	icon_frame = 1
+
+	tags = { weapon_type_marine debuffer_role }
+
+	component_set = "SFT_COMP_W_DRP_P_1"
+
+	power						= @SFTz_SFT_COMP_W_DRP_P_1_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 95 }
+	total_fire_time				= 150
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_DRP_P_1
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t4_cost
+		}
+		upkeep = {
+			energy = @m_t4_upkeep_energy
+			alloys = @m_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_DRP_P_1
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_DRP_P_2"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_DRP_P_2"
+	icon_frame = 1
+
+	tags = { weapon_type_marine debuffer_role }
+
+	component_set = "SFT_COMP_W_DRP_P_2"
+
+	power						= @SFTz_SFT_COMP_W_DRP_P_2_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 95 }
+	total_fire_time				= 150
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_DRP_P_2
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t5_cost
+		}
+		upkeep = {
+			energy = @m_t5_upkeep_energy
+			alloys = @m_t5_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_DRP_P_2
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_DRP_P_3"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_DRP_P_3"
+	icon_frame = 1
+
+	tags = { weapon_type_marine debuffer_role }
+
+	component_set = "SFT_COMP_W_DRP_P_3"
+
+	power						= @SFTz_SFT_COMP_W_DRP_P_3_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 95 }
+	total_fire_time				= 150
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_DRP_P_3
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t6_cost
+		}
+		upkeep = {
+			energy = @m_t6_upkeep_energy
+			alloys = @m_t6_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_DRP_P_3
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_BIO_P_1"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_BIO_P_1"
+	icon_frame = 1
+
+	tags = { weapon_type_marine debuffer_role }
+
+	component_set = "SFT_COMP_W_BIO_P_1"
+
+	power						= @SFTz_SFT_COMP_W_BIO_P_1_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 95 }
+	total_fire_time				= 150
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_BIO_P_1
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t4_cost
+		}
+		upkeep = {
+			food = @m_t4_upkeep_energy
+			alloys = @m_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_BIO_P_1
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_BIO_P_2"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_BIO_P_2"
+	icon_frame = 1
+
+	tags = { weapon_type_marine debuffer_role }
+
+	component_set = "SFT_COMP_W_BIO_P_2"
+
+	power						= @SFTz_SFT_COMP_W_BIO_P_2_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 95 }
+	total_fire_time				= 150
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_BIO_P_2
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t5_cost
+		}
+		upkeep = {
+			food = @m_t5_upkeep_energy
+			alloys = @m_t5_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_BIO_P_2
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_BIO_P_3"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_BIO_P_3"
+	icon_frame = 1
+
+	tags = { weapon_type_marine debuffer_role }
+
+	component_set = "SFT_COMP_W_BIO_P_3"
+
+	power						= @SFTz_SFT_COMP_W_BIO_P_3_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 95 }
+	total_fire_time				= 150
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_BIO_P_3
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t6_cost
+		}
+		upkeep = {
+			food = @m_t6_upkeep_energy
+			alloys = @m_t6_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_BIO_P_3
+	}
+
+}
+
+utility_component_template = {
+
+	key = "SFT_COMP_A_MCH_FCT"
+	icon = "GFX_ship_part_SFT_COMP_A_MCH_FCT"
+	power = @SFTz_SFT_COMP_A_MCH_FCT_POWER
+	resources = { category = ship_components cost = { alloys = @SFTz_SFT_COMP_A_MCH_FCT_ALLOY } }
+
+	size = aux
+	icon_frame = 1
+	component_set = "SFT_COMP_A_MCH_FCT"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_A_MCH_FCT
+	}
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_A_MCH_FCT
+
+}
+
+utility_component_template = {
+
+	key = "SFT_COMP_A_PSI_SHR"
+	icon = "GFX_ship_part_SFT_COMP_A_PSI_SHR"
+	power = @SFTz_SFT_COMP_A_PSI_SHR_POWER
+	resources = { category = ship_components cost = { alloys = @SFTz_SFT_COMP_A_PSI_SHR_ALLOY } }
+
+	size = aux
+	icon_frame = 1
+	component_set = "SFT_COMP_A_PSI_SHR"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_A_PSI_SHR
+	}
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_A_PSI_SHR
+
+}
+
+utility_component_template = {
+
+	key = "SFT_COMP_A_GNS_HGR"
+	icon = "GFX_ship_part_SFT_COMP_A_GNS_HGR"
+	power = @SFTz_SFT_COMP_A_GNS_HGR_POWER
+	resources = { category = ship_components cost = { alloys = @SFTz_SFT_COMP_A_GNS_HGR_ALLOY } }
+
+	size = aux
+	icon_frame = 1
+	component_set = "SFT_COMP_A_GNS_HGR"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_A_GNS_HGR
+	}
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_A_GNS_HGR
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_REP_RAY"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_REP_RAY"
+	icon_frame = 1
+
+	tags = { weapon_type_special buffer_role noncombat_repair }
+
+	component_set = "SFT_COMP_W_REP_RAY"
+
+	power						= @SFTz_SFT_COMP_W_REP_RAY_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 15 }
+	total_fire_time				= 0
+	range						= @SFTz_RANGE_0050
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_REP_RAY
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t4_cost
+		}
+		upkeep = {
+			energy = @m_t4_upkeep_energy
+			alloys = @m_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_REP_RAY
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_STA_WEB"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_STA_WEB"
+	icon_frame = 1
+
+	tags = { weapon_type_special debuffer_role }
+
+	component_set = "SFT_COMP_W_STA_WEB"
+
+	power						= @SFTz_SFT_COMP_W_STA_WEB_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 75 }
+	total_fire_time				= 10
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_STA_WEB
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t4_cost
+		}
+		upkeep = {
+			energy = @m_t4_upkeep_energy
+			alloys = @m_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_STA_WEB
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_PHA_EXP"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_PHA_EXP"
+	icon_frame = 1
+
+	tags = { weapon_type_special debuffer_role }
+
+	component_set = "SFT_COMP_W_PHA_EXP"
+
+	power						= @SFTz_SFT_COMP_W_PHA_EXP_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 75 }
+	total_fire_time				= 10
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_PHA_EXP
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t5_cost
+		}
+		upkeep = {
+			energy = @m_t5_upkeep_energy
+			alloys = @m_t5_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_PHA_EXP
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_TGT_AUG"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_TGT_AUG"
+	icon_frame = 1
+
+	tags = { weapon_type_special buffer_role }
+
+	component_set = "SFT_COMP_W_TGT_AUG"
+
+	power						= @SFTz_SFT_COMP_W_TGT_AUG_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 25 }
+	total_fire_time				= 35
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_TGT_AUG
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t4_cost
+		}
+		upkeep = {
+			energy = @m_t4_upkeep_energy
+			alloys = @m_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_TGT_AUG
+	}
+
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_SLD_AUG"
+	size = point_defence
+	type = instant
+
+	icon = "GFX_ship_part_SFT_COMP_W_SLD_AUG"
+	icon_frame = 1
+
+	tags = { weapon_type_special buffer_role }
+
+	component_set = "SFT_COMP_W_SLD_AUG"
+
+	power						= @SFTz_SFT_COMP_W_SLD_AUG_POWER
+	damage						= { min = 0 max = 0 }
+	windup						= { min = 5 max = 15 }
+	total_fire_time				= 40
+	range						= @SFTz_RANGE_0030
+	accuracy					= 0.80
+	tracking					= 0.80
+	size_damage_factor			= 0.0
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_SFT_COMP_W_SLD_AUG
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @m_t4_cost
+		}
+		upkeep = {
+			energy = @m_t4_upkeep_energy
+			alloys = @m_t4_upkeep_alloys
+		}
+	}
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_SFT_COMP_W_SLD_AUG
+	}
+
+}
+
+# ## Perdition Beam 바닐라 부품 덮어쓰기, 발사각 되돌리기
+
+weapon_component_template = {
+	key = "PERDITION_BEAM_TITAN"
+	size = titanic
+	type = instant
+	prio_projectile = yes
+
+	icon = "GFX_ship_part_perdition_beam"
+	icon_frame = 1
+
+	firing_arc = 10.0
+	use_ship_main_target = no
+
+	tags = { weapon_type_energy weapon_role_artillery t_slot }
+	prerequisites = { "tech_titans" }
+	component_set = "PERDITION_BEAM"
+	projectile_gfx = "perdition_beam"
+	potential = {
+		ship_uses_titan_components = yes
+	}
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @titanic_t6_cost
+			rare_crystals = @titanic_t6_rare
+		}
+		upkeep = {
+			alloys = @titanic_t6_upkeep_alloys
+		}
+		upkeep = {
+			trigger = {
+				from = {
+					country_uses_bio_ships = no
+				}
+			}
+			energy = @titanic_t6_upkeep_energy
+		}
+		upkeep = {
+			trigger = {
+				from = {
+					country_uses_bio_ships = yes
+				}
+			}
+			food = @titanic_t6_upkeep_energy
+		}
+	}
+
+	collateral_damage = @perdition_beam_fleet_damage
+	collateral_range = @perdition_beam_collateral_range
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 1.5
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.01
+			no_resource_for_component = { RESOURCE = rare_crystals }
+		}
+	}
+}
+
+weapon_component_template = {
+	key = "SFT_COMP_W_TI_CNON"
+	size = titanic
+	type = instant
+	prio_projectile = yes
+
+	icon = "GFX_ship_part_SFT_COMP_W_TI_CNON"
+	icon_frame = 1
+
+	firing_arc = 10.0
+	use_ship_main_target = no
+
+	prerequisites = { "tech_titans" }
+	component_set = "SFT_COMP_W_TI_CNON"
+	projectile_gfx = "SFT_COMP_W_TI_CNON_projectile"
+	potential = {
+		ship_uses_titan_components = yes
+	}
+
+	tags = { weapon_type_kinetic weapon_role_artillery t_slot }
+
+	power						= @SFTz_SFT_COMP_W_TI_CNON_POWER
+	damage						= { min = 10000 max = 20000 }
+	hull_damage					= 1.25
+	shield_damage				= 2.00
+	shield_penetration			= 0.00
+	armor_damage				= 0.75
+	armor_penetration			= 0.00
+	windup						= { min = 30 max = 120 }
+	total_fire_time				= 180
+	range						= @SFTz_RANGE_0250
+	accuracy					= 0.85
+	tracking					= 0.00
+	size_damage_factor			= 0.0
+
+	resources = {
+		category = ship_components
+		cost = {
+			alloys = @titanic_t6_cost
+			volatile_motes = @titanic_t6_rare
+		}
+		upkeep = {
+			alloys = @titanic_t6_upkeep_alloys
+		}
+		upkeep = {
+			trigger = {
+				from = {
+					country_uses_bio_ships = no
+				}
+			}
+			energy = @titanic_t6_upkeep_energy
+		}
+		upkeep = {
+			trigger = {
+				from = {
+					country_uses_bio_ships = yes
+				}
+			}
+			food = @titanic_t6_upkeep_energy
+		}
+	}
+
+	target_weights = {
+		titan = 3
+		battleship = 2
+		stinger_stage_1 = 1.5
+		stinger_stage_2 = 2
+		stinger_stage_3 = 2
+	}
+
+	ai_weight = {
+		weight = 1
+		modifier = {
+			factor = 0.01
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+
+}

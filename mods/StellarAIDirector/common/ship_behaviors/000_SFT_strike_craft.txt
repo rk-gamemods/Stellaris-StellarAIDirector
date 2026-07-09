@@ -1,0 +1,24 @@
+
+ship_behavior = {
+	name										= "fighters_behavior"
+	preferred_attack_range						= @SFTz_RANGE_0010				# median
+	formation_distance							= @SFTz_RTFD					# 300
+	return_to_formation_distance				= @SFTz_RTFD					# 500
+	collision_awareness							= 0.5
+	collision_strafe							= 1.0
+	collision_radius							= 1.0
+	attack_move_pattern							= orbit							# orbit
+	passive_move_pattern						= charge						# charge
+}
+
+ship_behavior = {
+	name										= "bombers_behavior"
+	preferred_attack_range						= @SFTz_RANGE_0010				# median
+	formation_distance							= @SFTz_RTFD					# 300
+	return_to_formation_distance				= @SFTz_RTFD					# 500
+	collision_awareness							= 0.5
+	collision_strafe							= 1.0
+	collision_radius							= 1.0
+	attack_move_pattern							= charge						# charge
+	passive_move_pattern						= charge						# charge
+}

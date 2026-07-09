@@ -1,0 +1,333 @@
+
+SFTt_REDESIGNABLE_COUNTRY = {
+
+	AND = {
+
+		OR = {
+			is_country_type = default
+			is_country_type = enclave_mercenary
+		}
+		OR = {
+			is_ai = yes
+			has_country_flag = SFTf_DESIGN_DEBUG
+		}
+	}
+
+}
+
+SFTt_REDESIGNABLE_GALAXY = {
+
+	AND = {
+
+		is_nsc_activated = no
+		SFTt_ADDON_NEW_SECTION_USE = yes
+
+	}
+
+}
+
+SFTt_REDESIGNABLE_SHIP = {
+
+	OR = {
+
+		ship_uses_corvette_components = yes
+		ship_uses_destroyer_components = yes
+		ship_uses_cruiser_components = yes
+		ship_uses_battleship_components = yes
+		ship_uses_titan_components = yes
+		ship_uses_juggernaut_components = yes
+		ship_uses_colossus_components = yes
+
+		ship_uses_mauler_components = yes
+		ship_uses_weaver_components = yes
+		ship_uses_harbinger_components = yes
+		ship_uses_stinger_components = yes
+
+	}
+
+}
+
+SFTt_SHIP_HAS_ANY_ROLE = {
+
+	OR = {
+
+		has_role = brawler
+		has_role = gunship
+		has_role = explosive
+		has_role = carrier
+		has_role = screen
+		has_role = artillery
+		has_role = energy_torpedoes
+		has_role = buffer_role
+		has_role = debuffer_role
+		has_role = gunship_stealth
+		has_role = explosive_stealth
+		has_role = carrier_stealth
+		has_role = screen_stealth
+		has_role = artillery_stealth
+		has_role = brawler_stealth
+		has_role = energy_torpedoes_stealth
+		has_role = buffer_role_stealth
+		has_role = debuffer_role_stealth
+
+		##### 현재 버그로 인해 has_role 트리거 자체가 작동하지 않는다. 일단 버그리포트는 했음
+
+	}
+
+}
+
+SFTt_CAN_USE_X_SLOT = {
+
+	OR = {
+
+		AND = { has_technology = tech_energy_lance_1 NOT = { no_resource_for_component = { RESOURCE = rare_crystals } } }
+		AND = { has_technology = tech_energy_lance_2 NOT = { no_resource_for_component = { RESOURCE = rare_crystals } } }
+		AND = { has_technology = tech_arc_emitter_1 NOT = { no_resource_for_component = { RESOURCE = rare_crystals } } }
+		AND = { has_technology = tech_arc_emitter_2 NOT = { no_resource_for_component = { RESOURCE = rare_crystals } } }
+		AND = { has_technology = tech_mass_accelerator_1 NOT = { no_resource_for_component = { RESOURCE = volatile_motes } } }
+		AND = { has_technology = tech_mass_accelerator_2 NOT = { no_resource_for_component = { RESOURCE = volatile_motes } } }
+
+		##### 고대 가속기는 고려하지 않음. 자원 문제에 AI 가 대응하지 못할 가능성이 너무 높음.
+		##### 바이오쉽도 기술이름과 자원종류는 똑같으니까 그대로 쓰면 됨
+
+	}
+
+}
+
+SFTt_CAN_USE_ET = {
+
+	OR = {
+
+		AND = { has_technology = tech_energy_torpedoes_1 NOT = { no_resource_for_component = { RESOURCE = exotic_gases } } }
+		AND = { has_technology = tech_energy_torpedoes_2 NOT = { no_resource_for_component = { RESOURCE = exotic_gases } } }
+
+	}
+
+}
+
+SFTt_CAN_USE_G_HB = {
+
+	OR = {
+
+		has_technology = tech_swarmer_missiles_1
+		has_technology = tech_swarmer_missiles_2
+		has_technology = tech_scourge_missile_1
+		has_technology = tech_energy_torpedoes_1
+		has_technology = tech_energy_torpedoes_2
+
+	}
+
+}
+
+SFTt_CAN_USE_FF_BF = {
+
+	OR = {
+
+		has_technology = tech_shields_3
+		has_technology = tech_auxiliary_fire_control
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_IMPORTANT = {
+
+	OR = {
+
+		SFTt_LAST_INC_TECH_SHIP = yes
+		SFTt_LAST_INC_TECH_X_T1 = yes
+		SFTt_LAST_INC_TECH_X_T2 = yes
+		SFTt_LAST_INC_TECH_L_KA = yes
+		SFTt_LAST_INC_TECH_M_SM = yes
+		SFTt_LAST_INC_TECH_E_TP = yes
+		SFTt_LAST_INC_TECH_H_SC = yes
+		SFTt_LAST_INC_TECH_G_HB = yes
+		SFTt_LAST_INC_TECH_S_FF = yes
+		SFTt_LAST_INC_TECH_MRIN = yes
+		last_increased_tech = tech_SFT_NW_SECTION
+		last_increased_tech = tech_SFT_SP_FRIGATE
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_SHIP = {
+
+	OR = {
+
+		last_increased_tech = tech_corvettes
+		last_increased_tech = tech_torpedoes_1
+		last_increased_tech = tech_destroyers
+		last_increased_tech = tech_cruisers
+		last_increased_tech = tech_battleships
+		last_increased_tech = tech_titans
+		last_increased_tech = tech_colossus
+
+		last_increased_tech = tech_maulers
+		last_increased_tech = tech_mauler_growth_1
+		last_increased_tech = tech_mauler_growth_2
+		last_increased_tech = tech_weavers
+		last_increased_tech = tech_weaver_growth_1
+		last_increased_tech = tech_weaver_growth_2
+		last_increased_tech = tech_harbingers
+		last_increased_tech = tech_harbinger_growth_1
+		last_increased_tech = tech_harbinger_growth_2
+		last_increased_tech = tech_stingers
+		last_increased_tech = tech_stinger_growth_1
+		last_increased_tech = tech_stinger_growth_2
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_X_T1 = {
+
+	OR = {
+
+		last_increased_tech = tech_energy_lance_1
+		last_increased_tech = tech_arc_emitter_1
+		last_increased_tech = tech_mass_accelerator_1
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_X_T2 = {
+
+	OR = {
+
+		last_increased_tech = tech_energy_lance_2
+		last_increased_tech = tech_arc_emitter_2
+		last_increased_tech = tech_mass_accelerator_2
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_L_KA = {
+
+	OR = {
+
+		last_increased_tech = tech_kinetic_artillery_1
+		last_increased_tech = tech_kinetic_artillery_2
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_M_SM = {
+
+	OR = {
+
+		last_increased_tech = tech_swarmer_missiles_1
+		last_increased_tech = tech_swarmer_missiles_2
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_E_TP = {
+
+	OR = {
+
+		last_increased_tech = tech_energy_torpedoes_1
+		last_increased_tech = tech_energy_torpedoes_2
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_H_SC = {
+
+	OR = {
+
+		last_increased_tech = tech_strike_craft_1
+		last_increased_tech = tech_strike_craft_2
+		last_increased_tech = tech_strike_craft_3
+		last_increased_tech = tech_strike_craft_skrand
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_G_HB = {
+
+	OR = {
+
+		last_increased_tech = tech_swarmer_missiles_1
+		last_increased_tech = tech_swarmer_missiles_2
+		last_increased_tech = tech_scourge_missile_1
+		last_increased_tech = tech_energy_torpedoes_1
+		last_increased_tech = tech_energy_torpedoes_2
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_S_FF = {
+
+	OR = {
+
+		last_increased_tech = tech_assembly_pattern
+		last_increased_tech = tech_telepathy
+		last_increased_tech = tech_ship_armor_3
+		last_increased_tech = tech_strike_craft_1
+		last_increased_tech = tech_ftl_inhibitor
+		last_increased_tech = tech_wormhole_stabilization
+		last_increased_tech = tech_shields_3
+		last_increased_tech = tech_auxiliary_fire_control
+
+	}
+
+}
+
+SFTt_LAST_INC_TECH_MRIN = {
+
+	OR = {
+
+		last_increased_tech = tech_centralized_command
+		last_increased_tech = tech_combat_training
+
+	}
+
+}
+
+SFTt_END_GAME_ENKI = {
+
+	AND = {
+
+		NOT = { has_country_flag = SFTf_DESIGN_UPDATED }
+		SFTt_CAN_USE_X_SLOT = yes
+
+		OR = {
+			is_preferred_weapons = weapon_type_energy
+			is_preferred_weapons = weapon_type_kinetic
+		}
+
+	}
+
+	##### EN/KI 선호, X 슬롯 사용 가능한데 업데이트 쿨다운마다 돌리고 있다면 최후반으로 평가해서 가중치 추가
+
+}
+
+SFTt_LAST_INC_X_BUT_NO_BB_XL = {
+
+	AND = {
+
+		SFTt_CAN_USE_X_SLOT = yes
+
+		OR = {
+			SFTt_LAST_INC_TECH_X_T1 = yes
+			SFTt_LAST_INC_TECH_X_T2 = yes
+		}
+
+		NOR = {
+			has_country_flag = SFTf_DESIGN_BB_XL
+			has_country_flag = SFTf_DESIGN_BB_XS
+		}
+
+	}
+
+	##### 순양함 XL, X 슬롯 개발 직후 BB_XL/XS 안쓰는경우에 선호도 증가 (최대 6회)
+
+}

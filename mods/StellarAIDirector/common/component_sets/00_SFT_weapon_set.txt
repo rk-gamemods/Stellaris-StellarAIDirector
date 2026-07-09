@@ -1,0 +1,90 @@
+
+component_set = {
+	key = "SFT_COMP_W_DRP_P_1"
+	icon = "GFX_ship_part_SFT_COMP_W_DRP_P_1"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_DRP_P_2"
+	icon = "GFX_ship_part_SFT_COMP_W_DRP_P_2"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_DRP_P_3"
+	icon = "GFX_ship_part_SFT_COMP_W_DRP_P_3"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_BIO_P_1"
+	icon = "GFX_ship_part_SFT_COMP_W_BIO_P_1"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_BIO_P_2"
+	icon = "GFX_ship_part_SFT_COMP_W_BIO_P_2"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_BIO_P_3"
+	icon = "GFX_ship_part_SFT_COMP_W_BIO_P_3"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_A_MCH_FCT"
+	icon = "GFX_ship_part_SFT_COMP_A_MCH_FCT"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_A_PSI_SHR"
+	icon = "GFX_ship_part_SFT_COMP_A_PSI_SHR"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_A_GNS_HGR"
+	icon = "GFX_ship_part_SFT_COMP_A_GNS_HGR"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_REP_RAY"
+	icon = "GFX_ship_part_SFT_COMP_W_REP_RAY"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_STA_WEB"
+	icon = "GFX_ship_part_SFT_COMP_W_STA_WEB"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_PHA_EXP"
+	icon = "GFX_ship_part_SFT_COMP_W_PHA_EXP"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_TGT_AUG"
+	icon = "GFX_ship_part_SFT_COMP_W_TGT_AUG"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_SLD_AUG"
+	icon = "GFX_ship_part_SFT_COMP_W_SLD_AUG"
+	icon_frame = 1
+}
+
+component_set = {
+	key = "SFT_COMP_W_TI_CNON"
+	icon = "GFX_ship_part_SFT_COMP_W_TI_CNON"
+	icon_frame = 1
+}

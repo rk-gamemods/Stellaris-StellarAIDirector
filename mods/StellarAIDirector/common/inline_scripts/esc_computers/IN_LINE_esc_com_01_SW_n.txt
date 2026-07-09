@@ -1,0 +1,27 @@
+	key = ESC_NANITE_COMPUTER_SWARM
+
+	inline_script = {
+		script = esc_computers/esc_inlines_combat_computers
+		COMPUTER_ICON = GFX_esc_nanite_computer_swarm
+		POWER = @ESC_COMPUTER_power_nanite
+		SHIP_COMBAT_ROLE = swarm
+		PREREQUISITE = esc_tech_nanite_thought_matrix
+		STRATEGIC_RESOURCE_TYPE = nanites
+		IS_BIOSHIP_COMPUTER = no
+		COMPONENT_WEIGHT = 16
+	}
+
+	upgrade_path = swarm
+	ship_behavior = swarm
+	ai_tags = { gunship brawler }
+
+	ship_modifier = {
+		ship_fire_rate_mult = 0.15
+		ship_weapon_damage = 0.15
+		ship_evasion_add = 10
+	}
+	modifier = {
+		ship_shield_mult = 0.1
+		ship_armor_mult = 0.1
+		ship_hull_mult = 0.1
+	}

@@ -1,0 +1,29 @@
+	key = ESC_BIO_NANITE_COMPUTER_DEBUFFER
+
+	inline_script = {
+		script = esc_computers/esc_inlines_combat_computers
+		COMPUTER_ICON = GFX_esc_nanite_computer_line
+		POWER = @ESC_COMPUTER_power_nanite
+		SHIP_COMBAT_ROLE = debuffer
+		PREREQUISITE = esc_tech_nanite_thought_matrix
+		STRATEGIC_RESOURCE_TYPE = nanites
+		IS_BIOSHIP_COMPUTER = yes
+		COMPONENT_WEIGHT = 16
+	}
+
+	upgrade_path = debuffer
+	ship_behavior = swarm
+	ai_tags = { debuffer_role debuffer_role_stealth }
+
+	ship_modifier = {
+		ship_fire_rate_mult = 0.15
+		ship_weapon_damage = 0.15
+		ship_weapon_range_mult = 0.1
+		debuffer_role_weapon_fire_rate_mult = 0.15
+		ship_accuracy_add = 15
+	}
+	modifier = {
+		ship_shield_mult = 0.1
+		ship_armor_mult = 0.1
+		ship_hull_mult = 0.1
+	}

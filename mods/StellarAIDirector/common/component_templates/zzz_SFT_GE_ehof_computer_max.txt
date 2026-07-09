@@ -1,0 +1,59 @@
+
+##### ehof_t1_components.txt
+
+utility_component_template = {
+    key = "SENTIENT_COMPUTER_MAX"
+    size = small
+    icon = "GFX_sentient_computer_max"
+    icon_frame = 1
+    power = @ehof_computer_power1
+
+	#x	inline_script = components/size_restriction/giga_artillery									##########
+
+	potential = {
+		has_gigastructures = yes																	##########
+		from = {
+			country_uses_bio_ships = no
+		}
+		SFTt_ship_uses_max_role = yes
+	}
+
+	show_tech_unlock_if = {
+		country_uses_bio_ships = no
+		has_gigastructures = yes																	##########
+	}
+
+    prerequisites = { "tech_sm_computers" }
+    component_set = "combat_computers"
+    ship_behavior = "max"																			##########
+    # upgrades_to = "COMPOUND_COMPUTER_MAX"
+    ai_tags = { artillery artillery_stealth energy_torpedoes energy_torpedoes_stealth }
+    ai_weight = {
+        weight = @ehof_t1_weight
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_COM_max					##########
+		modifier = { factor = 0.0 has_gigastructures = no }											##########
+        modifier = {
+            is_fallen_empire = yes
+            factor = 0
+        }
+        modifier = {
+            factor = 0.0
+            ehof_default_country = yes
+            no_resource_for_component = { RESOURCE = giga_sr_sentient_metal }
+        }
+    }
+    resources = {
+        category = ship_components
+        cost = { giga_sr_sentient_metal = @ehof_computer_cost1 }
+    }
+
+    ship_modifier = {
+        ship_fire_rate_mult = @SFTz_MAX_COM_FIRE_RATE_GE_ehof_t1
+        ship_weapon_range_mult = @SFTz_MAX_COM_RANGE_GE_ehof_t1										##########
+    }
+
+	inline_script = ship_components/compo_effect/IN_LINE_compo_effect_COM_max						##########
+
+	valid_for_country = { has_gigastructures = yes }												##########
+
+}

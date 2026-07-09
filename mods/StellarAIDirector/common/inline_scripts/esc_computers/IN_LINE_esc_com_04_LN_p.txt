@@ -1,0 +1,29 @@
+	key = ESC_GIGAPREDATOR_INSTINCTS_LINE
+
+	inline_script = {
+		script = esc_computers/esc_inlines_combat_computers
+		COMPUTER_ICON = GFX_esc_gigapredator_instincts_line
+		POWER = @ESC_COMPUTER_power_dreadnought
+		SHIP_COMBAT_ROLE = line
+		PREREQUISITE = esc_tech_gigapredator_instincts
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+		IS_BIOSHIP_COMPUTER = yes
+		COMPONENT_WEIGHT = 16
+	}
+
+	upgrade_path = line
+	ship_behavior = line
+	ai_tags = { gunship }
+
+	ship_modifier = {
+		ship_weapon_damage = 0.2
+		ship_fire_rate_mult = 0.1
+		ship_accuracy_add = 10
+	}
+	modifier = {
+		ship_shield_mult = 0.25
+		ship_evasion_add = 10
+		ship_speed_mult = 0.1
+		ship_damage_against_starbases_mult = 0.75
+		ship_orbital_bombardment_mult = 0.75
+	}

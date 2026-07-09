@@ -1,0 +1,3 @@
+##### SFT 기본값
+
+@SFTz_combat_modifier_mult_combat =		0.25		##### 전투 중인 모든 함선 대상 모디파이어 강도

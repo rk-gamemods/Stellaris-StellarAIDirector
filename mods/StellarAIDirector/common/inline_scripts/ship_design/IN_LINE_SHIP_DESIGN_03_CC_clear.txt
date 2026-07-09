@@ -1,0 +1,9 @@
+
+remove_country_flag = SFTf_DESIGN_CC_XL
+remove_country_flag = SFTf_DESIGN_CC_LL
+remove_country_flag = SFTf_DESIGN_CC_PD
+remove_country_flag = SFTf_DESIGN_CC_SC
+remove_country_flag = SFTf_DESIGN_CC_EX
+remove_country_flag = SFTf_DESIGN_CC_MM
+remove_country_flag = SFTf_DESIGN_CC_TP
+remove_country_flag = SFTf_DESIGN_CC_ET

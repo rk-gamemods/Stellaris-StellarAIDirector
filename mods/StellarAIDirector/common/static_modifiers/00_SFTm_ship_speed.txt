@@ -1,0 +1,4 @@
+
+SFTm_SHIP_SPEED_REDUCTION_COMBAT = {
+	ship_speed_reduction = 1.00
+}

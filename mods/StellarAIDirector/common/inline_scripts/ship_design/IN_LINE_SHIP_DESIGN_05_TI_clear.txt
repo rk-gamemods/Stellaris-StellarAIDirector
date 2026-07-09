@@ -1,0 +1,7 @@
+
+remove_country_flag = SFTf_DESIGN_TI_TX
+remove_country_flag = SFTf_DESIGN_TI_TL
+remove_country_flag = SFTf_DESIGN_TI_TE
+remove_country_flag = SFTf_DESIGN_TI_TS
+remove_country_flag = SFTf_DESIGN_TI_EX
+remove_country_flag = SFTf_DESIGN_TI_SC

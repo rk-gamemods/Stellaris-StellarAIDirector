@@ -1,0 +1,60 @@
+
+SFTt_IS_MARINE_ARMY = {
+
+	OR = {
+
+		army_type = SFT_marine_army
+		army_type = SFT_marine_mchi
+		army_type = SFT_marine_mech
+		army_type = SFT_marine_psio
+		army_type = SFT_marine_gnsp
+		army_type = SFT_marine_elit
+
+	}
+
+}
+
+SFTt_IS_MARINE_SHIP = {
+
+	OR = {
+
+		SFTt_HAS_COMPO_MARINE_POD_1 = yes
+		SFTt_HAS_COMPO_MARINE_POD_2 = yes
+		SFTt_HAS_COMPO_MARINE_POD_3 = yes
+
+	}
+
+}
+
+SFTt_HAS_COMPO_MARINE_POD_1 = {
+
+	OR = {
+
+		has_component = SFT_COMP_W_DRP_P_1
+		has_component = SFT_COMP_W_BIO_P_1
+
+	}
+
+}
+
+SFTt_HAS_COMPO_MARINE_POD_2 = {
+
+	OR = {
+
+		has_component = SFT_COMP_W_DRP_P_2
+		has_component = SFT_COMP_W_BIO_P_2
+
+	}
+
+}
+
+SFTt_HAS_COMPO_MARINE_POD_3 = {
+
+	OR = {
+
+		has_component = SFT_COMP_W_DRP_P_3
+		has_component = SFT_COMP_W_BIO_P_3
+
+	}
+
+}

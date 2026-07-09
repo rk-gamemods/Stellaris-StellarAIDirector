@@ -1,0 +1,27 @@
+	key = ESC_DREADNOUGHT_COMPUTER_PICKET
+
+	inline_script = {
+		script = esc_computers/esc_inlines_combat_computers
+		COMPUTER_ICON = GFX_esc_dreadnought_computer_picket
+		POWER = @ESC_COMPUTER_power_dreadnought
+		SHIP_COMBAT_ROLE = picket	# _adc
+		PREREQUISITE = esc_tech_dreadnought_computer
+		STRATEGIC_RESOURCE_TYPE = rare_crystals
+		IS_BIOSHIP_COMPUTER = no
+		COMPONENT_WEIGHT = 16
+	}
+
+	upgrade_path = picket
+	ship_behavior = picket
+	ai_tags = { screen }
+
+	ship_modifier = {
+		ship_weapon_damage = 0.2
+		ship_fire_rate_mult = 0.1
+		ship_tracking_add = 10
+	}
+	modifier = {
+		ship_shield_mult = 0.25
+		ship_evasion_add = 10
+		ship_speed_mult = 0.1
+	}

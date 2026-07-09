@@ -1,0 +1,121 @@
+
+ship_behavior = {
+	name										= "swarm"
+	preferred_attack_range						= @SFTz_RANGE_0010				# min
+	formation_distance							= @SFTz_RANGE_0010				# min
+	return_to_formation_distance				= @SFTz_RTFD					# 1500
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_050		# 0.50
+	collision_strafe							= @SFTz_COLLISION_SIZE_100		# 1.00
+	collision_radius							= @SFTz_COLLISION_SIZE_200		# 2.00
+	attack_move_pattern							= orbit							# orbit
+	passive_move_pattern						= charge						# charge
+	desc										= "SWARM_DESC"
+}
+
+ship_behavior = {
+	name										= "picket"
+	preferred_attack_range						= median						# median
+	formation_distance							= median						# median
+	return_to_formation_distance				= @SFTz_RTFD					# 250
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_075		# 0.75
+	collision_strafe							= @SFTz_COLLISION_SIZE_075		# 0.75
+	collision_radius							= @SFTz_COLLISION_SIZE_200		# 2.00
+	attack_move_pattern							= stay_at_range					# stay_at_range
+	passive_move_pattern						= orbit							# orbit
+	desc										= "PICKET_DESC"
+}
+
+ship_behavior = {
+	name										= "line"
+	preferred_attack_range						= median						# median
+	formation_distance							= median						# median
+	return_to_formation_distance				= @SFTz_RTFD					# 500
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_075		# 0.75
+	collision_strafe							= @SFTz_COLLISION_SIZE_250		# 2.50
+	collision_radius							= @SFTz_COLLISION_SIZE_200		# 2.00
+	attack_move_pattern							= stay_at_range					# stay_at_range
+	passive_move_pattern						= charge						# charge
+	desc										= "LINE_DESC"
+}
+
+ship_behavior = {
+	name										= "artillery"
+	preferred_attack_range						= max							# max
+	formation_distance							= max							# max
+	return_to_formation_distance				= @SFTz_RTFD					# 1000
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_020		# 0.20
+	collision_strafe							= @SFTz_COLLISION_SIZE_050		# 2.50
+	collision_radius							= @SFTz_COLLISION_SIZE_050		# 2.00
+	attack_move_pattern							= maintain_distance				# maintain_distance
+	passive_move_pattern						= maintain_distance				# stay_at_range
+	desc										= "ARTILLERY_DESC"
+}
+
+ship_behavior = {
+	name										= "carrier"
+	preferred_attack_range						= @SFTz_RTFD					# max
+	formation_distance							= @SFTz_RTFD					# max
+	return_to_formation_distance				= @SFTz_RTFD					# 1000
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_075		# 0.75
+	collision_strafe							= @SFTz_COLLISION_SIZE_250		# 2.50
+	collision_radius							= @SFTz_COLLISION_SIZE_200		# 2.00
+	attack_move_pattern							= maintain_distance				# maintain_distance
+	passive_move_pattern						= stationary					# stay_at_range
+	desc										= "CARRIER_DESC"
+	range_components							= strike_craft
+}
+
+ship_behavior = {
+	name										= "torpedo"
+	preferred_attack_range						= @SFTz_RANGE_0010				# 10
+	formation_distance							= @SFTz_RANGE_0010				# 10
+	return_to_formation_distance				= @SFTz_RTFD					# 1200
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_025		# 0.25
+	collision_strafe							= @SFTz_COLLISION_SIZE_050		# 0.50
+	collision_radius							= @SFTz_COLLISION_SIZE_200		# 2.00
+	attack_move_pattern							= orbit							# charge
+	passive_move_pattern						= charge						# charge
+	desc										= "TORPEDO_DESC"
+}
+
+ship_behavior = {
+	name										= "platform"
+	preferred_attack_range						= max							# max
+	formation_distance							= max							# 40
+	return_to_formation_distance				= @SFTz_RTFD					# 20
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_020		# 0.20
+	collision_strafe							= @SFTz_COLLISION_SIZE_250		# 2.50
+	collision_radius							= @SFTz_COLLISION_SIZE_200		# 2.00
+	attack_move_pattern							= stationary					# stationary
+	passive_move_pattern						= none							# none
+	desc										= "PLATFORM_BEHAVIOR_DESC"
+}
+
+ship_behavior = {
+	name										= "max"							# "artillery"
+	preferred_attack_range						= max							# max
+	formation_distance							= max							# max
+	return_to_formation_distance				= @SFTz_RTFD					# 1000
+	source_target_anchor_factor					= 1.0
+	combat_target_anchor						= root
+	collision_awareness							= @SFTz_COLLISION_SIZE_020		# 0.20
+	collision_strafe							= @SFTz_COLLISION_SIZE_050		# 2.50
+	collision_radius							= @SFTz_COLLISION_SIZE_100		# 2.00
+	attack_move_pattern							= stay_at_range					# maintain_distance
+	passive_move_pattern						= stay_at_range					# stay_at_range
+	desc										= "MAX_DESC"
+}

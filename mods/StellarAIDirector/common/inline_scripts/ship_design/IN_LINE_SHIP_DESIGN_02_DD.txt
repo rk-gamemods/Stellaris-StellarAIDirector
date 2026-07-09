@@ -1,0 +1,133 @@
+
+if = {
+
+	limit = { uses_standard_ship_sizes = yes has_technology = tech_destroyers }
+
+	random_list = {
+
+		10 = {								##### [저격컴] X 슬롯을 쓰는 유리대포 저격함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_02_DD_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_DD_XL years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_DD_XL" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_DD_XL }
+
+			modifier = { factor =   20		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_CAN_USE_X_SLOT = no }									##### X 슬롯 사용할 수 있을 떄에만 사용
+			modifier = { factor =   80		SFTt_LAST_INC_TECH_X_T2 = yes }								##### T2 X 슬롯 개발 직후 직후 가중치 추가 (3회)
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_UNE }							##### [PrE] UNE 저격 구축함 선호 가중치, 자연스럽게 방공순양함 유도
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_CHO }							##### [PrE] 선택받은 자 저격 구축함 선호 가중치
+
+			modifier = { factor = 5000		SFTt_CO_HV_ALL_XL = yes }									##### [AIP] 초계함만 던지고 all X 쓰는 거포 AIP
+
+		}
+
+		10 = {								##### [초계컴] P 슬롯 위주 좀 단단한 방공 구축함, 가장 흔한 세팅이 되어야 함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_02_DD_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_DD_PD years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_DD_PD" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_DD_PD }
+
+			modifier = { factor =   40		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   40		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   60		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   60		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor = 5000		has_country_flag = SFTf_DESIGN_BB_MM }						##### 전열컴 전함이 돌격하면 전방에서 대 어뢰 스크린 역할
+			modifier = { factor =    0.001	has_country_flag = SFTf_DESIGN_CC_PD }						##### 순양함이 방공순양함이라면 가중치 매우 감소
+
+			modifier = { factor = 5000		SFTt_CRAZY_FOR_MISSILE = yes }								##### [AIP] 장거리 미사일에 미친 AIP도 구축함은 탱커로 사용
+
+			modifier = { factor = 5000		SFTt_CO_CC_LL_BB_DD_TANKERS = yes }							##### [AIP] 저격초계함, L 순양함에 전함/구축함이 탱킹
+
+		}
+
+		10 = {								##### [전열컴] M/S 사격 무기 위주의 전열 구축함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_02_DD_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_DD_MS years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_DD_MS" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_DD_MS }
+
+			modifier = { factor =   33		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor = 5000		SFTt_CO_CC_LL_BB_DD_TANKERS = yes }							##### [AIP] 저격초계함, L 순양함에 전함/구축함이 탱킹
+
+		}
+
+		10 = {								##### [포격컴] M/S 슬롯으로 도배한 미사일 구축함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_02_DD_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_DD_EX years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_DD_EX" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_DD_EX }
+
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   28		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0.5	NOT = { has_technology = tech_swarmer_missiles_1 } }		##### SwM 기술 없으면 가중치 감소
+			modifier = { factor =   80		SFTt_LAST_INC_TECH_M_SM = yes }								##### SwM 기술 개발 직후 가중치 추가 (2회)
+
+		}
+
+		10 = {								##### [포격컴] L 슬롯 2개 쓰는 저기동 고화력 모니터함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_02_DD_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_DD_LL years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_DD_LL" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_DD_LL }
+
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   38		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0.5	NOT = { has_technology = tech_kinetic_artillery_1 } }		##### KA 기술 없으면 가중치 감소
+			modifier = { factor =   80		SFTt_LAST_INC_TECH_L_KA = yes }								##### KA 기술 개발 직후 가중치 추가 (2회)
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_AQU }							##### [PrE] 사티렐리안 모니터 구축함 선호 가중치
+
+		}
+
+		10 = {								##### [항모컴] 구축함급 소형항모
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_02_DD_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_DD_SC years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_DD_SC" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_DD_SC }
+
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0.1	NOT = { has_technology = tech_strike_craft_1 } }			##### 함재기 기술 없으면 가중치 감소
+			modifier = { factor =   50		SFTt_LAST_INC_TECH_H_SC = yes }								##### 함재기 기술 개발 직후 가중치 추가 (3+1회)
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_YND }							##### [PrE] 욘다림 소형항모 선호 가중치
+
+			modifier = { factor = 5000		SFTt_SC_DD_CARRIER = yes }									##### [AIP] 함재기 선호인데 구축함을 항공모함으로 쓰는 AIP
+
+		}
+
+	}
+
+}

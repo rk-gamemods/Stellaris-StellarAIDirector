@@ -1,0 +1,4 @@
+
+weapon_type_marine
+weapon_type_special
+noncombat_repair

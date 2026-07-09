@@ -1,0 +1,40 @@
+
+if = {
+
+	limit = { country_uses_bio_ships = yes has_technology = tech_weavers }
+
+	random_list = {
+
+		10 = {								##### [지원컴] 버프 위버
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_12_WV_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_WV_BF years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_WV_BF#NL#" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_WV_BF }
+
+			modifier = { factor =   35		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   35		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   35		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   35		is_preferred_weapons = weapon_type_strike_craft }
+
+		}
+
+		10 = {								##### [제압컴] 디버프 위버
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_12_WV_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_WV_DB years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_WV_DB#NL#" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_WV_DB }
+
+			modifier = { factor =   65		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   65		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   65		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   65		is_preferred_weapons = weapon_type_strike_craft }
+
+		}
+
+	}
+
+}

@@ -1,0 +1,50 @@
+
+SFTt_ENEMY_FAR_AWAY = {
+
+    exists = solar_system
+    exists = fleet
+
+    fleet = {
+
+		count_combatant_fleet = {
+
+			count = 0
+
+			limit = {
+
+				any_owned_ship = {
+
+					exists = solar_system
+
+					OR = {
+
+						SFTt_EXTREME_LONG_RANGE_SHIP = yes
+
+						distance = {
+
+							source = prevprevprev
+							max_distance <= @SFTz_RANGE_0250
+							same_solar_system = yes
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+SFTt_EXTREME_LONG_RANGE_SHIP = {
+
+	OR = {
+		is_ship_size = titan
+		is_ship_size = ion_cannon
+	}
+
+}

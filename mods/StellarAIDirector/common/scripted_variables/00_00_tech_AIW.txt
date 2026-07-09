@@ -1,0 +1,8 @@
+
+##### 00_scripted_variables.txt
+##### AI TECH WEIGHTS AND BEHAVIOR VARIABLES
+
+@ai_ship_types_factor					= 10.0			# 5 # bonus chance for ai to pick new ship techs
+@ai_starbase_types_factor				= 10.0			# 5 # extra chance for ai to pick starhold / star fortress / citadel
+@favored_weapon_ai_tech_factor			=  5.0			# 1.5
+@disfavored_weapon_ai_tech_factor		=  0.50			# 0.75

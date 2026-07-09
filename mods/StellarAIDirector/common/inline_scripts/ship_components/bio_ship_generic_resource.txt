@@ -1,0 +1,41 @@
+##### from Lithoid bioship mod
+##### https://steamcommunity.com/sharedfiles/filedetails/?id=3479948802 이 모드 호환성을 위한 코드인데 1년이상 업뎃 끊김
+
+#x	resources = {
+#x		category = ship_components
+#x		cost = {
+#x			$EXTRA_COST$
+#x		}
+#x		cost = {
+#x			food = $COST$
+#x			mult = @alloy_to_food_cost_ratio
+#x			trigger = {
+#x				owner = {		##### 이거도 스코프 에러 남
+#x					country_uses_bio_ships = yes
+#x					#x	NOT = { graphical_culture = lithogenesis_01 }			##### 그 모드에서 추가한 GC
+#x				}
+#x			}
+#x		}
+#x		cost = {
+#x			minerals = $COST$
+#x			mult = @alloy_to_food_cost_ratio
+#x			mult = 0.8
+#x			trigger = {
+#x				owner = {
+#x					country_uses_bio_ships = yes
+#x					#x	graphical_culture = lithogenesis_01
+#x				}
+#x			}
+#x		}
+#x	}
+
+	resources = {
+		category = ship_components
+		cost = {
+			food = $COST$
+			mult = @alloy_to_food_cost_ratio
+		}
+	}
+
+##### 결국은 바닐라의 00_biogenesis_utilities.txt 와 똑같아졌네
+##### 쓰이는 곳은 000_SFT_00_biogenesis_utilities_roles.txt 여기밖에 없는데 도로 고치기 귀찮아 ;;;

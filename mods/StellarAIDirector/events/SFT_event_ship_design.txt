@@ -1,0 +1,151 @@
+namespace = SFT_event_ship_design
+
+event = {
+
+	id = SFT_event_ship_design.100
+	hide_window = yes
+	is_triggered_only = yes			##### ON_ACTION : on_yearly_pulse
+
+	immediate = {
+
+		every_country = {
+
+			limit = {
+
+				SFTt_REDESIGNABLE_GALAXY = yes
+				SFTt_REDESIGNABLE_COUNTRY = yes
+				NOT = { has_country_flag = SFTf_DESIGN_UPDATED }							##### 업데이트 쿨다운 10년 확인
+
+			}
+
+			country_event = { id = SFT_event_ship_design.300 }
+
+		}
+
+	}
+
+}
+
+country_event = {
+
+	id = SFT_event_ship_design.200
+	hide_window = yes
+	is_triggered_only = yes			##### ON_ACTION : on_tech_increased
+
+	immediate = {
+
+		if = {
+
+			limit = {
+
+				SFTt_REDESIGNABLE_GALAXY = yes
+				SFTt_REDESIGNABLE_COUNTRY = yes
+				SFTt_LAST_INC_TECH_IMPORTANT = yes											##### 함선 기술 또는 주요 기술 연구하면 업데이트 쿨다운 무시하고 작동
+
+			}
+
+			country_event = { id = SFT_event_ship_design.300 }
+
+		}
+
+	}
+
+}
+
+country_event = {
+
+	id = SFT_event_ship_design.300
+	hide_window = yes
+	is_triggered_only = yes			##### ON_ACTION : by SFT_event_ship_design.100, 200
+
+	immediate = {
+
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_05_TI
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_04_BB
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_03_CC
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_02_DD
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_01_FF
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_01_CO
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_14_ST
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_13_HB
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_12_WV
+
+		set_timed_country_flag = { flag = SFTf_DESIGN_UPDATED years = 10 }					##### 업데이트 쿨다운 10년 = 아무리 늦어도 10년에 한번은 디자인 플래그 & 설계 업데이트 한다
+
+		country_event = { id = SFT_event_ship_design.500 days = 5 random = 5 }				##### 디자인 재설정을 바로 하니까 플래그 반영이 잘 안되는 듯 해서 5-10일 딜레이
+
+	}
+
+}
+
+event = {
+
+	id = SFT_event_ship_design.400
+	hide_window = yes
+	is_triggered_only = yes			##### ON_ACTION : on_decade_pulse
+
+	immediate = {
+
+		every_country = {
+
+			limit = {
+
+				SFTt_REDESIGNABLE_GALAXY = no												##### NSC 작동 또는 함선구역 비활성화시에는 그냥 10년마다 한번씩 함선 설계만 리프레시
+				SFTt_REDESIGNABLE_COUNTRY = yes
+
+			}
+
+			country_event = { id = SFT_event_ship_design.500 days = 5 random = 5 }
+
+		}
+
+	}
+
+}
+
+country_event = {
+
+	id = SFT_event_ship_design.500
+	hide_window = yes
+	is_triggered_only = yes			##### ON_ACTION : by SFT_event_ship_design.300, 400
+
+	immediate = {
+
+		every_owned_design = {
+
+			limit = { SFTt_REDESIGNABLE_SHIP = yes }
+
+			save_event_target_as = design_to_be_removed
+			prev = { remove_ship_design = event_target:design_to_be_removed }
+
+		}
+
+		refresh_auto_generated_ship_designs = yes
+
+	}
+
+}
+
+country_event = {
+
+	id = SFT_event_ship_design.900
+	hide_window = yes
+	is_triggered_only = yes			##### ON_ACTION : 디버그 전용 모든 플래그 클리어
+
+	immediate = {
+
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_05_TI_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_04_BB_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_03_CC_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_02_DD_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_01_CO_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_14_ST_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_13_HB_clear
+		inline_script = ship_design/IN_LINE_SHIP_DESIGN_12_WV_clear
+
+		remove_country_flag = SFTf_DESIGN_UPDATED
+
+	}
+
+}

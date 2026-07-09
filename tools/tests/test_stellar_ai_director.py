@@ -26,6 +26,8 @@ from stellar_ai_director_lib import (
     SNAPSHOT_ROOT,
     STANDALONE_PARITY_INVENTORY_CSV,
     STANDALONE_PARITY_INVENTORY_MD,
+    SFT_EQUIVALENCE_AUDIT_CSV,
+    SFT_EQUIVALENCE_AUDIT_MD,
     STELLARAI_INLINE_SCRIPT_DEPENDENCIES,
     block_assignments,
     collect_generated_conflict_rows,
@@ -195,13 +197,56 @@ class GeneratedModValidityTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             mod_root = Path(temp_dir) / "StellarAIDirector"
             (mod_root / "common" / "diplomatic_actions").mkdir(parents=True)
+            (mod_root / "common" / "component_templates").mkdir(parents=True)
             (mod_root / "common" / "ship_designs").mkdir(parents=True)
 
             errors = forbidden_generated_surface_errors(mod_root)
+            strict_errors = forbidden_generated_surface_errors(mod_root, allowed_surfaces=set())
 
         self.assertEqual(len(errors), 2)
         self.assertTrue(any("diplomatic_actions" in error for error in errors))
         self.assertTrue(any("ship_designs" in error for error in errors))
+        self.assertEqual(len(strict_errors), 3)
+        self.assertTrue(any("component_templates" in error for error in strict_errors))
+
+    def test_sft_addon_equivalence_preserves_active_ship_build_logic(self):
+        addon_equivalence = (
+            MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_sft_addon_equivalence.txt"
+        ).read_text(encoding="utf-8")
+        role_triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zz_SFTt_SHIP_USE_ROLES.txt").read_text(
+            encoding="utf-8"
+        )
+        design_triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zz_SFTt_SHIP_DESIGN.txt").read_text(
+            encoding="utf-8"
+        )
+        design_refresh_on_action = (
+            MOD_ROOT / "common" / "on_actions" / "zzzz_staid_sft_design_refresh_on_actions.txt"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("SFTt_ADDON_NEW_SECTION_USE = { always = no }", addon_equivalence)
+        self.assertIn("SFTt_ADDON_COMBAT_COM_REST_REMOVED = { always = yes }", addon_equivalence)
+        self.assertIn("SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes", role_triggers)
+        self.assertIn("SFTt_ADDON_NEW_SECTION_USE = yes", design_triggers)
+        self.assertIn("SFT_event_ship_design.400", design_refresh_on_action)
+        self.assertTrue((MOD_ROOT / "common" / "component_templates" / "000_SFT_00_utilities_roles.txt").exists())
+        sft_section_files = list((MOD_ROOT / "common" / "section_templates").glob("*SFT*"))
+        sft_technology_files = list((MOD_ROOT / "common" / "technology").glob("*SFT*"))
+        self.assertEqual(sft_section_files, [])
+        self.assertEqual(sft_technology_files, [])
+
+    def test_sft_equivalence_audit_documents_included_and_excluded_surfaces(self):
+        self.assertTrue(SFT_EQUIVALENCE_AUDIT_CSV.exists())
+        self.assertTrue(SFT_EQUIVALENCE_AUDIT_MD.exists())
+        with SFT_EQUIVALENCE_AUDIT_CSV.open("r", encoding="utf-8-sig", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        targets = {row["target"] for row in rows}
+        self.assertIn("common/component_templates/000_SFT_00_utilities_roles.txt", targets)
+        self.assertIn("common/on_actions/zzzz_staid_sft_design_refresh_on_actions.txt", targets)
+        self.assertFalse(any(target.startswith("common/section_templates/") for target in targets))
+        self.assertFalse(any(target.startswith("common/technology/") for target in targets))
+        audit_text = SFT_EQUIVALENCE_AUDIT_MD.read_text(encoding="utf-8")
+        self.assertIn("Disable New Ship Sections", audit_text)
+        self.assertIn("Combat Computer Restriction Removal", audit_text)
 
     def test_standalone_parity_inventory_covers_baseline_surfaces(self):
         self.assertTrue(STANDALONE_PARITY_INVENTORY_CSV.exists())
@@ -219,6 +264,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "policies_edicts_defines",
             "research_economy_fleet_conversion",
             "generated_conflict_winners",
+            "spacefleet_tactica_ship_build_logic",
             "advanced_ship_design_nsc3_esc_gigas_runtime",
         }:
             self.assertIn(surface, surfaces)
@@ -1555,7 +1601,8 @@ class GeneratedModValidityTests(unittest.TestCase):
         generated_text = "\n".join(path.read_text(encoding="utf-8") for path in (MOD_ROOT / "common").rglob("*.txt"))
         referenced_scripts = set(re.findall(r"script\s*=\s*\"?stellarai/([A-Za-z0-9_/-]+)\"?", generated_text))
         expected_scripts = set(STELLARAI_INLINE_SCRIPT_DEPENDENCIES)
-        self.assertTrue(expected_scripts.issubset(referenced_scripts))
+        self.assertTrue(referenced_scripts)
+        self.assertTrue(referenced_scripts.issubset(expected_scripts))
         for script_name in referenced_scripts:
             self.assertTrue(
                 (MOD_ROOT / "common" / "inline_scripts" / "stellarai" / f"{script_name}.txt").exists(),

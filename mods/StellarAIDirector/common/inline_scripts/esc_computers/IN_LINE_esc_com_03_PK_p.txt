@@ -1,0 +1,27 @@
+	key = ESC_GIGAPREDATOR_INSTINCTS_PICKET
+
+	inline_script = {
+		script = esc_computers/esc_inlines_combat_computers
+		COMPUTER_ICON = GFX_esc_gigapredator_instincts_picket
+		POWER = @ESC_COMPUTER_power_dreadnought
+		SHIP_COMBAT_ROLE = picket
+		PREREQUISITE = esc_tech_gigapredator_instincts
+		STRATEGIC_RESOURCE_TYPE = exotic_gases
+		IS_BIOSHIP_COMPUTER = yes
+		COMPONENT_WEIGHT = 16
+	}
+
+	upgrade_path = picket
+	ship_behavior = picket
+	ai_tags = { screen }
+
+	ship_modifier = {
+		ship_weapon_damage = 0.2
+		ship_fire_rate_mult = 0.1
+		ship_tracking_add = 10
+	}
+	modifier = {
+		ship_shield_mult = 0.25
+		ship_evasion_add = 10
+		ship_speed_mult = 0.1
+	}

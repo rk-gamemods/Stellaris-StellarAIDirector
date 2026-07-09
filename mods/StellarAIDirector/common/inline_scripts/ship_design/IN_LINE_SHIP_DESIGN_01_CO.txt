@@ -1,0 +1,118 @@
+
+if = {
+
+	limit = { uses_standard_ship_sizes = yes has_technology = tech_corvettes }
+
+	random_list = {
+
+		10 = {								##### [무리컴] 일반 근접전 초계함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_CO_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_CO_SW years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_CO_SW#NL#" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_CO_SW }
+
+			modifier = { factor =   50		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   20		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   20		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_KAZ }							##### [PrE] 켈 아잔은 항상 근접전 초계함
+
+		}
+
+		10 = {								##### [포격컴] 미사일 초계함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_CO_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_CO_EX years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_CO_EX#NL#" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_CO_EX }
+
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =	60		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   40		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_XT4 }							##### [PrE] XT-489 미사일 초계함
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_PRK }							##### [PrE] 프릭키키-티 미사일 초계함 선호
+
+			modifier = { factor = 5000		SFTt_CRAZY_FOR_MISSILE = yes }								##### [AIP] 장거리 미사일에 미친 AIP
+
+		}
+
+		10 = {								##### [초계컴] 방공 초계함, 중갑 초계함만큼 단단하지는 않지만 방공에 특화
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_CO_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_CO_PD years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_CO_PD#NL#" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_CO_PD }
+
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =	19		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor = 5000		SFTt_SC_DD_CARRIER = yes }									##### [AIP] 함재기 선호인데 구축함을 항공모함으로 쓰는 AIP
+
+			modifier = { factor =    0		has_country_flag = SFTf_PrE_UNE }							##### [PrE] UNE 방공 초계함 불호 가중치
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_ORB }							##### [PrE] 오르비스 방공 초계함 가중치
+
+		}
+
+		10 = {								##### [무리컴] 중갑 초계함, 함대 앞에서 몸빵서는 것 위주
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_CO_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_CO_HV years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_CO_HV#NL#" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_CO_HV }
+
+			modifier = { factor =   20		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   25		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   19		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =	20		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		NOT = { has_technology = tech_cruisers } }					##### 순양함 이후부터 사용, 순양함 이전에 사용시 초반 초계함 싸움에 밀려서 스노우볼 당할 위험
+			modifier = { factor =  100		last_increased_tech = tech_cruisers }						##### 순양함 개발 직후 가중치 추가 (1회)
+
+			modifier = { factor = 5000		has_country_flag = SFTf_PrE_COM }							##### [PrE] 인류연방 중갑 초계함 선호 가중치
+
+			modifier = { factor = 5000		SFTt_CRAZY_FOR_MISSILE = yes }								##### [AIP] 장거리 미사일에 미친 AIP, 초계함을 방패로 쓸 수도 있다
+
+			modifier = { factor = 5000		SFTt_CO_HV_ALL_XL = yes }									##### [AIP] 초계함만 던지고 all X 쓰는 거포 AIP
+
+		}
+
+		10 = {								##### [저격컴] L 슬롯 중추 선수 저격 초계함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_CO_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_CO_LL years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_CO_LL#NL#" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_CO_LL }
+
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   30		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    1		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		NOT = { has_technology = tech_cruisers } }					##### 순양함 이후부터 사용, 순양함 이전에 사용시 초반 초계함 싸움에 밀려서 스노우볼 당할 위험
+			modifier = { factor =  100		last_increased_tech = tech_cruisers }						##### 순양함 개발 직후 가중치 추가 (1회)
+
+			modifier = { factor =   80		SFTt_LAST_INC_TECH_L_KA = yes }								##### KA 기술 개발 직후 가중치 추가 (2회)
+
+			modifier = { factor = 5000		SFTt_CO_CC_LL_BB_DD_TANKERS = yes }							##### [AIP] 저격초계함, L 순양함에 전함/구축함이 탱킹
+
+			##### CO_LL 을 쓰고, 전함과 (순양함) 이 앞에서 탱킹 (BB_MM, CC_MM) 하는 조합을 만들어 줄 수도 있을 듯, 근데 이러면 DD 도 PD 가 강제되네
+			##### 생각해보니 슬롯이 fixed 라도 L 슬롯 무기에는 사격각 있는 것이 없으니 저격컴보다 포격컴이 나은가 ㅠㅜ 생각해봐야 할 문제
+
+		}
+
+	}
+
+}

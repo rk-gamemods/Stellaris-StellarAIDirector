@@ -1,0 +1,153 @@
+
+SFTt_ship_uses_regular_role = {
+
+	is_arkship_ship = no
+
+	NOT = { is_ship_size = colossus }
+
+	NOT = { is_ship_size = military_station_small }
+	NOT = { is_ship_size = military_station_medium }
+	NOT = { is_ship_size = military_station_large }
+	NOT = { is_ship_size = ion_cannon }
+
+	NOT = { is_ship_size = starbase_outpost }
+	NOT = { is_ship_size = starbase_starport }
+	NOT = { is_ship_size = starbase_starhold }
+	NOT = { is_ship_size = starbase_starfortress }
+	NOT = { is_ship_size = starbase_citadel }
+	NOT = { is_ship_size = orbital_ring_tier_1 }
+	NOT = { is_ship_size = orbital_ring_tier_2 }
+	NOT = { is_ship_size = orbital_ring_tier_3 }
+
+	NOT = { is_ship_size = starbase_deep_space_citadel_1 }
+	NOT = { is_ship_size = starbase_deep_space_citadel_2 }
+	NOT = { is_ship_size = starbase_deep_space_citadel_3 }
+
+	NOT = { is_ship_size = starbase_waystation_1 }
+	NOT = { is_ship_size = starbase_waystation_2 }
+	NOT = { is_ship_size = starbase_waystation_3 }
+
+	NOT = { is_ship_size = explorationship }								##### NSC explorationship
+	NOT = { is_ship_size = starbase_stronghold }							##### NSC 에서 추가된 항성기지
+	NOT = { is_ship_size = starbase_headquarters }							##### NSC 에서 추가된 항성기지
+
+}
+
+SFTt_ship_uses_swarm_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_swarm_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_swarm_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+	}
+
+}
+
+SFTt_ship_uses_torpedo_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_torpedo_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_torpedo_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+		OR = {
+			is_ship_size = crisis_cruiser
+		}
+	}
+
+}
+
+SFTt_ship_uses_picket_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_picket_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_picket_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+	}
+
+}
+
+SFTt_ship_uses_line_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_line_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_line_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+	}
+
+}
+
+SFTt_ship_uses_artillery_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_artillery_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_artillery_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+		OR = {
+			is_ship_size = crisis_corvette
+		}
+	}
+
+}
+
+SFTt_ship_uses_carrier_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_carrier_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_carrier_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+		AND = { SFTt_ADDON_FF_SP_ACTIVATED = yes is_ship_size = frigate }
+		OR = {
+			SFTt_SHIP_SIZE_DD = yes
+			is_ship_size = crisis_corvette
+			is_ship_size = crisis_destroyer
+			is_ship_size = crisis_cruiser
+			is_ship_size = cosmo_crisis_destroyer
+			SFTt_SHIP_SIZE_TI = yes
+		}
+	}
+
+}
+
+SFTt_ship_uses_debuffer_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_debuffer_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_debuffer_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+		AND = { SFTt_ADDON_FF_SP_ACTIVATED = yes is_ship_size = frigate }
+	}
+
+}
+
+SFTt_ship_uses_buffer_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+	OR = {
+		ship_uses_buffer_role = yes
+		AND = { is_extra_ship_components_activate = yes ESC_ship_uses_buffer_computers = yes }
+		AND = { SFTt_ADDON_COMBAT_COM_REST_REMOVED = yes SFTt_ship_uses_regular_role = yes }
+		AND = { SFTt_ADDON_FF_SP_ACTIVATED = yes is_ship_size = frigate }
+	}
+
+}
+
+SFTt_ship_uses_max_role = {
+
+	SFTt_ship_uses_regular_role = yes
+
+}

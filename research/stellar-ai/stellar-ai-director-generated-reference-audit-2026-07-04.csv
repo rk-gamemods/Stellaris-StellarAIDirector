@@ -3615,6 +3615,9 @@ technology,tech_Flagship_1,has_technology,common/technology/zzzz_staid_01_unlock
 technology,tech_Flagship_1,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
 technology,tech_Flagship_1,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
 technology,tech_afterburners_1,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
+technology,tech_arc_emitter_1,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_arc_emitter_2,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_auxiliary_fire_control,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
 technology,tech_basic_science_lab_1,has_technology,common/districts/zzzz_staid_06_research_infrastructure_districts.txt,ok,reference exists in source or generated inventory
 technology,tech_basic_science_lab_1,has_technology,common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt,ok,reference exists in source or generated inventory
 technology,tech_battleships,has_technology,common/economic_plans/zzzz_staid_additive_economic_plan.txt,ok,reference exists in source or generated inventory
@@ -3637,6 +3640,12 @@ technology,tech_ehof_sentient_tier_1,has_technology,common/technology/zzzz_staid
 technology,tech_ehof_sentient_tier_3,has_technology,common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt,ok,reference exists in source or generated inventory
 technology,tech_ehof_sentient_tier_3,has_technology,common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt,ok,reference exists in source or generated inventory
 technology,tech_ehof_sentient_tier_4,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
+technology,tech_energy_lance_1,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_energy_lance_2,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_energy_torpedoes_1,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_energy_torpedoes_1,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_energy_torpedoes_2,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_energy_torpedoes_2,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
 technology,tech_fe_clinic_1,has_technology,common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt,ok,reference exists in source or generated inventory
 technology,tech_fe_clinic_1,has_technology,common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt,ok,reference exists in source or generated inventory
 technology,tech_fe_clinic_2,has_technology,common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt,ok,reference exists in source or generated inventory
@@ -3747,6 +3756,8 @@ technology,tech_hyper_entertainment_forum,has_technology,common/districts/zzzz_s
 technology,tech_interstellar_economics,has_technology,common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt,ok,reference exists in source or generated inventory
 technology,tech_interstellar_economics,has_technology,common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt,ok,reference exists in source or generated inventory
 technology,tech_lasers_2,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
+technology,tech_mass_accelerator_1,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_mass_accelerator_2,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
 technology,tech_mass_drivers_2,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
 technology,tech_matter_decompressor,has_technology,common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt,ok,reference exists in source or generated inventory
 technology,tech_mega_engineering,has_technology,common/ai_budget/zzz_staid_alloys_budget.txt,ok,reference exists in source or generated inventory
@@ -3827,8 +3838,10 @@ technology,tech_science_nexus,has_technology,common/megastructures/zzzz_staid_03
 technology,tech_science_nexus,has_technology,common/scripted_triggers/zzz_staid_decision_state_triggers.txt,ok,reference exists in source or generated inventory
 technology,tech_science_nexus,has_technology,common/scripted_triggers/zzz_staid_decision_state_triggers.txt,ok,reference exists in source or generated inventory
 technology,tech_science_nexus,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
+technology,tech_scourge_missile_1,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
 technology,tech_self_aware_logic,has_technology,common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt,ok,reference exists in source or generated inventory
 technology,tech_shields_2,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
+technology,tech_shields_3,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
 technology,tech_ship_armor_2,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
 technology,tech_space_whale_weapon_1,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
 technology,tech_starbase_3,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
@@ -3838,6 +3851,8 @@ technology,tech_strike_craft_1,has_technology,common/scripted_triggers/zzzz_stai
 technology,tech_strike_craft_1,has_technology,common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt,ok,reference exists in source or generated inventory
 technology,tech_strike_craft_1,has_technology,common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt,ok,reference exists in source or generated inventory
 technology,tech_supercarrier_1,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
+technology,tech_swarmer_missiles_1,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
+technology,tech_swarmer_missiles_2,has_technology,common/scripted_triggers/zz_SFTt_SHIP_DESIGN.txt,ok,reference exists in source or generated inventory
 technology,tech_thrusters_2,has_technology,common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,ok,reference exists in source or generated inventory
 technology,tech_titans,has_technology,common/technology/zzzz_staid_01_unlock_technology_technology.txt,ok,reference exists in source or generated inventory
 technology,tech_torpedoes_1,has_technology,common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt,ok,reference exists in source or generated inventory

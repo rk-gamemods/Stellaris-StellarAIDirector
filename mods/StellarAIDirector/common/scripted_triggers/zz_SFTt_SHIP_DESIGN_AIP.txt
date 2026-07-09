@@ -1,0 +1,67 @@
+
+##### 프리셋 제국 특징이 AIP 성격에 우선하도록, 프리셋 제국은 AIP 트리거 확인 건너뛰도록 세팅
+
+
+SFTt_CRAZY_FOR_MISSILE = {												##### 이외 모든함급 미사일, 호위함은 근접어뢰, 구축함은 PD 몸빵
+
+	AND = {
+
+		SFTt_PrE_YES = no
+
+		OR = {
+			has_ai_personality = xenophobic_isolationists				##### EX / S6 A3 H1 / 외계종 혐오 고립주의자 / Xenophobic Isolationists
+			has_ai_personality = map_sublime_porte						##### EX / S3 A5 H2 / 제국의 문 / Sublime Porte
+			has_ai_personality = map_princes_of_madness					##### EX / S8 A1 H1 / 광기의 대공 / Princes of Madness
+		}
+
+	}
+
+}
+
+SFTt_CO_HV_ALL_XL = {													##### 초계함은 중갑세팅으로 던지고 나머지 함급은 모두 XL 몰빵 + 에너지 어뢰
+
+	AND = {
+
+		SFTt_PrE_YES = no
+
+		OR = {
+			has_ai_personality = hegemonic_imperialists					##### EN / S5 A5 H0 / 패권적 제국주의자 / Hegemonic Imperialists / CO+ BB+
+			has_ai_personality = map_experts_in_xenocide				##### EN / S3 A4 H3 / 절멸 전문가 / Experts in Xenocide
+			has_ai_personality = map_totalitarian_patriots				##### EN / S3 A5 H2 / 전체주의 애국자 / Totalitarian Patriots
+		}
+
+	}
+
+}
+
+SFTt_SC_DD_CARRIER = {													##### 함재기 선호인데 구축함을 항공모함으로 사용
+
+	AND = {
+
+		SFTt_PrE_YES = no
+
+		OR = {
+			has_ai_personality = migrating_flock						##### SC / S4 A4 H2 / 이주자 무리 / Migratory Flock
+			has_ai_personality = map_slave_traders						##### SC / S5 A3 H2 / 노예 무역상 / Slave Traders
+			has_ai_personality = map_psychotic_hordes					##### SC / S3 A4 H3 / 피에 굶주린 약탈자 / Bloodthirsty Hordes
+		}
+
+	}
+
+}
+
+SFTt_CO_CC_LL_BB_DD_TANKERS = {											##### 저격초계함, L 순양함에 전함/구축함이 탱킹
+
+	AND = {
+
+		SFTt_PrE_YES = no
+
+		OR = {
+			has_ai_personality = harmonious_hierarchy					##### EX / S4 A6 H0 / 조화로운 집단체 / Harmonious Collective
+			has_ai_personality = map_quiet_cultists						##### EN / S6 A3 H1 / 조용한 광신자 / Quiet Cultists
+			has_ai_personality = map_hopeless_pessimists				##### KI / S4 A6 H0 / 절망적인 비관론자 / Hopeless Pessimists
+		}
+
+	}
+
+}

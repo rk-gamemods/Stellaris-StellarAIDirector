@@ -1,0 +1,570 @@
+
+SFTt_PrE_ANY = {
+
+	OR = {
+
+		has_country_flag = SFTf_PrE_checked
+		SFTt_PrE_YES = yes
+
+	}
+
+}
+
+SFTt_PrE_YES = {
+
+	OR = {
+
+		has_country_flag = SFTf_PrE_UNE
+		has_country_flag = SFTf_PrE_COM
+		has_country_flag = SFTf_PrE_VOR
+		has_country_flag = SFTf_PrE_BLG
+		has_country_flag = SFTf_PrE_ORB
+		has_country_flag = SFTf_PrE_KLK
+		has_country_flag = SFTf_PrE_CHO
+		has_country_flag = SFTf_PrE_MSI
+		has_country_flag = SFTf_PrE_KET
+		has_country_flag = SFTf_PrE_HBT
+
+		has_country_flag = SFTf_PrE_TZN
+		has_country_flag = SFTf_PrE_YND
+		has_country_flag = SFTf_PrE_IFR
+		has_country_flag = SFTf_PrE_GLB
+		has_country_flag = SFTf_PrE_JHT
+		has_country_flag = SFTf_PrE_SCL
+		has_country_flag = SFTf_PrE_KAZ
+		has_country_flag = SFTf_PrE_RES
+		has_country_flag = SFTf_PrE_BSH
+		has_country_flag = SFTf_PrE_TXO
+		has_country_flag = SFTf_PrE_TXN
+		has_country_flag = SFTf_PrE_AQU
+		has_country_flag = SFTf_PrE_PST
+		has_country_flag = SFTf_PrE_AVB
+		has_country_flag = SFTf_PrE_HZB
+		has_country_flag = SFTf_PrE_ECS
+		has_country_flag = SFTf_PrE_TEB
+		has_country_flag = SFTf_PrE_XT4
+		has_country_flag = SFTf_PrE_LOK
+		has_country_flag = SFTf_PrE_MWR
+		has_country_flag = SFTf_PrE_NYR
+		has_country_flag = SFTf_PrE_PRK
+
+	}
+
+}
+
+##### prescripted_flags/00_default_empire_flags.txt
+
+SFTt_PrE_UNE = { has_country_flag = human_1 }							##### 지구 국제 연합
+SFTt_PrE_COM = { has_country_flag = human_2 }							##### 인류 연방
+SFTt_PrE_VOR = { has_country_flag = the_voor }							##### 부어 기술관료국
+SFTt_PrE_BLG = { has_country_flag = prescripted_blorg }					##### 블로르그 공동체
+SFTt_PrE_ORB = { has_country_flag = orbis }								##### 오르비스 고객 만족사
+SFTt_PrE_KLK = { has_country_flag = kilik_cooperative }					##### 킬릭 협동체
+SFTt_PrE_CHO = { has_country_flag = chosen_empire }						##### 선택받은 자
+SFTt_PrE_MSI = { has_country_flag = MSI }								##### 미나마르 특화 산업국
+SFTt_PrE_KET = { has_country_flag = ratling_country }					##### 케틀링 항성 무리
+SFTt_PrE_HBT = { has_country_flag = solarpunk_country }					##### 하빈테 통합 행성
+
+SFTt_PrE_TZN = {														##### 친 제국
+
+	AND = {
+
+		has_authority = auth_imperial
+		has_origin = origin_default
+		has_valid_civic = civic_police_state
+		has_valid_civic = civic_slaver_guilds
+		has_ethic = ethic_authoritarian
+		has_ethic = ethic_fanatic_militarist
+
+		owner_species = {
+			is_species_class = REP
+			has_trait = trait_strong
+			has_trait = trait_resilient
+			has_trait = trait_rapid_breeders
+			has_trait = trait_decadent
+			has_trait = trait_quarrelsome
+		}
+
+	}
+
+}
+
+SFTt_PrE_YND = {														##### 욘다림 왕국
+
+	AND = {
+
+		has_authority = auth_imperial
+		has_origin = origin_default
+		has_valid_civic = civic_imperial_cult
+		has_valid_civic = civic_aristocratic_elite
+		has_ethic = ethic_authoritarian
+		has_ethic = ethic_fanatic_spiritualist
+
+		owner_species = {
+			is_species_class = AVI
+			has_trait = trait_conformists
+			has_trait = trait_natural_physicists
+			has_trait = trait_slow_learners
+		}
+
+	}
+
+}
+
+SFTt_PrE_IFR = {														##### 아이페릭스 연합 함대
+
+	AND = {
+
+		has_authority = auth_oligarchic
+		has_origin = origin_default
+		has_valid_civic = civic_corporate_dominion
+		has_valid_civic = civic_shadow_council
+		has_ethic = ethic_egalitarian
+		has_ethic = ethic_spiritualist
+		has_ethic = ethic_pacifist
+
+		owner_species = {
+			is_species_class = MAM
+			has_trait = trait_thrifty
+			has_trait = trait_communal
+			has_trait = trait_deviants
+		}
+
+	}
+
+}
+
+SFTt_PrE_GLB = {														##### 글렙식 재단
+
+	AND = {
+
+		has_authority = auth_oligarchic
+		has_origin = origin_default
+		has_valid_civic = civic_exalted_priesthood
+		has_valid_civic = civic_efficient_bureaucracy
+		has_ethic = ethic_fanatic_xenophile
+		has_ethic = ethic_spiritualist
+
+		owner_species = {
+			is_species_class = MOL
+			has_trait = trait_sedentary
+			has_trait = trait_enduring
+			has_trait = trait_conservational
+			has_trait = trait_resilient
+		}
+
+	}
+
+}
+
+SFTt_PrE_JHT = {														##### 제헤트마 자치령
+
+	AND = {
+
+		has_authority = auth_dictatorial
+		has_origin = origin_default
+		has_valid_civic = civic_environmentalist
+		has_valid_civic = civic_philosopher_king
+		has_ethic = ethic_authoritarian
+		has_ethic = ethic_fanatic_pacifist
+
+		owner_species = {
+			is_species_class = FUN
+			has_trait = trait_slow_breeders
+			has_trait = trait_ingenious
+			has_trait = trait_communal
+			has_trait = trait_strong
+		}
+
+	}
+
+}
+
+SFTt_PrE_SCL = {														##### 사일다리 연합
+
+	AND = {
+
+		has_authority = auth_democratic
+		has_origin = origin_default
+		has_valid_civic = civic_environmentalist
+		has_valid_civic = civic_free_haven
+		has_ethic = ethic_spiritualist
+		has_ethic = ethic_pacifist
+		has_ethic = ethic_xenophile
+
+		owner_species = {
+			is_species_class = MAM
+			has_trait = trait_charismatic
+			has_trait = trait_natural_sociologists
+			has_trait = trait_weak
+		}
+
+	}
+
+}
+
+SFTt_PrE_KAZ = {														##### 켈-아잔 공화국
+
+	AND = {
+
+		has_authority = auth_oligarchic
+		has_origin = origin_default
+		has_valid_civic = civic_warrior_culture
+		has_valid_civic = civic_citizen_service
+		has_ethic = ethic_egalitarian
+		has_ethic = ethic_fanatic_militarist
+
+		owner_species = {
+			is_species_class = ART
+			has_trait = trait_very_strong
+			has_trait = trait_traditional
+			has_trait = trait_deviants
+			has_trait = trait_solitary
+		}
+
+	}
+
+}
+
+SFTt_PrE_RES = {														##### 록 반란국
+
+	AND = {
+
+		has_authority = auth_democratic
+		has_origin = origin_payback
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_citizen_service
+		has_ethic = ethic_fanatic_egalitarian
+		has_ethic = ethic_militarist
+
+		owner_species = {
+			is_species_class = AVI
+			has_trait = trait_ingenious
+			has_trait = trait_quick_learners
+			has_trait = trait_unruly
+			has_trait = trait_natural_engineers
+		}
+
+	}
+
+}
+
+SFTt_PrE_BSH = {														##### 불시착 자유민 연합
+
+	AND = {
+
+		has_authority = auth_democratic
+		has_origin = origin_broken_shackles
+		has_valid_civic = civic_beacon_of_liberty
+		has_valid_civic = civic_free_haven
+		has_ethic = ethic_egalitarian
+		has_ethic = ethic_fanatic_xenophile
+
+		owner_species = {
+			is_species_class = REP
+			has_trait = trait_ingenious
+			has_trait = trait_quick_learners
+			has_trait = trait_unruly
+			has_trait = trait_natural_engineers
+		}
+
+	}
+
+}
+
+SFTt_PrE_TXO = {														##### 고르티칸 동맹
+
+	AND = {
+
+		has_authority = auth_democratic
+		has_origin = origin_overtuned
+		has_valid_civic = civic_scavengers
+		has_valid_civic = civic_toxic_baths
+		has_ethic = ethic_fanatic_egalitarian
+		has_ethic = ethic_materialist
+
+		owner_species = {
+			is_species_class = TOX
+			has_trait = trait_incubator
+			has_trait = trait_unruly
+			has_trait = trait_spliced_adaptability
+			has_trait = trait_auto_mod_overtuned
+			has_trait = trait_gene_mentorship
+		}
+
+	}
+
+}
+
+SFTt_PrE_TXN = {														##### 로토타불 대종주국
+
+	AND = {
+
+		has_authority = auth_imperial
+		has_origin = origin_toxic_knights
+		has_valid_civic = civic_feudal_realm
+		has_valid_civic = civic_aristocratic_elite
+		has_ethic = ethic_authoritarian
+		has_ethic = ethic_militarist
+		has_ethic = ethic_spiritualist
+
+		owner_species = {
+			is_species_class = TOX
+			has_trait = trait_traditional
+			has_trait = trait_strong
+			has_trait = trait_resilient
+			has_trait = trait_noxious
+			has_trait = trait_nonadaptive
+		}
+
+	}
+
+}
+
+SFTt_PrE_AQU = {														##### 사티렐리안 쾌락주의자
+
+	AND = {
+
+		has_authority = auth_dictatorial
+		has_origin = origin_ocean_paradise
+		has_valid_civic = civic_anglers
+		has_valid_civic = civic_environmentalist
+		has_ethic = ethic_xenophobe
+		has_ethic = ethic_fanatic_pacifist
+
+		owner_species = {
+			is_species_class = AQUATIC
+			has_trait = trait_aquatic
+			has_trait = trait_conservational
+			has_trait = trait_sedentary
+			has_trait = trait_slow_learners
+		}
+
+	}
+
+}
+
+SFTt_PrE_PST = {														##### 파샤티 흡수자
+
+	AND = {
+
+		has_authority = auth_dictatorial
+		has_origin = origin_necrophage
+		has_valid_civic = civic_reanimated_armies
+		has_valid_civic = civic_cutthroat_politics
+		has_ethic = ethic_fanatic_xenophobe
+		has_ethic = ethic_militarist
+
+		owner_species = {
+			is_species_class = NECROID
+			has_trait = trait_necrophage
+			has_trait = trait_deviants
+			has_trait = trait_very_strong
+		}
+
+	}
+
+}
+
+SFTt_PrE_AVB = {														##### 아베'브렌의 파수꾼
+
+	AND = {
+
+		has_authority = auth_imperial
+		has_origin = origin_default
+		has_valid_civic = civic_philosopher_king
+		has_valid_civic = civic_environmentalist
+		has_ethic = ethic_pacifist
+		has_ethic = ethic_fanatic_spiritualist
+
+		owner_species = {
+			is_species_class = LITHOID
+			has_trait = trait_lithoid
+			has_trait = trait_communal
+			has_trait = trait_industrious
+			has_trait = trait_sedentary
+		}
+
+	}
+
+}
+
+SFTt_PrE_HZB = {														##### 하즈부잔 조직
+
+	AND = {
+
+		has_authority = auth_corporate
+		has_origin = origin_default
+		has_valid_civic = civic_criminal_heritage
+		has_valid_civic = civic_franchising
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_spiritualist
+
+		owner_species = {
+			is_species_class = REP
+			has_trait = trait_ingenious
+			has_trait = trait_thrifty
+			has_trait = trait_deviants
+			has_trait = trait_quarrelsome
+		}
+
+	}
+
+}
+
+SFTt_PrE_ECS = {														##### 지구 관리단
+
+	AND = {
+
+		has_authority = auth_machine_intelligence
+		has_origin = origin_default
+		has_valid_civic = civic_machine_servitor
+		has_valid_civic = civic_machine_delegated_functions
+		has_ethic = ethic_gestalt_consciousness
+
+		owner_species = {
+			is_species_class = MACHINE
+			has_trait = trait_machine_unit
+			has_trait = trait_robot_emotion_emulators
+			has_trait = trait_robot_double_jointed
+			has_trait = trait_robot_high_maintenance
+		}
+
+	}
+
+}
+
+SFTt_PrE_TEB = {														##### 테브리드 동족체
+
+	AND = {
+
+		has_authority = auth_machine_intelligence
+		has_origin = origin_default
+		has_valid_civic = civic_machine_assimilator
+		has_valid_civic = civic_machine_predictive_analysis
+		has_ethic = ethic_gestalt_consciousness
+
+		owner_species = {
+			is_species_class = MACHINE
+			has_trait = trait_machine_unit
+			has_trait = trait_robot_logic_engines
+			has_trait = trait_robot_learning_algorithms
+			has_trait = trait_robot_luxurious
+		}
+
+	}
+
+}
+
+SFTt_PrE_XT4 = {														##### XT-489 말살국
+
+	AND = {
+
+		has_authority = auth_machine_intelligence
+		has_origin = origin_default
+		has_valid_civic = civic_machine_terminator
+		has_valid_civic = civic_machine_warbots
+		has_ethic = ethic_gestalt_consciousness
+
+		owner_species = {
+			is_species_class = MACHINE
+			has_trait = trait_machine_unit
+			has_trait = trait_robot_power_drills
+			has_trait = trait_robot_mass_produced
+			has_trait = trait_robot_uncanny
+			has_trait = trait_robot_bulky
+		}
+
+	}
+
+}
+
+SFTt_PrE_LOK = {														##### 로켄 기계론자
+
+	AND = {
+
+		has_authority = auth_democratic
+		has_origin = origin_mechanists
+		has_valid_civic = civic_technocracy
+		has_valid_civic = civic_meritocracy
+		has_ethic = ethic_egalitarian
+		has_ethic = ethic_fanatic_materialist
+
+		owner_species = {
+			is_species_class = REP
+			has_trait = trait_natural_engineers
+			has_trait = trait_talented
+			has_trait = trait_quick_learners
+			has_trait = trait_sedentary
+		}
+
+	}
+
+}
+
+SFTt_PrE_MWR = {														##### 마위어 관리인
+
+	AND = {
+
+		has_authority = auth_dictatorial
+		has_origin = origin_default
+		has_valid_civic = civic_idyllic_bloom
+		has_valid_civic = civic_agrarian_idyll
+		has_ethic = ethic_xenophobe
+		has_ethic = ethic_fanatic_pacifist
+
+		owner_species = {
+			is_species_class = PLANT
+			has_trait = trait_agrarian
+			has_trait = trait_enduring
+			has_trait = trait_conservational
+			has_trait = trait_slow_breeders
+		}
+
+	}
+
+}
+
+SFTt_PrE_NYR = {														##### 니르 수호대
+
+	AND = {
+
+		has_authority = auth_imperial
+		has_origin = origin_default
+		has_valid_civic = civic_sovereign_guardianship
+		has_valid_civic = civic_warrior_culture
+		has_ethic = ethic_authoritarian
+		has_ethic = ethic_fanatic_militarist
+
+		owner_species = {
+			is_species_class = REP
+			has_trait = trait_nonadaptive
+			has_trait = trait_sedentary
+			has_trait = trait_venerable
+			has_trait = trait_slow_breeders
+			has_trait = trait_very_strong
+		}
+
+	}
+
+}
+
+SFTt_PrE_PRK = {														##### 프릭키키-티
+
+	AND = {
+
+		has_valid_civic = civic_fanatic_purifiers
+		has_valid_civic = civic_cutthroat_politics
+		has_ethic = ethic_fanatic_xenophobe
+		has_ethic = ethic_militarist
+
+		owner_species = {
+			is_species_class = REP
+			has_trait = trait_industrious
+			has_trait = trait_solitary
+			has_trait = trait_decadent
+		}
+
+	}
+
+}

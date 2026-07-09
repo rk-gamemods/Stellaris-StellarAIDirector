@@ -74,8 +74,6 @@
 @high_trade_from_jobs = 0.15
 @holomuseum_specimen_produces_mult = 0.15
 @medical_workforce_mult = 0.05
-@minerals_reseource_building_tier2_factor = 1.12
-@minerals_reseource_building_tier3_factor = 1.12
 @nomadic_minerals_to_strategic_ratio	= 0.1
 @tier_2_capital_defense_armies = 4
 @tier_3_capital_defense_armies = 8
@@ -2240,8 +2238,8 @@ holding_offworld_foundry = {
 	}
 }
 
-# object = building:building_mineral_purification_hub; source = Stellar AI::common\buildings\~stellarai_resource_buildings.txt
-# staid_dataset_job_pressure = family:alloy_scaling jobs:800.0 roi2250:5766050.0 flags:has_ai_or_direct_output|has_build_cost|has_jobs|has_upkeep|overridden_in_stack|uses_inline_script
+# object = building:building_mineral_purification_hub; source = Stellaris vanilla::common\buildings\03_resource_buildings.txt
+# staid_dataset_job_pressure = family:alloy_scaling jobs:800.0 roi2250:5766050.0 flags:ai_weight_absent|has_ai_or_direct_output|has_build_cost|has_jobs|has_upkeep|uses_inline_script
 building_mineral_purification_hub = {
 	desc = {
 		trigger = { NOT = { is_planet_class = pc_shattered_ring_habitable } }
@@ -2392,24 +2390,10 @@ building_mineral_purification_hub = {
 	show_tech_unlock_if = {
 		is_wilderness_empire = no
 	}
-
+	ai_weight_coefficient = 27
+	additional_ai_weight = 8428
 	ai_weight = {
-		factor = @minerals_reseource_building_tier3_factor
-		inline_script = {
-			script = stellarai/minerals_recovery_building_weight
-		}
-		inline_script = {
-			script = stellarai/rare_resource_guard_modifiers
-			STRATEGIC_RESOURCE = volatile_motes
-			MIN_INCOME = @b3_rare_upkeep
-			MIN_STOCKPILE = 10
-			EARLY_FACTOR = 0.35
-			EARLY_YEARS = 80
-			EARLY_STOCKPILE = 25
-			SURPLUS_FACTOR = 1.08
-			SURPLUS_INCOME = 4
-			SURPLUS_STOCKPILE = 45
-		}
+		factor = 1
 		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
 		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
 		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
@@ -2423,8 +2407,6 @@ building_mineral_purification_hub = {
 		modifier = { factor = 5 years_passed > 119 }
 		modifier = { factor = 8 owner = { has_monthly_income = { resource = alloys value < 500 } } }
 	}
-	ai_weight_coefficient = 27
-	additional_ai_weight = 8428
 
 	ai_resource_production = {
 		alloys = 1
@@ -5372,8 +5354,8 @@ building_giga_paluush_homes = {
 	}
 }
 
-# object = building:building_mineral_purification_plant; source = Stellar AI::common\buildings\~stellarai_resource_buildings.txt
-# staid_dataset_job_pressure = family:energy_scaling jobs:400.0 roi2250:2899500.0 flags:has_ai_or_direct_output|has_jobs|has_upkeep|overridden_in_stack|uses_inline_script
+# object = building:building_mineral_purification_plant; source = Stellaris vanilla::common\buildings\03_resource_buildings.txt
+# staid_dataset_job_pressure = family:energy_scaling jobs:400.0 roi2250:2899500.0 flags:ai_weight_absent|has_ai_or_direct_output|has_jobs|has_upkeep|uses_inline_script
 building_mineral_purification_plant = {
 	desc = {
 		trigger = {
@@ -5489,12 +5471,10 @@ building_mineral_purification_plant = {
 	show_tech_unlock_if = {
 		is_wilderness_empire = no
 	}
-
+	ai_weight_coefficient = 26
+	additional_ai_weight = 5139
 	ai_weight = {
-		factor = @minerals_reseource_building_tier2_factor
-		inline_script = {
-			script = stellarai/minerals_recovery_building_weight
-		}
+		factor = 1
 		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
 		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
 		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
@@ -5508,8 +5488,6 @@ building_mineral_purification_plant = {
 		modifier = { factor = 5 years_passed > 119 }
 		modifier = { factor = 8 owner = { has_monthly_income = { resource = energy value < 500 } } }
 	}
-	ai_weight_coefficient = 26
-	additional_ai_weight = 5139
 
 	ai_resource_production = {
 		energy = 10

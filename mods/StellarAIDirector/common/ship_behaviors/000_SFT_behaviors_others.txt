@@ -1,0 +1,22 @@
+
+ship_behavior = {
+	name										= "default"
+	preferred_attack_range						= median						# median
+	formation_distance							= @SFTz_RANGE_0010				# 10
+	return_to_formation_distance				= @SFTz_RTFD					# 500
+	collision_awareness							= @SFTz_COLLISION_SIZE_075		# 0.75
+	attack_move_pattern							= none 							# none
+	passive_move_pattern						= orbit 						# orbit
+	desc										= "DEFAULT_BEHAVIOR_DESC"
+}
+
+ship_behavior = {
+	name										= "stellarite_default"
+	preferred_attack_range						= max							# max
+	formation_distance							= @SFTz_RANGE_0010				# 75
+	return_to_formation_distance				= @SFTz_RTFD					# 500
+	collision_awareness							= @SFTz_COLLISION_SIZE_090		# 0.90
+	attack_move_pattern							= flee							# flee
+	passive_move_pattern						= charge						# charge
+	desc										= "STELLARITE_DEFAULT_BEHAVIOR_DESC"
+}

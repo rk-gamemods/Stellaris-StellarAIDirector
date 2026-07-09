@@ -1,0 +1,106 @@
+
+if = {
+
+	limit = { has_technology = tech_titans }
+
+	random_list = {
+
+		10 = {								##### [저격컴] TX 타이탄
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_05_TI_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_TI_TX years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_TI_TX" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_TI_TX }
+
+			modifier = { factor =   35		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_CAN_USE_X_SLOT = no }									##### X 슬롯 사용할 수 있을 떄에만 사용
+
+		}
+
+		10 = {								##### [저격컴] TL 타이탄
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_05_TI_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_TI_TL years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_TI_TL" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_TI_TL }
+
+			modifier = { factor =   40		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   60		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+		}
+
+		10 = {								##### [저격컴] TE 타이탄
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_05_TI_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_TI_TE years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_TI_TE" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_TI_TE }
+
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		country_uses_bio_ships = yes }									##### 바이오쉽은 S 슬롯에 미사일이 없다
+
+		}
+
+		10 = {								##### [저격컴] TS 타이탄
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_05_TI_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_TI_TS years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_TI_TS" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_TI_TS }
+
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   40		is_preferred_weapons = weapon_type_strike_craft }
+
+		}
+
+		10 = {								##### [포격컴] EX 타이탄
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_05_TI_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_TI_EX years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_TI_EX" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_TI_EX }
+
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   65		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		country_uses_bio_ships = yes }									##### 바이오쉽은 S 슬롯에 미사일이 없다
+
+		}
+
+		10 = {								##### [항모컴] SC 타이탄
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_05_TI_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_TI_SC years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_TI_SC" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_TI_SC }
+
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   40		is_preferred_weapons = weapon_type_strike_craft }
+
+		}
+
+	}
+
+}

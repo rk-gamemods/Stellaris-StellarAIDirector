@@ -12,6 +12,7 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 | Extra Ship Components NEXT | available | `C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\2648658105-extra-ship-components-next` |
 | Starbase Extended 3.0 | available | `C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\3250900527-starbase-extended-30` |
 | Stellar AI | available | `C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\mod-source-snapshots\2026-07-04\3610149307-stellar-ai` |
+| Spacefleet Tactica | available | `.` |
 | !!!Universal Resource Patch [2.4+] | missing_snapshot | `.` |
 
 ## Artifact Counts

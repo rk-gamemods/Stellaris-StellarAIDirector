@@ -1,0 +1,690 @@
+# Healing "Weapons"
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_healing_weapons
+		TIER = 1
+		EXOTIC_GASES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = HEALING_GUN_2
+	projectile_gfx = "biogenesis_01_healing_projectile"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_healing_weapons
+		TIER = 2
+		EXOTIC_GASES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = HEALING_GUN_3
+	projectile_gfx = "biogenesis_01_healing_projectile"
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_healing_weapons
+		TIER = 3
+		EXOTIC_GASES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = HEALING_GUN_4
+	projectile_gfx = "biogenesis_01_healing_projectile"
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_healing_weapons
+		TIER = 4
+		EXOTIC_GASES = @s_t4_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = HEALING_GUN_5
+	projectile_gfx = "biogenesis_01_healing_projectile"
+
+	ai_weight = {
+		weight = 4
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_healing_weapons
+		TIER = 5
+		EXOTIC_GASES = @s_t5_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = HEALING_GUN_6
+	projectile_gfx = "biogenesis_01_healing_projectile"
+
+	ai_weight = {
+		weight = 5
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = exotic_gases }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_healing_weapons
+		TIER = 6
+		EXOTIC_GASES = 0
+		DARK_MATTER = @s_t6_rare
+		REPAIR_AMOUNT = 60
+	}
+
+	projectile_gfx = "biogenesis_01_healing_projectile"
+
+	ai_weight = {
+		weight = 6
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+# Confusing "Weapons"
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_confusing_weapons
+		TIER = 1
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = CONFUSER_GUN_2
+	projectile_gfx = "biogenesis_01_confuser_laser"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_confusing_weapons
+		TIER = 2
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = CONFUSER_GUN_3
+	projectile_gfx = "biogenesis_01_confuser_laser"
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_confusing_weapons
+		TIER = 3
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = CONFUSER_GUN_4
+	projectile_gfx = "biogenesis_01_confuser_laser"
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_confusing_weapons
+		TIER = 4
+		VOLATILE_MOTES = @s_t4_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = CONFUSER_GUN_5
+	projectile_gfx = "biogenesis_01_confuser_laser"
+
+	ai_weight = {
+		weight = 4
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_confusing_weapons
+		TIER = 5
+		VOLATILE_MOTES = @s_t5_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = CONFUSER_GUN_6
+	projectile_gfx = "biogenesis_01_confuser_laser"
+
+	ai_weight = {
+		weight = 5
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_confusing_weapons
+		TIER = 6
+		VOLATILE_MOTES = 0
+		DARK_MATTER = @s_t6_rare
+		REPAIR_AMOUNT = 60
+	}
+
+	projectile_gfx = "biogenesis_01_confuser_laser"
+
+	ai_weight = {
+		weight = 6
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+# Anti-Evasion "Weapons"
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_evasion_weapons
+		TIER = 1
+		RARE_CRYSTALS = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_EVASION_GUN_2
+	projectile_gfx = "biogenesis_01_anti_evasion_projectile"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_evasion_weapons
+		TIER = 2
+		RARE_CRYSTALS = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_EVASION_GUN_3
+	projectile_gfx = "biogenesis_01_anti_evasion_projectile"
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_evasion_weapons
+		TIER = 3
+		RARE_CRYSTALS = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_EVASION_GUN_4
+	projectile_gfx = "biogenesis_01_anti_evasion_projectile"
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_evasion_weapons
+		TIER = 4
+		RARE_CRYSTALS = @s_t4_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_EVASION_GUN_5
+	projectile_gfx = "biogenesis_01_anti_evasion_projectile"
+
+	ai_weight = {
+		weight = 4
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = rare_crystals }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_evasion_weapons
+		TIER = 5
+		RARE_CRYSTALS = @s_t5_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_EVASION_GUN_6
+	projectile_gfx = "biogenesis_01_anti_evasion_projectile"
+
+	ai_weight = {
+		weight = 5
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = rare_crystals }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_evasion_weapons
+		TIER = 6
+		RARE_CRYSTALS = 0
+		DARK_MATTER = @s_t6_rare
+	}
+
+	projectile_gfx = "biogenesis_01_anti_evasion_projectile"
+
+	ai_weight = {
+		weight = 6
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+# Evasion "Weapons"
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_evasion_weapons
+		TIER = 1
+		RARE_CRYSTALS = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = EVASION_GUN_2
+	projectile_gfx = "biogenesis_01_evasion_projectile"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_evasion_weapons
+		TIER = 2
+		RARE_CRYSTALS = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = EVASION_GUN_3
+	projectile_gfx = "biogenesis_01_evasion_projectile"
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_evasion_weapons
+		TIER = 3
+		RARE_CRYSTALS = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = EVASION_GUN_4
+	projectile_gfx = "biogenesis_01_evasion_projectile"
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_evasion_weapons
+		TIER = 4
+		RARE_CRYSTALS = @s_t4_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = EVASION_GUN_5
+	projectile_gfx = "biogenesis_01_evasion_projectile"
+
+	ai_weight = {
+		weight = 4
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = rare_crystals }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_evasion_weapons
+		TIER = 5
+		RARE_CRYSTALS = @s_t5_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = EVASION_GUN_6
+	projectile_gfx = "biogenesis_01_evasion_projectile"
+
+	ai_weight = {
+		weight = 5
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = rare_crystals }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_evasion_weapons
+		TIER = 6
+		RARE_CRYSTALS = 0
+		DARK_MATTER = @s_t6_rare
+		REPAIR_AMOUNT = 60
+	}
+
+	projectile_gfx = "biogenesis_01_evasion_projectile"
+
+	ai_weight = {
+		weight = 6
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+# Anti-Fire Rate "Weapons"
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_fire_rate_weapons
+		TIER = 1
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_FIRE_RATE_GUN_2
+	projectile_gfx = "biogenesis_01_anti_fire_rate_laser"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_fire_rate_weapons
+		TIER = 2
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_FIRE_RATE_GUN_3
+	projectile_gfx = "biogenesis_01_anti_fire_rate_laser"
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_fire_rate_weapons
+		TIER = 3
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_FIRE_RATE_GUN_4
+	projectile_gfx = "biogenesis_01_anti_fire_rate_laser"
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_fire_rate_weapons
+		TIER = 4
+		VOLATILE_MOTES = @s_t4_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_FIRE_RATE_GUN_5
+	projectile_gfx = "biogenesis_01_anti_fire_rate_laser"
+
+	ai_weight = {
+		weight = 4
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_fire_rate_weapons
+		TIER = 5
+		VOLATILE_MOTES = @s_t5_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = ANTI_FIRE_RATE_GUN_6
+	projectile_gfx = "biogenesis_01_anti_fire_rate_laser"
+
+	ai_weight = {
+		weight = 5
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_anti_fire_rate_weapons
+		TIER = 6
+		VOLATILE_MOTES = 0
+		DARK_MATTER = @s_t6_rare
+		REPAIR_AMOUNT = 60
+	}
+
+	tags = { weapon_type_energy }
+	projectile_gfx = "biogenesis_01_anti_fire_rate_laser"
+
+	ai_weight = {
+		weight = 6
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_debuff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}
+
+# Fire Rate "Weapons"
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_fire_rate_weapons
+		TIER = 1
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = FIRE_RATE_GUN_2
+	projectile_gfx = "biogenesis_01_fire_rate_laser"
+
+	ai_weight = {
+		weight = 1
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_fire_rate_weapons
+		TIER = 2
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = FIRE_RATE_GUN_3
+	projectile_gfx = "biogenesis_01_fire_rate_laser"
+
+	ai_weight = {
+		weight = 2
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_fire_rate_weapons
+		TIER = 3
+		VOLATILE_MOTES = 0
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = FIRE_RATE_GUN_4
+	projectile_gfx = "biogenesis_01_fire_rate_laser"
+
+	ai_weight = {
+		weight = 3
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_fire_rate_weapons
+		TIER = 4
+		VOLATILE_MOTES = @s_t4_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = FIRE_RATE_GUN_5
+	projectile_gfx = "biogenesis_01_fire_rate_laser"
+
+	ai_weight = {
+		weight = 4
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_fire_rate_weapons
+		TIER = 5
+		VOLATILE_MOTES = @s_t5_rare
+		DARK_MATTER = 0
+	}
+
+	upgrades_to = FIRE_RATE_GUN_6
+	projectile_gfx = "biogenesis_01_fire_rate_laser"
+
+	ai_weight = {
+		weight = 5
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = volatile_motes }
+		}
+	}
+}
+
+weapon_component_template = {
+	inline_script = {
+		script = ship_components/bio_weaver_SFT_fire_rate_weapons
+		TIER = 6
+		VOLATILE_MOTES = 0
+		DARK_MATTER = @s_t6_rare
+		REPAIR_AMOUNT = 60
+	}
+
+	tags = { weapon_type_energy }
+	projectile_gfx = "biogenesis_01_fire_rate_laser"
+
+	ai_weight = {
+		weight = 6
+		inline_script = ship_components/compo_weight/IN_LINE_compo_weight_WPN_weaver_buff
+		modifier = {
+			factor = 0.0
+			no_resource_for_component = { RESOURCE = sr_dark_matter }
+		}
+	}
+}

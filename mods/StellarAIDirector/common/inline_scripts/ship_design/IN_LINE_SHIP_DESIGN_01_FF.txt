@@ -1,0 +1,150 @@
+
+if = {
+
+	limit = { uses_standard_ship_sizes = yes has_technology = tech_torpedoes_1 }
+
+	random_list = {
+
+		10 = {								##### [무리컴] 일반 호위함, 함선구획은 관계없지만 S1G1 에 2배 가중치
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_FF_TP years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_FF_TP" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_FF_TP }
+
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   25		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   35		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor = 5000		SFTt_CRAZY_FOR_MISSILE = yes }								##### [AIP] 장거리 미사일에 미친 AIP
+
+		}
+
+		10 = {								##### [포격컴] 장거리 에너지 어뢰 호위함, G2 만 사용
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_FF_ET years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_FF_ET" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_FF_ET }
+
+			modifier = { factor =   40		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   20		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   25		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_CAN_USE_ET = no }										##### 에너지 어뢰 사용할 수 있을 떄에만 사용
+			modifier = { factor =   80		SFTt_LAST_INC_TECH_E_TP = yes }								##### 에너지 어뢰 개발 직후 가중치 추가 (2회)
+
+			modifier = { factor = 5000		SFTt_CO_HV_ALL_XL = yes }									##### [AIP] 초계함만 던지고 all X 쓰는 거포 AIP
+
+		}
+
+		10 = {								##### [제압컴] 해병대 상륙 호위함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_FF_MR years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_FF_MR" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_FF_MR }
+
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_ADDON_FF_SP_ACTIVATED = no }							##### SOF 애드온 작동시만 사용가능
+
+			modifier = { factor =  100		SFTt_LAST_INC_TECH_MRIN = yes }								##### 부품 연구 직후 가중치 추가 (2회)
+
+		}
+
+		10 = {								##### [지원컴] 지원 호위함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_FF_BF years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_FF_BF" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_FF_BF }
+
+			modifier = { factor =   15		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   25		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_ADDON_FF_SP_ACTIVATED = no }							##### SOF 애드온 작동시만 사용가능
+
+			modifier = { factor =    0		SFTt_CAN_USE_FF_BF = no }									##### 부품 연구 요구치
+			modifier = { factor =  100		last_increased_tech = tech_shields_3 }						##### 부품 연구 직후 가중치 추가 (1회)
+			modifier = { factor =  100		last_increased_tech = tech_auxiliary_fire_control }			##### 부품 연구 직후 가중치 추가 (1회)
+
+		}
+
+		10 = {								##### [지원컴] 수리 호위함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_FF_RP years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_FF_RP" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_FF_RP }
+
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_ADDON_FF_SP_ACTIVATED = no }							##### SOF 애드온 작동시만 사용가능
+
+			modifier = { factor =    0		NOT = { has_technology = tech_ship_armor_3 } }				##### 부품 연구 요구치
+			modifier = { factor =  100		last_increased_tech = tech_ship_armor_3 }					##### 부품 연구 직후 가중치 추가 (1회)
+
+			modifier = { factor =    0		NOT = { has_technology = tech_strike_craft_1 } }			##### 부품 연구 요구치
+			modifier = { factor =  100		last_increased_tech = tech_strike_craft_1 }					##### 부품 연구 직후 가중치 추가 (1회)
+
+		}
+
+		10 = {								##### [제압컴] 위상 추방기 호위함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_FF_DB years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_FF_DB" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_FF_DB }
+
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =    5		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_ADDON_FF_SP_ACTIVATED = no }							##### SOF 애드온 작동시만 사용가능
+
+			modifier = { factor =    0		NOT = { has_technology = tech_wormhole_stabilization } }	##### 부품 연구 요구치
+			modifier = { factor =  100		last_increased_tech = tech_wormhole_stabilization }			##### 부품 연구 직후 가중치 추가 (1회)
+
+		}
+
+		10 = {								##### [제압컴] 웨비파이어 호위함
+
+			inline_script = 				ship_design/IN_LINE_SHIP_DESIGN_01_FF_clear
+			set_timed_country_flag = {		flag = SFTf_DESIGN_FF_WB years = 11 }
+			inline_script = {				script = ship_design/IN_LINE_SHIP_DESIGN_zz_LOG SFTf_DESIGN_FLAG = "SFTf_DESIGN_FF_WB" }
+
+			modifier = { factor =  100		has_country_flag = SFTf_DESIGN_FF_WB }
+
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_energy }
+			modifier = { factor =   10		is_preferred_weapons = weapon_type_kinetic }
+			modifier = { factor =   20		is_preferred_weapons = weapon_type_explosive }
+			modifier = { factor =   35		is_preferred_weapons = weapon_type_strike_craft }
+
+			modifier = { factor =    0		SFTt_ADDON_FF_SP_ACTIVATED = no }							##### SOF 애드온 작동시만 사용가능
+
+			modifier = { factor =    0		NOT = { has_technology = tech_ftl_inhibitor } }				##### 부품 연구 요구치
+			modifier = { factor =  100		last_increased_tech = tech_ftl_inhibitor }					##### 부품 연구 직후 가중치 추가 (1회)
+
+		}
+
+	}
+
+}

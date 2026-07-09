@@ -1,0 +1,23 @@
+
+if = {
+
+	limit = { has_global_flag = SFTf_DESIGN_LOG }
+
+	if = {
+		limit = { is_preferred_weapons = weapon_type_energy }
+		log = "                                     [GetDate] / [This.GetPersonalityName] / EN / [This.GetName] / $SFTf_DESIGN_FLAG$                                                   "
+	}
+	else_if = {
+		limit = { is_preferred_weapons = weapon_type_kinetic }
+		log = "                                     [GetDate] / [This.GetPersonalityName] / KI / [This.GetName] / $SFTf_DESIGN_FLAG$                                                   "
+	}
+	else_if = {
+		limit = { is_preferred_weapons = weapon_type_explosive }
+		log = "                                     [GetDate] / [This.GetPersonalityName] / EX / [This.GetName] / $SFTf_DESIGN_FLAG$                                                   "
+	}
+	else_if = {
+		limit = { is_preferred_weapons = weapon_type_strike_craft }
+		log = "                                     [GetDate] / [This.GetPersonalityName] / SC / [This.GetName] / $SFTf_DESIGN_FLAG$                                                   "
+	}
+
+}

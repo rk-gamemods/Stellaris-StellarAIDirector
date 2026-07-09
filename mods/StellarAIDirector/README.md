@@ -25,8 +25,8 @@ Missing required Steam parents during generation: none.
 
 - Stellar AI source was used as private local parity evidence, not as a launch
   dependency.
-- Reference present during generation: True.
-- Reference load position during generation: 115.
+- Reference present during generation: False.
+- Reference load position during generation: None.
 - Absorbed/reimplemented baseline surfaces: `common/ai_budget`,
   `common/economic_plans`, construction-pressure defines and budgets,
   research/economy/fleet conversion, market/runway safety, claim/war-support

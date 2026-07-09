@@ -1,0 +1,121 @@
+
+SFTt_SHIP_SIZE_CO = {
+	OR = {
+		is_ship_size = corvette
+		is_ship_size = offspring_corvette
+	}
+}
+
+SFTt_SHIP_SIZE_FF = {
+	OR = {
+		is_ship_size = frigate
+	}
+}
+
+SFTt_SHIP_SIZE_DD = {
+	OR = {
+		is_ship_size = destroyer
+		is_ship_size = offspring_destroyer
+	}
+}
+
+SFTt_SHIP_SIZE_CC = {
+	OR = {
+		is_ship_size = cruiser
+		is_ship_size = offspring_cruiser
+		is_ship_size = ember_cruiser
+	}
+}
+
+SFTt_SHIP_SIZE_BB = {
+	OR = {
+		is_ship_size = battleship
+		is_ship_size = offspring_battleship
+		is_ship_size = ember_battleship
+	}
+}
+
+SFTt_SHIP_SIZE_TI = {
+	OR = {
+		is_ship_size = titan
+		is_ship_size = bio_titan
+#x		is_ship_size = cosmo_crisis_titan
+#x		is_ship_size = large_fallen_stinger
+#x		is_ship_size = cosmo_crisis_stinger
+	}
+}
+
+SFTt_SHIP_SIZE_MO = {
+	OR = {
+		is_ship_size = mauler_stage_1
+		is_ship_size = mauler_stage_2
+		is_ship_size = mauler_stage_3
+		is_ship_size = offspring_mauler_stage_1
+		is_ship_size = offspring_mauler_stage_2
+		is_ship_size = offspring_mauler_stage_3
+	}
+}
+
+SFTt_SHIP_SIZE_WV = {
+	OR = {
+		is_ship_size = weaver_stage_1
+		is_ship_size = weaver_stage_2
+		is_ship_size = weaver_stage_3
+		is_ship_size = offspring_weaver_stage_1
+		is_ship_size = offspring_weaver_stage_2
+		is_ship_size = offspring_weaver_stage_3
+	}
+}
+
+SFTt_SHIP_SIZE_HB = {
+	OR = {
+		is_ship_size = harbinger_stage_1
+		is_ship_size = harbinger_stage_2
+		is_ship_size = harbinger_stage_3
+		is_ship_size = offspring_harbinger_stage_1
+		is_ship_size = offspring_harbinger_stage_2
+		is_ship_size = offspring_harbinger_stage_3
+	}
+}
+
+SFTt_SHIP_SIZE_ST = {
+	OR = {
+		is_ship_size = stinger_stage_1
+		is_ship_size = stinger_stage_2
+		is_ship_size = stinger_stage_3
+		is_ship_size = offspring_stinger_stage_1
+		is_ship_size = offspring_stinger_stage_2
+		is_ship_size = offspring_stinger_stage_3
+	}
+}
+
+SFTt_SHIP_SIZE_BIGSHIP_NO_USE_AC = {
+
+	OR = {
+
+		is_ship_size = titan
+		is_ship_size = bio_titan
+		is_ship_size = cosmo_crisis_battlecruiser
+		is_ship_size = cosmo_crisis_titan
+		is_ship_size = large_fallen_stinger
+		is_ship_size = cosmo_crisis_stinger
+
+		is_ship_size = starbase_outpost
+		is_ship_size = starbase_starport
+		is_ship_size = starbase_starhold
+		is_ship_size = starbase_starfortress
+		is_ship_size = starbase_citadel
+		is_ship_size = orbital_ring_tier_1
+		is_ship_size = orbital_ring_tier_2
+		is_ship_size = orbital_ring_tier_3
+
+		is_ship_size = starbase_deep_space_citadel_1
+		is_ship_size = starbase_deep_space_citadel_2
+		is_ship_size = starbase_deep_space_citadel_3
+
+		is_ship_size = starbase_stronghold							##### NSC 에서 추가된 항성기지
+		is_ship_size = starbase_headquarters						##### NSC 에서 추가된 항성기지
+
+	}
+
+}
