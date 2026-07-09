@@ -44,6 +44,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Trade is modeled as Stellaris 4.4 logistics/capacity headroom, not as a normal priced ROI resource.
 - The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object replacement keeps trade logistics visible while pushing beyond vanilla/Stellar AI scale.
 - Fleet, planetary, megastructure, static-defense, and surplus gates require trade income floors before adding more ship, colony, or resource-imbalance upkeep pressure.
+- Advanced component and modded fleet conversion routes require core support runway, fleet-level trade capacity, and strategic-resource income before their strategic-resource pressure can fire.
 
 ## Market Cap-Breaker Policy
 

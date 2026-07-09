@@ -736,6 +736,12 @@ staid_fleet_payoff_exploitation_ready = {
 
 staid_advanced_component_resource_support_ready = {
 	NOT = { staid_catastrophic_collapse_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		staid_basic_economy_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
+	staid_trade_fleet_capacity_safe = yes
 	OR = {
 		has_monthly_income = { resource = volatile_motes value > 5 }
 		has_monthly_income = { resource = exotic_gases value > 5 }

@@ -10328,6 +10328,12 @@ staid_fleet_payoff_exploitation_ready = {
 
 staid_advanced_component_resource_support_ready = {
 	NOT = { staid_catastrophic_collapse_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		staid_basic_economy_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+	}
+	staid_trade_fleet_capacity_safe = yes
 	OR = {
 		has_monthly_income = { resource = volatile_motes value > 5 }
 		has_monthly_income = { resource = exotic_gases value > 5 }
@@ -12081,6 +12087,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Trade is modeled as Stellaris 4.4 logistics/capacity headroom, not as a normal priced ROI resource.",
         "- The generated `basic_economy_plan` includes trade reserve and trade recovery subplans so the Director's full-object replacement keeps trade logistics visible while pushing beyond vanilla/Stellar AI scale.",
         "- Fleet, planetary, megastructure, static-defense, and surplus gates require trade income floors before adding more ship, colony, or resource-imbalance upkeep pressure.",
+        "- Advanced component and modded fleet conversion routes require core support runway, fleet-level trade capacity, and strategic-resource income before their strategic-resource pressure can fire.",
         "",
         "## Market Cap-Breaker Policy",
         "",

@@ -1142,6 +1142,8 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_esc_component_unlock_ready = {",
             "staid_advanced_component_resource_support_ready = {",
             "staid_modded_fleet_conversion_ready = {",
+            "NOT = { staid_core_deficit_short_runway = yes }",
+            "staid_trade_fleet_capacity_safe = yes",
             "resource = sr_dark_matter value > 1",
             "resource = giga_sr_sentient_metal value > 1",
             "staid_nsc3_capital_hull_unlock_ready = yes",
@@ -1179,6 +1181,42 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertNotIn("has_monthly_income = { resource = alloys value > 200 }", shipyard_block)
         self.assertIn("resource_stockpile_compare = { resource = alloys value >", shipyard_block)
         self.assertIn("resource_stockpile_compare = { resource = energy value > 8000 }", fleet_block)
+
+    def test_support_economy_bridge_keeps_resource_bottlenecks_first_class(self):
+        trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        parse_file(trigger_path)
+        text = trigger_path.read_text(encoding="utf-8")
+        basic_block = text[text.index("staid_basic_economy_runway_safe = {") : text.index("staid_trade_capacity_safe = {")]
+        advanced_block = text[
+            text.index("staid_advanced_component_resource_support_ready = {") : text.index(
+                "staid_nsc3_capital_hull_unlock_ready = {"
+            )
+        ]
+        megastructure_block = text[
+            text.index("staid_megastructure_prep_ready = {") : text.index("staid_megastructure_commit_safe = {")
+        ]
+        for marker in (
+            "staid_research_input_runway_safe = yes",
+            "staid_food_runway_safe = yes",
+            "NOT = { has_deficit = minerals }",
+            "NOT = { has_deficit = alloys }",
+            "has_monthly_income = { resource = minerals value > 100 }",
+            "has_monthly_income = { resource = alloys value > 75 }",
+        ):
+            self.assertIn(marker, basic_block)
+        for marker in (
+            "NOT = { staid_core_deficit_short_runway = yes }",
+            "staid_basic_economy_runway_safe = yes",
+            "staid_trade_fleet_capacity_safe = yes",
+            "has_monthly_income = { resource = volatile_motes value > 5 }",
+            "has_monthly_income = { resource = sr_dark_matter value > 1 }",
+            "has_monthly_income = { resource = giga_sr_negative_mass value > 1 }",
+            "has_monthly_income = { resource = giga_sr_amb_megaconstruction value > 1 }",
+        ):
+            self.assertIn(marker, advanced_block)
+        self.assertIn("staid_trade_planetary_capacity_safe = yes", megastructure_block)
+        self.assertNotIn("Stellar AI Director generic trade sell", text)
+        self.assertNotIn("Stellar AI Director generic trade buy", text)
 
     def test_research_infrastructure_overrides_drive_labs_and_habitat_science(self):
         buildings_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt"
