@@ -114,24 +114,59 @@ RESOURCE_AMOUNT_JSON_COLUMNS = {
     ),
     "buildings": (
         "direct_output_json",
+        "direct_triggered_output_json",
+        "direct_optimistic_output_json",
         "direct_upkeep_json",
+        "direct_triggered_upkeep_json",
+        "direct_optimistic_upkeep_json",
+        "job_base_output_json",
+        "job_triggered_output_json",
         "job_output_json",
+        "job_base_upkeep_json",
+        "job_triggered_upkeep_json",
         "job_upkeep_json",
+        "base_output_json",
+        "triggered_output_json",
+        "optimistic_output_json",
         "total_output_json",
+        "base_upkeep_json",
+        "triggered_upkeep_json",
+        "optimistic_upkeep_json",
         "total_upkeep_json",
     ),
     "development": (
         "direct_output_json",
+        "direct_triggered_output_json",
+        "direct_optimistic_output_json",
         "direct_upkeep_json",
+        "direct_triggered_upkeep_json",
+        "direct_optimistic_upkeep_json",
+        "job_base_output_json",
+        "job_triggered_output_json",
         "job_output_json",
+        "job_base_upkeep_json",
+        "job_triggered_upkeep_json",
         "job_upkeep_json",
+        "base_output_json",
+        "triggered_output_json",
+        "optimistic_output_json",
         "total_output_json",
+        "base_upkeep_json",
+        "triggered_upkeep_json",
+        "optimistic_upkeep_json",
         "total_upkeep_json",
+        "base_net_resources_json",
+        "conservative_net_resources_json",
+        "optimistic_net_resources_json",
         "net_resources_json",
     ),
     "strategic_infrastructure": (
         "direct_output_json",
+        "direct_triggered_output_json",
+        "direct_optimistic_output_json",
         "direct_upkeep_json",
+        "direct_triggered_upkeep_json",
+        "direct_optimistic_upkeep_json",
     ),
 }
 
@@ -158,6 +193,13 @@ def net_amounts(output: dict[str, float], upkeep: dict[str, float]) -> dict[str,
     net = dict(output)
     add_amounts(net, upkeep, -1.0)
     return net
+
+
+def combined_amounts(*amounts: dict[str, float]) -> dict[str, float]:
+    combined: dict[str, float] = {}
+    for item in amounts:
+        add_amounts(combined, item)
+    return combined
 
 
 def classify_colony_class(object_id: str) -> str:
@@ -435,16 +477,23 @@ def collect_winning_jobs(playset: dict[str, Any]) -> dict[str, dict[str, Any]]:
                 "optimistic_research_total": round(research_total(optimistic_output), 6),
                 "unresolved_variables": "|".join(sorted(unresolved)) or "none",
                 **resource_columns("base_output", base_output),
+                **resource_columns("triggered_output", triggered_output),
                 **resource_columns("optimistic_output", optimistic_output),
+                **resource_columns("base_upkeep", base_upkeep),
+                **resource_columns("triggered_upkeep", triggered_upkeep),
                 **resource_columns("optimistic_upkeep", optimistic_upkeep),
             }
         )
     return winners
 
 
-def direct_resource_blocks(value: PDXBlock, variables: dict[str, float]) -> tuple[dict[str, float], dict[str, float], set[str]]:
+def direct_resource_blocks(
+    value: PDXBlock, variables: dict[str, float]
+) -> tuple[dict[str, float], dict[str, float], dict[str, float], dict[str, float], set[str]]:
     output: dict[str, float] = {}
+    triggered_output: dict[str, float] = {}
     upkeep: dict[str, float] = {}
+    triggered_upkeep: dict[str, float] = {}
     unresolved: set[str] = set()
     for resources in block_assignments(value, "resources"):
         if not isinstance(resources.value, PDXBlock):
@@ -454,15 +503,23 @@ def direct_resource_blocks(value: PDXBlock, variables: dict[str, float]) -> tupl
                 amounts, missing = _collect_resource_amounts(assignment.value, variables)
                 add_amounts(output, amounts)
                 unresolved.update(missing)
+            elif assignment.key in {"triggered_produces", "triggered_produced_resources"}:
+                amounts, missing = _collect_resource_amounts(assignment.value, variables)
+                add_amounts(triggered_output, amounts)
+                unresolved.update(missing)
             elif assignment.key == "upkeep":
                 amounts, missing = _collect_resource_amounts(assignment.value, variables)
                 add_amounts(upkeep, amounts)
+                unresolved.update(missing)
+            elif assignment.key == "triggered_upkeep":
+                amounts, missing = _collect_resource_amounts(assignment.value, variables)
+                add_amounts(triggered_upkeep, amounts)
                 unresolved.update(missing)
     for ai_production in block_assignments(value, "ai_resource_production"):
         amounts, missing = _collect_resource_amounts(ai_production.value, variables)
         add_amounts(output, amounts)
         unresolved.update(missing)
-    return output, upkeep, unresolved
+    return output, triggered_output, upkeep, triggered_upkeep, unresolved
 
 
 def source_gate_summary(value: PDXBlock) -> dict[str, str]:
@@ -518,10 +575,16 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
             continue
         value = row["value"]
         jobs_created, missing_jobs = _collect_job_adds(value, variables)
-        direct_output, direct_upkeep, missing_direct = direct_resource_blocks(value, variables)
+        direct_output, direct_triggered_output, direct_upkeep, direct_triggered_upkeep, missing_direct = direct_resource_blocks(value, variables)
+        direct_optimistic_output = combined_amounts(direct_output, direct_triggered_output)
+        direct_optimistic_upkeep = combined_amounts(direct_upkeep, direct_triggered_upkeep)
         modifier_effects, missing_modifiers = collect_building_research_modifier_effects(value, variables)
         gates = source_gate_summary(value)
+        job_base_output: dict[str, float] = {}
+        job_triggered_output: dict[str, float] = {}
         job_output: dict[str, float] = {}
+        job_base_upkeep: dict[str, float] = {}
+        job_triggered_upkeep: dict[str, float] = {}
         job_upkeep: dict[str, float] = {}
         job_subject_counts: dict[str, float] = {}
         unknown_jobs: list[str] = []
@@ -531,7 +594,11 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                 unknown_jobs.append(job_id)
                 continue
             job_equivalents = normalize_job_workforce(count)
+            add_amounts(job_base_output, json.loads(str(job["base_output_json"])), job_equivalents)
+            add_amounts(job_triggered_output, json.loads(str(job["triggered_output_json"])), job_equivalents)
             add_amounts(job_output, json.loads(str(job["optimistic_output_json"])), job_equivalents)
+            add_amounts(job_base_upkeep, json.loads(str(job["base_upkeep_json"])), job_equivalents)
+            add_amounts(job_triggered_upkeep, json.loads(str(job["triggered_upkeep_json"])), job_equivalents)
             add_amounts(job_upkeep, json.loads(str(job["optimistic_upkeep_json"])), job_equivalents)
             subject = str(job["subject"])
             category = str(job.get("category", ""))
@@ -540,10 +607,14 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                 job_subject_counts[category.removeprefix("planet_")] = (
                     job_subject_counts.get(category.removeprefix("planet_"), 0.0) + job_equivalents
                 )
-        total_output = dict(direct_output)
-        total_upkeep = dict(direct_upkeep)
-        add_amounts(total_output, job_output)
-        add_amounts(total_upkeep, job_upkeep)
+        base_output = combined_amounts(direct_output, job_base_output)
+        triggered_output = combined_amounts(direct_triggered_output, job_triggered_output)
+        total_output = combined_amounts(base_output, triggered_output)
+        base_upkeep = combined_amounts(direct_upkeep, job_base_upkeep)
+        triggered_upkeep = combined_amounts(direct_triggered_upkeep, job_triggered_upkeep)
+        total_upkeep = combined_amounts(base_upkeep, triggered_upkeep)
+        conservative_output = dict(base_output)
+        conservative_upkeep = dict(total_upkeep)
         chain = chain_for(object_id, upgrades)
         rows.append(
             {
@@ -564,12 +635,32 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                 "unknown_jobs": "|".join(sorted(unknown_jobs)) or "none",
                 "job_subject_counts_json": _json_dump(job_subject_counts),
                 "direct_output_json": _json_dump(direct_output),
+                "direct_triggered_output_json": _json_dump(direct_triggered_output),
+                "direct_optimistic_output_json": _json_dump(direct_optimistic_output),
                 "direct_upkeep_json": _json_dump(direct_upkeep),
+                "direct_triggered_upkeep_json": _json_dump(direct_triggered_upkeep),
+                "direct_optimistic_upkeep_json": _json_dump(direct_optimistic_upkeep),
+                "job_base_output_json": _json_dump(job_base_output),
+                "job_triggered_output_json": _json_dump(job_triggered_output),
                 "job_output_json": _json_dump(job_output),
+                "job_base_upkeep_json": _json_dump(job_base_upkeep),
+                "job_triggered_upkeep_json": _json_dump(job_triggered_upkeep),
                 "job_upkeep_json": _json_dump(job_upkeep),
                 "research_modifier_effects_json": _json_dump(modifier_effects),
+                "base_output_json": _json_dump(base_output),
+                "triggered_output_json": _json_dump(triggered_output),
+                "conservative_output_json": _json_dump(conservative_output),
+                "optimistic_output_json": _json_dump(total_output),
                 "total_output_json": _json_dump(total_output),
+                "base_upkeep_json": _json_dump(base_upkeep),
+                "triggered_upkeep_json": _json_dump(triggered_upkeep),
+                "conservative_upkeep_json": _json_dump(conservative_upkeep),
+                "optimistic_upkeep_json": _json_dump(total_upkeep),
                 "total_upkeep_json": _json_dump(total_upkeep),
+                "base_research": round(research_total(base_output), 6),
+                "triggered_research": round(research_total(triggered_output), 6),
+                "conservative_research": round(research_total(conservative_output), 6),
+                "optimistic_research": round(research_total(total_output), 6),
                 "total_research": round(research_total(total_output), 6),
                 "direct_research": round(research_total(direct_output), 6),
                 "job_research": round(research_total(job_output), 6),
@@ -586,7 +677,15 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                 )
                 or "none",
                 "unresolved_variables": "|".join(sorted(missing_jobs | missing_direct | missing_modifiers)) or "none",
+                **resource_columns("base_output", base_output),
+                **resource_columns("triggered_output", triggered_output),
+                **resource_columns("conservative_output", conservative_output),
+                **resource_columns("optimistic_output", total_output),
                 **resource_columns("total_output", total_output),
+                **resource_columns("base_upkeep", base_upkeep),
+                **resource_columns("triggered_upkeep", triggered_upkeep),
+                **resource_columns("conservative_upkeep", conservative_upkeep),
+                **resource_columns("optimistic_upkeep", total_upkeep),
                 **resource_columns("total_upkeep", total_upkeep),
             }
         )
@@ -604,9 +703,15 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
             continue
         value = row["value"]
         jobs_created, missing_jobs = _collect_job_adds(value, variables)
-        direct_output, direct_upkeep, missing_direct = direct_resource_blocks(value, variables)
+        direct_output, direct_triggered_output, direct_upkeep, direct_triggered_upkeep, missing_direct = direct_resource_blocks(value, variables)
+        direct_optimistic_output = combined_amounts(direct_output, direct_triggered_output)
+        direct_optimistic_upkeep = combined_amounts(direct_upkeep, direct_triggered_upkeep)
         gates = source_gate_summary(value)
+        job_base_output: dict[str, float] = {}
+        job_triggered_output: dict[str, float] = {}
         job_output: dict[str, float] = {}
+        job_base_upkeep: dict[str, float] = {}
+        job_triggered_upkeep: dict[str, float] = {}
         job_upkeep: dict[str, float] = {}
         unknown_jobs: list[str] = []
         for job_id, count in jobs_created.items():
@@ -615,14 +720,23 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
                 unknown_jobs.append(job_id)
                 continue
             job_equivalents = normalize_job_workforce(count)
+            add_amounts(job_base_output, json.loads(str(job["base_output_json"])), job_equivalents)
+            add_amounts(job_triggered_output, json.loads(str(job["triggered_output_json"])), job_equivalents)
             add_amounts(job_output, json.loads(str(job["optimistic_output_json"])), job_equivalents)
+            add_amounts(job_base_upkeep, json.loads(str(job["base_upkeep_json"])), job_equivalents)
+            add_amounts(job_triggered_upkeep, json.loads(str(job["triggered_upkeep_json"])), job_equivalents)
             add_amounts(job_upkeep, json.loads(str(job["optimistic_upkeep_json"])), job_equivalents)
-        total_output = dict(direct_output)
-        total_upkeep = dict(direct_upkeep)
-        add_amounts(total_output, job_output)
-        add_amounts(total_upkeep, job_upkeep)
-        net_resources = dict(total_output)
-        add_amounts(net_resources, total_upkeep, -1.0)
+        base_output = combined_amounts(direct_output, job_base_output)
+        triggered_output = combined_amounts(direct_triggered_output, job_triggered_output)
+        total_output = combined_amounts(base_output, triggered_output)
+        base_upkeep = combined_amounts(direct_upkeep, job_base_upkeep)
+        triggered_upkeep = combined_amounts(direct_triggered_upkeep, job_triggered_upkeep)
+        total_upkeep = combined_amounts(base_upkeep, triggered_upkeep)
+        conservative_output = dict(base_output)
+        conservative_upkeep = dict(total_upkeep)
+        base_net_resources = net_amounts(base_output, base_upkeep)
+        conservative_net_resources = net_amounts(conservative_output, conservative_upkeep)
+        net_resources = net_amounts(total_output, total_upkeep)
         rows.append(
             {
                 "object_type": object_type,
@@ -638,12 +752,35 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
                 ),
                 "unknown_jobs": "|".join(sorted(unknown_jobs)) or "none",
                 "direct_output_json": _json_dump(direct_output),
+                "direct_triggered_output_json": _json_dump(direct_triggered_output),
+                "direct_optimistic_output_json": _json_dump(direct_optimistic_output),
                 "direct_upkeep_json": _json_dump(direct_upkeep),
+                "direct_triggered_upkeep_json": _json_dump(direct_triggered_upkeep),
+                "direct_optimistic_upkeep_json": _json_dump(direct_optimistic_upkeep),
+                "job_base_output_json": _json_dump(job_base_output),
+                "job_triggered_output_json": _json_dump(job_triggered_output),
                 "job_output_json": _json_dump(job_output),
+                "job_base_upkeep_json": _json_dump(job_base_upkeep),
+                "job_triggered_upkeep_json": _json_dump(job_triggered_upkeep),
                 "job_upkeep_json": _json_dump(job_upkeep),
+                "base_output_json": _json_dump(base_output),
+                "triggered_output_json": _json_dump(triggered_output),
+                "conservative_output_json": _json_dump(conservative_output),
+                "optimistic_output_json": _json_dump(total_output),
                 "total_output_json": _json_dump(total_output),
+                "base_upkeep_json": _json_dump(base_upkeep),
+                "triggered_upkeep_json": _json_dump(triggered_upkeep),
+                "conservative_upkeep_json": _json_dump(conservative_upkeep),
+                "optimistic_upkeep_json": _json_dump(total_upkeep),
                 "total_upkeep_json": _json_dump(total_upkeep),
+                "base_net_resources_json": _json_dump(base_net_resources),
+                "conservative_net_resources_json": _json_dump(conservative_net_resources),
+                "optimistic_net_resources_json": _json_dump(net_resources),
                 "net_resources_json": _json_dump(net_resources),
+                "base_research": round(research_total(base_output), 6),
+                "triggered_research": round(research_total(triggered_output), 6),
+                "conservative_research": round(research_total(conservative_output), 6),
+                "optimistic_research": round(research_total(total_output), 6),
                 "total_research": round(research_total(total_output), 6),
                 "net_consumer_goods": round(net_resources.get("consumer_goods", 0.0), 6),
                 "net_energy": round(net_resources.get("energy", 0.0), 6),
@@ -663,8 +800,19 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
                 )
                 or "none",
                 "unresolved_variables": "|".join(sorted(missing_jobs | missing_direct)) or "none",
+                **resource_columns("base_output", base_output),
+                **resource_columns("triggered_output", triggered_output),
+                **resource_columns("conservative_output", conservative_output),
+                **resource_columns("optimistic_output", total_output),
                 **resource_columns("total_output", total_output),
+                **resource_columns("base_upkeep", base_upkeep),
+                **resource_columns("triggered_upkeep", triggered_upkeep),
+                **resource_columns("conservative_upkeep", conservative_upkeep),
+                **resource_columns("optimistic_upkeep", total_upkeep),
                 **resource_columns("total_upkeep", total_upkeep),
+                **resource_columns("base_net", base_net_resources),
+                **resource_columns("conservative_net", conservative_net_resources),
+                **resource_columns("optimistic_net", net_resources),
                 **resource_columns("net", net_resources),
             }
         )
@@ -683,6 +831,12 @@ def aggregate_selected_buildings(selected: list[dict[str, Any]]) -> dict[str, An
     job_output: dict[str, float] = {}
     direct_upkeep: dict[str, float] = {}
     job_upkeep: dict[str, float] = {}
+    base_output: dict[str, float] = {}
+    triggered_output: dict[str, float] = {}
+    optimistic_output: dict[str, float] = {}
+    base_upkeep: dict[str, float] = {}
+    triggered_upkeep: dict[str, float] = {}
+    optimistic_upkeep: dict[str, float] = {}
     subject_counts: dict[str, float] = {}
     job_research_add: dict[str, dict[str, float]] = {}
     job_upkeep_add: dict[str, dict[str, float]] = {}
@@ -691,10 +845,16 @@ def aggregate_selected_buildings(selected: list[dict[str, Any]]) -> dict[str, An
     researcher_upkeep_mult = 0.0
     modifier_keys: dict[str, float] = {}
     for row in selected:
-        add_amounts(direct_output, json.loads(str(row["direct_output_json"])))
+        add_amounts(direct_output, json.loads(str(row["direct_optimistic_output_json"])))
         add_amounts(job_output, json.loads(str(row["job_output_json"])))
-        add_amounts(direct_upkeep, json.loads(str(row["direct_upkeep_json"])))
+        add_amounts(direct_upkeep, json.loads(str(row["direct_optimistic_upkeep_json"])))
         add_amounts(job_upkeep, json.loads(str(row["job_upkeep_json"])))
+        add_amounts(base_output, json.loads(str(row["base_output_json"])))
+        add_amounts(triggered_output, json.loads(str(row["triggered_output_json"])))
+        add_amounts(optimistic_output, json.loads(str(row["optimistic_output_json"])))
+        add_amounts(base_upkeep, json.loads(str(row["base_upkeep_json"])))
+        add_amounts(triggered_upkeep, json.loads(str(row["triggered_upkeep_json"])))
+        add_amounts(optimistic_upkeep, json.loads(str(row["optimistic_upkeep_json"])))
         add_amounts(subject_counts, json.loads(str(row["job_subject_counts_json"])))
         effects = json.loads(str(row["research_modifier_effects_json"]))
         add_nested_amounts(job_research_add, effects.get("job_research_add", {}))
@@ -703,11 +863,9 @@ def aggregate_selected_buildings(selected: list[dict[str, Any]]) -> dict[str, An
         add_amounts(resource_job_mult, effects.get("resource_job_mult", {}))
         add_amounts(modifier_keys, effects.get("research_modifier_keys", {}))
         researcher_upkeep_mult += float(effects.get("researcher_upkeep_mult", 0.0))
-    base_output = dict(direct_output)
-    base_upkeep = dict(direct_upkeep)
-    add_amounts(base_output, job_output)
-    add_amounts(base_upkeep, job_upkeep)
-    adjusted_output = dict(base_output)
+    conservative_output = dict(base_output)
+    conservative_upkeep = dict(optimistic_upkeep)
+    adjusted_output = dict(optimistic_output)
     adjusted_upkeep = dict(direct_upkeep)
     adjusted_job_upkeep = dict(job_upkeep)
 
@@ -730,10 +888,19 @@ def aggregate_selected_buildings(selected: list[dict[str, Any]]) -> dict[str, An
         "direct_output": direct_output,
         "job_output": job_output,
         "base_output": base_output,
+        "triggered_output": triggered_output,
+        "conservative_output": conservative_output,
+        "optimistic_output": optimistic_output,
         "adjusted_output": adjusted_output,
         "direct_upkeep": direct_upkeep,
         "job_upkeep": job_upkeep,
         "base_upkeep": base_upkeep,
+        "triggered_upkeep": triggered_upkeep,
+        "conservative_upkeep": conservative_upkeep,
+        "optimistic_upkeep": optimistic_upkeep,
+        "base_net": net_amounts(base_output, base_upkeep),
+        "conservative_net": net_amounts(conservative_output, conservative_upkeep),
+        "optimistic_net": net_amounts(optimistic_output, optimistic_upkeep),
         "adjusted_upkeep": adjusted_upkeep,
         "subject_counts": subject_counts,
         "modifier_keys": modifier_keys,
@@ -796,6 +963,8 @@ def plan_rows(buildings: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 selected = greedy_best(candidates, take)
                 bundle = aggregate_selected_buildings(selected)
                 base_research = research_total(bundle["base_output"])
+                conservative_research = research_total(bundle["conservative_output"])
+                optimistic_research = research_total(bundle["optimistic_output"])
                 adjusted_research = research_total(bundle["adjusted_output"])
                 rows.append(
                     {
@@ -804,17 +973,30 @@ def plan_rows(buildings: list[dict[str, Any]]) -> list[dict[str, Any]]:
                         "selected_buildings": "|".join(row["building_id"] for row in selected),
                         "research_per_full_colony": round(adjusted_research, 6),
                         "base_research_per_full_colony": round(base_research, 6),
+                        "conservative_research_per_full_colony": round(conservative_research, 6),
+                        "optimistic_research_per_full_colony": round(optimistic_research, 6),
                         "adjusted_research_per_full_colony": round(adjusted_research, 6),
                         "colonies_for_3000_research": quota_count(3000, adjusted_research),
                         "colonies_for_3000_base_research": quota_count(3000, base_research),
+                        "colonies_for_3000_conservative_research": quota_count(3000, conservative_research),
+                        "colonies_for_3000_optimistic_research": quota_count(3000, optimistic_research),
                         "colonies_for_3000_adjusted_research": quota_count(3000, adjusted_research),
                         "modeled_researcher_upkeep_mult": round(bundle["researcher_upkeep_mult"], 6),
                         "modifier_keys_json": _json_dump(bundle["modifier_keys"]),
                         "unused_slots": slots - take,
                         **resource_columns("base_output", bundle["base_output"]),
+                        **resource_columns("triggered_output", bundle["triggered_output"]),
+                        **resource_columns("conservative_output", bundle["conservative_output"]),
+                        **resource_columns("optimistic_output", bundle["optimistic_output"]),
                         **resource_columns("adjusted_output", bundle["adjusted_output"]),
                         **resource_columns("base_upkeep", bundle["base_upkeep"]),
+                        **resource_columns("triggered_upkeep", bundle["triggered_upkeep"]),
+                        **resource_columns("conservative_upkeep", bundle["conservative_upkeep"]),
+                        **resource_columns("optimistic_upkeep", bundle["optimistic_upkeep"]),
                         **resource_columns("adjusted_upkeep", bundle["adjusted_upkeep"]),
+                        **resource_columns("base_net", bundle["base_net"]),
+                        **resource_columns("conservative_net", bundle["conservative_net"]),
+                        **resource_columns("optimistic_net", bundle["optimistic_net"]),
                     }
                 )
     return rows
@@ -1138,7 +1320,9 @@ def strategic_infrastructure_rows(playset: dict[str, Any]) -> list[dict[str, Any
         if not isinstance(value, PDXBlock):
             continue
         modifiers, missing_modifiers = collect_numeric_assignments_matching(value, variables, STRATEGIC_MODIFIER_TERMS)
-        output, upkeep, missing_resources = direct_resource_blocks(value, variables)
+        output, triggered_output, upkeep, triggered_upkeep, missing_resources = direct_resource_blocks(value, variables)
+        optimistic_output = combined_amounts(output, triggered_output)
+        optimistic_upkeep = combined_amounts(upkeep, triggered_upkeep)
         tags = strategic_tags_for_object(object_type, object_id, value, modifiers, output)
         if not tags and not modifiers:
             continue
@@ -1186,10 +1370,18 @@ def strategic_infrastructure_rows(playset: dict[str, Any]) -> list[dict[str, Any
                 "winning_file": row["relative_file"],
                 "modifier_keys_json": _json_dump(modifiers),
                 "direct_output_json": _json_dump(output),
+                "direct_triggered_output_json": _json_dump(triggered_output),
+                "direct_optimistic_output_json": _json_dump(optimistic_output),
                 "direct_upkeep_json": _json_dump(upkeep),
+                "direct_triggered_upkeep_json": _json_dump(triggered_upkeep),
+                "direct_optimistic_upkeep_json": _json_dump(optimistic_upkeep),
                 "unresolved_variables": "|".join(sorted(missing_modifiers | missing_resources)) or "none",
                 **resource_columns("direct_output", output),
+                **resource_columns("direct_triggered_output", triggered_output),
+                **resource_columns("direct_optimistic_output", optimistic_output),
                 **resource_columns("direct_upkeep", upkeep),
+                **resource_columns("direct_triggered_upkeep", triggered_upkeep),
+                **resource_columns("direct_optimistic_upkeep", optimistic_upkeep),
             }
         )
     return sorted(rows, key=lambda item: (str(item["role"]), -float(item["priority_score"]), str(item["object_id"])))
@@ -1297,6 +1489,7 @@ def write_summary(
         f"- Resource coverage rows: {len(resource_coverage_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
+        "- Jobs, buildings, development rows, and plan rows preserve base, triggered, conservative, and optimistic resource scenarios where applicable.",
         "- Strategic infrastructure rows classify habitat growth centers, capital/empire-unique candidates, starbase migration support, and refactor constraints such as `can_demolish = no`.",
         "- Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.",
         "",

@@ -120,7 +120,9 @@ class ActiveStackEconomicValuationMaintenanceTests(unittest.TestCase):
 
 
 RESEARCH_CAPACITY_BUILDINGS_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-buildings-2026-07-09.csv"
+RESEARCH_CAPACITY_JOBS_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-jobs-2026-07-09.csv"
 RESEARCH_CAPACITY_DEVELOPMENT_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-development-2026-07-09.csv"
+RESEARCH_CAPACITY_PLAN_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-plan-2026-07-09.csv"
 RESEARCH_CAPACITY_INFRASTRUCTURE_CSV = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
 RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
 GIGAS_MODELED_RESOURCE_KEYS = {
@@ -429,6 +431,68 @@ class GeneratedModValidityTests(unittest.TestCase):
         row_by_building = {row["building_id"]: row for row in building_rows}
         if "building_research_lab_3" in row_by_building:
             self.assertIn("tech", row_by_building["building_research_lab_3"]["prerequisites"])
+
+    def test_research_capacity_model_preserves_resource_scenarios(self):
+        with RESEARCH_CAPACITY_JOBS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            jobs_reader = csv.DictReader(handle)
+            job_columns = set(jobs_reader.fieldnames or [])
+        with RESEARCH_CAPACITY_BUILDINGS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            buildings_reader = csv.DictReader(handle)
+            building_rows = list(buildings_reader)
+            building_columns = set(buildings_reader.fieldnames or [])
+        with RESEARCH_CAPACITY_DEVELOPMENT_CSV.open("r", encoding="utf-8", newline="") as handle:
+            development_reader = csv.DictReader(handle)
+            development_rows = list(development_reader)
+            development_columns = set(development_reader.fieldnames or [])
+        with RESEARCH_CAPACITY_PLAN_CSV.open("r", encoding="utf-8", newline="") as handle:
+            plan_reader = csv.DictReader(handle)
+            plan_columns = set(plan_reader.fieldnames or [])
+
+        scenario_json_columns = {
+            "base_output_json",
+            "triggered_output_json",
+            "conservative_output_json",
+            "optimistic_output_json",
+            "base_upkeep_json",
+            "triggered_upkeep_json",
+            "conservative_upkeep_json",
+            "optimistic_upkeep_json",
+        }
+        for prefix in ("base", "triggered", "optimistic"):
+            self.assertIn(f"{prefix}_output_physics_research", job_columns)
+            self.assertIn(f"{prefix}_upkeep_consumer_goods", job_columns)
+        for columns in (building_columns, development_columns):
+            self.assertTrue(scenario_json_columns.issubset(columns))
+            self.assertIn("base_output_physics_research", columns)
+            self.assertIn("triggered_output_physics_research", columns)
+            self.assertIn("conservative_upkeep_consumer_goods", columns)
+            self.assertIn("optimistic_upkeep_consumer_goods", columns)
+        self.assertIn("base_net_resources_json", development_columns)
+        self.assertIn("conservative_net_resources_json", development_columns)
+        self.assertIn("optimistic_net_resources_json", development_columns)
+        self.assertIn("conservative_research_per_full_colony", plan_columns)
+        self.assertIn("optimistic_research_per_full_colony", plan_columns)
+        self.assertIn("triggered_output_physics_research", plan_columns)
+        self.assertIn("conservative_net_consumer_goods", plan_columns)
+        self.assertIn("optimistic_net_consumer_goods", plan_columns)
+
+        def assert_scenario_arithmetic(rows: list[dict[str, str]], row_label: str) -> None:
+            self.assertTrue(rows, row_label)
+            for sample in rows[:25]:
+                for resource in ("physics_research", "society_research", "engineering_research", "consumer_goods"):
+                    base = float(sample[f"base_output_{resource}"])
+                    triggered = float(sample[f"triggered_output_{resource}"])
+                    optimistic = float(sample[f"optimistic_output_{resource}"])
+                    self.assertAlmostEqual(base + triggered, optimistic, places=6)
+                    self.assertAlmostEqual(float(sample[f"conservative_output_{resource}"]), base, places=6)
+                    base_upkeep = float(sample[f"base_upkeep_{resource}"])
+                    triggered_upkeep = float(sample[f"triggered_upkeep_{resource}"])
+                    optimistic_upkeep = float(sample[f"optimistic_upkeep_{resource}"])
+                    self.assertAlmostEqual(base_upkeep + triggered_upkeep, optimistic_upkeep, places=6)
+                    self.assertAlmostEqual(float(sample[f"conservative_upkeep_{resource}"]), optimistic_upkeep, places=6)
+
+        assert_scenario_arithmetic(building_rows, "building scenario rows")
+        assert_scenario_arithmetic(development_rows, "development scenario rows")
 
     def test_nonconstruction_economic_valuation_dataset_extends_without_duplicate_construction_surfaces(self):
         self.assertTrue(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.exists())
