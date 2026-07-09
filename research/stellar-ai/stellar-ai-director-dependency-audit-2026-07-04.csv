@@ -1,5 +1,5 @@
 dependency_type,steam_id,expected_name,descriptor_present,playset_present,actual_playset_name,load_position,status
-compatibility_dependency,1595876588,!!!Universal Resource Patch [2.4+],yes,yes,!!!Universal Resource Patch [2.4+],118,ok
+compatibility_dependency,1595876588,!!!Universal Resource Patch [2.4+],yes,yes,!!!Universal Resource Patch [2.4+],115,ok
 required_parent,2648658105,Extra Ship Components NEXT,yes,yes,Extra Ship Components NEXT,70,ok
 required_parent,1121692237,Gigastructural Engineering & More (4.4),yes,yes,Gigastructural Engineering & More (4.4),62,ok
 required_parent,683230077,NSC3,yes,yes,NSC3,71,ok

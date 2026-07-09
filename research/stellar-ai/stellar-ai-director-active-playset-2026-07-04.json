@@ -1,6 +1,6 @@
 {
   "collection_name": "4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity",
-  "mod_count": 119,
+  "mod_count": 116,
   "mods": [
     {
       "name": "Battle Debris - Starship Graveyards",
@@ -687,33 +687,15 @@
       "steam_id": "3657869155"
     },
     {
-      "name": "Spacefleet Tactica",
-      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3696204283",
-      "position": 115,
-      "steam_id": "3696204283"
-    },
-    {
-      "name": "SFT ADD-ON : Disable New Ship Sections",
-      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3703611846",
-      "position": 116,
-      "steam_id": "3703611846"
-    },
-    {
-      "name": "SFT ADD-ON : Combat Computer Restriction Removal",
-      "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\3726506420",
-      "position": 117,
-      "steam_id": "3726506420"
-    },
-    {
       "name": "!!!Universal Resource Patch [2.4+]",
       "path": "c:\\steam\\steamapps\\workshop\\content\\281990\\1595876588",
-      "position": 118,
+      "position": 115,
       "steam_id": "1595876588"
     },
     {
       "name": "Stellar AI Director",
       "path": "C:\\Users\\Admin\\Documents\\GIT\\GameMods\\StellarisMods\\mods\\StellarAIDirector",
-      "position": 119,
+      "position": 116,
       "steam_id": ""
     }
   ],
@@ -721,7 +703,7 @@
     "Guilli's Planet Modifiers and Features": true,
     "Planetary Diversity": true,
     "Smarter Hyper Relays": true,
-    "Spacefleet Tactica": true,
+    "Spacefleet Tactica": false,
     "Universal Resource Patch": true
   },
   "parity_reference_mods": {
@@ -731,9 +713,9 @@
       "present": false
     },
     "3696204283": {
-      "load_position": 115,
+      "load_position": null,
       "name": "Spacefleet Tactica",
-      "present": true
+      "present": false
     }
   },
   "patch_mod_enabled": true,

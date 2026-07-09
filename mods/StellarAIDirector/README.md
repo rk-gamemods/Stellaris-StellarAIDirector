@@ -98,13 +98,12 @@ current selected collection, the latest required parent is at load position
 The Director may still be compared against Stellar AI for private parity review,
 but the descriptor intentionally omits a Stellar AI dependency.
 
-## Load Proof
+## Runtime Proof
 
-When a player-controlled country starts, the mod fires a one-time popup titled
-`Stellar AI Director Loaded`. Seeing that popup proves Irony loaded the Director into
-the active playset and the game executed the Director event/on_action surface.
-It does not prove long-run AI efficacy, megastructure scaling, or the
-3,000+ total-research-per-month before 2350 runtime target.
+The normal mod must not fire startup proof popups or auto-confirm third-party
+setup menus. Live-launch proof is checked through the launcher descriptor,
+`dlc_load.json`, static validation, and explicit user-approved smoke testing
+outside normal gameplay flow.
 
 ## Surplus Sink Ordering
 
@@ -131,7 +130,7 @@ python -m unittest discover -s tools/tests
 ```
 
 Static validation proves generated file safety, known-reference coverage, and
-deterministic policy contracts. Launch proof is the `Stellar AI Director Loaded` popup.
+deterministic policy contracts.
 Observer proof remains a separate final gate for the strategic v2 packet: the
 current branch still needs the constrained observer run to prove that at least
 one AI empire can reach the intended high-scale economy and 3,000+ total

@@ -1574,30 +1574,31 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertIn(marker, triggers + economy + market_events)
 
-    def test_gigas_startup_unblock_is_host_scoped_and_hidden(self):
-        on_action_path = MOD_ROOT / "common" / "on_actions" / "zzzz_staid_gigas_startup_unblock_on_actions.txt"
-        event_path = MOD_ROOT / "events" / "zzzz_staid_gigas_startup_unblock_events.txt"
-        parse_file(on_action_path)
-        parse_file(event_path)
-
-        on_action_text = on_action_path.read_text(encoding="utf-8")
-        event_text = event_path.read_text(encoding="utf-8")
-
-        self.assertIn("on_game_start_country", on_action_text)
-        self.assertIn("on_press_begin", on_action_text)
-        self.assertIn("staid_gigas_startup.1", on_action_text)
-        for marker in (
-            "namespace = staid_gigas_startup",
-            "hide_window = yes",
-            "is_triggered_only = yes",
-            "fire_only_once = yes",
-            "has_country_flag = giga_host",
-            "NOT = { has_global_flag = giga_game_started }",
-            "giga_preset_gigas_experience = yes",
-            "country_event = { id = giga_menu.1111 }",
+    def test_director_does_not_auto_confirm_gigas_startup_settings(self):
+        forbidden_paths = (
+            MOD_ROOT / "common" / "on_actions" / "zzz_staid_load_proof_on_actions.txt",
+            MOD_ROOT / "common" / "on_actions" / "zzzz_staid_gigas_startup_unblock_on_actions.txt",
+            MOD_ROOT / "events" / "zzz_staid_load_proof_events.txt",
+            MOD_ROOT / "events" / "zzzz_staid_gigas_startup_unblock_events.txt",
+            MOD_ROOT / "localisation" / "english" / "staid_load_proof_l_english.yml",
+        )
+        for path in forbidden_paths:
+            self.assertFalse(path.exists(), f"Stellar AI Director must not ship startup test artifacts: {path}")
+        forbidden_markers = {
+            "giga_preset_gigas_experience",
+            "giga_menu.1111",
             "STELLAR_AI_DIRECTOR_GIGAS_STARTUP_UNBLOCK",
-        ):
-            self.assertIn(marker, event_text)
+            "STELLAR_AI_DIRECTOR_LOAD_PROOF",
+            "staid_gigas_startup",
+            "staid_load_proof",
+        }
+        live_text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for root in (MOD_ROOT / "common", MOD_ROOT / "events")
+            for path in root.rglob("*.txt")
+        )
+        for marker in forbidden_markers:
+            self.assertNotIn(marker, live_text)
 
     def test_generated_stranded_fleet_recovery_uses_guarded_vanilla_mia(self):
         on_action_path = MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt"

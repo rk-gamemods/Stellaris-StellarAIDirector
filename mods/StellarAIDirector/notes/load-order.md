@@ -31,7 +31,7 @@ The Director descriptor intentionally omits Stellar AI. Current Stellar AI sourc
 | reference mod | present | load position | role |
 | --- | --- | ---: | --- |
 | Stellar AI | False | None | private parity/reference source, not descriptor dependency |
-| Spacefleet Tactica | True | 115 | private parity/reference source, not descriptor dependency |
+| Spacefleet Tactica | False | None | private parity/reference source, not descriptor dependency |
 
 ## Current Intentional Supersession
 

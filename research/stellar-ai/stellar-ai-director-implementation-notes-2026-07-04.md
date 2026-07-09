@@ -28,7 +28,7 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 ## Selected Playset
 
 - Collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-- Mod count: 119
+- Mod count: 116
 - Irony patch mod enabled: True
 
 ## Required Parent Detection
@@ -47,7 +47,7 @@ Stellar AI is no longer a required launch dependency. Its current local source r
 | reference mod | present | load position | role |
 | --- | --- | ---: | --- |
 | Stellar AI | False | None | private parity/reference source, not descriptor dependency |
-| Spacefleet Tactica | True | 115 | private parity/reference source, not descriptor dependency |
+| Spacefleet Tactica | False | None | private parity/reference source, not descriptor dependency |
 
 Baseline absorbed/reimplemented surfaces: AI budgets, `basic_economy_plan`, construction pressure, research/economy/fleet conversion, market/runway safety, claim/war support reserves, and high-scale modded progression hooks.
 

@@ -44,9 +44,6 @@ MAIN_MENU_PROOF_PATH = RESEARCH_ROOT / "stellar-ai-director-main-menu-proof-2026
 MAIN_MENU_CONFIRMATION_ENV = "STELLAR_AI_DIRECTOR_MAIN_MENU_CONFIRMED"
 LAUNCH_SURFACE_ENV = "STELLAR_AI_DIRECTOR_LAUNCH_SURFACE"
 MAIN_MENU_REQUIRED_MODES = ("baseline_without_director", "with_director")
-LOAD_PROOF_EVENT_ID = "staid_load_proof.1"
-LOAD_PROOF_LOG_MARKER = "STELLAR_AI_DIRECTOR_LOAD_PROOF"
-LOAD_PROOF_TITLE = "Stellar AI Director Loaded"
 PLAN_PATH = REPO_ROOT / "plans" / "stellar-ai-director-v1-remaining-plan.md"
 PLAN_STATUS_JSON = RESEARCH_ROOT / "stellar-ai-director-v1-plan-status-2026-07-04.json"
 PLAN_STATUS_MD = RESEARCH_ROOT / "stellar-ai-director-v1-plan-status-2026-07-04.md"
@@ -787,7 +784,6 @@ PLAN_PHASE_EVIDENCE = {
         "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt",
         "mods/StellarAIDirector/common/script_values/zzz_staid_roi_values.txt",
         "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
-        "mods/StellarAIDirector/common/on_actions/zzz_staid_load_proof_on_actions.txt",
         "mods/StellarAIDirector/notes/tuning-notes.md",
     ),
     "P6": (
@@ -846,9 +842,6 @@ PLAN_PHASE_EVIDENCE = {
         "research/stellar-ai/stellar-ai-director-irony-conflict-scan-2026-07-04.md",
     ),
     "P14": (
-        "mods/StellarAIDirector/common/on_actions/zzz_staid_load_proof_on_actions.txt",
-        "mods/StellarAIDirector/events/zzz_staid_load_proof_events.txt",
-        "mods/StellarAIDirector/localisation/english/staid_load_proof_l_english.yml",
         "research/stellar-ai/stellar-ai-director-launch-comparison-2026-07-04.json",
         "research/stellar-ai/stellar-ai-director-main-menu-proof-2026-07-04.json",
         "research/stellar-ai/baseline-without-director-screenshot-2026-07-04.png",
@@ -8702,7 +8695,6 @@ def generated_surface_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         "common/economic_plans/zzzz_staid_additive_economic_plan.txt",
         "common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt",
         "events/zzz_staid_market_and_fleet_safety_events.txt",
-        "common/on_actions/zzz_staid_load_proof_on_actions.txt",
         "common/on_actions/zzz_staid_threat_response_on_actions.txt",
         "common/opinion_modifiers/zzz_staid_threat_response_opinions.txt",
         "common/script_values/zzz_staid_roi_values.txt",
@@ -9048,73 +9040,6 @@ def enable_director_in_dlc_load(dlc_load_path: Path = DLC_LOAD_PATH) -> Path:
 
 def disable_director_in_dlc_load(dlc_load_path: Path = DLC_LOAD_PATH) -> Path:
     return set_director_enabled_in_dlc_load(False, dlc_load_path)
-
-
-def collect_load_proof_contract(mod_root: Path = MOD_ROOT) -> dict[str, Any]:
-    files = {
-        "on_action": mod_root / "common" / "on_actions" / "zzz_staid_load_proof_on_actions.txt",
-        "event": mod_root / "events" / "zzz_staid_load_proof_events.txt",
-        "localisation": mod_root / "localisation" / "english" / "staid_load_proof_l_english.yml",
-    }
-    errors: list[str] = []
-    for label, path in files.items():
-        if not path.exists():
-            errors.append(f"Load-proof {label} file is missing: {path}")
-
-    on_action = files["on_action"]
-    if on_action.exists():
-        text = read_text(on_action)
-        try:
-            parse_file(on_action)
-        except PDXParseError as exc:
-            errors.append(f"Load-proof on_action parse failed: {exc}")
-        if "on_game_start_country" not in text:
-            errors.append("Load-proof on_action does not hook on_game_start_country")
-        if LOAD_PROOF_EVENT_ID not in text:
-            errors.append(f"Load-proof on_action does not reference {LOAD_PROOF_EVENT_ID}")
-
-    event = files["event"]
-    if event.exists():
-        text = read_text(event)
-        try:
-            parse_file(event)
-        except PDXParseError as exc:
-            errors.append(f"Load-proof event parse failed: {exc}")
-        required_fragments = (
-            "namespace = staid_load_proof",
-            "country_event =",
-            f"id = {LOAD_PROOF_EVENT_ID}",
-            f"title = {LOAD_PROOF_EVENT_ID}.name",
-            f"desc = {LOAD_PROOF_EVENT_ID}.desc",
-            "picture = GFX_evt_grand_speech",
-            "show_sound = event_default",
-            "is_triggered_only = yes",
-            "fire_only_once = yes",
-            "is_ai = no",
-            LOAD_PROOF_LOG_MARKER,
-            f"name = {LOAD_PROOF_EVENT_ID}.a",
-        )
-        for fragment in required_fragments:
-            if fragment not in text:
-                errors.append(f"Load-proof event is missing expected fragment: {fragment}")
-
-    localisation = files["localisation"]
-    if localisation.exists():
-        raw = localisation.read_bytes()
-        text = read_text(localisation)
-        if not raw.startswith(b"\xef\xbb\xbf"):
-            errors.append(f"Load-proof localisation must be UTF-8 BOM encoded: {localisation}")
-        for key in (f"{LOAD_PROOF_EVENT_ID}.name", f"{LOAD_PROOF_EVENT_ID}.desc", f"{LOAD_PROOF_EVENT_ID}.a"):
-            if key not in text:
-                errors.append(f"Load-proof localisation is missing key: {key}")
-        if LOAD_PROOF_TITLE not in text:
-            errors.append(f"Load-proof localisation title is not {LOAD_PROOF_TITLE!r}")
-
-    return {
-        "status": "ok" if not errors else "fail",
-        "errors": errors,
-        "files": {label: str(path) for label, path in files.items()},
-    }
 
 
 def generate_roi_artifacts() -> list[dict[str, Any]]:
@@ -12192,13 +12117,12 @@ current selected collection, the latest required parent is at load position
 The Director may still be compared against Stellar AI for private parity review,
 but the descriptor intentionally omits a Stellar AI dependency.
 
-## Load Proof
+## Runtime Proof
 
-When a player-controlled country starts, the mod fires a one-time popup titled
-`{LOAD_PROOF_TITLE}`. Seeing that popup proves Irony loaded the Director into
-the active playset and the game executed the Director event/on_action surface.
-It does not prove long-run AI efficacy, megastructure scaling, or the
-3,000+ total-research-per-month before 2350 runtime target.
+The normal mod must not fire startup proof popups or auto-confirm third-party
+setup menus. Live-launch proof is checked through the launcher descriptor,
+`dlc_load.json`, static validation, and explicit user-approved smoke testing
+outside normal gameplay flow.
 
 ## Surplus Sink Ordering
 
@@ -12225,7 +12149,7 @@ python -m unittest discover -s tools/tests
 ```
 
 Static validation proves generated file safety, known-reference coverage, and
-deterministic policy contracts. Launch proof is the `{LOAD_PROOF_TITLE}` popup.
+deterministic policy contracts.
 Observer proof remains a separate final gate for the strategic v2 packet: the
 current branch still needs the constrained observer run to prove that at least
 one AI empire can reach the intended high-scale economy and 3,000+ total

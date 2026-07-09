@@ -18,17 +18,12 @@ OBSERVER_COMMAND_SCHEDULE = """# Observer-loop console command schedule for a ma
 # Use `python tools/manage_stellaris_commands_at_date.py disable` to remove it.
 # `game_speed 5` is intentional: in Stellaris 4.4.x it unlocks the dev-only
 # higher simulation speed displayed by the UI as GAME_SPEED_6.
-# `event giga_menu.1111` is the Gigastructural Engineering startup-confirm
-# event used by the active benchmark playset when the preset dialog blocks
-# normal UI confirmation.
-2200.01.01 = "event giga_menu.1111"
 2200.01.01 = "help human_ai"
 2200.01.01 = "help observe"
 2200.01.01 = "human_ai"
 2200.01.01 = "observe"
 2200.01.01 = "help game_speed"
 2200.01.01 = "game_speed 5"
-2200.01.02 = "event giga_menu.1111"
 2200.01.02 = "help human_ai"
 2200.01.02 = "help observe"
 2200.01.02 = "human_ai"
