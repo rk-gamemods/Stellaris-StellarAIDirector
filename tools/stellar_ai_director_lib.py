@@ -92,6 +92,7 @@ NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD = (
     RESEARCH_ROOT / "stellar-ai-director-nonconstruction-economic-valuation-2026-07-07.md"
 )
 ECONOMIC_VALUATION_EVIDENCE_MD = RESEARCH_ROOT / "stellar-ai-director-economic-valuation-evidence-2026-07-07.md"
+BUILD_PLAN_CONSUMER_POLICY_CSV = RESEARCH_ROOT / "stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv"
 OBJECT_ATLAS_COVERAGE_MD = OBJECT_ATLAS_ROOT / "coverage-report-2026-07-06.md"
 ROUTE_REPORT_MD = OBJECT_ATLAS_ROOT / "route-reports-2026-07-06.md"
 
@@ -5041,6 +5042,7 @@ DATASET_JOB_PRESSURE_UNSAFE_TEXT_MARKERS = (
 DATASET_JOB_PRESSURE_FORBIDDEN_OBJECT_IDS = {
     "building_pd_rogue_council",
 }
+BUILD_PLAN_CONSUMABLE_STATUSES = {"yes", "conditional"}
 
 AI_RESOURCE_PRODUCTION_FAMILY_DEFAULTS = {
     "consumer_goods_repair": ("consumer_goods",),
@@ -5151,6 +5153,47 @@ def dataset_job_pressure_runtime_safety_issues(
     return issues
 
 
+def build_plan_consumer_policy_rows() -> list[dict[str, Any]]:
+    return _read_csv_rows(BUILD_PLAN_CONSUMER_POLICY_CSV)
+
+
+def build_plan_consumer_policy_buildings(rows: list[dict[str, Any]] | None = None) -> dict[str, dict[str, Any]]:
+    policy_rows = rows if rows is not None else build_plan_consumer_policy_rows()
+    return {
+        str(row["object_id"]): row
+        for row in policy_rows
+        if row.get("row_family") == "building"
+    }
+
+
+def build_plan_consumer_policy_selected_objects(rows: list[dict[str, Any]] | None = None) -> set[str]:
+    policy_rows = rows if rows is not None else build_plan_consumer_policy_rows()
+    selected: set[str] = set()
+    for row in policy_rows:
+        if row.get("row_family") != "role_target" or row.get("can_consume_now") != "yes":
+            continue
+        for item in str(row.get("selected_objects", "")).split("|"):
+            item = item.strip()
+            if item:
+                selected.add(item)
+    return selected
+
+
+def build_plan_consumer_policy_allows_dataset_object(
+    row: dict[str, Any],
+    building_policy: dict[str, dict[str, Any]],
+    selected_objects: set[str],
+) -> bool:
+    object_type = str(row.get("object_type", ""))
+    object_id = str(row.get("object_id", ""))
+    if object_type == "building":
+        policy = building_policy.get(object_id)
+        return bool(policy and policy.get("can_consume_now") in BUILD_PLAN_CONSUMABLE_STATUSES)
+    if object_type == "district":
+        return f"district:{object_id}" in selected_objects
+    return False
+
+
 def dataset_job_pressure_weight_block(block: str, row: dict[str, Any]) -> str:
     jobs = max(1.0, float(row["jobs_created_total_estimate"] or 1))
     roi = max(1.0, float(row["roi_2250_to_2350_estimate"] or 1))
@@ -5247,10 +5290,15 @@ def dataset_ai_resource_production_block(row: dict[str, Any]) -> str:
 
 def dataset_job_pressure_override_rows(limit: int = DATASET_JOB_PRESSURE_OBJECT_LIMIT) -> list[dict[str, Any]]:
     rows = _read_csv_rows(ECONOMIC_VALUATION_DATASET_CSV)
+    policy_rows = build_plan_consumer_policy_rows()
+    building_policy = build_plan_consumer_policy_buildings(policy_rows)
+    selected_objects = build_plan_consumer_policy_selected_objects(policy_rows)
     known_jobs = collect_object_names(SNAPSHOT_ROOT).get("pop_job", set())
     candidates: list[dict[str, Any]] = []
     for row in rows:
         if row.get("object_type") not in {"building", "district"}:
+            continue
+        if not build_plan_consumer_policy_allows_dataset_object(row, building_policy, selected_objects):
             continue
         if row.get("winning_mod_name") == "Stellar AI Director":
             continue
@@ -5282,10 +5330,13 @@ def dataset_job_pressure_override_rows(limit: int = DATASET_JOB_PRESSURE_OBJECT_
         }[row["object_type"]]
         generated_file = MOD_ROOT / "common" / folder / f"zzzz_staid_13_dataset_job_pressure_{folder}.txt"
         family = dataset_job_pressure_family(row)
+        policy = building_policy.get(row["object_id"], {})
         candidates.append(
             {
                 **row,
                 "pressure_family": family,
+                "build_plan_consumer_status": policy.get("can_consume_now", "role_target"),
+                "build_plan_scorable_status": policy.get("scorable_status", "role_target_scorable"),
                 "source_path": str(source_path),
                 "generated_folder": folder,
                 "generated_file": generated_file.as_posix(),
@@ -5347,6 +5398,7 @@ def dataset_job_pressure_override_artifacts() -> list[dict[str, Any]]:
             "# Dataset-driven job pressure: if a planet has unemployed pops and no free jobs, build economically viable job providers instead of leaving pops idle.",
             "# Source potential/allow/possible blocks still own prerequisites and legality.",
             f"# Source dataset: {ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT).as_posix()}",
+            f"# Build-plan consumer policy: {BUILD_PLAN_CONSUMER_POLICY_CSV.relative_to(REPO_ROOT).as_posix()}",
             "",
         ]
         variables = route_override_file_variables(file_rows)
@@ -5361,7 +5413,8 @@ def dataset_job_pressure_override_artifacts() -> list[dict[str, Any]]:
             block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
             body.append(
                 f"# object = {row['object_type']}:{row['object_id']}; "
-                f"source = {row['winning_mod_name']}::{row['winning_file']}"
+                f"source = {row['winning_mod_name']}::{row['winning_file']}; "
+                f"consumer_policy = {row['build_plan_consumer_status']}:{row['build_plan_scorable_status']}"
             )
             body.append(block.rstrip())
             body.append("")

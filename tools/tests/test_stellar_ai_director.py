@@ -15,6 +15,8 @@ from stellar_ai_director_lib import (
     ECONOMIC_VALUATION_EVIDENCE_MD,
     ECONOMIC_VALUATION_CANONICAL_COLUMNS,
     ECONOMIC_VALUATION_SOURCE_FACT_COLUMNS,
+    BUILD_PLAN_CONSUMABLE_STATUSES,
+    BUILD_PLAN_CONSUMER_POLICY_CSV,
     EmpireState,
     GENERATED_VERSION_INVENTORY_MD,
     MANUAL_STATIC_VALIDATION_MD,
@@ -36,6 +38,9 @@ from stellar_ai_director_lib import (
     collect_object_names,
     economic_valuation_evidence_passes,
     economic_valuation_dataset_passes,
+    build_plan_consumer_policy_buildings,
+    build_plan_consumer_policy_rows,
+    build_plan_consumer_policy_selected_objects,
     dataset_job_pressure_override_rows,
     dataset_ai_resource_production_amounts,
     extract_top_level_object_text,
@@ -794,8 +799,9 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(all(float(row["jobs_created_total_estimate"]) > 0 for row in rows))
         self.assertTrue(all(float(row["roi_2250_to_2350_estimate"]) > 0 for row in rows))
         self.assertIn("consumer_goods_repair", {row["pressure_family"] for row in rows})
-        self.assertIn("building_navel_base", row_ids)
-        self.assertIn("building_navel_command", row_ids)
+        self.assertIn("building_negative_mass_factory_2", row_ids)
+        self.assertIn("building_giga_pcc_scrap_pile", row_ids)
+        self.assertIn("building_sentinel_posts", row_ids)
         self.assertNotIn("building_pd_rogue_council", row_ids)
         self.assertTrue(all(row["object_type"] != "zone" for row in rows))
 
@@ -814,8 +820,9 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn("ai_weight_coefficient", text)
             parse_file(file_path)
         self.assertIn("family:consumer_goods_repair", combined_text)
-        self.assertIn("building_navel_base", combined_text)
-        self.assertIn("building_navel_command", combined_text)
+        self.assertIn("building_negative_mass_factory_2", combined_text)
+        self.assertIn("building_giga_pcc_scrap_pile", combined_text)
+        self.assertIn("building_sentinel_posts", combined_text)
         self.assertNotIn("building_pd_rogue_council", combined_text)
         self.assertIn("staid_high_scale_snowball_pressure", combined_text)
         self.assertIn(
@@ -1318,6 +1325,30 @@ class GeneratedModValidityTests(unittest.TestCase):
             }
         )
         self.assertEqual(direct_amounts, {"consumer_goods": 35})
+
+    def test_dataset_job_pressure_rows_are_build_plan_policy_consumable(self):
+        self.assertTrue(BUILD_PLAN_CONSUMER_POLICY_CSV.exists())
+        policy_rows = build_plan_consumer_policy_rows()
+        building_policy = build_plan_consumer_policy_buildings(policy_rows)
+        selected_objects = build_plan_consumer_policy_selected_objects(policy_rows)
+
+        rows = dataset_job_pressure_override_rows()
+        self.assertTrue(rows)
+        self.assertTrue([row for row in rows if row["object_type"] == "building"])
+
+        disallowed = []
+        for row in rows:
+            if row["object_type"] == "building":
+                policy = building_policy.get(row["object_id"])
+                if not policy or policy["can_consume_now"] not in BUILD_PLAN_CONSUMABLE_STATUSES:
+                    disallowed.append(f"building:{row['object_id']}")
+            elif row["object_type"] == "district":
+                if f"district:{row['object_id']}" not in selected_objects:
+                    disallowed.append(f"district:{row['object_id']}")
+            else:
+                disallowed.append(f"{row['object_type']}:{row['object_id']}")
+
+        self.assertFalse(disallowed[:25])
 
     def test_high_scale_construction_plan_and_budget_pressure_are_generated(self):
         economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
