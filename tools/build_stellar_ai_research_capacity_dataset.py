@@ -1287,7 +1287,115 @@ def role_bundle_row(
     }
 
 
-def role_target_rows(buildings: list[dict[str, Any]], development_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def modeled_resource_total(amounts: dict[str, float]) -> float:
+    return sum(max(0.0, float(amounts.get(key, 0.0))) for key in (*RESEARCH_KEYS, *SUPPORT_KEYS))
+
+
+def role_family_bundle_row(
+    role: str,
+    source_scope: str,
+    colony_class: str,
+    selected_objects: list[str],
+    output: dict[str, float],
+    upkeep: dict[str, float],
+    extra_score: float = 0.0,
+) -> dict[str, Any]:
+    net = net_amounts(output, upkeep)
+    return {
+        "role": role,
+        "build_plan_family": role,
+        "source_scope": source_scope,
+        "colony_class": colony_class,
+        "slots": 0,
+        "selected_count": len(selected_objects),
+        "selected_objects": "|".join(selected_objects),
+        "gross_role_output": round(modeled_resource_total(output) + extra_score, 6),
+        "net_role_output": round(modeled_resource_total(net) + extra_score, 6),
+        **resource_columns("output", output),
+        **resource_columns("upkeep", upkeep),
+        **resource_columns("net", net),
+    }
+
+
+def add_development_family_rows(rows: list[dict[str, Any]], development_rows: list[dict[str, Any]]) -> None:
+    family_classes = {
+        "habitat_support_center": {"habitat"},
+        "ring_world": {"ring_world"},
+        "arcology_world": {"arcology"},
+        "frameworld": {"frameworld"},
+        "birch_world": {"birch_world"},
+        "gigas_special_world": {"alderson_disk", "frameworld", "birch_world"},
+    }
+    for family, classes in family_classes.items():
+        candidates = []
+        for row in development_rows:
+            if str(row["colony_class"]) not in classes:
+                continue
+            output = json.loads(str(row["optimistic_output_json"]))
+            upkeep = json.loads(str(row["optimistic_upkeep_json"]))
+            net = net_amounts(output, upkeep)
+            score = modeled_resource_total(output) + modeled_resource_total(net)
+            candidates.append((score, row, output, upkeep))
+        if not candidates:
+            continue
+        ordered = sorted(candidates, key=lambda item: (item[0], str(item[1]["object_id"])), reverse=True)
+        for take in sorted({1, min(3, len(ordered)), min(6, len(ordered))}):
+            output: dict[str, float] = {}
+            upkeep: dict[str, float] = {}
+            selected_objects: list[str] = []
+            for _score, row, row_output, row_upkeep in ordered[:take]:
+                add_amounts(output, row_output)
+                add_amounts(upkeep, row_upkeep)
+                selected_objects.append(f"{row['object_type']}:{row['object_id']}")
+            rows.append(
+                role_family_bundle_row(
+                    role=family,
+                    source_scope=f"development_family_top_{take}",
+                    colony_class="|".join(sorted(classes)),
+                    selected_objects=selected_objects,
+                    output=output,
+                    upkeep=upkeep,
+                )
+            )
+
+
+def add_strategic_family_rows(rows: list[dict[str, Any]], strategic_rows: list[dict[str, Any]]) -> None:
+    strategic_roles = {"capital_world", "habitat_growth_center", "habitat_support_center"}
+    for role in sorted(strategic_roles):
+        candidates = [row for row in strategic_rows if str(row["role"]) == role]
+        if not candidates:
+            continue
+        ordered = sorted(
+            candidates,
+            key=lambda item: (float(item["priority_score"]), str(item["object_id"])),
+            reverse=True,
+        )
+        for take in sorted({1, min(3, len(ordered)), min(6, len(ordered))}):
+            output: dict[str, float] = {}
+            upkeep: dict[str, float] = {}
+            selected_objects: list[str] = []
+            extra_score = 0.0
+            for row in ordered[:take]:
+                add_amounts(output, json.loads(str(row["direct_optimistic_output_json"])))
+                add_amounts(upkeep, json.loads(str(row["direct_optimistic_upkeep_json"])))
+                selected_objects.append(f"{row['object_type']}:{row['object_id']}")
+                extra_score += float(row["priority_score"])
+            rows.append(
+                role_family_bundle_row(
+                    role=role,
+                    source_scope=f"strategic_family_top_{take}",
+                    colony_class="strategic_infrastructure",
+                    selected_objects=selected_objects,
+                    output=output,
+                    upkeep=upkeep,
+                    extra_score=extra_score,
+                )
+            )
+
+
+def role_target_rows(
+    buildings: list[dict[str, Any]], development_rows: list[dict[str, Any]], strategic_rows: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for role in ROLE_TARGETS:
         for candidate_scope, source_scope in (
@@ -1356,7 +1464,9 @@ def role_target_rows(buildings: list[dict[str, Any]], development_rows: list[dic
                         bundle={"output": output, "upkeep": upkeep, "net": net_amounts(output, upkeep)},
                     )
                 )
-    return rows
+    add_development_family_rows(rows, development_rows)
+    add_strategic_family_rows(rows, strategic_rows)
+    return sorted(rows, key=lambda item: (str(item["role"]), str(item["source_scope"]), str(item["colony_class"])))
 
 
 def collect_technology_modifier_rows(playset: dict[str, Any]) -> list[dict[str, Any]]:
@@ -1856,9 +1966,9 @@ def main() -> None:
     buildings = collect_buildings(playset, jobs)
     development_rows = collect_development_rows(playset, jobs)
     plans = plan_rows(buildings)
-    role_rows = role_target_rows(buildings, development_rows)
     tech_rows = collect_technology_modifier_rows(playset)
     strategic_rows = strategic_infrastructure_rows(playset)
+    role_rows = role_target_rows(buildings, development_rows, strategic_rows)
     resource_coverage_rows = modeling_resource_coverage_rows(job_rows, buildings, development_rows, strategic_rows)
     readiness_rows = build_plan_readiness_rows(buildings)
     benefit_rows = strategic_benefit_taxonomy_rows(strategic_rows)

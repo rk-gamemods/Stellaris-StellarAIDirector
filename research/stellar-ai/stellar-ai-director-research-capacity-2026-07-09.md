@@ -9,7 +9,7 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Districts/zones indexed: 547
 - Buildings with resolved research output: 135
 - Districts/zones with net consumer-goods output: 8
-- Colony role target rows: 220
+- Colony role target rows: 247
 - Technologies with research-relevant modifiers indexed: 18
 - Strategic infrastructure target rows: 1333
 - Resource coverage rows: 21
