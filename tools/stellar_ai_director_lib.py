@@ -11411,6 +11411,31 @@ basic_economy_plan = {
 
 \tsubplan = {
 \t\tscaling = yes
+\t\tset_name = "Stellar AI Director NSC3 hull readiness reserve"
+\t\tpotential = {
+\t\t\tstaid_research_input_runway_safe = yes
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tOR = {
+\t\t\t\tstaid_nsc3_capital_hull_unlock_ready = yes
+\t\t\t\thas_technology = tech_battleships
+\t\t\t\thas_technology = tech_Carrier_1
+\t\t\t\thas_technology = tech_Dreadnought_1
+\t\t\t\tyears_passed > 79
+\t\t\t}
+\t\t}
+\t\tincome = {
+\t\t\talloys = 900
+\t\t\tenergy = 650
+\t\t\tminerals = 450
+\t\t\tengineering_research = 900
+\t\t\tphysics_research = 450
+\t\t\ttrade = 250
+\t\t}
+\t\tnaval_cap = 1200
+\t}
+
+\tsubplan = {
+\t\tscaling = yes
 \t\tset_name = "Stellar AI Director threat readiness reserve"
 \t\tpotential = {
 \t\t\thas_country_flag = staid_tr_defensive_readiness_low

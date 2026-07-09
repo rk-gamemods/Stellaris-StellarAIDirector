@@ -598,6 +598,31 @@ basic_economy_plan = {
 
 	subplan = {
 		scaling = yes
+		set_name = "Stellar AI Director NSC3 hull readiness reserve"
+		potential = {
+			staid_research_input_runway_safe = yes
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			OR = {
+				staid_nsc3_capital_hull_unlock_ready = yes
+				has_technology = tech_battleships
+				has_technology = tech_Carrier_1
+				has_technology = tech_Dreadnought_1
+				years_passed > 79
+			}
+		}
+		income = {
+			alloys = 900
+			energy = 650
+			minerals = 450
+			engineering_research = 900
+			physics_research = 450
+			trade = 250
+		}
+		naval_cap = 1200
+	}
+
+	subplan = {
+		scaling = yes
 		set_name = "Stellar AI Director threat readiness reserve"
 		potential = {
 			has_country_flag = staid_tr_defensive_readiness_low

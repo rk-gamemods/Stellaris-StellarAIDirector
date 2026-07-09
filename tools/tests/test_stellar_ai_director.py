@@ -1129,8 +1129,11 @@ class GeneratedModValidityTests(unittest.TestCase):
     def test_phase_machine_and_modded_conversion_gates_are_generated(self):
         technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
         parse_file(trigger_path)
-        text = technology_path.read_text(encoding="utf-8") + trigger_path.read_text(encoding="utf-8")
+        parse_file(economy_path)
+        economy = economy_path.read_text(encoding="utf-8")
+        text = technology_path.read_text(encoding="utf-8") + trigger_path.read_text(encoding="utf-8") + economy
         for marker in (
             "staid_phase_mega_engineering_rush = {",
             "staid_phase_galactic_wonders_entry = {",
@@ -1151,8 +1154,24 @@ class GeneratedModValidityTests(unittest.TestCase):
             "NOT = { staid_advanced_component_resource_support_ready = yes }",
             "has_technology = tech_Flagship_1",
             "has_technology = esc_tech_dark_matter_power_core_2",
+            'set_name = "Stellar AI Director NSC3 hull readiness reserve"',
         ):
             self.assertIn(marker, text)
+        nsc3_hull_block = economy[
+            economy.index('set_name = "Stellar AI Director NSC3 hull readiness reserve"') : economy.index(
+                'set_name = "Stellar AI Director threat readiness reserve"'
+            )
+        ]
+        for marker in (
+            "staid_nsc3_capital_hull_unlock_ready = yes",
+            "has_technology = tech_battleships",
+            "has_technology = tech_Carrier_1",
+            "has_technology = tech_Dreadnought_1",
+            "alloys = 900",
+            "engineering_research = 900",
+            "naval_cap = 1200",
+        ):
+            self.assertIn(marker, nsc3_hull_block)
 
     def test_unity_to_research_paths_are_source_backed(self):
         traditions_path = MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt"
