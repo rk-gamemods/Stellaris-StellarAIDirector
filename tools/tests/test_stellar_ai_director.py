@@ -697,6 +697,25 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(benefit_rows)
         self.assertEqual({row["can_consume_now"] for row in benefit_rows}, {"no"})
 
+    def test_research_capacity_model_artifact_row_counts_are_stable(self):
+        expected_counts = {
+            RESEARCH_CAPACITY_JOBS_CSV: 501,
+            RESEARCH_CAPACITY_BUILDINGS_CSV: 826,
+            RESEARCH_CAPACITY_DEVELOPMENT_CSV: 547,
+            RESEARCH_CAPACITY_PLAN_CSV: 24,
+            RESEARCH_CAPACITY_ROLES_CSV: 247,
+            RESEARCH_CAPACITY_INFRASTRUCTURE_CSV: 1333,
+            RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV: 21,
+            RESEARCH_CAPACITY_READINESS_CSV: 826,
+            RESEARCH_CAPACITY_BENEFITS_CSV: 1887,
+            RESEARCH_CAPACITY_BLOCKERS_CSV: 1042,
+            RESEARCH_CAPACITY_CONSUMER_POLICY_CSV: 1093,
+        }
+        for path, expected_count in expected_counts.items():
+            with path.open("r", encoding="utf-8", newline="") as handle:
+                rows = list(csv.DictReader(handle))
+            self.assertEqual(len(rows), expected_count, path.name)
+
     def test_nonconstruction_economic_valuation_dataset_extends_without_duplicate_construction_surfaces(self):
         self.assertTrue(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.exists())
         self.assertTrue(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD.exists())
