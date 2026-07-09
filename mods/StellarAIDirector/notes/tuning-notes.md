@@ -37,7 +37,8 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 - Defensive or high-threat empires get additive starbase reserve subplans only after recovery and short-runway deficit gates are clear.
 - Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.
-- The generated ESC starbase reactor override adds direct crisis-starbase AI weight support; other starbase modules/buildings remain manual-review candidates.
+- Generated starbase pressure is guarded by `staid_static_defense_threat_window` and `staid_starbase_defense_economy_safe`.
+- Copied safe Starbase Extended/ESC starbase module and building objects can receive Director defense pressure; Waystation sections, ship sizes, component templates, and other loader-sensitive defense surfaces remain outside Director ownership.
 
 ## Trade-Capacity Policy
 
@@ -86,6 +87,14 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.
 - Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting, Discovery/Diplomacy/AP support, and cooperative diplomatic stance only; direct research-agreement action and personality rewrites remain gated until separately proven.
 - Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.
+- More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` are copied through the dataset job-pressure path, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked until their runtime and UI semantics are proven.
+- Arkship carrier planets are excluded from copied Planetary Diversity outpost decisions, and later high-scale planetary pressure remains normal-empire-only where the Nomad/Arkship audit found no safe shared surface.
+
+## Nomad/Arkship Compatibility Policy
+
+- Nomadic empires get only the targeted opening research route `staid_opening_nomad_arkship_research` until a dedicated Nomad strategy is proven.
+- Most megastructure, colony, starbase, war, fleet, fauna, and planetary-capacity pressure is guarded for normal empires with `is_nomadic = no`.
+- The Director does not override Nomad colony types, Arkship ship sizes, Arkship component templates, Waystation sections, Waylines, Contracts, or Operational Reserve objects; those remain owned by vanilla and parent mods.
 
 ## NSC3/ESC Design Policy
 

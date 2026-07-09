@@ -38,6 +38,12 @@
 - Fleet-throughput economy gates provide the current ship-use path without guessing direct ship-design templates.
 - ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 
+## Strategic V2 Compatibility Reviews
+
+- Starbase Extended review: Director-owned starbase defense pressure is limited to copied safe module/building surfaces and generated economy gates. Parent-owned Waystation sections, ship sizes, component templates, and related starbase/ship loader surfaces remain out of scope because the active conflict matrix shows high-risk parent conflicts there.
+- Planetary Diversity / More Arcologies review: `building_navel_base` and `building_navel_command` are now intentional copied building overrides through the dataset job-pressure generator. `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites are blocked until their AI, UI, and load-order semantics are proven.
+- Nomad/Arkship review: Director has one additive targeted opening route for Arkship research and otherwise keeps high-scale pressure normal-empire-only. It does not override Nomad colony types, Arkship ship sizes, Arkship component templates, Waystation sections, Waylines, Contracts, or Operational Reserve objects.
+
 ## Review Rules
 
 - Any new full-object override must include an ownership note naming the parent surface and reason.
@@ -51,3 +57,4 @@
 - Reviewed `common\ai_budget` conflicts: `alloys_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, `sentient_metal_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
 - Each reviewed object resolves to `Stellar AI Director ... (LIOS)` as an intentional Director win.
 - No unexplained Director gameplay conflicts were observed in the reviewed Director conflict set.
+- Fresh Irony UI review has not yet been repeated for the strategic v2 starbase and Planetary Diversity surfaces; current classifications are based on generated audits and indexed active conflict-matrix evidence.

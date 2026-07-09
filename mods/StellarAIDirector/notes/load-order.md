@@ -9,6 +9,7 @@ Required compatibility-mod maximum load position: 72
 - Load after NSC3.
 - Load after Extra Ship Components NEXT.
 - Load after Starbase Extended 3.0.
+- Load after Planetary Diversity and Planetary Diversity - More Arcologies when those collection surfaces are active.
 - Load after !!!Universal Resource Patch [2.4+].
 - Load after compatibility patches whose AI/economy behavior the Director intentionally coordinates.
 - Stellar AI is not a required parent for the standalone baseline; keep it only as private parity/reference evidence when comparing behavior during development.
@@ -36,4 +37,5 @@ The Director descriptor intentionally omits Stellar AI. Current Stellar AI sourc
 - `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally defines the Director-owned `alloys_expenditure_megastructures` budget using Stellar AI parity evidence without requiring Stellar AI to load.
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally overrides Gigas `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures` budgets.
 - `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets.
+- `common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt` intentionally copies selected safe parent buildings, including More Arcologies naval-administration buildings, when the source object is present in the active indexed mod stack.
 - Additive scripted triggers, script values, and economic-plan subplans use the `staid_` namespace and should not conflict with parent object IDs.
