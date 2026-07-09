@@ -17,7 +17,7 @@
     "ai_empires": "6",
     "difficulty": "Ensign",
     "galaxy_size": "Tiny / 200 stars",
-    "gigastructural_engineering_preset": "Giga-Experience unless startup modal records otherwise",
+    "gigastructural_engineering_preset": "Arcade; screenshot evidence shows uncapped megastructures and enabled crisis/warship systems",
     "max_year": 2350,
     "player_bonuses": "off",
     "scaling": "off",
@@ -29,7 +29,7 @@
     2325,
     2350
   ],
-  "status": "created",
-  "target_game_version": "Repo target Stellaris 4.4.5; prior local runtime displayed Pegasus v4.4.4 (26b7), recheck at launch",
+  "status": "stopped_for_patch_after_2325_research_curve_failure",
+  "target_game_version": "Repo target Stellaris 4.4.5; live runtime displayed Pegasus v4.4.4 (7d82) at launch",
   "target_mod": "Stellar AI Director"
 }

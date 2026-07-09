@@ -1092,17 +1092,17 @@ class GeneratedModValidityTests(unittest.TestCase):
             research_text,
         )
         for marker in (
-            "modifier = { factor = 5 owner = { staid_research_under_curve = yes } }",
-            "modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }",
-            "modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }",
+            "modifier = { factor = 14 owner = { staid_research_under_curve = yes } }",
+            "modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }",
+            "modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }",
         ):
             self.assertIn(marker, research_text)
         self.assertIn(
-            "modifier = { factor = 0 owner = { NOT = { staid_planetary_capacity_growth_ready = yes } } }",
+            "modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }",
             research_district_text,
         )
         self.assertIn(
-            "modifier = { factor = 3 owner = { staid_research_under_curve = yes } }",
+            "modifier = { factor = 8 owner = { staid_research_under_curve = yes } }",
             research_district_text,
         )
         self.assertIn(
@@ -1526,8 +1526,8 @@ class GeneratedModValidityTests(unittest.TestCase):
             "building_institute = {",
             "building_supercomputer = {",
             "building_archaeostudies_faculty = {",
-            "ai_weight_coefficient = 12",
-            "additional_ai_weight = 1200",
+            "ai_weight_coefficient = 18",
+            "additional_ai_weight = 3200",
             "script = stellarai/rare_resource_guard_modifiers",
             "staid_research_construction_priority_ready",
             "modifier = { factor = 8 has_designation = col_research }",
@@ -1535,14 +1535,19 @@ class GeneratedModValidityTests(unittest.TestCase):
             "modifier = { factor = 6 has_designation = col_ring_research }",
             "modifier = { factor = 6 has_designation = col_ecu_research }",
             "modifier = { factor = 5 has_designation = col_nomad_research }",
+            "modifier = { factor = 14 owner = { staid_research_under_curve = yes } }",
+            "modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }",
+            "modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }",
         ):
             self.assertIn(marker, buildings_text)
         for marker in (
-            "# policy_route = crowded_tall_route",
+            "# policy_route = research_throughput_infrastructure",
             "district_hab_science = {",
-            "ai_weight_coefficient = 4",
-            "additional_ai_weight = 500",
+            "ai_weight_coefficient = 12",
+            "additional_ai_weight = 1800",
             "modifier = { factor = 8 has_designation = col_habitat_research }",
+            "modifier = { factor = 8 owner = { staid_research_under_curve = yes } }",
+            "modifier = { factor = 5 owner = { years_passed > 79 staid_research_under_curve = yes } }",
         ):
             self.assertIn(marker, districts_text)
 

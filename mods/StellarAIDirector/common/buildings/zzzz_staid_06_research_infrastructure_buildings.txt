@@ -84,7 +84,7 @@ building_research_lab_1 = {
 	allow = {
 	}
 
-	ai_weight_coefficient = 8
+	ai_weight_coefficient = 14
 
 	destroy_trigger = {
 		OR = {
@@ -120,7 +120,7 @@ building_research_lab_1 = {
 	upgrades = {
 		"building_research_lab_2"
 	}
-	additional_ai_weight = 600
+	additional_ai_weight = 2000
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
@@ -129,9 +129,13 @@ building_research_lab_1 = {
 		modifier = { factor = 6 has_designation = col_ring_research }
 		modifier = { factor = 6 has_designation = col_ecu_research }
 		modifier = { factor = 5 has_designation = col_nomad_research }
-		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
-		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
-		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_research_under_curve = yes } }
+		modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }
+		modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }
+		modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 owner = { years_passed > 44 } }
+		modifier = { factor = 3 free_building_slots > 0 }
 	}
 }
 
@@ -199,8 +203,8 @@ building_research_lab_2 = {
 		"building_research_lab_3"
 	}
 
-	ai_weight_coefficient = 10
-	additional_ai_weight = 900
+	ai_weight_coefficient = 16
+	additional_ai_weight = 2600
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
@@ -209,9 +213,13 @@ building_research_lab_2 = {
 		modifier = { factor = 6 has_designation = col_ring_research }
 		modifier = { factor = 6 has_designation = col_ecu_research }
 		modifier = { factor = 5 has_designation = col_nomad_research }
-		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
-		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
-		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_research_under_curve = yes } }
+		modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }
+		modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }
+		modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 owner = { years_passed > 44 } }
+		modifier = { factor = 3 free_building_slots > 0 }
 	}
 }
 
@@ -275,8 +283,8 @@ building_research_lab_3 = {
 		is_wilderness_empire = no
 	}
 
-	ai_weight_coefficient = 12
-	additional_ai_weight = 1200
+	ai_weight_coefficient = 18
+	additional_ai_weight = 3200
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
@@ -285,9 +293,13 @@ building_research_lab_3 = {
 		modifier = { factor = 6 has_designation = col_ring_research }
 		modifier = { factor = 6 has_designation = col_ecu_research }
 		modifier = { factor = 5 has_designation = col_nomad_research }
-		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
-		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
-		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_research_under_curve = yes } }
+		modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }
+		modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }
+		modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 owner = { years_passed > 44 } }
+		modifier = { factor = 3 free_building_slots > 0 }
 	}
 }
 
@@ -395,7 +407,7 @@ building_institute = {
 		is_regular_empire = yes
 	}
 
-	ai_weight_coefficient = 8
+	ai_weight_coefficient = 14
 
 	inline_script = {
 		script = districts/ai_research_extra_weighting
@@ -427,11 +439,15 @@ building_institute = {
 		modifier = { factor = 6 has_designation = col_ring_research }
 		modifier = { factor = 6 has_designation = col_ecu_research }
 		modifier = { factor = 5 has_designation = col_nomad_research }
-		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
-		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
-		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_research_under_curve = yes } }
+		modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }
+		modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }
+		modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 owner = { years_passed > 44 } }
+		modifier = { factor = 3 free_building_slots > 0 }
 	}
-	additional_ai_weight = 800
+	additional_ai_weight = 2200
 }
 
 
@@ -540,7 +556,7 @@ building_supercomputer = {
 		is_wilderness_empire = no
 	}
 
-	ai_weight_coefficient = 8
+	ai_weight_coefficient = 14
 
 	inline_script = {
 		script = districts/ai_research_extra_weighting
@@ -572,11 +588,15 @@ building_supercomputer = {
 		modifier = { factor = 6 has_designation = col_ring_research }
 		modifier = { factor = 6 has_designation = col_ecu_research }
 		modifier = { factor = 5 has_designation = col_nomad_research }
-		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
-		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
-		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_research_under_curve = yes } }
+		modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }
+		modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }
+		modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 owner = { years_passed > 44 } }
+		modifier = { factor = 3 free_building_slots > 0 }
 	}
-	additional_ai_weight = 800
+	additional_ai_weight = 2200
 }
 
 
@@ -754,13 +774,13 @@ building_archaeostudies_faculty = {
 		text = building_archaeostudies_faculty_relic_effect
 	}
 
-	ai_weight_coefficient = 6
+	ai_weight_coefficient = 10
 
 	inline_script = {
 		script = districts/ai_research_society_extra_weighting
 		AMOUNT = 5
 	}
-	additional_ai_weight = 500
+	additional_ai_weight = 1600
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
@@ -769,8 +789,12 @@ building_archaeostudies_faculty = {
 		modifier = { factor = 6 has_designation = col_ring_research }
 		modifier = { factor = 6 has_designation = col_ecu_research }
 		modifier = { factor = 5 has_designation = col_nomad_research }
-		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
-		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
-		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_research_under_curve = yes } }
+		modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }
+		modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }
+		modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 4 owner = { years_passed > 44 } }
+		modifier = { factor = 3 free_building_slots > 0 }
 	}
 }

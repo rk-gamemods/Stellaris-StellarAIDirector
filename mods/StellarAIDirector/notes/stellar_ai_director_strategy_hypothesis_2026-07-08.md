@@ -778,6 +778,13 @@ Do not silently delete failed hypotheses. Move them to a rejected/deprecated sub
 - Strategic impact: Megastructure count alone is not a success proxy. The next patch should make existing research designations materially increase lab/science-district construction pressure while preserving support-economy gates, and should continue distinguishing research-producing megastructures from generic economy/industry megastructures.
 - Required implementation/test follow-up: Apply only source-backed designation-aware pressure to generated research infrastructure weights; do not broad-rewrite `common/colony_types` unless later evidence proves the colony selection layer itself is the bottleneck. The next observer run must verify research jobs, labs, science districts, and research megastructure composition, not just total parsed megastructure count.
 
+2026-07-09 update:
+- What changed: Observer run `observer-20260709T104133Z` falsified the designation-only construction patch before 2350. The run stopped at 2325 after the top included regular AI reached only 860.299 monthly research; direct save inspection found one excluded country at about 1507.57, still below the needed 3,000-by-2350 curve.
+- Evidence source: `research/stellar-ai/observer-runs/observer-20260709T104133Z/checkpoints.csv`, `summary.md`, `manual-notes.md`, screenshots `checkpoint-2250-screen.png`, `checkpoint-2300-screen-final.png`, and `checkpoint-2325-screen-paused.png`, plus JDataMunch validation of `stellar_ai_observer_20260709T104133Z_checkpoints`.
+- Affected hypothesis section: 9.2 Direct Research Route, 13 Observer Testing Theory, 14.1 Research And Economy, and 15 Maintenance Protocol.
+- Strategic impact: Economic-plan targets were already high and checkpoint rows showed positive energy/alloy/mineral/consumer-goods income with no deficits, so the bottleneck is construction execution strength. Research infrastructure weights need to overpower generic construction when an empire is under curve, not merely prefer labs on already-research-designated worlds.
+- Required implementation/test follow-up: Raise generated lab, institute, supercomputer, archaeostudies, and habitat-science district weights; add stronger under-curve, midgame, surplus, and high-scale multipliers while preserving the zero gate for unsafe economies. Rerun static validation and a fresh observer benchmark.
+
 ---
 
 ## 16. Recommended Repository Placement

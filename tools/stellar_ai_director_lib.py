@@ -560,13 +560,13 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "influence_expenditure_claims_militarist", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 165000, "file_key": "08_site_limited_expansion"},
     {"object_id": "influence_expenditure_claims_fanatic_militarist", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 185000, "file_key": "08_site_limited_expansion"},
     # Direct research-throughput infrastructure for the observed low-tech/high-stockpile failure mode.
-    {"object_id": "building_research_lab_1", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 140000, "coefficient": "8", "additional_weight": "600", "file_key": "06_research_infrastructure"},
-    {"object_id": "building_research_lab_2", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 160000, "coefficient": "10", "additional_weight": "900", "file_key": "06_research_infrastructure"},
-    {"object_id": "building_research_lab_3", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 180000, "coefficient": "12", "additional_weight": "1200", "file_key": "06_research_infrastructure"},
-    {"object_id": "building_institute", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 150000, "coefficient": "8", "additional_weight": "800", "file_key": "06_research_infrastructure"},
-    {"object_id": "building_supercomputer", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 150000, "coefficient": "8", "additional_weight": "800", "file_key": "06_research_infrastructure"},
-    {"object_id": "building_archaeostudies_faculty", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 130000, "coefficient": "6", "additional_weight": "500", "file_key": "06_research_infrastructure"},
-    {"object_id": "district_hab_science", "object_type": "district", "mod_id": "vanilla", "source_file": "common/districts/03_habitat_districts.txt", "route_id": "crowded_tall_route", "weight": 110000, "coefficient": "4", "additional_weight": "500", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_research_lab_1", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 220000, "coefficient": "14", "additional_weight": "2000", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_research_lab_2", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 250000, "coefficient": "16", "additional_weight": "2600", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_research_lab_3", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 280000, "coefficient": "18", "additional_weight": "3200", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_institute", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 240000, "coefficient": "14", "additional_weight": "2200", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_supercomputer", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 240000, "coefficient": "14", "additional_weight": "2200", "file_key": "06_research_infrastructure"},
+    {"object_id": "building_archaeostudies_faculty", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 190000, "coefficient": "10", "additional_weight": "1600", "file_key": "06_research_infrastructure"},
+    {"object_id": "district_hab_science", "object_type": "district", "mod_id": "vanilla", "source_file": "common/districts/03_habitat_districts.txt", "route_id": "research_throughput_infrastructure", "weight": 210000, "coefficient": "12", "additional_weight": "1800", "file_key": "06_research_infrastructure"},
     # Compounding-growth infrastructure: population and science capacity pay off over the full game clock.
     {"object_id": "building_robot_assembly_plant", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 155000, "coefficient": "8", "additional_weight": "900", "file_key": "07_pop_assembly"},
     {"object_id": "building_robot_assembly_complex", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 175000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
@@ -4838,16 +4838,21 @@ def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> 
             "\t\tmodifier = { factor = 6 has_designation = col_ring_research }",
             "\t\tmodifier = { factor = 6 has_designation = col_ecu_research }",
             "\t\tmodifier = { factor = 5 has_designation = col_nomad_research }",
-            "\t\tmodifier = { factor = 5 owner = { staid_research_under_curve = yes } }",
-            "\t\tmodifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }",
-            "\t\tmodifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }",
+            "\t\tmodifier = { factor = 14 owner = { staid_research_under_curve = yes } }",
+            "\t\tmodifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }",
+            "\t\tmodifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }",
+            "\t\tmodifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }",
+            "\t\tmodifier = { factor = 6 owner = { staid_high_scale_snowball_pressure = yes } }",
+            "\t\tmodifier = { factor = 4 owner = { years_passed > 44 } }",
+            "\t\tmodifier = { factor = 3 free_building_slots > 0 }",
         ):
             block = insert_top_level_ai_weight_modifier(block, modifier)
-    elif target.get("object_id") == "district_hab_science":
+    if target.get("object_id") == "district_hab_science":
         for modifier in (
             "\t\tmodifier = { factor = 8 has_designation = col_habitat_research }",
-            "\t\tmodifier = { factor = 4 owner = { staid_planetary_capacity_growth_ready = yes } }",
-            "\t\tmodifier = { factor = 3 owner = { staid_research_under_curve = yes } }",
+            "\t\tmodifier = { factor = 8 owner = { staid_research_under_curve = yes } }",
+            "\t\tmodifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }",
+            "\t\tmodifier = { factor = 5 owner = { years_passed > 79 staid_research_under_curve = yes } }",
         ):
             block = insert_top_level_ai_weight_modifier(block, modifier)
     elif route_id == "pop_assembly_snowball_core":
