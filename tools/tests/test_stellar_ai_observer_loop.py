@@ -31,6 +31,11 @@ class StellarAiObserverLoopTests(unittest.TestCase):
         self.assertNotIn('game_speed 4"', OBSERVER_COMMAND_SCHEDULE)
         self.assertIn("GAME_SPEED_6", OBSERVER_COMMAND_SCHEDULE)
 
+    def test_commands_at_date_includes_gigas_startup_unblock(self):
+        self.assertIn('2200.01.01 = "event giga_menu.1111"', OBSERVER_COMMAND_SCHEDULE)
+        self.assertIn('2200.01.02 = "event giga_menu.1111"', OBSERVER_COMMAND_SCHEDULE)
+        self.assertIn("Gigastructural Engineering startup-confirm", OBSERVER_COMMAND_SCHEDULE)
+
     def test_commands_at_date_observer_schedule_is_explicit_and_removable(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             live_path = Path(temp_dir) / "commands_at_date.txt"

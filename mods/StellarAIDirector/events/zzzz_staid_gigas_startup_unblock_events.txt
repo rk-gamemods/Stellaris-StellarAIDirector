@@ -1,0 +1,19 @@
+namespace = staid_gigas_startup
+
+country_event = {
+	id = staid_gigas_startup.1
+	hide_window = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_country_flag = giga_host
+		NOT = { has_global_flag = giga_game_started }
+	}
+
+	immediate = {
+		log = "STELLAR_AI_DIRECTOR_GIGAS_STARTUP_UNBLOCK: applying Giga-Experience preset and confirming startup menu for observer benchmark"
+		giga_preset_gigas_experience = yes
+		country_event = { id = giga_menu.1111 }
+	}
+}
