@@ -920,6 +920,26 @@ class GeneratedModValidityTests(unittest.TestCase):
             "modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }",
             pop_text,
         )
+        for marker in (
+            "modifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
+            "modifier = { factor = 4 owner = { is_materialist = yes } }",
+            "modifier = { factor = 7 owner = { OR = { is_machine_empire = yes is_individual_machine = yes } } }",
+            "modifier = { factor = 5 owner = { OR = { has_technology = tech_cloning has_cloning_tradition = yes } } }",
+            "modifier = { factor = 3 owner = { has_ascension_perk = ap_engineered_evolution } }",
+            "modifier = { factor = 6 owner = { is_hive_empire = yes } }",
+            "modifier = { factor = 0 owner = { has_origin = origin_progenitor_hive } }",
+            "modifier = { factor = 8 owner = { has_origin = origin_progenitor_hive } }",
+        ):
+            self.assertIn(marker, pop_text)
+        for marker in (
+            "is_regular_empire = yes",
+            "NOT = { has_policy_flag = robots_outlawed }",
+            "OR = {\n\t\t\t\tis_machine_empire = yes\n\t\t\t\tis_individual_machine = yes",
+            "is_hive_empire = yes",
+            "NOT = { has_origin = origin_progenitor_hive }",
+            "has_origin = origin_progenitor_hive",
+        ):
+            self.assertIn(marker, pop_text)
 
     def test_habitat_route_override_repairs_gigas_spawn_effect_parameters(self):
         megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"

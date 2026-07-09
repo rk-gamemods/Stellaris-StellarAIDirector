@@ -4825,6 +4825,37 @@ def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> 
             "\t\tmodifier = { factor = 3 owner = { staid_research_under_curve = yes } }",
         ):
             block = insert_top_level_ai_weight_modifier(block, modifier)
+    elif route_id == "pop_assembly_snowball_core":
+        object_id = str(target.get("object_id", ""))
+        pop_assembly_modifiers = {
+            "building_robot_assembly_plant": (
+                "\t\tmodifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
+                "\t\tmodifier = { factor = 4 owner = { is_materialist = yes } }",
+            ),
+            "building_robot_assembly_complex": (
+                "\t\tmodifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
+                "\t\tmodifier = { factor = 4 owner = { is_materialist = yes } }",
+            ),
+            "building_machine_assembly_plant": (
+                "\t\tmodifier = { factor = 7 owner = { OR = { is_machine_empire = yes is_individual_machine = yes } } }",
+            ),
+            "building_machine_assembly_complex": (
+                "\t\tmodifier = { factor = 7 owner = { OR = { is_machine_empire = yes is_individual_machine = yes } } }",
+            ),
+            "building_clone_vats": (
+                "\t\tmodifier = { factor = 5 owner = { OR = { has_technology = tech_cloning has_cloning_tradition = yes } } }",
+                "\t\tmodifier = { factor = 3 owner = { has_ascension_perk = ap_engineered_evolution } }",
+            ),
+            "building_spawning_pool": (
+                "\t\tmodifier = { factor = 6 owner = { is_hive_empire = yes } }",
+                "\t\tmodifier = { factor = 0 owner = { has_origin = origin_progenitor_hive } }",
+            ),
+            "building_offspring_nest": (
+                "\t\tmodifier = { factor = 8 owner = { has_origin = origin_progenitor_hive } }",
+            ),
+        }
+        for modifier in pop_assembly_modifiers.get(object_id, ()):
+            block = insert_top_level_ai_weight_modifier(block, modifier)
     return block
 
 
@@ -12084,6 +12115,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.5 rejects in active economic-plan files.",
         "- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.",
         "- Research labs keep a hard zero gate unless `staid_research_input_runway_safe` is true, then add extra pressure for `staid_research_under_curve`, `staid_opening_route_research_priority`, and `staid_surplus_sink_pressure`. Habitat science districts keep the tall-capacity gate and add under-curve research pressure.",
+        "- Pop assembly buildings keep the `staid_pop_assembly_snowball_ready` hard gate, then add path-specific pressure for valid robot/synth, machine, clone/biological, hive, and progenitor-hive assembly routes.",
         "- Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.",
         "- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.",
         "- Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.",

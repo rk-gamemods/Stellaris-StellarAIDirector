@@ -218,6 +218,8 @@ building_robot_assembly_plant = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }
+		modifier = { factor = 4 owner = { is_materialist = yes } }
 	}
 }
 
@@ -401,6 +403,8 @@ building_robot_assembly_complex = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }
+		modifier = { factor = 4 owner = { is_materialist = yes } }
 	}
 }
 
@@ -515,6 +519,7 @@ building_machine_assembly_plant = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 7 owner = { OR = { is_machine_empire = yes is_individual_machine = yes } } }
 	}
 }
 
@@ -613,6 +618,7 @@ building_machine_assembly_complex = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 7 owner = { OR = { is_machine_empire = yes is_individual_machine = yes } } }
 	}
 }
 
@@ -916,6 +922,8 @@ building_clone_vats = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 5 owner = { OR = { has_technology = tech_cloning has_cloning_tradition = yes } } }
+		modifier = { factor = 3 owner = { has_ascension_perk = ap_engineered_evolution } }
 	}
 }
 
@@ -1022,6 +1030,8 @@ building_spawning_pool = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 6 owner = { is_hive_empire = yes } }
+		modifier = { factor = 0 owner = { has_origin = origin_progenitor_hive } }
 	}
 }
 
@@ -1110,5 +1120,6 @@ building_offspring_nest = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 8 owner = { has_origin = origin_progenitor_hive } }
 	}
 }
