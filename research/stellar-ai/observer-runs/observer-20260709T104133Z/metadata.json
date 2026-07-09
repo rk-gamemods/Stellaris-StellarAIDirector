@@ -1,0 +1,35 @@
+{
+  "artifacts": {
+    "checkpoints": "checkpoints.csv",
+    "manual_notes": "manual-notes.md",
+    "metrics": "metrics.json",
+    "summary_json": "summary.json",
+    "summary_md": "summary.md"
+  },
+  "baseline_commit": "e684f3e",
+  "benchmark_intent": "Verify whether the research-designation construction patch can push at least one regular AI empire to 3,000+ monthly research before 2350 without hidden bonuses.",
+  "created_at_utc": "2026-07-09T10:41:33.031363+00:00",
+  "hidden_economic_bonuses": false,
+  "launcher": "Irony Mod Manager",
+  "run_id": "observer-20260709T104133Z",
+  "settings": {
+    "advanced_ai_starts": "off",
+    "ai_empires": "6",
+    "difficulty": "Ensign",
+    "galaxy_size": "Tiny / 200 stars",
+    "gigastructural_engineering_preset": "Giga-Experience unless startup modal records otherwise",
+    "max_year": 2350,
+    "player_bonuses": "off",
+    "scaling": "off",
+    "tech_cost": "0.5x if matching prior constrained benchmark setup"
+  },
+  "standard_checkpoints": [
+    2250,
+    2300,
+    2325,
+    2350
+  ],
+  "status": "created",
+  "target_game_version": "Repo target Stellaris 4.4.5; prior local runtime displayed Pegasus v4.4.4 (26b7), recheck at launch",
+  "target_mod": "Stellar AI Director"
+}
