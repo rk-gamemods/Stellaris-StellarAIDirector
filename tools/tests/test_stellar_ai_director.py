@@ -694,6 +694,85 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("ap_nihilistic_acquisition", ascension_perks)
         self.assertIn("staid_raiding_pop_acquisition_priority", ascension_perks)
 
+    def test_fleet_payoff_routes_bias_economy_without_forcing_wars(self):
+        triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").read_text(
+            encoding="utf-8"
+        )
+        economy = (MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt").read_text(
+            encoding="utf-8"
+        )
+        policies = (MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt").read_text(
+            encoding="utf-8"
+        )
+        bombardment = (
+            MOD_ROOT / "common" / "bombardment_stances" / "zzzz_staid_12_militarist_raiding_bombardment.txt"
+        ).read_text(encoding="utf-8")
+        ascension_perks = (
+            MOD_ROOT / "common" / "ascension_perks" / "zzzz_staid_02_perks_traditions_ascension_perks.txt"
+        ).read_text(encoding="utf-8")
+
+        def generated_object_block(text, object_name):
+            start = text.index(f"{object_name} = {{")
+            next_header = text.find("\n\n\n# policy_route =", start + 1)
+            return text[start:] if next_header == -1 else text[start:next_header]
+
+        generated_text = "\n".join(
+            (
+                triggers[
+                    triggers.index("staid_militarist_conquest_strategy = {") : triggers.index(
+                        "staid_raiding_pop_growth_strategy = {"
+                    )
+                ],
+                triggers[
+                    triggers.index("staid_raiding_pop_growth_strategy = {") : triggers.index(
+                        "staid_raiding_pop_acquisition_priority = {"
+                    )
+                ],
+                economy[
+                    economy.index('set_name = "Stellar AI Director militarist conquest fleet reserve"') : economy.index(
+                        'set_name = "Stellar AI Director raiding pop acquisition reserve"'
+                    )
+                ],
+                economy[
+                    economy.index('set_name = "Stellar AI Director raiding pop acquisition reserve"') : economy.index(
+                        'set_name = "Stellar AI Director hostile fauna clearance reserve"'
+                    )
+                ],
+                policies,
+                bombardment,
+                generated_object_block(ascension_perks, "ap_lord_of_war"),
+                generated_object_block(ascension_perks, "ap_nihilistic_acquisition"),
+            )
+        )
+
+        for marker in (
+            'set_name = "Stellar AI Director militarist conquest fleet reserve"',
+            'set_name = "Stellar AI Director raiding pop acquisition reserve"',
+            "alloys = 6000",
+            "naval_cap = 6000",
+            "alloys = 4500",
+            "naval_cap = 4500",
+            "factor = 18 staid_militarist_conquest_strategy = yes",
+            "factor = 80 staid_raiding_pop_growth_strategy = yes",
+            "abduct_pops = yes",
+            "ap_nihilistic_acquisition",
+        ):
+            self.assertIn(marker, generated_text)
+
+        forbidden_forced_war_hooks = (
+            "declare_war",
+            "set_war_goal",
+            "create_war",
+            "add_claim",
+            "create_claim",
+            "add_casus_belli",
+            "country_event =",
+            "fleet_event =",
+            "create_fleet",
+        )
+        for hook in forbidden_forced_war_hooks:
+            self.assertNotIn(hook, generated_text)
+
     def test_hostile_fauna_reserve_stays_on_safe_clearance_window(self):
         triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").read_text(
             encoding="utf-8"
