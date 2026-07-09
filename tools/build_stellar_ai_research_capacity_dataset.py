@@ -40,6 +40,7 @@ OUT_DEVELOPMENT = RESEARCH_ROOT / "stellar-ai-director-research-capacity-develop
 OUT_PLAN = RESEARCH_ROOT / "stellar-ai-director-research-capacity-plan-2026-07-09.csv"
 OUT_ROLES = RESEARCH_ROOT / "stellar-ai-director-colony-role-targets-2026-07-09.csv"
 OUT_TECH = RESEARCH_ROOT / "stellar-ai-director-research-capacity-tech-modifiers-2026-07-09.csv"
+OUT_INFRA = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
@@ -72,6 +73,28 @@ ROLE_TARGETS = {
     "refinery_world": ("volatile_motes", "exotic_gases", "rare_crystals"),
     "trade_world": ("trade",),
 }
+STRATEGIC_MODIFIER_TERMS = (
+    "pop_growth",
+    "pop_assembly",
+    "resettlement",
+    "migration",
+    "shipyard",
+    "naval_cap",
+    "stability",
+    "amenities",
+    "envoy",
+    "diplom",
+    "trust",
+    "federation",
+    "opinion",
+    "relations",
+    "research_speed",
+)
+POP_GROWTH_TERMS = ("pop_growth", "pop_assembly", "organic_pop_assembly", "clone_soldiers")
+RESETTLEMENT_SOURCE_TERMS = ("resettlement_unemployed_mult",)
+RESETTLEMENT_DESTINATION_TERMS = ("resettlement_unemployed_destination_mult",)
+CAPITAL_STRATEGIC_TERMS = ("envoy", "diplom", "trust", "federation", "opinion", "relations", "edict", "council")
+STARBASE_PRIORITY_TERMS = ("resettlement", "migration", "shipyard", "naval_cap", "trade", "food", "stability")
 
 
 def add_amounts(left: dict[str, float], right: dict[str, float], factor: float = 1.0) -> None:
@@ -115,6 +138,92 @@ def classify_colony_class(object_id: str) -> str:
     if "resort" in lower:
         return "resort_world"
     return "generic_planet_or_special"
+
+
+def assignment_value_text(value: Any) -> str:
+    atom = atom_value(value)
+    if atom is None:
+        return ""
+    return str(atom).strip('"')
+
+
+def has_assignment(value: PDXBlock, key: str, expected: str | None = None) -> bool:
+    for assignment in iter_assignments(value):
+        if assignment.key.strip('"') != key:
+            continue
+        if expected is None:
+            return True
+        if assignment_value_text(assignment.value).lower() == expected.lower():
+            return True
+    return False
+
+
+def collect_numeric_assignments_matching(
+    value: PDXBlock, variables: dict[str, float], terms: tuple[str, ...]
+) -> tuple[dict[str, float], set[str]]:
+    modifiers: dict[str, float] = {}
+    unresolved: set[str] = set()
+    for assignment in iter_assignments(value):
+        key = assignment.key.strip('"')
+        if not any(term in key.lower() for term in terms):
+            continue
+        amount, unresolved_variable = _numeric_atom(assignment.value, variables)
+        if unresolved_variable:
+            unresolved.add(unresolved_variable)
+            continue
+        modifiers[key] = modifiers.get(key, 0.0) + amount
+    return modifiers, unresolved
+
+
+def sum_modifier_terms(modifiers: dict[str, float], terms: tuple[str, ...]) -> float:
+    return sum(amount for key, amount in modifiers.items() if any(term in key.lower() for term in terms))
+
+
+def strategic_tags_for_object(
+    object_type: str,
+    object_id: str,
+    value: PDXBlock,
+    modifiers: dict[str, float],
+    direct_output: dict[str, float],
+) -> list[str]:
+    tags: list[str] = []
+    object_lower = object_id.lower()
+    if object_type == "building" and classify_colony_class(object_id) == "habitat":
+        tags.append("habitat_support_candidate")
+    if object_type == "building" and sum_modifier_terms(modifiers, POP_GROWTH_TERMS) > 0:
+        tags.append("habitat_growth_center")
+    if sum_modifier_terms(modifiers, RESETTLEMENT_SOURCE_TERMS) > 0:
+        tags.append("migration_source")
+    if sum_modifier_terms(modifiers, RESETTLEMENT_DESTINATION_TERMS) > 0:
+        tags.append("migration_destination")
+    if object_type == "building" and (
+        has_assignment(value, "country_modifier")
+        or has_assignment(value, "triggered_country_modifier")
+        or has_assignment(value, "empire_limit")
+        or has_assignment(value, "is_capital", "yes")
+        or "capital" in object_lower
+    ):
+        tags.append("capital_or_empire_unique_candidate")
+    if object_type.startswith("starbase") and any(term in object_lower for term in STARBASE_PRIORITY_TERMS):
+        tags.append("starbase_support_candidate")
+    if object_type.startswith("starbase") and sum_modifier_terms(modifiers, ("resettlement", "migration")) > 0:
+        tags.append("starbase_migration_support")
+    if object_type.startswith("starbase") and (
+        sum_modifier_terms(modifiers, ("shipyard", "naval_cap")) or any(term in object_lower for term in ("shipyard", "anchorage"))
+    ):
+        tags.append("starbase_fleet_scaling")
+    if object_type.startswith("starbase") and (
+        direct_output.get("food", 0.0) > 0
+        or direct_output.get("energy", 0.0) > 0
+        or direct_output.get("minerals", 0.0) > 0
+        or direct_output.get("trade", 0.0) > 0
+    ):
+        tags.append("starbase_resource_support")
+    if has_assignment(value, "can_demolish", "no"):
+        tags.append("cannot_demolish")
+    if has_assignment(value, "destroy_trigger"):
+        tags.append("has_destroy_trigger")
+    return sorted(set(tags))
 
 
 def normalize_job_workforce(amount: float) -> float:
@@ -891,6 +1000,135 @@ def collect_technology_modifier_rows(playset: dict[str, Any]) -> list[dict[str, 
     return rows
 
 
+def collect_winning_folder_definitions(playset: dict[str, Any], folders: dict[str, str]) -> dict[tuple[str, str], dict[str, Any]]:
+    winners: dict[tuple[str, str], dict[str, Any]] = {}
+    for root_info in _valuation_stack_roots(playset):
+        root = Path(root_info["root"])
+        common = root / "common"
+        if not common.exists():
+            continue
+        for folder, object_type in folders.items():
+            folder_path = common / folder
+            if not folder_path.exists():
+                continue
+            for path in iter_text_files(folder_path):
+                try:
+                    parsed = parse_file(path)
+                except PDXParseError:
+                    continue
+                for assignment in block_assignments(parsed):
+                    if assignment.key.startswith("@") or not isinstance(assignment.value, PDXBlock):
+                        continue
+                    key = (object_type, assignment.key)
+                    current = winners.get(key)
+                    if current is None or int(root_info["load_position"]) >= int(current["load_position"]):
+                        winners[key] = {
+                            **root_info,
+                            "object_type": object_type,
+                            "object_id": assignment.key,
+                            "relative_file": str(path.relative_to(root)),
+                            "value": assignment.value,
+                        }
+    return winners
+
+
+def strategic_priority_score(object_type: str, tags: list[str], modifiers: dict[str, float], output: dict[str, float]) -> float:
+    score = 0.0
+    score += max(0.0, sum_modifier_terms(modifiers, POP_GROWTH_TERMS)) * 25.0
+    score += max(0.0, sum_modifier_terms(modifiers, RESETTLEMENT_SOURCE_TERMS)) * 100.0
+    score += max(0.0, sum_modifier_terms(modifiers, RESETTLEMENT_DESTINATION_TERMS)) * 50.0
+    score += max(0.0, sum_modifier_terms(modifiers, CAPITAL_STRATEGIC_TERMS)) * 25.0
+    score += len([tag for tag in tags if tag in {"capital_or_empire_unique_candidate", "starbase_support_candidate"}]) * 10.0
+    if "starbase_migration_support" in tags:
+        score += 150.0
+    if "starbase_fleet_scaling" in tags:
+        score += 50.0
+    if "starbase_resource_support" in tags:
+        score += 15.0 + sum(max(0.0, output.get(key, 0.0)) for key in SUPPORT_KEYS)
+    if "habitat_support_candidate" in tags:
+        score += 5.0
+    if object_type in {"district", "zone"} and "habitat_growth_center" in tags:
+        score += 25.0
+    return round(score, 6)
+
+
+def strategic_infrastructure_rows(playset: dict[str, Any]) -> list[dict[str, Any]]:
+    roots = _valuation_stack_roots(playset)
+    variables = collect_global_variables([Path(root["root"]) for root in roots])
+    definitions = _collect_economic_definitions(playset)
+    winners = _winning_economic_definitions(definitions)
+    winners.update(
+        collect_winning_folder_definitions(
+            playset,
+            {
+                "starbase_buildings": "starbase_building",
+                "starbase_modules": "starbase_module",
+            },
+        )
+    )
+    rows: list[dict[str, Any]] = []
+    for (object_type, object_id), row in sorted(winners.items()):
+        value = row.get("value")
+        if not isinstance(value, PDXBlock):
+            continue
+        modifiers, missing_modifiers = collect_numeric_assignments_matching(value, variables, STRATEGIC_MODIFIER_TERMS)
+        output, upkeep, missing_resources = direct_resource_blocks(value, variables)
+        tags = strategic_tags_for_object(object_type, object_id, value, modifiers, output)
+        if not tags and not modifiers:
+            continue
+        role = "strategic_support"
+        if "capital_or_empire_unique_candidate" in tags:
+            role = "capital_world"
+        if "habitat_growth_center" in tags:
+            role = "habitat_growth_center"
+        elif "habitat_support_candidate" in tags:
+            role = "habitat_support_center"
+        if "starbase_migration_support" in tags:
+            role = "starbase_migration_support"
+        elif "starbase_fleet_scaling" in tags:
+            role = "starbase_fleet_scaling"
+        elif "starbase_resource_support" in tags:
+            role = "starbase_resource_support"
+        rows.append(
+            {
+                "role": role,
+                "object_type": object_type,
+                "object_id": object_id,
+                "colony_class": classify_colony_class(object_id),
+                "strategic_tags": "|".join(tags) or "none",
+                "priority_score": strategic_priority_score(object_type, tags, modifiers, output),
+                "pop_growth_or_assembly": round(sum_modifier_terms(modifiers, POP_GROWTH_TERMS), 6),
+                "resettlement_source_mult": round(sum_modifier_terms(modifiers, RESETTLEMENT_SOURCE_TERMS), 6),
+                "resettlement_destination_mult": round(sum_modifier_terms(modifiers, RESETTLEMENT_DESTINATION_TERMS), 6),
+                "capital_or_diplomacy_modifier": round(sum_modifier_terms(modifiers, CAPITAL_STRATEGIC_TERMS), 6),
+                "can_demolish": assignment_value_text(block_assignments(value, "can_demolish")[0].value)
+                if block_assignments(value, "can_demolish")
+                else "default",
+                "can_build": assignment_value_text(block_assignments(value, "can_build")[0].value)
+                if block_assignments(value, "can_build")
+                else "default",
+                "can_be_disabled": assignment_value_text(block_assignments(value, "can_be_disabled")[0].value)
+                if block_assignments(value, "can_be_disabled")
+                else "default",
+                "has_destroy_trigger": "yes" if has_assignment(value, "destroy_trigger") else "no",
+                "has_country_modifier": "yes"
+                if has_assignment(value, "country_modifier") or has_assignment(value, "triggered_country_modifier")
+                else "no",
+                "has_empire_limit": "yes" if has_assignment(value, "empire_limit") else "no",
+                "requires_capital": "yes" if has_assignment(value, "is_capital", "yes") else "no",
+                "winning_mod_name": row["name"],
+                "winning_file": row["relative_file"],
+                "modifier_keys_json": _json_dump(modifiers),
+                "direct_output_json": _json_dump(output),
+                "direct_upkeep_json": _json_dump(upkeep),
+                "unresolved_variables": "|".join(sorted(missing_modifiers | missing_resources)) or "none",
+                **resource_columns("direct_output", output),
+                **resource_columns("direct_upkeep", upkeep),
+            }
+        )
+    return sorted(rows, key=lambda item: (str(item["role"]), -float(item["priority_score"]), str(item["object_id"])))
+
+
 def write_summary(
     jobs: dict[str, dict[str, Any]],
     buildings: list[dict[str, Any]],
@@ -898,6 +1136,7 @@ def write_summary(
     plans: list[dict[str, Any]],
     role_rows: list[dict[str, Any]],
     tech_rows: list[dict[str, Any]],
+    strategic_rows: list[dict[str, Any]],
 ) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
     best = sorted(research_buildings, key=lambda row: float(row["total_research"]), reverse=True)[:20]
@@ -921,8 +1160,10 @@ def write_summary(
         f"- Districts/zones with net consumer-goods output: {len(consumer_goods_development)}",
         f"- Colony role target rows: {len(role_rows)}",
         f"- Technologies with research-relevant modifiers indexed: {len(tech_rows)}",
+        f"- Strategic infrastructure target rows: {len(strategic_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
+        "- Strategic infrastructure rows classify habitat growth centers, capital/empire-unique candidates, starbase migration support, and refactor constraints such as `can_demolish = no`.",
         "",
         "## Top Research Buildings",
         "",
@@ -968,6 +1209,28 @@ def write_summary(
         lines.append(
             f"| {row['role']} | {row['source_scope']} | {row['colony_class']} | {row['net_role_output']} | `{row['selected_objects']}` |"
         )
+    lines.extend(
+        [
+            "",
+            "## Strategic Infrastructure Targets",
+            "",
+            "| role | object | score | tags | source |",
+            "| --- | --- | ---: | --- | --- |",
+        ]
+    )
+    for role in (
+        "starbase_migration_support",
+        "habitat_growth_center",
+        "habitat_support_center",
+        "capital_world",
+        "starbase_fleet_scaling",
+        "starbase_resource_support",
+    ):
+        role_rows_for_summary = [row for row in strategic_rows if row["role"] == role]
+        for row in sorted(role_rows_for_summary, key=lambda item: (-float(item["priority_score"]), str(item["object_id"])))[:8]:
+            lines.append(
+                f"| {row['role']} | `{row['object_type']}:{row['object_id']}` | {row['priority_score']} | {row['strategic_tags']} | {row['winning_mod_name']} |"
+            )
     lines.extend(["", "## Colony Scenarios", "", "| scenario | base research/month | adjusted research/month | adjusted CG upkeep | colonies for 3000 |", "| --- | ---: | ---: | ---: | ---: |"])
     for row in plans:
         lines.append(
@@ -988,17 +1251,20 @@ def main() -> None:
     plans = plan_rows(buildings)
     role_rows = role_target_rows(buildings, development_rows)
     tech_rows = collect_technology_modifier_rows(playset)
+    strategic_rows = strategic_infrastructure_rows(playset)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
     write_csv(OUT_DEVELOPMENT, development_rows)
     write_csv(OUT_PLAN, plans)
     write_csv(OUT_ROLES, role_rows)
     write_csv(OUT_TECH, tech_rows)
-    write_summary(jobs, buildings, development_rows, plans, role_rows, tech_rows)
+    write_csv(OUT_INFRA, strategic_rows)
+    write_summary(jobs, buildings, development_rows, plans, role_rows, tech_rows, strategic_rows)
     print(
         f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
         f"{len(development_rows)} districts/zones, {len(plans)} plan rows, "
-        f"{len(role_rows)} role rows, {len(tech_rows)} tech modifier rows"
+        f"{len(role_rows)} role rows, {len(tech_rows)} tech modifier rows, "
+        f"{len(strategic_rows)} strategic infrastructure rows"
     )
 
 

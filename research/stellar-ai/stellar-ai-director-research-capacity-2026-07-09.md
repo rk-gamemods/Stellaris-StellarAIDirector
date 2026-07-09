@@ -11,8 +11,10 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Districts/zones with net consumer-goods output: 8
 - Colony role target rows: 220
 - Technologies with research-relevant modifiers indexed: 18
+- Strategic infrastructure target rows: 801
 - Source roots include vanilla at `C:\Steam\steamapps\common\Stellaris` plus enabled launcher mods.
 - Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.
+- Strategic infrastructure rows classify habitat growth centers, capital/empire-unique candidates, starbase migration support, and refactor constraints such as `can_demolish = no`.
 
 ## Top Research Buildings
 
@@ -74,6 +76,52 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 | trade_world | development_top_1 | all_colony_classes | 103.0 | `district:district_maginot_ringworld_barracks` |
 | unity_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 369.0 | `gpm_building_ascension_tower|building_giga_matrioshka_brain_uplink_sanctuary|building_giga_matrioshka_brain_uplink_entertainment|building_solarpunk_gaiaseeder|building_gaia_unity_servitor|building_simulation_3|building_sensorium_3|building_hypercomms_forum|building_galactic_memorial_3|building_corporate_forum|xeno_geology_holomuseum|galactic_history_holomuseum` |
 | unity_world | development_top_1 | all_colony_classes | 346.5 | `district:district_mindlink` |
+
+## Strategic Infrastructure Targets
+
+| role | object | score | tags | source |
+| --- | --- | ---: | --- | --- |
+| starbase_migration_support | `starbase_building:transit_hub` | 350.0 | migration_source|starbase_migration_support | Stellaris vanilla |
+| habitat_growth_center | `building:building_clone_army_clone_vat` | 1110.0 | capital_or_empire_unique_candidate|habitat_growth_center|has_destroy_trigger | Stellaris vanilla |
+| habitat_growth_center | `building:building_clone_vats` | 450.0 | habitat_growth_center|has_destroy_trigger | Stellar AI Director |
+| habitat_growth_center | `building:building_mem_lost_emperor_ancient_palace` | 285.0 | capital_or_empire_unique_candidate|habitat_growth_center|has_destroy_trigger | More Events Mod |
+| habitat_growth_center | `building:building_mem_ancestors_grudge_robot_factory` | 135.0 | capital_or_empire_unique_candidate|habitat_growth_center | More Events Mod |
+| habitat_growth_center | `building:building_genomic_facility` | 100.0 | habitat_growth_center|has_destroy_trigger | Stellaris vanilla |
+| habitat_growth_center | `building:building_woorskyr_biofuel_refinery` | 13.75 | capital_or_empire_unique_candidate|habitat_growth_center|has_destroy_trigger | Forgotten Empires 4.4.1 |
+| habitat_growth_center | `building:building_woorskyr_barkfarm` | 12.5 | capital_or_empire_unique_candidate|habitat_growth_center|has_destroy_trigger | Forgotten Empires 4.4.1 |
+| habitat_growth_center | `building:building_woorskyr_growth_monitoring_center` | 12.5 | capital_or_empire_unique_candidate|habitat_growth_center|has_destroy_trigger | Forgotten Empires 4.4.1 |
+| habitat_support_center | `building:building_hab_capital` | 15.0 | cannot_demolish|capital_or_empire_unique_candidate|habitat_support_candidate | Stellaris vanilla |
+| habitat_support_center | `building:building_hab_fe_capital` | 15.0 | capital_or_empire_unique_candidate|habitat_support_candidate | Stellaris vanilla |
+| habitat_support_center | `building:building_hab_major_capital` | 15.0 | cannot_demolish|capital_or_empire_unique_candidate|habitat_support_candidate | Stellaris vanilla |
+| habitat_support_center | `building:building_hab_system_capital` | 15.0 | cannot_demolish|capital_or_empire_unique_candidate|habitat_support_candidate | Stellaris vanilla |
+| habitat_support_center | `building:building_giga_gas_giant_habitation_module` | 5.0 | habitat_support_candidate|has_destroy_trigger | Gigastructural Engineering & More (4.4) |
+| habitat_support_center | `building:building_giga_habitat_zro_harvester` | 5.0 | habitat_support_candidate | Gigastructural Engineering & More (4.4) |
+| habitat_support_center | `building:building_superhab_farm` | 5.0 | habitat_support_candidate|has_destroy_trigger | Stellar AI Director |
+| habitat_support_center | `building:building_superhab_foundry` | 5.0 | habitat_support_candidate|has_destroy_trigger | Stellar AI Director |
+| capital_world | `building:building_grand_embassy` | 60.0 | capital_or_empire_unique_candidate|has_destroy_trigger | Stellaris vanilla |
+| capital_world | `building:building_order_keep` | 60.0 | cannot_demolish|capital_or_empire_unique_candidate|has_destroy_trigger|migration_destination | Stellaris vanilla |
+| capital_world | `building:building_embassy` | 35.0 | capital_or_empire_unique_candidate|has_destroy_trigger | Stellaris vanilla |
+| capital_world | `building:building_whisperers_sanctum` | 35.0 | capital_or_empire_unique_candidate|has_destroy_trigger | Stellaris vanilla |
+| capital_world | `building:mem_building_ancient_palace` | 35.0 | capital_or_empire_unique_candidate | More Events Mod |
+| capital_world | `building:building_cyberdome` | 22.5 | capital_or_empire_unique_candidate|has_destroy_trigger|migration_destination | Stellaris vanilla |
+| capital_world | `building:building_xeno_tourism_agency` | 22.5 | capital_or_empire_unique_candidate|migration_destination | Stellaris vanilla |
+| capital_world | `building:building_cradle_sanctum` | 15.0 | capital_or_empire_unique_candidate|has_destroy_trigger | Stellaris vanilla |
+| starbase_fleet_scaling | `starbase_module:arkship_capital_shipyard` | 60.0 | starbase_fleet_scaling|starbase_support_candidate | Stellaris vanilla |
+| starbase_fleet_scaling | `starbase_building:equatorial_shipyard_uplink` | 60.0 | starbase_fleet_scaling|starbase_support_candidate | Gigastructural Engineering & More (4.4) |
+| starbase_fleet_scaling | `starbase_building:gpm_precursor_shipyards_uplink` | 60.0 | starbase_fleet_scaling|starbase_support_candidate | Guilli's Planet Modifiers and Features |
+| starbase_fleet_scaling | `starbase_building:hyperstructural_shipyard_uplink` | 60.0 | starbase_fleet_scaling|starbase_support_candidate | Gigastructural Engineering & More (4.4) |
+| starbase_fleet_scaling | `starbase_module:orbital_ring_shipyard` | 60.0 | starbase_fleet_scaling|starbase_support_candidate | Stellaris vanilla |
+| starbase_fleet_scaling | `starbase_module:shipyard` | 60.0 | starbase_fleet_scaling|starbase_support_candidate | Stellaris vanilla |
+| starbase_fleet_scaling | `starbase_building:virtual_shipyard_uplink_building` | 60.0 | starbase_fleet_scaling|starbase_support_candidate | Gigastructural Engineering & More (4.4) |
+| starbase_fleet_scaling | `starbase_building:adv_assembly_yard` | 50.0 | starbase_fleet_scaling | Starbase Extended 3.0 |
+| starbase_resource_support | `starbase_building:financial_space_center` | 30.0 | starbase_resource_support | Starbase Extended 3.0 |
+| starbase_resource_support | `starbase_building:pyroclastic_resonator` | 30.0 | starbase_resource_support | Stellaris vanilla |
+| starbase_resource_support | `starbase_module:solar_panel_network` | 30.0 | starbase_resource_support | NSC3 |
+| starbase_resource_support | `starbase_building:trader_proxy_office` | 30.0 | starbase_resource_support|starbase_support_candidate | Stellaris vanilla |
+| starbase_resource_support | `starbase_module:trading_hub` | 29.5 | starbase_resource_support | Stellaris vanilla |
+| starbase_resource_support | `starbase_building:esc_starbase_reactor` | 27.0 | starbase_resource_support | Stellar AI Director |
+| starbase_resource_support | `starbase_module:astromining_bay` | 26.0 | starbase_resource_support | Stellaris vanilla |
+| starbase_resource_support | `starbase_building:nebula_refinery` | 26.0 | starbase_resource_support | Stellaris vanilla |
 
 ## Colony Scenarios
 
