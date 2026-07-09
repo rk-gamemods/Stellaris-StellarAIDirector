@@ -83,6 +83,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.
 - Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.
 - Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.
+- Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.
 - Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.
 
 ## NSC3/ESC Design Policy

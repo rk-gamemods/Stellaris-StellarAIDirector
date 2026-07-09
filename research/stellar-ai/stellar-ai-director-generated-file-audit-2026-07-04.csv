@@ -3,7 +3,7 @@ common/ai_budget/zzz_staid_alloys_budget.txt,ai_budget,ai_budget,ok,ok,1,0,ok,va
 common/ai_budget/zzz_staid_gigas_resource_budgets.txt,ai_budget,ai_budget,ok,ok,3,0,ok,valid generated PDXScript surface
 common/ai_budget/zzzz_staid_08_site_limited_expansion_ai_budget.txt,ai_budget,ai_budget,ok,ok,3,0,ok,valid generated PDXScript surface
 common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt,ai_budget,ai_budget,ok,ok,3,0,ok,valid generated PDXScript surface
-common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt,ascension_perks,ascension_perk,ok,ok,4,0,ok,valid generated PDXScript surface
+common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt,ascension_perks,ascension_perk,ok,ok,7,0,ok,valid generated PDXScript surface
 common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt,bombardment_stances,bombardment_stance,ok,ok,1,0,ok,valid generated PDXScript surface
 common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt,buildings,building,ok,ok,29,0,ok,valid generated PDXScript surface
 common/buildings/zzzz_staid_07_pop_assembly_buildings.txt,buildings,building,ok,ok,24,0,ok,valid generated PDXScript surface
@@ -35,7 +35,7 @@ common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt,scripted_tri
 common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt,starbase_buildings,starbase_building,ok,ok,4,0,ok,valid generated PDXScript surface
 common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt,starbase_modules,starbase_module,ok,ok,10,0,ok,valid generated PDXScript surface
 common/technology/zzzz_staid_01_unlock_technology_technology.txt,technology,technology,ok,ok,97,0,ok,valid generated PDXScript surface
-common/traditions/zzzz_staid_02_perks_traditions_traditions.txt,traditions,tradition,ok,ok,4,0,ok,valid generated PDXScript surface
+common/traditions/zzzz_staid_02_perks_traditions_traditions.txt,traditions,tradition,ok,ok,7,0,ok,valid generated PDXScript surface
 events/zzz_staid_load_proof_events.txt,events,events,ok,ok,2,0,ok,valid generated PDXScript surface
 events/zzz_staid_market_and_fleet_safety_events.txt,events,events,ok,ok,4,0,ok,valid generated PDXScript surface
 events/zzz_staid_threat_response_events.txt,events,events,ok,ok,3,0,ok,valid generated PDXScript surface

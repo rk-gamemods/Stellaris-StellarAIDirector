@@ -1154,6 +1154,47 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
+    def test_unity_to_research_paths_are_source_backed(self):
+        traditions_path = MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt"
+        perks_path = MOD_ROOT / "common" / "ascension_perks" / "zzzz_staid_02_perks_traditions_ascension_perks.txt"
+        parse_file(traditions_path)
+        parse_file(perks_path)
+        traditions_text = traditions_path.read_text(encoding="utf-8")
+        perks_text = perks_path.read_text(encoding="utf-8")
+        combined = traditions_text + perks_text
+        for marker in (
+            "# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt",
+            "tr_discovery_adopt = {",
+            "tr_discovery_finish = {",
+            "# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt",
+            "tr_diplomacy_finish = {",
+            "# policy_route = research_diplomacy_core; source = common/ascension_perks/00_ascension_perks.txt",
+            "ap_technological_ascendancy = {",
+            "# policy_route = economy_megastructure_core; source = common/ascension_perks/00_ascension_perks.txt",
+            "ap_master_builders = {",
+            "ap_galactic_wonders = {",
+            "ap_gigastructural_constructs = {",
+            "modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }",
+            "modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }",
+            "modifier = { factor = 0 NOT = { staid_core_unlock_research_priority_ready = yes } }",
+        ):
+            self.assertIn(marker, combined)
+        reference_rows = collect_generated_reference_rows(MOD_ROOT)
+        unresolved = [
+            row
+            for row in reference_rows
+            if row["generated_file"]
+            in {
+                "common/traditions/zzzz_staid_02_perks_traditions_traditions.txt",
+                "common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt",
+            }
+            and row["reference_name"]
+            in {"staid_research_diplomacy_priority_ready", "staid_core_unlock_research_priority_ready"}
+            and row["status"] != "ok"
+        ]
+        self.assertEqual(unresolved, [])
+        self.assertNotIn("generic unity hoard", combined.lower())
+
     def test_fleet_conversion_gates_have_income_pressure_lane(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         parse_file(trigger_path)

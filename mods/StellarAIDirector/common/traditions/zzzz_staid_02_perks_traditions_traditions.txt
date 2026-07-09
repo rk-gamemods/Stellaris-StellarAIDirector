@@ -6,6 +6,95 @@
 # Generated surface: common/traditions
 
 
+# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_absent; source_ai_weight = no
+tr_discovery_adopt = {
+	unlocks_agenda = agenda_chart_the_unknown
+	custom_tooltip = tr_discovery_adopt_desc
+	modifier = {
+		ship_anomaly_research_speed_mult = 0.20
+	}
+
+	ai_weight = {
+		factor = 115000
+
+		# policy_route = research_diplomacy_core
+		# source_object = tradition:tr_discovery_adopt
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_discovery_finish = {
+	modifier = {
+		all_technology_research_speed = 0.10
+		ascension_perks_add = 1
+	}
+
+	tradition_swap = {
+		name = tr_discovery_federations_finish
+		inherit_icon = yes
+		inherit_name = yes
+		custom_tooltip = tr_discovery_federations_finish_desc
+		trigger = {
+			has_federations_dlc = yes
+		}
+		modifier = {
+			all_technology_research_speed = 0.10
+			ascension_perks_add = 1
+		}
+		weight = {
+			factor = 1
+		}
+	}
+
+	ai_weight = {
+		factor = 170000
+
+		# policy_route = research_diplomacy_core
+		# source_object = tradition:tr_discovery_finish
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt; parent_ai = parent_ai_absent; source_ai_weight = no
+tr_diplomacy_finish = {
+	modifier = {
+		federation_experience_add = 2
+		diplo_weight_mult = 0.10
+		country_official_cap_add = 1
+		ascension_perks_add = 1
+	}
+
+	ai_weight = {
+		factor = 120000
+
+		# policy_route = research_diplomacy_core
+		# source_object = tradition:tr_diplomacy_finish
+		modifier = { factor = 0 staid_survival_mode = yes }
+		modifier = { factor = 0.35 staid_recovery_mode = yes }
+		modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 2 years_passed > 44 }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+}
+
+
 # policy_route = conquest_escape_route; source = common/traditions/00_supremacy.txt; parent_ai = parent_ai_absent; source_ai_weight = no
 tr_supremacy_adopt = {
 	unlocks_agenda = agenda_military_buildup
