@@ -301,7 +301,7 @@ GENERATED_SURFACE_FOLDERS = {
     "traditions": "tradition",
     "zones": "zone",
 }
-GENERATED_AUXILIARY_COMMON_FOLDERS: set[str] = set()
+GENERATED_AUXILIARY_COMMON_FOLDERS: set[str] = {"inline_scripts"}
 
 GIGAS_HABITAT_ZONE_SLOT_DISTRICTS = {
     "district_giga_hab_city": ("slot_city_government", "slot_habitat_01", "slot_habitat_02"),
@@ -4489,6 +4489,17 @@ def mod_source_root_for_id(mod_id: str, snapshot_root: Path = SNAPSHOT_ROOT) -> 
     raise ValueError(f"No source snapshot or live Workshop folder found for mod id {mod_id}")
 
 
+def write_stellarai_inline_script_dependencies() -> None:
+    source_root = mod_source_root_for_id("3610149307")
+    source_dir = source_root / "common" / "inline_scripts" / "stellarai"
+    target_dir = MOD_ROOT / "common" / "inline_scripts" / "stellarai"
+    for script_name in STELLARAI_INLINE_SCRIPT_DEPENDENCIES:
+        source_path = source_dir / f"{script_name}.txt"
+        if not source_path.exists():
+            raise FileNotFoundError(f"Missing Stellar AI inline script dependency: {source_path}")
+        write_text_file(target_dir / source_path.name, read_text(source_path))
+
+
 def generated_common_folder_for_type(object_type: str) -> str:
     for folder, mapped_type in GENERATED_SURFACE_FOLDERS.items():
         if mapped_type == object_type:
@@ -5259,6 +5270,12 @@ ROUTE_BUILD_GATES = {
     "research_throughput_infrastructure": "staid_research_construction_priority_ready",
     "research_diplomacy_core": "staid_research_diplomacy_priority_ready",
 }
+
+STELLARAI_INLINE_SCRIPT_DEPENDENCIES = (
+    "invalid_planet_type_guard",
+    "minerals_recovery_building_weight",
+    "rare_resource_guard_modifiers",
+)
 
 ROUTE_TIMING_FACTORS = {
     "mega_shipyard_core": (3, 5, 8),
@@ -7068,6 +7085,8 @@ def collect_generated_reference_rows(
     if not common.exists():
         return rows
     for file_path in iter_text_files(common):
+        if file_path.relative_to(common).parts[0] == "inline_scripts":
+            continue
         try:
             parsed = parse_file(file_path)
         except PDXParseError:
@@ -7360,7 +7379,7 @@ def collect_generated_file_audit_rows(mod_root: Path = MOD_ROOT) -> list[dict[st
         text = read_text(file_path)
         placeholder_count = unresolved_template_placeholder_count(
             text,
-            allow_scripted_effect_parameters=folder == "scripted_effects",
+            allow_scripted_effect_parameters=folder in {"inline_scripts", "scripted_effects"},
         )
         parse_status = "not_checked"
         top_level_object_count = 0
@@ -9564,6 +9583,7 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     )
     write_text_file(MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt", market_and_fleet_safety_events_text())
     write_text_file(MOD_ROOT / "common" / "script_values" / "zzz_staid_roi_values.txt", script_values_text(thresholds))
+    write_stellarai_inline_script_dependencies()
     write_planetary_diversity_profile_artifacts()
     generate_route_override_artifacts()
     dataset_job_pressure_override_artifacts()

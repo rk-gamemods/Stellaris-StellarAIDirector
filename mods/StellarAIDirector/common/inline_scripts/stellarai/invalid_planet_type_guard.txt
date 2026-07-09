@@ -1,0 +1,4 @@
+modifier = {
+	factor = 0.01
+	has_carrier_flag = $PLANET_FLAG$
+}

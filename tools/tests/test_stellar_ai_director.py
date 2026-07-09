@@ -26,6 +26,7 @@ from stellar_ai_director_lib import (
     SNAPSHOT_ROOT,
     STANDALONE_PARITY_INVENTORY_CSV,
     STANDALONE_PARITY_INVENTORY_MD,
+    STELLARAI_INLINE_SCRIPT_DEPENDENCIES,
     block_assignments,
     collect_generated_conflict_rows,
     collect_generated_file_audit_rows,
@@ -1538,6 +1539,17 @@ class GeneratedModValidityTests(unittest.TestCase):
             "additional_ai_weight = 500",
         ):
             self.assertIn(marker, districts_text)
+
+    def test_packaged_stellarai_inline_script_dependencies_cover_generated_references(self):
+        generated_text = "\n".join(path.read_text(encoding="utf-8") for path in (MOD_ROOT / "common").rglob("*.txt"))
+        referenced_scripts = set(re.findall(r"script\s*=\s*\"?stellarai/([A-Za-z0-9_/-]+)\"?", generated_text))
+        expected_scripts = set(STELLARAI_INLINE_SCRIPT_DEPENDENCIES)
+        self.assertTrue(expected_scripts.issubset(referenced_scripts))
+        for script_name in referenced_scripts:
+            self.assertTrue(
+                (MOD_ROOT / "common" / "inline_scripts" / "stellarai" / f"{script_name}.txt").exists(),
+                f"Missing packaged Stellar AI inline script dependency: stellarai/{script_name}",
+            )
 
     def test_unresolved_source_local_variables_are_reported(self):
         with tempfile.TemporaryDirectory() as temp_dir:
