@@ -1,0 +1,19 @@
+file,bytes,role
+README.md,3500,research packet artifact
+actionable_research_gaps.csv,4356,research packet artifact
+ai_modded_systems_findings.md,5475,research packet artifact
+answered_research_questions.csv,4356,research packet artifact
+console_testing_cheatsheet.md,5399,research packet artifact
+gigas_findings.md,7389,research packet artifact
+main_report.md,14183,research packet artifact
+modded_resources_ui_findings.md,4486,research packet artifact
+modding_tools_resources.md,4860,research packet artifact
+nsc3_esc_fleet_findings.md,5578,research packet artifact
+packet_manifest.csv,1041,research packet artifact
+planetary_diversity_guilli_findings.md,4402,research packet artifact
+ranked_research_questions.md,4442,research packet artifact
+runtime_verification_queue.csv,2843,research packet artifact
+source_inventory.csv,30752,research packet artifact
+starbase_defense_findings.md,3447,research packet artifact
+strategy_findings.md,7210,research packet artifact
+version_hazards_44_45.md,4480,research packet artifact
