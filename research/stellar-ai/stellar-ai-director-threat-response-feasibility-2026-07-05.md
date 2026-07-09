@@ -23,7 +23,7 @@ V1 reacts only from eligible third-party default countries with communications. 
 
 ## Test Steps
 
-Run unit tests, regenerate the patch, validate generated output, run `git diff --check`, refresh the docs index, and verify the generated CSV evidence. Runtime/main-menu/observer launch validation is intentionally out of scope for this deterministic implementation goal unless a separate user-approved runtime task is opened.
+Run unit tests, regenerate the patch, validate generated output, run `git diff --check`, refresh the docs index, and verify the generated CSV evidence. Runtime/main-menu/observer validation must stay separate from static checks and should run only after the non-runtime gates are complete.
 
 ## Recommendation
 

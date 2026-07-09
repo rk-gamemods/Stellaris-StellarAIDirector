@@ -142,6 +142,26 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("Stellar AI is not a required parent", load_order)
         self.assertEqual(stale_stellar_ai_dependency_errors(), [])
 
+    def test_generated_docs_preserve_strategic_v2_runtime_gates(self):
+        readme = (MOD_ROOT / "README.md").read_text(encoding="utf-8")
+        load_order = (MOD_ROOT / "notes" / "load-order.md").read_text(encoding="utf-8")
+        conflicts = (MOD_ROOT / "notes" / "conflicts.md").read_text(encoding="utf-8")
+        observer_log = (MOD_ROOT / "notes" / "observer-test-log.md").read_text(encoding="utf-8")
+        tuning = (MOD_ROOT / "notes" / "tuning-notes.md").read_text(encoding="utf-8")
+
+        self.assertIn("building_navel_base", readme)
+        self.assertIn("building_navel_command", readme)
+        self.assertIn("Planetary Diversity - More Arcologies", load_order)
+        self.assertIn("Strategic V2 Compatibility Reviews", conflicts)
+        self.assertIn("Fresh Irony UI review has not yet been repeated", conflicts)
+        self.assertIn("Generated starbase pressure is guarded", tuning)
+        self.assertIn("Nomad/Arkship Compatibility Policy", tuning)
+        self.assertIn("Strategic V2 Observer Checkpoints", observer_log)
+        self.assertIn("3,000+ total monthly research before 2350", observer_log)
+        self.assertIn("final constrained observer run", observer_log)
+        self.assertNotIn("P15 runtime/observer validation is superseded", observer_log)
+        self.assertNotIn("acceptance gate", observer_log)
+
     def test_stale_stellar_ai_dependency_validator_rejects_current_requirements(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

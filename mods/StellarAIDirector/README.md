@@ -131,8 +131,8 @@ python -m unittest discover -s tools/tests
 ```
 
 Static validation proves generated file safety, known-reference coverage, and
-deterministic policy contracts. Launch proof is the `Stellar AI Director Loaded`
-popup. Observer proof remains a separate final gate for the strategic v2 packet:
-the current branch still needs the constrained observer run to prove that at
-least one AI empire can reach the intended high-scale economy and 3,000+ total
+deterministic policy contracts. Launch proof is the `Stellar AI Director Loaded` popup.
+Observer proof remains a separate final gate for the strategic v2 packet: the
+current branch still needs the constrained observer run to prove that at least
+one AI empire can reach the intended high-scale economy and 3,000+ total
 research per month before 2350 without hidden AI economic bonuses.

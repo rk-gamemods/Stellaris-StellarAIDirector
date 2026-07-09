@@ -878,8 +878,8 @@ PLAN_PHASE_OPEN_REASONS = {
 }
 
 PLAN_PHASE_SUPERSEDED_REASONS = {
-    "P14": "Superseded for this goal: user/runtime launch validation is intentionally out of scope; deterministic validation is the acceptance gate.",
-    "P15": "Superseded for this goal: observer runtime validation is intentionally out of scope; deterministic validation is the acceptance gate.",
+    "P14": "Deferred until non-runtime gates are complete: launch proof must be checked separately from static validation.",
+    "P15": "Deferred until non-runtime gates are complete: observer runtime validation remains the final efficacy proof gate.",
 }
 
 TEXT_SUFFIXES = {".txt", ".mod", ".asset", ".gfx", ".gui", ".yml", ".yaml", ".csv", ".json"}
@@ -6541,7 +6541,7 @@ V1 reacts only from eligible third-party default countries with communications. 
 
 ## Test Steps
 
-Run unit tests, regenerate the patch, validate generated output, run `git diff --check`, refresh the docs index, and verify the generated CSV evidence. Runtime/main-menu/observer launch validation is intentionally out of scope for this deterministic implementation goal unless a separate user-approved runtime task is opened.
+Run unit tests, regenerate the patch, validate generated output, run `git diff --check`, refresh the docs index, and verify the generated CSV evidence. Runtime/main-menu/observer validation must stay separate from static checks and should run only after the non-runtime gates are complete.
 
 ## Recommendation
 
@@ -6851,7 +6851,7 @@ def collect_observer_save_summary(save_path: Path) -> dict[str, Any]:
         "short_smoke_checks": short_smoke_checks,
         "short_smoke_passes": all(short_smoke_checks.values()),
         "high_roi_path_observed": False,
-        "p15_completion_note": "Short Irony-launched save evidence is retained as historical context; P15 runtime/observer validation is superseded for this deterministic implementation goal.",
+        "p15_completion_note": "Short Irony-launched save evidence is retained as historical context only; strategic v2 still requires a final constrained observer run for long-run efficacy proof.",
     }
 
 
@@ -11761,6 +11761,10 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Adds a planetary-capacity economic subplan plus direct research lab and
   habitat science district construction weights for safe mineral/energy-backed
   tall growth without broad job automation rewrites or trade logistics collapse.
+- Adds targeted More Arcologies naval-administration building pressure for
+  `building_navel_base` and `building_navel_command` through the dataset
+  job-pressure generator; broad zone, colony-designation, and Rogue Council
+  rewrites remain excluded.
 - Adds mandatory unlock-research pressure so AI empires keep pushing
   engineering/research/unity toward Mega Engineering, Mega Shipyard,
   planetcraft/systemcraft chains, NSC hulls, and ESC component tiers.
@@ -11773,6 +11777,13 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
   planetcraft/systemcraft unlocks, NSC3 hull unlocks, ESC high-tier component
   unlocks, AP/tradition pressure, economy megastructures, planetcraft, war moon,
   systemcraft, and ESC starbase reactor support.
+- Adds threat/economy-gated starbase defense pressure for copied safe parent
+  starbase modules and buildings while keeping Starbase Extended Waystation
+  section and ship/component surfaces outside Director ownership.
+- Records 4.4.5 Nomad/Arkship compatibility as a targeted opening-research
+  lane plus normal-empire-only high-scale pressure; the Director does not own
+  Nomad colony types, Arkship ship sizes, Arkship component templates,
+  Waystation sections, Waylines, Contracts, or Operational Reserve objects.
 - Leaves ESC internal component-template `key = ...` overrides and direct NSC3
   ship-design templates as manual-review blockers until the atlas models those
   loader surfaces safely.
@@ -11792,6 +11803,8 @@ but the descriptor intentionally omits a Stellar AI dependency.
 When a player-controlled country starts, the mod fires a one-time popup titled
 `{LOAD_PROOF_TITLE}`. Seeing that popup proves Irony loaded the Director into
 the active playset and the game executed the Director event/on_action surface.
+It does not prove long-run AI efficacy, megastructure scaling, or the
+3,000+ total-research-per-month before 2350 runtime target.
 
 ## Surplus Sink Ordering
 
@@ -11812,9 +11825,17 @@ separate `director_*` columns.
 Run:
 
 ```powershell
+python tools/generate_stellar_ai_director_patch.py
 python tools/validate_stellar_ai_director_patch.py
 python -m unittest discover -s tools/tests
 ```
+
+Static validation proves generated file safety, known-reference coverage, and
+deterministic policy contracts. Launch proof is the `{LOAD_PROOF_TITLE}` popup.
+Observer proof remains a separate final gate for the strategic v2 packet: the
+current branch still needs the constrained observer run to prove that at least
+one AI empire can reach the intended high-scale economy and 3,000+ total
+research per month before 2350 without hidden AI economic bonuses.
 '''
 
 
@@ -11965,6 +11986,7 @@ def load_order_note_text(playset: dict[str, Any]) -> str:
         "- Load after NSC3.",
         "- Load after Extra Ship Components NEXT.",
         "- Load after Starbase Extended 3.0.",
+        "- Load after Planetary Diversity and Planetary Diversity - More Arcologies when those collection surfaces are active.",
         "- Load after !!!Universal Resource Patch [2.4+].",
         "- Load after compatibility patches whose AI/economy behavior the Director intentionally coordinates.",
         "- Stellar AI is not a required parent for the standalone baseline; keep it only as private parity/reference evidence when comparing behavior during development.",
@@ -12000,6 +12022,7 @@ def load_order_note_text(playset: dict[str, Any]) -> str:
             "- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally defines the Director-owned `alloys_expenditure_megastructures` budget using Stellar AI parity evidence without requiring Stellar AI to load.",
             "- `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally overrides Gigas `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures` budgets.",
             "- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets.",
+            "- `common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt` intentionally copies selected safe parent buildings, including More Arcologies naval-administration buildings, when the source object is present in the active indexed mod stack.",
             "- Additive scripted triggers, script values, and economic-plan subplans use the `staid_` namespace and should not conflict with parent object IDs.",
         ]
     )
@@ -12047,6 +12070,12 @@ def conflicts_note_text() -> str:
 - Fleet-throughput economy gates provide the current ship-use path without guessing direct ship-design templates.
 - ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 
+## Strategic V2 Compatibility Reviews
+
+- Starbase Extended review: Director-owned starbase defense pressure is limited to copied safe module/building surfaces and generated economy gates. Parent-owned Waystation sections, ship sizes, component templates, and related starbase/ship loader surfaces remain out of scope because the active conflict matrix shows high-risk parent conflicts there.
+- Planetary Diversity / More Arcologies review: `building_navel_base` and `building_navel_command` are now intentional copied building overrides through the dataset job-pressure generator. `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites are blocked until their AI, UI, and load-order semantics are proven.
+- Nomad/Arkship review: Director has one additive targeted opening route for Arkship research and otherwise keeps high-scale pressure normal-empire-only. It does not override Nomad colony types, Arkship ship sizes, Arkship component templates, Waystation sections, Waylines, Contracts, or Operational Reserve objects.
+
 ## Review Rules
 
 - Any new full-object override must include an ownership note naming the parent surface and reason.
@@ -12060,6 +12089,7 @@ def conflicts_note_text() -> str:
 - Reviewed `common\\ai_budget` conflicts: `alloys_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, `sentient_metal_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
 - Each reviewed object resolves to `Stellar AI Director ... (LIOS)` as an intentional Director win.
 - No unexplained Director gameplay conflicts were observed in the reviewed Director conflict set.
+- Fresh Irony UI review has not yet been repeated for the strategic v2 starbase and Planetary Diversity surfaces; current classifications are based on generated audits and indexed active conflict-matrix evidence.
 """
 
 
@@ -12071,19 +12101,20 @@ def observer_test_log_text(playset: dict[str, Any]) -> str:
 - Difficulty: Cadet smoke setup from launch run notes.
 - Crisis settings: inherited selected playset defaults for the smoke save.
 - Mod order evidence: required parents are recorded in `notes/load-order.md`; save mod list contains {summary['mod_count']} mods."""
-        checkpoints = f"""- Early economy stability: short-smoke pass from `{OBSERVER_SMOKE_SAVE_SUMMARY_MD.name}`.
-- First mega-engineering unlock: pending.
-- First high-ROI megastructure start: pending.
-- First economy multiplier completion: pending.
-- Shipyard/fleet payoff behavior: pending.
-- Deficit spiral check: no early deficit collapse observed in parsed 2202.01.01 save metrics.
-- War interruption behavior: pending.
-- Starbase defense investment: pending."""
+        historical_checkpoints = f"""- Early economy stability: short-smoke pass from `{OBSERVER_SMOKE_SAVE_SUMMARY_MD.name}`.
+- Deficit spiral check: no early deficit collapse observed in parsed 2202.01.01 save metrics."""
+        strategic_v2_checkpoints = """- First Mega Engineering unlock: not yet proven in the current strategic v2 branch.
+- First high-ROI megastructure start: not yet proven in the current strategic v2 branch.
+- First economy multiplier completion: not yet proven in the current strategic v2 branch.
+- Shipyard/fleet payoff behavior: not yet proven in the current strategic v2 branch.
+- War interruption behavior: not yet proven in the current strategic v2 branch.
+- Starbase defense investment: not yet proven in the current strategic v2 branch.
+- At least one AI empire reaching 3,000+ total monthly research before 2350: not yet proven in the current strategic v2 branch."""
         threat_response = """- Classified aggressive war deterministic contract: covered by generated tests and validator.
 - Threat-response generated files emitted after 2026-07-05 implementation: covered by file audit and validator.
 - Unknown/modded war goal inertness: covered by classification data, tests, and validator.
 - No forced wars, join-war behavior, or punitive CBs: covered by forbidden-effect tests and validator.
-- Runtime launch observation: intentionally out of scope for this deterministic implementation goal."""
+- Runtime launch observation: required only after non-runtime gates are complete and runtime evidence is the final remaining blocker."""
         results = f"""Short Irony-launched save summary: `{OBSERVER_SMOKE_SAVE_SUMMARY_MD.name}`.
 
 - Save date: {summary['date']}.
@@ -12093,21 +12124,26 @@ def observer_test_log_text(playset: dict[str, Any]) -> str:
 - Player monthly income: `{json.dumps(summary['player_monthly_income'], sort_keys=True)}`.
 - High-ROI path observed: {summary['high_roi_path_observed']}.
 
-This short-smoke evidence is retained as historical context. P15 runtime/observer validation is superseded for this deterministic implementation goal; generated artifacts, tests, validators, and indexed evidence are the acceptance gate."""
+This short-smoke evidence is retained as historical context only. Generated
+artifacts, tests, validators, and indexed evidence are the non-runtime gates for
+the strategic v2 packet; they do not replace the final constrained observer run
+required to prove long-run AI efficacy and the 3,000+ total-research-per-month
+before 2350 target."""
     else:
         setup = """- Galaxy size: not run yet.
 - AI count: not run yet.
 - Difficulty: not run yet.
 - Crisis settings: not run yet.
 - Mod order evidence: required parents are recorded in `notes/load-order.md`."""
-        checkpoints = """- Early economy stability: pending.
-- First mega-engineering unlock: pending.
-- First high-ROI megastructure start: pending.
-- First economy multiplier completion: pending.
-- Shipyard/fleet payoff behavior: pending.
-- Deficit spiral check: pending.
-- War interruption behavior: pending.
-- Starbase defense investment: pending."""
+        historical_checkpoints = """- Early economy stability: pending.
+- Deficit spiral check: pending."""
+        strategic_v2_checkpoints = """- First Mega Engineering unlock: not yet proven in the current strategic v2 branch.
+- First high-ROI megastructure start: not yet proven in the current strategic v2 branch.
+- First economy multiplier completion: not yet proven in the current strategic v2 branch.
+- Shipyard/fleet payoff behavior: not yet proven in the current strategic v2 branch.
+- War interruption behavior: not yet proven in the current strategic v2 branch.
+- Starbase defense investment: not yet proven in the current strategic v2 branch.
+- At least one AI empire reaching 3,000+ total monthly research before 2350: not yet proven in the current strategic v2 branch."""
         threat_response = """- Classified aggressive war observed: pending.
 - Threat-response generated files loaded after 2026-07-05 implementation: pending.
 - Unknown/modded war goal inertness observed at runtime: pending.
@@ -12122,9 +12158,13 @@ Selected collection: {playset['collection_name']}
 
 {setup}
 
-## Checkpoints
+## Historical Smoke Checkpoints
 
-{checkpoints}
+{historical_checkpoints}
+
+## Strategic V2 Observer Checkpoints
+
+{strategic_v2_checkpoints}
 
 ## Threat-Response Checkpoints
 
@@ -12177,7 +12217,8 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "- Defensive or high-threat empires get additive starbase reserve subplans only after recovery and short-runway deficit gates are clear.",
         "- Aggressive under-cap empires keep fleet expansion priority unless crisis pressure is high.",
-        "- The generated ESC starbase reactor override adds direct crisis-starbase AI weight support; other starbase modules/buildings remain manual-review candidates.",
+        "- Generated starbase pressure is guarded by `staid_static_defense_threat_window` and `staid_starbase_defense_economy_safe`.",
+        "- Copied safe Starbase Extended/ESC starbase module and building objects can receive Director defense pressure; Waystation sections, ship sizes, component templates, and other loader-sensitive defense surfaces remain outside Director ownership.",
         "",
         "## Trade-Capacity Policy",
         "",
@@ -12226,6 +12267,14 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.",
         "- Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting, Discovery/Diplomacy/AP support, and cooperative diplomatic stance only; direct research-agreement action and personality rewrites remain gated until separately proven.",
         "- Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.",
+        "- More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` are copied through the dataset job-pressure path, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked until their runtime and UI semantics are proven.",
+        "- Arkship carrier planets are excluded from copied Planetary Diversity outpost decisions, and later high-scale planetary pressure remains normal-empire-only where the Nomad/Arkship audit found no safe shared surface.",
+        "",
+        "## Nomad/Arkship Compatibility Policy",
+        "",
+        "- Nomadic empires get only the targeted opening research route `staid_opening_nomad_arkship_research` until a dedicated Nomad strategy is proven.",
+        "- Most megastructure, colony, starbase, war, fleet, fauna, and planetary-capacity pressure is guarded for normal empires with `is_nomadic = no`.",
+        "- The Director does not override Nomad colony types, Arkship ship sizes, Arkship component templates, Waystation sections, Waylines, Contracts, or Operational Reserve objects; those remain owned by vanilla and parent mods.",
         "",
         "## NSC3/ESC Design Policy",
         "",
