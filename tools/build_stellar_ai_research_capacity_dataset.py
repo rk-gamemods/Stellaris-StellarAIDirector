@@ -47,6 +47,7 @@ OUT_RESOURCE_COVERAGE = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-c
 OUT_READINESS = RESEARCH_ROOT / "stellar-ai-director-build-plan-readiness-2026-07-09.csv"
 OUT_BENEFITS = RESEARCH_ROOT / "stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv"
 OUT_BLOCKERS = RESEARCH_ROOT / "stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv"
+OUT_CONSUMER_POLICY = RESEARCH_ROOT / "stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
@@ -1929,6 +1930,194 @@ def modeling_blocker_accounting_rows(
     return sorted(rows, key=lambda item: (str(item["issue_type"]), str(item["source_artifact"]), str(item["object_id"]), str(item["issue_key"])))
 
 
+def selected_object_keys(selected_objects: str) -> list[tuple[str, str]]:
+    keys: list[tuple[str, str]] = []
+    for item in cell_items(selected_objects):
+        if ":" in item:
+            object_type, object_id = item.split(":", 1)
+        elif item.startswith("building_") or item.startswith("holding_"):
+            object_type, object_id = "building", item
+        else:
+            object_type, object_id = "unknown", item
+        keys.append((object_type, object_id))
+    return keys
+
+
+def policy_blocker_summary(blockers: list[dict[str, Any]]) -> tuple[int, str]:
+    issue_types = sorted({str(row["issue_type"]) for row in blockers})
+    return len(blockers), compact_list(issue_types)
+
+
+def consumer_policy_rows(
+    readiness_rows: list[dict[str, Any]],
+    role_rows: list[dict[str, Any]],
+    benefit_rows: list[dict[str, Any]],
+    blocker_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    blockers_by_object: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for row in blocker_rows:
+        blockers_by_object.setdefault((str(row["object_type"]), str(row["object_id"])), []).append(row)
+
+    benefit_counts: dict[tuple[str, str], dict[str, int]] = {}
+    benefit_class_counts: dict[str, dict[str, int]] = {}
+    for row in benefit_rows:
+        object_key = (str(row.get("object_type", "")), str(row.get("object_id", "")))
+        object_counts = benefit_counts.setdefault(object_key, {"numeric": 0, "policy_required": 0})
+        class_counts = benefit_class_counts.setdefault(
+            str(row["benefit_class"]),
+            {"numeric": 0, "detected_unvalued": 0, "not_observed": 0, "rows": 0},
+        )
+        class_counts["rows"] += 1
+        valuation_status = str(row["valuation_status"])
+        if valuation_status == "numeric_value_preserved":
+            object_counts["numeric"] += 1
+            class_counts["numeric"] += 1
+        elif valuation_status in {"detected_unvalued", "not_observed"}:
+            object_counts["policy_required"] += 1
+            class_counts[valuation_status] += 1
+
+    rows: list[dict[str, Any]] = []
+    for row in readiness_rows:
+        object_key = ("building", str(row["building_id"]))
+        blockers = blockers_by_object.get(object_key, [])
+        blocker_count, issue_types = policy_blocker_summary(blockers)
+        counts = benefit_counts.get(object_key, {"numeric": 0, "policy_required": 0})
+        build_candidate = str(row["build_plan_candidate"])
+        if build_candidate != "yes":
+            scorable_status = "not_build_plan_candidate"
+            can_consume_now = "no"
+            next_action = "Exclude from construction ordering unless source-backed candidate rules change."
+        elif blocker_count > 0:
+            scorable_status = "blocked_unresolved_modeling"
+            can_consume_now = "no"
+            next_action = "Resolve or policy-classify blocker rows before scoring this building."
+        elif str(row["readiness_phase"]) == "base_available":
+            scorable_status = "scorable_now"
+            can_consume_now = "yes"
+            next_action = "Eligible for conservative construction ordering."
+        else:
+            scorable_status = "gated_scorable_with_conditions"
+            can_consume_now = "conditional"
+            next_action = "Emit only with readiness gates or use fallback policy."
+        fallback_id = str(row["fallback_building_id"])
+        rows.append(
+            {
+                "row_family": "building",
+                "consumer_surface": "colony_automation",
+                "object_type": "building",
+                "object_id": str(row["building_id"]),
+                "role": str(row["primary_role"]),
+                "source_scope": "readiness",
+                "scorable_status": scorable_status,
+                "can_consume_now": can_consume_now,
+                "readiness_phase": str(row["readiness_phase"]),
+                "build_plan_candidate": build_candidate,
+                "gate_reasons": str(row["gate_reasons"]),
+                "blocker_count": blocker_count,
+                "blocker_issue_types": issue_types,
+                "benefit_numeric_rows": counts["numeric"],
+                "benefit_policy_required_rows": counts["policy_required"],
+                "fallback_building_id": fallback_id,
+                "fallback_lifetime": "permanent_or_no_regret_only" if fallback_id else "",
+                "replacement_policy": "no_proactive_replacement_static_evidence",
+                "selected_objects": str(row["building_id"]),
+                "source_mod": str(row["winning_mod_name"]),
+                "source_file": str(row["winning_file"]),
+                "next_action": next_action,
+            }
+        )
+
+    for row in role_rows:
+        selected_keys = selected_object_keys(str(row["selected_objects"]))
+        selected_blockers = [
+            blocker
+            for key in selected_keys
+            for blocker in blockers_by_object.get(key, [])
+        ]
+        blocker_count, issue_types = policy_blocker_summary(selected_blockers)
+        benefit_numeric = sum(benefit_counts.get(key, {"numeric": 0, "policy_required": 0})["numeric"] for key in selected_keys)
+        benefit_policy_required = sum(
+            benefit_counts.get(key, {"numeric": 0, "policy_required": 0})["policy_required"] for key in selected_keys
+        )
+        source_scope = str(row["source_scope"])
+        if source_scope.startswith("build_plan_candidate"):
+            consumer_surface = "economic_plan|colony_automation"
+        elif source_scope.startswith("development") or source_scope.startswith("strategic_family"):
+            consumer_surface = "economic_plan|colony_automation_policy"
+        else:
+            consumer_surface = "economic_plan"
+        if blocker_count > 0:
+            scorable_status = "blocked_unresolved_modeling"
+            can_consume_now = "no"
+            next_action = "Resolve selected-object blockers before using this role target."
+        else:
+            scorable_status = "role_target_scorable"
+            can_consume_now = "yes"
+            next_action = "Eligible as an input to economic-plan pressure or construction-order policy."
+        rows.append(
+            {
+                "row_family": "role_target",
+                "consumer_surface": consumer_surface,
+                "object_type": "role_target",
+                "object_id": f"{row['role']}:{row['source_scope']}:{row['colony_class']}",
+                "role": str(row["role"]),
+                "source_scope": source_scope,
+                "scorable_status": scorable_status,
+                "can_consume_now": can_consume_now,
+                "readiness_phase": "",
+                "build_plan_candidate": "",
+                "gate_reasons": "",
+                "blocker_count": blocker_count,
+                "blocker_issue_types": issue_types,
+                "benefit_numeric_rows": benefit_numeric,
+                "benefit_policy_required_rows": benefit_policy_required,
+                "fallback_building_id": "",
+                "fallback_lifetime": "not_applicable",
+                "replacement_policy": "role_target_does_not_demolish_or_replace",
+                "selected_objects": str(row["selected_objects"]),
+                "source_mod": "",
+                "source_file": "",
+                "next_action": next_action,
+            }
+        )
+
+    for benefit_class, counts in sorted(benefit_class_counts.items()):
+        policy_required = counts["detected_unvalued"] + counts["not_observed"]
+        if policy_required:
+            scorable_status = "benefit_formula_policy_required"
+            next_action = "Define class-specific formula or detected-only policy before scoring this benefit class."
+        else:
+            scorable_status = "benefit_formula_mapping_required"
+            next_action = "Map preserved numeric values into a source-backed economic-plan or construction-order rule."
+        rows.append(
+            {
+                "row_family": "benefit_class",
+                "consumer_surface": "economic_plan|colony_automation_policy",
+                "object_type": "benefit_class",
+                "object_id": benefit_class,
+                "role": "",
+                "source_scope": "benefit_taxonomy",
+                "scorable_status": scorable_status,
+                "can_consume_now": "no",
+                "readiness_phase": "",
+                "build_plan_candidate": "",
+                "gate_reasons": "",
+                "blocker_count": policy_required,
+                "blocker_issue_types": "benefit_formula_status" if policy_required else "",
+                "benefit_numeric_rows": counts["numeric"],
+                "benefit_policy_required_rows": policy_required,
+                "fallback_building_id": "",
+                "fallback_lifetime": "not_applicable",
+                "replacement_policy": "benefit_class_does_not_demolish_or_replace",
+                "selected_objects": "",
+                "source_mod": "",
+                "source_file": "",
+                "next_action": next_action,
+            }
+        )
+    return sorted(rows, key=lambda item: (str(item["row_family"]), str(item["object_id"]), str(item["source_scope"])))
+
+
 def modeling_resource_coverage_rows(
     job_rows: list[dict[str, Any]],
     buildings: list[dict[str, Any]],
@@ -2007,6 +2196,7 @@ def write_summary(
     readiness_rows: list[dict[str, Any]],
     benefit_rows: list[dict[str, Any]],
     blocker_rows: list[dict[str, Any]],
+    consumer_policy_rows: list[dict[str, Any]],
 ) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
     best = sorted(research_buildings, key=lambda row: float(row["total_research"]), reverse=True)[:20]
@@ -2035,6 +2225,7 @@ def write_summary(
         f"- Build-plan readiness rows: {len(readiness_rows)}",
         f"- Strategic benefit taxonomy rows: {len(benefit_rows)}",
         f"- Modeling blocker accounting rows: {len(blocker_rows)}",
+        f"- Build-plan consumer policy rows: {len(consumer_policy_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
         "- Jobs, buildings, development rows, and plan rows preserve base, triggered, conservative, and optimistic resource scenarios where applicable.",
@@ -2043,6 +2234,7 @@ def write_summary(
         "- Build-plan readiness rows classify building gate phases and same-role fallback candidates before unlocks.",
         "- Strategic benefit taxonomy rows classify detected non-resource benefits and record no-evidence classes for active-stack gaps.",
         "- Modeling blocker accounting rows normalize unknown jobs, unresolved variables, quality flags, unsupported resources, and unvalued benefit formulas.",
+        "- Build-plan consumer policy rows join readiness, blocker accounting, role targets, and benefit taxonomy into scorable/not-scorable consumer decisions.",
         "",
         "## Top Research Buildings",
         "",
@@ -2135,6 +2327,7 @@ def main() -> None:
     readiness_rows = build_plan_readiness_rows(buildings)
     benefit_rows = strategic_benefit_taxonomy_rows(strategic_rows)
     blocker_rows = modeling_blocker_accounting_rows(buildings, development_rows, strategic_rows, resource_coverage_rows, benefit_rows)
+    consumer_rows = consumer_policy_rows(readiness_rows, role_rows, benefit_rows, blocker_rows)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
     write_csv(OUT_DEVELOPMENT, development_rows)
@@ -2146,6 +2339,7 @@ def main() -> None:
     write_csv(OUT_READINESS, readiness_rows)
     write_csv(OUT_BENEFITS, benefit_rows)
     write_csv(OUT_BLOCKERS, blocker_rows)
+    write_csv(OUT_CONSUMER_POLICY, consumer_rows)
     write_summary(
         jobs,
         buildings,
@@ -2158,6 +2352,7 @@ def main() -> None:
         readiness_rows,
         benefit_rows,
         blocker_rows,
+        consumer_rows,
     )
     print(
         f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
@@ -2167,7 +2362,8 @@ def main() -> None:
         f"{len(resource_coverage_rows)} resource coverage rows, "
         f"{len(readiness_rows)} readiness rows, "
         f"{len(benefit_rows)} benefit taxonomy rows, "
-        f"{len(blocker_rows)} blocker rows"
+        f"{len(blocker_rows)} blocker rows, "
+        f"{len(consumer_rows)} consumer policy rows"
     )
 
 
