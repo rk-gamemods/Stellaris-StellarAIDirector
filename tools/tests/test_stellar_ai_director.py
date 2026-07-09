@@ -125,6 +125,7 @@ RESEARCH_CAPACITY_DEVELOPMENT_CSV = RESEARCH_ROOT / "stellar-ai-director-researc
 RESEARCH_CAPACITY_PLAN_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-plan-2026-07-09.csv"
 RESEARCH_CAPACITY_INFRASTRUCTURE_CSV = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
 RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
+RESEARCH_CAPACITY_READINESS_CSV = RESEARCH_ROOT / "stellar-ai-director-build-plan-readiness-2026-07-09.csv"
 GIGAS_MODELED_RESOURCE_KEYS = {
     "giga_sr_negative_mass",
     "giga_sr_amb_megaconstruction",
@@ -421,11 +422,13 @@ class GeneratedModValidityTests(unittest.TestCase):
         for columns in (building_columns, development_columns):
             self.assertIn("prerequisites", columns)
             self.assertIn("potential_allow_gates", columns)
+            self.assertIn("potential_allow_gate_atoms", columns)
             self.assertIn("event_flags", columns)
             self.assertIn("unlock_flags", columns)
 
         self.assertTrue([row for row in building_rows if row["prerequisites"]])
         self.assertTrue([row for row in building_rows if row["potential_allow_gates"]])
+        self.assertTrue([row for row in building_rows if row["potential_allow_gate_atoms"]])
         self.assertTrue([row for row in development_rows if row["potential_allow_gates"]])
 
         row_by_building = {row["building_id"]: row for row in building_rows}
@@ -493,6 +496,42 @@ class GeneratedModValidityTests(unittest.TestCase):
 
         assert_scenario_arithmetic(building_rows, "building scenario rows")
         assert_scenario_arithmetic(development_rows, "development scenario rows")
+
+    def test_research_capacity_model_generates_build_plan_readiness_rows(self):
+        with RESEARCH_CAPACITY_BUILDINGS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            building_rows = list(csv.DictReader(handle))
+        with RESEARCH_CAPACITY_READINESS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            readiness_reader = csv.DictReader(handle)
+            readiness_rows = list(readiness_reader)
+            readiness_columns = set(readiness_reader.fieldnames or [])
+
+        expected_columns = {
+            "building_id",
+            "primary_role",
+            "readiness_phase",
+            "gate_reasons",
+            "build_plan_candidate",
+            "capital_tier_gate",
+            "fallback_building_id",
+            "fallback_reason",
+            "prerequisites",
+            "potential_allow_gate_atoms",
+            "upgrade_terminal",
+        }
+        self.assertTrue(expected_columns.issubset(readiness_columns))
+        self.assertEqual(len(readiness_rows), len(building_rows))
+
+        phases = {row["readiness_phase"] for row in readiness_rows}
+        self.assertIn("base_available", phases)
+        self.assertIn("after_prerequisite", phases)
+        self.assertTrue([row for row in readiness_rows if row["gate_reasons"]])
+        self.assertTrue([row for row in readiness_rows if row["build_plan_candidate"] == "yes"])
+        self.assertTrue([row for row in readiness_rows if row["fallback_reason"] == "same_role_available_before_target_unlock"])
+
+        by_building = {row["building_id"]: row for row in readiness_rows}
+        if "building_research_lab_3" in by_building:
+            self.assertEqual(by_building["building_research_lab_3"]["readiness_phase"], "after_prerequisite")
+            self.assertIn("technology_prerequisite", by_building["building_research_lab_3"]["gate_reasons"])
 
     def test_nonconstruction_economic_valuation_dataset_extends_without_duplicate_construction_surfaces(self):
         self.assertTrue(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.exists())

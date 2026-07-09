@@ -44,6 +44,7 @@ OUT_ROLES = RESEARCH_ROOT / "stellar-ai-director-colony-role-targets-2026-07-09.
 OUT_TECH = RESEARCH_ROOT / "stellar-ai-director-research-capacity-tech-modifiers-2026-07-09.csv"
 OUT_INFRA = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
 OUT_RESOURCE_COVERAGE = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
+OUT_READINESS = RESEARCH_ROOT / "stellar-ai-director-build-plan-readiness-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
@@ -527,6 +528,7 @@ def source_gate_summary(value: PDXBlock) -> dict[str, str]:
     event_flags: list[str] = []
     unlock_flags: list[str] = []
     gates: list[str] = []
+    gate_atoms: list[str] = []
     for assignment in iter_assignments(value):
         key = assignment.key.strip('"')
         if key == "prerequisites":
@@ -537,9 +539,11 @@ def source_gate_summary(value: PDXBlock) -> dict[str, str]:
             event_flags.extend(assignment_atoms(assignment.value))
         elif key in {"potential", "allow", "possible", "trigger"}:
             gates.append(key)
+            gate_atoms.extend(assignment_atoms(assignment.value))
     return {
         "prerequisites": compact_list(prereqs),
         "potential_allow_gates": compact_list(gates),
+        "potential_allow_gate_atoms": compact_list(gate_atoms),
         "event_flags": compact_list(event_flags),
         "unlock_flags": compact_list(unlock_flags),
     }
@@ -1031,6 +1035,139 @@ def build_plan_building_candidate(row: dict[str, Any]) -> bool:
     return True
 
 
+def cell_items(value: Any) -> list[str]:
+    text = str(value or "").strip()
+    if not text or text == "none":
+        return []
+    return [item for item in text.split("|") if item]
+
+
+def readiness_phase(row: dict[str, Any]) -> str:
+    if cell_items(row.get("prerequisites")):
+        return "after_prerequisite"
+    if cell_items(row.get("unlock_flags")):
+        return "after_feature_unlock"
+    if cell_items(row.get("event_flags")):
+        return "after_event_flag"
+    if cell_items(row.get("potential_allow_gates")):
+        return "conditional_scripted"
+    return "base_available"
+
+
+def primary_building_role(row: dict[str, Any]) -> tuple[str, float]:
+    output = json.loads(str(row["optimistic_output_json"]))
+    upkeep = json.loads(str(row["optimistic_upkeep_json"]))
+    net = net_amounts(output, upkeep)
+    if "has_research_modifiers" in str(row.get("data_quality_flags", "")).split("|"):
+        return "research_world", max(0.0, research_total(output))
+    best_role = "support"
+    best_score = 0.0
+    for role in ROLE_TARGETS:
+        score = max(role_total(output, role), role_total(net, role))
+        if score > best_score:
+            best_role = role
+            best_score = score
+    return best_role, best_score
+
+
+def has_capital_tier_gate(row: dict[str, Any]) -> str:
+    text = "|".join(
+        [
+            str(row.get("prerequisites", "")),
+            str(row.get("potential_allow_gate_atoms", "")),
+            str(row.get("event_flags", "")),
+            str(row.get("unlock_flags", "")),
+        ]
+    ).lower()
+    terms = ("capital", "building_capital", "planetary_administration", "planetary_capital", "system_capital")
+    return "yes" if any(term in text for term in terms) else "no"
+
+
+def build_plan_readiness_rows(buildings: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    enriched: list[dict[str, Any]] = []
+    for row in buildings:
+        role, role_score = primary_building_role(row)
+        phase = readiness_phase(row)
+        build_plan_candidate = build_plan_building_candidate(row)
+        gate_reasons = []
+        if cell_items(row.get("prerequisites")):
+            gate_reasons.append("technology_prerequisite")
+        if cell_items(row.get("unlock_flags")):
+            gate_reasons.append("feature_unlock")
+        if cell_items(row.get("event_flags")):
+            gate_reasons.append("event_flag")
+        if cell_items(row.get("potential_allow_gates")):
+            gate_reasons.append("scripted_potential_allow")
+        if not build_plan_candidate:
+            gate_reasons.append("not_build_plan_candidate")
+        enriched.append(
+            {
+                **row,
+                "_primary_role": role,
+                "_primary_role_score": role_score,
+                "_readiness_phase": phase,
+                "_build_plan_candidate": build_plan_candidate,
+                "_gate_reasons": gate_reasons,
+                "_capital_tier_gate": has_capital_tier_gate(row),
+            }
+        )
+
+    fallback_pool = [
+        row
+        for row in enriched
+        if row["_build_plan_candidate"]
+        and row["_readiness_phase"] in {"base_available", "conditional_scripted"}
+        and row["is_upgrade_terminal"] == "yes"
+    ]
+    rows: list[dict[str, Any]] = []
+    for row in enriched:
+        fallback = None
+        if row["_readiness_phase"] != "base_available":
+            candidates = [
+                candidate
+                for candidate in fallback_pool
+                if candidate["_primary_role"] == row["_primary_role"] and candidate["building_id"] != row["building_id"]
+            ]
+            if candidates:
+                fallback = max(
+                    candidates,
+                    key=lambda item: (
+                        float(item["_primary_role_score"]),
+                        float(item.get("job_slots_total", 0.0)),
+                        str(item["building_id"]),
+                    ),
+                )
+        rows.append(
+            {
+                "building_id": row["building_id"],
+                "primary_role": row["_primary_role"],
+                "primary_role_score": round(float(row["_primary_role_score"]), 6),
+                "readiness_phase": row["_readiness_phase"],
+                "gate_reasons": compact_list(row["_gate_reasons"]),
+                "build_plan_candidate": "yes" if row["_build_plan_candidate"] else "no",
+                "repeatable_candidate": "yes" if repeatable_building_candidate(row) else "no",
+                "capital_tier_gate": row["_capital_tier_gate"],
+                "fallback_building_id": str(fallback["building_id"]) if fallback else "",
+                "fallback_primary_role_score": round(float(fallback["_primary_role_score"]), 6) if fallback else 0.0,
+                "fallback_reason": "same_role_available_before_target_unlock" if fallback else "",
+                "readiness_status": "fallback_available" if fallback else row["_readiness_phase"],
+                "prerequisites": row.get("prerequisites", ""),
+                "potential_allow_gates": row.get("potential_allow_gates", ""),
+                "potential_allow_gate_atoms": row.get("potential_allow_gate_atoms", ""),
+                "event_flags": row.get("event_flags", ""),
+                "unlock_flags": row.get("unlock_flags", ""),
+                "is_upgrade_terminal": row["is_upgrade_terminal"],
+                "upgrade_terminal": row["upgrade_terminal"],
+                "upgrade_chain_to_terminal": row["upgrade_chain_to_terminal"],
+                "colony_class": row["colony_class"],
+                "category": row["category"],
+                "winning_mod_name": row["winning_mod_name"],
+                "winning_file": row["winning_file"],
+            }
+        )
+    return sorted(rows, key=lambda item: (str(item["primary_role"]), str(item["readiness_phase"]), str(item["building_id"])))
+
+
 def building_bundle_for_role(selected: list[dict[str, Any]], role: str) -> dict[str, dict[str, float]]:
     if role == "research_world":
         bundle = aggregate_selected_buildings(selected)
@@ -1462,6 +1599,7 @@ def write_summary(
     tech_rows: list[dict[str, Any]],
     strategic_rows: list[dict[str, Any]],
     resource_coverage_rows: list[dict[str, Any]],
+    readiness_rows: list[dict[str, Any]],
 ) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
     best = sorted(research_buildings, key=lambda row: float(row["total_research"]), reverse=True)[:20]
@@ -1487,11 +1625,13 @@ def write_summary(
         f"- Technologies with research-relevant modifiers indexed: {len(tech_rows)}",
         f"- Strategic infrastructure target rows: {len(strategic_rows)}",
         f"- Resource coverage rows: {len(resource_coverage_rows)}",
+        f"- Build-plan readiness rows: {len(readiness_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
         "- Jobs, buildings, development rows, and plan rows preserve base, triggered, conservative, and optimistic resource scenarios where applicable.",
         "- Strategic infrastructure rows classify habitat growth centers, capital/empire-unique candidates, starbase migration support, and refactor constraints such as `can_demolish = no`.",
         "- Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.",
+        "- Build-plan readiness rows classify building gate phases and same-role fallback candidates before unlocks.",
         "",
         "## Top Research Buildings",
         "",
@@ -1581,6 +1721,7 @@ def main() -> None:
     tech_rows = collect_technology_modifier_rows(playset)
     strategic_rows = strategic_infrastructure_rows(playset)
     resource_coverage_rows = modeling_resource_coverage_rows(job_rows, buildings, development_rows, strategic_rows)
+    readiness_rows = build_plan_readiness_rows(buildings)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
     write_csv(OUT_DEVELOPMENT, development_rows)
@@ -1589,13 +1730,25 @@ def main() -> None:
     write_csv(OUT_TECH, tech_rows)
     write_csv(OUT_INFRA, strategic_rows)
     write_csv(OUT_RESOURCE_COVERAGE, resource_coverage_rows)
-    write_summary(jobs, buildings, development_rows, plans, role_rows, tech_rows, strategic_rows, resource_coverage_rows)
+    write_csv(OUT_READINESS, readiness_rows)
+    write_summary(
+        jobs,
+        buildings,
+        development_rows,
+        plans,
+        role_rows,
+        tech_rows,
+        strategic_rows,
+        resource_coverage_rows,
+        readiness_rows,
+    )
     print(
         f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
         f"{len(development_rows)} districts/zones, {len(plans)} plan rows, "
         f"{len(role_rows)} role rows, {len(tech_rows)} tech modifier rows, "
         f"{len(strategic_rows)} strategic infrastructure rows, "
-        f"{len(resource_coverage_rows)} resource coverage rows"
+        f"{len(resource_coverage_rows)} resource coverage rows, "
+        f"{len(readiness_rows)} readiness rows"
     )
 
 
