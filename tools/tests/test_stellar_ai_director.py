@@ -651,6 +651,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         for marker in (
             "staid_militarist_conquest_strategy",
             "staid_raiding_pop_growth_strategy",
+            "staid_hostile_fauna_safe_clearance_window",
             "staid_hostile_fauna_clearance_strategy",
             "staid_raiding_pop_acquisition_priority",
         ):
@@ -692,6 +693,59 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("factor = 60 owner = { staid_raiding_pop_growth_strategy = yes }", bombardment)
         self.assertIn("ap_nihilistic_acquisition", ascension_perks)
         self.assertIn("staid_raiding_pop_acquisition_priority", ascension_perks)
+
+    def test_hostile_fauna_reserve_stays_on_safe_clearance_window(self):
+        triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").read_text(
+            encoding="utf-8"
+        )
+        economy = (MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt").read_text(
+            encoding="utf-8"
+        )
+        safe_window_block = triggers[
+            triggers.index("staid_hostile_fauna_safe_clearance_window = {") : triggers.index(
+                "staid_hostile_fauna_clearance_strategy = {"
+            )
+        ]
+        strategy_block = triggers[
+            triggers.index("staid_hostile_fauna_clearance_strategy = {") : triggers.index(
+                "staid_site_limited_expansion_ready = {"
+            )
+        ]
+        reserve_block = economy[
+            economy.index('set_name = "Stellar AI Director hostile fauna clearance reserve"') : economy.index(
+                'set_name = "Stellar AI Director modded unlock research reserve"'
+            )
+        ]
+
+        self.assertIn("staid_fleet_buildup_economy_safe = yes", safe_window_block)
+        self.assertIn("NOT = { staid_security_existential = yes }", safe_window_block)
+        self.assertIn("used_naval_capacity_percent < 1.20", safe_window_block)
+        self.assertIn("has_monthly_income = { resource = alloys value > 60 }", safe_window_block)
+        self.assertIn("staid_hostile_fauna_safe_clearance_window = yes", strategy_block)
+        self.assertIn("staid_hostile_fauna_clearance_strategy = yes", reserve_block)
+
+        forbidden_targets = (
+            "crystal_station_large",
+            "leviathan_01_scavenger_bot",
+            "leviathan_01_elder_tiyanki",
+            "leviathan_01_voidspawn",
+            "reanimated_leviathan_01_elder_tiyanki",
+            "reanimated_leviathan_01_voidspawn",
+            "reanimated_space_dragon",
+            "tech_leviathan_techgenesis",
+        )
+        forbidden_effects = (
+            "fleet_event =",
+            "country_event =",
+            "create_fleet =",
+            "declare_war",
+            "every_owned_fleet",
+        )
+        for block in (safe_window_block, strategy_block, reserve_block):
+            for target in forbidden_targets:
+                self.assertNotIn(target, block)
+            for effect in forbidden_effects:
+                self.assertNotIn(effect, block)
 
     def test_dataset_job_pressure_adds_ai_resource_production(self):
         amounts = dataset_ai_resource_production_amounts(

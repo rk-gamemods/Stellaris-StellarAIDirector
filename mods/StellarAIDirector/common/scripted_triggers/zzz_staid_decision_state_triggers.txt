@@ -998,17 +998,24 @@ staid_raiding_pop_acquisition_priority = {
 	}
 }
 
-staid_hostile_fauna_clearance_strategy = {
+staid_hostile_fauna_safe_clearance_window = {
 	is_nomadic = no
 	NOT = { staid_catastrophic_collapse_mode = yes }
-	used_naval_capacity_percent < 1.50
+	NOT = { staid_security_existential = yes }
+	staid_has_safe_basic_stockpiles = yes
+	staid_fleet_buildup_economy_safe = yes
+	used_naval_capacity_percent < 1.20
 	OR = {
 		staid_opening_hostile_fauna_clearance = yes
 		AND = {
 			years_passed < 60
-			has_monthly_income = { resource = alloys value > 45 }
+			has_monthly_income = { resource = alloys value > 60 }
 		}
 	}
+}
+
+staid_hostile_fauna_clearance_strategy = {
+	staid_hostile_fauna_safe_clearance_window = yes
 }
 
 staid_site_limited_expansion_ready = {

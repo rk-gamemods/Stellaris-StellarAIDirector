@@ -10596,17 +10596,24 @@ staid_raiding_pop_acquisition_priority = {
 \t}
 }
 
-staid_hostile_fauna_clearance_strategy = {
+staid_hostile_fauna_safe_clearance_window = {
 \tis_nomadic = no
 \tNOT = { staid_catastrophic_collapse_mode = yes }
-\tused_naval_capacity_percent < 1.50
+\tNOT = { staid_security_existential = yes }
+\tstaid_has_safe_basic_stockpiles = yes
+\tstaid_fleet_buildup_economy_safe = yes
+\tused_naval_capacity_percent < 1.20
 \tOR = {
 \t\tstaid_opening_hostile_fauna_clearance = yes
 \t\tAND = {
 \t\t\tyears_passed < 60
-\t\t\thas_monthly_income = { resource = alloys value > 45 }
+\t\t\thas_monthly_income = { resource = alloys value > 60 }
 \t\t}
 \t}
+}
+
+staid_hostile_fauna_clearance_strategy = {
+\tstaid_hostile_fauna_safe_clearance_window = yes
 }
 
 staid_site_limited_expansion_ready = {
