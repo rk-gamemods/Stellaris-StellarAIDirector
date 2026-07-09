@@ -11,15 +11,17 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Districts/zones with net consumer-goods output: 8
 - Colony role target rows: 220
 - Technologies with research-relevant modifiers indexed: 18
-- Strategic infrastructure target rows: 801
-- Resource coverage rows: 20
+- Strategic infrastructure target rows: 1333
+- Resource coverage rows: 21
 - Build-plan readiness rows: 826
+- Strategic benefit taxonomy rows: 1887
 - Source roots include vanilla at `C:\Steam\steamapps\common\Stellaris` plus enabled launcher mods.
 - Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.
 - Jobs, buildings, development rows, and plan rows preserve base, triggered, conservative, and optimistic resource scenarios where applicable.
 - Strategic infrastructure rows classify habitat growth centers, capital/empire-unique candidates, starbase migration support, and refactor constraints such as `can_demolish = no`.
 - Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.
 - Build-plan readiness rows classify building gate phases and same-role fallback candidates before unlocks.
+- Strategic benefit taxonomy rows classify detected non-resource benefits and record no-evidence classes for active-stack gaps.
 
 ## Top Research Buildings
 

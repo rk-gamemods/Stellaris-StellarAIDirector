@@ -45,6 +45,7 @@ OUT_TECH = RESEARCH_ROOT / "stellar-ai-director-research-capacity-tech-modifiers
 OUT_INFRA = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
 OUT_RESOURCE_COVERAGE = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
 OUT_READINESS = RESEARCH_ROOT / "stellar-ai-director-build-plan-readiness-2026-07-09.csv"
+OUT_BENEFITS = RESEARCH_ROOT / "stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
@@ -89,8 +90,25 @@ STRATEGIC_MODIFIER_TERMS = (
     "migration",
     "shipyard",
     "naval_cap",
+    "naval_capacity",
     "stability",
     "amenities",
+    "housing",
+    "habitability",
+    "planet_capacity",
+    "crime",
+    "deviancy",
+    "defense_army",
+    "defense_armies",
+    "army",
+    "bombardment",
+    "ship_build",
+    "shipyard_build",
+    "starbase",
+    "megastructure",
+    "build_speed",
+    "district",
+    "blocker",
     "envoy",
     "diplom",
     "trust",
@@ -104,6 +122,28 @@ RESETTLEMENT_SOURCE_TERMS = ("resettlement_unemployed_mult",)
 RESETTLEMENT_DESTINATION_TERMS = ("resettlement_unemployed_destination_mult",)
 CAPITAL_STRATEGIC_TERMS = ("envoy", "diplom", "trust", "federation", "opinion", "relations", "edict", "council")
 STARBASE_PRIORITY_TERMS = ("resettlement", "migration", "shipyard", "naval_cap", "trade", "food", "stability")
+BENEFIT_CLASS_TERMS = {
+    "pop_growth_assembly": POP_GROWTH_TERMS,
+    "migration_resettlement": ("resettlement", "migration"),
+    "trade_policy_value": ("trade", "trade_value"),
+    "amenities": ("amenities",),
+    "stability": ("stability",),
+    "housing": ("housing",),
+    "habitability": ("habitability",),
+    "planet_capacity": ("planet_capacity",),
+    "crime_deviancy_control": ("crime", "deviancy"),
+    "defense_armies": ("defense_army", "defense_armies", "army"),
+    "bombardment_resistance": ("bombardment",),
+    "naval_capacity": ("naval_cap", "naval_capacity"),
+    "shipyard_throughput": ("shipyard", "ship_build", "shipyard_build"),
+    "starbase_support": ("starbase", "shipyard", "naval_cap", "trade", "resettlement", "migration"),
+    "diplomacy_envoys": CAPITAL_STRATEGIC_TERMS,
+    "research_speed": ("research_speed",),
+    "empire_country_modifier": ("country_modifier", "triggered_country_modifier", "empire_limit"),
+    "megastructure_construction": ("megastructure", "build_speed"),
+    "blocker_district_capacity": ("blocker", "district"),
+    "direct_resource_support": SUPPORT_KEYS,
+}
 RESOURCE_AMOUNT_JSON_COLUMNS = {
     "jobs": (
         "base_output_json",
@@ -1524,6 +1564,102 @@ def strategic_infrastructure_rows(playset: dict[str, Any]) -> list[dict[str, Any
     return sorted(rows, key=lambda item: (str(item["role"]), -float(item["priority_score"]), str(item["object_id"])))
 
 
+def matching_modifier_keys(modifiers: dict[str, float], terms: tuple[str, ...]) -> list[str]:
+    return sorted(key for key in modifiers if any(term in key.lower() for term in terms))
+
+
+def direct_resource_benefit_amount(row: dict[str, Any]) -> float:
+    output = json.loads(str(row.get("direct_optimistic_output_json", "{}") or "{}"))
+    return sum(max(0.0, float(output.get(key, 0.0))) for key in SUPPORT_KEYS)
+
+
+def strategic_benefit_taxonomy_rows(strategic_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    seen_classes: set[str] = set()
+    for row in strategic_rows:
+        modifiers = json.loads(str(row.get("modifier_keys_json", "{}") or "{}"))
+        tags = cell_items(row.get("strategic_tags"))
+        object_type = str(row["object_type"])
+        object_id = str(row["object_id"])
+        object_text = f"{object_type}|{object_id}|{'|'.join(tags)}".lower()
+        for benefit_class, terms in BENEFIT_CLASS_TERMS.items():
+            modifier_keys = matching_modifier_keys(modifiers, terms)
+            tag_hits = [tag for tag in tags if any(term in tag.lower() for term in terms)]
+            text_hit = any(term in object_text for term in terms)
+            amount = sum(float(modifiers[key]) for key in modifier_keys)
+            if benefit_class == "direct_resource_support":
+                amount = direct_resource_benefit_amount(row)
+            if benefit_class == "empire_country_modifier":
+                text_hit = text_hit or str(row.get("has_country_modifier", "")) == "yes" or str(row.get("has_empire_limit", "")) == "yes"
+            if benefit_class == "starbase_support":
+                text_hit = text_hit or object_type.startswith("starbase")
+            if not modifier_keys and not tag_hits and not text_hit and amount == 0:
+                continue
+            seen_classes.add(benefit_class)
+            if amount != 0:
+                evidence_kind = "numeric_modifier" if modifier_keys else "direct_resource"
+                valuation_status = "numeric_value_preserved"
+            elif modifier_keys:
+                evidence_kind = "numeric_modifier_zero_sum"
+                valuation_status = "numeric_value_preserved"
+            elif tag_hits:
+                evidence_kind = "strategic_tag"
+                valuation_status = "detected_unvalued"
+            else:
+                evidence_kind = "text_or_structural_signal"
+                valuation_status = "detected_unvalued"
+            rows.append(
+                {
+                    "benefit_class": benefit_class,
+                    "object_type": object_type,
+                    "object_id": object_id,
+                    "role": row["role"],
+                    "strategic_tags": row["strategic_tags"],
+                    "evidence_kind": evidence_kind,
+                    "valuation_status": valuation_status,
+                    "formula_status": "resource_or_modifier_amount" if amount != 0 or modifier_keys else "detected_no_formula",
+                    "benefit_amount": round(amount, 6),
+                    "source_terms": "|".join(terms),
+                    "matched_modifier_keys": "|".join(modifier_keys),
+                    "matched_tags": "|".join(tag_hits),
+                    "priority_score": row["priority_score"],
+                    "can_demolish": row["can_demolish"],
+                    "can_build": row["can_build"],
+                    "can_be_disabled": row["can_be_disabled"],
+                    "has_destroy_trigger": row["has_destroy_trigger"],
+                    "winning_mod_name": row["winning_mod_name"],
+                    "winning_file": row["winning_file"],
+                }
+            )
+    for benefit_class, terms in sorted(BENEFIT_CLASS_TERMS.items()):
+        if benefit_class in seen_classes:
+            continue
+        rows.append(
+            {
+                "benefit_class": benefit_class,
+                "object_type": "",
+                "object_id": "",
+                "role": "",
+                "strategic_tags": "",
+                "evidence_kind": "no_active_stack_evidence",
+                "valuation_status": "not_observed",
+                "formula_status": "not_observed",
+                "benefit_amount": 0.0,
+                "source_terms": "|".join(terms),
+                "matched_modifier_keys": "",
+                "matched_tags": "",
+                "priority_score": 0.0,
+                "can_demolish": "",
+                "can_build": "",
+                "can_be_disabled": "",
+                "has_destroy_trigger": "",
+                "winning_mod_name": "",
+                "winning_file": "",
+            }
+        )
+    return sorted(rows, key=lambda item: (str(item["benefit_class"]), str(item["object_type"]), str(item["object_id"])))
+
+
 def modeling_resource_coverage_rows(
     job_rows: list[dict[str, Any]],
     buildings: list[dict[str, Any]],
@@ -1600,6 +1736,7 @@ def write_summary(
     strategic_rows: list[dict[str, Any]],
     resource_coverage_rows: list[dict[str, Any]],
     readiness_rows: list[dict[str, Any]],
+    benefit_rows: list[dict[str, Any]],
 ) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
     best = sorted(research_buildings, key=lambda row: float(row["total_research"]), reverse=True)[:20]
@@ -1626,12 +1763,14 @@ def write_summary(
         f"- Strategic infrastructure target rows: {len(strategic_rows)}",
         f"- Resource coverage rows: {len(resource_coverage_rows)}",
         f"- Build-plan readiness rows: {len(readiness_rows)}",
+        f"- Strategic benefit taxonomy rows: {len(benefit_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
         "- Jobs, buildings, development rows, and plan rows preserve base, triggered, conservative, and optimistic resource scenarios where applicable.",
         "- Strategic infrastructure rows classify habitat growth centers, capital/empire-unique candidates, starbase migration support, and refactor constraints such as `can_demolish = no`.",
         "- Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.",
         "- Build-plan readiness rows classify building gate phases and same-role fallback candidates before unlocks.",
+        "- Strategic benefit taxonomy rows classify detected non-resource benefits and record no-evidence classes for active-stack gaps.",
         "",
         "## Top Research Buildings",
         "",
@@ -1722,6 +1861,7 @@ def main() -> None:
     strategic_rows = strategic_infrastructure_rows(playset)
     resource_coverage_rows = modeling_resource_coverage_rows(job_rows, buildings, development_rows, strategic_rows)
     readiness_rows = build_plan_readiness_rows(buildings)
+    benefit_rows = strategic_benefit_taxonomy_rows(strategic_rows)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
     write_csv(OUT_DEVELOPMENT, development_rows)
@@ -1731,6 +1871,7 @@ def main() -> None:
     write_csv(OUT_INFRA, strategic_rows)
     write_csv(OUT_RESOURCE_COVERAGE, resource_coverage_rows)
     write_csv(OUT_READINESS, readiness_rows)
+    write_csv(OUT_BENEFITS, benefit_rows)
     write_summary(
         jobs,
         buildings,
@@ -1741,6 +1882,7 @@ def main() -> None:
         strategic_rows,
         resource_coverage_rows,
         readiness_rows,
+        benefit_rows,
     )
     print(
         f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
@@ -1748,7 +1890,8 @@ def main() -> None:
         f"{len(role_rows)} role rows, {len(tech_rows)} tech modifier rows, "
         f"{len(strategic_rows)} strategic infrastructure rows, "
         f"{len(resource_coverage_rows)} resource coverage rows, "
-        f"{len(readiness_rows)} readiness rows"
+        f"{len(readiness_rows)} readiness rows, "
+        f"{len(benefit_rows)} benefit taxonomy rows"
     )
 
 

@@ -126,11 +126,34 @@ RESEARCH_CAPACITY_PLAN_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capac
 RESEARCH_CAPACITY_INFRASTRUCTURE_CSV = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
 RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
 RESEARCH_CAPACITY_READINESS_CSV = RESEARCH_ROOT / "stellar-ai-director-build-plan-readiness-2026-07-09.csv"
+RESEARCH_CAPACITY_BENEFITS_CSV = RESEARCH_ROOT / "stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv"
 GIGAS_MODELED_RESOURCE_KEYS = {
     "giga_sr_negative_mass",
     "giga_sr_amb_megaconstruction",
     "giga_sr_iodizium",
     "giga_sr_sentient_metal",
+}
+REQUIRED_STRATEGIC_BENEFIT_CLASSES = {
+    "pop_growth_assembly",
+    "migration_resettlement",
+    "trade_policy_value",
+    "amenities",
+    "stability",
+    "housing",
+    "habitability",
+    "planet_capacity",
+    "crime_deviancy_control",
+    "defense_armies",
+    "bombardment_resistance",
+    "naval_capacity",
+    "shipyard_throughput",
+    "starbase_support",
+    "diplomacy_envoys",
+    "research_speed",
+    "empire_country_modifier",
+    "megastructure_construction",
+    "blocker_district_capacity",
+    "direct_resource_support",
 }
 
 
@@ -532,6 +555,33 @@ class GeneratedModValidityTests(unittest.TestCase):
         if "building_research_lab_3" in by_building:
             self.assertEqual(by_building["building_research_lab_3"]["readiness_phase"], "after_prerequisite")
             self.assertIn("technology_prerequisite", by_building["building_research_lab_3"]["gate_reasons"])
+
+    def test_research_capacity_model_generates_strategic_benefit_taxonomy(self):
+        with RESEARCH_CAPACITY_BENEFITS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            benefits_reader = csv.DictReader(handle)
+            benefit_rows = list(benefits_reader)
+            benefit_columns = set(benefits_reader.fieldnames or [])
+
+        expected_columns = {
+            "benefit_class",
+            "object_type",
+            "object_id",
+            "evidence_kind",
+            "valuation_status",
+            "formula_status",
+            "benefit_amount",
+            "source_terms",
+            "matched_modifier_keys",
+            "priority_score",
+        }
+        self.assertTrue(expected_columns.issubset(benefit_columns))
+        benefit_classes = {row["benefit_class"] for row in benefit_rows}
+        self.assertTrue(REQUIRED_STRATEGIC_BENEFIT_CLASSES.issubset(benefit_classes))
+        self.assertTrue([row for row in benefit_rows if row["valuation_status"] == "numeric_value_preserved"])
+        self.assertTrue([row for row in benefit_rows if row["valuation_status"] == "detected_unvalued"])
+        self.assertTrue([row for row in benefit_rows if row["evidence_kind"] == "no_active_stack_evidence"])
+        self.assertTrue([row for row in benefit_rows if row["benefit_class"] == "starbase_support"])
+        self.assertTrue([row for row in benefit_rows if row["benefit_class"] == "direct_resource_support"])
 
     def test_nonconstruction_economic_valuation_dataset_extends_without_duplicate_construction_surfaces(self):
         self.assertTrue(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.exists())
