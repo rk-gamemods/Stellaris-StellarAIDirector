@@ -49,6 +49,8 @@ from stellar_ai_director_lib import (
     parse_pdx,
     resource_waste_pressure,
     research_under_curve,
+    forbidden_generated_surface_errors,
+    stale_stellar_ai_dependency_errors,
     surplus_sink_pressure,
     validate_staid_scripted_trigger_cycles,
     validate_generated_patch,
@@ -138,6 +140,47 @@ class GeneratedModValidityTests(unittest.TestCase):
         load_order = (MOD_ROOT / "notes" / "load-order.md").read_text(encoding="utf-8")
         self.assertIn("Stellar AI remains a private parity reference", readme)
         self.assertIn("Stellar AI is not a required parent", load_order)
+        self.assertEqual(stale_stellar_ai_dependency_errors(), [])
+
+    def test_stale_stellar_ai_dependency_validator_rejects_current_requirements(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            mod_root = root / "StellarAIDirector"
+            research_root = root / "research" / "stellar-ai"
+            (mod_root / "notes").mkdir(parents=True)
+            research_root.mkdir(parents=True)
+            (mod_root / "descriptor.mod").write_text(
+                'name="Stellar AI Director"\ndependencies={\n\t"Stellar AI"\n}\n',
+                encoding="utf-8",
+            )
+            (mod_root / "README.md").write_text("This mod requires Stellar AI.\n", encoding="utf-8")
+            (mod_root / "notes" / "load-order.md").write_text(
+                "Stellar AI is not a required parent.\n",
+                encoding="utf-8",
+            )
+            (research_root / "README.md").write_text(
+                "Stellar AI remains a private parity reference only.\n",
+                encoding="utf-8",
+            )
+
+            errors = stale_stellar_ai_dependency_errors(mod_root, research_root)
+
+        self.assertTrue(any("descriptor must not require Stellar AI" in error for error in errors))
+        self.assertTrue(any("current docs must not imply Stellar AI is required" in error for error in errors))
+
+    def test_forbidden_surface_validator_blocks_unsafe_generated_folders(self):
+        self.assertEqual(forbidden_generated_surface_errors(), [])
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            mod_root = Path(temp_dir) / "StellarAIDirector"
+            (mod_root / "common" / "diplomatic_actions").mkdir(parents=True)
+            (mod_root / "common" / "ship_designs").mkdir(parents=True)
+
+            errors = forbidden_generated_surface_errors(mod_root)
+
+        self.assertEqual(len(errors), 2)
+        self.assertTrue(any("diplomatic_actions" in error for error in errors))
+        self.assertTrue(any("ship_designs" in error for error in errors))
 
     def test_standalone_parity_inventory_covers_baseline_surfaces(self):
         self.assertTrue(STANDALONE_PARITY_INVENTORY_CSV.exists())

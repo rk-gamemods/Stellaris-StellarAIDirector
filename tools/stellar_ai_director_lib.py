@@ -7075,6 +7075,76 @@ def descriptor_dependencies(text: str) -> list[str]:
     return re.findall(r'"([^"]+)"', match.group("body"))
 
 
+STALE_STELLAR_AI_REQUIREMENT_PATTERNS = (
+    re.compile(r"\brequires?\s+Stellar AI\b", re.IGNORECASE),
+    re.compile(
+        r"\bStellar AI\s+(?:is|remains|must be|should be|needs to be)\s+"
+        r"(?:a\s+)?(?:required|required parent|required dependency|launch dependency|dependency)",
+        re.IGNORECASE,
+    ),
+    re.compile(r"\brequired\s+(?:launch\s+)?dependency\s*:\s*Stellar AI\b", re.IGNORECASE),
+)
+SAFE_STELLAR_AI_CONTEXT_RE = re.compile(
+    r"\b(no longer|not|omits?|without|private parity|reference only|not a launch dependency|not a required parent)\b",
+    re.IGNORECASE,
+)
+CURRENT_STANDALONE_DOCS = (
+    Path("README.md"),
+    Path("notes/load-order.md"),
+)
+FORBIDDEN_GENERATED_SURFACES = (
+    Path("common/diplomatic_actions"),
+    Path("common/personalities"),
+    Path("common/ship_designs"),
+    Path("common/component_templates"),
+    Path("common/section_templates"),
+    Path("common/ship_sizes"),
+)
+
+
+def line_implies_stellar_ai_required(line: str) -> bool:
+    if "Stellar AI" not in line:
+        return False
+    if SAFE_STELLAR_AI_CONTEXT_RE.search(line):
+        return False
+    return any(pattern.search(line) for pattern in STALE_STELLAR_AI_REQUIREMENT_PATTERNS)
+
+
+def stale_stellar_ai_dependency_errors(
+    mod_root: Path = MOD_ROOT,
+    research_root: Path = RESEARCH_ROOT,
+) -> list[str]:
+    errors: list[str] = []
+    descriptor_path = mod_root / "descriptor.mod"
+    if descriptor_path.exists() and "Stellar AI" in descriptor_dependencies(read_text(descriptor_path)):
+        errors.append(f"{descriptor_path}: descriptor must not require Stellar AI as a launch dependency")
+
+    doc_paths = [mod_root / relative for relative in CURRENT_STANDALONE_DOCS]
+    doc_paths.append(research_root / "README.md")
+    for path in doc_paths:
+        if not path.exists():
+            continue
+        for line_number, line in enumerate(read_text(path).splitlines(), start=1):
+            if line_implies_stellar_ai_required(line):
+                errors.append(f"{path}:{line_number}: current docs must not imply Stellar AI is required")
+    return errors
+
+
+def forbidden_generated_surface_errors(
+    mod_root: Path = MOD_ROOT,
+    allowed_surfaces: set[Path] | None = None,
+) -> list[str]:
+    allowed = allowed_surfaces or set()
+    errors: list[str] = []
+    for relative in FORBIDDEN_GENERATED_SURFACES:
+        if relative in allowed:
+            continue
+        path = mod_root / relative
+        if path.exists():
+            errors.append(f"{path}: forbidden generated surface exists without a researched task flag")
+    return errors
+
+
 def playset_mod_by_id(playset: dict[str, Any], steam_id: str) -> dict[str, Any] | None:
     for mod in playset.get("mods", []):
         if safe_mod_id(mod.get("steam_id")) == steam_id:
@@ -12035,6 +12105,8 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
 
 def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
     errors: list[str] = []
+    errors.extend(stale_stellar_ai_dependency_errors(MOD_ROOT, RESEARCH_ROOT))
+    errors.extend(forbidden_generated_surface_errors(MOD_ROOT))
     errors.extend(validate_object_atlas_artifacts())
     if not economic_valuation_evidence_passes():
         errors.append(
