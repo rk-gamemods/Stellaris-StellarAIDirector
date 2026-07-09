@@ -14,8 +14,8 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Strategic infrastructure target rows: 1333
 - Resource coverage rows: 21
 - Build-plan readiness rows: 826
-- Strategic benefit taxonomy rows: 1887
-- Modeling blocker accounting rows: 396
+- Strategic benefit taxonomy rows: 1924
+- Modeling blocker accounting rows: 0
 - Build-plan consumer policy rows: 1093
 - Source roots include vanilla at `C:\Steam\steamapps\common\Stellaris` plus enabled launcher mods.
 - Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.

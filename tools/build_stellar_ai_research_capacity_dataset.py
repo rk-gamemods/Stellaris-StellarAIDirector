@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import math
 import re
@@ -51,6 +52,8 @@ OUT_BENEFITS = RESEARCH_ROOT / "stellar-ai-director-strategic-benefit-taxonomy-2
 OUT_BLOCKERS = RESEARCH_ROOT / "stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv"
 OUT_CONSUMER_POLICY = RESEARCH_ROOT / "stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
+WEBCHATGPT_MODELING_OUTPUTS_ROOT = RESEARCH_ROOT.parent / "webchatgpt" / "stellar-ai-modeling-outputs-2026-07-09"
+BENEFIT_FORMULA_POLICY_MATRIX_CSV = WEBCHATGPT_MODELING_OUTPUTS_ROOT / "benefit_formula_policy_matrix.csv"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
 SUPPORT_KEYS = (
@@ -87,6 +90,25 @@ SOURCE_BACKED_STALE_NO_EFFECT_JOB_IDS = {
 SOURCE_BACKED_EXTERNAL_ACOT_JOB_IDS = {
     "job_giga_megaengineering_overseer_acot_alpha",
     "job_giga_megaengineering_overseer_drone_acot_alpha",
+}
+BLOCKER_ACCOUNTING_COLUMNS = [
+    "source_artifact",
+    "object_type",
+    "object_id",
+    "issue_type",
+    "issue_key",
+    "accounting_status",
+    "next_action",
+    "source_mod",
+    "source_file",
+]
+NON_BLOCKING_BENEFIT_DECISIONS = {
+    "detected_only_non_scoring_policy",
+    "numeric_formula_defined",
+    "source_backed_zero_effect",
+}
+SPECIAL_SCOPED_UNRESOLVED_VARIABLE_EXCLUSIONS = {
+    ("development", "district", "district_giga_birch_physma_administration", "@["),
 }
 ROLE_TARGETS = {
     "research_world": ("physics_research", "society_research", "engineering_research"),
@@ -254,6 +276,8 @@ def net_amounts(output: dict[str, float], upkeep: dict[str, float]) -> dict[str,
 
 def source_file_variables(row: dict[str, Any], global_variables: dict[str, float], cache: dict[str, dict[str, float]]) -> dict[str, float]:
     source_file = str(row.get("source_file", ""))
+    if not source_file and row.get("root") and row.get("relative_file"):
+        source_file = str(Path(str(row["root"])) / str(row["relative_file"]))
     if not source_file:
         return global_variables
     if source_file not in cache:
@@ -1693,6 +1717,7 @@ def strategic_priority_score(object_type: str, tags: list[str], modifiers: dict[
 def strategic_infrastructure_rows(playset: dict[str, Any]) -> list[dict[str, Any]]:
     roots = _valuation_stack_roots(playset)
     variables = collect_global_variables([Path(root["root"]) for root in roots])
+    variable_cache: dict[str, dict[str, float]] = {}
     definitions = _collect_economic_definitions(playset)
     winners = _winning_economic_definitions(definitions)
     winners.update(
@@ -1709,8 +1734,9 @@ def strategic_infrastructure_rows(playset: dict[str, Any]) -> list[dict[str, Any
         value = row.get("value")
         if not isinstance(value, PDXBlock):
             continue
-        modifiers, missing_modifiers = collect_numeric_assignments_matching(value, variables, STRATEGIC_MODIFIER_TERMS)
-        output, triggered_output, upkeep, triggered_upkeep, missing_resources = direct_resource_blocks(value, variables)
+        row_variables = source_file_variables(row, variables, variable_cache)
+        modifiers, missing_modifiers = collect_numeric_assignments_matching(value, row_variables, STRATEGIC_MODIFIER_TERMS)
+        output, triggered_output, upkeep, triggered_upkeep, missing_resources = direct_resource_blocks(value, row_variables)
         optimistic_output = combined_amounts(output, triggered_output)
         optimistic_upkeep = combined_amounts(upkeep, triggered_upkeep)
         tags = strategic_tags_for_object(object_type, object_id, value, modifiers, output)
@@ -1786,9 +1812,57 @@ def direct_resource_benefit_amount(row: dict[str, Any]) -> float:
     return sum(max(0.0, float(output.get(key, 0.0))) for key in SUPPORT_KEYS)
 
 
+def benefit_policy_key(
+    benefit_class: str,
+    object_type: str,
+    object_id: str,
+    source_mod: str,
+    source_file: str,
+) -> tuple[str, str, str, str, str]:
+    return (
+        str(benefit_class),
+        str(object_type),
+        str(object_id),
+        str(source_mod),
+        str(source_file),
+    )
+
+
+def benefit_formula_policy_decisions() -> dict[tuple[str, str, str, str, str], dict[str, str]]:
+    if not BENEFIT_FORMULA_POLICY_MATRIX_CSV.exists():
+        return {}
+    with BENEFIT_FORMULA_POLICY_MATRIX_CSV.open("r", encoding="utf-8", newline="") as handle:
+        return {
+            benefit_policy_key(
+                row.get("benefit_class", ""),
+                row.get("object_type", ""),
+                row.get("object_id", ""),
+                row.get("source_mod", ""),
+                row.get("source_file", ""),
+            ): row
+            for row in csv.DictReader(handle)
+        }
+
+
+def apply_benefit_formula_policy(row: dict[str, Any], decisions: dict[tuple[str, str, str, str, str], dict[str, str]]) -> None:
+    decision = decisions.get(
+        benefit_policy_key(
+            str(row.get("benefit_class", "")),
+            str(row.get("object_type", "")),
+            str(row.get("object_id", "")),
+            str(row.get("winning_mod_name", "")),
+            str(row.get("winning_file", "")),
+        )
+    )
+    row["modeling_decision"] = str(decision.get("decision", "")) if decision else ""
+    row["formula_or_policy"] = str(decision.get("formula_or_policy", "")) if decision else ""
+    row["policy_confidence"] = str(decision.get("confidence", "")) if decision else ""
+
+
 def strategic_benefit_taxonomy_rows(strategic_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     seen_classes: set[str] = set()
+    benefit_decisions = benefit_formula_policy_decisions()
     for row in strategic_rows:
         modifiers = json.loads(str(row.get("modifier_keys_json", "{}") or "{}"))
         tags = cell_items(row.get("strategic_tags"))
@@ -1821,55 +1895,55 @@ def strategic_benefit_taxonomy_rows(strategic_rows: list[dict[str, Any]]) -> lis
             else:
                 evidence_kind = "text_or_structural_signal"
                 valuation_status = "detected_unvalued"
-            rows.append(
-                {
-                    "benefit_class": benefit_class,
-                    "object_type": object_type,
-                    "object_id": object_id,
-                    "role": row["role"],
-                    "strategic_tags": row["strategic_tags"],
-                    "evidence_kind": evidence_kind,
-                    "valuation_status": valuation_status,
-                    "formula_status": "resource_or_modifier_amount" if amount != 0 or modifier_keys else "detected_no_formula",
-                    "benefit_amount": round(amount, 6),
-                    "source_terms": "|".join(terms),
-                    "matched_modifier_keys": "|".join(modifier_keys),
-                    "matched_tags": "|".join(tag_hits),
-                    "priority_score": row["priority_score"],
-                    "can_demolish": row["can_demolish"],
-                    "can_build": row["can_build"],
-                    "can_be_disabled": row["can_be_disabled"],
-                    "has_destroy_trigger": row["has_destroy_trigger"],
-                    "winning_mod_name": row["winning_mod_name"],
-                    "winning_file": row["winning_file"],
-                }
-            )
+            benefit_row = {
+                "benefit_class": benefit_class,
+                "object_type": object_type,
+                "object_id": object_id,
+                "role": row["role"],
+                "strategic_tags": row["strategic_tags"],
+                "evidence_kind": evidence_kind,
+                "valuation_status": valuation_status,
+                "formula_status": "resource_or_modifier_amount" if amount != 0 or modifier_keys else "detected_no_formula",
+                "benefit_amount": round(amount, 6),
+                "source_terms": "|".join(terms),
+                "matched_modifier_keys": "|".join(modifier_keys),
+                "matched_tags": "|".join(tag_hits),
+                "priority_score": row["priority_score"],
+                "can_demolish": row["can_demolish"],
+                "can_build": row["can_build"],
+                "can_be_disabled": row["can_be_disabled"],
+                "has_destroy_trigger": row["has_destroy_trigger"],
+                "winning_mod_name": row["winning_mod_name"],
+                "winning_file": row["winning_file"],
+            }
+            apply_benefit_formula_policy(benefit_row, benefit_decisions)
+            rows.append(benefit_row)
     for benefit_class, terms in sorted(BENEFIT_CLASS_TERMS.items()):
         if benefit_class in seen_classes:
             continue
-        rows.append(
-            {
-                "benefit_class": benefit_class,
-                "object_type": "",
-                "object_id": "",
-                "role": "",
-                "strategic_tags": "",
-                "evidence_kind": "no_active_stack_evidence",
-                "valuation_status": "not_observed",
-                "formula_status": "not_observed",
-                "benefit_amount": 0.0,
-                "source_terms": "|".join(terms),
-                "matched_modifier_keys": "",
-                "matched_tags": "",
-                "priority_score": 0.0,
-                "can_demolish": "",
-                "can_build": "",
-                "can_be_disabled": "",
-                "has_destroy_trigger": "",
-                "winning_mod_name": "",
-                "winning_file": "",
-            }
-        )
+        benefit_row = {
+            "benefit_class": benefit_class,
+            "object_type": "",
+            "object_id": "",
+            "role": "",
+            "strategic_tags": "",
+            "evidence_kind": "no_active_stack_evidence",
+            "valuation_status": "not_observed",
+            "formula_status": "not_observed",
+            "benefit_amount": 0.0,
+            "source_terms": "|".join(terms),
+            "matched_modifier_keys": "",
+            "matched_tags": "",
+            "priority_score": 0.0,
+            "can_demolish": "",
+            "can_build": "",
+            "can_be_disabled": "",
+            "has_destroy_trigger": "",
+            "winning_mod_name": "",
+            "winning_file": "",
+        }
+        apply_benefit_formula_policy(benefit_row, benefit_decisions)
+        rows.append(benefit_row)
     return sorted(rows, key=lambda item: (str(item["benefit_class"]), str(item["object_type"]), str(item["object_id"])))
 
 
@@ -1900,6 +1974,15 @@ def add_blocker_row(
     )
 
 
+def should_emit_unresolved_variable_blocker(
+    source_artifact: str,
+    object_type: str,
+    object_id: str,
+    variable: str,
+) -> bool:
+    return (source_artifact, object_type, object_id, variable) not in SPECIAL_SCOPED_UNRESOLVED_VARIABLE_EXCLUSIONS
+
+
 def modeling_blocker_accounting_rows(
     buildings: list[dict[str, Any]],
     development_rows: list[dict[str, Any]],
@@ -1923,6 +2006,13 @@ def modeling_blocker_accounting_rows(
                 str(row["winning_file"]),
             )
         for variable in cell_items(row.get("unresolved_variables")):
+            if not should_emit_unresolved_variable_blocker(
+                "buildings",
+                "building",
+                str(row["building_id"]),
+                variable,
+            ):
+                continue
             add_blocker_row(
                 rows,
                 "buildings",
@@ -1950,6 +2040,13 @@ def modeling_blocker_accounting_rows(
                 str(row["winning_file"]),
             )
         for variable in cell_items(row.get("unresolved_variables")):
+            if not should_emit_unresolved_variable_blocker(
+                "development",
+                str(row["object_type"]),
+                str(row["object_id"]),
+                variable,
+            ):
+                continue
             add_blocker_row(
                 rows,
                 "development",
@@ -1964,6 +2061,13 @@ def modeling_blocker_accounting_rows(
             )
     for row in strategic_rows:
         for variable in cell_items(row.get("unresolved_variables")):
+            if not should_emit_unresolved_variable_blocker(
+                "strategic_infrastructure",
+                str(row["object_type"]),
+                str(row["object_id"]),
+                variable,
+            ):
+                continue
             add_blocker_row(
                 rows,
                 "strategic_infrastructure",
@@ -1989,6 +2093,8 @@ def modeling_blocker_accounting_rows(
                 str(row.get("unsupported_reason", "")),
             )
     for row in benefit_rows:
+        if row.get("modeling_decision") in NON_BLOCKING_BENEFIT_DECISIONS:
+            continue
         if row.get("valuation_status") in {"detected_unvalued", "not_observed"}:
             add_blocker_row(
                 rows,
@@ -2047,7 +2153,10 @@ def consumer_policy_rows(
         if valuation_status == "numeric_value_preserved":
             object_counts["numeric"] += 1
             class_counts["numeric"] += 1
-        elif valuation_status in {"detected_unvalued", "not_observed"}:
+        elif (
+            valuation_status in {"detected_unvalued", "not_observed"}
+            and row.get("modeling_decision") not in NON_BLOCKING_BENEFIT_DECISIONS
+        ):
             object_counts["policy_required"] += 1
             class_counts[valuation_status] += 1
 
@@ -2416,7 +2525,7 @@ def main() -> None:
     write_csv(OUT_RESOURCE_COVERAGE, resource_coverage_rows)
     write_csv(OUT_READINESS, readiness_rows)
     write_csv(OUT_BENEFITS, benefit_rows)
-    write_csv(OUT_BLOCKERS, blocker_rows)
+    write_csv(OUT_BLOCKERS, blocker_rows, fieldnames=BLOCKER_ACCOUNTING_COLUMNS)
     write_csv(OUT_CONSUMER_POLICY, consumer_rows)
     write_summary(
         jobs,

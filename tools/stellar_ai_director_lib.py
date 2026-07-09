@@ -16,6 +16,7 @@ import os
 import re
 import time
 import zipfile
+from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -1042,7 +1043,8 @@ def parse_pdx(text: str) -> PDXBlock:
 
 def parse_file(path: Path) -> PDXBlock:
     try:
-        return parse_pdx(read_text(path))
+        text = read_text(path)
+        return parse_pdx(normalize_macro_expressions(text, collect_variables(text)))
     except PDXParseError as exc:
         raise PDXParseError(f"{path}: {exc}") from exc
 
@@ -1122,7 +1124,9 @@ def eval_macro_expression(value: str, variables: dict[str, float]) -> float | No
     expr = value[2:-1].strip()
     expr = re.sub(
         r"\b[A-Za-z_][A-Za-z0-9_]*\b",
-        lambda match: str(variables.get(f"@{match.group(0)}", match.group(0))),
+        lambda match: str(
+            variables.get(match.group(0), variables.get(f"@{match.group(0)}", match.group(0)))
+        ),
         expr,
     )
     if not re.fullmatch(r"[0-9.\s+*/()-]+", expr):
@@ -1845,10 +1849,65 @@ def _numeric_atom(value: PDXValue, variables: dict[str, float]) -> tuple[float, 
         return (0.0, None)
     if atom in variables:
         return (variables[atom], None)
+    macro_value = eval_macro_expression(atom, variables)
+    if macro_value is not None:
+        return (macro_value, None)
     try:
         return (float(atom), None)
     except ValueError:
+        if atom.startswith("@["):
+            return (0.0, atom)
         return (0.0, atom if atom.startswith("@") else None)
+
+
+def _object_variables(winner: dict[str, Any], global_variables: dict[str, float]) -> dict[str, float]:
+    variables = dict(global_variables)
+    source_file = winner.get("source_file")
+    if source_file:
+        variables.update(collect_variables(read_text(Path(source_file))))
+    return variables
+
+
+SPECIAL_SCOPED_UNRESOLVED_VARIABLE_EXCLUSIONS = {
+    ("district", "district_giga_birch_physma_administration"): {
+        "@[": "birch_world_special_colony_missing_sector_job_expression_modeled_zero_effect",
+    },
+}
+
+
+SPECIAL_COLONY_CLASSES = {"alderson_disk", "birch_world", "frameworld"}
+
+
+def _scope_prefix(item: str) -> str:
+    return item.split(":", 1)[1] if ":" in item else item
+
+
+def _row_item_token(row: dict[str, Any]) -> str:
+    object_type = str(row.get("object_type", ""))
+    object_id = str(row.get("object_id", ""))
+    if object_type == "district":
+        return f"district:{object_id}"
+    return object_id
+
+
+def build_plan_consumer_policy_excludes_dataset_object(
+    row: dict[str, Any],
+    policy_row: dict[str, Any] | None,
+) -> bool:
+    colony_class = str(row.get("colony_class", ""))
+    if colony_class in SPECIAL_COLONY_CLASSES:
+        if not policy_row:
+            return True
+        object_id = str(policy_row.get("object_id", ""))
+        selected_objects = {
+            _scope_prefix(item.strip())
+            for item in str(policy_row.get("selected_objects", "")).split("|")
+            if item.strip()
+        }
+        if object_id.endswith(f":{colony_class}") and _scope_prefix(_row_item_token(row)) in selected_objects:
+            return False
+        return True
+    return False
 
 
 def _collect_resource_amounts(value: PDXValue, variables: dict[str, float]) -> tuple[dict[str, float], set[str]]:
@@ -2135,6 +2194,7 @@ def _economic_object_row(
     source_summary: dict[str, Any],
     variables: dict[str, float],
 ) -> dict[str, Any]:
+    variables = _object_variables(winner, variables)
     value = winner["value"]
     assert isinstance(value, PDXBlock)
     flags: set[str] = set()
@@ -2166,6 +2226,8 @@ def _economic_object_row(
     unresolved.update(missing_jobs)
     ai_state, missing_ai = _top_level_ai_state(value, variables)
     unresolved.update(missing_ai)
+    scoped_exclusions = SPECIAL_SCOPED_UNRESOLVED_VARIABLE_EXCLUSIONS.get(key, {})
+    unresolved = {item for item in unresolved if item not in scoped_exclusions}
     modifier_keys = _collect_modifier_keys(value)
     top_level = _assignment_plain(
         value,
@@ -2475,6 +2537,7 @@ def fresh_economic_valuation_source_facts(
     for object_key, winner in winners.items():
         value = winner["value"]
         assert isinstance(value, PDXBlock)
+        object_variables = _object_variables(winner, variables)
         summary = summaries[object_key]
         fact_row = {
             "object_type": object_key[0],
@@ -2486,7 +2549,7 @@ def fresh_economic_valuation_source_facts(
             "definition_count": summary["source_count"],
             "source_mods": "|".join(dict.fromkeys(summary["source_mods"])),
             "source_files": "|".join(dict.fromkeys(summary["source_files"])),
-            **_source_numeric_fact_columns(value, variables),
+            **_source_numeric_fact_columns(value, object_variables),
         }
         normalized_fact_row = normalize_economic_valuation_rows([fact_row])[0]
         facts[object_key] = {
@@ -4472,9 +4535,9 @@ def choose_decision_state(state: EmpireState) -> str:
     return "normal_growth_mode"
 
 
-def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
+def write_csv(path: Path, rows: list[dict[str, Any]], fieldnames: list[str] | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = list(rows[0].keys()) if rows else []
+    fieldnames = fieldnames or (list(rows[0].keys()) if rows else [])
     temp_path = path.with_name(f"{path.name}.tmp.{os.getpid()}")
     with temp_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
@@ -5201,31 +5264,52 @@ def build_plan_consumer_policy_buildings(rows: list[dict[str, Any]] | None = Non
     }
 
 
-def build_plan_consumer_policy_selected_objects(rows: list[dict[str, Any]] | None = None) -> set[str]:
+def build_plan_consumer_policy_selected_object_rows(
+    rows: list[dict[str, Any]] | None = None,
+) -> dict[str, list[dict[str, Any]]]:
     policy_rows = rows if rows is not None else build_plan_consumer_policy_rows()
-    selected: set[str] = set()
+    selected: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in policy_rows:
         if row.get("row_family") != "role_target" or row.get("can_consume_now") != "yes":
             continue
         for item in str(row.get("selected_objects", "")).split("|"):
             item = item.strip()
             if item:
-                selected.add(item)
+                selected[item].append(row)
     return selected
+
+
+def build_plan_consumer_policy_selected_objects(rows: list[dict[str, Any]] | None = None) -> set[str]:
+    return set(build_plan_consumer_policy_selected_object_rows(rows))
 
 
 def build_plan_consumer_policy_allows_dataset_object(
     row: dict[str, Any],
     building_policy: dict[str, dict[str, Any]],
     selected_objects: set[str],
+    selected_object_policy_rows: dict[str, list[dict[str, Any]]] | None = None,
 ) -> bool:
     object_type = str(row.get("object_type", ""))
     object_id = str(row.get("object_id", ""))
     if object_type == "building":
         policy = building_policy.get(object_id)
-        return bool(policy and policy.get("can_consume_now") in BUILD_PLAN_CONSUMABLE_STATUSES)
+        return bool(
+            policy
+            and policy.get("can_consume_now") in BUILD_PLAN_CONSUMABLE_STATUSES
+            and not build_plan_consumer_policy_excludes_dataset_object(row, policy)
+        )
     if object_type == "district":
-        return f"district:{object_id}" in selected_objects
+        token = f"district:{object_id}"
+        if token not in selected_objects:
+            return False
+        if str(row.get("colony_class", "")) in SPECIAL_COLONY_CLASSES:
+            if not selected_object_policy_rows:
+                return False
+            return any(
+                not build_plan_consumer_policy_excludes_dataset_object(row, policy_row)
+                for policy_row in selected_object_policy_rows.get(token, [])
+            )
+        return True
     return False
 
 
@@ -5327,13 +5411,19 @@ def dataset_job_pressure_override_rows(limit: int = DATASET_JOB_PRESSURE_OBJECT_
     rows = _read_csv_rows(ECONOMIC_VALUATION_DATASET_CSV)
     policy_rows = build_plan_consumer_policy_rows()
     building_policy = build_plan_consumer_policy_buildings(policy_rows)
-    selected_objects = build_plan_consumer_policy_selected_objects(policy_rows)
+    selected_object_policy_rows = build_plan_consumer_policy_selected_object_rows(policy_rows)
+    selected_objects = set(selected_object_policy_rows)
     known_jobs = collect_object_names(SNAPSHOT_ROOT).get("pop_job", set())
     candidates: list[dict[str, Any]] = []
     for row in rows:
         if row.get("object_type") not in {"building", "district"}:
             continue
-        if not build_plan_consumer_policy_allows_dataset_object(row, building_policy, selected_objects):
+        if not build_plan_consumer_policy_allows_dataset_object(
+            row,
+            building_policy,
+            selected_objects,
+            selected_object_policy_rows,
+        ):
             continue
         if row.get("winning_mod_name") == "Stellar AI Director":
             continue

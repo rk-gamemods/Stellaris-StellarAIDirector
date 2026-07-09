@@ -16,7 +16,6 @@ from stellar_ai_director_lib import (
     ECONOMIC_VALUATION_EVIDENCE_MD,
     ECONOMIC_VALUATION_CANONICAL_COLUMNS,
     ECONOMIC_VALUATION_SOURCE_FACT_COLUMNS,
-    BUILD_PLAN_CONSUMABLE_STATUSES,
     BUILD_PLAN_CONSUMER_POLICY_CSV,
     EmpireState,
     GENERATED_VERSION_INVENTORY_MD,
@@ -51,6 +50,8 @@ from stellar_ai_director_lib import (
     generate_economic_valuation_dataset,
     generate_mod_files,
     generate_object_atlas_artifacts,
+    build_plan_consumer_policy_allows_dataset_object,
+    build_plan_consumer_policy_selected_object_rows,
     mod_source_root_for_id,
     NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV,
     NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD,
@@ -661,6 +662,9 @@ class GeneratedModValidityTests(unittest.TestCase):
             "source_terms",
             "matched_modifier_keys",
             "priority_score",
+            "modeling_decision",
+            "formula_or_policy",
+            "policy_confidence",
         }
         self.assertTrue(expected_columns.issubset(benefit_columns))
         benefit_classes = {row["benefit_class"] for row in benefit_rows}
@@ -670,6 +674,9 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue([row for row in benefit_rows if row["evidence_kind"] == "no_active_stack_evidence"])
         self.assertTrue([row for row in benefit_rows if row["benefit_class"] == "starbase_support"])
         self.assertTrue([row for row in benefit_rows if row["benefit_class"] == "direct_resource_support"])
+        self.assertTrue([row for row in benefit_rows if row["modeling_decision"] == "detected_only_non_scoring_policy"])
+        self.assertTrue([row for row in benefit_rows if row["modeling_decision"] == "numeric_formula_defined"])
+        self.assertTrue([row for row in benefit_rows if row["modeling_decision"] == "source_backed_zero_effect"])
 
     def test_research_capacity_model_includes_expanded_role_families(self):
         with RESEARCH_CAPACITY_ROLES_CSV.open("r", encoding="utf-8", newline="") as handle:
@@ -706,11 +713,10 @@ class GeneratedModValidityTests(unittest.TestCase):
             "source_file",
         }
         self.assertTrue(expected_columns.issubset(blocker_columns))
-        self.assertTrue(blocker_rows)
         issue_types = {row["issue_type"] for row in blocker_rows}
         self.assertNotIn("unknown_job", issue_types)
-        self.assertIn("unresolved_variable", issue_types)
-        self.assertIn("benefit_formula_status", issue_types)
+        self.assertNotIn("unresolved_variable", issue_types)
+        self.assertNotIn("benefit_formula_status", issue_types)
         self.assertNotIn("data_quality_flag", issue_types)
         self.assertFalse([row for row in blocker_rows if not row["accounting_status"]])
         self.assertFalse([row for row in blocker_rows if not row["next_action"]])
@@ -750,11 +756,10 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertFalse([row for row in policy_rows if not row["next_action"]])
 
         blocked_rows = [row for row in policy_rows if int(row["blocker_count"]) > 0]
-        self.assertTrue(blocked_rows)
-        self.assertFalse([row for row in blocked_rows if row["can_consume_now"] == "yes"])
-        self.assertTrue(
-            [row for row in blocked_rows if row["consumer_modeling_status"] == "blocked_unresolved_modeling"]
-        )
+        self.assertFalse(blocked_rows)
+        self.assertFalse([row for row in policy_rows if row["consumer_modeling_status"] == "blocked_unresolved_modeling"])
+        self.assertTrue([row for row in policy_rows if row["consumer_modeling_status"] == "scorable_now"])
+        self.assertTrue([row for row in policy_rows if row["consumer_modeling_status"] == "gated_scorable_with_conditions"])
         self.assertFalse(
             [
                 row
@@ -785,8 +790,8 @@ class GeneratedModValidityTests(unittest.TestCase):
             RESEARCH_CAPACITY_INFRASTRUCTURE_CSV: 1333,
             RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV: 21,
             RESEARCH_CAPACITY_READINESS_CSV: 826,
-            RESEARCH_CAPACITY_BENEFITS_CSV: 1887,
-            RESEARCH_CAPACITY_BLOCKERS_CSV: 396,
+            RESEARCH_CAPACITY_BENEFITS_CSV: 1924,
+            RESEARCH_CAPACITY_BLOCKERS_CSV: 0,
             RESEARCH_CAPACITY_CONSUMER_POLICY_CSV: 1093,
         }
         for path, expected_count in expected_counts.items():
@@ -1403,7 +1408,8 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(BUILD_PLAN_CONSUMER_POLICY_CSV.exists())
         policy_rows = build_plan_consumer_policy_rows()
         building_policy = build_plan_consumer_policy_buildings(policy_rows)
-        selected_objects = build_plan_consumer_policy_selected_objects(policy_rows)
+        selected_object_policy_rows = build_plan_consumer_policy_selected_object_rows(policy_rows)
+        selected_objects = set(selected_object_policy_rows)
 
         rows = dataset_job_pressure_override_rows()
         self.assertTrue(rows)
@@ -1411,17 +1417,45 @@ class GeneratedModValidityTests(unittest.TestCase):
 
         disallowed = []
         for row in rows:
-            if row["object_type"] == "building":
-                policy = building_policy.get(row["object_id"])
-                if not policy or policy["can_consume_now"] not in BUILD_PLAN_CONSUMABLE_STATUSES:
-                    disallowed.append(f"building:{row['object_id']}")
-            elif row["object_type"] == "district":
-                if f"district:{row['object_id']}" not in selected_objects:
-                    disallowed.append(f"district:{row['object_id']}")
-            else:
+            if not build_plan_consumer_policy_allows_dataset_object(
+                row,
+                building_policy,
+                selected_objects,
+                selected_object_policy_rows,
+            ):
                 disallowed.append(f"{row['object_type']}:{row['object_id']}")
 
         self.assertFalse(disallowed[:25])
+
+    def test_special_colony_objects_do_not_leak_into_generic_consumer_targets(self):
+        special_classes = {"alderson_disk", "birch_world", "frameworld"}
+        special_object_class = {}
+        for path in (
+            ECONOMIC_VALUATION_DATASET_CSV,
+            NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV,
+        ):
+            with path.open(newline="", encoding="utf-8") as handle:
+                for row in csv.DictReader(handle):
+                    colony_class = row.get("colony_class", "")
+                    if colony_class not in special_classes:
+                        continue
+                    object_id = row.get("object_id", "")
+                    object_type = row.get("object_type", "")
+                    token = object_id if object_type == "building" else f"{object_type}:{object_id}"
+                    special_object_class[token] = colony_class
+
+        leaks = []
+        for policy_row in build_plan_consumer_policy_rows():
+            if policy_row.get("can_consume_now") != "yes":
+                continue
+            target_id = policy_row.get("object_id", "")
+            for item in str(policy_row.get("selected_objects", "")).split("|"):
+                token = item.strip()
+                colony_class = special_object_class.get(token)
+                if colony_class and not target_id.endswith(f":{colony_class}"):
+                    leaks.append(f"{target_id}->{token}:{colony_class}")
+
+        self.assertFalse(leaks[:25])
 
     def test_high_scale_construction_plan_and_budget_pressure_are_generated(self):
         economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
