@@ -1,0 +1,18 @@
+{
+  "checkpoint_row_count": 0,
+  "checkpoint_year_counts": {},
+  "empire_rank_counts": {},
+  "evidence_file_counts": {
+    "exports": 0,
+    "logs": 0,
+    "saves": 0,
+    "screenshots": 0
+  },
+  "has_patch_hypothesis_table": true,
+  "hidden_economic_bonuses": false,
+  "manual_notes_bytes": 3107,
+  "run_id": "observer-20260709T123802Z",
+  "status": "created",
+  "summary_generated_at_utc": "2026-07-09T12:42:38.535405+00:00",
+  "target_game_version": "Repo target Stellaris 4.4.5; prior live runtime displayed Pegasus v4.4.4 (7d82), recheck at launch"
+}
