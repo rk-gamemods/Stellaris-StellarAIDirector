@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import re
 import sys
@@ -23,6 +24,74 @@ VOLATILE_PATTERNS = (
     (re.compile(r"\b0x[0-9a-f]+\b", re.IGNORECASE), "0x<hex>"),
     (re.compile(r"\b\d{2,}\b"), "<n>"),
     (re.compile(r"[A-Z]:\\[^:\n]+", re.IGNORECASE), "<path>"),
+)
+
+LOG_RISK_CATEGORIES = (
+    {
+        "category": "director_owned",
+        "owner": "Stellar AI Director",
+        "risk": "Generated Director surface or copied override issue",
+        "next_action": "Fix generated output, rerun Director validator, and keep runtime proof separate.",
+        "patterns": (
+            re.compile(r"\bzzzz?_staid(?:\b|_)", re.IGNORECASE),
+            re.compile(r"\bStellarAIDirector\b", re.IGNORECASE),
+            re.compile(r"\bempire_size\b", re.IGNORECASE),
+        ),
+    },
+    {
+        "category": "gigas_frameworld",
+        "owner": "Gigastructural Engineering",
+        "risk": "Frameworld or frameworld defensive-station reference drift",
+        "next_action": "Inspect Gigas frameworld source and avoid Director overrides until current IDs are proven.",
+        "patterns": (
+            re.compile(r"\bframeworld_planetary_outpost\b", re.IGNORECASE),
+            re.compile(r"\bgiga_frameworld_origin\.1002\b", re.IGNORECASE),
+            re.compile(r"\bframeworld\b", re.IGNORECASE),
+        ),
+    },
+    {
+        "category": "gigas_orbital",
+        "owner": "Gigastructural Engineering",
+        "risk": "Orbital category or mega-build scripted-trigger reference drift",
+        "next_action": "Refresh Gigas object inventory before megastructure route changes.",
+        "patterns": (
+            re.compile(r"\bmajor_orbital(?:_knights)?\b", re.IGNORECASE),
+            re.compile(r"\bminor_orbital\b", re.IGNORECASE),
+            re.compile(r"\bgiga_mega_categories\b", re.IGNORECASE),
+        ),
+    },
+    {
+        "category": "esc_deferred_refs",
+        "owner": "Extra Ship Components NEXT or ship-size dependency",
+        "risk": "Deferred key-reference failure for ship/component surfaces",
+        "next_action": "Treat direct ESC component-template and ship-stack handling as research gated.",
+        "patterns": (
+            re.compile(r"deferred read key reference", re.IGNORECASE),
+            re.compile(r"\bExtra Ship Components\b", re.IGNORECASE),
+            re.compile(r"\bESC\b", re.IGNORECASE),
+        ),
+    },
+    {
+        "category": "uses_ship_category_scope",
+        "owner": "Parent mod script scope",
+        "risk": "uses_ship_category evaluated in an invalid scope",
+        "next_action": "Verify trigger/effect scope against current docs before patching any ship-growth route.",
+        "patterns": (re.compile(r"\buses_ship_category\b", re.IGNORECASE),),
+    },
+    {
+        "category": "has_job_scope",
+        "owner": "Portrait/species/job selector source",
+        "risk": "has_job evaluated in an invalid scope",
+        "next_action": "Map source owner before changing jobs or portrait selectors.",
+        "patterns": (re.compile(r"\bhas_job\b", re.IGNORECASE),),
+    },
+    {
+        "category": "starbase_modules",
+        "owner": "Starbase module override source",
+        "risk": "Starbase module parser, duplicate-potential, or AI-weight issue",
+        "next_action": "Keep Starbase Extended handling separate from economy route changes.",
+        "patterns": (re.compile(r"\bstarbase_modules?\b", re.IGNORECASE),),
+    },
 )
 
 
@@ -235,6 +304,117 @@ def summarize_logs(paths: Iterable[Path], sample_limit: int = 2) -> dict[str, ob
     }
 
 
+def classify_log_risk_text(text: str) -> dict[str, object]:
+    for category in LOG_RISK_CATEGORIES:
+        if any(pattern.search(text) for pattern in category["patterns"]):  # type: ignore[index]
+            return {key: value for key, value in category.items() if key != "patterns"}
+    return {
+        "category": "unclassified",
+        "owner": "unknown",
+        "risk": "No strategic v2 4.4.5 risk category matched",
+        "next_action": "Review manually if this family is high-volume, fatal, or Director-adjacent.",
+    }
+
+
+def classify_log_risk_rows(
+    summary: dict[str, object],
+    top: int | None = None,
+    include_all_classified: bool = False,
+) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    families = summary["families"]  # type: ignore[index]
+    for index, group in enumerate(families):
+        sample_text = "\n".join(str(sample.get("text", "")) for sample in group.get("samples", []))
+        classification = classify_log_risk_text(f"{group['signature']}\n{sample_text}")
+        if top is not None and index >= top and not (
+            include_all_classified and classification["category"] != "unclassified"
+        ):
+            continue
+        rows.append(
+            {
+                "category": classification["category"],
+                "owner": classification["owner"],
+                "risk": classification["risk"],
+                "next_action": classification["next_action"],
+                "count": group["count"],
+                "severity": group["severity"],
+                "source": group["source"],
+                "first_path": group["first_path"],
+                "first_line": group["first_line"],
+                "last_path": group["last_path"],
+                "last_line": group["last_line"],
+                "signature": group["signature"],
+            }
+        )
+    return rows
+
+
+def render_log_risk_markdown(summary: dict[str, object], rows: list[dict[str, object]], top: int) -> str:
+    category_counts: Counter[str] = Counter()
+    category_entries: Counter[str] = Counter()
+    for row in rows:
+        category = str(row["category"])
+        category_counts[category] += 1
+        category_entries[category] += int(row["count"])
+    lines = [
+        "# Stellar AI Director 4.4.5 Log Risk Report",
+        "",
+        "Generated by `tools/summarize_stellaris_log.py --risk-report` from existing log artifacts.",
+        "This is triage evidence only; it does not prove runtime behavior or launch readiness.",
+        "",
+        f"Files: {len(summary['files'])}",
+        f"Entries: {summary['total_entries']}",
+        f"Classified families: {len(rows)}",
+        "",
+        "## Category Counts",
+        "",
+        "| category | families | entries |",
+        "| --- | ---: | ---: |",
+    ]
+    for category in sorted(category_counts):
+        lines.append(f"| {category} | {category_counts[category]} | {category_entries[category]} |")
+    lines.extend(["", "## Classified Families", ""])
+    for index, row in enumerate(rows[:top], 1):
+        lines.extend(
+            [
+                f"### {index}. {row['category']} - {row['count']}x `{row['source']}` [{row['severity']}]",
+                "",
+                f"- Owner: {row['owner']}",
+                f"- Risk: {row['risk']}",
+                f"- Next action: {row['next_action']}",
+                f"- First: `{row['first_path']}:{row['first_line']}`",
+                f"- Last: `{row['last_path']}:{row['last_line']}`",
+                f"- Signature: `{row['signature']}`",
+                "",
+            ]
+        )
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def write_risk_csv(path: Path, rows: list[dict[str, object]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "category",
+        "owner",
+        "risk",
+        "next_action",
+        "count",
+        "severity",
+        "source",
+        "first_path",
+        "first_line",
+        "last_path",
+        "last_line",
+        "signature",
+    ]
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(
+            {key: value.strip() if isinstance(value, str) else value for key, value in row.items()} for row in rows
+        )
+
+
 def render_markdown(summary: dict[str, object], top: int) -> str:
     families = summary["families"][:top]  # type: ignore[index]
     groups = summary["groups"][:top]  # type: ignore[index]
@@ -320,6 +500,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--top", type=int, default=25, help="Number of groups to include in Markdown output.")
     parser.add_argument("--samples", type=int, default=2, help="Sample entries retained per group.")
     parser.add_argument("--output", type=Path, help="Optional output file. Defaults to stdout.")
+    parser.add_argument("--risk-report", action="store_true", help="Classify top families into strategic v2 4.4.5 risk buckets.")
+    parser.add_argument("--risk-csv-output", type=Path, help="Optional CSV output path for --risk-report rows.")
     return parser.parse_args(argv)
 
 
@@ -332,7 +514,15 @@ def main(argv: list[str] | None = None) -> int:
             print(f"missing log file: {path}", file=sys.stderr)
         return 2
     summary = summarize_logs(paths, sample_limit=args.samples)
-    if args.format == "json":
+    if args.risk_report:
+        risk_rows = classify_log_risk_rows(summary, top=args.top, include_all_classified=True)
+        if args.risk_csv_output:
+            write_risk_csv(args.risk_csv_output, risk_rows)
+        if args.format == "json":
+            output = json.dumps({"summary": summary, "risk_rows": risk_rows}, indent=2)
+        else:
+            output = render_log_risk_markdown(summary, risk_rows, top=args.top)
+    elif args.format == "json":
         output = json.dumps(summary, indent=2)
     else:
         output = render_markdown(summary, top=args.top)

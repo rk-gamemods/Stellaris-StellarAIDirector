@@ -6,7 +6,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from summarize_stellaris_log import render_markdown, summarize_logs
+from summarize_stellaris_log import classify_log_risk_rows, render_log_risk_markdown, render_markdown, summarize_logs
 
 
 class StellarisLogSummaryTests(unittest.TestCase):
@@ -86,6 +86,43 @@ class StellarisLogSummaryTests(unittest.TestCase):
         self.assertEqual(summary["family_count"], 1)
         self.assertEqual(summary["families"][0]["count"], 2)
         self.assertEqual(summary["families"][0]["severity"], "error")
+
+    def test_risk_classifier_separates_required_445_buckets(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "error.log"
+            path.write_text(
+                "\n".join(
+                    [
+                        "[20:30:01][trigger.cpp:1]: Script Error: major_orbital missing in giga_mega_categories",
+                        "[20:30:02][trigger.cpp:1]: Script Error: frameworld_planetary_outpost missing",
+                        "[20:30:03][parser.cpp:1]: Failed to deferred read key reference for ESC ship size",
+                        "[20:30:04][trigger.cpp:1]: Wrong scope for trigger 'uses_ship_category'",
+                        "Current scope: ship_growth_stage",
+                        "Supported Scopes: country",
+                        "[20:30:05][trigger.cpp:1]: Wrong scope for trigger 'has_job'",
+                        "Current scope: portrait",
+                        "Supported Scopes: pop",
+                        "[20:30:06][parser.cpp:1]: Error in common/starbase_modules/example.txt duplicate potential",
+                        "[20:30:07][parser.cpp:1]: Error in zzzz_staid_14_high_scale_ai_defines.txt",
+                    ]
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+
+            summary = summarize_logs([path], sample_limit=1)
+            rows = classify_log_risk_rows(summary, top=20)
+            markdown = render_log_risk_markdown(summary, rows, top=20)
+
+        categories = {row["category"] for row in rows}
+        self.assertIn("gigas_orbital", categories)
+        self.assertIn("gigas_frameworld", categories)
+        self.assertIn("esc_deferred_refs", categories)
+        self.assertIn("uses_ship_category_scope", categories)
+        self.assertIn("has_job_scope", categories)
+        self.assertIn("starbase_modules", categories)
+        self.assertIn("director_owned", categories)
+        self.assertIn("Stellar AI Director 4.4.5 Log Risk Report", markdown)
 
 
 if __name__ == "__main__":
