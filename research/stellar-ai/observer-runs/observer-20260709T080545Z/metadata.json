@@ -34,8 +34,16 @@
     2325,
     2350
   ],
-  "status": "prepared_after_research_gate_repair",
+  "status": "failed_2350_research_benchmark",
   "target_game_version": "Stellaris 4.4.5 stable/current local install",
   "target_mod": "Stellar AI Director",
-  "runtime_version_risk": "Previous observer launch displayed Pegasus v4.4.4 while repository default target is 4.4.5; re-check during this run."
+  "result": {
+    "benchmark_passed": false,
+    "highest_research_monthly": 1018.93,
+    "highest_research_empire": "Laurnaise Empire",
+    "highest_research_year": 2350,
+    "required_research_monthly": 3000,
+    "summary": "No eligible regular AI reached 3,000 monthly research before or at 2350."
+  },
+  "runtime_version_risk": "Runtime displayed Pegasus v4.4.4 (26b7) while repository default target is 4.4.5."
 }
