@@ -53,6 +53,7 @@ from stellar_ai_director_lib import (
     validate_staid_scripted_trigger_cycles,
     validate_generated_patch,
     validate_object_atlas_artifacts,
+    write_text_file_preserving_generated_timestamp,
 )
 
 
@@ -261,6 +262,29 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("Construction Dataset Counts", evidence_text)
         self.assertIn("Nonconstruction Dataset Counts", evidence_text)
         self.assertIn("resource", evidence_text)
+
+    def test_generated_timestamp_writer_preserves_stamp_when_body_is_unchanged(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            report_path = Path(temp_dir) / "report.md"
+            write_text_file_preserving_generated_timestamp(
+                report_path,
+                "# Report\n\nGenerated: first\n\nBody\n",
+            )
+            write_text_file_preserving_generated_timestamp(
+                report_path,
+                "# Report\n\nGenerated: second\n\nBody\n",
+            )
+
+            self.assertIn("Generated: first", report_path.read_text(encoding="utf-8"))
+
+            write_text_file_preserving_generated_timestamp(
+                report_path,
+                "# Report\n\nGenerated: third\n\nChanged body\n",
+            )
+
+            updated = report_path.read_text(encoding="utf-8")
+            self.assertIn("Generated: third", updated)
+            self.assertIn("Changed body", updated)
 
     def test_dataset_job_pressure_overrides_use_live_valuation_rows(self):
         rows = dataset_job_pressure_override_rows()

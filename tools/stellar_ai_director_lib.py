@@ -2513,7 +2513,9 @@ def generate_economic_valuation_dataset() -> list[dict[str, Any]]:
     playset = build_active_playset_snapshot()
     rows = enrich_economic_valuation_rows_with_source_facts(build_economic_valuation_rows(playset), playset)
     write_csv(ECONOMIC_VALUATION_DATASET_CSV, rows)
-    write_text_file(ECONOMIC_VALUATION_DATASET_MD, economic_valuation_dataset_summary(rows, playset))
+    write_text_file_preserving_generated_timestamp(
+        ECONOMIC_VALUATION_DATASET_MD, economic_valuation_dataset_summary(rows, playset)
+    )
     return rows
 
 
@@ -2803,7 +2805,7 @@ Configured nonconstruction object types not present in the current file: {missin
 
 
 def write_economic_valuation_evidence_summary() -> None:
-    write_text_file(ECONOMIC_VALUATION_EVIDENCE_MD, economic_valuation_evidence_summary())
+    write_text_file_preserving_generated_timestamp(ECONOMIC_VALUATION_EVIDENCE_MD, economic_valuation_evidence_summary())
 
 
 def block_has_assignment(value: PDXValue, key: str) -> bool:
@@ -4442,7 +4444,27 @@ def write_json(path: Path, data: Any) -> None:
 
 def write_text_file(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    normalized = "\n".join(line.rstrip() for line in text.splitlines()).rstrip("\n") + "\n"
+    normalized = normalize_text_file_content(text)
+    path.write_text(normalized, encoding="utf-8", newline="\n")
+
+
+def normalize_text_file_content(text: str) -> str:
+    return "\n".join(line.rstrip() for line in text.splitlines()).rstrip("\n") + "\n"
+
+
+GENERATED_TIMESTAMP_RE = re.compile(r"(?m)^Generated: .+$")
+
+
+def write_text_file_preserving_generated_timestamp(path: Path, text: str) -> None:
+    normalized = normalize_text_file_content(text)
+    if path.exists():
+        existing = normalize_text_file_content(path.read_text(encoding="utf-8"))
+        existing_without_stamp = GENERATED_TIMESTAMP_RE.sub("Generated: <preserved>", existing, count=1)
+        next_without_stamp = GENERATED_TIMESTAMP_RE.sub("Generated: <preserved>", normalized, count=1)
+        match = GENERATED_TIMESTAMP_RE.search(existing)
+        if match and existing_without_stamp == next_without_stamp:
+            normalized = GENERATED_TIMESTAMP_RE.sub(match.group(0), normalized, count=1)
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(normalized, encoding="utf-8", newline="\n")
 
 
