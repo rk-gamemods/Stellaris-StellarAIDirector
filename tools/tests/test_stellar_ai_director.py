@@ -890,14 +890,31 @@ class GeneratedModValidityTests(unittest.TestCase):
 
     def test_research_and_pop_assembly_buildings_have_owner_economy_gates(self):
         research_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt"
+        research_district_path = MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt"
         pop_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_07_pop_assembly_buildings.txt"
         parse_file(research_path)
+        parse_file(research_district_path)
         parse_file(pop_path)
         research_text = research_path.read_text(encoding="utf-8")
+        research_district_text = research_district_path.read_text(encoding="utf-8")
         pop_text = pop_path.read_text(encoding="utf-8")
         self.assertIn(
             "modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }",
             research_text,
+        )
+        for marker in (
+            "modifier = { factor = 5 owner = { staid_research_under_curve = yes } }",
+            "modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }",
+            "modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }",
+        ):
+            self.assertIn(marker, research_text)
+        self.assertIn(
+            "modifier = { factor = 0 owner = { NOT = { staid_planetary_capacity_growth_ready = yes } } }",
+            research_district_text,
+        )
+        self.assertIn(
+            "modifier = { factor = 3 owner = { staid_research_under_curve = yes } }",
+            research_district_text,
         )
         self.assertIn(
             "modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }",

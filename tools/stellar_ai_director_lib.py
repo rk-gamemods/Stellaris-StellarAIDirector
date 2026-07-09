@@ -4807,10 +4807,25 @@ def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> 
         f"\tadditional_ai_weight = {additional_weight}",
     )
     route_gate = route_gate_for_target(target)
-    return insert_top_level_ai_weight_modifier(
+    block = insert_top_level_ai_weight_modifier(
         block,
         f"\t\tmodifier = {{ factor = 0 owner = {{ NOT = {{ {route_gate} = yes }} }} }}",
     )
+    route_id = str(target.get("route_id", ""))
+    if route_id == "research_throughput_infrastructure":
+        for modifier in (
+            "\t\tmodifier = { factor = 5 owner = { staid_research_under_curve = yes } }",
+            "\t\tmodifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }",
+            "\t\tmodifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }",
+        ):
+            block = insert_top_level_ai_weight_modifier(block, modifier)
+    elif target.get("object_id") == "district_hab_science":
+        for modifier in (
+            "\t\tmodifier = { factor = 4 owner = { staid_planetary_capacity_growth_ready = yes } }",
+            "\t\tmodifier = { factor = 3 owner = { staid_research_under_curve = yes } }",
+        ):
+            block = insert_top_level_ai_weight_modifier(block, modifier)
+    return block
 
 
 DATASET_JOB_PRESSURE_OBJECT_LIMIT = 1200
@@ -12068,6 +12083,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.",
         "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.5 rejects in active economic-plan files.",
         "- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.",
+        "- Research labs keep a hard zero gate unless `staid_research_input_runway_safe` is true, then add extra pressure for `staid_research_under_curve`, `staid_opening_route_research_priority`, and `staid_surplus_sink_pressure`. Habitat science districts keep the tall-capacity gate and add under-curve research pressure.",
         "- Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.",
         "- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.",
         "- Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.",
