@@ -1006,6 +1006,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         event_text = event_path.read_text(encoding="utf-8")
 
         self.assertIn("on_game_start_country", on_action_text)
+        self.assertIn("on_press_begin", on_action_text)
         self.assertIn("staid_gigas_startup.1", on_action_text)
         for marker in (
             "namespace = staid_gigas_startup",

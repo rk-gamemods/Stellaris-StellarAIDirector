@@ -5,3 +5,9 @@ on_game_start_country = {
 		staid_gigas_startup.1
 	}
 }
+
+on_press_begin = {
+	events = {
+		staid_gigas_startup.1
+	}
+}
