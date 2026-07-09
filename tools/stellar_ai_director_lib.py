@@ -4833,6 +4833,11 @@ def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> 
     route_id = str(target.get("route_id", ""))
     if route_id == "research_throughput_infrastructure":
         for modifier in (
+            "\t\tmodifier = { factor = 8 has_designation = col_research }",
+            "\t\tmodifier = { factor = 6 has_designation = col_habitat_research }",
+            "\t\tmodifier = { factor = 6 has_designation = col_ring_research }",
+            "\t\tmodifier = { factor = 6 has_designation = col_ecu_research }",
+            "\t\tmodifier = { factor = 5 has_designation = col_nomad_research }",
             "\t\tmodifier = { factor = 5 owner = { staid_research_under_curve = yes } }",
             "\t\tmodifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }",
             "\t\tmodifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }",
@@ -4840,6 +4845,7 @@ def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> 
             block = insert_top_level_ai_weight_modifier(block, modifier)
     elif target.get("object_id") == "district_hab_science":
         for modifier in (
+            "\t\tmodifier = { factor = 8 has_designation = col_habitat_research }",
             "\t\tmodifier = { factor = 4 owner = { staid_planetary_capacity_growth_ready = yes } }",
             "\t\tmodifier = { factor = 3 owner = { staid_research_under_curve = yes } }",
         ):

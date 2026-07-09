@@ -771,6 +771,13 @@ YYYY-MM-DD update:
 
 Do not silently delete failed hypotheses. Move them to a rejected/deprecated subsection with evidence, so future agents do not rediscover and reimplement them.
 
+2026-07-09 update:
+- What changed: Added a targeted follow-up hypothesis after observer run `observer-20260709T080545Z` failed the 2350 research benchmark. The run's top eligible AI reached only 1018.93 monthly research by 2350, and save inspection showed research-designated planets with almost no staffed research jobs.
+- Evidence source: `research/stellar-ai/observer-runs/observer-20260709T080545Z/checkpoints.csv`, `summary.md`, `manual-notes.md`, and save inspection of `checkpoint-2350-autosave_2350.01.01.sav`. Example: `EMPIRE_DESIGN_humans1` had research-designated colonies such as `HUMAN1_PLANET_Spring` and `HUMAN1_PLANET_NewCoventry` but zero decoded research jobs on those worlds; the same save showed high parsed megastructure counts were mostly Dyson swarms, asteroid/orbital industry assets, and other non-research structures rather than a research snowball.
+- Affected hypothesis section: 9.2 Direct Research Route, 13 Observer Testing Theory, 14.1 Research And Economy, and 14.4 Megastructures And Gigas Routes.
+- Strategic impact: Megastructure count alone is not a success proxy. The next patch should make existing research designations materially increase lab/science-district construction pressure while preserving support-economy gates, and should continue distinguishing research-producing megastructures from generic economy/industry megastructures.
+- Required implementation/test follow-up: Apply only source-backed designation-aware pressure to generated research infrastructure weights; do not broad-rewrite `common/colony_types` unless later evidence proves the colony selection layer itself is the bottleneck. The next observer run must verify research jobs, labs, science districts, and research megastructure composition, not just total parsed megastructure count.
+
 ---
 
 ## 16. Recommended Repository Placement

@@ -124,6 +124,11 @@ building_research_lab_1 = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
+		modifier = { factor = 8 has_designation = col_research }
+		modifier = { factor = 6 has_designation = col_habitat_research }
+		modifier = { factor = 6 has_designation = col_ring_research }
+		modifier = { factor = 6 has_designation = col_ecu_research }
+		modifier = { factor = 5 has_designation = col_nomad_research }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -199,6 +204,11 @@ building_research_lab_2 = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
+		modifier = { factor = 8 has_designation = col_research }
+		modifier = { factor = 6 has_designation = col_habitat_research }
+		modifier = { factor = 6 has_designation = col_ring_research }
+		modifier = { factor = 6 has_designation = col_ecu_research }
+		modifier = { factor = 5 has_designation = col_nomad_research }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -270,6 +280,11 @@ building_research_lab_3 = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
+		modifier = { factor = 8 has_designation = col_research }
+		modifier = { factor = 6 has_designation = col_habitat_research }
+		modifier = { factor = 6 has_designation = col_ring_research }
+		modifier = { factor = 6 has_designation = col_ecu_research }
+		modifier = { factor = 5 has_designation = col_nomad_research }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -407,6 +422,11 @@ building_institute = {
 		}
 
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
+		modifier = { factor = 8 has_designation = col_research }
+		modifier = { factor = 6 has_designation = col_habitat_research }
+		modifier = { factor = 6 has_designation = col_ring_research }
+		modifier = { factor = 6 has_designation = col_ecu_research }
+		modifier = { factor = 5 has_designation = col_nomad_research }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -547,6 +567,11 @@ building_supercomputer = {
 		}
 
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
+		modifier = { factor = 8 has_designation = col_research }
+		modifier = { factor = 6 has_designation = col_habitat_research }
+		modifier = { factor = 6 has_designation = col_ring_research }
+		modifier = { factor = 6 has_designation = col_ecu_research }
+		modifier = { factor = 5 has_designation = col_nomad_research }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -739,6 +764,11 @@ building_archaeostudies_faculty = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
+		modifier = { factor = 8 has_designation = col_research }
+		modifier = { factor = 6 has_designation = col_habitat_research }
+		modifier = { factor = 6 has_designation = col_ring_research }
+		modifier = { factor = 6 has_designation = col_ecu_research }
+		modifier = { factor = 5 has_designation = col_nomad_research }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }

@@ -93,6 +93,7 @@ district_hab_science = {
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 0 owner = { NOT = { staid_planetary_capacity_growth_ready = yes } } }
+		modifier = { factor = 8 has_designation = col_habitat_research }
 		modifier = { factor = 4 owner = { staid_planetary_capacity_growth_ready = yes } }
 		modifier = { factor = 3 owner = { staid_research_under_curve = yes } }
 	}

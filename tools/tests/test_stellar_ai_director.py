@@ -1530,6 +1530,11 @@ class GeneratedModValidityTests(unittest.TestCase):
             "additional_ai_weight = 1200",
             "script = stellarai/rare_resource_guard_modifiers",
             "staid_research_construction_priority_ready",
+            "modifier = { factor = 8 has_designation = col_research }",
+            "modifier = { factor = 6 has_designation = col_habitat_research }",
+            "modifier = { factor = 6 has_designation = col_ring_research }",
+            "modifier = { factor = 6 has_designation = col_ecu_research }",
+            "modifier = { factor = 5 has_designation = col_nomad_research }",
         ):
             self.assertIn(marker, buildings_text)
         for marker in (
@@ -1537,6 +1542,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "district_hab_science = {",
             "ai_weight_coefficient = 4",
             "additional_ai_weight = 500",
+            "modifier = { factor = 8 has_designation = col_habitat_research }",
         ):
             self.assertIn(marker, districts_text)
 
