@@ -1,0 +1,33 @@
+{
+  "artifacts": {
+    "checkpoints": "checkpoints.csv",
+    "manual_notes": "manual-notes.md",
+    "metrics": "metrics.json",
+    "summary_json": "summary.json",
+    "summary_md": "summary.md"
+  },
+  "benchmark_intent": "Top one or two AI empires plausibly crisis-ready by 2350 without hidden bonuses; explicit user gate is at least one AI empire reaching 3000+ total monthly research before 2350.",
+  "branch": "codex/stellar-ai-director-strategic-v2",
+  "computer_use_surface": "not mounted in this Codex thread; exact tool_search did not expose Computer Use and plugin install candidates did not include it",
+  "created_at_utc": "2026-07-09T05:25:14.414522+00:00",
+  "hidden_economic_bonuses": false,
+  "launcher": "Irony Mod Manager",
+  "run_id": "observer-20260709T052514Z",
+  "settings": {
+    "advanced_ai_starts": "off",
+    "difficulty": "Ensign",
+    "galaxy_size": "Tiny / smallest available galaxy",
+    "max_game_year": "2350",
+    "player_bonuses": "off",
+    "scaling": "off"
+  },
+  "standard_checkpoints": [
+    2250,
+    2300,
+    2325,
+    2350
+  ],
+  "status": "created",
+  "target_game_version": "Stellaris 4.4.5 stable/current local install",
+  "target_mod": "Stellar AI Director"
+}
