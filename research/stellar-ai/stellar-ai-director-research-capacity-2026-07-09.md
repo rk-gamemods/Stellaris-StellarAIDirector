@@ -6,59 +6,76 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 
 - Jobs indexed: 501
 - Buildings indexed: 826
-- Buildings with resolved research output: 55
+- Districts/zones indexed: 547
+- Buildings with resolved research output: 135
+- Districts/zones with net consumer-goods output: 8
+- Technologies with research-relevant modifiers indexed: 18
 - Source roots include vanilla at `C:\Steam\steamapps\common\Stellaris` plus enabled launcher mods.
+- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.
 
 ## Top Research Buildings
 
 | rank | building | research/month | jobs | mod |
 | --- | --- | ---: | ---: | --- |
-| 1 | `building_mem_lost_emperor_ancient_palace` | 1500.0 | 8.8 | More Events Mod |
-| 2 | `building_master_archive` | 300.0 | 10.0 | Stellaris vanilla |
-| 3 | `building_giga_institute_2` | 81.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 4 | `building_giga_supercomputer_2` | 81.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 5 | `building_fe_lab_2` | 60.0 | 0 | Stellaris vanilla |
-| 6 | `building_giga_iodizium_research` | 60.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 7 | `building_giga_institute_1` | 54.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 8 | `building_giga_supercomputer_1` | 54.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 9 | `building_mp_primitive_particle_accelerator` | 25.0 | 0 | More Primitives |
-| 10 | `building_mem_asp_spire` | 24.0 | 0 | More Events Mod |
-| 11 | `holding_mem_asp_spire` | 24.0 | 0 | More Events Mod |
-| 12 | `building_defense_nexus_capacity` | 20.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 13 | `building_mp_primitive_holographic_domes` | 20.0 | 0 | More Primitives |
-| 14 | `building_mp_primitive_satellite_dish` | 20.0 | 0 | More Primitives |
-| 15 | `building_mp_primitive_test_site` | 20.0 | 1.0 | More Primitives |
-| 16 | `building_organic_paradise` | 20.0 | 30.0 | Stellaris vanilla |
-| 17 | `building_organic_sanctuary` | 20.0 | 15.0 | Stellaris vanilla |
-| 18 | `building_passenger_dorms` | 20.0 | 5.0 | Stellaris vanilla |
-| 19 | `building_passenger_paradise` | 20.0 | 15.0 | Stellaris vanilla |
-| 20 | `esc_building_dragon_hatchery` | 20.0 | 0 | Extra Ship Components NEXT |
+| 1 | `building_mem_lost_emperor_ancient_palace` | 1506.9 | 8.8 | More Events Mod |
+| 2 | `building_master_archive` | 450.0 | 10.0 | Stellaris vanilla |
+| 3 | `building_pinniped_sanctuary` | 105.0 | 16.0 | Stellaris vanilla |
+| 4 | `building_giga_institute_2` | 81.0 | 0 | Gigastructural Engineering & More (4.4) |
+| 5 | `building_giga_supercomputer_2` | 81.0 | 0 | Gigastructural Engineering & More (4.4) |
+| 6 | `building_wet_td_bio_lab` | 68.25 | 9.0 | Stellar AI Director |
+| 7 | `building_superhab_lab` | 64.5 | 9.0 | Stellar AI Director |
+| 8 | `building_fe_lab_2` | 60.0 | 0 | Stellaris vanilla |
+| 9 | `building_giga_iodizium_research` | 60.0 | 0 | Gigastructural Engineering & More (4.4) |
+| 10 | `building_giga_institute_1` | 54.0 | 0 | Gigastructural Engineering & More (4.4) |
+| 11 | `building_giga_supercomputer_1` | 54.0 | 0 | Gigastructural Engineering & More (4.4) |
+| 12 | `building_cryo_lab` | 49.125 | 4.5 | Stellar AI Director |
+| 13 | `building_order_keep` | 48.0 | 16.0 | Stellaris vanilla |
+| 14 | `building_augmentation_center` | 40.0 | 8.0 | Stellaris vanilla |
+| 15 | `building_karst_lab` | 36.0 | 9.0 | Stellar AI Director |
+| 16 | `building_navel_command` | 36.0 | 12.0 | Planetary Diversity - More Arcologies |
+| 17 | `building_supercon_lab` | 34.125 | 4.5 | Stellar AI Director |
+| 18 | `building_aquifer_lab` | 32.25 | 4.5 | Stellar AI Director |
+| 19 | `building_biolumen_lab` | 32.25 | 4.5 | Stellar AI Director |
+| 20 | `building_lichen_lab` | 32.25 | 4.5 | Stellar AI Director |
+
+## Top Consumer-Goods Districts/Zones
+
+| rank | type | object | net consumer goods/month | jobs | mod |
+| --- | --- | --- | ---: | ---: | --- |
+| 1 | district | `district_giga_birch_void_ktisma` | 5000.0 | 2.4 | Gigastructural Engineering & More (4.4) |
+| 2 | district | `district_giga_frameworld_sanctuary_advanced` | 40.0 | 0.4 | Gigastructural Engineering & More (4.4) |
+| 3 | district | `district_giga_frameworld_sanctuary` | 20.0 | 0.2 | Gigastructural Engineering & More (4.4) |
+| 4 | district | `district_giga_frameworld_factory_advanced` | 10.0 | 0.01 | Gigastructural Engineering & More (4.4) |
+| 5 | district | `district_srw_commercial` | 8.5 | 4.0 | Planetary Diversity - More Arcologies |
+| 6 | zone | `zone_resort_grand_museum` | 6.0 | 2.0 | Stellaris vanilla |
+| 7 | zone | `zone_resort_spiritual_retreat` | 6.0 | 2.0 | Stellaris vanilla |
+| 8 | district | `district_giga_frameworld_factory` | 5.0 | 0.01 | Gigastructural Engineering & More (4.4) |
 
 ## Colony Scenarios
 
-| scenario | research/month | colonies for 3000 |
-| --- | ---: | ---: |
-| raw_top_terminal_top_1_in_6_slots | 1500.0 | 2 |
-| raw_top_terminal_top_3_in_6_slots | 1881.0 | 2 |
-| raw_top_terminal_top_6_in_6_slots | 2082.0 | 2 |
-| raw_top_terminal_top_1_in_8_slots | 1500.0 | 2 |
-| raw_top_terminal_top_3_in_8_slots | 1881.0 | 2 |
-| raw_top_terminal_top_8_in_8_slots | 2131.0 | 2 |
-| raw_top_terminal_top_1_in_10_slots | 1500.0 | 2 |
-| raw_top_terminal_top_3_in_10_slots | 1881.0 | 2 |
-| raw_top_terminal_top_10_in_10_slots | 2175.0 | 2 |
-| raw_top_terminal_top_1_in_12_slots | 1500.0 | 2 |
-| raw_top_terminal_top_3_in_12_slots | 1881.0 | 2 |
-| raw_top_terminal_top_12_in_12_slots | 2215.0 | 2 |
-| repeatable_candidate_terminal_top_1_in_6_slots | 300.0 | 10 |
-| repeatable_candidate_terminal_top_3_in_6_slots | 462.0 | 7 |
-| repeatable_candidate_terminal_top_6_in_6_slots | 562.0 | 6 |
-| repeatable_candidate_terminal_top_1_in_8_slots | 300.0 | 10 |
-| repeatable_candidate_terminal_top_3_in_8_slots | 462.0 | 7 |
-| repeatable_candidate_terminal_top_8_in_8_slots | 596.0 | 6 |
-| repeatable_candidate_terminal_top_1_in_10_slots | 300.0 | 10 |
-| repeatable_candidate_terminal_top_3_in_10_slots | 462.0 | 7 |
-| repeatable_candidate_terminal_top_10_in_10_slots | 626.0 | 5 |
-| repeatable_candidate_terminal_top_1_in_12_slots | 300.0 | 10 |
-| repeatable_candidate_terminal_top_3_in_12_slots | 462.0 | 7 |
-| repeatable_candidate_terminal_top_12_in_12_slots | 656.0 | 5 |
+| scenario | base research/month | adjusted research/month | adjusted CG upkeep | colonies for 3000 |
+| --- | ---: | ---: | ---: | ---: |
+| raw_top_terminal_top_1_in_6_slots | 1506.9 | 1506.9 | 4.15 | 2 |
+| raw_top_terminal_top_3_in_6_slots | 2061.9 | 2061.9 | 18.15 | 2 |
+| raw_top_terminal_top_6_in_6_slots | 2194.65 | 2391.975 | 31.65 | 2 |
+| raw_top_terminal_top_1_in_8_slots | 1506.9 | 1506.9 | 4.15 | 2 |
+| raw_top_terminal_top_3_in_8_slots | 2061.9 | 2061.9 | 18.15 | 2 |
+| raw_top_terminal_top_8_in_8_slots | 2356.65 | 2553.975 | 31.65 | 2 |
+| raw_top_terminal_top_1_in_10_slots | 1506.9 | 1506.9 | 4.15 | 2 |
+| raw_top_terminal_top_3_in_10_slots | 2061.9 | 2061.9 | 18.15 | 2 |
+| raw_top_terminal_top_10_in_10_slots | 2453.775 | 2692.1625 | 35.4 | 2 |
+| raw_top_terminal_top_1_in_12_slots | 1506.9 | 1506.9 | 4.15 | 2 |
+| raw_top_terminal_top_3_in_12_slots | 2061.9 | 2061.9 | 18.15 | 2 |
+| raw_top_terminal_top_12_in_12_slots | 2573.775 | 2815.0875 | 35.4 | 2 |
+| repeatable_candidate_terminal_top_1_in_6_slots | 450.0 | 450.0 | 0.0 | 7 |
+| repeatable_candidate_terminal_top_3_in_6_slots | 555.0 | 682.5 | 14.0 | 5 |
+| repeatable_candidate_terminal_top_6_in_6_slots | 768.75 | 962.625 | 27.5 | 4 |
+| repeatable_candidate_terminal_top_1_in_8_slots | 450.0 | 450.0 | 0.0 | 7 |
+| repeatable_candidate_terminal_top_3_in_8_slots | 555.0 | 682.5 | 14.0 | 5 |
+| repeatable_candidate_terminal_top_8_in_8_slots | 897.75 | 1115.625 | 27.5 | 3 |
+| repeatable_candidate_terminal_top_1_in_10_slots | 450.0 | 450.0 | 0.0 | 7 |
+| repeatable_candidate_terminal_top_3_in_10_slots | 555.0 | 682.5 | 14.0 | 5 |
+| repeatable_candidate_terminal_top_10_in_10_slots | 1006.875 | 1244.4 | 31.25 | 3 |
+| repeatable_candidate_terminal_top_1_in_12_slots | 450.0 | 450.0 | 0.0 | 7 |
+| repeatable_candidate_terminal_top_3_in_12_slots | 555.0 | 682.5 | 14.0 | 5 |
+| repeatable_candidate_terminal_top_12_in_12_slots | 1066.875 | 1367.0025 | 31.25 | 3 |

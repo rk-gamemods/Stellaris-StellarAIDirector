@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,7 @@ from stellar_ai_director_lib import (
     _collect_resource_amounts,
     _collect_upgrade_ids,
     _json_dump,
+    _numeric_atom,
     _valuation_stack_roots,
     _winning_economic_definitions,
     atom_value,
@@ -34,7 +36,9 @@ from stellar_ai_director_lib import (
 
 OUT_JOBS = RESEARCH_ROOT / "stellar-ai-director-research-capacity-jobs-2026-07-09.csv"
 OUT_BUILDINGS = RESEARCH_ROOT / "stellar-ai-director-research-capacity-buildings-2026-07-09.csv"
+OUT_DEVELOPMENT = RESEARCH_ROOT / "stellar-ai-director-research-capacity-development-2026-07-09.csv"
 OUT_PLAN = RESEARCH_ROOT / "stellar-ai-director-research-capacity-plan-2026-07-09.csv"
+OUT_TECH = RESEARCH_ROOT / "stellar-ai-director-research-capacity-tech-modifiers-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
@@ -47,6 +51,7 @@ SUPPORT_KEYS = (
     "exotic_gases",
     "rare_crystals",
 )
+UPKEEP_MULT_KEYS = ("planet_researchers_upkeep_mult",)
 
 
 def add_amounts(left: dict[str, float], right: dict[str, float], factor: float = 1.0) -> None:
@@ -65,6 +70,97 @@ def resource_columns(prefix: str, amounts: dict[str, float]) -> dict[str, float]
 
 def normalize_job_workforce(amount: float) -> float:
     return amount / JOB_WORKFORCE_UNITS
+
+
+def job_subject(job_id: str) -> str:
+    base = job_id.removeprefix("job_")
+    if base.endswith("y"):
+        return f"{base[:-1]}ies"
+    return f"{base}s"
+
+
+def resolve_job(jobs: dict[str, dict[str, Any]], job_id: str) -> dict[str, Any] | None:
+    return jobs.get(job_id) or jobs.get(job_id.removeprefix("job_"))
+
+
+def is_research_modifier_key(key: str) -> bool:
+    return (
+        "research" in key
+        and (
+            key.endswith("_produces_add")
+            or key.endswith("_produces_mult")
+            or key.endswith("_upkeep_add")
+            or key.endswith("_upkeep_mult")
+            or key.endswith("_research_speed_mult")
+        )
+    )
+
+
+def collect_numeric_modifier_assignments(
+    value: PDXBlock, variables: dict[str, float]
+) -> tuple[dict[str, float], set[str]]:
+    modifiers: dict[str, float] = {}
+    unresolved: set[str] = set()
+    for assignment in iter_assignments(value):
+        key = assignment.key.strip('"')
+        if not is_research_modifier_key(key):
+            continue
+        amount, unresolved_variable = _numeric_atom(assignment.value, variables)
+        if unresolved_variable:
+            unresolved.add(unresolved_variable)
+            continue
+        modifiers[key] = modifiers.get(key, 0.0) + amount
+    return modifiers, unresolved
+
+
+def collect_building_research_modifier_effects(
+    value: PDXBlock, variables: dict[str, float]
+) -> tuple[dict[str, Any], set[str]]:
+    modifiers, unresolved = collect_numeric_modifier_assignments(value, variables)
+    job_research_add: dict[str, dict[str, float]] = {}
+    job_upkeep_add: dict[str, dict[str, float]] = {}
+    job_research_mult: dict[str, float] = {}
+    resource_job_mult: dict[str, float] = {}
+    upkeep_mult = 0.0
+    for key, amount in modifiers.items():
+        add_match = re.fullmatch(r"planet_([A-Za-z0-9_]+)_(physics_research|society_research|engineering_research)_produces_add", key)
+        if add_match:
+            subject, resource = add_match.groups()
+            job_research_add.setdefault(subject, {})[resource] = job_research_add.setdefault(subject, {}).get(resource, 0.0) + amount
+            continue
+        res_mult_match = re.fullmatch(r"planet_jobs_(physics_research|society_research|engineering_research)_produces_mult", key)
+        if res_mult_match:
+            resource = res_mult_match.group(1)
+            resource_job_mult[resource] = resource_job_mult.get(resource, 0.0) + amount
+            continue
+        upkeep_add_match = re.fullmatch(r"planet_([A-Za-z0-9_]+)_([A-Za-z0-9_]+)_upkeep_add", key)
+        if upkeep_add_match:
+            subject, resource = upkeep_add_match.groups()
+            if resource in SUPPORT_KEYS:
+                job_upkeep_add.setdefault(subject, {})[resource] = job_upkeep_add.setdefault(subject, {}).get(resource, 0.0) + amount
+            continue
+        if key in UPKEEP_MULT_KEYS:
+            upkeep_mult += amount
+            continue
+        mult_match = re.fullmatch(r"planet_([A-Za-z0-9_]+)_produces_mult", key)
+        if mult_match:
+            job_research_mult[mult_match.group(1)] = job_research_mult.get(mult_match.group(1), 0.0) + amount
+            continue
+        job_res_mult_match = re.fullmatch(r"planet_([A-Za-z0-9_]+)_(physics_research|society_research|engineering_research)_produces_mult", key)
+        if job_res_mult_match:
+            subject, resource = job_res_mult_match.groups()
+            job_research_mult[f"{subject}:{resource}"] = job_research_mult.get(f"{subject}:{resource}", 0.0) + amount
+    return (
+        {
+            "research_modifier_keys": modifiers,
+            "job_research_add": job_research_add,
+            "job_upkeep_add": job_upkeep_add,
+            "job_research_mult": job_research_mult,
+            "resource_job_mult": resource_job_mult,
+            "researcher_upkeep_mult": upkeep_mult,
+        },
+        unresolved,
+    )
 
 
 def collect_job_resources(value: PDXBlock, variables: dict[str, float]) -> tuple[dict[str, float], dict[str, float], dict[str, float], dict[str, float], set[str]]:
@@ -130,6 +226,8 @@ def collect_winning_jobs(playset: dict[str, Any]) -> dict[str, dict[str, Any]]:
         add_amounts(optimistic_upkeep, triggered_upkeep)
         row.update(
             {
+                "category": atom_value(block_assignments(value, "category")[0].value) if block_assignments(value, "category") else "",
+                "subject": job_subject(str(row["job_id"])),
                 "base_output_json": _json_dump(base_output),
                 "triggered_output_json": _json_dump(triggered_output),
                 "optimistic_output_json": _json_dump(optimistic_output),
@@ -201,17 +299,26 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
         value = row["value"]
         jobs_created, missing_jobs = _collect_job_adds(value, variables)
         direct_output, direct_upkeep, missing_direct = direct_resource_blocks(value, variables)
+        modifier_effects, missing_modifiers = collect_building_research_modifier_effects(value, variables)
         job_output: dict[str, float] = {}
         job_upkeep: dict[str, float] = {}
+        job_subject_counts: dict[str, float] = {}
         unknown_jobs: list[str] = []
         for job_id, count in jobs_created.items():
-            job = jobs.get(job_id)
+            job = resolve_job(jobs, job_id)
             if not job:
                 unknown_jobs.append(job_id)
                 continue
             job_equivalents = normalize_job_workforce(count)
             add_amounts(job_output, json.loads(str(job["optimistic_output_json"])), job_equivalents)
             add_amounts(job_upkeep, json.loads(str(job["optimistic_upkeep_json"])), job_equivalents)
+            subject = str(job["subject"])
+            category = str(job.get("category", ""))
+            job_subject_counts[subject] = job_subject_counts.get(subject, 0.0) + job_equivalents
+            if category:
+                job_subject_counts[category.removeprefix("planet_")] = (
+                    job_subject_counts.get(category.removeprefix("planet_"), 0.0) + job_equivalents
+                )
         total_output = dict(direct_output)
         total_upkeep = dict(direct_upkeep)
         add_amounts(total_output, job_output)
@@ -232,17 +339,97 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                     sum(max(0.0, normalize_job_workforce(amount)) for amount in jobs_created.values()), 6
                 ),
                 "unknown_jobs": "|".join(sorted(unknown_jobs)) or "none",
+                "job_subject_counts_json": _json_dump(job_subject_counts),
+                "direct_output_json": _json_dump(direct_output),
+                "direct_upkeep_json": _json_dump(direct_upkeep),
+                "job_output_json": _json_dump(job_output),
+                "job_upkeep_json": _json_dump(job_upkeep),
+                "research_modifier_effects_json": _json_dump(modifier_effects),
+                "total_output_json": _json_dump(total_output),
+                "total_upkeep_json": _json_dump(total_upkeep),
+                "total_research": round(research_total(total_output), 6),
+                "direct_research": round(research_total(direct_output), 6),
+                "job_research": round(research_total(job_output), 6),
+                "modeled_researcher_upkeep_mult": round(float(modifier_effects["researcher_upkeep_mult"]), 6),
+                "data_quality_flags": "|".join(
+                    flag
+                    for flag in [
+                        "research_output" if research_total(total_output) > 0 else "",
+                        "has_research_modifiers" if modifier_effects["research_modifier_keys"] else "",
+                        "has_unknown_jobs" if unknown_jobs else "",
+                        "unresolved_variables" if missing_jobs or missing_direct or missing_modifiers else "",
+                    ]
+                    if flag
+                )
+                or "none",
+                "unresolved_variables": "|".join(sorted(missing_jobs | missing_direct | missing_modifiers)) or "none",
+                **resource_columns("total_output", total_output),
+                **resource_columns("total_upkeep", total_upkeep),
+            }
+        )
+    return rows
+
+
+def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    roots = _valuation_stack_roots(playset)
+    variables = collect_global_variables([Path(root["root"]) for root in roots])
+    definitions = _collect_economic_definitions(playset)
+    winners = _winning_economic_definitions(definitions)
+    rows: list[dict[str, Any]] = []
+    for (object_type, object_id), row in sorted(winners.items()):
+        if object_type not in {"district", "zone"} or not isinstance(row.get("value"), PDXBlock):
+            continue
+        value = row["value"]
+        jobs_created, missing_jobs = _collect_job_adds(value, variables)
+        direct_output, direct_upkeep, missing_direct = direct_resource_blocks(value, variables)
+        job_output: dict[str, float] = {}
+        job_upkeep: dict[str, float] = {}
+        unknown_jobs: list[str] = []
+        for job_id, count in jobs_created.items():
+            job = resolve_job(jobs, job_id)
+            if not job:
+                unknown_jobs.append(job_id)
+                continue
+            job_equivalents = normalize_job_workforce(count)
+            add_amounts(job_output, json.loads(str(job["optimistic_output_json"])), job_equivalents)
+            add_amounts(job_upkeep, json.loads(str(job["optimistic_upkeep_json"])), job_equivalents)
+        total_output = dict(direct_output)
+        total_upkeep = dict(direct_upkeep)
+        add_amounts(total_output, job_output)
+        add_amounts(total_upkeep, job_upkeep)
+        net_resources = dict(total_output)
+        add_amounts(net_resources, total_upkeep, -1.0)
+        rows.append(
+            {
+                "object_type": object_type,
+                "object_id": object_id,
+                "winning_mod_name": row["name"],
+                "winning_file": row["relative_file"],
+                "jobs_created_json": _json_dump(jobs_created),
+                "raw_job_workforce_total": round(sum(max(0.0, amount) for amount in jobs_created.values()), 6),
+                "job_slots_total": round(
+                    sum(max(0.0, normalize_job_workforce(amount)) for amount in jobs_created.values()), 6
+                ),
+                "unknown_jobs": "|".join(sorted(unknown_jobs)) or "none",
                 "direct_output_json": _json_dump(direct_output),
                 "direct_upkeep_json": _json_dump(direct_upkeep),
                 "job_output_json": _json_dump(job_output),
                 "job_upkeep_json": _json_dump(job_upkeep),
                 "total_output_json": _json_dump(total_output),
                 "total_upkeep_json": _json_dump(total_upkeep),
+                "net_resources_json": _json_dump(net_resources),
                 "total_research": round(research_total(total_output), 6),
+                "net_consumer_goods": round(net_resources.get("consumer_goods", 0.0), 6),
+                "net_energy": round(net_resources.get("energy", 0.0), 6),
+                "net_minerals": round(net_resources.get("minerals", 0.0), 6),
                 "data_quality_flags": "|".join(
                     flag
                     for flag in [
                         "research_output" if research_total(total_output) > 0 else "",
+                        "consumer_goods_positive" if net_resources.get("consumer_goods", 0.0) > 0 else "",
+                        "consumer_goods_negative" if net_resources.get("consumer_goods", 0.0) < 0 else "",
+                        "energy_positive" if net_resources.get("energy", 0.0) > 0 else "",
+                        "minerals_positive" if net_resources.get("minerals", 0.0) > 0 else "",
                         "has_unknown_jobs" if unknown_jobs else "",
                         "unresolved_variables" if missing_jobs or missing_direct else "",
                     ]
@@ -252,12 +439,98 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                 "unresolved_variables": "|".join(sorted(missing_jobs | missing_direct)) or "none",
                 **resource_columns("total_output", total_output),
                 **resource_columns("total_upkeep", total_upkeep),
+                **resource_columns("net", net_resources),
             }
         )
     return rows
 
 
+def add_nested_amounts(left: dict[str, dict[str, float]], right: dict[str, dict[str, float]]) -> None:
+    for outer, inner in right.items():
+        bucket = left.setdefault(outer, {})
+        for key, value in inner.items():
+            bucket[key] = bucket.get(key, 0.0) + float(value)
+
+
+def aggregate_selected_buildings(selected: list[dict[str, Any]]) -> dict[str, Any]:
+    direct_output: dict[str, float] = {}
+    job_output: dict[str, float] = {}
+    direct_upkeep: dict[str, float] = {}
+    job_upkeep: dict[str, float] = {}
+    subject_counts: dict[str, float] = {}
+    job_research_add: dict[str, dict[str, float]] = {}
+    job_upkeep_add: dict[str, dict[str, float]] = {}
+    job_research_mult: dict[str, float] = {}
+    resource_job_mult: dict[str, float] = {}
+    researcher_upkeep_mult = 0.0
+    modifier_keys: dict[str, float] = {}
+    for row in selected:
+        add_amounts(direct_output, json.loads(str(row["direct_output_json"])))
+        add_amounts(job_output, json.loads(str(row["job_output_json"])))
+        add_amounts(direct_upkeep, json.loads(str(row["direct_upkeep_json"])))
+        add_amounts(job_upkeep, json.loads(str(row["job_upkeep_json"])))
+        add_amounts(subject_counts, json.loads(str(row["job_subject_counts_json"])))
+        effects = json.loads(str(row["research_modifier_effects_json"]))
+        add_nested_amounts(job_research_add, effects.get("job_research_add", {}))
+        add_nested_amounts(job_upkeep_add, effects.get("job_upkeep_add", {}))
+        add_amounts(job_research_mult, effects.get("job_research_mult", {}))
+        add_amounts(resource_job_mult, effects.get("resource_job_mult", {}))
+        add_amounts(modifier_keys, effects.get("research_modifier_keys", {}))
+        researcher_upkeep_mult += float(effects.get("researcher_upkeep_mult", 0.0))
+    base_output = dict(direct_output)
+    base_upkeep = dict(direct_upkeep)
+    add_amounts(base_output, job_output)
+    add_amounts(base_upkeep, job_upkeep)
+    adjusted_output = dict(base_output)
+    adjusted_upkeep = dict(direct_upkeep)
+    adjusted_job_upkeep = dict(job_upkeep)
+
+    for resource in RESEARCH_KEYS:
+        additive = sum(subject_counts.get(subject, 0.0) * values.get(resource, 0.0) for subject, values in job_research_add.items())
+        mult = resource_job_mult.get(resource, 0.0)
+        mult += job_research_mult.get("researchers", 0.0)
+        mult += job_research_mult.get(f"researchers:{resource}", 0.0)
+        adjusted_output[resource] = direct_output.get(resource, 0.0) + (job_output.get(resource, 0.0) + additive) * (1.0 + mult)
+
+    for subject, values in job_upkeep_add.items():
+        subject_count = subject_counts.get(subject, 0.0)
+        for resource, amount in values.items():
+            adjusted_job_upkeep[resource] = adjusted_job_upkeep.get(resource, 0.0) + subject_count * amount
+    for resource, amount in list(adjusted_job_upkeep.items()):
+        adjusted_job_upkeep[resource] = amount * (1.0 + researcher_upkeep_mult)
+    add_amounts(adjusted_upkeep, adjusted_job_upkeep)
+
+    return {
+        "direct_output": direct_output,
+        "job_output": job_output,
+        "base_output": base_output,
+        "adjusted_output": adjusted_output,
+        "direct_upkeep": direct_upkeep,
+        "job_upkeep": job_upkeep,
+        "base_upkeep": base_upkeep,
+        "adjusted_upkeep": adjusted_upkeep,
+        "subject_counts": subject_counts,
+        "modifier_keys": modifier_keys,
+        "job_research_add": job_research_add,
+        "job_upkeep_add": job_upkeep_add,
+        "job_research_mult": job_research_mult,
+        "resource_job_mult": resource_job_mult,
+        "researcher_upkeep_mult": researcher_upkeep_mult,
+    }
+
+
+def quota_count(target: float, amount: float) -> int:
+    return math.ceil(target / amount) if amount > 0 else 0
+
+
 def plan_rows(buildings: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def research_candidate(row: dict[str, Any]) -> bool:
+        if row["is_upgrade_terminal"] != "yes":
+            return False
+        if float(row["total_research"]) > 0:
+            return True
+        return "has_research_modifiers" in str(row["data_quality_flags"]).split("|")
+
     def repeatable_candidate(row: dict[str, Any]) -> bool:
         mod_name = str(row["winning_mod_name"]).lower()
         building_id = str(row["building_id"])
@@ -266,39 +539,142 @@ def plan_rows(buildings: list[dict[str, Any]]) -> list[dict[str, Any]]:
         special_prefixes = ("holding_", "building_fe_", "building_organic_", "building_passenger_")
         return not building_id.startswith(special_prefixes)
 
+    def greedy_best(candidates: list[dict[str, Any]], take: int) -> list[dict[str, Any]]:
+        selected: list[dict[str, Any]] = []
+        remaining = list(candidates)
+        def marginal_score(row: dict[str, Any]) -> tuple[float, float, float, str]:
+            bundle = aggregate_selected_buildings([*selected, row])
+            return (
+                research_total(bundle["adjusted_output"]),
+                research_total(bundle["base_output"]),
+                float(row["total_research"]),
+                str(row["building_id"]),
+            )
+
+        while remaining and len(selected) < take:
+            best_row = max(remaining, key=marginal_score)
+            selected.append(best_row)
+            remaining.remove(best_row)
+        return selected
+
     scopes = {
-        "raw_top_terminal": [
-            row for row in buildings if row["is_upgrade_terminal"] == "yes" and float(row["total_research"]) > 0
-        ],
+        "raw_top_terminal": [row for row in buildings if research_candidate(row)],
         "repeatable_candidate_terminal": [
-            row
-            for row in buildings
-            if row["is_upgrade_terminal"] == "yes" and float(row["total_research"]) > 0 and repeatable_candidate(row)
+            row for row in buildings if research_candidate(row) and repeatable_candidate(row)
         ],
     }
     rows: list[dict[str, Any]] = []
     for scope, candidates in scopes.items():
-        best = sorted(candidates, key=lambda row: float(row["total_research"]), reverse=True)
         for slots in (6, 8, 10, 12):
-            for take in (1, min(3, len(best)), min(slots, len(best))):
-                selected = best[:take]
-                research = sum(float(row["total_research"]) for row in selected)
+            for take in sorted({1, min(3, len(candidates)), min(slots, len(candidates))}):
+                selected = greedy_best(candidates, take)
+                bundle = aggregate_selected_buildings(selected)
+                base_research = research_total(bundle["base_output"])
+                adjusted_research = research_total(bundle["adjusted_output"])
                 rows.append(
                     {
                         "scenario": f"{scope}_top_{take}_in_{slots}_slots",
                         "building_slots": slots,
                         "selected_buildings": "|".join(row["building_id"] for row in selected),
-                        "research_per_full_colony": round(research, 6),
-                        "colonies_for_3000_research": math.ceil(3000 / research) if research > 0 else 0,
+                        "research_per_full_colony": round(adjusted_research, 6),
+                        "base_research_per_full_colony": round(base_research, 6),
+                        "adjusted_research_per_full_colony": round(adjusted_research, 6),
+                        "colonies_for_3000_research": quota_count(3000, adjusted_research),
+                        "colonies_for_3000_base_research": quota_count(3000, base_research),
+                        "colonies_for_3000_adjusted_research": quota_count(3000, adjusted_research),
+                        "modeled_researcher_upkeep_mult": round(bundle["researcher_upkeep_mult"], 6),
+                        "modifier_keys_json": _json_dump(bundle["modifier_keys"]),
                         "unused_slots": slots - take,
+                        **resource_columns("base_output", bundle["base_output"]),
+                        **resource_columns("adjusted_output", bundle["adjusted_output"]),
+                        **resource_columns("base_upkeep", bundle["base_upkeep"]),
+                        **resource_columns("adjusted_upkeep", bundle["adjusted_upkeep"]),
                     }
                 )
     return rows
 
 
-def write_summary(jobs: dict[str, dict[str, Any]], buildings: list[dict[str, Any]], plans: list[dict[str, Any]]) -> None:
+def collect_technology_modifier_rows(playset: dict[str, Any]) -> list[dict[str, Any]]:
+    roots = _valuation_stack_roots(playset)
+    variables = collect_global_variables([Path(root["root"]) for root in roots])
+    winners: dict[str, dict[str, Any]] = {}
+    for root_info in roots:
+        root = Path(root_info["root"])
+        folder = root / "common" / "technology"
+        if not folder.exists():
+            continue
+        for path in iter_text_files(folder):
+            try:
+                parsed = parse_file(path)
+            except PDXParseError:
+                continue
+            for assignment in block_assignments(parsed):
+                if assignment.key.startswith("@") or not isinstance(assignment.value, PDXBlock):
+                    continue
+                current = winners.get(assignment.key)
+                if current is None or int(root_info["load_position"]) >= int(current["load_position"]):
+                    winners[assignment.key] = {
+                        **root_info,
+                        "technology_id": assignment.key,
+                        "relative_file": str(path.relative_to(root)),
+                        "value": assignment.value,
+                    }
+    rows: list[dict[str, Any]] = []
+    for tech_id, row in sorted(winners.items()):
+        modifiers, unresolved = collect_numeric_modifier_assignments(row["value"], variables)
+        if not modifiers:
+            continue
+        rows.append(
+            {
+                "technology_id": tech_id,
+                "winning_mod_name": row["name"],
+                "winning_file": row["relative_file"],
+                "modifier_keys_json": _json_dump(modifiers),
+                "planet_researcher_or_job_output_mult": round(
+                    sum(
+                        amount
+                        for key, amount in modifiers.items()
+                        if (
+                            key.startswith("planet_researchers_") and key.endswith("_produces_mult")
+                        ) or (
+                            key.startswith("planet_jobs_") and key.endswith("_research_produces_mult")
+                        )
+                    ),
+                    6,
+                ),
+                "station_research_output_mult": round(
+                    sum(amount for key, amount in modifiers.items() if key.startswith("station_researchers_")),
+                    6,
+                ),
+                "research_speed_mult": round(
+                    sum(amount for key, amount in modifiers.items() if key.endswith("_research_speed_mult")),
+                    6,
+                ),
+                "researcher_upkeep_mult": round(
+                    sum(amount for key, amount in modifiers.items() if key in UPKEEP_MULT_KEYS),
+                    6,
+                ),
+                "unresolved_variables": "|".join(sorted(unresolved)) or "none",
+            }
+        )
+    return rows
+
+
+def write_summary(
+    jobs: dict[str, dict[str, Any]],
+    buildings: list[dict[str, Any]],
+    development_rows: list[dict[str, Any]],
+    plans: list[dict[str, Any]],
+    tech_rows: list[dict[str, Any]],
+) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
     best = sorted(research_buildings, key=lambda row: float(row["total_research"]), reverse=True)[:20]
+    consumer_goods_development = [
+        row for row in development_rows if float(row["net_consumer_goods"]) > 0
+    ]
+    best_consumer_goods = sorted(
+        consumer_goods_development, key=lambda row: float(row["net_consumer_goods"]), reverse=True
+    )[:10]
     lines = [
         "# Stellar AI Director Research Capacity",
         "",
@@ -308,8 +684,12 @@ def write_summary(jobs: dict[str, dict[str, Any]], buildings: list[dict[str, Any
         "",
         f"- Jobs indexed: {len(jobs)}",
         f"- Buildings indexed: {len(buildings)}",
+        f"- Districts/zones indexed: {len(development_rows)}",
         f"- Buildings with resolved research output: {len(research_buildings)}",
+        f"- Districts/zones with net consumer-goods output: {len(consumer_goods_development)}",
+        f"- Technologies with research-relevant modifiers indexed: {len(tech_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
+        "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
         "",
         "## Top Research Buildings",
         "",
@@ -320,9 +700,24 @@ def write_summary(jobs: dict[str, dict[str, Any]], buildings: list[dict[str, Any
         lines.append(
             f"| {index} | `{row['building_id']}` | {row['total_research']} | {row['job_slots_total']} | {row['winning_mod_name']} |"
         )
-    lines.extend(["", "## Colony Scenarios", "", "| scenario | research/month | colonies for 3000 |", "| --- | ---: | ---: |"])
+    lines.extend(
+        [
+            "",
+            "## Top Consumer-Goods Districts/Zones",
+            "",
+            "| rank | type | object | net consumer goods/month | jobs | mod |",
+            "| --- | --- | --- | ---: | ---: | --- |",
+        ]
+    )
+    for index, row in enumerate(best_consumer_goods, 1):
+        lines.append(
+            f"| {index} | {row['object_type']} | `{row['object_id']}` | {row['net_consumer_goods']} | {row['job_slots_total']} | {row['winning_mod_name']} |"
+        )
+    lines.extend(["", "## Colony Scenarios", "", "| scenario | base research/month | adjusted research/month | adjusted CG upkeep | colonies for 3000 |", "| --- | ---: | ---: | ---: | ---: |"])
     for row in plans:
-        lines.append(f"| {row['scenario']} | {row['research_per_full_colony']} | {row['colonies_for_3000_research']} |")
+        lines.append(
+            f"| {row['scenario']} | {row['base_research_per_full_colony']} | {row['adjusted_research_per_full_colony']} | {row['adjusted_upkeep_consumer_goods']} | {row['colonies_for_3000_research']} |"
+        )
     write_text_file(OUT_MD, "\n".join(lines) + "\n")
 
 
@@ -334,12 +729,19 @@ def main() -> None:
         for row in sorted(jobs.values(), key=lambda item: item["job_id"])
     ]
     buildings = collect_buildings(playset, jobs)
+    development_rows = collect_development_rows(playset, jobs)
     plans = plan_rows(buildings)
+    tech_rows = collect_technology_modifier_rows(playset)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
+    write_csv(OUT_DEVELOPMENT, development_rows)
     write_csv(OUT_PLAN, plans)
-    write_summary(jobs, buildings, plans)
-    print(f"generated {len(job_rows)} jobs, {len(buildings)} buildings, {len(plans)} plan rows")
+    write_csv(OUT_TECH, tech_rows)
+    write_summary(jobs, buildings, development_rows, plans, tech_rows)
+    print(
+        f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
+        f"{len(development_rows)} districts/zones, {len(plans)} plan rows, {len(tech_rows)} tech modifier rows"
+    )
 
 
 if __name__ == "__main__":

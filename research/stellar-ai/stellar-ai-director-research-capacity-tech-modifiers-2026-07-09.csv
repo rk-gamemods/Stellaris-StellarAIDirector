@@ -1,0 +1,19 @@
+technology_id,winning_mod_name,winning_file,modifier_keys_json,planet_researcher_or_job_output_mult,station_research_output_mult,research_speed_mult,researcher_upkeep_mult,unresolved_variables
+giga_tech_blokkat_history,Gigastructural Engineering & More (4.4),common\technology\giga_13_blokkat.txt,"{""category_blokkats_research_speed_mult"":0.2}",0,0,0.2,0,none
+giga_tech_blokkat_scrap_research,Gigastructural Engineering & More (4.4),common\technology\giga_13_blokkat.txt,"{""category_blokkats_research_speed_mult"":0.15}",0,0,0.15,0,none
+giga_tech_blokkat_timetravel,Gigastructural Engineering & More (4.4),common\technology\giga_13_blokkat.txt,"{""category_blokkats_research_speed_mult"":0.3}",0,0,0.3,0,none
+giga_tech_event_exotic_lab_data,Gigastructural Engineering & More (4.4),common\technology\giga_06_special_project_tech.txt,"{""planet_jobs_physics_research_produces_mult"":0.05}",0.05,0,0,0,none
+giga_tech_planetary_computer,Stellar AI Director,common\technology\zzzz_staid_01_unlock_technology_technology.txt,"{""planet_researchers_produces_mult"":0.05,""planet_researchers_upkeep_mult"":0.05}",0.05,0,0,0.05,none
+tech_administrative_ai,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""planet_researchers_upkeep_mult"":0.1}",0,0,0,0.1,none
+tech_archeology_lab,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""ship_anomaly_research_speed_mult"":0.25}",0,0,0.25,0,none
+tech_atmospheric_orbital_mechanics,Stellaris vanilla,common\technology\00_first_contact_tech.txt,"{""station_researchers_produces_mult"":0.05}",0,0.05,0,0,none
+tech_gpm_arachnophobia_discovery_2,Guilli's Planet Modifiers and Features,common\technology\gpm_discovery_techs.txt,"{""planet_biologists_society_research_produces_add"":0.5}",0,0,0,0,none
+tech_gpm_precursor_remnants_discovery,Guilli's Planet Modifiers and Features,common\technology\gpm_discovery_techs.txt,"{""ship_anomaly_research_speed_mult"":0.6}",0,0,0.6,0,none
+tech_mem_crawler_physiology,More Events Mod,common\technology\mem_crawler_tech.txt,"{""planet_researchers_society_research_produces_mult"":0.05}",0.05,0,0,0,none
+tech_positronic_implants,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""planet_researchers_upkeep_mult"":0.05}",0,0,0,0.05,none
+tech_sapient_ai,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""planet_researchers_upkeep_mult"":0.1}",0,0,0,0.1,none
+tech_space_science_1,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""station_researchers_produces_mult"":0.1}",0,0.1,0,0,none
+tech_space_science_2,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""station_researchers_produces_mult"":0.1}",0,0.1,0,0,none
+tech_space_science_3,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""station_researchers_produces_mult"":0.1}",0,0.1,0,0,none
+tech_space_science_4,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""station_researchers_produces_mult"":0.1}",0,0.1,0,0,none
+tech_space_science_5,Stellaris vanilla,common\technology\00_phys_tech.txt,"{""station_researchers_produces_mult"":0.1}",0,0.1,0,0,none
