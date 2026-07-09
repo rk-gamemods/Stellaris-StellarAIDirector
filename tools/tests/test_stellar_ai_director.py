@@ -1470,11 +1470,24 @@ class GeneratedModValidityTests(unittest.TestCase):
     def test_research_federation_weight_is_generated_without_unsafe_diplomacy_overrides(self):
         federation_path = MOD_ROOT / "common" / "federation_types" / "zzzz_staid_15_research_diplomacy_federation_types.txt"
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        policy_path = MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt"
+        traditions_path = MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt"
+        ascension_path = MOD_ROOT / "common" / "ascension_perks" / "zzzz_staid_02_perks_traditions_ascension_perks.txt"
         parse_file(federation_path)
         parse_file(trigger_path)
+        parse_file(policy_path)
+        parse_file(traditions_path)
+        parse_file(ascension_path)
 
         text = federation_path.read_text(encoding="utf-8")
         trigger_text = trigger_path.read_text(encoding="utf-8")
+        policy_text = policy_path.read_text(encoding="utf-8")
+        traditions_text = traditions_path.read_text(encoding="utf-8")
+        ascension_text = ascension_path.read_text(encoding="utf-8")
+        generated_common_text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in sorted((MOD_ROOT / "common").rglob("*.txt"))
+        )
         research_federation = extract_top_level_object_text(text, "research_federation")
 
         self.assertIn("# policy_route = research_diplomacy_core", text)
@@ -1485,6 +1498,12 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("from = { staid_research_diplomacy_priority_ready = yes }", research_federation)
         self.assertIn("has_active_tradition = tr_discovery_federations_finish", research_federation)
         self.assertIn("staid_research_diplomacy_priority_ready = {", trigger_text)
+        self.assertIn("diplo_stance_cooperative", policy_text)
+        self.assertIn("tr_discovery_federations_finish", traditions_text)
+        self.assertIn("tr_diplomacy_finish", traditions_text)
+        self.assertIn("ap_technological_ascendancy", ascension_text)
+        self.assertIn("staid_research_diplomacy_priority_ready = yes", generated_common_text)
+        self.assertNotIn("action_form_research_agreement", generated_common_text)
 
         self.assertFalse((MOD_ROOT / "common" / "diplomatic_actions").exists())
         self.assertFalse((MOD_ROOT / "common" / "personalities").exists())

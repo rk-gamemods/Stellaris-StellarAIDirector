@@ -12133,6 +12133,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.",
         "- Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.",
         "- Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.",
+        "- Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting, Discovery/Diplomacy/AP support, and cooperative diplomatic stance only; direct research-agreement action and personality rewrites remain gated until separately proven.",
         "- Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.",
         "",
         "## NSC3/ESC Design Policy",
