@@ -15,7 +15,7 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Resource coverage rows: 21
 - Build-plan readiness rows: 826
 - Strategic benefit taxonomy rows: 1887
-- Modeling blocker accounting rows: 1042
+- Modeling blocker accounting rows: 396
 - Build-plan consumer policy rows: 1093
 - Source roots include vanilla at `C:\Steam\steamapps\common\Stellaris` plus enabled launcher mods.
 - Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.
@@ -24,8 +24,8 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.
 - Build-plan readiness rows classify building gate phases and same-role fallback candidates before unlocks.
 - Strategic benefit taxonomy rows classify detected non-resource benefits and record no-evidence classes for active-stack gaps.
-- Modeling blocker accounting rows normalize unknown jobs, unresolved variables, quality flags, unsupported resources, and unvalued benefit formulas.
-- Build-plan consumer policy rows join readiness, blocker accounting, role targets, and benefit taxonomy into scorable/not-scorable consumer decisions.
+- Modeling blocker accounting rows normalize unresolved jobs, unresolved variables, unsupported resources, and unvalued benefit formulas; source-proven no-effect job references stay in the source exclusion audit columns instead of blocking scoring.
+- Build-plan consumer policy rows join readiness, blocker accounting, role targets, and benefit taxonomy into consume/block decisions; unresolved modeling remains blocked until resolved or source-classified.
 
 ## Top Research Buildings
 
@@ -56,7 +56,7 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 
 | rank | type | object | net consumer goods/month | jobs | mod |
 | --- | --- | --- | ---: | ---: | --- |
-| 1 | district | `district_giga_birch_void_ktisma` | 5000.0 | 2.4 | Gigastructural Engineering & More (4.4) |
+| 1 | district | `district_giga_birch_void_ktisma` | 5000.0 | 0 | Gigastructural Engineering & More (4.4) |
 | 2 | district | `district_giga_frameworld_sanctuary_advanced` | 40.0 | 0.4 | Gigastructural Engineering & More (4.4) |
 | 3 | district | `district_giga_frameworld_sanctuary` | 20.0 | 0.2 | Gigastructural Engineering & More (4.4) |
 | 4 | district | `district_giga_frameworld_factory_advanced` | 10.0 | 0.01 | Gigastructural Engineering & More (4.4) |
@@ -81,7 +81,7 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 | mining_world | development_top_1 | all_colony_classes | 10000.0 | `district:district_giga_birch_void_ktisma` |
 | refinery_world | build_plan_candidate_terminal_buildings_9_in_12_slots | building_slots_any_colony | 135.5 | `building_dimensional_fabricator|building_nanite_transmuter|building_mote_aggravator|building_crystal_growth|building_churning_stomach|esc_building_crystal_farm_2|building_giga_elysium_dust_sifter|building_living_metal_clinic|building_offworld_expedition_hub` |
 | refinery_world | development_top_1 | all_colony_classes | 9.0 | `district:district_giga_frameworld_refinery` |
-| research_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 1154.4025 | `building_master_archive|building_pinniped_sanctuary|building_giga_supercomputer_2|building_giga_institute_2|building_wet_td_bio_lab|building_superhab_lab|building_giga_iodizium_research|esc_building_dragon_hatchery|building_cryo_lab|building_order_keep|building_augmentation_center|building_navel_command` |
+| research_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 1367.0025 | `building_master_archive|building_pinniped_sanctuary|building_giga_matrioshka_brain_uplink_research|building_wet_td_bio_lab|building_superhab_lab|building_giga_supercomputer_2|building_giga_institute_2|building_order_keep|building_cryo_lab|building_giga_iodizium_research|building_augmentation_center|esc_building_dragon_hatchery` |
 | research_world | development_top_1 | all_colony_classes | 7500.0 | `district:district_giga_birch_void_physma` |
 | trade_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 381.0 | `building_giga_research_lab_2|building_giga_interstellar_hydroponic_farm|building_giga_gas_giant_habitation_module|building_tendril_cradle_4|building_cyberdome|building_temple_of_prosperity|building_subversive_shrine|building_low_tech_admin_hub|building_giga_matrioshka_brain_uplink_entertainment|building_clear_thought_clinic|building_imperial_concession_port|building_gaia_unity_temple` |
 | trade_world | development_top_1 | all_colony_classes | 103.0 | `district:district_maginot_ringworld_barracks` |
@@ -140,25 +140,25 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 | --- | ---: | ---: | ---: | ---: |
 | raw_top_terminal_top_1_in_6_slots | 1506.9 | 1506.9 | 4.15 | 2 |
 | raw_top_terminal_top_3_in_6_slots | 2061.9 | 2061.9 | 18.15 | 2 |
-| raw_top_terminal_top_6_in_6_slots | 2194.65 | 2391.975 | 31.65 | 2 |
+| raw_top_terminal_top_6_in_6_slots | 2130.15 | 2460.3 | 32.0625 | 2 |
 | raw_top_terminal_top_1_in_8_slots | 1506.9 | 1506.9 | 4.15 | 2 |
 | raw_top_terminal_top_3_in_8_slots | 2061.9 | 2061.9 | 18.15 | 2 |
-| raw_top_terminal_top_8_in_8_slots | 2356.65 | 2553.975 | 31.65 | 2 |
+| raw_top_terminal_top_8_in_8_slots | 2242.65 | 2685.3 | 39.5625 | 2 |
 | raw_top_terminal_top_1_in_10_slots | 1506.9 | 1506.9 | 4.15 | 2 |
 | raw_top_terminal_top_3_in_10_slots | 2061.9 | 2061.9 | 18.15 | 2 |
-| raw_top_terminal_top_10_in_10_slots | 2453.775 | 2692.1625 | 35.4 | 2 |
+| raw_top_terminal_top_10_in_10_slots | 2372.775 | 2849.55 | 44.25 | 2 |
 | raw_top_terminal_top_1_in_12_slots | 1506.9 | 1506.9 | 4.15 | 2 |
 | raw_top_terminal_top_3_in_12_slots | 2061.9 | 2061.9 | 18.15 | 2 |
-| raw_top_terminal_top_12_in_12_slots | 2573.775 | 2815.0875 | 35.4 | 2 |
+| raw_top_terminal_top_12_in_12_slots | 2493.775 | 3010.55 | 44.25 | 1 |
 | repeatable_candidate_terminal_top_1_in_6_slots | 450.0 | 450.0 | 0.0 | 7 |
-| repeatable_candidate_terminal_top_3_in_6_slots | 555.0 | 682.5 | 14.0 | 5 |
-| repeatable_candidate_terminal_top_6_in_6_slots | 768.75 | 962.625 | 27.5 | 4 |
+| repeatable_candidate_terminal_top_3_in_6_slots | 555.0 | 682.5 | 17.5 | 5 |
+| repeatable_candidate_terminal_top_6_in_6_slots | 687.75 | 1075.5 | 34.375 | 3 |
 | repeatable_candidate_terminal_top_1_in_8_slots | 450.0 | 450.0 | 0.0 | 7 |
-| repeatable_candidate_terminal_top_3_in_8_slots | 555.0 | 682.5 | 14.0 | 5 |
-| repeatable_candidate_terminal_top_8_in_8_slots | 897.75 | 1115.625 | 27.5 | 3 |
+| repeatable_candidate_terminal_top_3_in_8_slots | 555.0 | 682.5 | 17.5 | 5 |
+| repeatable_candidate_terminal_top_8_in_8_slots | 784.875 | 1254.75 | 39.0625 | 3 |
 | repeatable_candidate_terminal_top_1_in_10_slots | 450.0 | 450.0 | 0.0 | 7 |
-| repeatable_candidate_terminal_top_3_in_10_slots | 555.0 | 682.5 | 14.0 | 5 |
-| repeatable_candidate_terminal_top_10_in_10_slots | 1006.875 | 1244.4 | 31.25 | 3 |
+| repeatable_candidate_terminal_top_3_in_10_slots | 555.0 | 682.5 | 17.5 | 5 |
+| repeatable_candidate_terminal_top_10_in_10_slots | 946.875 | 1416.75 | 39.0625 | 3 |
 | repeatable_candidate_terminal_top_1_in_12_slots | 450.0 | 450.0 | 0.0 | 7 |
-| repeatable_candidate_terminal_top_3_in_12_slots | 555.0 | 682.5 | 14.0 | 5 |
-| repeatable_candidate_terminal_top_12_in_12_slots | 1066.875 | 1367.0025 | 31.25 | 3 |
+| repeatable_candidate_terminal_top_3_in_12_slots | 555.0 | 682.5 | 17.5 | 5 |
+| repeatable_candidate_terminal_top_12_in_12_slots | 1022.875 | 1568.75 | 54.0625 | 2 |

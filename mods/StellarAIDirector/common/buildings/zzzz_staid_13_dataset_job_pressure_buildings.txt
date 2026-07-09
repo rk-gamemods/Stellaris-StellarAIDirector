@@ -27,6 +27,8 @@
 @b3_upkeep = 8
 @b4_biomass = 800
 @b4_minerals = 2000
+@b4_rare_cost = 200
+@b4_rare_upkeep = 4
 @b4_time = 900
 @b4_upkeep = 10
 @building_static_jobs = 200
@@ -36,6 +38,13 @@
 @buildtime_4 = 480
 @buildtime_5 = 600
 @buildtime_6 = 720
+@clones_sustained_basic = 1000
+@genomic_cloning_amenities = 500
+@genomic_cloning_assembly = 1.0
+@genomic_mutation_auto_mod = 100
+@genomic_mutation_habitability = 0.10
+@genomic_purity_growth = 0.10
+@genomic_workforce_mult = 0.15
 @nomadic_minerals_to_strategic_ratio	= 0.1
 
 # object = building:building_negative_mass_factory_2; source = Gigastructural Engineering & More (4.4)::common\buildings\giga_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
@@ -116,6 +125,293 @@ building_negative_mass_factory_2 = {
 
 	ai_resource_production = {
 		consumer_goods = 12
+	}
+}
+
+# object = building:building_augmentation_center; source = Stellaris vanilla::common\buildings\20_machine_age_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:consumer_goods_repair jobs:800.0 roi2250:5775600.0 flags:ai_weight_absent|has_jobs|has_upkeep|uses_inline_script
+building_augmentation_center = {
+	base_buildtime = @b3_time
+
+	desc = { # Regular empire, default
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				NOT = { has_origin = origin_cybernetic_creed }
+				NOR = {
+					has_country_flag = cyber_control_government
+					has_country_flag = cyber_control_corporate
+					has_country_flag = cyber_control_independent
+				}
+			}
+		}
+		text = building_augmentation_center_desc
+	}
+
+	desc = { # Regular empire, government control
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				NOT = { has_origin = origin_cybernetic_creed }
+				has_country_flag = cyber_control_government
+			}
+		}
+		text = building_augmentation_center_government_desc
+	}
+
+	desc = { # Regular empire, corporate control
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				NOT = { has_origin = origin_cybernetic_creed }
+				has_country_flag = cyber_control_corporate
+			}
+		}
+		text = building_augmentation_center_corporate_desc
+	}
+
+	desc = { # Regular empire, independent control
+		trigger = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				NOT = { has_origin = origin_cybernetic_creed }
+				has_country_flag = cyber_control_independent
+			}
+		}
+		text = building_augmentation_center_independent_desc
+	}
+
+	desc = { # Cybernetic Creed
+		trigger = {
+			exists = owner
+			owner = {
+				has_origin = origin_cybernetic_creed
+			}
+		}
+		text = building_augmentation_center_creed_desc
+	}
+
+	desc = { # Hive
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+			}
+		}
+		text = building_augmentation_center_hive_desc
+	}
+
+	category = pop_assembly
+
+	building_sets = {
+		government
+		urban
+		research
+		engineering
+	}
+
+	planet_limit = 1
+
+	potential = {
+		owner = {
+			OR = {
+				has_country_flag = augmentation_center_available
+				has_active_tradition = tr_cybernetics_augmentation_centers
+				has_active_tradition = tr_cybernetics_assimilator_augmentation_centers
+			}
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			NOR = {
+				has_country_flag = augmentation_center_available
+				has_active_tradition = tr_cybernetics_augmentation_centers
+				has_active_tradition = tr_cybernetics_assimilator_augmentation_centers
+			}
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				OR = {
+					has_active_tradition = tr_cybernetics_augmentation_centers
+					has_valid_civic = civic_machine_assimilator
+				}
+			}
+		}
+		auto_mod_monthly_add = 600
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		modifier = {
+			job_augmentor_add = 200
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_cybernetics_augmentation_overload }
+		}
+		modifier = {
+			job_augmentor_add = 200
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_augmentor_drone_add = 200
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_valid_civic = civic_machine_assimilator }
+		}
+		modifier = {
+			job_augmentor_drone_add = 200
+		}
+	}
+
+	### CONTROLLING SECTOR MODIFIERS ###
+	triggered_planet_modifier = { # Government control, after Cyberization
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cyber_augmentation_center_government
+			}
+		}
+		modifier = {
+			planet_jobs_unity_produces_mult = 0.10
+		}
+	}
+
+	triggered_planet_modifier = { # Corporate control, after Cyberization
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cyber_augmentation_center_corporate
+			}
+		}
+		modifier = {
+			planet_jobs_consumer_goods_produces_mult = 0.10
+		}
+	}
+
+	triggered_planet_modifier = { # Independent control, after Cyberization
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cyber_augmentation_center_independent
+			}
+		}
+		modifier = {
+			planet_jobs_upkeep_mult = -0.05
+		}
+	}
+
+	### JOB STRATA FOCUS MODIFIERS ###
+	triggered_planet_modifier = { # Ruler focus
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cyber_focus_rulers
+			}
+		}
+		modifier = {
+			pop_cat_ruler_bonus_workforce_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = { # Specialist focus
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cyber_focus_specialists
+			}
+		}
+		modifier = {
+			pop_cat_specialist_bonus_workforce_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = { # Worker focus
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cyber_focus_workers
+			}
+		}
+		modifier = {
+			pop_cat_worker_bonus_workforce_mult = 0.1
+		}
+	}
+
+	triggered_planet_modifier = { # General focus
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cyber_focus_everyone
+			}
+		}
+		modifier = {
+			planet_jobs_produces_mult = 0.05
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b3_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = @b3_upkeep
+		}
+	}
+
+	is_essential = yes
+	ai_weight_coefficient = 27
+	additional_ai_weight = 8428
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 18 owner = { country_uses_consumer_goods = yes NOT = { staid_consumer_goods_runway_safe = yes } } }
+	}
+
+	ai_resource_production = {
+		consumer_goods = 1
+		unity = 1
 	}
 }
 
@@ -784,6 +1080,109 @@ building_mineral_purification_hub = {
 	}
 }
 
+# object = building:building_volcanic_forge_2; source = Stellaris vanilla::common\buildings\02_government_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:alloy_scaling jobs:800.0 roi2250:5759590.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep
+building_volcanic_forge_2 = {
+	base_buildtime = @b2_time
+	base_cap_amount = 1
+	can_build = no
+	category = government
+	building_sets = {
+		government
+		urban
+	}
+
+	potential = {
+		exists = owner
+		owner = { is_world_forger_empire = yes }
+		NOR = {
+			is_planet_class = pc_city
+			AND = {
+				is_terraforming = yes
+				is_scripted_terraforming = no
+			}
+		}
+	}
+	allow = { has_upgraded_capital = yes }
+	destroy_trigger = {
+		OR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_machine
+			is_planet_class = pc_hive
+			AND = {
+				exists = owner
+				owner = { is_world_forger_empire = no }
+			}
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b2_minerals
+			exotic_gases = @b2_rare_cost
+		}
+		upkeep = {
+			energy = @b3_upkeep
+			exotic_gases = @b2_rare_upkeep
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = { owner = { is_gestalt = no } }
+		job_polytechnic_mentor_add = @building_static_jobs_high
+	}
+	triggered_planet_modifier = {
+		potential = { owner = { is_gestalt = yes } }
+		job_polytechnic_drone_add = @building_static_jobs_high
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_polytechnic_mentor_effect
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_polytechnic_drone_effect
+	}
+	triggered_desc = {
+		text = building_volcanic_forge_2_effect
+	}
+	auto_generate_description = no
+
+	on_destroy = {
+		carrier_event = { id = infernals.32 }
+	}
+
+	prerequisites = { "tech_volcanic_forge" }
+	ai_weight_coefficient = 27
+	additional_ai_weight = 8428
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { has_monthly_income = { resource = alloys value < 500 } } }
+	}
+
+	ai_resource_production = {
+		alloys = 8
+	}
+}
+
 # object = building:building_ehof_sm_forge_1; source = Gigastructural Engineering & More (4.4)::common\buildings\giga_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
 # staid_dataset_job_pressure = family:alloy_scaling jobs:600.0 roi2250:4336520.0 flags:has_ai_or_direct_output|has_build_cost|has_jobs|has_upkeep|uses_inline_script
 building_ehof_sm_forge_1 = {
@@ -875,6 +1274,1029 @@ building_ehof_sm_forge_1 = {
 	ai_resource_production = {
 		alloys = 6
 		giga_sr_sentient_metal = 1
+	}
+}
+
+# object = building:building_volcanic_forge_1; source = Stellaris vanilla::common\buildings\02_government_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:alloy_scaling jobs:400.0 roi2250:2885560.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep
+building_volcanic_forge_1 = {
+	base_buildtime = @b1_time
+	base_cap_amount = 1
+	category = government
+	building_sets = {
+		government
+		urban
+	}
+	potential = {
+		exists = owner
+		owner = { is_world_forger_empire = yes }
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_machine
+			is_planet_class = pc_hive
+			is_artificial = yes
+			AND = {
+				is_terraforming = yes
+				is_scripted_terraforming = no
+			}
+		}
+	}
+	allow = { num_uncleared_blockers = 0 }
+	destroy_trigger = {
+		OR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_machine
+			is_planet_class = pc_hive
+			AND = {
+				exists = owner
+				owner = { is_world_forger_empire = no }
+			}
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = { minerals = @b1_minerals }
+		upkeep = { energy = @b2_upkeep }
+	}
+
+	triggered_planet_modifier = {
+		potential = { owner = { is_gestalt = no } }
+		job_polytechnic_mentor_add = @building_static_jobs
+	}
+	triggered_planet_modifier = {
+		potential = { owner = { is_gestalt = yes } }
+		job_polytechnic_drone_add = @building_static_jobs
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_polytechnic_mentor_effect
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_polytechnic_drone_effect
+	}
+	triggered_desc = {
+		text = building_volcanic_forge_1_effect
+	}
+	auto_generate_description = no
+
+	on_destroy = {
+		carrier_event = { id = infernals.32 }
+	}
+
+	prerequisites = { "tech_volcanic_forge" }
+	upgrades = { building_volcanic_forge_2 }
+	ai_weight_coefficient = 26
+	additional_ai_weight = 5138
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { has_monthly_income = { resource = alloys value < 500 } } }
+	}
+
+	ai_resource_production = {
+		alloys = 4
+	}
+}
+
+# object = building:building_xeno_zoo; source = Stellaris vanilla::common\buildings\10_deposit_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:research_scaling jobs:1400.0 roi2250:10097400.0 flags:ai_weight_absent|has_jobs|has_upkeep|uses_inline_script
+building_xeno_zoo = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+	category = research
+
+	building_sets = {
+		urban
+		research
+		society
+		zoo
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			is_guided_sapience_empire = no
+		}
+		colony = {
+			OR = {
+				has_modifier = resort_colony
+				OR = {
+					has_deposit = d_alien_pets_deposit
+					has_deposit = d_avian_reserve
+					AND = {
+						exists = owner
+						owner = { has_policy_flag = pre_sapients_protect }
+						any_owned_pop_group = {
+							is_sapient = no
+						}
+					}
+					AND = {
+						exists = owner
+						any_owned_pop_group = {
+							has_citizenship_type = {
+								type = citizenship_protected_drone
+								country = owner
+							}
+						}
+					}
+					any_owned_pop_group = {
+						is_livestock = yes
+					}
+					AND = {
+						exists = owner
+						any_owned_pop_group = {
+							has_trait = trait_nascent_stage
+						}
+					}
+				}
+			}
+		}
+	}
+
+	destroy_trigger = {
+		OR = {
+			AND = {
+				exists = owner
+				owner = {
+					OR = {
+						is_regular_empire = no
+						is_guided_sapience_empire = yes
+					}
+				}
+			}
+			planet = {
+				NOR = {
+					has_modifier = resort_colony
+					has_deposit = d_alien_pets_deposit
+					has_deposit = d_avian_reserve
+					AND = {
+						exists = owner
+						owner = { has_policy_flag = pre_sapients_protect }
+						any_owned_pop_group = {
+							is_sapient = no
+						}
+					}
+					AND = {
+						exists = owner
+						any_owned_pop_group = {
+							has_citizenship_type = {
+								type = citizenship_protected_drone
+								country = owner
+							}
+						}
+					}
+					any_owned_pop_group = {
+						is_livestock = yes
+					}
+					AND = {
+						exists = owner
+						any_owned_pop_group = {
+							has_trait = trait_nascent_stage
+						}
+					}
+				}
+			}
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = exotic_gases
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = @b1_upkeep
+		}
+	}
+
+	inline_script = {
+		script = jobs/biologists_add
+		AMOUNT = @building_static_jobs
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			has_modifier = resort_colony
+		}
+		modifier = {
+			job_biologist_add = @building_static_jobs
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			OR = {
+				any_owned_pop_group = {
+					is_livestock = yes
+					is_lithoid = no
+				}
+				any_owned_pop_group = {
+					has_citizenship_type = {
+						type = citizenship_protected_drone
+						country = owner
+					}
+				}
+			}
+			owner = {
+				NOT = { has_valid_civic = civic_warrior_culture }
+			}
+		}
+		modifier = {
+			job_livestock_zoo_animal_add = 300
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			planet = {
+				any_owned_pop_group = {
+					is_livestock = yes
+					is_lithoid = yes
+				}
+			}
+			exists = owner
+			owner = {
+				NOT = { has_valid_civic = civic_warrior_culture }
+			}
+		}
+		modifier = {
+			job_livestock_zoo_animal_lithoid_add = 300
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			OR = {
+				any_owned_pop_group = {
+					is_livestock = yes
+					is_lithoid = no
+				}
+				any_owned_pop_group = {
+					has_citizenship_type = {
+						type = citizenship_protected_drone
+						country = owner
+					}
+				}
+			}
+			owner = {
+				has_valid_civic = civic_warrior_culture
+			}
+		}
+		modifier = {
+			job_livestock_zoo_beast_add = 300
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			planet = {
+				any_owned_pop_group = {
+					is_livestock = no
+					is_lithoid = yes
+				}
+			}
+			exists = owner
+			owner = {
+				has_valid_civic = civic_warrior_culture
+			}
+		}
+		modifier = {
+			job_livestock_zoo_beast_lithoid_add = 300
+		}
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				NOT = { has_valid_civic = civic_warrior_culture }
+			}
+		}
+		text = pre_sapient_job_xeno_zoo_animal_tt
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_warrior_culture
+			}
+		}
+		text = pre_sapient_job_xeno_zoo_beast_tt
+	}
+
+	triggered_desc = {
+		text = biologist_is_xeno_zoo_keeper_tt
+	}
+
+	triggered_desc = {
+		text = NEW_LINE
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				NOT = { has_valid_civic = civic_warrior_culture }
+			}
+		}
+		text = job_xeno_zoo_animal_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				has_valid_civic = civic_warrior_culture
+			}
+		}
+		text = job_xeno_zoo_beast_effect_desc
+	}
+
+	prerequisites = {
+		"tech_alien_life_studies"
+	}
+	ai_weight_coefficient = 28
+	additional_ai_weight = 13301
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { staid_research_under_curve = yes } }
+	}
+
+	ai_resource_production = {
+		engineering_research = 14
+		physics_research = 14
+		society_research = 14
+	}
+}
+
+# object = building:building_giga_research_lab_2; source = Gigastructural Engineering & More (4.4)::common\buildings\giga_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:research_scaling jobs:600.0 roi2250:4293900.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep|uses_inline_script
+building_giga_research_lab_2 = {
+	base_buildtime = @b4_time
+	can_build = no
+
+	category = research
+
+	allow = {
+		has_major_upgraded_capital = yes
+	}
+
+	building_sets = {
+		research
+	}
+
+	potential = {
+		owner = { is_wilderness_empire = no }
+		is_special_colony_type = no
+	}
+
+	destroy_trigger = {
+		is_special_colony_type = yes
+	}
+
+	inline_script = {
+		script = jobs/researchers_add
+		AMOUNT = 1000
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_galactic_community_member = yes
+			}
+			is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+			has_modifier = pm_extradimensional_experimentation
+		}
+		modifier = {
+			job_dimensional_portal_researcher_add = 300
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				is_galactic_community_member = yes
+			}
+			is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+			has_modifier = pm_extradimensional_experimentation
+		}
+		modifier = {
+			job_dimensional_portal_researcher_gestalt_add = 300
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = @b4_minerals
+			exotic_gases = @b4_rare_cost
+			#rare_crystals = 100
+			#volatile_motes = 50
+		}
+		upkeep = {
+			energy = @b4_upkeep
+			exotic_gases = @b4_rare_upkeep
+		}
+		upkeep = {
+			trigger = {
+				owner = {
+					is_galactic_community_member = yes
+				}
+				is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+				planet = {
+					has_modifier = pm_extradimensional_experimentation
+				}
+			}
+			sr_zro = 1
+		}
+	}
+
+	show_tech_unlock_if = {
+		is_wilderness_empire = no
+	}
+
+	prerequisites = {
+		"tech_non_local_r_i"
+	}
+	ai_weight_coefficient = 27
+	additional_ai_weight = 6790
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { staid_research_under_curve = yes } }
+	}
+
+	ai_resource_production = {
+		engineering_research = 6
+		physics_research = 6
+		society_research = 6
+	}
+}
+
+# object = building:building_stone_palace; source = Stellaris vanilla::common\buildings\11_primitive_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:research_scaling jobs:400.0 roi2250:2905200.0 flags:ai_weight_absent|has_jobs
+building_stone_palace = {
+	capital = yes
+	can_build = no
+	can_demolish = yes
+	can_be_ruined = no
+	position_priority = 0
+	capital_tier = 0
+
+	category = government
+
+	building_sets = {
+		pre_ftl
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			is_primitive = yes
+			is_hive_empire = no
+			OR = {
+				has_country_flag = bronze_age
+				has_country_flag = iron_age
+				has_country_flag = late_medieval_age
+				has_country_flag = renaissance_age
+				has_country_flag = steam_age
+			}
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_primitive = no
+				is_hive_empire = yes
+			}
+		}
+	}
+
+	convert_to = {
+		building_hive_capital
+		building_machine_capital
+		building_colony_shelter
+		building_hab_capital
+		building_hab_fe_capital
+		building_colony_shelter_wilderness
+	}
+
+	planet_modifier = {
+		job_primitive_noble_add = 100
+		job_primitive_warrior_add = 100
+		job_primitive_researcher_add = 100
+		job_primitive_priest_add = 100
+		planet_housing_add = 300
+		planet_amenities_add = 2500
+		planet_crime_add = -10
+	}
+
+	upgrades = {
+	}
+	ai_weight_coefficient = 26
+	additional_ai_weight = 5139
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { staid_research_under_curve = yes } }
+	}
+
+	ai_resource_production = {
+		engineering_research = 4
+		physics_research = 4
+		society_research = 4
+	}
+}
+
+# object = building:building_pre_ftl_radio_telescope; source = Stellaris vanilla::common\buildings\11_primitive_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:research_scaling jobs:400.0 roi2250:2887200.0 flags:ai_weight_absent|has_jobs
+building_pre_ftl_radio_telescope = {
+	can_build = no
+	can_demolish = yes
+	can_be_ruined = no
+	planet_limit = 1
+
+	category = research
+
+	building_sets = {
+		pre_ftl
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			is_primitive = yes
+			OR = {
+				has_country_flag = atomic_age
+				has_country_flag = early_space_age
+			}
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			is_primitive = no
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+
+		job_primitive_researcher_2_add = 200
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+
+		job_primitive_hive_brain_drone_add = 200
+
+	}
+
+	triggered_desc = {
+		text = awareness_gain_desc
+	}
+	ai_weight_coefficient = 26
+	additional_ai_weight = 5138
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { staid_research_under_curve = yes } }
+	}
+
+	ai_resource_production = {
+		engineering_research = 4
+		physics_research = 4
+		society_research = 4
+	}
+}
+
+# object = building:building_giga_research_lab_1; source = Gigastructural Engineering & More (4.4)::common\buildings\giga_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:research_scaling jobs:400.0 roi2250:2859410.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep|uses_inline_script
+building_giga_research_lab_1 = {
+	base_buildtime = @b4_time
+	base_cap_amount = 1
+
+	category = research
+
+	allow = {
+		has_major_upgraded_capital = yes
+	}
+
+	building_sets = {
+		research
+	}
+
+
+	potential = {
+		owner = { is_wilderness_empire = no }
+		is_special_colony_type = no
+	}
+
+	destroy_trigger = {
+		is_special_colony_type = yes
+	}
+
+	upgrades = {
+		"building_giga_research_lab_2"
+	}
+
+	inline_script = {
+		script = jobs/researchers_add
+		AMOUNT = 800
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_regular_empire = yes
+				is_galactic_community_member = yes
+			}
+			is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+			has_modifier = pm_extradimensional_experimentation
+		}
+		modifier = {
+			job_dimensional_portal_researcher_add = 200
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				is_galactic_community_member = yes
+			}
+			is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+			has_modifier = pm_extradimensional_experimentation
+		}
+		modifier = {
+			job_dimensional_portal_researcher_gestalt_add = 200
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		cost = {
+			minerals = 1400
+			exotic_gases =150
+			#rare_crystals = 50
+		}
+		upkeep = {
+			energy = 9
+			exotic_gases = 3
+		}
+		upkeep = {
+			trigger = {
+				owner = {
+					is_galactic_community_member = yes
+				}
+				is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+				planet = {
+					has_modifier = pm_extradimensional_experimentation
+				}
+			}
+			sr_zro = 1
+		}
+	}
+
+	show_tech_unlock_if = {
+		is_wilderness_empire = no
+	}
+
+	prerequisites = {
+		"tech_u_r_e_t"
+	}
+	ai_weight_coefficient = 26
+	additional_ai_weight = 5137
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { staid_research_under_curve = yes } }
+	}
+
+	ai_resource_production = {
+		engineering_research = 4
+		physics_research = 4
+		society_research = 4
+	}
+}
+
+# object = building:building_ranger_lodge; source = Stellaris vanilla::common\buildings\05_research_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:research_scaling jobs:300.0 roi2250:2164500.0 flags:ai_weight_absent|has_ai_or_direct_output|has_jobs|has_upkeep|uses_inline_script
+building_ranger_lodge = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+	icon = holding_park_ranger_lodge
+
+	category = research
+
+	building_sets = {
+		research
+		society
+	}
+
+	potential = {
+		NOT = {	has_modifier = slave_colony	}
+		owner = {
+			is_regular_empire = yes
+			has_valid_civic = civic_environmentalist
+		}
+		NOR = {
+			is_planet_class = pc_city
+			is_planet_class = pc_hive
+			is_planet_class = pc_machine
+			is_planet_class = pc_relic
+		}
+		is_artificial = no
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = no_free_district_for_ranger_lodge
+			planet = {
+				num_free_districts = {
+					type = any
+					value > 0
+				}
+			}
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { is_regular_empire = no }
+			has_modifier = slave_colony
+			owner = { NOT = { has_valid_civic = civic_environmentalist } }
+			is_planet_class = pc_city
+			is_planet_class = pc_hive
+			is_planet_class = pc_machine
+			is_planet_class = pc_relic
+		}
+	}
+
+
+
+
+
+	planet_modifier = {
+		job_biologist_add = 100 # 100 Rangers no matter what
+		deposit_blockers_natural_unity_produces_add = 1.0
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			always = yes
+		}
+		job_biologist_add = 100 # +100 Rangers per natural blocker
+		mult = value:natural_blocker_count
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner_has_resolution = { RES = resolution_ecology_paradise_initiative }
+		}
+		job_biologist_add = 100 # +100 Rangers per natural blocker if GalCom approves
+		mult = value:natural_blocker_count
+	}
+
+
+	triggered_planet_modifier = {
+		potential = { owner_has_resolution = { RES = resolution_ecology_integrated_gardens } }
+		deposit_blockers_natural_unity_produces_add = 0.5
+	}
+
+	triggered_planet_modifier = {
+		potential = { owner_has_resolution = { RES = resolution_ecology_environmental_control_board } }
+		deposit_blockers_natural_unity_produces_add = 1.0
+	}
+
+	triggered_planet_modifier = {
+		potential = { owner_has_resolution = { RES = resolution_ecology_paradise_initiative } }
+		deposit_blockers_natural_unity_produces_add = 1.5
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = exotic_gases
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = @b1_upkeep
+		}
+	}
+
+	triggered_desc = {
+		text = biologist_is_ranger_tt
+	}
+
+	on_built = {
+		planet = {
+			add_blocker = { type = d_big_nature_preserve_blocker }
+		}
+	}
+
+	on_destroy = {
+		planet = {
+			if = {
+				limit = { has_deposit = d_big_nature_preserve_blocker }
+				every_deposit = {
+					limit = {
+						is_deposit_type = d_big_nature_preserve_blocker
+					}
+					remove_deposit = yes
+				}
+			}
+		}
+	}
+	ai_weight_coefficient = 25
+	additional_ai_weight = 4301
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { staid_research_under_curve = yes } }
+	}
+
+	ai_resource_production = {
+		engineering_research = 3
+		physics_research = 3
+		society_research = 3
+		unity = 2
+	}
+}
+
+# object = building:building_carceral_test_facility; source = Stellaris vanilla::common\buildings\14_branch_office_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:research_scaling jobs:50.0 roi2250:365400.0 flags:has_ai_or_direct_output|has_jobs|has_upkeep|uses_inline_script
+building_carceral_test_facility = {
+	base_buildtime = @b2_time
+	base_cap_amount = 1
+	owner_type = corporate
+	category = research
+
+	potential = {
+		has_branch_office = yes
+		branch_office_owner = {
+			has_valid_civic = civic_twisted_experimenters_corporate
+		}
+	}
+
+	planet_modifier = {
+		job_slave_orderly_add = 50
+	}
+
+	inline_script = {
+		script = jobs/enforcers_add
+		AMOUNT = 100
+	}
+
+	resources = {
+		category = planet_branch_office_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = exotic_gases
+			COST = @b3_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		produces = {
+			physics_research = 1
+			engineering_research = 1
+			society_research = 1
+			multiplier = planet.value:carceral_test_facility_research_output
+		}
+		upkeep = {
+			energy = 3
+		}
+	}
+
+	ai_weight = {
+		weight = 10
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { staid_research_under_curve = yes } }
+	}
+	ai_weight_coefficient = 22
+	additional_ai_weight = 2069
+
+	ai_resource_production = {
+		engineering_research = 1
+		physics_research = 1
+		society_research = 1
 	}
 }
 
@@ -1619,6 +3041,103 @@ building_waste_reprocessing_center = {
 	}
 }
 
+# object = building:building_augmentation_bazaars; source = Stellaris vanilla::common\buildings\20_machine_age_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:energy_scaling jobs:100.0 roi2250:724500.0 flags:ai_weight_absent|has_ai_or_direct_output|has_jobs|has_upkeep|uses_inline_script
+building_augmentation_bazaars = {
+	base_buildtime = @b2_time
+	planet_limit = 1
+
+	category = trade
+
+	building_sets = {
+		government
+		urban
+		trade
+	}
+
+	potential = {
+		exists = owner
+		owner = { has_valid_civic = civic_augmentation_bazaars }
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
+	}
+
+	allow = {
+		always = yes
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = { is_regular_empire = no }
+			has_modifier = slave_colony
+			has_modifier = resort_colony
+		}
+	}
+
+
+	planet_modifier = {
+		job_augmentor_add = 100
+	}
+
+	inline_script = {
+		script = "jobs/politician_add"
+		AMOUNT = @building_static_jobs
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_tradition = tr_cybernetics_integrated_anatomy
+			}
+			any_owned_pop_group = {
+				has_auto_modding_trait = yes
+			}
+		}
+		modifier = {
+			auto_mod_monthly_add = 200
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b2_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = @b2_upkeep
+		}
+	}
+
+
+	ai_weight_coefficient = 23
+	additional_ai_weight = 2558
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+		modifier = { factor = 8 owner = { has_monthly_income = { resource = energy value < 500 } } }
+	}
+
+	ai_resource_production = {
+		energy = 8
+	}
+}
+
 # object = building:building_giga_iodizium_mines; source = Gigastructural Engineering & More (4.4)::common\buildings\giga_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
 # staid_dataset_job_pressure = family:mineral_scaling jobs:200.0 roi2250:1446830.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep|uses_inline_script
 building_giga_iodizium_mines = {
@@ -2008,6 +3527,97 @@ building_giga_matter_synthesizer = {
 		modifier = {
 			job_matter_synthesizer_drone_add = 600
 		}
+	}
+	ai_weight_coefficient = 28
+	additional_ai_weight = 11681
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+
+	ai_resource_production = {
+		energy = 12
+		minerals = 12
+	}
+}
+
+# object = building:building_navel_command; source = Planetary Diversity - More Arcologies::common\buildings\pd_arc_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:1200.0 roi2250:8641690.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep
+building_navel_command = {
+	base_buildtime = @b1_time
+	can_build = no
+	planetary_ftl_inhibitor = yes
+	position_priority = 75
+	icon = holding_overlord_garrison
+	category = army
+
+	building_sets = {
+		government
+		fortress
+	}
+
+	allow = {
+		has_upgraded_capital = yes
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_pd_naval_admin_add = 600
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_pd_naval_admin_gestalt_add = 600
+		}
+	}
+
+	resources = {
+		category = planet_buildings_strongholds
+		cost = {
+			minerals = @b2_minerals
+			volatile_motes = @b2_rare_cost
+		}
+		upkeep = {
+			energy = 1
+			volatile_motes = @b2_rare_upkeep
+		}
+	}
+
+	prerequisites = {
+		"tech_global_defense_grid"
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_pd_naval_admin_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_pd_naval_admin_gestalt_effect_desc
 	}
 	ai_weight_coefficient = 28
 	additional_ai_weight = 11681
@@ -2449,6 +4059,105 @@ building_giga_matrioshka_brain_uplink_anti_deviancy = {
 	}
 }
 
+# object = building:building_navel_base; source = Planetary Diversity - More Arcologies::common\buildings\pd_arc_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:600.0 roi2250:4326760.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep
+building_navel_base = {
+	base_buildtime = 240
+	position_priority = 75
+	icon = holding_recruitment_office
+	base_cap_amount = 1
+	category = army
+
+	building_sets = {
+		government
+		fortress
+	}
+
+	exempt_from_ai_planet_specialization = no
+
+	potential = {
+		exists = owner
+		NOR = {
+			has_modifier = slave_colony
+			has_modifier = resort_colony
+			has_modifier = penal_colony
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		modifier = {
+			job_pd_naval_admin_add = 300
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		modifier = {
+			job_pd_naval_admin_gestalt_add = 300
+		}
+	}
+
+	resources = {
+		category = planet_buildings_strongholds
+		cost = {
+			minerals = @b1_minerals
+		}
+		upkeep = {
+			energy = 1
+		}
+	}
+
+	prerequisites = {
+		"tech_planetary_defenses"
+	}
+
+	upgrades = {
+		"building_navel_command"
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = no }
+		}
+		text = job_pd_naval_admin_effect_desc
+	}
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = { is_gestalt = yes }
+		}
+		text = job_pd_naval_admin_gestalt_effect_desc
+	}
+	ai_weight_coefficient = 27
+	additional_ai_weight = 6791
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+
+	ai_resource_production = {
+		energy = 6
+		minerals = 6
+	}
+}
+
 # object = building:building_deployment_post; source = Stellaris vanilla::common\buildings\00_capital_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
 # staid_dataset_job_pressure = family:general_job_pressure jobs:500.0 roi2250:3621300.0 flags:ai_weight_absent|has_jobs|has_upkeep|uses_inline_script
 building_deployment_post = {
@@ -2862,6 +4571,92 @@ building_giga_fe_stronghold = {
 	}
 }
 
+# object = building:building_hive_stone_palace; source = Stellaris vanilla::common\buildings\11_primitive_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:400.0 roi2250:2905200.0 flags:ai_weight_absent|has_jobs
+building_hive_stone_palace = {
+	icon = building_stone_palace
+	capital = yes
+	can_build = no
+	can_demolish = yes
+	can_be_ruined = no
+	position_priority = 0
+	capital_tier = 0
+
+	category = government
+
+	building_sets = {
+		pre_ftl
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			is_primitive = yes
+			is_hive_empire = yes
+			OR = {
+				has_country_flag = bronze_age
+				has_country_flag = iron_age
+				has_country_flag = late_medieval_age
+				has_country_flag = renaissance_age
+				has_country_flag = steam_age
+			}
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_primitive = no
+				is_hive_empire = no
+			}
+		}
+	}
+
+	convert_to = {
+		building_hive_capital
+		building_machine_capital
+		building_colony_shelter
+		building_hab_capital
+		building_hab_fe_capital
+		building_colony_shelter_wilderness
+	}
+
+	planet_modifier = {
+		job_primitive_hive_synapse_drone_add = 100
+		job_primitive_hive_warrior_add = 100
+		job_primitive_hive_cerebellum_drone_add = 100
+		job_primitive_hive_spawning_drone_add = 100
+		planet_housing_add = 300
+		planet_amenities_no_happiness_add = 2500
+		planet_crime_no_happiness_add = -10
+	}
+
+	upgrades = {
+	}
+	ai_weight_coefficient = 26
+	additional_ai_weight = 5139
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+
+	ai_resource_production = {
+		energy = 4
+		minerals = 4
+	}
+}
+
 # object = building:building_offworld_expedition_hub; source = Stellaris vanilla::common\buildings\04_manufacturing_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
 # staid_dataset_job_pressure = family:general_job_pressure jobs:400.0 roi2250:2885700.0 flags:ai_weight_absent|has_jobs|has_upkeep|uses_inline_script
 building_offworld_expedition_hub = {
@@ -3085,6 +4880,72 @@ building_citadel_uplink = {
 			}
 		}
 		text = job_skywatcher_drone_add_dsc_tt
+	}
+	ai_weight_coefficient = 26
+	additional_ai_weight = 5138
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+
+	ai_resource_production = {
+		energy = 4
+		minerals = 4
+	}
+}
+
+# object = building:building_order_castle; source = Stellaris vanilla::common\buildings\02_government_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:400.0 roi2250:2883600.0 flags:ai_weight_absent|has_jobs
+building_order_castle = {
+	icon = building_order_holding
+	base_buildtime = 180
+	can_demolish = no
+	can_be_disabled = no
+	can_build = no
+
+	category = government
+
+	building_sets = {
+		knights
+	}
+
+	destroy_trigger = {
+		OR = {
+			NOT = { exists = owner }
+			NOT = { owner = { has_origin = origin_toxic_knights } }
+		}
+	}
+
+	planet_modifier = {
+		job_knight_add = @building_static_jobs
+		planet_resettlement_unemployed_destination_mult = 0.2
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			owner = { NOT = { has_country_flag = quest_over } }
+		}
+		modifier = {
+			job_knight_add = @building_static_jobs
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+	}
+
+	triggered_desc = {
+		text = building_order_keep_effect
 	}
 	ai_weight_coefficient = 26
 	additional_ai_weight = 5138
@@ -3754,6 +5615,360 @@ building_necrophage_elevation_chamber = {
 	}
 }
 
+# object = building:building_subversive_shrine; source = Stellaris vanilla::common\buildings\14_branch_office_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:200.0 roi2250:1450185.0 flags:has_ai_or_direct_output|has_build_cost|has_jobs|has_upkeep|uses_inline_script
+building_subversive_shrine = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+	owner_type = corporate
+
+	category = unity
+
+	potential = {
+		has_branch_office = yes
+		branch_office_owner = {
+			has_valid_civic = civic_gospel_of_the_masses
+			is_illegal_criminal = yes
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			always = yes
+		}
+		job_bureaucrat_add = 200
+		pop_ethic_spiritualist_attraction_mult = 0.25
+	}
+
+	custom_tooltip = branch_office_building_trade_bonus
+
+	triggered_planet_modifier = {
+		planet_crime_add = 25
+		mult = branch_office_owner.value:scripted_modifier_mult|MODIFIER|branch_office_holding_crime_mult|
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			branch_office_owner = {
+				has_councilor = { COUNCILOR = "councilor_gospel_of_the_masses" }
+			}
+		}
+		pop_ethics_shift_speed_mult = 0.05
+		mult = value:councilor_level|TYPE|councilor_gospel_of_the_masses|
+	}
+
+	resources = {
+		category = planet_branch_office_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = 500
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		cost = {
+			influence = 30
+		}
+		cost = {
+			trigger = {
+				owner = {
+					is_megacorp = yes
+				}
+			}
+			influence = 30
+		}
+		produces = {
+			unity = 6
+			mult = value:branch_office_value_for_buildings
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+	ai_weight = {
+		weight = 250
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+	ai_weight_coefficient = 25
+	additional_ai_weight = 3448
+
+	ai_resource_production = {
+		energy = 2
+		minerals = 2
+		unity = 6
+	}
+}
+
+# object = building:building_genomic_facility; source = Stellaris vanilla::common\buildings\22_biogenesis_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:200.0 roi2250:1448400.0 flags:ai_weight_absent|has_jobs|has_upkeep|uses_inline_script
+building_genomic_facility = {
+	base_buildtime = @b3_time
+	category = amenity
+	planet_limit = 1
+
+	building_sets = {
+		government
+		research
+		society
+	}
+
+	potential = {
+		owner = {
+			has_country_flag = genomic_research_facility_unlocked
+			is_wilderness_empire = no
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			NOT = {
+				has_country_flag = genomic_research_facility_unlocked
+			}
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = exotic_gases
+			COST = @b3_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = @b3_upkeep
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { is_regular_empire = yes }
+		}
+		job_healthcare_add = @building_static_jobs
+	}
+
+	inline_script = {
+		script = jobs/spawning_drone_add
+		AMOUNT = @building_static_jobs
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_technology = tech_gene_tailoring
+			}
+			any_owned_pop_group = {
+				has_auto_modding_trait = yes
+			}
+		}
+		auto_mod_monthly_add = 200
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				game_start_auto_mod_empire = yes
+			}
+			any_owned_pop_group = {
+				has_auto_modding_trait = yes
+			}
+		}
+		auto_mod_monthly_add = 200
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = purity_unlock_level_1
+			}
+		}
+		logistic_growth_mult = @genomic_purity_growth
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = mutation_unlock_level_1
+			}
+		}
+		pop_environment_tolerance = @genomic_mutation_habitability
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cloning_unlock_level_1
+			}
+		}
+		fake_pop_growth_mod = @genomic_cloning_assembly
+	}
+
+	triggered_planet_pop_group_modifier_for_all = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cloning_unlock_level_1
+			}
+		}
+		bonus_pop_growth = @genomic_cloning_assembly
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cloning_unlock_level_2
+				is_gestalt = no
+			}
+		}
+		planet_amenities_add = @genomic_cloning_amenities
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = cloning_unlock_level_2
+				is_gestalt = yes
+			}
+		}
+		planet_amenities_no_happiness_add = @genomic_cloning_amenities
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = mutation_unlock_level_2
+			}
+		}
+		auto_mod_monthly_add = @genomic_mutation_auto_mod
+	}
+
+	triggered_planet_pop_group_modifier_for_all = {
+		potential = {
+			exists = owner
+			owner = {
+				has_cloning_genomic_growth_tradition = yes
+			}
+		}
+		bonus_pop_growth = @genomic_cloning_assembly
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_cloning_genomic_growth_tradition = yes
+			}
+		}
+		fake_pop_growth_mod = @genomic_cloning_assembly
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_country_flag = clone_army_full_potential
+				has_genetic_stage_1_tradition = yes
+			}
+		}
+		clone_soldiers_sustained = @clones_sustained_basic
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_purity_heightened_attributes_tradition = yes
+			}
+		}
+		organic_pop_bonus_workforce_mult = @genomic_workforce_mult
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+			}
+		}
+		text = healthcare_is_genomic_researcher_tt
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+			}
+		}
+		text = spawning_is_genomic_researcher_tt
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = no
+				has_completed_genetic_situation = no
+			}
+		}
+		text = job_genomic_researcher_situation_effect_desc
+	}
+
+	triggered_desc = {
+		trigger = {
+			exists = owner
+			owner = {
+				is_gestalt = yes
+				has_completed_genetic_situation = no
+			}
+		}
+		text = job_genomic_drone_situation_effect_desc
+	}
+
+	is_essential = yes
+	ai_weight_coefficient = 25
+	additional_ai_weight = 3448
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+
+	ai_resource_production = {
+		energy = 2
+		minerals = 2
+	}
+}
+
 # object = building:building_overseer_homes; source = Stellaris vanilla::common\buildings\07_amenity_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
 # staid_dataset_job_pressure = family:general_job_pressure jobs:200.0 roi2250:1446900.0 flags:ai_weight_absent|has_jobs|has_upkeep|uses_inline_script
 building_overseer_homes = {
@@ -3954,6 +6169,97 @@ building_giga_habitat_zro_harvester = {
 	ai_resource_production = {
 		energy = 2
 		minerals = 2
+	}
+}
+
+# object = building:building_temple_of_prosperity; source = Stellaris vanilla::common\buildings\14_branch_office_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:200.0 roi2250:1446595.0 flags:has_ai_or_direct_output|has_build_cost|has_jobs|has_upkeep|uses_inline_script
+building_temple_of_prosperity = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+
+	owner_type = corporate
+
+	category = unity
+
+	potential = {
+		has_branch_office = yes
+		branch_office_owner = {
+			has_valid_civic = civic_gospel_of_the_masses
+			is_legit_or_legal_criminal = yes
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			always = yes
+		}
+		job_bureaucrat_add = 200
+		pop_ethic_spiritualist_attraction_mult = 0.5
+	}
+
+	custom_tooltip = branch_office_building_trade_bonus
+
+	triggered_planet_modifier = {
+		potential = {
+			branch_office_owner = {
+				has_councilor = { COUNCILOR = "councilor_gospel_of_the_masses" }
+			}
+		}
+		pop_ethics_shift_speed_mult = 0.05
+		mult = value:branch_office_councilor_level|TYPE|councilor_gospel_of_the_masses|
+	}
+
+	resources = {
+		category = planet_branch_office_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = 500
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		cost = {
+			influence = 10
+		}
+		cost = {
+			trigger = {
+				owner = {
+					is_megacorp = yes
+				}
+			}
+			influence = 10
+		}
+		produces = {
+			unity = 6
+			mult = value:branch_office_value_for_buildings
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+
+	ai_weight = {
+		weight = 250
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+	ai_weight_coefficient = 25
+	additional_ai_weight = 3448
+
+	ai_resource_production = {
+		energy = 2
+		minerals = 2
+		unity = 6
 	}
 }
 
@@ -4319,6 +6625,114 @@ building_tendril_cradle_2 = {
 	}
 }
 
+# object = building:building_transcendental_retreat; source = Stellaris vanilla::common\buildings\20_machine_age_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:100.0 roi2250:728400.0 flags:ai_weight_absent|has_jobs|has_upkeep|uses_inline_script
+building_transcendental_retreat = {
+	base_buildtime = @b2_time
+	planet_limit = 1
+
+	category = pop_assembly
+
+	building_sets = {
+		government
+		urban
+		research
+		society
+	}
+
+	potential = {
+		exists = owner
+		owner = { has_valid_civic = civic_natural_design }
+		NOT = { has_modifier = resort_colony }
+		NOT = { has_modifier = slave_colony }
+	}
+
+	allow = {
+		always = yes
+	}
+
+	destroy_trigger = {
+		exists = owner
+		OR = {
+			owner = {
+				NOT = {
+					has_valid_civic = civic_natural_design
+				}
+			}
+			has_modifier = slave_colony
+			has_modifier = resort_colony
+		}
+	}
+
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+		}
+		logistic_growth_mult = 0.025
+		planet_doctors_unity_produces_add = 1
+		mult = owner.value:transcendental_growth
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			always = yes
+		}
+		planet_jobs_produces_mult = 0.1
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			always = yes
+		}
+		modifier = {
+			job_healthcare_add = 100
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b3_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = @b3_upkeep
+		}
+	}
+
+	triggered_desc = {
+		text = natural_design_ascension_bonus
+	}
+
+	prerequisites = {}
+	ai_weight_coefficient = 23
+	additional_ai_weight = 2559
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+
+	ai_resource_production = {
+		energy = 1
+		minerals = 1
+		unity = 1
+	}
+}
+
 # object = building:building_giga_siegfried_global_bunker; source = Gigastructural Engineering & More (4.4)::common\buildings\giga_flusion_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
 # staid_dataset_job_pressure = family:general_job_pressure jobs:100.0 roi2250:723600.0 flags:ai_weight_absent|has_jobs
 building_giga_siegfried_global_bunker = {
@@ -4527,6 +6941,116 @@ building_tendril_cradle_1 = {
 	ai_estimate_without_unemployment = yes
 	ai_weight_coefficient = 23
 	additional_ai_weight = 2558
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }
+		modifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }
+		modifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }
+		modifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }
+		modifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }
+		modifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }
+		modifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }
+		modifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }
+		modifier = { factor = 3 years_passed > 79 }
+		modifier = { factor = 5 years_passed > 119 }
+	}
+
+	ai_resource_production = {
+		energy = 1
+		minerals = 1
+	}
+}
+
+# object = building:building_bureaucratic_3; source = Stellaris vanilla::common\buildings\08_unity_buildings.txt; consumer_policy = conditional:gated_scorable_with_conditions
+# staid_dataset_job_pressure = family:general_job_pressure jobs:100.0 roi2250:711200.0 flags:ai_weight_absent|has_build_cost|has_jobs|has_upkeep|uses_inline_script
+building_bureaucratic_3 = {
+	base_buildtime = @b3_time
+	planet_limit = 1
+	category = unity
+
+	building_sets = {
+		unity
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			is_regular_empire = yes
+			is_spiritualist = no
+			has_make_spiritualist_perk = no
+		}
+		NOR = {
+			has_modifier = slave_colony
+			has_modifier = resort_colony
+		}
+	}
+
+	allow = {
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_regular_empire = no
+				is_spiritualist = yes
+				has_make_spiritualist_perk = yes
+			}
+		}
+	}
+
+	convert_to = {
+		building_sacred_nexus
+		building_hive_confluence
+		building_system_conflux
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b3_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		cost = {
+			rare_crystals = @b3_rare_cost
+		}
+		upkeep = {
+			energy = @b3_upkeep
+			rare_crystals = @b3_rare_upkeep
+		}
+	}
+
+	planet_modifier = {
+		pop_bureaucrat_bonus_workforce_mult = 0.10
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner.federation
+			owner = {
+				federation = {
+					has_federation_perk = all_the_priests_2
+				}
+			}
+		}
+		job_politician_add = @building_static_jobs_low
+	}
+
+	prerequisites = {
+		"tech_galactic_bureaucracy"
+	}
+
+	show_tech_unlock_if = {
+		is_regular_empire = yes
+		is_spiritualist = no
+		has_make_spiritualist_perk = no
+	}
+	ai_weight_coefficient = 23
+	additional_ai_weight = 2556
 	ai_weight = {
 		factor = 1
 		modifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }

@@ -28,9 +28,11 @@ from stellar_ai_director_lib import (
     build_active_playset_snapshot,
     compact_list,
     collect_global_variables,
+    collect_variables,
     iter_assignments,
     iter_text_files,
     parse_file,
+    read_text,
     write_csv,
     write_text_file,
 )
@@ -74,6 +76,18 @@ SUPPORT_KEYS = (
     "giga_sr_sentient_metal",
 )
 UPKEEP_MULT_KEYS = ("planet_researchers_upkeep_mult",)
+SOURCE_BACKED_STALE_NO_EFFECT_JOB_IDS = {
+    "job_brain_drone",
+    "job_calculator",
+    "job_giga_interstellar_researcher",
+    "job_giga_interstellar_researcher_drone",
+    "job_giga_interstellar_scavenger",
+    "job_giga_interstellar_scavenger_drone",
+}
+SOURCE_BACKED_EXTERNAL_ACOT_JOB_IDS = {
+    "job_giga_megaengineering_overseer_acot_alpha",
+    "job_giga_megaengineering_overseer_drone_acot_alpha",
+}
 ROLE_TARGETS = {
     "research_world": ("physics_research", "society_research", "engineering_research"),
     "forge_world": ("alloys",),
@@ -236,6 +250,34 @@ def net_amounts(output: dict[str, float], upkeep: dict[str, float]) -> dict[str,
     net = dict(output)
     add_amounts(net, upkeep, -1.0)
     return net
+
+
+def source_file_variables(row: dict[str, Any], global_variables: dict[str, float], cache: dict[str, dict[str, float]]) -> dict[str, float]:
+    source_file = str(row.get("source_file", ""))
+    if not source_file:
+        return global_variables
+    if source_file not in cache:
+        path = Path(source_file)
+        cache[source_file] = collect_variables(read_text(path)) if path.exists() else {}
+    if not cache[source_file]:
+        return global_variables
+    return {**global_variables, **cache[source_file]}
+
+
+def source_backed_job_exclusion(job_id: str, gates: dict[str, str], source_text: str = "") -> str:
+    gate_atoms = set(cell_items(str(gates.get("potential_allow_gate_atoms", "")).replace(";", "|")))
+    event_flags = set(cell_items(str(gates.get("event_flags", "")).replace(";", "|")))
+    if job_id in SOURCE_BACKED_STALE_NO_EFFECT_JOB_IDS:
+        return "source_orphan_no_pop_job_definition_modeled_zero_effect"
+    if (job_id.startswith("job_acot_") or job_id in SOURCE_BACKED_EXTERNAL_ACOT_JOB_IDS) and (
+        "acot_giga_void_sphere" in gate_atoms or "acot_giga_void_sphere" in source_text
+    ):
+        return "inactive_external_acot_integration_modeled_zero_effect"
+    if job_id.startswith("job_tc_") and (
+        "thaumstellaris_initialize" in gate_atoms or "thaumstellaris_initialize" in event_flags
+    ):
+        return "inactive_external_thaumstellaris_integration_modeled_zero_effect"
+    return ""
 
 
 def combined_amounts(*amounts: dict[str, float]) -> dict[str, float]:
@@ -530,6 +572,27 @@ def collect_winning_jobs(playset: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return winners
 
 
+def collect_scripted_modifier_keys(playset: dict[str, Any]) -> set[str]:
+    roots = _valuation_stack_roots(playset)
+    keys: set[str] = set()
+    for root_info in roots:
+        root = Path(root_info["root"])
+        folder = root / "common" / "scripted_modifiers"
+        if not folder.exists():
+            continue
+        for path in iter_text_files(folder):
+            try:
+                parsed = parse_file(path)
+            except PDXParseError:
+                continue
+            keys.update(
+                assignment.key
+                for assignment in block_assignments(parsed)
+                if not assignment.key.startswith("@")
+            )
+    return keys
+
+
 def direct_resource_blocks(
     value: PDXBlock, variables: dict[str, float]
 ) -> tuple[dict[str, float], dict[str, float], dict[str, float], dict[str, float], set[str]]:
@@ -605,9 +668,14 @@ def chain_for(building_id: str, upgrades: dict[str, list[str]]) -> list[str]:
     return chain
 
 
-def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+def collect_buildings(
+    playset: dict[str, Any],
+    jobs: dict[str, dict[str, Any]],
+    scripted_modifier_keys: set[str],
+) -> list[dict[str, Any]]:
     roots = _valuation_stack_roots(playset)
-    variables = collect_global_variables([Path(root["root"]) for root in roots])
+    global_variables = collect_global_variables([Path(root["root"]) for root in roots])
+    variable_cache: dict[str, dict[str, float]] = {}
     definitions = _collect_economic_definitions(playset)
     winners = _winning_economic_definitions(definitions)
     upgrades = {
@@ -620,12 +688,25 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
         if object_type != "building" or not isinstance(row.get("value"), PDXBlock):
             continue
         value = row["value"]
-        jobs_created, missing_jobs = _collect_job_adds(value, variables)
+        variables = source_file_variables(row, global_variables, variable_cache)
+        jobs_created, missing_jobs = _collect_job_adds(value, variables, scripted_modifier_keys)
         direct_output, direct_triggered_output, direct_upkeep, direct_triggered_upkeep, missing_direct = direct_resource_blocks(value, variables)
         direct_optimistic_output = combined_amounts(direct_output, direct_triggered_output)
         direct_optimistic_upkeep = combined_amounts(direct_upkeep, direct_triggered_upkeep)
         modifier_effects, missing_modifiers = collect_building_research_modifier_effects(value, variables)
         gates = source_gate_summary(value)
+        source_text = read_text(Path(str(row["source_file"]))) if Path(str(row["source_file"])).exists() else ""
+        source_excluded_jobs: dict[str, str] = {}
+        effective_jobs_created: dict[str, float] = {}
+        for job_id, count in jobs_created.items():
+            if resolve_job(jobs, job_id):
+                effective_jobs_created[job_id] = count
+                continue
+            exclusion = source_backed_job_exclusion(job_id, gates, source_text)
+            if exclusion:
+                source_excluded_jobs[job_id] = exclusion
+                continue
+            effective_jobs_created[job_id] = count
         job_base_output: dict[str, float] = {}
         job_triggered_output: dict[str, float] = {}
         job_output: dict[str, float] = {}
@@ -634,7 +715,7 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
         job_upkeep: dict[str, float] = {}
         job_subject_counts: dict[str, float] = {}
         unknown_jobs: list[str] = []
-        for job_id, count in jobs_created.items():
+        for job_id, count in effective_jobs_created.items():
             job = resolve_job(jobs, job_id)
             if not job:
                 unknown_jobs.append(job_id)
@@ -673,12 +754,13 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                 "is_upgrade_terminal": "yes" if not upgrades.get(object_id) else "no",
                 "upgrade_chain_to_terminal": "|".join(chain),
                 "upgrade_terminal": chain[-1],
-                "jobs_created_json": _json_dump(jobs_created),
-                "raw_job_workforce_total": round(sum(max(0.0, amount) for amount in jobs_created.values()), 6),
+                "jobs_created_json": _json_dump(effective_jobs_created),
+                "raw_job_workforce_total": round(sum(max(0.0, amount) for amount in effective_jobs_created.values()), 6),
                 "job_slots_total": round(
-                    sum(max(0.0, normalize_job_workforce(amount)) for amount in jobs_created.values()), 6
+                    sum(max(0.0, normalize_job_workforce(amount)) for amount in effective_jobs_created.values()), 6
                 ),
                 "unknown_jobs": "|".join(sorted(unknown_jobs)) or "none",
+                "source_excluded_jobs": _json_dump(source_excluded_jobs),
                 "job_subject_counts_json": _json_dump(job_subject_counts),
                 "direct_output_json": _json_dump(direct_output),
                 "direct_triggered_output_json": _json_dump(direct_triggered_output),
@@ -738,9 +820,14 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
     return rows
 
 
-def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+def collect_development_rows(
+    playset: dict[str, Any],
+    jobs: dict[str, dict[str, Any]],
+    scripted_modifier_keys: set[str],
+) -> list[dict[str, Any]]:
     roots = _valuation_stack_roots(playset)
-    variables = collect_global_variables([Path(root["root"]) for root in roots])
+    global_variables = collect_global_variables([Path(root["root"]) for root in roots])
+    variable_cache: dict[str, dict[str, float]] = {}
     definitions = _collect_economic_definitions(playset)
     winners = _winning_economic_definitions(definitions)
     rows: list[dict[str, Any]] = []
@@ -748,11 +835,24 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
         if object_type not in {"district", "zone"} or not isinstance(row.get("value"), PDXBlock):
             continue
         value = row["value"]
-        jobs_created, missing_jobs = _collect_job_adds(value, variables)
+        variables = source_file_variables(row, global_variables, variable_cache)
+        jobs_created, missing_jobs = _collect_job_adds(value, variables, scripted_modifier_keys)
         direct_output, direct_triggered_output, direct_upkeep, direct_triggered_upkeep, missing_direct = direct_resource_blocks(value, variables)
         direct_optimistic_output = combined_amounts(direct_output, direct_triggered_output)
         direct_optimistic_upkeep = combined_amounts(direct_upkeep, direct_triggered_upkeep)
         gates = source_gate_summary(value)
+        source_text = read_text(Path(str(row["source_file"]))) if Path(str(row["source_file"])).exists() else ""
+        source_excluded_jobs: dict[str, str] = {}
+        effective_jobs_created: dict[str, float] = {}
+        for job_id, count in jobs_created.items():
+            if resolve_job(jobs, job_id):
+                effective_jobs_created[job_id] = count
+                continue
+            exclusion = source_backed_job_exclusion(job_id, gates, source_text)
+            if exclusion:
+                source_excluded_jobs[job_id] = exclusion
+                continue
+            effective_jobs_created[job_id] = count
         job_base_output: dict[str, float] = {}
         job_triggered_output: dict[str, float] = {}
         job_output: dict[str, float] = {}
@@ -760,7 +860,7 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
         job_triggered_upkeep: dict[str, float] = {}
         job_upkeep: dict[str, float] = {}
         unknown_jobs: list[str] = []
-        for job_id, count in jobs_created.items():
+        for job_id, count in effective_jobs_created.items():
             job = resolve_job(jobs, job_id)
             if not job:
                 unknown_jobs.append(job_id)
@@ -791,12 +891,13 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
                 "winning_mod_name": row["name"],
                 "winning_file": row["relative_file"],
                 **gates,
-                "jobs_created_json": _json_dump(jobs_created),
-                "raw_job_workforce_total": round(sum(max(0.0, amount) for amount in jobs_created.values()), 6),
+                "jobs_created_json": _json_dump(effective_jobs_created),
+                "raw_job_workforce_total": round(sum(max(0.0, amount) for amount in effective_jobs_created.values()), 6),
                 "job_slots_total": round(
-                    sum(max(0.0, normalize_job_workforce(amount)) for amount in jobs_created.values()), 6
+                    sum(max(0.0, normalize_job_workforce(amount)) for amount in effective_jobs_created.values()), 6
                 ),
                 "unknown_jobs": "|".join(sorted(unknown_jobs)) or "none",
+                "source_excluded_jobs": _json_dump(source_excluded_jobs),
                 "direct_output_json": _json_dump(direct_output),
                 "direct_triggered_output_json": _json_dump(direct_triggered_output),
                 "direct_optimistic_output_json": _json_dump(direct_optimistic_output),
@@ -1834,19 +1935,6 @@ def modeling_blocker_accounting_rows(
                 str(row["winning_mod_name"]),
                 str(row["winning_file"]),
             )
-        for flag in cell_items(row.get("data_quality_flags")):
-            add_blocker_row(
-                rows,
-                "buildings",
-                "building",
-                str(row["building_id"]),
-                "data_quality_flag",
-                flag,
-                "tracked_quality_flag",
-                "Review before using this row for final build-plan scoring.",
-                str(row["winning_mod_name"]),
-                str(row["winning_file"]),
-            )
     for row in development_rows:
         for job_id in cell_items(row.get("unknown_jobs")):
             add_blocker_row(
@@ -1871,19 +1959,6 @@ def modeling_blocker_accounting_rows(
                 variable,
                 "variable_value_unresolved",
                 "Resolve global/local variable value or preserve as conservative blocker.",
-                str(row["winning_mod_name"]),
-                str(row["winning_file"]),
-            )
-        for flag in cell_items(row.get("data_quality_flags")):
-            add_blocker_row(
-                rows,
-                "development",
-                str(row["object_type"]),
-                str(row["object_id"]),
-                "data_quality_flag",
-                flag,
-                "tracked_quality_flag",
-                "Review before using this row for final build-plan scoring.",
                 str(row["winning_mod_name"]),
                 str(row["winning_file"]),
             )
@@ -1984,19 +2059,19 @@ def consumer_policy_rows(
         counts = benefit_counts.get(object_key, {"numeric": 0, "policy_required": 0})
         build_candidate = str(row["build_plan_candidate"])
         if build_candidate != "yes":
-            scorable_status = "not_build_plan_candidate"
+            consumer_modeling_status = "not_build_plan_candidate"
             can_consume_now = "no"
             next_action = "Exclude from construction ordering unless source-backed candidate rules change."
         elif blocker_count > 0:
-            scorable_status = "blocked_unresolved_modeling"
+            consumer_modeling_status = "blocked_unresolved_modeling"
             can_consume_now = "no"
-            next_action = "Resolve or policy-classify blocker rows before scoring this building."
+            next_action = "Resolve or source-classify blocker rows before scoring this building."
         elif str(row["readiness_phase"]) == "base_available":
-            scorable_status = "scorable_now"
+            consumer_modeling_status = "scorable_now"
             can_consume_now = "yes"
             next_action = "Eligible for conservative construction ordering."
         else:
-            scorable_status = "gated_scorable_with_conditions"
+            consumer_modeling_status = "gated_scorable_with_conditions"
             can_consume_now = "conditional"
             next_action = "Emit only with readiness gates or use fallback policy."
         fallback_id = str(row["fallback_building_id"])
@@ -2008,7 +2083,7 @@ def consumer_policy_rows(
                 "object_id": str(row["building_id"]),
                 "role": str(row["primary_role"]),
                 "source_scope": "readiness",
-                "scorable_status": scorable_status,
+                "consumer_modeling_status": consumer_modeling_status,
                 "can_consume_now": can_consume_now,
                 "readiness_phase": str(row["readiness_phase"]),
                 "build_plan_candidate": build_candidate,
@@ -2035,7 +2110,9 @@ def consumer_policy_rows(
             for blocker in blockers_by_object.get(key, [])
         ]
         blocker_count, issue_types = policy_blocker_summary(selected_blockers)
-        benefit_numeric = sum(benefit_counts.get(key, {"numeric": 0, "policy_required": 0})["numeric"] for key in selected_keys)
+        benefit_numeric = sum(
+            benefit_counts.get(key, {"numeric": 0, "policy_required": 0})["numeric"] for key in selected_keys
+        )
         benefit_policy_required = sum(
             benefit_counts.get(key, {"numeric": 0, "policy_required": 0})["policy_required"] for key in selected_keys
         )
@@ -2047,11 +2124,11 @@ def consumer_policy_rows(
         else:
             consumer_surface = "economic_plan"
         if blocker_count > 0:
-            scorable_status = "blocked_unresolved_modeling"
+            consumer_modeling_status = "blocked_unresolved_modeling"
             can_consume_now = "no"
             next_action = "Resolve selected-object blockers before using this role target."
         else:
-            scorable_status = "role_target_scorable"
+            consumer_modeling_status = "role_target_scorable"
             can_consume_now = "yes"
             next_action = "Eligible as an input to economic-plan pressure or construction-order policy."
         rows.append(
@@ -2062,7 +2139,7 @@ def consumer_policy_rows(
                 "object_id": f"{row['role']}:{row['source_scope']}:{row['colony_class']}",
                 "role": str(row["role"]),
                 "source_scope": source_scope,
-                "scorable_status": scorable_status,
+                "consumer_modeling_status": consumer_modeling_status,
                 "can_consume_now": can_consume_now,
                 "readiness_phase": "",
                 "build_plan_candidate": "",
@@ -2084,10 +2161,10 @@ def consumer_policy_rows(
     for benefit_class, counts in sorted(benefit_class_counts.items()):
         policy_required = counts["detected_unvalued"] + counts["not_observed"]
         if policy_required:
-            scorable_status = "benefit_formula_policy_required"
+            consumer_modeling_status = "benefit_formula_policy_required"
             next_action = "Define class-specific formula or detected-only policy before scoring this benefit class."
         else:
-            scorable_status = "benefit_formula_mapping_required"
+            consumer_modeling_status = "benefit_formula_mapping_required"
             next_action = "Map preserved numeric values into a source-backed economic-plan or construction-order rule."
         rows.append(
             {
@@ -2097,7 +2174,7 @@ def consumer_policy_rows(
                 "object_id": benefit_class,
                 "role": "",
                 "source_scope": "benefit_taxonomy",
-                "scorable_status": scorable_status,
+                "consumer_modeling_status": consumer_modeling_status,
                 "can_consume_now": "no",
                 "readiness_phase": "",
                 "build_plan_candidate": "",
@@ -2233,8 +2310,8 @@ def write_summary(
         "- Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.",
         "- Build-plan readiness rows classify building gate phases and same-role fallback candidates before unlocks.",
         "- Strategic benefit taxonomy rows classify detected non-resource benefits and record no-evidence classes for active-stack gaps.",
-        "- Modeling blocker accounting rows normalize unknown jobs, unresolved variables, quality flags, unsupported resources, and unvalued benefit formulas.",
-        "- Build-plan consumer policy rows join readiness, blocker accounting, role targets, and benefit taxonomy into scorable/not-scorable consumer decisions.",
+        "- Modeling blocker accounting rows normalize unresolved jobs, unresolved variables, unsupported resources, and unvalued benefit formulas; source-proven no-effect job references stay in the source exclusion audit columns instead of blocking scoring.",
+        "- Build-plan consumer policy rows join readiness, blocker accounting, role targets, and benefit taxonomy into consume/block decisions; unresolved modeling remains blocked until resolved or source-classified.",
         "",
         "## Top Research Buildings",
         "",
@@ -2313,12 +2390,13 @@ def write_summary(
 def main() -> None:
     playset = build_active_playset_snapshot()
     jobs = collect_winning_jobs(playset)
+    scripted_modifier_keys = collect_scripted_modifier_keys(playset)
     job_rows = [
         {key: value for key, value in row.items() if key != "value"}
         for row in sorted(jobs.values(), key=lambda item: item["job_id"])
     ]
-    buildings = collect_buildings(playset, jobs)
-    development_rows = collect_development_rows(playset, jobs)
+    buildings = collect_buildings(playset, jobs, scripted_modifier_keys)
+    development_rows = collect_development_rows(playset, jobs, scripted_modifier_keys)
     plans = plan_rows(buildings)
     tech_rows = collect_technology_modifier_rows(playset)
     strategic_rows = strategic_infrastructure_rows(playset)

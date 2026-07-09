@@ -62,8 +62,9 @@ Current Director evidence:
 - Generated model data validated through JDataMunch includes 826 readiness rows,
   592 current build-plan candidates, and 789 gated rows with same-role fallback
   candidates.
-- Generated blocker accounting has 1042 rows. These rows are tracked facts, not
-  scorable build-plan inputs until resolved or policy-classified.
+- Generated blocker accounting has 396 rows after the corrective manual source
+  audit. Unknown-job blockers are zero; remaining blockers are 265
+  benefit-formula rows and 131 unresolved-variable rows.
 
 ## Consumer Contract
 
@@ -135,9 +136,11 @@ Current Director evidence:
      construction ordering.
 
 8. Blocker accounting is a stop sign for final consumption.
-   - Unknown jobs, unresolved variables, quality flags, and unvalued benefit
-     formulas must either be resolved, explicitly excluded, or policy-classified
-     before their objects become final generated build-plan facts.
+   - Unresolved variables and unvalued benefit formulas must either be resolved,
+     explicitly excluded, or policy-classified before their objects become final
+     generated build-plan facts.
+   - Source-proven zero-effect job references belong in the
+     `source_excluded_jobs` audit field, not in final scoring.
    - The blocker CSV is allowed to remain nonempty during modeling, but a build
      plan generator must filter or annotate affected rows rather than scoring
      them as complete.
@@ -175,11 +178,11 @@ rules deterministically:
 
 ## Open Work
 
-- Add a generated consumer-policy artifact that joins readiness, blocker
-  accounting, role targets, and benefit taxonomy into one scorable/not-scorable
-  decision table.
-- Add tests for `build_plan_candidate`, blocker filtering, no `ai_weight`-only
-  strategy emission, and fallback lifetime classification.
-- Decide whether the first generated implementation should extend the current
-  economic-plan generator only, or add a new colony-automation generator in a
-  separate milestone.
+- Keep the generated consumer-policy artifact as the source of truth for
+  readiness, blocked rows, role targets, benefit taxonomy, and deterministic
+  non-candidate exclusions.
+- Keep tests for `build_plan_candidate`, no `ai_weight`-only strategy emission,
+  fallback lifetime classification, source-excluded job audit rows, and blocked
+  unresolved consumer statuses.
+- Do not tune build priorities from rows tied to the 396 remaining blockers.
+  Finish variable resolution and benefit-formula policy first.

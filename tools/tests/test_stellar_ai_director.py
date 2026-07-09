@@ -1,4 +1,5 @@
 import csv
+import json
 import re
 import tempfile
 import unittest
@@ -31,6 +32,7 @@ from stellar_ai_director_lib import (
     SFT_EQUIVALENCE_AUDIT_CSV,
     SFT_EQUIVALENCE_AUDIT_MD,
     STELLARAI_INLINE_SCRIPT_DEPENDENCIES,
+    _collect_job_adds,
     block_assignments,
     collect_generated_conflict_rows,
     collect_generated_file_audit_rows,
@@ -68,6 +70,45 @@ from stellar_ai_director_lib import (
 
 
 class ActiveStackEconomicValuationMaintenanceTests(unittest.TestCase):
+    def test_job_slot_collection_distinguishes_planet_and_country_modifier_contexts(self):
+        parsed = parse_pdx(
+            """
+            building_source_audit = {
+                triggered_country_modifier = {
+                    job_capital_trader_add = 200
+                }
+                triggered_planet_modifier = {
+                    job_researcher_add = 100
+                }
+            }
+            """
+        )
+        building = block_assignments(parsed, "building_source_audit")[0].value
+
+        jobs, missing = _collect_job_adds(building, {})
+
+        self.assertEqual(missing, set())
+        self.assertNotIn("job_capital_trader", jobs)
+        self.assertEqual(jobs["job_researcher"], 100.0)
+
+    def test_job_slot_collection_ignores_scripted_modifier_job_add_keys(self):
+        parsed = parse_pdx(
+            """
+            building_source_audit = {
+                triggered_planet_modifier = {
+                    job_healthcare_add = 100
+                    job_healthcare_amenities_add = 100
+                }
+            }
+            """
+        )
+        building = block_assignments(parsed, "building_source_audit")[0].value
+
+        jobs, missing = _collect_job_adds(building, {}, {"job_healthcare_amenities_add"})
+
+        self.assertEqual(missing, set())
+        self.assertEqual(jobs, {"job_healthcare": 100.0})
+
     def test_generated_economic_values_match_current_active_mod_files(self):
         dataset_rows = []
         for path in (ECONOMIC_VALUATION_DATASET_CSV, NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV):
@@ -476,6 +517,35 @@ class GeneratedModValidityTests(unittest.TestCase):
         if "building_research_lab_3" in row_by_building:
             self.assertIn("tech", row_by_building["building_research_lab_3"]["prerequisites"])
 
+    def test_research_capacity_model_audits_source_excluded_job_references(self):
+        with RESEARCH_CAPACITY_BUILDINGS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            building_rows = list(csv.DictReader(handle))
+        with RESEARCH_CAPACITY_DEVELOPMENT_CSV.open("r", encoding="utf-8", newline="") as handle:
+            development_rows = list(csv.DictReader(handle))
+
+        corporate_clinics = {row["building_id"]: row for row in building_rows}["building_corporate_clinics"]
+        self.assertNotIn("job_healthcare_amenities", corporate_clinics["unknown_jobs"])
+
+        corrona_capital = {row["building_id"]: row for row in building_rows}["building_giga_corrona_capital"]
+        corrona_exclusions = json.loads(corrona_capital["source_excluded_jobs"])
+        self.assertEqual(
+            corrona_exclusions["job_tc_arcane_research_job"],
+            "inactive_external_thaumstellaris_integration_modeled_zero_effect",
+        )
+
+        rows_by_object = {row["object_id"]: row for row in development_rows}
+        void_structure_exclusions = json.loads(rows_by_object["district_giga_birch_void_orykta"]["source_excluded_jobs"])
+        self.assertEqual(
+            void_structure_exclusions["job_acot_enforcer"],
+            "inactive_external_acot_integration_modeled_zero_effect",
+        )
+
+        interstellar_research_exclusions = json.loads(rows_by_object["district_giga_hab_science"]["source_excluded_jobs"])
+        self.assertEqual(
+            interstellar_research_exclusions["job_giga_interstellar_researcher"],
+            "source_orphan_no_pop_job_definition_modeled_zero_effect",
+        )
+
     def test_research_capacity_model_preserves_resource_scenarios(self):
         with RESEARCH_CAPACITY_JOBS_CSV.open("r", encoding="utf-8", newline="") as handle:
             jobs_reader = csv.DictReader(handle)
@@ -638,10 +708,10 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(expected_columns.issubset(blocker_columns))
         self.assertTrue(blocker_rows)
         issue_types = {row["issue_type"] for row in blocker_rows}
-        self.assertIn("unknown_job", issue_types)
+        self.assertNotIn("unknown_job", issue_types)
         self.assertIn("unresolved_variable", issue_types)
-        self.assertIn("data_quality_flag", issue_types)
         self.assertIn("benefit_formula_status", issue_types)
+        self.assertNotIn("data_quality_flag", issue_types)
         self.assertFalse([row for row in blocker_rows if not row["accounting_status"]])
         self.assertFalse([row for row in blocker_rows if not row["next_action"]])
 
@@ -658,7 +728,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "object_id",
             "role",
             "source_scope",
-            "scorable_status",
+            "consumer_modeling_status",
             "can_consume_now",
             "readiness_phase",
             "build_plan_candidate",
@@ -676,12 +746,15 @@ class GeneratedModValidityTests(unittest.TestCase):
         row_families = {row["row_family"] for row in policy_rows}
         self.assertTrue({"building", "role_target", "benefit_class"}.issubset(row_families))
         self.assertFalse([row for row in policy_rows if not row["consumer_surface"]])
-        self.assertFalse([row for row in policy_rows if not row["scorable_status"]])
+        self.assertFalse([row for row in policy_rows if not row["consumer_modeling_status"]])
         self.assertFalse([row for row in policy_rows if not row["next_action"]])
 
         blocked_rows = [row for row in policy_rows if int(row["blocker_count"]) > 0]
         self.assertTrue(blocked_rows)
         self.assertFalse([row for row in blocked_rows if row["can_consume_now"] == "yes"])
+        self.assertTrue(
+            [row for row in blocked_rows if row["consumer_modeling_status"] == "blocked_unresolved_modeling"]
+        )
         self.assertFalse(
             [
                 row
@@ -713,7 +786,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV: 21,
             RESEARCH_CAPACITY_READINESS_CSV: 826,
             RESEARCH_CAPACITY_BENEFITS_CSV: 1887,
-            RESEARCH_CAPACITY_BLOCKERS_CSV: 1042,
+            RESEARCH_CAPACITY_BLOCKERS_CSV: 396,
             RESEARCH_CAPACITY_CONSUMER_POLICY_CSV: 1093,
         }
         for path, expected_count in expected_counts.items():

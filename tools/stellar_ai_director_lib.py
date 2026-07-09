@@ -1869,12 +1869,47 @@ def _resource_value(amounts: dict[str, float]) -> float:
     return sum(amount * RESOURCE_VALUES.get(resource, 0.25) for resource, amount in amounts.items())
 
 
-def _collect_job_adds(value: PDXValue, variables: dict[str, float]) -> tuple[dict[str, float], set[str]]:
+JOB_ADD_EXCLUDED_CONTEXTS = {
+    "country_modifier",
+    "triggered_country_modifier",
+    "owner_modifier",
+    "triggered_owner_modifier",
+    "system_modifier",
+    "triggered_system_modifier",
+    "starbase_modifier",
+    "triggered_starbase_modifier",
+    "ship_modifier",
+    "triggered_ship_modifier",
+    "fleet_modifier",
+    "triggered_fleet_modifier",
+}
+
+
+def _iter_assignments_with_path(value: PDXValue, path: tuple[str, ...] = ()) -> Iterable[tuple[PDXAssignment, tuple[str, ...]]]:
+    if isinstance(value, PDXBlock):
+        for item in value.items:
+            if isinstance(item, PDXAssignment):
+                key = item.key.strip('"')
+                item_path = (*path, key)
+                yield item, item_path
+                yield from _iter_assignments_with_path(item.value, item_path)
+
+
+def _collect_job_adds(
+    value: PDXValue,
+    variables: dict[str, float],
+    ignored_job_add_keys: set[str] | None = None,
+) -> tuple[dict[str, float], set[str]]:
     jobs: dict[str, float] = {}
     unresolved: set[str] = set()
-    for assignment in iter_assignments(value):
+    ignored_keys = ignored_job_add_keys or set()
+    for assignment, path in _iter_assignments_with_path(value):
         key = assignment.key.strip('"')
         if not re.fullmatch(r"job_[A-Za-z0-9_]+_add", key):
+            continue
+        if key in ignored_keys:
+            continue
+        if any(context in JOB_ADD_EXCLUDED_CONTEXTS for context in path[:-1]):
             continue
         amount, unresolved_variable = _numeric_atom(assignment.value, variables)
         if unresolved_variable:
@@ -5336,7 +5371,7 @@ def dataset_job_pressure_override_rows(limit: int = DATASET_JOB_PRESSURE_OBJECT_
                 **row,
                 "pressure_family": family,
                 "build_plan_consumer_status": policy.get("can_consume_now", "role_target"),
-                "build_plan_scorable_status": policy.get("scorable_status", "role_target_scorable"),
+                "build_plan_modeling_status": policy.get("consumer_modeling_status", "role_target_scorable"),
                 "source_path": str(source_path),
                 "generated_folder": folder,
                 "generated_file": generated_file.as_posix(),
@@ -5414,7 +5449,7 @@ def dataset_job_pressure_override_artifacts() -> list[dict[str, Any]]:
             body.append(
                 f"# object = {row['object_type']}:{row['object_id']}; "
                 f"source = {row['winning_mod_name']}::{row['winning_file']}; "
-                f"consumer_policy = {row['build_plan_consumer_status']}:{row['build_plan_scorable_status']}"
+                f"consumer_policy = {row['build_plan_consumer_status']}:{row['build_plan_modeling_status']}"
             )
             body.append(block.rstrip())
             body.append("")
