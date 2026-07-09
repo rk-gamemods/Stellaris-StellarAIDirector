@@ -119,6 +119,18 @@ class ActiveStackEconomicValuationMaintenanceTests(unittest.TestCase):
         )
 
 
+RESEARCH_CAPACITY_BUILDINGS_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-buildings-2026-07-09.csv"
+RESEARCH_CAPACITY_DEVELOPMENT_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-development-2026-07-09.csv"
+RESEARCH_CAPACITY_INFRASTRUCTURE_CSV = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
+RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
+GIGAS_MODELED_RESOURCE_KEYS = {
+    "giga_sr_negative_mass",
+    "giga_sr_amb_megaconstruction",
+    "giga_sr_iodizium",
+    "giga_sr_sentient_metal",
+}
+
+
 class GeneratedModValidityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -324,6 +336,99 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(gigas_objects, "Gigas advanced buildings or districts were not captured.")
         self.assertTrue(any(float(row["jobs_created_total_estimate"]) > 0 for row in rows))
         self.assertTrue(any(float(row["roi_2250_to_2350_estimate"]) > 0 for row in rows))
+
+    def test_research_capacity_model_reconciles_active_winning_buildings(self):
+        with OBJECT_ATLAS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            atlas_rows = list(csv.DictReader(handle))
+        with RESEARCH_CAPACITY_BUILDINGS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            modeled_rows = list(csv.DictReader(handle))
+
+        active_winning_buildings = {
+            row["object_id"]
+            for row in atlas_rows
+            if row["object_type"] == "building" and row["load_winner"] == "yes"
+        }
+        modeled_buildings = {row["building_id"] for row in modeled_rows}
+
+        self.assertGreaterEqual(len(active_winning_buildings), 600)
+        self.assertFalse(
+            sorted(active_winning_buildings - modeled_buildings)[:25],
+            "Every active-stack winning building must be present in the generated research-capacity model.",
+        )
+
+    def test_research_capacity_model_promotes_gigas_resource_columns(self):
+        with RESEARCH_CAPACITY_BUILDINGS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            buildings_reader = csv.DictReader(handle)
+            building_rows = list(buildings_reader)
+            building_columns = set(buildings_reader.fieldnames or [])
+        with RESEARCH_CAPACITY_DEVELOPMENT_CSV.open("r", encoding="utf-8", newline="") as handle:
+            development_reader = csv.DictReader(handle)
+            development_rows = list(development_reader)
+            development_columns = set(development_reader.fieldnames or [])
+        with RESEARCH_CAPACITY_INFRASTRUCTURE_CSV.open("r", encoding="utf-8", newline="") as handle:
+            infrastructure_reader = csv.DictReader(handle)
+            infrastructure_columns = set(infrastructure_reader.fieldnames or [])
+        with RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV.open("r", encoding="utf-8", newline="") as handle:
+            coverage_rows = list(csv.DictReader(handle))
+
+        for resource in GIGAS_MODELED_RESOURCE_KEYS:
+            self.assertIn(f"total_output_{resource}", building_columns)
+            self.assertIn(f"total_upkeep_{resource}", building_columns)
+            self.assertIn(f"total_output_{resource}", development_columns)
+            self.assertIn(f"total_upkeep_{resource}", development_columns)
+            self.assertIn(f"net_{resource}", development_columns)
+            self.assertIn(f"direct_output_{resource}", infrastructure_columns)
+            self.assertIn(f"direct_upkeep_{resource}", infrastructure_columns)
+        for columns in (building_columns, development_columns):
+            self.assertIn("total_output_influence", columns)
+            self.assertIn("total_upkeep_influence", columns)
+        self.assertIn("direct_output_influence", infrastructure_columns)
+        self.assertIn("direct_upkeep_influence", infrastructure_columns)
+
+        buildings_with_promoted_gigas_value = [
+            row
+            for row in building_rows
+            if any(
+                float(row[f"total_output_{resource}"]) != 0.0
+                or float(row[f"total_upkeep_{resource}"]) != 0.0
+                for resource in GIGAS_MODELED_RESOURCE_KEYS
+            )
+        ]
+        development_with_promoted_gigas_value = [
+            row
+            for row in development_rows
+            if any(float(row[f"net_{resource}"]) != 0.0 for resource in GIGAS_MODELED_RESOURCE_KEYS)
+        ]
+
+        self.assertTrue(buildings_with_promoted_gigas_value)
+        self.assertTrue(development_with_promoted_gigas_value)
+        self.assertFalse([row for row in coverage_rows if row["normal_column_status"] == "unsupported"])
+        promoted_resources = {row["resource_key"] for row in coverage_rows}
+        self.assertTrue(GIGAS_MODELED_RESOURCE_KEYS.issubset(promoted_resources))
+
+    def test_research_capacity_model_carries_source_gates(self):
+        with RESEARCH_CAPACITY_BUILDINGS_CSV.open("r", encoding="utf-8", newline="") as handle:
+            buildings_reader = csv.DictReader(handle)
+            building_rows = list(buildings_reader)
+            building_columns = set(buildings_reader.fieldnames or [])
+        with RESEARCH_CAPACITY_DEVELOPMENT_CSV.open("r", encoding="utf-8", newline="") as handle:
+            development_reader = csv.DictReader(handle)
+            development_rows = list(development_reader)
+            development_columns = set(development_reader.fieldnames or [])
+
+        for columns in (building_columns, development_columns):
+            self.assertIn("prerequisites", columns)
+            self.assertIn("potential_allow_gates", columns)
+            self.assertIn("event_flags", columns)
+            self.assertIn("unlock_flags", columns)
+
+        self.assertTrue([row for row in building_rows if row["prerequisites"]])
+        self.assertTrue([row for row in building_rows if row["potential_allow_gates"]])
+        self.assertTrue([row for row in development_rows if row["potential_allow_gates"]])
+
+        row_by_building = {row["building_id"]: row for row in building_rows}
+        if "building_research_lab_3" in row_by_building:
+            self.assertIn("tech", row_by_building["building_research_lab_3"]["prerequisites"])
 
     def test_nonconstruction_economic_valuation_dataset_extends_without_duplicate_construction_surfaces(self):
         self.assertTrue(NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV.exists())

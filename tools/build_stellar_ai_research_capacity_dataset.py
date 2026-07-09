@@ -23,8 +23,10 @@ from stellar_ai_director_lib import (
     _valuation_stack_roots,
     _winning_economic_definitions,
     atom_value,
+    assignment_atoms,
     block_assignments,
     build_active_playset_snapshot,
+    compact_list,
     collect_global_variables,
     iter_assignments,
     iter_text_files,
@@ -41,6 +43,7 @@ OUT_PLAN = RESEARCH_ROOT / "stellar-ai-director-research-capacity-plan-2026-07-0
 OUT_ROLES = RESEARCH_ROOT / "stellar-ai-director-colony-role-targets-2026-07-09.csv"
 OUT_TECH = RESEARCH_ROOT / "stellar-ai-director-research-capacity-tech-modifiers-2026-07-09.csv"
 OUT_INFRA = RESEARCH_ROOT / "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv"
+OUT_RESOURCE_COVERAGE = RESEARCH_ROOT / "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
 JOB_WORKFORCE_UNITS = 100.0
@@ -54,12 +57,17 @@ SUPPORT_KEYS = (
     "rare_crystals",
     "food",
     "unity",
+    "influence",
     "trade",
     "trade_value",
     "sr_zro",
     "sr_dark_matter",
     "sr_living_metal",
     "nanites",
+    "giga_sr_negative_mass",
+    "giga_sr_amb_megaconstruction",
+    "giga_sr_iodizium",
+    "giga_sr_sentient_metal",
 )
 UPKEEP_MULT_KEYS = ("planet_researchers_upkeep_mult",)
 ROLE_TARGETS = {
@@ -95,6 +103,37 @@ RESETTLEMENT_SOURCE_TERMS = ("resettlement_unemployed_mult",)
 RESETTLEMENT_DESTINATION_TERMS = ("resettlement_unemployed_destination_mult",)
 CAPITAL_STRATEGIC_TERMS = ("envoy", "diplom", "trust", "federation", "opinion", "relations", "edict", "council")
 STARBASE_PRIORITY_TERMS = ("resettlement", "migration", "shipyard", "naval_cap", "trade", "food", "stability")
+RESOURCE_AMOUNT_JSON_COLUMNS = {
+    "jobs": (
+        "base_output_json",
+        "triggered_output_json",
+        "optimistic_output_json",
+        "base_upkeep_json",
+        "triggered_upkeep_json",
+        "optimistic_upkeep_json",
+    ),
+    "buildings": (
+        "direct_output_json",
+        "direct_upkeep_json",
+        "job_output_json",
+        "job_upkeep_json",
+        "total_output_json",
+        "total_upkeep_json",
+    ),
+    "development": (
+        "direct_output_json",
+        "direct_upkeep_json",
+        "job_output_json",
+        "job_upkeep_json",
+        "total_output_json",
+        "total_upkeep_json",
+        "net_resources_json",
+    ),
+    "strategic_infrastructure": (
+        "direct_output_json",
+        "direct_upkeep_json",
+    ),
+}
 
 
 def add_amounts(left: dict[str, float], right: dict[str, float], factor: float = 1.0) -> None:
@@ -426,6 +465,29 @@ def direct_resource_blocks(value: PDXBlock, variables: dict[str, float]) -> tupl
     return output, upkeep, unresolved
 
 
+def source_gate_summary(value: PDXBlock) -> dict[str, str]:
+    prereqs: list[str] = []
+    event_flags: list[str] = []
+    unlock_flags: list[str] = []
+    gates: list[str] = []
+    for assignment in iter_assignments(value):
+        key = assignment.key.strip('"')
+        if key == "prerequisites":
+            prereqs.extend(assignment_atoms(assignment.value))
+        elif key in {"feature_flags", "feature_flag", "show_tech_unlock_if"}:
+            unlock_flags.extend(assignment_atoms(assignment.value))
+        elif key in {"has_country_flag", "set_country_flag", "has_global_flag", "set_global_flag"}:
+            event_flags.extend(assignment_atoms(assignment.value))
+        elif key in {"potential", "allow", "possible", "trigger"}:
+            gates.append(key)
+    return {
+        "prerequisites": compact_list(prereqs),
+        "potential_allow_gates": compact_list(gates),
+        "event_flags": compact_list(event_flags),
+        "unlock_flags": compact_list(unlock_flags),
+    }
+
+
 def chain_for(building_id: str, upgrades: dict[str, list[str]]) -> list[str]:
     chain = [building_id]
     seen = {building_id}
@@ -458,6 +520,7 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
         jobs_created, missing_jobs = _collect_job_adds(value, variables)
         direct_output, direct_upkeep, missing_direct = direct_resource_blocks(value, variables)
         modifier_effects, missing_modifiers = collect_building_research_modifier_effects(value, variables)
+        gates = source_gate_summary(value)
         job_output: dict[str, float] = {}
         job_upkeep: dict[str, float] = {}
         job_subject_counts: dict[str, float] = {}
@@ -489,6 +552,7 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
                 "winning_mod_name": row["name"],
                 "winning_file": row["relative_file"],
                 "category": atom_value(block_assignments(value, "category")[0].value) if block_assignments(value, "category") else "",
+                **gates,
                 "is_upgrade_terminal": "yes" if not upgrades.get(object_id) else "no",
                 "upgrade_chain_to_terminal": "|".join(chain),
                 "upgrade_terminal": chain[-1],
@@ -541,6 +605,7 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
         value = row["value"]
         jobs_created, missing_jobs = _collect_job_adds(value, variables)
         direct_output, direct_upkeep, missing_direct = direct_resource_blocks(value, variables)
+        gates = source_gate_summary(value)
         job_output: dict[str, float] = {}
         job_upkeep: dict[str, float] = {}
         unknown_jobs: list[str] = []
@@ -565,6 +630,7 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
                 "colony_class": classify_colony_class(object_id),
                 "winning_mod_name": row["name"],
                 "winning_file": row["relative_file"],
+                **gates,
                 "jobs_created_json": _json_dump(jobs_created),
                 "raw_job_workforce_total": round(sum(max(0.0, amount) for amount in jobs_created.values()), 6),
                 "job_slots_total": round(
@@ -1129,6 +1195,72 @@ def strategic_infrastructure_rows(playset: dict[str, Any]) -> list[dict[str, Any
     return sorted(rows, key=lambda item: (str(item["role"]), -float(item["priority_score"]), str(item["object_id"])))
 
 
+def modeling_resource_coverage_rows(
+    job_rows: list[dict[str, Any]],
+    buildings: list[dict[str, Any]],
+    development_rows: list[dict[str, Any]],
+    strategic_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    artifacts = {
+        "jobs": job_rows,
+        "buildings": buildings,
+        "development": development_rows,
+        "strategic_infrastructure": strategic_rows,
+    }
+    usage: dict[str, dict[str, Any]] = {}
+    for artifact, rows in artifacts.items():
+        for row in rows:
+            row_id = str(row.get("job_id") or row.get("building_id") or row.get("object_id") or "")
+            for column in RESOURCE_AMOUNT_JSON_COLUMNS[artifact]:
+                data = json.loads(str(row.get(column, "{}") or "{}"))
+                if not isinstance(data, dict):
+                    continue
+                for resource, amount in data.items():
+                    if not isinstance(amount, (int, float)) or amount == 0:
+                        continue
+                    bucket = usage.setdefault(
+                        resource,
+                        {
+                            "resource_key": resource,
+                            "artifacts_seen": set(),
+                            "output_rows": set(),
+                            "upkeep_rows": set(),
+                            "net_rows": set(),
+                        },
+                    )
+                    bucket["artifacts_seen"].add(artifact)
+                    if "upkeep" in column:
+                        bucket["upkeep_rows"].add((artifact, row_id))
+                    elif column.startswith("net_"):
+                        bucket["net_rows"].add((artifact, row_id))
+                    else:
+                        bucket["output_rows"].add((artifact, row_id))
+
+    modeled_resources = {*RESEARCH_KEYS, *SUPPORT_KEYS}
+    rows: list[dict[str, Any]] = []
+    for resource, data in sorted(usage.items()):
+        modeled = resource in modeled_resources
+        if resource in RESEARCH_KEYS:
+            category = "research"
+        elif resource.startswith("giga_sr_"):
+            category = "gigas_custom_resource"
+        else:
+            category = "resource"
+        rows.append(
+            {
+                "resource_key": resource,
+                "category": category,
+                "normal_column_status": "promoted" if modeled else "unsupported",
+                "artifacts_seen": "|".join(sorted(data["artifacts_seen"])),
+                "output_row_count": len(data["output_rows"]),
+                "upkeep_row_count": len(data["upkeep_rows"]),
+                "net_row_count": len(data["net_rows"]),
+                "unsupported_reason": "" if modeled else "resource key detected in amount JSON but absent from modeled resource columns",
+            }
+        )
+    return rows
+
+
 def write_summary(
     jobs: dict[str, dict[str, Any]],
     buildings: list[dict[str, Any]],
@@ -1137,6 +1269,7 @@ def write_summary(
     role_rows: list[dict[str, Any]],
     tech_rows: list[dict[str, Any]],
     strategic_rows: list[dict[str, Any]],
+    resource_coverage_rows: list[dict[str, Any]],
 ) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
     best = sorted(research_buildings, key=lambda row: float(row["total_research"]), reverse=True)[:20]
@@ -1161,9 +1294,11 @@ def write_summary(
         f"- Colony role target rows: {len(role_rows)}",
         f"- Technologies with research-relevant modifiers indexed: {len(tech_rows)}",
         f"- Strategic infrastructure target rows: {len(strategic_rows)}",
+        f"- Resource coverage rows: {len(resource_coverage_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
         "- Strategic infrastructure rows classify habitat growth centers, capital/empire-unique candidates, starbase migration support, and refactor constraints such as `can_demolish = no`.",
+        "- Resource coverage rows classify every resource key detected in amount JSON as promoted or unsupported.",
         "",
         "## Top Research Buildings",
         "",
@@ -1252,6 +1387,7 @@ def main() -> None:
     role_rows = role_target_rows(buildings, development_rows)
     tech_rows = collect_technology_modifier_rows(playset)
     strategic_rows = strategic_infrastructure_rows(playset)
+    resource_coverage_rows = modeling_resource_coverage_rows(job_rows, buildings, development_rows, strategic_rows)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
     write_csv(OUT_DEVELOPMENT, development_rows)
@@ -1259,12 +1395,14 @@ def main() -> None:
     write_csv(OUT_ROLES, role_rows)
     write_csv(OUT_TECH, tech_rows)
     write_csv(OUT_INFRA, strategic_rows)
-    write_summary(jobs, buildings, development_rows, plans, role_rows, tech_rows, strategic_rows)
+    write_csv(OUT_RESOURCE_COVERAGE, resource_coverage_rows)
+    write_summary(jobs, buildings, development_rows, plans, role_rows, tech_rows, strategic_rows, resource_coverage_rows)
     print(
         f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
         f"{len(development_rows)} districts/zones, {len(plans)} plan rows, "
         f"{len(role_rows)} role rows, {len(tech_rows)} tech modifier rows, "
-        f"{len(strategic_rows)} strategic infrastructure rows"
+        f"{len(strategic_rows)} strategic infrastructure rows, "
+        f"{len(resource_coverage_rows)} resource coverage rows"
     )
 
 
