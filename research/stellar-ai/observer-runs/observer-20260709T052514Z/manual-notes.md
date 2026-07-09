@@ -55,13 +55,22 @@ Record exact `help <command>` results before relying on commands.
 
 ### 2325
 
+- Evidence: `screenshots/checkpoint-2325-reached-20260709T0743Z.png`, `saves/checkpoint-2325-autosave_2325.01.01.sav`, `exports/checkpoint-2325-benchmark.md`, and `checkpoints.csv`.
+- Extractor result: 8 eligible regular AI countries, checkpoint date 2325.01.01.
+- JDataMunch dataset `stellar_ai_observer_20260709T052514Z_checkpoints` validated after this checkpoint with 27 rows and 25 columns.
+- Top research country was `NAME_The_Chosen` at 644.918 monthly research, 186.761 alloys income, 317 fleet power, 3 colonies, and 17 parsed megastructures.
+- Second place was `Klumetan Berserkers` at 571.319 monthly research, 149.897 alloys income, 45 fleet power, 10 colonies, and 23 parsed megastructures.
+- Early-stop result: failed research-snowball trajectory. The run is below the 3,000+ monthly research success gate and below the observer-loop diagnostic expectation of being near or above roughly 1,000 monthly research well before this point. Preserve evidence, stop the run, patch, and rerun rather than continuing to 2350 on this trajectory.
+
 ### 2350
+
+- Deferred for this failed attempt. Do not claim 2350 success from this run.
 
 ## Qualitative Behavior
 
 - Strong AI behavior:
-- Bad economy behavior:
-- Bad fleet/war behavior:
+- Bad economy behavior: research scaling remains much too weak; best parsed regular AI reached only 644.918 monthly research by 2325.
+- Bad fleet/war behavior: several high-economy/high-pop countries had zero or near-zero parsed fleet power by 2300-2325, while research still did not snowball.
 - Missing modded asset usage:
 - Deficit or collapse cases:
 
@@ -71,3 +80,5 @@ Each hypothesis must cite evidence from this run, source files, logs, saves, scr
 
 | hypothesis | evidence | expected effect | patch status | result |
 | --- | --- | --- | --- | --- |
+| Research snowball still lacks a high-pressure late-midgame accelerator for regular AI empires. | 2325 checkpoint leader at 644.918 research/month; second at 571.319 despite 17-23 parsed megastructures. | Add/retune Director plan pressure so qualifying AIs shift harder into research-job/building/habitat/megastructure compounding before 2300. | open | |
+| Fleet/war pressure may be consuming alloys without enough conquest/economy payoff, or some empires are demilitarizing after expansion. | 2300-2325 rows show several empires with 0-50 parsed fleet power while others remain low-research; 2325 leader has only 317 fleet power. | Audit war/fleet/economy balance so aggression expands economy instead of stalling research. | open | |
