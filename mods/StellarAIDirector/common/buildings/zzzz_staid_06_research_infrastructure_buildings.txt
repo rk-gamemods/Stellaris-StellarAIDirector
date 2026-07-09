@@ -123,7 +123,7 @@ building_research_lab_1 = {
 	additional_ai_weight = 600
 	ai_weight = {
 		factor = 1
-		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -198,7 +198,7 @@ building_research_lab_2 = {
 	additional_ai_weight = 900
 	ai_weight = {
 		factor = 1
-		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -269,7 +269,7 @@ building_research_lab_3 = {
 	additional_ai_weight = 1200
 	ai_weight = {
 		factor = 1
-		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -406,7 +406,7 @@ building_institute = {
 			PLANET_FLAG = stellarai_invalid_for_research_to_build
 		}
 
-		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -546,7 +546,7 @@ building_supercomputer = {
 			PLANET_FLAG = stellarai_invalid_for_research_to_build
 		}
 
-		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }
@@ -738,7 +738,7 @@ building_archaeostudies_faculty = {
 	additional_ai_weight = 500
 	ai_weight = {
 		factor = 1
-		modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }
+		modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }
 		modifier = { factor = 5 owner = { staid_research_under_curve = yes } }
 		modifier = { factor = 4 owner = { staid_opening_route_research_priority = yes } }
 		modifier = { factor = 3 owner = { staid_surplus_sink_pressure = yes } }

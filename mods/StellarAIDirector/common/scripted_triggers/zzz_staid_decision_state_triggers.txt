@@ -67,6 +67,12 @@ staid_research_input_runway_safe = {
 	resource_stockpile_compare = { resource = energy value > 3000 }
 }
 
+staid_research_minimum_input_runway_safe = {
+	staid_consumer_goods_runway_safe = yes
+	NOT = { has_deficit = energy }
+	has_monthly_income = { resource = energy value > 25 }
+}
+
 staid_research_diplomacy_priority_ready = {
 	NOT = { staid_survival_mode = yes }
 	NOT = { staid_core_deficit_short_runway = yes }
@@ -353,6 +359,7 @@ staid_research_under_curve = {
 	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		staid_research_input_runway_safe = yes
+		staid_research_minimum_input_runway_safe = yes
 		staid_high_scale_snowball_pressure = yes
 	}
 	OR = {
@@ -379,6 +386,19 @@ staid_research_under_curve = {
 				has_monthly_income = { resource = society_research value < 400 }
 				has_monthly_income = { resource = engineering_research value < 550 }
 			}
+		}
+	}
+}
+
+staid_research_construction_priority_ready = {
+	is_nomadic = no
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_research_input_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+		AND = {
+			staid_research_under_curve = yes
+			staid_research_minimum_input_runway_safe = yes
 		}
 	}
 }

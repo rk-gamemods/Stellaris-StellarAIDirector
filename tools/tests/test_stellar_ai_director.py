@@ -983,6 +983,8 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_consumer_goods_runway_safe",
             "staid_food_runway_safe",
             "staid_research_input_runway_safe",
+            "staid_research_minimum_input_runway_safe",
+            "staid_research_construction_priority_ready",
             "Stellar AI Director consumer goods runway repair",
             "Stellar AI Director food break-even repair",
             "staid_research_under_curve",
@@ -1085,7 +1087,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         research_district_text = research_district_path.read_text(encoding="utf-8")
         pop_text = pop_path.read_text(encoding="utf-8")
         self.assertIn(
-            "modifier = { factor = 0 owner = { NOT = { staid_research_input_runway_safe = yes } } }",
+            "modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }",
             research_text,
         )
         for marker in (
@@ -1526,6 +1528,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "ai_weight_coefficient = 12",
             "additional_ai_weight = 1200",
             "script = stellarai/rare_resource_guard_modifiers",
+            "staid_research_construction_priority_ready",
         ):
             self.assertIn(marker, buildings_text)
         for marker in (

@@ -5230,7 +5230,7 @@ ROUTE_RESEARCH_GATES = {
     "raiding_pop_acquisition_route": "staid_raiding_pop_acquisition_priority",
     "apex_site_preservation_core": "staid_apex_site_preservation_ready",
     "fallen_empire_benchmark_route": "staid_static_defense_investment_ready",
-    "research_throughput_infrastructure": "staid_research_input_runway_safe",
+    "research_throughput_infrastructure": "staid_research_construction_priority_ready",
     "research_diplomacy_core": "staid_research_diplomacy_priority_ready",
 }
 
@@ -5256,7 +5256,7 @@ ROUTE_BUILD_GATES = {
     "raiding_pop_acquisition_route": "staid_raiding_pop_acquisition_priority",
     "apex_site_preservation_core": "staid_apex_site_preservation_ready",
     "fallen_empire_benchmark_route": "staid_static_defense_investment_ready",
-    "research_throughput_infrastructure": "staid_research_input_runway_safe",
+    "research_throughput_infrastructure": "staid_research_construction_priority_ready",
     "research_diplomacy_core": "staid_research_diplomacy_priority_ready",
 }
 
@@ -9674,6 +9674,12 @@ staid_research_input_runway_safe = {
 \tresource_stockpile_compare = { resource = energy value > 3000 }
 }
 
+staid_research_minimum_input_runway_safe = {
+\tstaid_consumer_goods_runway_safe = yes
+\tNOT = { has_deficit = energy }
+\thas_monthly_income = { resource = energy value > 25 }
+}
+
 staid_research_diplomacy_priority_ready = {
 \tNOT = { staid_survival_mode = yes }
 \tNOT = { staid_core_deficit_short_runway = yes }
@@ -9960,6 +9966,7 @@ staid_research_under_curve = {
 \tNOT = { staid_catastrophic_collapse_mode = yes }
 \tOR = {
 \t\tstaid_research_input_runway_safe = yes
+\t\tstaid_research_minimum_input_runway_safe = yes
 \t\tstaid_high_scale_snowball_pressure = yes
 \t}
 \tOR = {
@@ -9986,6 +9993,19 @@ staid_research_under_curve = {
 \t\t\t\thas_monthly_income = { resource = society_research value < 400 }
 \t\t\t\thas_monthly_income = { resource = engineering_research value < 550 }
 \t\t\t}
+\t\t}
+\t}
+}
+
+staid_research_construction_priority_ready = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tOR = {
+\t\tstaid_research_input_runway_safe = yes
+\t\tstaid_high_scale_snowball_pressure = yes
+\t\tAND = {
+\t\t\tstaid_research_under_curve = yes
+\t\t\tstaid_research_minimum_input_runway_safe = yes
 \t\t}
 \t}
 }
@@ -12259,7 +12279,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.",
         "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.5 rejects in active economic-plan files.",
         "- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.",
-        "- Research labs keep a hard zero gate unless `staid_research_input_runway_safe` is true, then add extra pressure for `staid_research_under_curve`, `staid_opening_route_research_priority`, and `staid_surplus_sink_pressure`. Habitat science districts keep the tall-capacity gate and add under-curve research pressure.",
+        "- Research labs keep a hard zero gate unless `staid_research_construction_priority_ready` is true, which allows full runway, high-scale surplus, or under-curve research with minimum CG/energy runway; they then add extra pressure for `staid_research_under_curve`, `staid_opening_route_research_priority`, and `staid_surplus_sink_pressure`. Habitat science districts keep the tall-capacity gate and add under-curve research pressure.",
         "- Pop assembly buildings keep the `staid_pop_assembly_snowball_ready` hard gate, then add path-specific pressure for valid robot/synth, machine, clone/biological, hive, and progenitor-hive assembly routes.",
         "- Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.",
         "- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.",
