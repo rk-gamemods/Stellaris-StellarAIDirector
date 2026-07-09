@@ -1044,6 +1044,13 @@ staid_apex_site_preservation_ready = {
 staid_starbase_defense_economy_safe = {
 	is_nomadic = no
 	NOT = { staid_catastrophic_collapse_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	OR = {
+		NOT = { staid_recovery_mode = yes }
+		staid_security_existential = yes
+		staid_crisis_starbase_pressure = yes
+		staid_homeland_under_attack = yes
+	}
 	OR = {
 		has_monthly_income = { resource = alloys value > 35 }
 		resource_stockpile_compare = { resource = alloys value > 1200 }
@@ -1056,15 +1063,29 @@ staid_starbase_defense_economy_safe = {
 	}
 }
 
+staid_static_defense_threat_window = {
+	OR = {
+		staid_crisis_starbase_pressure = yes
+		staid_security_existential = yes
+		staid_homeland_under_attack = yes
+		staid_defensive_starbase_strategy = yes
+		AND = {
+			OR = {
+				staid_aggressive_fleet_pressure = yes
+				staid_militarist_conquest_strategy = yes
+			}
+			OR = {
+				highest_threat > 25
+				years_passed > 80
+				staid_high_scale_snowball_pressure = yes
+			}
+		}
+	}
+}
+
 staid_static_defense_investment_ready = {
 	staid_starbase_defense_economy_safe = yes
-	OR = {
-		staid_defensive_starbase_strategy = yes
-		staid_aggressive_fleet_pressure = yes
-		staid_militarist_conquest_strategy = yes
-		staid_high_scale_snowball_pressure = yes
-		staid_crisis_starbase_pressure = yes
-	}
+	staid_static_defense_threat_window = yes
 }
 
 staid_unity_sink_priority_ready = {

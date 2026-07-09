@@ -689,6 +689,7 @@ basic_economy_plan = {
 		scaling = yes
 		set_name = "Stellar AI Director crisis starbase reserve"
 		potential = {
+			staid_starbase_defense_economy_safe = yes
 			staid_crisis_starbase_pressure = yes
 		}
 		income = {

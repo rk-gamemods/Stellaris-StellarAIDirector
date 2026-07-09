@@ -7920,7 +7920,9 @@ def starbase_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         "staid_defensive_starbase_strategy",
         "staid_crisis_starbase_pressure",
         "staid_aggressive_fleet_pressure",
+        "staid_static_defense_threat_window",
         "staid_static_defense_investment_ready",
+        "staid_core_deficit_short_runway = yes",
         "staid_recovery_mode = yes",
     }
     required_note_terms = {
@@ -10642,6 +10644,13 @@ staid_apex_site_preservation_ready = {
 staid_starbase_defense_economy_safe = {
 \tis_nomadic = no
 \tNOT = { staid_catastrophic_collapse_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tOR = {
+\t\tNOT = { staid_recovery_mode = yes }
+\t\tstaid_security_existential = yes
+\t\tstaid_crisis_starbase_pressure = yes
+\t\tstaid_homeland_under_attack = yes
+\t}
 \tOR = {
 \t\thas_monthly_income = { resource = alloys value > 35 }
 \t\tresource_stockpile_compare = { resource = alloys value > 1200 }
@@ -10654,15 +10663,29 @@ staid_starbase_defense_economy_safe = {
 \t}
 }
 
+staid_static_defense_threat_window = {
+\tOR = {
+\t\tstaid_crisis_starbase_pressure = yes
+\t\tstaid_security_existential = yes
+\t\tstaid_homeland_under_attack = yes
+\t\tstaid_defensive_starbase_strategy = yes
+\t\tAND = {
+\t\t\tOR = {
+\t\t\t\tstaid_aggressive_fleet_pressure = yes
+\t\t\t\tstaid_militarist_conquest_strategy = yes
+\t\t\t}
+\t\t\tOR = {
+\t\t\t\thighest_threat > 25
+\t\t\t\tyears_passed > 80
+\t\t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\t}
+\t\t}
+\t}
+}
+
 staid_static_defense_investment_ready = {
 \tstaid_starbase_defense_economy_safe = yes
-\tOR = {
-\t\tstaid_defensive_starbase_strategy = yes
-\t\tstaid_aggressive_fleet_pressure = yes
-\t\tstaid_militarist_conquest_strategy = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t\tstaid_crisis_starbase_pressure = yes
-\t}
+\tstaid_static_defense_threat_window = yes
 }
 
 staid_unity_sink_priority_ready = {
@@ -11509,6 +11532,7 @@ basic_economy_plan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director crisis starbase reserve"
 \t\tpotential = {
+\t\t\tstaid_starbase_defense_economy_safe = yes
 \t\t\tstaid_crisis_starbase_pressure = yes
 \t\t}
 \t\tincome = {
