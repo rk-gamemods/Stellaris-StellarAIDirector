@@ -38,6 +38,7 @@ OUT_JOBS = RESEARCH_ROOT / "stellar-ai-director-research-capacity-jobs-2026-07-0
 OUT_BUILDINGS = RESEARCH_ROOT / "stellar-ai-director-research-capacity-buildings-2026-07-09.csv"
 OUT_DEVELOPMENT = RESEARCH_ROOT / "stellar-ai-director-research-capacity-development-2026-07-09.csv"
 OUT_PLAN = RESEARCH_ROOT / "stellar-ai-director-research-capacity-plan-2026-07-09.csv"
+OUT_ROLES = RESEARCH_ROOT / "stellar-ai-director-colony-role-targets-2026-07-09.csv"
 OUT_TECH = RESEARCH_ROOT / "stellar-ai-director-research-capacity-tech-modifiers-2026-07-09.csv"
 OUT_MD = RESEARCH_ROOT / "stellar-ai-director-research-capacity-2026-07-09.md"
 RESEARCH_KEYS = ("physics_research", "society_research", "engineering_research")
@@ -50,8 +51,27 @@ SUPPORT_KEYS = (
     "volatile_motes",
     "exotic_gases",
     "rare_crystals",
+    "food",
+    "unity",
+    "trade",
+    "trade_value",
+    "sr_zro",
+    "sr_dark_matter",
+    "sr_living_metal",
+    "nanites",
 )
 UPKEEP_MULT_KEYS = ("planet_researchers_upkeep_mult",)
+ROLE_TARGETS = {
+    "research_world": ("physics_research", "society_research", "engineering_research"),
+    "forge_world": ("alloys",),
+    "factory_world": ("consumer_goods",),
+    "generator_world": ("energy",),
+    "mining_world": ("minerals",),
+    "agri_world": ("food",),
+    "unity_world": ("unity",),
+    "refinery_world": ("volatile_motes", "exotic_gases", "rare_crystals"),
+    "trade_world": ("trade",),
+}
 
 
 def add_amounts(left: dict[str, float], right: dict[str, float], factor: float = 1.0) -> None:
@@ -66,6 +86,35 @@ def research_total(amounts: dict[str, float]) -> float:
 def resource_columns(prefix: str, amounts: dict[str, float]) -> dict[str, float]:
     keys = (*RESEARCH_KEYS, *SUPPORT_KEYS)
     return {f"{prefix}_{key}": round(amounts.get(key, 0.0), 6) for key in keys}
+
+
+def role_total(amounts: dict[str, float], role: str) -> float:
+    return sum(amounts.get(key, 0.0) for key in ROLE_TARGETS[role])
+
+
+def net_amounts(output: dict[str, float], upkeep: dict[str, float]) -> dict[str, float]:
+    net = dict(output)
+    add_amounts(net, upkeep, -1.0)
+    return net
+
+
+def classify_colony_class(object_id: str) -> str:
+    lower = object_id.lower()
+    if "birch" in lower:
+        return "birch_world"
+    if "frameworld" in lower:
+        return "frameworld"
+    if "alderson" in lower:
+        return "alderson_disk"
+    if "ring_world" in lower or "ringworld" in lower or "_srw_" in lower:
+        return "ring_world"
+    if "habitat" in lower or lower.startswith("district_hab_") or "_hab_" in lower or "superhab" in lower:
+        return "habitat"
+    if "arcology" in lower or "ecumenopolis" in lower:
+        return "arcology"
+    if "resort" in lower:
+        return "resort_world"
+    return "generic_planet_or_special"
 
 
 def normalize_job_workforce(amount: float) -> float:
@@ -327,6 +376,7 @@ def collect_buildings(playset: dict[str, Any], jobs: dict[str, dict[str, Any]]) 
         rows.append(
             {
                 "building_id": object_id,
+                "colony_class": classify_colony_class(object_id),
                 "winning_mod_name": row["name"],
                 "winning_file": row["relative_file"],
                 "category": atom_value(block_assignments(value, "category")[0].value) if block_assignments(value, "category") else "",
@@ -403,6 +453,7 @@ def collect_development_rows(playset: dict[str, Any], jobs: dict[str, dict[str, 
             {
                 "object_type": object_type,
                 "object_id": object_id,
+                "colony_class": classify_colony_class(object_id),
                 "winning_mod_name": row["name"],
                 "winning_file": row["relative_file"],
                 "jobs_created_json": _json_dump(jobs_created),
@@ -594,6 +645,186 @@ def plan_rows(buildings: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return rows
 
 
+def repeatable_building_candidate(row: dict[str, Any]) -> bool:
+    mod_name = str(row["winning_mod_name"]).lower()
+    building_id = str(row["building_id"])
+    if "more events" in mod_name or "more primitives" in mod_name:
+        return False
+    special_prefixes = ("holding_", "building_fe_", "building_organic_", "building_passenger_")
+    return not building_id.startswith(special_prefixes)
+
+
+def build_plan_building_candidate(row: dict[str, Any]) -> bool:
+    if not repeatable_building_candidate(row):
+        return False
+    building_id = str(row["building_id"]).lower()
+    mod_name = str(row["winning_mod_name"]).lower()
+    blocked_terms = (
+        "capital",
+        "primitive",
+        "branch_office",
+        "aeternum",
+        "katzen",
+        "ancient_palace",
+        "fallen_empire",
+        "lost_emperor",
+    )
+    if any(term in building_id or term in mod_name for term in blocked_terms):
+        return False
+    return True
+
+
+def building_bundle_for_role(selected: list[dict[str, Any]], role: str) -> dict[str, dict[str, float]]:
+    if role == "research_world":
+        bundle = aggregate_selected_buildings(selected)
+        output = dict(bundle["adjusted_output"])
+        upkeep = dict(bundle["adjusted_upkeep"])
+        return {"output": output, "upkeep": upkeep, "net": net_amounts(output, upkeep)}
+    output: dict[str, float] = {}
+    upkeep: dict[str, float] = {}
+    for row in selected:
+        total_output = json.loads(str(row["total_output_json"]))
+        total_upkeep = json.loads(str(row["total_upkeep_json"]))
+        add_amounts(output, total_output)
+        add_amounts(upkeep, total_upkeep)
+    return {"output": output, "upkeep": upkeep, "net": net_amounts(output, upkeep)}
+
+
+def role_building_candidates(buildings: list[dict[str, Any]], role: str, candidate_scope: str) -> list[dict[str, Any]]:
+    candidates: list[dict[str, Any]] = []
+    for row in buildings:
+        if row["is_upgrade_terminal"] != "yes":
+            continue
+        if candidate_scope == "repeatable" and not repeatable_building_candidate(row):
+            continue
+        if candidate_scope == "build_plan" and not build_plan_building_candidate(row):
+            continue
+        bundle = building_bundle_for_role([row], role)
+        if role_total(bundle["output"], role) > 0 or role_total(bundle["net"], role) > 0:
+            candidates.append(row)
+            continue
+        if role == "research_world" and "has_research_modifiers" in str(row["data_quality_flags"]).split("|"):
+            candidates.append(row)
+    return candidates
+
+
+def greedy_role_buildings(candidates: list[dict[str, Any]], role: str, take: int) -> list[dict[str, Any]]:
+    selected: list[dict[str, Any]] = []
+    remaining = list(candidates)
+
+    def marginal_score(row: dict[str, Any]) -> tuple[float, float, float, str]:
+        bundle = building_bundle_for_role([*selected, row], role)
+        return (
+            role_total(bundle["net"], role),
+            role_total(bundle["output"], role),
+            float(row.get("job_slots_total", 0.0)),
+            str(row["building_id"]),
+        )
+
+    while remaining and len(selected) < take:
+        best_row = max(remaining, key=marginal_score)
+        selected.append(best_row)
+        remaining.remove(best_row)
+    return selected
+
+
+def role_bundle_row(
+    role: str,
+    build_plan_family: str,
+    source_scope: str,
+    colony_class: str,
+    slots: int,
+    selected_objects: list[str],
+    bundle: dict[str, dict[str, float]],
+) -> dict[str, Any]:
+    return {
+        "role": role,
+        "build_plan_family": build_plan_family,
+        "source_scope": source_scope,
+        "colony_class": colony_class,
+        "slots": slots,
+        "selected_count": len(selected_objects),
+        "selected_objects": "|".join(selected_objects),
+        "gross_role_output": round(role_total(bundle["output"], role), 6),
+        "net_role_output": round(role_total(bundle["net"], role), 6),
+        **resource_columns("output", bundle["output"]),
+        **resource_columns("upkeep", bundle["upkeep"]),
+        **resource_columns("net", bundle["net"]),
+    }
+
+
+def role_target_rows(buildings: list[dict[str, Any]], development_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for role in ROLE_TARGETS:
+        for candidate_scope, source_scope in (
+            ("raw", "raw_terminal_buildings"),
+            ("repeatable", "repeatable_terminal_buildings"),
+            ("build_plan", "build_plan_candidate_terminal_buildings"),
+        ):
+            candidates = role_building_candidates(buildings, role, candidate_scope)
+            for slots in (6, 8, 10, 12):
+                take = min(slots, len(candidates))
+                if take <= 0:
+                    continue
+                selected = greedy_role_buildings(candidates, role, take)
+                bundle = building_bundle_for_role(selected, role)
+                rows.append(
+                    role_bundle_row(
+                        role=role,
+                        build_plan_family=role,
+                        source_scope=f"{source_scope}_{take}_in_{slots}_slots",
+                        colony_class="building_slots_any_colony",
+                        slots=slots,
+                        selected_objects=[str(row["building_id"]) for row in selected],
+                        bundle=bundle,
+                    )
+                )
+
+        development_candidates = []
+        for row in development_rows:
+            output = json.loads(str(row["total_output_json"]))
+            upkeep = json.loads(str(row["total_upkeep_json"]))
+            bundle = {"output": output, "upkeep": upkeep, "net": net_amounts(output, upkeep)}
+            if role_total(bundle["output"], role) > 0 or role_total(bundle["net"], role) > 0:
+                development_candidates.append((row, bundle))
+
+        classes = sorted({str(row["colony_class"]) for row, _bundle in development_candidates})
+        for colony_class in ["all_colony_classes", *classes]:
+            class_candidates = [
+                (row, bundle)
+                for row, bundle in development_candidates
+                if colony_class == "all_colony_classes" or row["colony_class"] == colony_class
+            ]
+            if not class_candidates:
+                continue
+            ordered = sorted(
+                class_candidates,
+                key=lambda item: (role_total(item[1]["net"], role), role_total(item[1]["output"], role), str(item[0]["object_id"])),
+                reverse=True,
+            )
+            for take in sorted({1, min(3, len(ordered)), min(6, len(ordered))}):
+                selected_pairs = ordered[:take]
+                output: dict[str, float] = {}
+                upkeep: dict[str, float] = {}
+                selected_objects: list[str] = []
+                for row, bundle in selected_pairs:
+                    add_amounts(output, bundle["output"])
+                    add_amounts(upkeep, bundle["upkeep"])
+                    selected_objects.append(f"{row['object_type']}:{row['object_id']}")
+                rows.append(
+                    role_bundle_row(
+                        role=role,
+                        build_plan_family=role,
+                        source_scope=f"development_top_{take}",
+                        colony_class=colony_class,
+                        slots=0,
+                        selected_objects=selected_objects,
+                        bundle={"output": output, "upkeep": upkeep, "net": net_amounts(output, upkeep)},
+                    )
+                )
+    return rows
+
+
 def collect_technology_modifier_rows(playset: dict[str, Any]) -> list[dict[str, Any]]:
     roots = _valuation_stack_roots(playset)
     variables = collect_global_variables([Path(root["root"]) for root in roots])
@@ -665,6 +896,7 @@ def write_summary(
     buildings: list[dict[str, Any]],
     development_rows: list[dict[str, Any]],
     plans: list[dict[str, Any]],
+    role_rows: list[dict[str, Any]],
     tech_rows: list[dict[str, Any]],
 ) -> None:
     research_buildings = [row for row in buildings if float(row["total_research"]) > 0]
@@ -687,6 +919,7 @@ def write_summary(
         f"- Districts/zones indexed: {len(development_rows)}",
         f"- Buildings with resolved research output: {len(research_buildings)}",
         f"- Districts/zones with net consumer-goods output: {len(consumer_goods_development)}",
+        f"- Colony role target rows: {len(role_rows)}",
         f"- Technologies with research-relevant modifiers indexed: {len(tech_rows)}",
         f"- Source roots include vanilla at `{STELLARIS_INSTALL_ROOT}` plus enabled launcher mods.",
         "- Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.",
@@ -713,6 +946,28 @@ def write_summary(
         lines.append(
             f"| {index} | {row['object_type']} | `{row['object_id']}` | {row['net_consumer_goods']} | {row['job_slots_total']} | {row['winning_mod_name']} |"
         )
+    best_role_rows = [
+        row
+        for row in role_rows
+        if (
+            row["source_scope"].startswith("build_plan_candidate_terminal_buildings_")
+            and row["source_scope"].endswith("_in_12_slots")
+        )
+        or (row["source_scope"] == "development_top_1" and row["colony_class"] == "all_colony_classes")
+    ]
+    lines.extend(
+        [
+            "",
+            "## Colony Role Targets",
+            "",
+            "| role | source | class | net role output | selected |",
+            "| --- | --- | --- | ---: | --- |",
+        ]
+    )
+    for row in sorted(best_role_rows, key=lambda item: (item["role"], item["source_scope"], item["colony_class"])):
+        lines.append(
+            f"| {row['role']} | {row['source_scope']} | {row['colony_class']} | {row['net_role_output']} | `{row['selected_objects']}` |"
+        )
     lines.extend(["", "## Colony Scenarios", "", "| scenario | base research/month | adjusted research/month | adjusted CG upkeep | colonies for 3000 |", "| --- | ---: | ---: | ---: | ---: |"])
     for row in plans:
         lines.append(
@@ -731,16 +986,19 @@ def main() -> None:
     buildings = collect_buildings(playset, jobs)
     development_rows = collect_development_rows(playset, jobs)
     plans = plan_rows(buildings)
+    role_rows = role_target_rows(buildings, development_rows)
     tech_rows = collect_technology_modifier_rows(playset)
     write_csv(OUT_JOBS, job_rows)
     write_csv(OUT_BUILDINGS, buildings)
     write_csv(OUT_DEVELOPMENT, development_rows)
     write_csv(OUT_PLAN, plans)
+    write_csv(OUT_ROLES, role_rows)
     write_csv(OUT_TECH, tech_rows)
-    write_summary(jobs, buildings, development_rows, plans, tech_rows)
+    write_summary(jobs, buildings, development_rows, plans, role_rows, tech_rows)
     print(
         f"generated {len(job_rows)} jobs, {len(buildings)} buildings, "
-        f"{len(development_rows)} districts/zones, {len(plans)} plan rows, {len(tech_rows)} tech modifier rows"
+        f"{len(development_rows)} districts/zones, {len(plans)} plan rows, "
+        f"{len(role_rows)} role rows, {len(tech_rows)} tech modifier rows"
     )
 
 

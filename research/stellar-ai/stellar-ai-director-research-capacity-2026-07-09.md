@@ -9,6 +9,7 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Districts/zones indexed: 547
 - Buildings with resolved research output: 135
 - Districts/zones with net consumer-goods output: 8
+- Colony role target rows: 220
 - Technologies with research-relevant modifiers indexed: 18
 - Source roots include vanilla at `C:\Steam\steamapps\common\Stellaris` plus enabled launcher mods.
 - Plan rows include base and building-modifier-adjusted research/upkeep. Technology rows are inventoried but not auto-applied to colony plans yet.
@@ -50,6 +51,29 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 | 6 | zone | `zone_resort_grand_museum` | 6.0 | 2.0 | Stellaris vanilla |
 | 7 | zone | `zone_resort_spiritual_retreat` | 6.0 | 2.0 | Stellaris vanilla |
 | 8 | district | `district_giga_frameworld_factory` | 5.0 | 0.01 | Gigastructural Engineering & More (4.4) |
+
+## Colony Role Targets
+
+| role | source | class | net role output | selected |
+| --- | --- | --- | ---: | --- |
+| agri_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 511.0 | `building_nourishment_center|building_giga_gas_giant_habitation_module|building_giga_interstellar_hydroponic_farm|building_low_tech_farm|building_contained_ecosphere|building_giga_pcc_scrap_pile|building_bio_reprocessing_facilities|building_food_processing_center|building_junkheap|building_giga_corrona_homes|building_foundry_upkeep_1|building_food_conglomerate` |
+| agri_world | development_top_1 | all_colony_classes | 10000.0 | `district:district_giga_birch_void_ktisma` |
+| factory_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 99.625 | `building_affluence_center|building_junkheap|building_factory_efficiency_1|building_low_tech_scrap_refinery|building_underground_chemists|building_virtual_entertainment_studios|building_temple_of_prosperity|building_subversive_shrine|building_low_tech_admin_hub|building_research_upkeep_1|esc_building_reprocessing_plant|building_industrial_subsidiary` |
+| factory_world | development_top_1 | all_colony_classes | 5000.0 | `district:district_giga_birch_void_ktisma` |
+| forge_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 153.675 | `building_giga_gas_giant_habitation_module|building_nano_forge|building_giga_pcc_scrap_pile|building_giga_interstellar_hydroponic_farm|building_nanotech_cauldron|building_foundry_efficiency_1|esc_building_reprocessing_plant|building_wet_td_bio_lab|building_materiality_engine|building_low_tech_scrap_refinery|building_supercon_lab|building_storm_lab` |
+| forge_world | development_top_1 | all_colony_classes | 5000.0 | `district:district_giga_birch_void_ktisma` |
+| generator_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 1023.0 | `building_giga_gas_giant_habitation_module|building_giga_blokkat_blokkwork_node|building_class_4_singularity|building_giga_research_lab_2|building_giga_flusion_fusion_power_plant|building_giga_iodizium_plant|esc_building_stellar_energy_tower|building_waste_reprocessing_center|building_giga_energy_nexus_3|building_cyberdome|building_private_security|building_underground_clubs` |
+| generator_world | development_top_1 | all_colony_classes | 10000.0 | `district:district_giga_birch_void_ktisma` |
+| mining_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 434.5 | `building_giga_gas_giant_habitation_module|building_giga_pcc_scrap_pile|building_giga_matter_synthesizer|esc_building_magmaminer_2|building_mineral_purification_hub|building_wildcat_miners|building_low_tech_scrap_refinery|building_materiality_engine|building_junkheap|building_waste_reprocessing_center|gpm_building_mining_nanite_nexus|building_research_upkeep_1` |
+| mining_world | development_top_1 | all_colony_classes | 10000.0 | `district:district_giga_birch_void_ktisma` |
+| refinery_world | build_plan_candidate_terminal_buildings_9_in_12_slots | building_slots_any_colony | 135.5 | `building_dimensional_fabricator|building_nanite_transmuter|building_mote_aggravator|building_crystal_growth|building_churning_stomach|esc_building_crystal_farm_2|building_giga_elysium_dust_sifter|building_living_metal_clinic|building_offworld_expedition_hub` |
+| refinery_world | development_top_1 | all_colony_classes | 9.0 | `district:district_giga_frameworld_refinery` |
+| research_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 1154.4025 | `building_master_archive|building_pinniped_sanctuary|building_giga_supercomputer_2|building_giga_institute_2|building_wet_td_bio_lab|building_superhab_lab|building_giga_iodizium_research|esc_building_dragon_hatchery|building_cryo_lab|building_order_keep|building_augmentation_center|building_navel_command` |
+| research_world | development_top_1 | all_colony_classes | 7500.0 | `district:district_giga_birch_void_physma` |
+| trade_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 381.0 | `building_giga_research_lab_2|building_giga_interstellar_hydroponic_farm|building_giga_gas_giant_habitation_module|building_tendril_cradle_4|building_cyberdome|building_temple_of_prosperity|building_subversive_shrine|building_low_tech_admin_hub|building_giga_matrioshka_brain_uplink_entertainment|building_clear_thought_clinic|building_imperial_concession_port|building_gaia_unity_temple` |
+| trade_world | development_top_1 | all_colony_classes | 103.0 | `district:district_maginot_ringworld_barracks` |
+| unity_world | build_plan_candidate_terminal_buildings_12_in_12_slots | building_slots_any_colony | 369.0 | `gpm_building_ascension_tower|building_giga_matrioshka_brain_uplink_sanctuary|building_giga_matrioshka_brain_uplink_entertainment|building_solarpunk_gaiaseeder|building_gaia_unity_servitor|building_simulation_3|building_sensorium_3|building_hypercomms_forum|building_galactic_memorial_3|building_corporate_forum|xeno_geology_holomuseum|galactic_history_holomuseum` |
+| unity_world | development_top_1 | all_colony_classes | 346.5 | `district:district_mindlink` |
 
 ## Colony Scenarios
 
