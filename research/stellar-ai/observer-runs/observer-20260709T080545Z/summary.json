@@ -1,0 +1,18 @@
+{
+  "checkpoint_row_count": 0,
+  "checkpoint_year_counts": {},
+  "empire_rank_counts": {},
+  "evidence_file_counts": {
+    "exports": 0,
+    "logs": 0,
+    "saves": 0,
+    "screenshots": 0
+  },
+  "has_patch_hypothesis_table": true,
+  "hidden_economic_bonuses": false,
+  "manual_notes_bytes": 2427,
+  "run_id": "observer-20260709T080545Z",
+  "status": "prepared_after_research_gate_repair",
+  "summary_generated_at_utc": "2026-07-09T08:06:19.317665+00:00",
+  "target_game_version": "Stellaris 4.4.5 stable/current local install"
+}
