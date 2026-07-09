@@ -479,6 +479,60 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertIn(marker, doctrine_text)
 
+    def test_opening_route_trigger_references_resolve_across_generated_surfaces(self):
+        opening = MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_10_opening_strategy_triggers.txt"
+        kernel = MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_20_strategy_kernel_triggers.txt"
+        opening_text = opening.read_text(encoding="utf-8")
+        kernel_text = kernel.read_text(encoding="utf-8")
+
+        defined_opening_routes = set(re.findall(r"(?m)^(staid_opening_[A-Za-z0-9_]+)\s*=\s*\{", opening_text))
+        required_opening_routes = {
+            "staid_opening_direct_research",
+            "staid_opening_unity_to_research",
+            "staid_opening_military_to_pops",
+            "staid_opening_hostile_fauna_clearance",
+            "staid_opening_defensive_tall_research",
+            "staid_opening_trade_to_research",
+            "staid_opening_hive_growth_research",
+            "staid_opening_machine_growth_research",
+            "staid_opening_nomad_arkship_research",
+            "staid_opening_any_research_route",
+        }
+        self.assertTrue(required_opening_routes.issubset(defined_opening_routes))
+
+        required_kernel_gates = {
+            "staid_is_opening_phase",
+            "staid_has_safe_basic_stockpiles",
+            "staid_can_afford_research_push",
+            "staid_security_existential",
+            "staid_opening_route_research_priority",
+        }
+        defined_kernel_gates = set(re.findall(r"(?m)^(staid_[A-Za-z0-9_]+)\s*=\s*\{", kernel_text))
+        self.assertTrue(required_kernel_gates.issubset(defined_kernel_gates))
+
+        generated_common_files = [
+            path
+            for path in (MOD_ROOT / "common").glob("**/*.txt")
+            if path.name.startswith(("zzz_staid_", "zzzz_staid_"))
+        ]
+        defined_route_surface = defined_opening_routes | defined_kernel_gates
+        missing_references = {}
+        consumer_paths = set()
+        for path in generated_common_files:
+            text = path.read_text(encoding="utf-8")
+            references = set(re.findall(r"\b(staid_opening_[A-Za-z0-9_]+)\b", text))
+            missing = references - defined_route_surface
+            if missing:
+                missing_references[str(path.relative_to(MOD_ROOT))] = sorted(missing)
+            if references and path != opening:
+                consumer_paths.add(path.relative_to(MOD_ROOT).as_posix())
+
+        self.assertEqual(missing_references, {})
+        self.assertIn("common/economic_plans/zzzz_staid_additive_economic_plan.txt", consumer_paths)
+        self.assertIn("common/policies/zzzz_staid_10_opening_growth_policies.txt", consumer_paths)
+        self.assertIn("common/edicts/zzzz_staid_10_opening_growth_edicts.txt", consumer_paths)
+        self.assertNotRegex(opening_text + kernel_text, r"\b(set|has)_country_flag\s*=\s*staid_opening_")
+
     def test_july7_policy_and_edict_overrides_are_generated_from_verified_ids(self):
         policy = MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt"
         edicts = MOD_ROOT / "common" / "edicts" / "zzzz_staid_10_opening_growth_edicts.txt"
