@@ -1404,21 +1404,32 @@ class GeneratedModValidityTests(unittest.TestCase):
             parse_file(path)
 
         policy_text = policy.read_text(encoding="utf-8")
-        self.assertIn("diplomatic_stance", policy_text)
-        self.assertIn("diplo_stance_cooperative", policy_text)
-        self.assertIn("diplo_stance_cooperative_nomad", policy_text)
-        self.assertNotIn("staid_opening_route_research_priority", policy_text)
-        self.assertNotIn("factor = 12", policy_text)
+        diplomatic_text = extract_top_level_object_text(policy_text, "diplomatic_stance")
+        self.assertIn("diplo_stance_cooperative", diplomatic_text)
+        self.assertIn("diplo_stance_cooperative_nomad", diplomatic_text)
+        self.assertNotIn("staid_opening_route_research_priority", diplomatic_text)
+        self.assertNotIn("factor = 12", diplomatic_text)
+        # Diplomatic opening behavior is intentionally narrower than the
+        # Director's long economic opening. Native war posture immediately exits
+        # Cooperative/Expansionist opening weights without excluding conqueror,
+        # subjugator, or militarist personalities from the object wholesale.
         for marker in (
             "factor = 2",
-            "staid_is_opening_phase = yes",
+            "staid_is_diplomatic_opening_phase = yes",
             "staid_opening_any_research_route = yes",
+            "NOT = { staid_security_existential = yes }",
+            "NOT = { staid_native_war_posture_active = yes }",
+            "modifier = { factor = 0 staid_native_war_posture_active = yes }",
+            "num_rivals = 0",
+        ):
+            self.assertIn(marker, diplomatic_text)
+        for obsolete_marker in (
+            "staid_is_opening_phase = yes",
             "NOT = { staid_militarist_conquest_strategy = yes }",
             "NOT = { has_ai_personality_behaviour = conqueror }",
             "NOT = { has_ai_personality_behaviour = subjugator }",
-            "num_rivals = 0",
         ):
-            self.assertIn(marker, policy_text)
+            self.assertNotIn(obsolete_marker, diplomatic_text)
 
         edicts_text = edicts.read_text(encoding="utf-8")
         for marker in (
@@ -1616,13 +1627,17 @@ class GeneratedModValidityTests(unittest.TestCase):
                 "staid_naval_capacity_expansion_ready = {"
             )
         ]
+        # The 4.4.4 replacement delegates containment detection to the shared
+        # boxed-in war-pressure trigger. Mature empires must not age out of claim
+        # pressure through the obsolete five-planet cutoff.
         for marker in (
             "has_potential_claims = yes",
-            "num_owned_planets < 5",
-            "NOT = { has_ai_expansion_plan = yes }",
+            "staid_boxed_in_war_pressure = yes",
             "has_resource = { type = influence amount > 250 }",
         ):
             self.assertIn(marker, boxed_in_trigger)
+        self.assertNotIn("num_owned_planets < 5", boxed_in_trigger)
+        self.assertNotIn("NOT = { has_ai_expansion_plan = yes }", boxed_in_trigger)
 
     def test_relative_economic_standards_scale_by_colonies_and_fleet_burden(self):
         self.assertTrue(RELATIVE_ECONOMIC_STANDARDS_CSV.exists())
