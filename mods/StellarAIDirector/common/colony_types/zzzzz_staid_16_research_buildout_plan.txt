@@ -27,7 +27,7 @@ col_city = {
 		NOT = { is_planet_class = pc_nanotech }
 		OR = {
 			owner = { is_ai = no }
-			planet = { NOT = { has_planet_flag = staid_research_plan_claimed } }
+			NOT = { has_carrier_flag = staid_research_plan_claimed }
 		}
 	}
 
@@ -74,7 +74,7 @@ col_research = {
 		NOT = { is_planet_class = pc_nanotech }
 		OR = {
 			owner = { is_ai = no }
-			planet = { has_planet_flag = staid_research_plan_claimed }
+			has_carrier_flag = staid_research_plan_claimed
 		}
 	}
 

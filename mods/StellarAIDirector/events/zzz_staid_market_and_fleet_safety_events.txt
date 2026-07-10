@@ -273,14 +273,14 @@ country_event = {
 					has_designation = col_ring_research
 				}
 			}
-			set_planet_flag = staid_research_plan_claimed
+			set_carrier_flag = staid_research_plan_claimed
 		}
 		every_owned_planet = {
 			limit = {
 				is_capital = yes
-				has_planet_flag = staid_research_plan_claimed
+				has_carrier_flag = staid_research_plan_claimed
 			}
-			remove_planet_flag = staid_research_plan_claimed
+			remove_carrier_flag = staid_research_plan_claimed
 		}
 
 		if = {
@@ -288,7 +288,7 @@ country_event = {
 				num_owned_planets >= 3
 				count_owned_planet = {
 					limit = {
-						has_planet_flag = staid_research_plan_claimed
+						has_carrier_flag = staid_research_plan_claimed
 					}
 					count < 1
 				}
@@ -323,7 +323,7 @@ country_event = {
 						has_designation = col_fortress
 					}
 				}
-				set_planet_flag = staid_research_plan_claimed
+				set_carrier_flag = staid_research_plan_claimed
 			}
 		}
 
@@ -349,7 +349,7 @@ country_event = {
 				trigger = count_owned_planet
 				parameters = {
 					limit = {
-						has_planet_flag = staid_research_plan_claimed
+						has_carrier_flag = staid_research_plan_claimed
 					}
 				}
 				variable = staid_research_plan_current
@@ -393,7 +393,7 @@ country_event = {
 								has_designation = col_fortress
 							}
 						}
-						set_planet_flag = staid_research_plan_claimed
+						set_carrier_flag = staid_research_plan_claimed
 					}
 				}
 			}

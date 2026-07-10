@@ -1083,9 +1083,15 @@ class GeneratedModValidityTests(unittest.TestCase):
         city = extract_top_level_object_text(colony_types, "col_city")
         research = extract_top_level_object_text(colony_types, "col_research")
         self.assertIn("owner = { is_ai = no }", city)
-        self.assertIn("planet = { NOT = { has_planet_flag = staid_research_plan_claimed } }", city)
+        self.assertIn("NOT = { has_carrier_flag = staid_research_plan_claimed }", city)
         self.assertIn("owner = { is_ai = no }", research)
-        self.assertIn("planet = { has_planet_flag = staid_research_plan_claimed }", research)
+        self.assertIn("has_carrier_flag = staid_research_plan_claimed", research)
+        for obsolete_planet_flag_operation in (
+            "has_planet_flag = staid_research_plan_claimed",
+            "set_planet_flag = staid_research_plan_claimed",
+            "remove_planet_flag = staid_research_plan_claimed",
+        ):
+            self.assertNotIn(obsolete_planet_flag_operation, colony_types + events + triggers)
         for marker in (
             "country_event = { id = staid_economy_safety.4 }",
             "num_owned_planets >= 3",
@@ -1100,7 +1106,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "factor = 12",
             "has_designation = col_city",
             "staid_research_construction_priority_ready = yes",
-            "set_planet_flag = staid_research_plan_claimed",
+            "set_carrier_flag = staid_research_plan_claimed",
         ):
             self.assertIn(marker, events)
         for invalid_nested_planet_scope in (
@@ -1117,7 +1123,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_good_research_candidate = {",
             "staid_research_plan_candidate = {",
             "is_scope_type = planet",
-            "NOT = { has_planet_flag = staid_research_plan_claimed }",
+            "NOT = { has_carrier_flag = staid_research_plan_claimed }",
         ):
             self.assertIn(marker, triggers)
         self.assertEqual(

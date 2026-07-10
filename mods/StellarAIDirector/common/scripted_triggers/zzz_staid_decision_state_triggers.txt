@@ -621,7 +621,7 @@ staid_research_plan_candidate = {
 		is_ai = yes
 		is_nomadic = no
 	}
-	NOT = { has_planet_flag = staid_research_plan_claimed }
+	NOT = { has_carrier_flag = staid_research_plan_claimed }
 	NOT = { is_planet_class = pc_nanotech }
 	NOR = {
 		uses_district_set = city_world
