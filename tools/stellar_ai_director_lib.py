@@ -13669,7 +13669,6 @@ country_event = {
 \t\tevery_owned_fleet = {
 \t\t\tlimit = {
 \t\t\t\tNOT = { has_fleet_order = build_orbital_station_order }
-\t\t\t\thas_variable = staid_outpost_order_months
 \t\t\t}
 \t\t\tset_variable = { which = staid_outpost_order_months value = 0 }
 \t\t}

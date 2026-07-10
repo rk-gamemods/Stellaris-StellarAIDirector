@@ -439,7 +439,6 @@ country_event = {
 		every_owned_fleet = {
 			limit = {
 				NOT = { has_fleet_order = build_orbital_station_order }
-				has_variable = staid_outpost_order_months
 			}
 			set_variable = { which = staid_outpost_order_months value = 0 }
 		}

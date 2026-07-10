@@ -2329,6 +2329,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "days = 360",
         ):
             self.assertIn(marker, events)
+        self.assertNotIn("has_variable = staid_outpost_order_months", events)
 
         clear_order_files = [
             path
