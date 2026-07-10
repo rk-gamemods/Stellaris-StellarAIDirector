@@ -42,3 +42,9 @@ research/stellar-ai/observer-runs/**/screenshots/*.jpg
 research/stellar-ai/observer-runs/**/screenshots/*.jpeg
 research/stellar-ai/observer-runs/**/exports/
 research/stellar-ai/observer-runs/**/commands_at_date.txt
+
+# Local Stellaris knowledge-base runtime state
+knowledge-base/runtime/
+knowledge-base/backups/
+knowledge-base/*.sqlite3
+knowledge-base/*.sqlite3-*

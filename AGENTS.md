@@ -42,6 +42,12 @@ This folder is for Stellaris modding, mod preparation, experiments, and supporti
 - Tested recovery for stale Munch handles in this project: fork the current Codex thread into the same directory, then rerun exact guide discovery, all three mounted guide calls, and the patched preflight. The same-directory fork reset `Transport closed` without closing Codex; do not rely on process killing as the reset mechanism.
 - For local Stellaris project indexing, keep JDocMunch embeddings disabled unless the user explicitly asks to enable them. Prefer `use_embeddings=false` or `JDOCMUNCH_EMBEDDING_PROVIDER=none` for index refreshes.
 
+## Stellaris Knowledge Base Routing
+
+- Treat `knowledge-base/runtime/stellaris_knowledge_base.sqlite3` and `tools/stellaris_kb.py` as first-class project tooling. Run `python tools\stellaris_kb.py status` before relying on the database; use `knowledge-base/README.md` as the operator entrypoint.
+- Route read-only retrieval through `$stl-knowledge-base-query`, reviewed evidence packets through `$stl-knowledge-base-update`, lifecycle/backup/restore work through `$stl-knowledge-base-maintenance`, and unresolved evidence work through `$stl-knowledge-base-gap-research`.
+- The CLI owns every database write, lock, backup, migration, and validation step; do not mutate SQLite directly. Keep version applicability explicit—the current production baseline is Stellaris `4.4.4`, and other-version evidence must not be promoted without comparative proof.
+
 ## Stellaris Modding Defaults
 
 - Target Stellaris PC 4.4.5 stable/current local install unless the task explicitly says 4.4.4 rollback, 4.5 beta, or another version.

@@ -1,0 +1,849 @@
+{
+  "packet_version": 1,
+  "packet_key": "skb-4.4.4-initial-baseline-war-gaps-20260710-v1",
+  "target_version": "4.4.4",
+  "title": "Initial verified Pegasus 4.4.4 baseline, war readiness, and research gaps",
+  "purpose": "Establish conservative version-attested claims and prioritized static, runtime, and tooling-aware research routes for the first production knowledge packet.",
+  "actor": {
+    "key": "ai:codex",
+    "display_name": "Codex",
+    "type": "ai_agent"
+  },
+  "items": [
+    {
+      "key": "system:local-stellaris-install:pegasus-4.4.4-5505",
+      "type": "system",
+      "display_name": "Local Stellaris Pegasus 4.4.4 (5505)",
+      "summary": "Build-attested local Stellaris installation captured on 2026-07-10."
+    },
+    {
+      "key": "playset:capture:2026-07-10:116-enabled-mods",
+      "type": "playset",
+      "display_name": "Active playset capture: 2026-07-10",
+      "summary": "Dated active-environment capture with 116 enabled mods."
+    },
+    {
+      "key": "playset:capture:2026-07-08:121-source-roots",
+      "type": "playset",
+      "display_name": "Historical source-root capture: 2026-07-08",
+      "summary": "Historical 121-row source-root capture that is not the current playset."
+    },
+    {
+      "key": "mechanic:ai-war-declaration-readiness",
+      "type": "mechanic",
+      "display_name": "AI war-declaration readiness",
+      "summary": "Native pre-planner requirements that control whether ordinary AI can enter war planning."
+    },
+    {
+      "key": "field:country-type:ai.min_navy_for_wars",
+      "type": "field",
+      "display_name": "country_type.ai.min_navy_for_wars",
+      "summary": "Country-type field defining desired-navy coverage required before wars."
+    },
+    {
+      "key": "field:country-type:ai.min_assault_armies_for_wars",
+      "type": "field",
+      "display_name": "country_type.ai.min_assault_armies_for_wars",
+      "summary": "Country-type field defining the assault-army requirement before wars."
+    },
+    {
+      "key": "field:scripted-variable:armies_for_declaring_war",
+      "type": "field",
+      "display_name": "@armies_for_declaring_war",
+      "summary": "Vanilla scripted variable used by the default country-type army gate."
+    },
+    {
+      "key": "subsystem:stellar-ai-director:war-readiness",
+      "type": "subsystem",
+      "display_name": "Stellar AI Director war readiness",
+      "summary": "Director-owned native country-type override for ordinary AI readiness."
+    },
+    {
+      "key": "system:active-stack-winner-reconstruction",
+      "type": "system",
+      "display_name": "Active-stack winner reconstruction",
+      "summary": "Current playset descriptors, order, hashes, conflicts, and merged winners."
+    },
+    {
+      "key": "subsystem:ai-economic-plans",
+      "type": "subsystem",
+      "display_name": "AI economic plans and subplans",
+      "summary": "Merged top-level plans, scaling subplans, and optional subplans."
+    },
+    {
+      "key": "subsystem:ship-design-graph",
+      "type": "subsystem",
+      "display_name": "Ship-design reference graph",
+      "summary": "Ship sizes, sections, component templates, required components, and active winners."
+    },
+    {
+      "key": "subsystem:colony-automation-exceptions",
+      "type": "subsystem",
+      "display_name": "Colony automation exceptions",
+      "summary": "4.4 colony-automation exception definitions and observed grammar."
+    },
+    {
+      "key": "subsystem:pd-guilli-planet-model",
+      "type": "subsystem",
+      "display_name": "Planetary Diversity and Guilli planet model",
+      "summary": "Zones, designations, modifiers, and AI valuation for the active planet-content stack."
+    },
+    {
+      "key": "subsystem:gigas-progression-and-crisis-counters",
+      "type": "subsystem",
+      "display_name": "Gigas progression and crisis counters",
+      "summary": "Technology, project, resource, flag, structure, and crisis-response routes."
+    },
+    {
+      "key": "subsystem:starbase-resource-ui-integration",
+      "type": "subsystem",
+      "display_name": "Starbase, resource, and UI integration",
+      "summary": "Starbase Extended, resource patch, topbar, and UIOD winner and runtime surfaces."
+    },
+    {
+      "key": "subsystem:archetype-and-conquest-consumers",
+      "type": "subsystem",
+      "display_name": "Archetype and conquest consumers",
+      "summary": "Subjects, invasion, gestalts, genocidals, pacifists, megacorps, Nomads, and special origins."
+    },
+    {
+      "key": "mechanic:on-action-duplicate-resolution",
+      "type": "mechanic",
+      "display_name": "Nested on_action duplicate resolution",
+      "summary": "Engine behavior for duplicate event IDs and weighted random events in nested on_actions."
+    }
+  ],
+  "evidence": [
+    {
+      "key": "evidence:baseline:launcher-version",
+      "corpus": "vanilla-4.4.4",
+      "relative_path": "launcher-settings.json",
+      "locator_type": "json_path",
+      "json_path": "$.version",
+      "label": "Local launcher version",
+      "summary": "The local launcher reports Pegasus v4.4.4 (5505).",
+      "retrieval_instructions": "Open the exact cataloged launcher-settings.json revision and inspect $.version."
+    },
+    {
+      "key": "evidence:context:active-environment",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-ai-control-web-2026-07-10.md",
+      "locator_type": "note_section",
+      "section_title": "Confirmed from the active environment",
+      "label": "Dated active-environment findings",
+      "summary": "The 2026-07-10 capture records 116 enabled mods, Director last, Stellar AI absent, and the July 8 dataset as stale.",
+      "retrieval_instructions": "Use JDocMunch to retrieve and hash-verify the named section."
+    },
+    {
+      "key": "evidence:war-readiness:field-semantics",
+      "corpus": "vanilla-4.4.4",
+      "relative_path": "common/country_types/00_country_types.txt",
+      "locator_type": "file_lines",
+      "line_start": 25,
+      "line_end": 26,
+      "label": "Country-type readiness field semantics",
+      "summary": "Vanilla comments define the desired-navy and assault-army pre-war semantics.",
+      "retrieval_instructions": "Open lines 25-26 in the exact cataloged 4.4.4 vanilla artifact."
+    },
+    {
+      "key": "evidence:war-readiness:default-values",
+      "corpus": "vanilla-4.4.4",
+      "relative_path": "common/country_types/00_country_types.txt",
+      "locator_type": "file_lines",
+      "line_start": 124,
+      "line_end": 128,
+      "symbol_or_object_key": "default",
+      "label": "Default country-type readiness values",
+      "summary": "The 4.4.4 default country type enables war and sets 0.5 navy coverage plus @armies_for_declaring_war.",
+      "retrieval_instructions": "Open the default ai block at lines 124-128 in the exact cataloged artifact."
+    },
+    {
+      "key": "evidence:war-readiness:army-variable",
+      "corpus": "vanilla-4.4.4",
+      "relative_path": "common/scripted_variables/00_scripted_variables.txt",
+      "locator_type": "file_lines",
+      "line_start": 389,
+      "line_end": 389,
+      "symbol_or_object_key": "@armies_for_declaring_war",
+      "label": "Army declaration variable",
+      "summary": "The 4.4.4 scripted variable resolves @armies_for_declaring_war to 6.",
+      "retrieval_instructions": "Open line 389 in the exact cataloged 4.4.4 vanilla artifact."
+    },
+    {
+      "key": "evidence:director:war-readiness-override",
+      "corpus": "repo",
+      "relative_path": "mods/StellarAIDirector/common/country_types/zzzzz_staid_18_native_war_readiness.txt",
+      "locator_type": "file_lines",
+      "line_start": 1,
+      "line_end": 50,
+      "symbol_or_object_key": "default",
+      "label": "Director default country-type override",
+      "summary": "The generated override omits min_navy_for_wars and explicitly sets min_assault_armies_for_wars to zero.",
+      "retrieval_instructions": "Open the exact cataloged generated file and inspect the default ai block."
+    },
+    {
+      "key": "evidence:war-deadlock:root-cause",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-war-deadlock-root-cause-2026-07-10.md",
+      "locator_type": "note_section",
+      "section_title": "Concrete root cause",
+      "label": "War-deadlock root-cause analysis",
+      "summary": "The 2232 analysis found zero inactive ordinary AI empires passing both configured readiness thresholds.",
+      "retrieval_instructions": "Use JDocMunch to retrieve and hash-verify the named section."
+    },
+    {
+      "key": "evidence:war-deadlock:runtime-proof",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-war-deadlock-root-cause-2026-07-10.md",
+      "locator_type": "note_section",
+      "section_title": "Runtime proof completed on the pinned 4.4.4 full stack",
+      "label": "Pinned 4.4.4 runtime proof",
+      "summary": "The dated 116-mod test records AofB entering preparation below 0.5 navy coverage and declaring an ordinary conquest war.",
+      "retrieval_instructions": "Use JDocMunch to retrieve and hash-verify the named section; preserve its runtime caveats."
+    },
+    {
+      "key": "evidence:war-deadlock:zero-army-follow-up",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-war-deadlock-root-cause-2026-07-10.md",
+      "locator_type": "note_section",
+      "section_title": "The ordinary declaration comparison now points back to assault armies",
+      "label": "Zero-army and high-capacity follow-up",
+      "summary": "AofB had event-granted offensive armies while Cevantia had zero, leaving army count and high naval capacity unresolved discriminators.",
+      "retrieval_instructions": "Use JDocMunch to retrieve and hash-verify the named section."
+    },
+    {
+      "key": "evidence:playset:historical-121-roots",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/tables/active-source-roots-2026-07-08.csv",
+      "locator_type": "dataset_record",
+      "record_set": "all 121 rows",
+      "use_dataset_schema": true,
+      "label": "Historical July 8 source roots",
+      "summary": "A 121-row source-root snapshot from 2026-07-08 that must remain historical.",
+      "retrieval_instructions": "Use JDataMunch against the registered schema and retain the capture date."
+    },
+    {
+      "key": "evidence:open-question:on-actions",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/webchatgpt-followup-2026-07-08/remaining_open_questions.csv",
+      "locator_type": "dataset_record",
+      "row_number": 2,
+      "use_dataset_schema": true,
+      "label": "On-action semantics question",
+      "summary": "Historical gap row for nested on_action duplicate semantics.",
+      "retrieval_instructions": "Use JDataMunch to retrieve row 2 from the exact registered dataset revision."
+    },
+    {
+      "key": "evidence:open-question:economic-plans",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/webchatgpt-followup-2026-07-08/remaining_open_questions.csv",
+      "locator_type": "dataset_record",
+      "row_number": 3,
+      "use_dataset_schema": true,
+      "label": "Merged economic-plan question",
+      "summary": "Historical gap row for final merged nested economic subplans.",
+      "retrieval_instructions": "Use JDataMunch to retrieve row 3 from the exact registered dataset revision."
+    },
+    {
+      "key": "evidence:open-question:colony-exceptions",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/webchatgpt-followup-2026-07-08/remaining_open_questions.csv",
+      "locator_type": "dataset_record",
+      "row_number": 4,
+      "use_dataset_schema": true,
+      "label": "Colony-automation exception question",
+      "summary": "Historical gap row for colony_automation_exceptions grammar.",
+      "retrieval_instructions": "Use JDataMunch to retrieve row 4 from the exact registered dataset revision."
+    },
+    {
+      "key": "evidence:open-question:pd-uiod",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/webchatgpt-followup-2026-07-08/remaining_open_questions.csv",
+      "locator_type": "dataset_record",
+      "row_number": 6,
+      "use_dataset_schema": true,
+      "label": "PD and UIOD question",
+      "summary": "Historical gap row for Planetary Diversity and UI interactions.",
+      "retrieval_instructions": "Use JDataMunch to retrieve row 6 from the exact registered dataset revision."
+    },
+    {
+      "key": "evidence:open-question:ship-graph",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/webchatgpt-followup-2026-07-08/remaining_open_questions.csv",
+      "locator_type": "dataset_record",
+      "row_number": 7,
+      "use_dataset_schema": true,
+      "label": "Ship graph question",
+      "summary": "Historical gap row for NSC3, ESC NEXT, and Spacefleet Tactica graph validation.",
+      "retrieval_instructions": "Use JDataMunch to retrieve row 7 from the exact registered dataset revision."
+    },
+    {
+      "key": "evidence:open-question:urp-ui",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/webchatgpt-followup-2026-07-08/remaining_open_questions.csv",
+      "locator_type": "dataset_record",
+      "row_number": 9,
+      "use_dataset_schema": true,
+      "label": "Universal resource patch UI question",
+      "summary": "Historical gap row for resource-group winners and runtime topbar visibility.",
+      "retrieval_instructions": "Use JDataMunch to retrieve row 9 from the exact registered dataset revision."
+    },
+    {
+      "key": "evidence:ship-graph:missing-references",
+      "corpus": "repo",
+      "relative_path": "research/stellaris-codex-modding-guide-packet-2026-07-08/tables/ship-design-reference-checks-2026-07-08.csv",
+      "locator_type": "dataset_record",
+      "record_set": "reference_status=missing grouped by target_surface",
+      "query_text": "SELECT reference_status,target_surface,COUNT(*) FROM rows GROUP BY reference_status,target_surface",
+      "use_dataset_schema": true,
+      "label": "Historical ship-graph missing references",
+      "summary": "The validated 17,855-row graph contains 75 missing references: 56 component templates, 13 ship sizes, and six section templates.",
+      "retrieval_instructions": "Use JDataMunch on stellaris_packet_ship_design_reference_checks_20260708 and rerun the grouped query."
+    },
+    {
+      "key": "evidence:colony-exceptions:vanilla-example",
+      "corpus": "vanilla-4.4.4",
+      "relative_path": "common/colony_automation_exceptions/00_crisis_exceptions.txt",
+      "locator_type": "object_key",
+      "symbol_or_object_key": "automate_permanent_employment_building",
+      "label": "Exact 4.4.4 colony-automation exception example",
+      "summary": "The build-attested vanilla file supplies a concrete exception object and available trigger body.",
+      "retrieval_instructions": "Use the exact vanilla artifact or JDocMunch section for automate_permanent_employment_building."
+    },
+    {
+      "key": "evidence:pd:modeling-blockers",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv",
+      "locator_type": "dataset_record",
+      "record_set": "all six rows",
+      "use_dataset_schema": true,
+      "label": "Planet modeling blockers",
+      "summary": "Six detected-but-unvalued Planetary Diversity and More Arcologies benefit rows.",
+      "retrieval_instructions": "Use JDataMunch to inspect the exact six-row dataset and its source locators."
+    },
+    {
+      "key": "evidence:gigas:route-blockers",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-gigas-route-blockers-2026-07-09.csv",
+      "locator_type": "dataset_record",
+      "record_set": "all eleven rows",
+      "use_dataset_schema": true,
+      "label": "Gigas route blockers",
+      "summary": "Eleven static route rows with explicit unresolved runtime sequencing and mastery boundaries.",
+      "retrieval_instructions": "Use JDataMunch to inspect all rows and preserve the static/runtime distinction."
+    },
+    {
+      "key": "evidence:starbase:surface-study",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-starbase-defense-v2-surface-study-2026-07-09.csv",
+      "locator_type": "dataset_record",
+      "record_set": "all thirteen rows",
+      "use_dataset_schema": true,
+      "label": "Starbase defense surface study",
+      "summary": "Static Starbase Extended identity, building, module, AI-weight, and risk-surface study.",
+      "retrieval_instructions": "Use JDataMunch to inspect the exact dataset; treat old load positions as historical."
+    },
+    {
+      "key": "evidence:subsystems:strategic-gaps",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-strategic-subsystem-audit-2026-07-09.csv",
+      "locator_type": "dataset_record",
+      "record_set": "audit_status in partial_audit,gap_identified",
+      "use_dataset_schema": true,
+      "label": "Strategic subsystem gaps",
+      "summary": "Subsystem audit rows identifying partial archetype coverage and absent conquest consumers.",
+      "retrieval_instructions": "Use JDataMunch and filter the exact dataset by audit_status."
+    },
+    {
+      "key": "evidence:nomad:compatibility-audit",
+      "corpus": "repo",
+      "relative_path": "research/stellar-ai/stellar-ai-director-nomad-arkship-compatibility-audit-2026-07-09.csv",
+      "locator_type": "dataset_record",
+      "record_set": "all ten rows",
+      "use_dataset_schema": true,
+      "label": "Nomad and Arkship compatibility audit",
+      "summary": "Ten static noninterference findings for the 4.4 Nomad and Arkship surfaces.",
+      "retrieval_instructions": "Use JDataMunch to inspect the exact ten-row dataset."
+    }
+  ],
+  "claims": [
+    {
+      "key": "claim:baseline:local-install:pegasus-4.4.4-5505:2026-07-10",
+      "type": "structure",
+      "primary_item": "system:local-stellaris-install:pegasus-4.4.4-5505",
+      "statement": "The locally cataloged Stellaris installation reported Pegasus v4.4.4 (5505) when captured on 2026-07-10.",
+      "context": "Local Steam installation at C:\\Steam\\steamapps\\common\\Stellaris.",
+      "epistemic_note": "The launcher artifact is direct build-attested local evidence.",
+      "state": "verified",
+      "confidence": "very_high",
+      "basis_summary": "Exact launcher-settings.json revision from the local 4.4.4 installation.",
+      "evidence": [
+        {
+          "key": "evidence:baseline:launcher-version",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 5,
+          "interpretation": "Direct local version field."
+        }
+      ]
+    },
+    {
+      "key": "claim:playset:capture-2026-07-10:116-director-last-stellar-ai-absent",
+      "type": "structure",
+      "primary_item": "playset:capture:2026-07-10:116-enabled-mods",
+      "statement": "The 2026-07-10 active-environment capture contained 116 enabled mods, loaded Stellar AI Director last, and did not include Workshop Stellar AI.",
+      "context": "Dated capture; it must not be silently treated as current after launcher changes.",
+      "epistemic_note": "The research section records the inspected active environment; a fresh machine-readable 116-mod snapshot remains open work.",
+      "state": "verified",
+      "confidence": "high",
+      "basis_summary": "Hash-verified active-environment research section.",
+      "evidence": [
+        {
+          "key": "evidence:context:active-environment",
+          "stance": "supports",
+          "directness": 4,
+          "strength": 4,
+          "interpretation": "Dated active-environment inventory and ordering summary."
+        }
+      ]
+    },
+    {
+      "key": "claim:playset:2026-07-08-121-roots:stale-for-2026-07-10",
+      "type": "negative",
+      "primary_item": "playset:capture:2026-07-08:121-source-roots",
+      "statement": "The 121-row source-root capture from 2026-07-08 is historical and must not be used as the current 2026-07-10 active playset.",
+      "context": "The later environment capture explicitly identifies the older conflict/source-root evidence as stale.",
+      "epistemic_note": "The historical rows remain valid for their own dated snapshot only.",
+      "state": "verified",
+      "confidence": "high",
+      "basis_summary": "Exact historical dataset plus the later active-environment disposition.",
+      "evidence": [
+        {
+          "key": "evidence:playset:historical-121-roots",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 4,
+          "interpretation": "Direct identity and date of the older source-root snapshot."
+        },
+        {
+          "key": "evidence:context:active-environment",
+          "stance": "supports",
+          "directness": 4,
+          "strength": 4,
+          "interpretation": "Later capture explicitly marks the older dataset stale."
+        }
+      ]
+    },
+    {
+      "key": "claim:war-readiness:default-country-type:4.4.4-thresholds",
+      "type": "behavior",
+      "primary_item": "mechanic:ai-war-declaration-readiness",
+      "statement": "Pegasus 4.4.4 enables war declaration for the ordinary default country type but requires 0.5 desired-navy coverage and @armies_for_declaring_war, which resolves to six assault armies, before native war planning.",
+      "context": "Exact Pegasus 4.4.4 (5505) default country type.",
+      "epistemic_note": "Direct static definitions establish the configured gates and their documented semantics.",
+      "state": "verified",
+      "confidence": "very_high",
+      "basis_summary": "Exact build-attested country-type and scripted-variable lines.",
+      "evidence": [
+        {
+          "key": "evidence:war-readiness:field-semantics",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 5,
+          "interpretation": "Direct documentation of both fields' pre-war semantics."
+        },
+        {
+          "key": "evidence:war-readiness:default-values",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 5,
+          "interpretation": "Direct values in the ordinary default country type."
+        },
+        {
+          "key": "evidence:war-readiness:army-variable",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 5,
+          "interpretation": "Direct resolution of the army threshold to six."
+        }
+      ]
+    },
+    {
+      "key": "claim:war-readiness:2232-deadlock:threshold-intersection",
+      "type": "behavior",
+      "primary_item": "mechanic:ai-war-declaration-readiness",
+      "statement": "In the inspected 2232 save, no inactive ordinary AI empire passed both 4.4.4 readiness thresholds, preventing native target selection and preparation.",
+      "context": "Dated 116-mod investigation of the pinned 4.4.4 campaign.",
+      "epistemic_note": "The normalized research result is verified, but the raw save and typed verification-run context are not yet attached to this packet.",
+      "state": "verified",
+      "confidence": "high",
+      "basis_summary": "Hash-verified root-cause section with saved-state counts and threshold comparisons.",
+      "evidence": [
+        {
+          "key": "evidence:war-deadlock:root-cause",
+          "stance": "supports",
+          "directness": 4,
+          "strength": 5,
+          "interpretation": "Source-backed analysis reports zero intersection and zero planner transitions."
+        }
+      ]
+    },
+    {
+      "key": "claim:director-war-readiness:override-removes-navy-zeroes-army",
+      "type": "structure",
+      "primary_item": "subsystem:stellar-ai-director:war-readiness",
+      "statement": "The generated Stellar AI Director default-country override omits min_navy_for_wars and sets min_assault_armies_for_wars to 0.",
+      "context": "Current repository-generated full-object default country-type override.",
+      "epistemic_note": "Static source proves the generated object; current active-winner capture is tracked separately.",
+      "state": "verified",
+      "confidence": "very_high",
+      "basis_summary": "Exact generated repository artifact.",
+      "evidence": [
+        {
+          "key": "evidence:director:war-readiness-override",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 5,
+          "interpretation": "Direct inspection of the generated ai block."
+        }
+      ]
+    },
+    {
+      "key": "claim:war-readiness:runtime-aofb-below-half-navy-declared",
+      "type": "behavior",
+      "primary_item": "subsystem:stellar-ai-director:war-readiness",
+      "statement": "In the captured 116-mod 4.4.4 test, AofB entered preparation below the old 0.5 navy threshold and declared an ordinary wg_conquest war after the Director override loaded.",
+      "context": "User-completed copied-save test from 2232.01.01 through 2234.01.01.",
+      "epistemic_note": "The raw save copies and normalized verification_run/execution_context are not yet attached; confidence remains high rather than very high.",
+      "state": "verified",
+      "confidence": "high",
+      "basis_summary": "Hash-verified runtime report with dates, country identity, navy coverage, planner transition, and war goal.",
+      "evidence": [
+        {
+          "key": "evidence:war-deadlock:runtime-proof",
+          "stance": "supports",
+          "directness": 4,
+          "strength": 5,
+          "interpretation": "Dated runtime evidence for a below-threshold ordinary declaration."
+        }
+      ]
+    },
+    {
+      "key": "claim:war-readiness:runtime-zero-army-not-isolated",
+      "type": "negative",
+      "primary_item": "mechanic:ai-war-declaration-readiness",
+      "statement": "The AofB declaration does not prove the zero-assault-army branch because AofB already possessed event-granted offensive armies.",
+      "context": "Comparison of AofB and Cevantia in the pinned campaign.",
+      "epistemic_note": "Army count and high naval capacity remain separate runtime discriminators requiring an approved controlled branch.",
+      "state": "verified",
+      "confidence": "high",
+      "basis_summary": "Hash-verified saved-state follow-up and ordinary declaration comparison.",
+      "evidence": [
+        {
+          "key": "evidence:war-deadlock:zero-army-follow-up",
+          "stance": "supports",
+          "directness": 4,
+          "strength": 5,
+          "interpretation": "The declaring empire had 16+ event-provided offensive armies before targeting."
+        }
+      ]
+    },
+    {
+      "key": "claim:ship-graph:2026-07-08:75-missing-references",
+      "type": "structure",
+      "primary_item": "subsystem:ship-design-graph",
+      "statement": "The validated historical 2026-07-08 ship graph contains 17,855 checks: 17,780 resolved and 75 missing, comprising 56 component-template, 13 ship-size, and six section-template references.",
+      "context": "Historical July 8 graph; it is not proof of the current 116-mod graph.",
+      "epistemic_note": "JDataMunch validation and grouped aggregation confirm the counts; current-stack reconstruction remains open.",
+      "state": "verified",
+      "confidence": "high",
+      "basis_summary": "Validated exact dataset and reproducible grouped query.",
+      "evidence": [
+        {
+          "key": "evidence:ship-graph:missing-references",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 5,
+          "interpretation": "Direct grouped counts from the validated 17,855-row dataset."
+        }
+      ]
+    },
+    {
+      "key": "claim:colony-automation-exceptions:4.4.4-source-located",
+      "type": "structure",
+      "primary_item": "subsystem:colony-automation-exceptions",
+      "statement": "Pegasus 4.4.4 contains concrete colony_automation_exceptions definitions, including automate_permanent_employment_building in 00_crisis_exceptions.txt.",
+      "context": "Exact build-attested vanilla source; engine semantics beyond observed examples are not inferred.",
+      "epistemic_note": "The source-location portion of the old gap is resolved; exhaustive grammar cataloging remains open.",
+      "state": "verified",
+      "confidence": "very_high",
+      "basis_summary": "Exact 4.4.4 vanilla object definition.",
+      "evidence": [
+        {
+          "key": "evidence:colony-exceptions:vanilla-example",
+          "stance": "supports",
+          "directness": 5,
+          "strength": 5,
+          "interpretation": "Direct object in the target-version vanilla source."
+        }
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "key": "question:runtime:war-readiness:zero-army-vs-high-capacity:4.4.4",
+      "primary_item": "mechanic:ai-war-declaration-readiness",
+      "question": "Does an ordinary 4.4.4 AI with zero offensive armies still face an unexposed pre-planner gate, and is high naval capacity an independent blocker?",
+      "uncertainty_reason": "AofB escaped with event-granted armies while Cevantia had zero armies and high capacity; the variables have not been independently changed.",
+      "status": "open",
+      "evidence_mode": "runtime",
+      "runtime_approval_required": true,
+      "priority": 100,
+      "next_action": "Only in a user-approved controlled branch, vary offensive-army count and naval capacity independently and preserve before/after saves.",
+      "evidence": [
+        "evidence:war-deadlock:runtime-proof",
+        "evidence:war-deadlock:zero-army-follow-up"
+      ]
+    },
+    {
+      "key": "question:static:playset:winner-snapshot:4.4.4",
+      "primary_item": "system:active-stack-winner-reconstruction",
+      "question": "What are the current 116-mod descriptors, hashes, exact load order, conflicts, and final object/file winners?",
+      "uncertainty_reason": "The dated prose captures 116 enabled mods, but the reusable 121-row machine-readable snapshot belongs to the older July 8 stack.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 95,
+      "next_action": "Capture the current launcher/playset descriptors and rebuild Irony or deterministic conflict and winner inventories without launching Stellaris.",
+      "evidence": [
+        "evidence:context:active-environment",
+        "evidence:playset:historical-121-roots"
+      ]
+    },
+    {
+      "key": "question:static:economic-plans:merged-subplans:4.4.4",
+      "primary_item": "subsystem:ai-economic-plans",
+      "question": "What is the final merged 4.4.4 economic-plan and nested-subplan graph for the dated 116-mod active stack?",
+      "uncertainty_reason": "Object-level load winners do not prove merge-style nested scaling and optional subplan winners, and older evidence belongs to a stale parent-AI stack.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 90,
+      "next_action": "Reconstruct final top-level plans plus duplicate nested subplan winners from current source roots and verified merge semantics.",
+      "evidence": ["evidence:open-question:economic-plans"]
+    },
+    {
+      "key": "question:static:ship-graph:nsc3-esc-sft-current:4.4.4",
+      "primary_item": "subsystem:ship-design-graph",
+      "question": "What is the current NSC3, ESC NEXT, and Spacefleet Tactica ship graph, and which references are truly unresolved in the 116-mod stack?",
+      "uncertainty_reason": "The validated July 8 graph has 75 missing references but the active stack and winners have since changed.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 90,
+      "next_action": "Rebuild the graph from current winners and classify every missing component, ship-size, and section reference.",
+      "evidence": [
+        "evidence:open-question:ship-graph",
+        "evidence:ship-graph:missing-references"
+      ]
+    },
+    {
+      "key": "question:static:colony-automation-exceptions:catalog:4.4.4",
+      "primary_item": "subsystem:colony-automation-exceptions",
+      "question": "What complete field and trigger shapes occur across every 4.4.4 colony_automation_exceptions object?",
+      "uncertainty_reason": "A target-version source and concrete example are located, but the full observed grammar and CWTools comparison are not cataloged.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 80,
+      "next_action": "Catalog every exact 4.4.4 example and cross-check observed fields against the matching CWTools rules without inferring engine semantics.",
+      "evidence": [
+        "evidence:open-question:colony-exceptions",
+        "evidence:colony-exceptions:vanilla-example"
+      ]
+    },
+    {
+      "key": "question:static:pd-guilli:zone-benefit-model:4.4.4",
+      "primary_item": "subsystem:pd-guilli-planet-model",
+      "question": "What are the current Planetary Diversity and Guilli zone, designation, modifier, and benefit winners, and which benefits have a defensible AI valuation formula?",
+      "uncertainty_reason": "Six benefits remain detected but unvalued, while static winners and runtime construction scoring require distinct evidence.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 80,
+      "next_action": "Normalize current zones, designations, and winner definitions; resolve formulas only where exact source semantics justify them.",
+      "evidence": [
+        "evidence:open-question:pd-uiod",
+        "evidence:pd:modeling-blockers"
+      ]
+    },
+    {
+      "key": "question:static:gigas:routes-crisis-counters:4.4.4",
+      "primary_item": "subsystem:gigas-progression-and-crisis-counters",
+      "question": "What current technology, resource, flag, project, structure, and crisis-counter routes must the AI satisfy for Gigas progression?",
+      "uncertainty_reason": "Static route coverage exists, but several prerequisite and counterstructure paths remain incomplete and runtime mastery is not statically provable.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 75,
+      "next_action": "Build a current exact route graph and keep execution tempo and sequencing as separate runtime questions.",
+      "evidence": ["evidence:gigas:route-blockers"]
+    },
+    {
+      "key": "question:static:starbase-urp-ui:file-winners:4.4.4",
+      "primary_item": "subsystem:starbase-resource-ui-integration",
+      "question": "What are the current Starbase Extended, resource-group, topbar, UIOD, ship-size, section, and component winners?",
+      "uncertainty_reason": "Static identities are known, but historical load positions and high-risk UI/ship surfaces need a current winner reconstruction.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 75,
+      "next_action": "Reconstruct current file and object winners with Irony and exact active source roots.",
+      "evidence": [
+        "evidence:starbase:surface-study",
+        "evidence:open-question:urp-ui"
+      ]
+    },
+    {
+      "key": "question:runtime:starbase-urp-ui:visibility:4.4.4",
+      "primary_item": "subsystem:starbase-resource-ui-integration",
+      "question": "Are expected strategic resources, starbase slots, and upgrade paths visible and usable in the active 4.4.4 UI?",
+      "uncertainty_reason": "File and object winners cannot prove final topbar visibility, slot rendering, or interactive upgrade behavior.",
+      "status": "open",
+      "evidence_mode": "runtime",
+      "runtime_approval_required": true,
+      "priority": 65,
+      "next_action": "Only with user approval, run a focused UI smoke test after static winner reconstruction is complete.",
+      "evidence": [
+        "evidence:starbase:surface-study",
+        "evidence:open-question:urp-ui"
+      ]
+    },
+    {
+      "key": "question:static:archetypes:consumer-capability-matrix:4.4.4",
+      "primary_item": "subsystem:archetype-and-conquest-consumers",
+      "question": "Which native AI consumers and capability lanes cover subjects, invasion, gestalts, genocidals, pacifists, megacorps, Nomads, Arkships, and special origins?",
+      "uncertainty_reason": "The subsystem audit identifies partial or absent ownership, while Nomad noninterference findings cover only one part of the matrix.",
+      "status": "open",
+      "evidence_mode": "static",
+      "runtime_approval_required": false,
+      "priority": 60,
+      "next_action": "Build one static capability matrix per archetype or consumer lane and retain runtime cadence as separate evidence.",
+      "evidence": [
+        "evidence:subsystems:strategic-gaps",
+        "evidence:nomad:compatibility-audit"
+      ]
+    },
+    {
+      "key": "question:runtime:on-actions:duplicate-event-merge:4.4.4",
+      "primary_item": "mechanic:on-action-duplicate-resolution",
+      "question": "How does the 4.4.4 engine resolve duplicate event IDs and weighted random_events inside nested on_actions?",
+      "uncertainty_reason": "CWTools can validate shape but does not establish the engine's duplicate and weighted runtime semantics.",
+      "status": "open",
+      "evidence_mode": "runtime",
+      "runtime_approval_required": true,
+      "priority": 55,
+      "next_action": "Only with user approval, run a minimal isolated duplicate-ID and weighted-random-events experiment after static duplicate inventory.",
+      "evidence": ["evidence:open-question:on-actions"]
+    }
+  ],
+  "relations": [
+    {
+      "key": "relation:field:min-navy:field-of:default-country-type:4.4.4",
+      "source": "field:country-type:ai.min_navy_for_wars",
+      "type": "field_of",
+      "target": "object:country_type:default",
+      "confidence": "very_high",
+      "risk": "low",
+      "source_claim": "claim:war-readiness:default-country-type:4.4.4-thresholds",
+      "rationale": "The default country-type ai block contains the field.",
+      "impact_explanation": "Changing the field changes the navy readiness condition for ordinary AI using the default country type.",
+      "review_action": "Inspect the final winning default country-type definition.",
+      "validation_action": "Compare exact 4.4.4 vanilla and active override values.",
+      "evidence": ["evidence:war-readiness:default-values"]
+    },
+    {
+      "key": "relation:field:min-assault-armies:field-of:default-country-type:4.4.4",
+      "source": "field:country-type:ai.min_assault_armies_for_wars",
+      "type": "field_of",
+      "target": "object:country_type:default",
+      "confidence": "very_high",
+      "risk": "low",
+      "source_claim": "claim:war-readiness:default-country-type:4.4.4-thresholds",
+      "rationale": "The default country-type ai block contains the field.",
+      "impact_explanation": "Changing the field changes the army readiness condition for ordinary AI using the default country type.",
+      "review_action": "Inspect the final winning default country-type definition.",
+      "validation_action": "Compare exact 4.4.4 vanilla and active override values.",
+      "evidence": ["evidence:war-readiness:default-values"]
+    },
+    {
+      "key": "relation:field:min-assault-armies:depends-on:armies-for-declaring-war:4.4.4",
+      "source": "field:country-type:ai.min_assault_armies_for_wars",
+      "type": "depends_on",
+      "target": "field:scripted-variable:armies_for_declaring_war",
+      "confidence": "very_high",
+      "risk": "high",
+      "source_claim": "claim:war-readiness:default-country-type:4.4.4-thresholds",
+      "rationale": "The vanilla default field references @armies_for_declaring_war.",
+      "impact_explanation": "Changing the scripted variable changes the resolved vanilla assault-army threshold.",
+      "review_action": "Review all references and active overrides of the variable and field.",
+      "validation_action": "Resolve the variable in the exact target-version source.",
+      "evidence": [
+        "evidence:war-readiness:default-values",
+        "evidence:war-readiness:army-variable"
+      ]
+    },
+    {
+      "key": "relation:mechanic:war-readiness:depends-on:min-navy:4.4.4",
+      "source": "mechanic:ai-war-declaration-readiness",
+      "type": "depends_on",
+      "target": "field:country-type:ai.min_navy_for_wars",
+      "confidence": "very_high",
+      "risk": "critical",
+      "source_claim": "claim:war-readiness:default-country-type:4.4.4-thresholds",
+      "rationale": "The field is documented and observed as a pre-war readiness requirement.",
+      "impact_explanation": "A restrictive value can prevent target selection and make downstream war tuning unreachable.",
+      "review_action": "Review readiness fields before adjusting downstream aggression or declaration weights.",
+      "validation_action": "Validate the active winner and compare planner transitions around the threshold.",
+      "evidence": [
+        "evidence:war-readiness:field-semantics",
+        "evidence:war-deadlock:root-cause"
+      ]
+    },
+    {
+      "key": "relation:mechanic:war-readiness:depends-on:min-assault-armies:4.4.4",
+      "source": "mechanic:ai-war-declaration-readiness",
+      "type": "depends_on",
+      "target": "field:country-type:ai.min_assault_armies_for_wars",
+      "confidence": "very_high",
+      "risk": "critical",
+      "source_claim": "claim:war-readiness:default-country-type:4.4.4-thresholds",
+      "rationale": "The field is documented and observed as a pre-war readiness requirement.",
+      "impact_explanation": "A restrictive value can prevent target selection and create a demand cycle with peacetime army production.",
+      "review_action": "Review readiness and army-production consumers together.",
+      "validation_action": "Keep zero-army engine behavior open until a user-approved controlled test isolates it.",
+      "evidence": [
+        "evidence:war-readiness:field-semantics",
+        "evidence:war-deadlock:root-cause",
+        "evidence:war-deadlock:zero-army-follow-up"
+      ]
+    },
+    {
+      "key": "relation:subsystem:director-war-readiness:implements:war-readiness:4.4.4",
+      "source": "subsystem:stellar-ai-director:war-readiness",
+      "type": "implements",
+      "target": "mechanic:ai-war-declaration-readiness",
+      "confidence": "high",
+      "risk": "high",
+      "source_claim": "claim:director-war-readiness:override-removes-navy-zeroes-army",
+      "rationale": "The Director changes the native readiness fields through a full-object country-type override.",
+      "impact_explanation": "The override changes when ordinary AI reaches native target selection while leaving downstream planner surfaces native.",
+      "review_action": "Review version drift and active full-object conflicts whenever the target version or playset changes.",
+      "validation_action": "Run static winner validation and retain runtime proof as separately scoped evidence.",
+      "evidence": [
+        "evidence:director:war-readiness-override",
+        "evidence:war-deadlock:runtime-proof"
+      ]
+    }
+  ]
+}

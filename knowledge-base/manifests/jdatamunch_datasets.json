@@ -1,0 +1,1701 @@
+{
+  "manifest_version": 1,
+  "provider": "jdatamunch",
+  "generated_at": "2026-07-10",
+  "selection": "Dataset handles whose names identify Stellaris, Stellar AI, or STAID project evidence. Authoritative rows remain in JDataMunch/source files.",
+  "dataset_count": 169,
+  "total_rows": 701874,
+  "total_source_bytes": 175953243,
+  "datasets": [
+    {
+      "dataset": "staid_benefit_formula_policy_matrix_current_20260709",
+      "file": "benefit_formula_policy_matrix.csv",
+      "rows": 265,
+      "columns": 11,
+      "size_bytes": 222749,
+      "source_format": "csv",
+      "fingerprint": "sha256:7804ea34dd3aced73ed8b583c8bb4932dab6a102f181ec063b89f8182906de49",
+      "indexed_at": "2026-07-09T17:50:43.533558"
+    },
+    {
+      "dataset": "staid_consumer_policy_current_20260709",
+      "file": "stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv",
+      "rows": 1093,
+      "columns": 23,
+      "size_bytes": 576458,
+      "source_format": "csv",
+      "fingerprint": "sha256:d846c925bae071bd9437487939c745d4a298d45672339990977c0fb0027bdb69",
+      "indexed_at": "2026-07-09T17:49:32.294829"
+    },
+    {
+      "dataset": "staid_dataset_job_pressure_current_20260709",
+      "file": "stellar-ai-director-dataset-job-pressure-overrides-2026-07-07.csv",
+      "rows": 146,
+      "columns": 49,
+      "size_bytes": 431593,
+      "source_format": "csv",
+      "fingerprint": "sha256:7b81bd267f3ae7f76ec33b495a4c459d307c3d46b5ca9a00885d15d685401395",
+      "indexed_at": "2026-07-09T17:46:51.822416"
+    },
+    {
+      "dataset": "staid_economic_valuation_current_20260709",
+      "file": "stellar-ai-director-economic-valuation-2026-07-07.csv",
+      "rows": 1373,
+      "columns": 43,
+      "size_bytes": 2774111,
+      "source_format": "csv",
+      "fingerprint": "sha256:c71ed4361c4d38d85bcf3fe98232b85680f89a49c0ca541b21552e50782320ed",
+      "indexed_at": "2026-07-09T17:46:52.050427"
+    },
+    {
+      "dataset": "staid_generated_conflicts_current_20260709",
+      "file": "stellar-ai-director-generated-conflicts-2026-07-04.csv",
+      "rows": 866,
+      "columns": 6,
+      "size_bytes": 167886,
+      "source_format": "csv",
+      "fingerprint": "sha256:f873c77b7d9fbdb1e2b9ce276594d9fe125d80ee8192a543cf99cd41ae9e70bd",
+      "indexed_at": "2026-07-09T18:34:43.603085"
+    },
+    {
+      "dataset": "staid_generated_file_audit_current_20260709",
+      "file": "stellar-ai-director-generated-file-audit-2026-07-04.csv",
+      "rows": 131,
+      "columns": 9,
+      "size_bytes": 17703,
+      "source_format": "csv",
+      "fingerprint": "sha256:876743f7f929acf156608cf49e9f4d440cb9da11c912dd42179dbec4db0b4d34",
+      "indexed_at": "2026-07-09T17:46:52.202833"
+    },
+    {
+      "dataset": "staid_generated_reference_audit_current_20260709",
+      "file": "stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+      "rows": 1653,
+      "columns": 6,
+      "size_bytes": 309467,
+      "source_format": "csv",
+      "fingerprint": "sha256:15026a2829bf114e7f32932f0ca26c55dcd21c48a7fd93cd8b1b89e7d91fcf0c",
+      "indexed_at": "2026-07-09T17:46:52.303116"
+    },
+    {
+      "dataset": "staid_modeling_blocker_accounting_current_20260709",
+      "file": "stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv",
+      "rows": 6,
+      "columns": 9,
+      "size_bytes": 1684,
+      "source_format": "csv",
+      "fingerprint": "sha256:1e05f625d3fce3ae149a3b6a15115040c1ca36925d1ab7a36f0a1e138bf7bfd2",
+      "indexed_at": "2026-07-09T17:49:32.356283"
+    },
+    {
+      "dataset": "staid_nonconstruction_economic_valuation_current_20260709",
+      "file": "stellar-ai-director-nonconstruction-economic-valuation-2026-07-07.csv",
+      "rows": 4737,
+      "columns": 43,
+      "size_bytes": 7195949,
+      "source_format": "csv",
+      "fingerprint": "sha256:b184c06fc60700cb8ae29ffb13e1ac6bbb354ccc782929644454a937e7380b7c",
+      "indexed_at": "2026-07-09T18:34:44.210135"
+    },
+    {
+      "dataset": "staid_object_atlas_current_20260709",
+      "file": "object-atlas-2026-07-06.csv",
+      "rows": 31211,
+      "columns": 24,
+      "size_bytes": 7336487,
+      "source_format": "csv",
+      "fingerprint": "sha256:f66fab85ce5bf71d8c489508d0dac4e275ebd3c8bb188ae7e1bba9ce53f787d0",
+      "indexed_at": "2026-07-09T17:46:50.861207"
+    },
+    {
+      "dataset": "staid_parent_ai_support_current_20260709",
+      "file": "parent-ai-support-map-2026-07-06.csv",
+      "rows": 31211,
+      "columns": 10,
+      "size_bytes": 5219178,
+      "source_format": "csv",
+      "fingerprint": "sha256:0a9ac9e9b9fa425a95b320d4be674919c8e1b8e34d42b4dbd2415e7bcb84fcfa",
+      "indexed_at": "2026-07-09T17:46:51.694779"
+    },
+    {
+      "dataset": "staid_relative_economic_standards_current_20260709",
+      "file": "stellar-ai-director-relative-economic-standards-2026-07-09.csv",
+      "rows": 69,
+      "columns": 8,
+      "size_bytes": 9513,
+      "source_format": "csv",
+      "fingerprint": "sha256:78a33723c4fa4d1b55bfc20a65a0cf4c34baf69b9a7f60acbf5a5f64e1d7568c",
+      "indexed_at": "2026-07-09T19:15:25.330042"
+    },
+    {
+      "dataset": "staid_research_capacity_buildings_current_20260709",
+      "file": "stellar-ai-director-research-capacity-buildings-2026-07-09.csv",
+      "rows": 826,
+      "columns": 282,
+      "size_bytes": 1486938,
+      "source_format": "csv",
+      "fingerprint": "sha256:f3f331d6db56fc5fc9c338c01812e883cb53740ef47ce69a806ca46185caa483",
+      "indexed_at": "2026-07-09T15:02:30.396776"
+    },
+    {
+      "dataset": "staid_research_capacity_development_current_20260709",
+      "file": "stellar-ai-director-research-capacity-development-2026-07-09.csv",
+      "rows": 547,
+      "columns": 370,
+      "size_bytes": 977160,
+      "source_format": "csv",
+      "fingerprint": "sha256:c3f06066e20b7db32d9a07836adbd6f0c05004dfd9dd38a293daa853999df7b5",
+      "indexed_at": "2026-07-09T15:02:29.494081"
+    },
+    {
+      "dataset": "staid_route_overrides_current_20260709",
+      "file": "stellar-ai-director-route-overrides-2026-07-06.csv",
+      "rows": 110,
+      "columns": 32,
+      "size_bytes": 76753,
+      "source_format": "csv",
+      "fingerprint": "sha256:67d158f06e2ff16eb61e3c300e02c3d95be956fff263dd50f90d405062bd3cbe",
+      "indexed_at": "2026-07-09T17:46:52.387044"
+    },
+    {
+      "dataset": "staid_standalone_parity_current_20260709",
+      "file": "stellar-ai-director-standalone-parity-inventory-2026-07-08.csv",
+      "rows": 11,
+      "columns": 6,
+      "size_bytes": 5505,
+      "source_format": "csv",
+      "fingerprint": "sha256:a241367b2b69c3e90bcf3d31d3c53f18902fcd2ec9cbf32c912d8619a303ea0a",
+      "indexed_at": "2026-07-09T17:46:52.439920"
+    },
+    {
+      "dataset": "staid_strategic_benefit_taxonomy_current_20260709",
+      "file": "stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv",
+      "rows": 1924,
+      "columns": 22,
+      "size_bytes": 764434,
+      "source_format": "csv",
+      "fingerprint": "sha256:b3a4ee0827342247b8e98ab444d19c9722b152088e0a452d139dc4dd217373df",
+      "indexed_at": "2026-07-09T17:49:43.263832"
+    },
+    {
+      "dataset": "staid_strategic_infrastructure_current_20260709",
+      "file": "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv",
+      "rows": 1335,
+      "columns": 165,
+      "size_bytes": 1200288,
+      "source_format": "csv",
+      "fingerprint": "sha256:69c9e5c53c528b810323940dc3876f67e9f0192d728f8c506b17bb15ba94a80f",
+      "indexed_at": "2026-07-09T17:49:33.134002"
+    },
+    {
+      "dataset": "staid_strategic_subsystem_audit_current_20260709",
+      "file": "stellar-ai-director-strategic-subsystem-audit-2026-07-09.csv",
+      "rows": 28,
+      "columns": 13,
+      "size_bytes": 19762,
+      "source_format": "csv",
+      "fingerprint": "sha256:13c1e895bdba3209b872cd29bb5673d0690e4d1c486b6c57dd6cfdb8a417c020",
+      "indexed_at": "2026-07-09T19:00:53.931226"
+    },
+    {
+      "dataset": "staid_war_goal_classification_current_20260709",
+      "file": "stellar-ai-director-threat-response-war-goal-classification-2026-07-05.csv",
+      "rows": 3,
+      "columns": 11,
+      "size_bytes": 758,
+      "source_format": "csv",
+      "fingerprint": "sha256:773bf1cf3675e89b96b66ba587f05a18bf361aca043647b2740eab23e4ca0033",
+      "indexed_at": "2026-07-09T17:46:52.494841"
+    },
+    {
+      "dataset": "stellar_ai_ai_surface_inventory",
+      "file": "ai-surface-inventory.csv",
+      "rows": 1696,
+      "columns": 26,
+      "size_bytes": 264901,
+      "source_format": "csv",
+      "fingerprint": "sha256:18b1a54bb7d03fb0db3350a8191ef8d9a93403801eaf8aacc8922be4b928233b",
+      "indexed_at": "2026-07-04T21:06:43.799939"
+    },
+    {
+      "dataset": "stellar_ai_dependency_edges_20260706",
+      "file": "dependency-edges-2026-07-06.csv",
+      "rows": 34808,
+      "columns": 8,
+      "size_bytes": 5402939,
+      "source_format": "csv",
+      "fingerprint": "sha256:f60f89a2151491cc324f37e9004a225ef13d8e3959974e85aa43bd39f04eaab3",
+      "indexed_at": "2026-07-07T20:52:41.324832"
+    },
+    {
+      "dataset": "stellar_ai_descriptor_inventory",
+      "file": "descriptor-inventory.csv",
+      "rows": 5,
+      "columns": 7,
+      "size_bytes": 1070,
+      "source_format": "csv",
+      "fingerprint": "sha256:a2f5e5b388f419c60841002c5f431e3d24ca4eb622857c908bf9dfb446823a9c",
+      "indexed_at": "2026-07-04T21:06:43.625441"
+    },
+    {
+      "dataset": "stellar_ai_director_4_4_5_log_risk_report_20260709",
+      "file": "stellar-ai-director-4-4-5-log-risk-report-2026-07-09.csv",
+      "rows": 2561,
+      "columns": 12,
+      "size_bytes": 1428329,
+      "source_format": "csv",
+      "fingerprint": "sha256:b160d9336767d085369fd7a383623082b02b46ad9bba09b1ae6661cd8c5e0dde",
+      "indexed_at": "2026-07-08T23:24:23.820877"
+    },
+    {
+      "dataset": "stellar_ai_director_444_corrected_provenance_20260710",
+      "file": "stellar-ai-director-war-planning-444-provenance-2026-07-10.csv",
+      "rows": 33,
+      "columns": 7,
+      "size_bytes": 14851,
+      "source_format": "csv",
+      "fingerprint": "sha256:dacfd3480fc3d7ba5a3e2ad592d357d78f32d7d0d856893a088d05a5b2bde9b1",
+      "indexed_at": "2026-07-10T13:31:35.438421"
+    },
+    {
+      "dataset": "stellar_ai_director_444_webchatgpt_provenance_20260710",
+      "file": "stellar-ai-director-war-planning-444-provenance-2026-07-10.csv",
+      "rows": 33,
+      "columns": 7,
+      "size_bytes": 14851,
+      "source_format": "csv",
+      "fingerprint": "sha256:dacfd3480fc3d7ba5a3e2ad592d357d78f32d7d0d856893a088d05a5b2bde9b1",
+      "indexed_at": "2026-07-10T12:59:59.666975"
+    },
+    {
+      "dataset": "stellar_ai_director_build_plan_consumer_policy_20260709",
+      "file": "stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv",
+      "rows": 1093,
+      "columns": 22,
+      "size_bytes": 523276,
+      "source_format": "csv",
+      "fingerprint": "sha256:c84fb0b66149b9b0bb6051d46b13378f08fc93f0666469f23e5cbffcc9bbbb4d",
+      "indexed_at": "2026-07-09T14:05:50.168057"
+    },
+    {
+      "dataset": "stellar_ai_director_build_plan_readiness_20260709",
+      "file": "stellar-ai-director-build-plan-readiness-2026-07-09.csv",
+      "rows": 826,
+      "columns": 24,
+      "size_bytes": 354951,
+      "source_format": "csv",
+      "fingerprint": "sha256:6da93033c20e94496f28acc71d19202e4d3c5d12cbcfb7af84719794ba17c446",
+      "indexed_at": "2026-07-09T12:50:33.657318"
+    },
+    {
+      "dataset": "stellar_ai_director_colony_role_targets_20260709",
+      "file": "stellar-ai-director-colony-role-targets-2026-07-09.csv",
+      "rows": 247,
+      "columns": 78,
+      "size_bytes": 145086,
+      "source_format": "csv",
+      "fingerprint": "sha256:0989ff83a038cccaa1effe6e348f05809ec649700baf9d204d52ad1bb8c17dc7",
+      "indexed_at": "2026-07-09T12:50:07.201978"
+    },
+    {
+      "dataset": "stellar_ai_director_dataset_job_pressure_overrides_20260707",
+      "file": "stellar-ai-director-dataset-job-pressure-overrides-2026-07-07.csv",
+      "rows": 128,
+      "columns": 49,
+      "size_bytes": 383030,
+      "source_format": "csv",
+      "fingerprint": "sha256:bf30b4a26ca1051cf88562615af8af3805815389ee7297f51b4d483aef1c7175",
+      "indexed_at": "2026-07-09T16:35:59.376329"
+    },
+    {
+      "dataset": "stellar_ai_director_dependency_audit_20260704",
+      "file": "stellar-ai-director-dependency-audit-2026-07-04.csv",
+      "rows": 6,
+      "columns": 8,
+      "size_bytes": 658,
+      "source_format": "csv",
+      "fingerprint": "sha256:f0114c9ca184dda91cda2cca01d28ebfb5f783cb3306d1815efa4cabe2b235c4",
+      "indexed_at": "2026-07-06T19:40:21.390168"
+    },
+    {
+      "dataset": "stellar_ai_director_dependency_edges_20260706",
+      "file": "dependency-edges-2026-07-06.csv",
+      "rows": 34789,
+      "columns": 8,
+      "size_bytes": 5400078,
+      "source_format": "csv",
+      "fingerprint": "sha256:f60f89a2151491cc324f37e9004a225ef13d8e3959974e85aa43bd39f04eaab3",
+      "indexed_at": "2026-07-08T23:26:27.025911"
+    },
+    {
+      "dataset": "stellar_ai_director_economic_valuation_2026_07_07",
+      "file": "stellar-ai-director-economic-valuation-2026-07-07.csv",
+      "rows": 1373,
+      "columns": 43,
+      "size_bytes": 2937572,
+      "source_format": "csv",
+      "fingerprint": "sha256:d284a306c14525c498402a0c5005b72efff706098af3bd0bf52281345e76234f",
+      "indexed_at": "2026-07-07T18:05:03.536443"
+    },
+    {
+      "dataset": "stellar_ai_director_economic_valuation_20260707",
+      "file": "stellar-ai-director-economic-valuation-2026-07-07.csv",
+      "rows": 1373,
+      "columns": 43,
+      "size_bytes": 2996160,
+      "source_format": "csv",
+      "fingerprint": "sha256:bc2623284b6ba4c4492e069f45d53c2c4ecd05f9de325a5e05a8e5076c46fe47",
+      "indexed_at": "2026-07-09T16:35:59.278567"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_conflicts_2026_07_04",
+      "file": "stellar-ai-director-generated-conflicts-2026-07-04.csv",
+      "rows": 126,
+      "columns": 6,
+      "size_bytes": 24469,
+      "source_format": "csv",
+      "fingerprint": "sha256:31c6649bf10c9041de6f1ccc71ee7b1ef6f1cd758cf1da0214873b822b902d68",
+      "indexed_at": "2026-07-06T17:01:08.010885"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_conflicts_20260704",
+      "file": "stellar-ai-director-generated-conflicts-2026-07-04.csv",
+      "rows": 1003,
+      "columns": 6,
+      "size_bytes": 193448,
+      "source_format": "csv",
+      "fingerprint": "sha256:36e55e42e80c4f2118cd9c30674de7dfa537dacecc9a23fabc6ba2aabc00d435",
+      "indexed_at": "2026-07-09T16:35:59.589169"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_conflicts_20260706_crashfix",
+      "file": "stellar-ai-director-generated-conflicts-2026-07-04.csv",
+      "rows": 243,
+      "columns": 6,
+      "size_bytes": 47561,
+      "source_format": "csv",
+      "fingerprint": "sha256:0fa360861936f7b1b779cd6eb8d23ea8cc16fbaa3c4cc50b35d5b6985a737051",
+      "indexed_at": "2026-07-06T22:23:14.108032"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_file_audit_2026_07_04",
+      "file": "stellar-ai-director-generated-file-audit-2026-07-04.csv",
+      "rows": 21,
+      "columns": 9,
+      "size_bytes": 2902,
+      "source_format": "csv",
+      "fingerprint": "sha256:b5d827bd8c6837ae1f8526eaeb7077d507dd7d4cd20fc4f1b4b5b8b41cadbe39",
+      "indexed_at": "2026-07-06T17:01:08.103695"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_file_audit_20260704",
+      "file": "stellar-ai-director-generated-file-audit-2026-07-04.csv",
+      "rows": 133,
+      "columns": 9,
+      "size_bytes": 18017,
+      "source_format": "csv",
+      "fingerprint": "sha256:0422f820d8ed2d3d78246386892435a6bf8f7c1a8187ecd81e4837bf7cf3fd7c",
+      "indexed_at": "2026-07-09T16:35:59.522653"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_file_audit_20260706_crashfix",
+      "file": "stellar-ai-director-generated-file-audit-2026-07-04.csv",
+      "rows": 26,
+      "columns": 9,
+      "size_bytes": 3586,
+      "source_format": "csv",
+      "fingerprint": "sha256:1c4c2842a585db3c21ca7799b742af23f3f6bad8773e7e3d97f8497f3d5d0bef",
+      "indexed_at": "2026-07-06T22:23:13.868854"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_reference_audit_2026_07_04",
+      "file": "stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+      "rows": 316,
+      "columns": 6,
+      "size_bytes": 55090,
+      "source_format": "csv",
+      "fingerprint": "sha256:fd37d268a829eafadd119625dd4d2df6b2503af18287e344762dca646982ff3a",
+      "indexed_at": "2026-07-06T17:01:08.194916"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_reference_audit_20260704",
+      "file": "stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+      "rows": 2549,
+      "columns": 6,
+      "size_bytes": 484714,
+      "source_format": "csv",
+      "fingerprint": "sha256:d5fbb939c662727ae74cc91aea38e43bf9fbd2fa19448422fd48e371a6e1e32d",
+      "indexed_at": "2026-07-09T16:35:59.469756"
+    },
+    {
+      "dataset": "stellar_ai_director_generated_reference_audit_20260706_crashfix",
+      "file": "stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+      "rows": 886,
+      "columns": 6,
+      "size_bytes": 160986,
+      "source_format": "csv",
+      "fingerprint": "sha256:743bc0c01a7025ab9fccc3564d66a1df87676146c05b12ce7459a0356d121ead",
+      "indexed_at": "2026-07-06T22:23:13.941596"
+    },
+    {
+      "dataset": "stellar_ai_director_gigas_route_blockers_20260709",
+      "file": "stellar-ai-director-gigas-route-blockers-2026-07-09.csv",
+      "rows": 11,
+      "columns": 7,
+      "size_bytes": 5105,
+      "source_format": "csv",
+      "fingerprint": "sha256:999607b2b8d004ad15c099d9fa31556ba8023c00d25ca9d2e9bcd06dae68c199",
+      "indexed_at": "2026-07-09T00:08:32.893226"
+    },
+    {
+      "dataset": "stellar_ai_director_hostile_fauna_clearance_inventory_20260709",
+      "file": "stellar-ai-director-hostile-fauna-clearance-inventory-2026-07-09.csv",
+      "rows": 10,
+      "columns": 5,
+      "size_bytes": 4482,
+      "source_format": "csv",
+      "fingerprint": "sha256:7ed96b13ed4ed23d37ae6fed9a56fec84551720841261d5c518bf1939e09dd43",
+      "indexed_at": "2026-07-09T00:27:12.508016"
+    },
+    {
+      "dataset": "stellar_ai_director_integration_policy_audit_20260704",
+      "file": "stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+      "rows": 4394,
+      "columns": 13,
+      "size_bytes": 1398747,
+      "source_format": "csv",
+      "fingerprint": "sha256:a79c32675f3dff39325d10ca992e0598e9c544254a7d5a147a55bd9bbda3ec9d",
+      "indexed_at": "2026-07-07T20:52:42.810429"
+    },
+    {
+      "dataset": "stellar_ai_director_integration_surfaces_20260704",
+      "file": "stellar-ai-director-integration-surfaces-2026-07-04.csv",
+      "rows": 4394,
+      "columns": 10,
+      "size_bytes": 1023086,
+      "source_format": "csv",
+      "fingerprint": "sha256:e2565bb0389706038b635254dba346b6a07d1c5a53cbb7db8d5fcdc546215d20",
+      "indexed_at": "2026-07-07T20:52:43.059190"
+    },
+    {
+      "dataset": "stellar_ai_director_market_values_2026_07_04",
+      "file": "stellar-ai-director-market-values-2026-07-04.csv",
+      "rows": 12,
+      "columns": 9,
+      "size_bytes": 857,
+      "source_format": "csv",
+      "fingerprint": "sha256:3f7850a38570cf77823c7f486861760cbf57e3f05cf7590d4d2b9c3337bd5745",
+      "indexed_at": "2026-07-04T16:57:38.752518"
+    },
+    {
+      "dataset": "stellar_ai_director_modeling_blocker_accounting_20260709",
+      "file": "stellar-ai-director-modeling-blocker-accounting-2026-07-09.csv",
+      "rows": 396,
+      "columns": 9,
+      "size_bytes": 106886,
+      "source_format": "csv",
+      "fingerprint": "sha256:c88cb7da3ca8d713b4e9abd5b273197b400348d35f309e5f1a4afbcca9950acd",
+      "indexed_at": "2026-07-09T14:06:04.411515"
+    },
+    {
+      "dataset": "stellar_ai_director_modeling_resource_coverage_20260709",
+      "file": "stellar-ai-director-modeling-resource-coverage-2026-07-09.csv",
+      "rows": 21,
+      "columns": 8,
+      "size_bytes": 2121,
+      "source_format": "csv",
+      "fingerprint": "sha256:a3cf204a772e484b20d308acd7d36531e83f948782b12bc249296c3e77f7bc52",
+      "indexed_at": "2026-07-09T12:50:28.788332"
+    },
+    {
+      "dataset": "stellar_ai_director_nomad_arkship_compatibility_audit_20260709",
+      "file": "stellar-ai-director-nomad-arkship-compatibility-audit-2026-07-09.csv",
+      "rows": 10,
+      "columns": 5,
+      "size_bytes": 2474,
+      "source_format": "csv",
+      "fingerprint": "sha256:017fa0fe25a3ec30d42c721562d4cc8e117b4d1631bbfa4c668e1fe66680399d",
+      "indexed_at": "2026-07-09T01:08:03.441856"
+    },
+    {
+      "dataset": "stellar_ai_director_nonconstruction_economic_valuation_20260707",
+      "file": "stellar-ai-director-nonconstruction-economic-valuation-2026-07-07.csv",
+      "rows": 4741,
+      "columns": 43,
+      "size_bytes": 7153747,
+      "source_format": "csv",
+      "fingerprint": "sha256:c202e4c2cc223b92d882d3970d4cadbfc5decfc96dccb7a08b86075ca603d7c7",
+      "indexed_at": "2026-07-08T23:56:12.690519"
+    },
+    {
+      "dataset": "stellar_ai_director_nsc3_esc_ship_stack_lane_20260709",
+      "file": "stellar-ai-director-nsc3-esc-ship-stack-lane-2026-07-09.csv",
+      "rows": 12,
+      "columns": 7,
+      "size_bytes": 3995,
+      "source_format": "csv",
+      "fingerprint": "sha256:3a34f02cd453d401832a468668db5aedc6d6b2d64521d27fccf0d5b96bbb8ab4",
+      "indexed_at": "2026-07-09T00:15:38.619340"
+    },
+    {
+      "dataset": "stellar_ai_director_object_atlas_20260706",
+      "file": "object-atlas-2026-07-06.csv",
+      "rows": 31211,
+      "columns": 24,
+      "size_bytes": 7336487,
+      "source_format": "csv",
+      "fingerprint": "sha256:8f2f7543052f89a64274c29eafcb12b2bb16b3e3489b4632a0600672d38fa1b0",
+      "indexed_at": "2026-07-08T23:26:26.278180"
+    },
+    {
+      "dataset": "stellar_ai_director_parent_ai_support_map_20260706",
+      "file": "parent-ai-support-map-2026-07-06.csv",
+      "rows": 31211,
+      "columns": 10,
+      "size_bytes": 5219178,
+      "source_format": "csv",
+      "fingerprint": "sha256:e296b65eee207657611ed46cfed4edca6d848b30943fa1790fd13ad3fd8ffbe1",
+      "indexed_at": "2026-07-08T23:26:27.781940"
+    },
+    {
+      "dataset": "stellar_ai_director_pd_targeted_expansion_review_20260709",
+      "file": "stellar-ai-director-pd-targeted-expansion-review-2026-07-09.csv",
+      "rows": 13,
+      "columns": 8,
+      "size_bytes": 4415,
+      "source_format": "csv",
+      "fingerprint": "sha256:f427eefe27a45a7eb2d74aa197e4694ef9342977b0b88bd364e2630e6e7e8c24",
+      "indexed_at": "2026-07-09T00:57:56.838755"
+    },
+    {
+      "dataset": "stellar_ai_director_planetary_diversity_profile_20260707",
+      "file": "stellar-ai-director-planetary-diversity-profile-2026-07-07.csv",
+      "rows": 426,
+      "columns": 6,
+      "size_bytes": 38099,
+      "source_format": "csv",
+      "fingerprint": "sha256:d2c81a5b20c976e00633cda5becb4be3a244d989a8bd9fd3d5cdea743bba25af",
+      "indexed_at": "2026-07-07T22:55:53.386309"
+    },
+    {
+      "dataset": "stellar_ai_director_policy_matrix_2026_07_06",
+      "file": "policy-matrix-2026-07-06.csv",
+      "rows": 6688,
+      "columns": 13,
+      "size_bytes": 1870730,
+      "source_format": "csv",
+      "fingerprint": "sha256:a6c81ccb4b15a2a7f0c48c581bdc43a88f2b0997770ac5cbd499b6cb8226fcc4",
+      "indexed_at": "2026-07-06T12:14:48.983202"
+    },
+    {
+      "dataset": "stellar_ai_director_policy_matrix_20260706",
+      "file": "policy-matrix-2026-07-06.csv",
+      "rows": 8135,
+      "columns": 13,
+      "size_bytes": 2288326,
+      "source_format": "csv",
+      "fingerprint": "sha256:215667968637eba088550d9626776d634d1ba7426918997a76576efbf2a5cea8",
+      "indexed_at": "2026-07-08T23:26:28.101427"
+    },
+    {
+      "dataset": "stellar_ai_director_research_agreement_surface_20260709",
+      "file": "stellar-ai-director-research-agreement-surface-2026-07-09.csv",
+      "rows": 5,
+      "columns": 11,
+      "size_bytes": 2340,
+      "source_format": "csv",
+      "fingerprint": "sha256:7566f84a560b02e8f3eb355a087584351e66790ae1289f41d06f90e7ab6e001c",
+      "indexed_at": "2026-07-09T00:04:54.299472"
+    },
+    {
+      "dataset": "stellar_ai_director_research_capacity_buildings_20260709",
+      "file": "stellar-ai-director-research-capacity-buildings-2026-07-09.csv",
+      "rows": 826,
+      "columns": 282,
+      "size_bytes": 1486938,
+      "source_format": "csv",
+      "fingerprint": "sha256:f3f331d6db56fc5fc9c338c01812e883cb53740ef47ce69a806ca46185caa483",
+      "indexed_at": "2026-07-09T14:06:17.804483"
+    },
+    {
+      "dataset": "stellar_ai_director_research_capacity_development_20260709",
+      "file": "stellar-ai-director-research-capacity-development-2026-07-09.csv",
+      "rows": 547,
+      "columns": 370,
+      "size_bytes": 977160,
+      "source_format": "csv",
+      "fingerprint": "sha256:c3f06066e20b7db32d9a07836adbd6f0c05004dfd9dd38a293daa853999df7b5",
+      "indexed_at": "2026-07-09T14:06:30.065712"
+    },
+    {
+      "dataset": "stellar_ai_director_research_capacity_jobs_20260709",
+      "file": "stellar-ai-director-research-capacity-jobs-2026-07-09.csv",
+      "rows": 501,
+      "columns": 155,
+      "size_bytes": 415901,
+      "source_format": "csv",
+      "fingerprint": "sha256:7c4d39ebb5c5dbd556ac5f9e2ff7cb6efefc5afe064ca8fad94d92b168384b54",
+      "indexed_at": "2026-07-09T12:57:21.695682"
+    },
+    {
+      "dataset": "stellar_ai_director_research_capacity_plan_20260709",
+      "file": "stellar-ai-director-research-capacity-plan-2026-07-09.csv",
+      "rows": 24,
+      "columns": 315,
+      "size_bytes": 49394,
+      "source_format": "csv",
+      "fingerprint": "sha256:27c26d6ac9c9725bd27e6417c14041101bb18b555b085023399eafcedc687060",
+      "indexed_at": "2026-07-09T12:57:37.929063"
+    },
+    {
+      "dataset": "stellar_ai_director_research_capacity_tech_modifiers_20260709",
+      "file": "stellar-ai-director-research-capacity-tech-modifiers-2026-07-09.csv",
+      "rows": 18,
+      "columns": 9,
+      "size_bytes": 3044,
+      "source_format": "csv",
+      "fingerprint": "sha256:19d35ea8aceecbb5ed1a23b2e488cb7f4eb00b53cb00871f42742ebfa9d011b1",
+      "indexed_at": "2026-07-09T12:50:18.371059"
+    },
+    {
+      "dataset": "stellar_ai_director_roi_matrix_2026_07_04",
+      "file": "stellar-ai-director-roi-matrix-2026-07-04.csv",
+      "rows": 188,
+      "columns": 41,
+      "size_bytes": 109208,
+      "source_format": "csv",
+      "fingerprint": "sha256:c0205ae618be1b5863647b235cb6dd7f02d8115610cbff4c44e08d50e98e36ac",
+      "indexed_at": "2026-07-04T16:58:57.238892"
+    },
+    {
+      "dataset": "stellar_ai_director_route_overrides_2026_07_06",
+      "file": "stellar-ai-director-route-overrides-2026-07-06.csv",
+      "rows": 31,
+      "columns": 30,
+      "size_bytes": 21300,
+      "source_format": "csv",
+      "fingerprint": "sha256:2c129401254ed310cc06d4c8b415a0258b06dd566892a9c3b6036529e7c6610c",
+      "indexed_at": "2026-07-06T12:40:01.562399"
+    },
+    {
+      "dataset": "stellar_ai_director_route_overrides_20260706",
+      "file": "stellar-ai-director-route-overrides-2026-07-06.csv",
+      "rows": 125,
+      "columns": 32,
+      "size_bytes": 86413,
+      "source_format": "csv",
+      "fingerprint": "sha256:97bf4aebfba2ff711d5b9446c1b9f2845e22e5a79e3eeff1a5892dcae2c78227",
+      "indexed_at": "2026-07-09T16:53:52.210355"
+    },
+    {
+      "dataset": "stellar_ai_director_route_overrides_20260706_crashfix",
+      "file": "stellar-ai-director-route-overrides-2026-07-06.csv",
+      "rows": 104,
+      "columns": 32,
+      "size_bytes": 73228,
+      "source_format": "csv",
+      "fingerprint": "sha256:31d4be957bf65f5337a49ae67ef8e5f2ef8cf607eea47f01161967cfb08febe0",
+      "indexed_at": "2026-07-06T22:23:14.027612"
+    },
+    {
+      "dataset": "stellar_ai_director_route_overrides_current_20260706_latest",
+      "file": "stellar-ai-director-route-overrides-2026-07-06.csv",
+      "rows": 104,
+      "columns": 32,
+      "size_bytes": 73228,
+      "source_format": "csv",
+      "fingerprint": "sha256:31d4be957bf65f5337a49ae67ef8e5f2ef8cf607eea47f01161967cfb08febe0",
+      "indexed_at": "2026-07-06T22:35:11.499288"
+    },
+    {
+      "dataset": "stellar_ai_director_route_overrides_head_20260706",
+      "file": "stellar-ai-director-route-overrides-HEAD-2026-07-06.csv",
+      "rows": 48,
+      "columns": 32,
+      "size_bytes": 33109,
+      "source_format": "csv",
+      "fingerprint": "sha256:06e935276900d346d2073e8d1034cf7adc930b650ee4651e6cb14ec1f992b3a0",
+      "indexed_at": "2026-07-06T22:35:11.394866"
+    },
+    {
+      "dataset": "stellar_ai_director_standalone_parity_inventory_20260708",
+      "file": "stellar-ai-director-standalone-parity-inventory-2026-07-08.csv",
+      "rows": 10,
+      "columns": 6,
+      "size_bytes": 4639,
+      "source_format": "csv",
+      "fingerprint": "sha256:8d29ffcccd7b8b241fc33ffdf2bd676afd149a1fb0b09cf4af1461d424d45756",
+      "indexed_at": "2026-07-08T18:03:17.546757"
+    },
+    {
+      "dataset": "stellar_ai_director_standalone_parity_inventory_20260708_current",
+      "file": "stellar-ai-director-standalone-parity-inventory-2026-07-08.csv",
+      "rows": 10,
+      "columns": 6,
+      "size_bytes": 4639,
+      "source_format": "csv",
+      "fingerprint": "sha256:8d29ffcccd7b8b241fc33ffdf2bd676afd149a1fb0b09cf4af1461d424d45756",
+      "indexed_at": "2026-07-08T18:10:41.799783"
+    },
+    {
+      "dataset": "stellar_ai_director_starbase_defense_v2_surface_study_20260709",
+      "file": "stellar-ai-director-starbase-defense-v2-surface-study-2026-07-09.csv",
+      "rows": 13,
+      "columns": 5,
+      "size_bytes": 3204,
+      "source_format": "csv",
+      "fingerprint": "sha256:0e698659f9bb369eaf66dfd15f59d0905f1d5a835a4ade2e60ae97a0a20c46c3",
+      "indexed_at": "2026-07-09T00:47:50.616458"
+    },
+    {
+      "dataset": "stellar_ai_director_strategic_benefit_taxonomy_20260709",
+      "file": "stellar-ai-director-strategic-benefit-taxonomy-2026-07-09.csv",
+      "rows": 1887,
+      "columns": 19,
+      "size_bytes": 685928,
+      "source_format": "csv",
+      "fingerprint": "sha256:10d2795e26783e4ab45c49674928557d1480d5aff63327d26200fb819ff2f8f4",
+      "indexed_at": "2026-07-09T13:44:01.793960"
+    },
+    {
+      "dataset": "stellar_ai_director_strategic_infrastructure_targets_20260709",
+      "file": "stellar-ai-director-strategic-infrastructure-targets-2026-07-09.csv",
+      "rows": 1333,
+      "columns": 165,
+      "size_bytes": 1201707,
+      "source_format": "csv",
+      "fingerprint": "sha256:36ae739e62040190812572bc2f94d48d429a1e481636558a3684f56075fa2732",
+      "indexed_at": "2026-07-09T13:43:57.761283"
+    },
+    {
+      "dataset": "stellar_ai_director_strategic_v2_decision_matrix",
+      "file": "DECISION_MATRIX.csv",
+      "rows": 33,
+      "columns": 9,
+      "size_bytes": 5979,
+      "source_format": "csv",
+      "fingerprint": "sha256:470698f3f59c21a2afd76350b3875e091c7c3980774d973860df0b8418363f42",
+      "indexed_at": "2026-07-08T22:13:09.518824"
+    },
+    {
+      "dataset": "stellar_ai_director_strategic_v2_evidence_map",
+      "file": "EVIDENCE_MAP.csv",
+      "rows": 56,
+      "columns": 7,
+      "size_bytes": 14892,
+      "source_format": "csv",
+      "fingerprint": "sha256:1455621e6467b5105217fd89fcd9aac5ae848d3d06b2e15c62f9eb46d99f26d7",
+      "indexed_at": "2026-07-08T22:13:09.434859"
+    },
+    {
+      "dataset": "stellar_ai_director_threat_response_war_goal_classification_20260705",
+      "file": "stellar-ai-director-threat-response-war-goal-classification-2026-07-05.csv",
+      "rows": 3,
+      "columns": 11,
+      "size_bytes": 758,
+      "source_format": "csv",
+      "fingerprint": "sha256:436dd42bc3d785af0ad28e508d9043bdbd0344302ff4df213cc17f6391ae18de",
+      "indexed_at": "2026-07-08T08:51:35.793831"
+    },
+    {
+      "dataset": "stellar_ai_director_war_chain_v2_plan_20260709",
+      "file": "stellar-ai-director-war-chain-v2-plan-2026-07-09.csv",
+      "rows": 8,
+      "columns": 6,
+      "size_bytes": 3566,
+      "source_format": "csv",
+      "fingerprint": "sha256:f5129991fff27a1c06bcb5a34932d65a8dbc52b3bdee58a53354cbdf89f48522",
+      "indexed_at": "2026-07-09T00:41:28.153895"
+    },
+    {
+      "dataset": "stellar_ai_integration_policy_audit",
+      "file": "stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+      "rows": 4335,
+      "columns": 13,
+      "size_bytes": 1383683,
+      "source_format": "csv",
+      "fingerprint": "sha256:a79c32675f3dff39325d10ca992e0598e9c544254a7d5a147a55bd9bbda3ec9d",
+      "indexed_at": "2026-07-04T20:54:18.002309"
+    },
+    {
+      "dataset": "stellar_ai_integration_surfaces",
+      "file": "stellar-ai-director-integration-surfaces-2026-07-04.csv",
+      "rows": 4335,
+      "columns": 10,
+      "size_bytes": 1013804,
+      "source_format": "csv",
+      "fingerprint": "sha256:e2565bb0389706038b635254dba346b6a07d1c5a53cbb7db8d5fcdc546215d20",
+      "indexed_at": "2026-07-04T20:54:18.185896"
+    },
+    {
+      "dataset": "stellar_ai_object_atlas_20260706",
+      "file": "object-atlas-2026-07-06.csv",
+      "rows": 31239,
+      "columns": 24,
+      "size_bytes": 7342696,
+      "source_format": "csv",
+      "fingerprint": "sha256:1c2f368cef041af52b70b5245b3c547a30a410b872aab3d207bdaf3d20257a59",
+      "indexed_at": "2026-07-08T08:51:55.989275"
+    },
+    {
+      "dataset": "stellar_ai_object_atlas_dependency_edges_20260706",
+      "file": "dependency-edges-2026-07-06.csv",
+      "rows": 34808,
+      "columns": 8,
+      "size_bytes": 5402939,
+      "source_format": "csv",
+      "fingerprint": "sha256:f60f89a2151491cc324f37e9004a225ef13d8e3959974e85aa43bd39f04eaab3",
+      "indexed_at": "2026-07-07T22:55:51.122265"
+    },
+    {
+      "dataset": "stellar_ai_object_atlas_parent_ai_support_map_20260706",
+      "file": "parent-ai-support-map-2026-07-06.csv",
+      "rows": 31239,
+      "columns": 10,
+      "size_bytes": 5223781,
+      "source_format": "csv",
+      "fingerprint": "sha256:e296b65eee207657611ed46cfed4edca6d848b30943fa1790fd13ad3fd8ffbe1",
+      "indexed_at": "2026-07-08T08:51:57.002650"
+    },
+    {
+      "dataset": "stellar_ai_object_atlas_policy_matrix_20260706",
+      "file": "policy-matrix-2026-07-06.csv",
+      "rows": 8143,
+      "columns": 13,
+      "size_bytes": 2290561,
+      "source_format": "csv",
+      "fingerprint": "sha256:215667968637eba088550d9626776d634d1ba7426918997a76576efbf2a5cea8",
+      "indexed_at": "2026-07-07T22:55:52.444191"
+    },
+    {
+      "dataset": "stellar_ai_observer_20260707T090209Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 47,
+      "columns": 25,
+      "size_bytes": 13466,
+      "source_format": "csv",
+      "fingerprint": "sha256:73223add5f53fc8c98663d82ad1891a764f7daf41af4b7c1d39c1fdcf203189d",
+      "indexed_at": "2026-07-07T06:45:45.433310"
+    },
+    {
+      "dataset": "stellar_ai_observer_20260707T105756Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 36,
+      "columns": 25,
+      "size_bytes": 9774,
+      "source_format": "csv",
+      "fingerprint": "sha256:ae9729e6171c652ff191f4330e694d2e7e7396ac3650b4c8574acc27e6e046d0",
+      "indexed_at": "2026-07-07T08:03:11.164652"
+    },
+    {
+      "dataset": "stellar_ai_observer_20260709T052514Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 27,
+      "columns": 25,
+      "size_bytes": 7674,
+      "source_format": "csv",
+      "fingerprint": "sha256:f7aa1ce39a11a7f88abee47bedf93547b921e36a9caf59eb1064ce5dcbdb70fc",
+      "indexed_at": "2026-07-09T03:45:21.376266"
+    },
+    {
+      "dataset": "stellar_ai_observer_20260709T080545Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 33,
+      "columns": 25,
+      "size_bytes": 9276,
+      "source_format": "csv",
+      "fingerprint": "sha256:b2f4b715ec8fb651e9c4d6f13531a158f7c6ae0b2dd0b2c2003860e028e9e95d",
+      "indexed_at": "2026-07-09T06:06:58.865440"
+    },
+    {
+      "dataset": "stellar_ai_observer_20260709T104133Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 21,
+      "columns": 25,
+      "size_bytes": 6117,
+      "source_format": "csv",
+      "fingerprint": "sha256:824a71e9a5de97d5c4dc7fae3c344d4192638e46b907a20060417189fbe466a2",
+      "indexed_at": "2026-07-09T07:53:44.139533"
+    },
+    {
+      "dataset": "stellar_ai_observer_20260709T123802Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 6,
+      "columns": 25,
+      "size_bytes": 1842,
+      "source_format": "csv",
+      "fingerprint": "sha256:57e9de42e1261e4215a4f9fb3fb4f3672545fbd5f866dff9533ff923c1dbf8d7",
+      "indexed_at": "2026-07-09T09:19:44.225124"
+    },
+    {
+      "dataset": "stellar_ai_parent_ai_support_map_20260706",
+      "file": "parent-ai-support-map-2026-07-06.csv",
+      "rows": 31239,
+      "columns": 10,
+      "size_bytes": 5223781,
+      "source_format": "csv",
+      "fingerprint": "sha256:0a9ac9e9b9fa425a95b320d4be674919c8e1b8e34d42b4dbd2415e7bcb84fcfa",
+      "indexed_at": "2026-07-07T20:52:42.406019"
+    },
+    {
+      "dataset": "stellar_ai_pdx_object_inventory",
+      "file": "pdx-object-inventory.csv",
+      "rows": 35991,
+      "columns": 8,
+      "size_bytes": 5478524,
+      "source_format": "csv",
+      "fingerprint": "sha256:fac7386f8c6c1d087793a3889c375b1c5676b7811594a93fde57eeaeae246876",
+      "indexed_at": "2026-07-04T21:06:35.387838"
+    },
+    {
+      "dataset": "stellar_ai_policy_matrix_20260706",
+      "file": "policy-matrix-2026-07-06.csv",
+      "rows": 8143,
+      "columns": 13,
+      "size_bytes": 2290561,
+      "source_format": "csv",
+      "fingerprint": "sha256:215667968637eba088550d9626776d634d1ba7426918997a76576efbf2a5cea8",
+      "indexed_at": "2026-07-07T20:31:50.691701"
+    },
+    {
+      "dataset": "stellar_ai_route_overrides_20260706",
+      "file": "stellar-ai-director-route-overrides-2026-07-06.csv",
+      "rows": 104,
+      "columns": 32,
+      "size_bytes": 73228,
+      "source_format": "csv",
+      "fingerprint": "sha256:31d4be957bf65f5337a49ae67ef8e5f2ef8cf607eea47f01161967cfb08febe0",
+      "indexed_at": "2026-07-06T21:42:28.330240"
+    },
+    {
+      "dataset": "stellar_ai_snapshot_manifest",
+      "file": "snapshot-manifest.csv",
+      "rows": 5,
+      "columns": 10,
+      "size_bytes": 1520,
+      "source_format": "csv",
+      "fingerprint": "sha256:c619ed4b7d4927850ae84ae71b6a63f7ee7c0a099454c285dceb29472b12e3ef",
+      "indexed_at": "2026-07-04T21:06:34.359754"
+    },
+    {
+      "dataset": "stellar_ai_war_mechanics_defines_catalog_20260708",
+      "file": "war_defines_catalog.csv",
+      "rows": 54,
+      "columns": 12,
+      "size_bytes": 24598,
+      "source_format": "csv",
+      "fingerprint": "sha256:36416a26057d16e2d7ecd3751b2ea7a0e3aadd6195e13462994026e88219438e",
+      "indexed_at": "2026-07-08T11:38:51.563353"
+    },
+    {
+      "dataset": "stellar_ai_war_mechanics_lever_catalog_20260708",
+      "file": "war_ai_lever_catalog.csv",
+      "rows": 29,
+      "columns": 15,
+      "size_bytes": 22094,
+      "source_format": "csv",
+      "fingerprint": "sha256:972bb455ee83d40ca1bc0eaccb03bd2d93e76bc60a3659537c5e7ec3a7262c8b",
+      "indexed_at": "2026-07-08T11:38:51.471481"
+    },
+    {
+      "dataset": "stellar_ai_war_mechanics_source_inventory_20260708",
+      "file": "source_inventory.csv",
+      "rows": 13,
+      "columns": 8,
+      "size_bytes": 4806,
+      "source_format": "csv",
+      "fingerprint": "sha256:79640183042bc9f6a85d9a1564a1966db340502af5ec438435b86a503c0b4863",
+      "indexed_at": "2026-07-08T11:38:51.656793"
+    },
+    {
+      "dataset": "stellar-ai-director-economic-valuation-2026-07-07",
+      "file": "stellar-ai-director-economic-valuation-2026-07-07.csv",
+      "rows": 1373,
+      "columns": 43,
+      "size_bytes": 2937572,
+      "source_format": "csv",
+      "fingerprint": "sha256:d284a306c14525c498402a0c5005b72efff706098af3bd0bf52281345e76234f",
+      "indexed_at": "2026-07-07T19:27:54.825281"
+    },
+    {
+      "dataset": "stellar-ai-director-generated-conflicts-2026-07-04",
+      "file": "stellar-ai-director-generated-conflicts-2026-07-04.csv",
+      "rows": 27,
+      "columns": 6,
+      "size_bytes": 5206,
+      "source_format": "csv",
+      "fingerprint": "sha256:719ea2b05b3b42cbd6532b6c34cd4dec291444039b2d04699bfff58c8c9aa55c",
+      "indexed_at": "2026-07-04T18:32:27.389591"
+    },
+    {
+      "dataset": "stellar-ai-director-generated-conflicts-20260706-recovery",
+      "file": "stellar-ai-director-generated-conflicts-2026-07-04.csv",
+      "rows": 162,
+      "columns": 6,
+      "size_bytes": 31630,
+      "source_format": "csv",
+      "fingerprint": "sha256:e3cc3e6fe54b76b03365a6f171ed496e321b8874e41205e5311210d85a5db289",
+      "indexed_at": "2026-07-06T19:08:05.327037"
+    },
+    {
+      "dataset": "stellar-ai-director-generated-file-audit-20260706-recovery",
+      "file": "stellar-ai-director-generated-file-audit-2026-07-04.csv",
+      "rows": 23,
+      "columns": 9,
+      "size_bytes": 3175,
+      "source_format": "csv",
+      "fingerprint": "sha256:671b6d4a9383e79ba05d2546b81d438a18fba355a9c80283f29fcbd7177a2708",
+      "indexed_at": "2026-07-06T19:08:05.395387"
+    },
+    {
+      "dataset": "stellar-ai-director-generated-reference-audit-20260706-recovery",
+      "file": "stellar-ai-director-generated-reference-audit-2026-07-04.csv",
+      "rows": 512,
+      "columns": 6,
+      "size_bytes": 90447,
+      "source_format": "csv",
+      "fingerprint": "sha256:3e7191e0f3aa769c4b3247f0fbd237d759612f56d107e1a324d87607cbfcb8a1",
+      "indexed_at": "2026-07-06T19:08:05.468092"
+    },
+    {
+      "dataset": "stellar-ai-director-integration-surfaces-2026-07-04",
+      "file": "stellar-ai-director-integration-surfaces-2026-07-04.csv",
+      "rows": 4335,
+      "columns": 10,
+      "size_bytes": 1013804,
+      "source_format": "csv",
+      "fingerprint": "sha256:e2565bb0389706038b635254dba346b6a07d1c5a53cbb7db8d5fcdc546215d20",
+      "indexed_at": "2026-07-04T18:26:38.486570"
+    },
+    {
+      "dataset": "stellar-ai-director-roi-matrix-2026-07-04",
+      "file": "stellar-ai-director-roi-matrix-2026-07-04.csv",
+      "rows": 188,
+      "columns": 41,
+      "size_bytes": 109208,
+      "source_format": "csv",
+      "fingerprint": "sha256:c0205ae618be1b5863647b235cb6dd7f02d8115610cbff4c44e08d50e98e36ac",
+      "indexed_at": "2026-07-04T18:15:54.337951"
+    },
+    {
+      "dataset": "stellar-ai-director-route-overrides-2026-07-06",
+      "file": "stellar-ai-director-route-overrides-2026-07-06.csv",
+      "rows": 106,
+      "columns": 32,
+      "size_bytes": 74459,
+      "source_format": "csv",
+      "fingerprint": "sha256:d342436e9b917c6a3a3a19183190315b26ad186f5fb0fc182e554c235077cc8f",
+      "indexed_at": "2026-07-07T19:58:48.404678"
+    },
+    {
+      "dataset": "stellar-ai-director-threat-response-war-goal-classification-2026-07-05",
+      "file": "stellar-ai-director-threat-response-war-goal-classification-2026-07-05.csv",
+      "rows": 3,
+      "columns": 11,
+      "size_bytes": 758,
+      "source_format": "csv",
+      "fingerprint": "sha256:773bf1cf3675e89b96b66ba587f05a18bf361aca043647b2740eab23e4ca0033",
+      "indexed_at": "2026-07-05T11:54:01.599870"
+    },
+    {
+      "dataset": "stellaris_ai_construction_moddable_controls_matrix_20260707",
+      "file": "moddable_controls_matrix.csv",
+      "rows": 21,
+      "columns": 8,
+      "size_bytes": 8425,
+      "source_format": "csv",
+      "fingerprint": "sha256:717b120b82347096299086040b572720cc52f7cfffc314602604de131fd99fc1",
+      "indexed_at": "2026-07-07T18:16:42.653420"
+    },
+    {
+      "dataset": "stellaris_ai_construction_research_source_inventory_20260707",
+      "file": "source_inventory.csv",
+      "rows": 18,
+      "columns": 8,
+      "size_bytes": 7914,
+      "source_format": "csv",
+      "fingerprint": "sha256:4c1f3bfed0592059fb84ec1c105f30c41726f84a629163792425b71556888a75",
+      "indexed_at": "2026-07-07T18:16:42.556480"
+    },
+    {
+      "dataset": "stellaris_ai_director_dependency_edges_2026_07_06",
+      "file": "dependency-edges-2026-07-06.csv",
+      "rows": 32864,
+      "columns": 8,
+      "size_bytes": 5074124,
+      "source_format": "csv",
+      "fingerprint": "sha256:90d331f73009d5e55bf5ffb8415d25cb8e3026060bcdf868e0bb3c44b51ad4b0",
+      "indexed_at": "2026-07-06T10:48:15.601994"
+    },
+    {
+      "dataset": "stellaris_ai_director_object_atlas_2026_07_06",
+      "file": "object-atlas-2026-07-06.csv",
+      "rows": 30724,
+      "columns": 24,
+      "size_bytes": 7179136,
+      "source_format": "csv",
+      "fingerprint": "sha256:cf1246301aae30d305b206ac2518b446ada005a87dd47cb94313ac52c136ba6b",
+      "indexed_at": "2026-07-06T10:48:07.205440"
+    },
+    {
+      "dataset": "stellaris_ai_director_parent_ai_support_2026_07_06",
+      "file": "parent-ai-support-map-2026-07-06.csv",
+      "rows": 30705,
+      "columns": 10,
+      "size_bytes": 5094681,
+      "source_format": "csv",
+      "fingerprint": "sha256:fffda74fd3a9170284a973e120e21a095401e8f465f83f0d1cdb18a7e188f410",
+      "indexed_at": "2026-07-06T10:48:16.838431"
+    },
+    {
+      "dataset": "stellaris_ai_director_policy_matrix_2026_07_06",
+      "file": "policy-matrix-2026-07-06.csv",
+      "rows": 6688,
+      "columns": 13,
+      "size_bytes": 1870730,
+      "source_format": "csv",
+      "fingerprint": "sha256:a6c81ccb4b15a2a7f0c48c581bdc43a88f2b0997770ac5cbd499b6cb8226fcc4",
+      "indexed_at": "2026-07-06T10:48:15.946866"
+    },
+    {
+      "dataset": "stellaris_ai_no_war_hypothesis_matrix_20260710",
+      "file": "HYPOTHESIS_MATRIX.csv",
+      "rows": 24,
+      "columns": 12,
+      "size_bytes": 29770,
+      "source_format": "csv",
+      "fingerprint": "sha256:d0316843593e8e7fc3707ee7942887f3e83c28f352011a9e6856fbd1813aa474",
+      "indexed_at": "2026-07-10T07:54:06.715697"
+    },
+    {
+      "dataset": "stellaris_ai_no_war_source_inventory_20260710",
+      "file": "SOURCE_INVENTORY.csv",
+      "rows": 47,
+      "columns": 8,
+      "size_bytes": 17788,
+      "source_format": "csv",
+      "fingerprint": "sha256:38f6215cc8cae5cc15aaf4e0a2ce202dfa3a7e6f1f9318a2376703f426a57959",
+      "indexed_at": "2026-07-10T07:54:06.761510"
+    },
+    {
+      "dataset": "stellaris_ai_observer_20260707T050444Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 48,
+      "columns": 25,
+      "size_bytes": 13090,
+      "source_format": "csv",
+      "fingerprint": "sha256:7a601a5f4e9eb1bb640806ed537ce8a739328f4e6448cc870fa66773c1e9b6f0",
+      "indexed_at": "2026-07-07T03:23:29.161049"
+    },
+    {
+      "dataset": "stellaris_ai_observer_20260707T073706Z_checkpoints",
+      "file": "checkpoints.csv",
+      "rows": 31,
+      "columns": 25,
+      "size_bytes": 8619,
+      "source_format": "csv",
+      "fingerprint": "sha256:6e5f5c295e8681adcf195d65d948b88dbdc2e66176b8bca5b65665e21002f1fa",
+      "indexed_at": "2026-07-07T04:48:42.715376"
+    },
+    {
+      "dataset": "stellaris_ai_war_external_mod_comparison_20260709",
+      "file": "external_ai_mod_comparison.csv",
+      "rows": 6,
+      "columns": 6,
+      "size_bytes": 2064,
+      "source_format": "csv",
+      "fingerprint": "sha256:10493ae60c71c1200ec6e536f3b58de91568b5f2a0cb19c74644bc7a58e7d8d1",
+      "indexed_at": "2026-07-09T23:13:49.863281"
+    },
+    {
+      "dataset": "stellaris_ai_war_gate_matrix_20260709",
+      "file": "war_declaration_gate_matrix.csv",
+      "rows": 10,
+      "columns": 7,
+      "size_bytes": 1978,
+      "source_format": "csv",
+      "fingerprint": "sha256:eedaed7976ffc0b0a0095c5623153f3942c0a1271b76df8b1b7f13f0186da732",
+      "indexed_at": "2026-07-09T23:13:49.960764"
+    },
+    {
+      "dataset": "stellaris_ai_war_hypotheses_20260709",
+      "file": "director_passive_galaxy_hypotheses.csv",
+      "rows": 9,
+      "columns": 6,
+      "size_bytes": 2347,
+      "source_format": "csv",
+      "fingerprint": "sha256:5dc3d565776205564f739400a3244516223ab66ef2b5e0b7f2a542d3df8443a7",
+      "indexed_at": "2026-07-09T23:13:49.817309"
+    },
+    {
+      "dataset": "stellaris_ai_war_source_inventory_20260709",
+      "file": "source_inventory.csv",
+      "rows": 10,
+      "columns": 7,
+      "size_bytes": 2484,
+      "source_format": "csv",
+      "fingerprint": "sha256:19a2be2d18fed76aa977aa600206d26d18f9d16eb3f4a1620318331ceed3acb8",
+      "indexed_at": "2026-07-09T23:13:49.912473"
+    },
+    {
+      "dataset": "stellaris_codex_packet_folder_surface_matrix_20260708",
+      "file": "folder_surface_matrix.csv",
+      "rows": 48,
+      "columns": 10,
+      "size_bytes": 19943,
+      "source_format": "csv",
+      "fingerprint": "sha256:4f0fd340e7c1886020d2485af79509cc48523f111501f9574a4a7da73ae7eba3",
+      "indexed_at": "2026-07-08T08:51:52.493517"
+    },
+    {
+      "dataset": "stellaris_codex_packet_sources_20260708",
+      "file": "sources.csv",
+      "rows": 22,
+      "columns": 8,
+      "size_bytes": 8360,
+      "source_format": "csv",
+      "fingerprint": "sha256:f14c81c0543ee122e1f2d7657cfa8790f722fd6595a7ef789ee07b49657c1988",
+      "indexed_at": "2026-07-08T08:51:52.655160"
+    },
+    {
+      "dataset": "stellaris_codex_skills_completion_ledger_2026_07_08",
+      "file": "completion-ledger.jsonl",
+      "rows": 106,
+      "columns": 7,
+      "size_bytes": 134575,
+      "source_format": "jsonl",
+      "fingerprint": "sha256:4229e4032176963c787a258dddd0d8aa804f1a95cede69a5e8f1bafa6da0a69a",
+      "indexed_at": "2026-07-08T13:08:59.507526"
+    },
+    {
+      "dataset": "stellaris_codex_skills_handcrafted_ledger_2026_07_08",
+      "file": "handcrafted-completion-ledger.jsonl",
+      "rows": 106,
+      "columns": 13,
+      "size_bytes": 187291,
+      "source_format": "jsonl",
+      "fingerprint": "sha256:cccfae7c94bcae7227dcf9eab93a7c6d459683f951ea5512b98b287d9652ae80",
+      "indexed_at": "2026-07-08T17:22:08.646636"
+    },
+    {
+      "dataset": "stellaris_codex_skills_roadmap_catalog_2026_07_08",
+      "file": "skills_catalog.jsonl",
+      "rows": 106,
+      "columns": 11,
+      "size_bytes": 81759,
+      "source_format": "jsonl",
+      "fingerprint": "sha256:1b13a2737ec818b4914a51a91ef1d4f1cd13f4648f47b32f0a3d9bb1d5697b5a",
+      "indexed_at": "2026-07-08T12:54:11.854737"
+    },
+    {
+      "dataset": "stellaris_external_gap_actionable_research_gaps_20260709",
+      "file": "actionable_research_gaps.csv",
+      "rows": 10,
+      "columns": 8,
+      "size_bytes": 4356,
+      "source_format": "csv",
+      "fingerprint": "sha256:002ee0282957887df5bcda6171f4e16e883772b9dc1f2f2740028106b73c8f74",
+      "indexed_at": "2026-07-09T12:35:00.693541"
+    },
+    {
+      "dataset": "stellaris_external_gap_answered_research_questions_20260709",
+      "file": "answered_research_questions.csv",
+      "rows": 10,
+      "columns": 8,
+      "size_bytes": 4356,
+      "source_format": "csv",
+      "fingerprint": "sha256:002ee0282957887df5bcda6171f4e16e883772b9dc1f2f2740028106b73c8f74",
+      "indexed_at": "2026-07-09T12:35:00.750562"
+    },
+    {
+      "dataset": "stellaris_external_gap_packet_manifest_20260709",
+      "file": "packet_manifest.csv",
+      "rows": 18,
+      "columns": 3,
+      "size_bytes": 1042,
+      "source_format": "csv",
+      "fingerprint": "sha256:4483bb7ba53fda697b53fb4bad0263ef3e2cd33a849f0c9816f5fc91eb94c1f4",
+      "indexed_at": "2026-07-09T12:35:00.562650"
+    },
+    {
+      "dataset": "stellaris_external_gap_runtime_verification_queue_20260709",
+      "file": "runtime_verification_queue.csv",
+      "rows": 10,
+      "columns": 7,
+      "size_bytes": 2843,
+      "source_format": "csv",
+      "fingerprint": "sha256:45b6d6ef2816a9fc959df0938fa1b70836cdca30518098e3e3f8f925373d89cb",
+      "indexed_at": "2026-07-09T12:35:00.822552"
+    },
+    {
+      "dataset": "stellaris_external_gap_source_inventory_20260709",
+      "file": "source_inventory.csv",
+      "rows": 85,
+      "columns": 9,
+      "size_bytes": 30752,
+      "source_format": "csv",
+      "fingerprint": "sha256:0c7b077e45e30ec8ae7235fa215d5606d717a1f5abca589a355699a911a5f88e",
+      "indexed_at": "2026-07-09T12:35:00.631399"
+    },
+    {
+      "dataset": "stellaris_observatory_plan_automation_17176",
+      "file": "07_automation_test_matrix.csv",
+      "rows": 47,
+      "columns": 7,
+      "size_bytes": 10916,
+      "source_format": "csv",
+      "fingerprint": "sha256:9465abf001f4bb9c9f7f417992d3a7893703e2c69edddb48f15375202eff3e9e",
+      "indexed_at": "2026-07-10T12:16:04.607518"
+    },
+    {
+      "dataset": "stellaris_observatory_plan_scope_17176",
+      "file": "09_scope_priority_matrix.csv",
+      "rows": 34,
+      "columns": 7,
+      "size_bytes": 5226,
+      "source_format": "csv",
+      "fingerprint": "sha256:69acafb9c1563e96a08ed4ef71578b5a96c604ef28aebb0db483fc0849de9151",
+      "indexed_at": "2026-07-10T12:16:04.723166"
+    },
+    {
+      "dataset": "stellaris_observatory_plan_sources_17176",
+      "file": "08_source_inventory.csv",
+      "rows": 43,
+      "columns": 7,
+      "size_bytes": 16373,
+      "source_format": "csv",
+      "fingerprint": "sha256:26689a405f50d2a6a5a7ee6f94c72c24310f4a2e62853a3f797e0282a2bfb800",
+      "indexed_at": "2026-07-10T12:16:04.663948"
+    },
+    {
+      "dataset": "stellaris_packet_active_load_order_conflicts_20260708",
+      "file": "active-load-order-conflict-matrix-2026-07-08.csv",
+      "rows": 2244,
+      "columns": 17,
+      "size_bytes": 1286114,
+      "source_format": "csv",
+      "fingerprint": "sha256:212f15f74a68f191f71207b31d76e1da17b99fa5b86a4da2a03a09eba003484c",
+      "indexed_at": "2026-07-08T09:13:27.012327"
+    },
+    {
+      "dataset": "stellaris_packet_active_source_roots_20260708",
+      "file": "active-source-roots-2026-07-08.csv",
+      "rows": 121,
+      "columns": 11,
+      "size_bytes": 18571,
+      "source_format": "csv",
+      "fingerprint": "sha256:dc5fcbd19ac39de6ab3bd8e91ff9c7868913384d51958c140a014b87642c4ba1",
+      "indexed_at": "2026-07-08T09:13:17.352144"
+    },
+    {
+      "dataset": "stellaris_packet_cwtools_diagnostics_20260708",
+      "file": "cwtools-diagnostics-2026-07-08.csv",
+      "rows": 5,
+      "columns": 4,
+      "size_bytes": 562,
+      "source_format": "csv",
+      "fingerprint": "sha256:553c42fc4f7c6b27c8ac22979522bfbdf4fee98cf4647b5b24b9879322e9bd3f",
+      "indexed_at": "2026-07-08T09:13:53.484404"
+    },
+    {
+      "dataset": "stellaris_packet_followup_cwtools_schema_surface_matrix_20260708",
+      "file": "cwtools_schema_surface_matrix.csv",
+      "rows": 16,
+      "columns": 7,
+      "size_bytes": 9975,
+      "source_format": "csv",
+      "fingerprint": "sha256:491794223116da0f0aac24a78b706cfb6fecb842a8aace44e8789defb41dc20e",
+      "indexed_at": "2026-07-08T10:53:04.091785"
+    },
+    {
+      "dataset": "stellaris_packet_followup_mod_maintainer_guidance_matrix_20260708",
+      "file": "mod_maintainer_guidance_matrix.csv",
+      "rows": 13,
+      "columns": 7,
+      "size_bytes": 5362,
+      "source_format": "csv",
+      "fingerprint": "sha256:b3e31cc1478f58d507bfcfa2cf47fd011f07f2804a2b7dfd0e4cbc12425eded3",
+      "indexed_at": "2026-07-08T10:53:07.664903"
+    },
+    {
+      "dataset": "stellaris_packet_followup_remaining_open_questions_20260708",
+      "file": "remaining_open_questions.csv",
+      "rows": 9,
+      "columns": 4,
+      "size_bytes": 3339,
+      "source_format": "csv",
+      "fingerprint": "sha256:e1229266ce69db3cf7363d4c51c17bc556c145535910301ef1a87eebfe77edbf",
+      "indexed_at": "2026-07-08T10:53:11.244570"
+    },
+    {
+      "dataset": "stellaris_packet_gigas_megastructure_ai_hooks_20260708",
+      "file": "gigas-megastructure-ai-hooks-2026-07-08.csv",
+      "rows": 810,
+      "columns": 15,
+      "size_bytes": 220407,
+      "source_format": "csv",
+      "fingerprint": "sha256:c338071c9761c66173bfcebf57dfb5e01e3a4d7205315c61a9eab947377895c0",
+      "indexed_at": "2026-07-08T09:13:38.019420"
+    },
+    {
+      "dataset": "stellaris_packet_object_definitions_20260708",
+      "file": "object-definitions-2026-07-08.csv",
+      "rows": 13749,
+      "columns": 26,
+      "size_bytes": 5763568,
+      "source_format": "csv",
+      "fingerprint": "sha256:def130a21a3cf775d4598087d534ecb01b70a2e93e67cdbbf28faccdd2159b4f",
+      "indexed_at": "2026-07-08T09:13:35.361708"
+    },
+    {
+      "dataset": "stellaris_packet_pdx_parse_diagnostics_20260708",
+      "file": "pdx-parse-diagnostics-2026-07-08.csv",
+      "rows": 0,
+      "columns": 8,
+      "size_bytes": 99,
+      "source_format": "csv",
+      "fingerprint": "sha256:a93fcdaf3dd6350d4d081ddd18bc69fc1d2ee176cf1d5b01ba795b0924d80137",
+      "indexed_at": "2026-07-08T09:13:56.049031"
+    },
+    {
+      "dataset": "stellaris_packet_planetary_diversity_zone_district_20260708",
+      "file": "planetary-diversity-zone-district-report-2026-07-08.csv",
+      "rows": 537,
+      "columns": 11,
+      "size_bytes": 120540,
+      "source_format": "csv",
+      "fingerprint": "sha256:0cac2c8cd68d4534f1790f6c7db83c46b424ccc4b49aa742243ead002d8ade71",
+      "indexed_at": "2026-07-08T09:13:49.998253"
+    },
+    {
+      "dataset": "stellaris_packet_ship_design_reference_checks_20260708",
+      "file": "ship-design-reference-checks-2026-07-08.csv",
+      "rows": 17855,
+      "columns": 11,
+      "size_bytes": 5298468,
+      "source_format": "csv",
+      "fingerprint": "sha256:1b082f5454633dc60904cba046b80152c4204956de90a0cf76f4cdccbe89d922",
+      "indexed_at": "2026-07-08T09:13:46.743219"
+    },
+    {
+      "dataset": "stellaris_packet_starbase_extended_scope_20260708",
+      "file": "starbase-extended-scope-report-2026-07-08.csv",
+      "rows": 50,
+      "columns": 15,
+      "size_bytes": 12738,
+      "source_format": "csv",
+      "fingerprint": "sha256:c12a68bcfc28c855d42688a0a31851c2bcf64c6850c39e8589143630285ad7d3",
+      "indexed_at": "2026-07-08T09:13:42.079269"
+    },
+    {
+      "dataset": "stellaris_packet_surface_source_provenance_20260708",
+      "file": "surface-source-provenance-2026-07-08.csv",
+      "rows": 2178,
+      "columns": 14,
+      "size_bytes": 463164,
+      "source_format": "csv",
+      "fingerprint": "sha256:322dd96295665f6b968e0a902387810ef44e225359ebf29c5db279a3cd22c79c",
+      "indexed_at": "2026-07-08T09:13:24.272630"
+    },
+    {
+      "dataset": "stellaris_packet_surface_summary_20260708",
+      "file": "surface-summary-2026-07-08.csv",
+      "rows": 18,
+      "columns": 11,
+      "size_bytes": 1853,
+      "source_format": "csv",
+      "fingerprint": "sha256:7dedfd4cdfebc56e7d5fe9b70833b0e23134d276d91be39211b6e0e707b303b3",
+      "indexed_at": "2026-07-08T09:13:19.755053"
+    },
+    {
+      "dataset": "stellaris_packet_winning_objects_20260708",
+      "file": "winning-objects-2026-07-08.csv",
+      "rows": 10276,
+      "columns": 29,
+      "size_bytes": 5519556,
+      "source_format": "csv",
+      "fingerprint": "sha256:c14e8d0036713a0af72e345ffd33fff8573838df962ffa0e9590d69d73974b94",
+      "indexed_at": "2026-07-08T09:13:30.142197"
+    },
+    {
+      "dataset": "stellaris_staid_sft_equivalence_audit_20260709",
+      "file": "stellar-ai-director-sft-equivalence-audit-2026-07-09.csv",
+      "rows": 91,
+      "columns": 4,
+      "size_bytes": 20276,
+      "source_format": "csv",
+      "fingerprint": "sha256:15656774227adcd30416e979bac6e3c77dc40dc3b517c4cc880ae0a5c24c2b22",
+      "indexed_at": "2026-07-09T10:20:23.235887"
+    },
+    {
+      "dataset": "stellaris_webchatgpt_cwtools_schema_surface_matrix_20260708",
+      "file": "cwtools_schema_surface_matrix.csv",
+      "rows": 16,
+      "columns": 7,
+      "size_bytes": 9975,
+      "source_format": "csv",
+      "fingerprint": "sha256:491794223116da0f0aac24a78b706cfb6fecb842a8aace44e8789defb41dc20e",
+      "indexed_at": "2026-07-08T10:49:46.201236"
+    },
+    {
+      "dataset": "stellaris_webchatgpt_mod_maintainer_guidance_matrix_20260708",
+      "file": "mod_maintainer_guidance_matrix.csv",
+      "rows": 13,
+      "columns": 7,
+      "size_bytes": 5362,
+      "source_format": "csv",
+      "fingerprint": "sha256:b3e31cc1478f58d507bfcfa2cf47fd011f07f2804a2b7dfd0e4cbc12425eded3",
+      "indexed_at": "2026-07-08T10:49:48.816095"
+    },
+    {
+      "dataset": "stellaris_webchatgpt_remaining_open_questions_20260708",
+      "file": "remaining_open_questions.csv",
+      "rows": 9,
+      "columns": 4,
+      "size_bytes": 3339,
+      "source_format": "csv",
+      "fingerprint": "sha256:e1229266ce69db3cf7363d4c51c17bc556c145535910301ef1a87eebfe77edbf",
+      "indexed_at": "2026-07-08T10:49:52.470177"
+    },
+    {
+      "dataset": "stellaris-ai-surface-inventory-2026-07-04",
+      "file": "ai-surface-inventory.csv",
+      "rows": 1696,
+      "columns": 26,
+      "size_bytes": 264901,
+      "source_format": "csv",
+      "fingerprint": "sha256:18b1a54bb7d03fb0db3350a8191ef8d9a93403801eaf8aacc8922be4b928233b",
+      "indexed_at": "2026-07-04T18:15:54.181359"
+    },
+    {
+      "dataset": "stellaris-descriptor-inventory-2026-07-04",
+      "file": "descriptor-inventory.csv",
+      "rows": 5,
+      "columns": 7,
+      "size_bytes": 1070,
+      "source_format": "csv",
+      "fingerprint": "sha256:a2f5e5b388f419c60841002c5f431e3d24ca4eb622857c908bf9dfb446823a9c",
+      "indexed_at": "2026-07-04T18:15:52.836949"
+    },
+    {
+      "dataset": "stellaris-pdx-object-inventory-2026-07-04",
+      "file": "pdx-object-inventory.csv",
+      "rows": 35991,
+      "columns": 8,
+      "size_bytes": 5478524,
+      "source_format": "csv",
+      "fingerprint": "sha256:fac7386f8c6c1d087793a3889c375b1c5676b7811594a93fde57eeaeae246876",
+      "indexed_at": "2026-07-04T18:15:53.955310"
+    },
+    {
+      "dataset": "stellaris-snapshot-manifest-2026-07-04",
+      "file": "snapshot-manifest.csv",
+      "rows": 5,
+      "columns": 10,
+      "size_bytes": 1520,
+      "source_format": "csv",
+      "fingerprint": "sha256:c619ed4b7d4927850ae84ae71b6a63f7ee7c0a099454c285dceb29472b12e3ef",
+      "indexed_at": "2026-07-04T18:15:52.753694"
+    },
+    {
+      "dataset": "stellarismods_2026_07_04_ai_marker_summary",
+      "file": "ai-marker-summary.csv",
+      "rows": 5,
+      "columns": 23,
+      "size_bytes": 767,
+      "source_format": "csv",
+      "fingerprint": "sha256:20d840b464b2104a2afdd7921131cf9e739c5879a03c6cbb5f1032b07fa2ef7b",
+      "indexed_at": "2026-07-04T14:23:37.402288"
+    },
+    {
+      "dataset": "stellarismods_2026_07_04_ai_surface_inventory",
+      "file": "ai-surface-inventory.csv",
+      "rows": 1696,
+      "columns": 26,
+      "size_bytes": 264901,
+      "source_format": "csv",
+      "fingerprint": "sha256:18b1a54bb7d03fb0db3350a8191ef8d9a93403801eaf8aacc8922be4b928233b",
+      "indexed_at": "2026-07-04T14:23:37.291913"
+    },
+    {
+      "dataset": "stellarismods_2026_07_04_file_inventory",
+      "file": "file-inventory.csv",
+      "rows": 10664,
+      "columns": 8,
+      "size_bytes": 1435422,
+      "source_format": "csv",
+      "fingerprint": "sha256:b048888ab844325c76a7d4a8785495bb645c725a1ea739b5b6625c76bcf9e213",
+      "indexed_at": "2026-07-04T14:23:35.816656"
+    },
+    {
+      "dataset": "stellarismods_2026_07_04_pdx_object_inventory",
+      "file": "pdx-object-inventory.csv",
+      "rows": 35991,
+      "columns": 8,
+      "size_bytes": 5478524,
+      "source_format": "csv",
+      "fingerprint": "sha256:fac7386f8c6c1d087793a3889c375b1c5676b7811594a93fde57eeaeae246876",
+      "indexed_at": "2026-07-04T14:23:37.034931"
+    },
+    {
+      "dataset": "stellarismods-stellar-ai-director-integration-policy-audit",
+      "file": "stellar-ai-director-integration-policy-audit-2026-07-04.csv",
+      "rows": 4335,
+      "columns": 13,
+      "size_bytes": 1383683,
+      "source_format": "csv",
+      "fingerprint": "sha256:a79c32675f3dff39325d10ca992e0598e9c544254a7d5a147a55bd9bbda3ec9d",
+      "indexed_at": "2026-07-04T19:41:06.884723"
+    },
+    {
+      "dataset": "stellarismods-stellar-ai-director-integration-surfaces",
+      "file": "stellar-ai-director-integration-surfaces-2026-07-04.csv",
+      "rows": 4335,
+      "columns": 10,
+      "size_bytes": 1013804,
+      "source_format": "csv",
+      "fingerprint": "sha256:e2565bb0389706038b635254dba346b6a07d1c5a53cbb7db8d5fcdc546215d20",
+      "indexed_at": "2026-07-04T19:37:57.394280"
+    },
+    {
+      "dataset": "stellarismods-stellar-ai-director-roi-matrix",
+      "file": "stellar-ai-director-roi-matrix-2026-07-04.csv",
+      "rows": 188,
+      "columns": 41,
+      "size_bytes": 109208,
+      "source_format": "csv",
+      "fingerprint": "sha256:c0205ae618be1b5863647b235cb6dd7f02d8115610cbff4c44e08d50e98e36ac",
+      "indexed_at": "2026-07-04T19:31:07.315560"
+    },
+    {
+      "dataset": "stellarismods-stellar-ai-director-roi-quality-audit",
+      "file": "stellar-ai-director-roi-quality-audit-2026-07-04.csv",
+      "rows": 753,
+      "columns": 11,
+      "size_bytes": 179771,
+      "source_format": "csv",
+      "fingerprint": "sha256:8af5e8979fb2806bb4559adebe00e6dda50d3f33fb6c3627d3ad4d90e5b01545",
+      "indexed_at": "2026-07-04T19:34:27.149968"
+    },
+    {
+      "dataset": "webchatgpt_staid_benefit_formula_policy_matrix_20260709",
+      "file": "benefit_formula_policy_matrix.csv",
+      "rows": 265,
+      "columns": 11,
+      "size_bytes": 222749,
+      "source_format": "csv",
+      "fingerprint": "sha256:7804ea34dd3aced73ed8b583c8bb4932dab6a102f181ec063b89f8182906de49",
+      "indexed_at": "2026-07-09T15:01:13.268307"
+    },
+    {
+      "dataset": "webchatgpt_staid_unresolved_variable_resolutions_20260709",
+      "file": "unresolved_variable_resolutions.csv",
+      "rows": 131,
+      "columns": 12,
+      "size_bytes": 74994,
+      "source_format": "csv",
+      "fingerprint": "sha256:79eedb90a881af59785ec7b108dd28e5b7ee3623c49dfef5389059af958060c7",
+      "indexed_at": "2026-07-09T15:01:13.167509"
+    }
+  ]
+}
