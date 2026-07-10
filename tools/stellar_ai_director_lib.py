@@ -79,6 +79,10 @@ MOD_STACK_COMPATIBILITY_MD = RESEARCH_ROOT / "STAID_MOD_STACK_COMPATIBILITY.md"
 MANUAL_STATIC_VALIDATION_MD = RESEARCH_ROOT / "STAID_MANUAL_STATIC_VALIDATION.md"
 STANDALONE_PARITY_INVENTORY_CSV = RESEARCH_ROOT / "stellar-ai-director-standalone-parity-inventory-2026-07-08.csv"
 STANDALONE_PARITY_INVENTORY_MD = RESEARCH_ROOT / "stellar-ai-director-standalone-parity-inventory-2026-07-08.md"
+STRATEGIC_SUBSYSTEM_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-strategic-subsystem-audit-2026-07-09.csv"
+STRATEGIC_SUBSYSTEM_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-strategic-subsystem-audit-2026-07-09.md"
+RELATIVE_ECONOMIC_STANDARDS_CSV = RESEARCH_ROOT / "stellar-ai-director-relative-economic-standards-2026-07-09.csv"
+RELATIVE_ECONOMIC_STANDARDS_MD = RESEARCH_ROOT / "stellar-ai-director-relative-economic-standards-2026-07-09.md"
 SFT_EQUIVALENCE_AUDIT_CSV = RESEARCH_ROOT / "stellar-ai-director-sft-equivalence-audit-2026-07-09.csv"
 SFT_EQUIVALENCE_AUDIT_MD = RESEARCH_ROOT / "stellar-ai-director-sft-equivalence-audit-2026-07-09.md"
 ECONOMIC_VALUATION_DATASET_CSV = RESEARCH_ROOT / "stellar-ai-director-economic-valuation-2026-07-07.csv"
@@ -104,6 +108,32 @@ REQUIRED_MODS = {
 PARITY_REFERENCE_MODS = {
     "3610149307": "Stellar AI",
     "3696204283": "Spacefleet Tactica",
+}
+
+# Stellar AI 0.10 (4.4.4) supplied these personality-side aggression values.
+# Stellar AI Director remains runtime-standalone: generated overrides copy the
+# current vanilla personality bodies and change only this scalar.
+STANDALONE_AGGRESSION_PERSONALITY_VALUES = {
+    "honorbound_warriors": 4.0,
+    "evangelising_zealots": 3.0,
+    "erudite_explorers": 1.8,
+    "spiritual_seekers": 0.5,
+    "ruthless_capitalists": 3.0,
+    "hegemonic_imperialists": 2.5,
+    "slaving_despots": 2.5,
+    "democratic_crusaders": 3.0,
+    "harmonious_hierarchy": 1.8,
+    "federation_builders": 1.8,
+    "fanatic_purifiers": 4.5,
+    "hive_mind": 3.0,
+    "devouring_swarm": 4.5,
+    "migrating_flock": 0.5,
+    "machine_intelligence": 3.0,
+    "assimilators": 3.0,
+    "exterminators": 4.5,
+    "servitors": 2.5,
+    "fanatic_befrienders": 4.5,
+    "became_the_crisis": 4.5,
 }
 
 ATLAS_SOURCE_MODS = {
@@ -216,6 +246,7 @@ ATLAS_COMMON_SURFACES = {
     "traditions": "tradition",
     "megastructures": "megastructure",
     "buildings": "building",
+    "colony_types": "colony_type",
     "districts": "district",
     "pop_jobs": "pop_job",
     "resources": "resource",
@@ -285,6 +316,7 @@ GENERATED_SURFACE_FOLDERS = {
     "component_templates": "component_template",
     "bombardment_stances": "bombardment_stance",
     "buildings": "building",
+    "colony_types": "colony_type",
     "decisions": "decision",
     "defines": "define",
     "districts": "district",
@@ -294,6 +326,7 @@ GENERATED_SURFACE_FOLDERS = {
     "megastructures": "megastructure",
     "opinion_modifiers": "opinion_modifier",
     "on_actions": "on_action",
+    "personalities": "personality",
     "policies": "policy",
     "scripted_effects": "scripted_effect",
     "scripted_modifiers": "scripted_modifier",
@@ -492,6 +525,9 @@ SURPLUS_WASTE_STOCKPILE_THRESHOLDS = {
     "giga_sr_sentient_metal": 2500.0,
 }
 
+# Cap-based sales require both a finite resource maximum and market tradability.
+# Stellaris 4.4.4 nanites have neither (`tradable = no`, no `max`), so they must
+# remain outside this list even though they are otherwise modeled economically.
 MARKET_CAP_BREAKER_SALES = [
     ("minerals", 50000, 5000, ""),
     ("food", 30000, 5000, "country_uses_food = yes"),
@@ -501,7 +537,6 @@ MARKET_CAP_BREAKER_SALES = [
     ("rare_crystals", 800, 200, ""),
     ("sr_dark_matter", 1000, 100, ""),
     ("sr_zro", 1000, 100, ""),
-    ("nanites", 1000, 100, ""),
     ("giga_sr_sentient_metal", 2500, 250, "has_technology = tech_ehof_sentient_tier_1"),
 ]
 
@@ -718,7 +753,7 @@ WAR_GOAL_THREAT_CLASSES = {
         "war_goal": "wg_conquest",
         "classification": "conquest",
         "severity": 2,
-        "source": "Stellaris 4.4.5 vanilla",
+        "source": "Stellaris 4.4.4 vanilla",
         "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
         "mod_or_vanilla": "vanilla",
         "punitive_outputs_allowed": "yes",
@@ -731,7 +766,7 @@ WAR_GOAL_THREAT_CLASSES = {
         "war_goal": "wg_subjugation",
         "classification": "subjugation",
         "severity": 3,
-        "source": "Stellaris 4.4.5 vanilla",
+        "source": "Stellaris 4.4.4 vanilla",
         "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
         "mod_or_vanilla": "vanilla",
         "punitive_outputs_allowed": "yes",
@@ -744,7 +779,7 @@ WAR_GOAL_THREAT_CLASSES = {
         "war_goal": "wg_humiliation",
         "classification": "humiliation",
         "severity": 1,
-        "source": "Stellaris 4.4.5 vanilla",
+        "source": "Stellaris 4.4.4 vanilla",
         "source_path": "C:/Steam/steamapps/common/Stellaris/common/war_goals/00_war_goals.txt",
         "mod_or_vanilla": "vanilla",
         "punitive_outputs_allowed": "yes",
@@ -1654,40 +1689,49 @@ def object_inventory_roots(snapshot_root: Path = SNAPSHOT_ROOT) -> list[Path]:
     return roots
 
 
-def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[str]]:
-    buckets = {
-        "megastructure": set(),
-        "technology": set(),
-        "ascension_perk": set(),
-        "bombardment_stance": set(),
-        "decision": set(),
-        "scripted_trigger": set(),
-        "scripted_value": set(),
-        "resource": set(),
-        "starbase_module": set(),
-        "starbase_building": set(),
-        "ai_budget": set(),
-        "economic_plan": set(),
-        "planet_class": set(),
-        "pop_job": set(),
-    }
+WRAPPED_OBJECT_ID_CHILD_KEYS = {
+    "component_set": "key",
+    "component_template": "key",
+    "ship_behavior": "name",
+}
+
+
+def assignment_object_id(object_type: str, assignment: PDXAssignment) -> str | None:
+    child_key = WRAPPED_OBJECT_ID_CHILD_KEYS.get(object_type)
+    if child_key is None:
+        return assignment.key
+    if not isinstance(assignment.value, PDXBlock):
+        return None
+    for child in block_assignments(assignment.value, child_key):
+        value = atom_value(child.value)
+        if value:
+            return value
+    return None
+
+
+def collect_object_names(
+    snapshot_root: Path = SNAPSHOT_ROOT,
+    inventory_roots: Iterable[Path] | None = None,
+) -> dict[str, set[str]]:
+    # on_actions and defines have merge semantics that are not represented by
+    # this object-level collision inventory. All remaining generated surfaces
+    # use named full-object definitions and must be checked against parents.
     folder_map = {
-        "megastructures": "megastructure",
-        "technology": "technology",
-        "ascension_perks": "ascension_perk",
-        "bombardment_stances": "bombardment_stance",
-        "decisions": "decision",
-        "scripted_triggers": "scripted_trigger",
-        "script_values": "scripted_value",
-        "strategic_resources": "resource",
-        "starbase_modules": "starbase_module",
-        "starbase_buildings": "starbase_building",
-        "ai_budget": "ai_budget",
-        "economic_plans": "economic_plan",
-        "planet_classes": "planet_class",
-        "pop_jobs": "pop_job",
+        folder: object_type
+        for folder, object_type in GENERATED_SURFACE_FOLDERS.items()
+        if folder not in {"defines", "on_actions", "scripted_variables"}
     }
-    for root in object_inventory_roots(snapshot_root):
+    folder_map.update(
+        {
+            "strategic_resources": "resource",
+            "resources": "resource",
+            "planet_classes": "planet_class",
+            "pop_jobs": "pop_job",
+        }
+    )
+    buckets = {object_type: set() for object_type in folder_map.values()}
+    roots = list(inventory_roots) if inventory_roots is not None else object_inventory_roots(snapshot_root)
+    for root in roots:
         common = root / "common"
         if not common.exists():
             continue
@@ -1703,9 +1747,10 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
                 except PDXParseError:
                     continue
                 for assignment in block_assignments(parsed):
-                    if not assignment.key.startswith("@"):
-                        buckets[bucket].add(assignment.key)
-    vanilla = Path(r"C:\Steam\steamapps\common\Stellaris\common")
+                    object_id = assignment_object_id(bucket, assignment)
+                    if object_id and not object_id.startswith("@"):
+                        buckets[bucket].add(object_id)
+    vanilla = VANILLA_COMMON_ROOT
     if vanilla.exists():
         for folder, bucket in folder_map.items():
             folder_path = vanilla / folder
@@ -1719,8 +1764,9 @@ def collect_object_names(snapshot_root: Path = SNAPSHOT_ROOT) -> dict[str, set[s
                 except PDXParseError:
                     continue
                 for assignment in block_assignments(parsed):
-                    if not assignment.key.startswith("@"):
-                        buckets[bucket].add(assignment.key)
+                    object_id = assignment_object_id(bucket, assignment)
+                    if object_id and not object_id.startswith("@"):
+                        buckets[bucket].add(object_id)
     return buckets
 
 
@@ -1760,6 +1806,7 @@ ECONOMIC_VALUATION_RESOURCE_KEYS = set(RESOURCE_VALUES) | {
     "pop_growth_speed",
 }
 GENERIC_JOB_MONTHLY_VALUE = 6.0
+JOB_WORKFORCE_UNITS = 100.0
 GENERIC_BUILDING_SLOT_VALUE = 12.0
 GENERIC_MODIFIER_KEY_VALUE = 3.0
 
@@ -2259,7 +2306,8 @@ def _economic_object_row(
         flags.add("ai_weight_zero_or_gated_zero")
     if int(source_summary["source_count"]) > 1:
         flags.add("overridden_in_stack")
-    jobs_total = sum(max(0.0, amount) for amount in jobs.values())
+    raw_job_workforce_total = sum(max(0.0, amount) for amount in jobs.values())
+    jobs_total = raw_job_workforce_total / JOB_WORKFORCE_UNITS
     output_value = _resource_value(output)
     job_value = jobs_total * GENERIC_JOB_MONTHLY_VALUE
     modifier_value = len([key for key in modifier_keys if "produces" in key or "output" in key or "add" in key]) * GENERIC_MODIFIER_KEY_VALUE
@@ -2597,7 +2645,8 @@ Important limitations:
 
 - ROI is a rough planning number, not a game simulation.
 - Explicit `ai_resource_production` and direct production are valued directly.
-- Job-only objects use `{GENERIC_JOB_MONTHLY_VALUE}` value per job per month because final job output depends on empire, species, designation, buildings, and modifiers.
+- Stellaris 4.x job modifiers use workforce units, normalized here as `{JOB_WORKFORCE_UNITS:g}` workforce per full job equivalent before valuation.
+- Job-only objects use `{GENERIC_JOB_MONTHLY_VALUE}` value per normalized job per month because final job output depends on empire, species, designation, buildings, and modifiers.
 - Modifier-only objects use a conservative key-count proxy and are flagged for review.
 - Inline scripts and unresolved variables are flagged so later weight generation can prefer high-confidence rows or require manual review.
 
@@ -3151,7 +3200,7 @@ def atlas_source_roots(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict[str, An
     roots = [
         {
             "mod_id": "vanilla",
-            "mod_name": "Stellaris vanilla 4.4.5",
+            "mod_name": "Stellaris vanilla 4.4.4",
             "source_root": STELLARIS_INSTALL_ROOT,
             "coverage_status": "available" if STELLARIS_INSTALL_ROOT.exists() else "missing",
         }
@@ -4680,7 +4729,11 @@ def write_sft_equivalence_files() -> list[dict[str, str]]:
     for source_path, target_path in iter_sft_equivalence_sources(source_root):
         if not source_path.exists():
             raise FileNotFoundError(f"Missing SFT equivalence source: {source_path}")
-        write_text_file(target_path, read_text(source_path))
+        ownership_header = (
+            "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
+            "# Full-object override ownership: copied from the pinned Spacefleet Tactica equivalence source.\n\n"
+        )
+        write_text_file(target_path, ownership_header + read_text(source_path))
         rows.append(
             {
                 "source": source_path.relative_to(source_root).as_posix(),
@@ -4811,6 +4864,38 @@ def replace_top_level_child_block(block_text: str, child_key: str, replacement_t
         raise ValueError("Generated block has no final closing brace")
     output[closing_index:closing_index] = ["", *replacement_text.rstrip().splitlines()]
     return "\n".join(output) + "\n"
+
+
+def append_child_block_clause(
+    block_text: str,
+    child_key: str,
+    clause_text: str,
+    *,
+    parent_depth: int = 1,
+) -> str:
+    """Append a clause inside a named child block without replacing source logic."""
+    lines = block_text.rstrip().splitlines()
+    child_pattern = re.compile(rf"^[ \t]*{re.escape(child_key)}[ \t]*=")
+    depth = 0
+    child_start = -1
+    for index, line in enumerate(lines):
+        if depth == parent_depth and child_pattern.match(line):
+            child_start = index
+            break
+        depth += _brace_delta(line)
+    if child_start < 0:
+        raise ValueError(f"Could not find child block {child_key} at depth {parent_depth}")
+
+    child_depth = depth + _brace_delta(lines[child_start])
+    if child_depth <= parent_depth:
+        raise ValueError(f"Child block {child_key} must span multiple lines")
+    for index in range(child_start + 1, len(lines)):
+        next_depth = child_depth + _brace_delta(lines[index])
+        if child_depth == parent_depth + 1 and next_depth == parent_depth:
+            lines[index:index] = clause_text.rstrip().splitlines()
+            return "\n".join(lines) + "\n"
+        child_depth = next_depth
+    raise ValueError(f"Could not find closing brace for child block {child_key}")
 
 
 def remove_top_level_child_block(block_text: str, child_key: str) -> str:
@@ -5137,6 +5222,7 @@ BUILD_PLAN_CONSUMABLE_STATUSES = {"yes", "conditional"}
 
 AI_RESOURCE_PRODUCTION_FAMILY_DEFAULTS = {
     "consumer_goods_repair": ("consumer_goods",),
+    "food_repair": ("food",),
     "alloy_scaling": ("alloys",),
     "research_scaling": ("physics_research", "society_research", "engineering_research"),
     "energy_scaling": ("energy",),
@@ -5187,8 +5273,14 @@ def dataset_job_pressure_family(row: dict[str, Any]) -> str:
             "category",
         )
     )
+    if str(row.get("category", "")).lower() == "army" or any(
+        token in text for token in ("naval", "soldier", "fortress", "stronghold", "military", "command_limit")
+    ):
+        return "military_capacity"
     if any(token in text for token in ("consumer_goods", "artisan", "factory", "industrial", "goods")):
         return "consumer_goods_repair"
+    if any(token in text for token in ("food", "farmer", "agri")):
+        return "food_repair"
     if any(token in text for token in ("alloys", "foundry", "forge", "metallurg")):
         return "alloy_scaling"
     if any(token in text for token in ("physics_research", "society_research", "engineering_research", "research", "scientist")):
@@ -5307,38 +5399,12 @@ def build_plan_consumer_policy_allows_dataset_object(
 
 
 def dataset_job_pressure_weight_block(block: str, row: dict[str, Any]) -> str:
-    jobs = max(1.0, float(row["jobs_created_total_estimate"] or 1))
-    roi = max(1.0, float(row["roi_2250_to_2350_estimate"] or 1))
     family = str(row.get("pressure_family") or dataset_job_pressure_family(row))
-    coefficient = max(4, min(36, int(round(math.log10(roi) * 4))))
-    additional = max(500, min(15000, int(round(jobs * 8 + math.log10(roi) * 300))))
-    block = replace_or_insert_top_level_scalar(block, "ai_weight_coefficient", f"\tai_weight_coefficient = {coefficient}")
-    block = replace_or_insert_top_level_scalar(block, "additional_ai_weight", f"\tadditional_ai_weight = {additional}")
-    modifiers = [
-        "\t\tmodifier = { factor = 30 num_unemployed > 0 free_jobs < 1 }",
-        "\t\tmodifier = { factor = 18 num_unemployed > 0 free_jobs < 3 }",
-        "\t\tmodifier = { factor = 16 owner = { staid_construction_spenddown_pressure = yes } }",
-        "\t\tmodifier = { factor = 14 owner = { staid_core_deficit_short_runway = yes } }",
-        "\t\tmodifier = { factor = 18 owner = { staid_high_scale_snowball_pressure = yes } }",
-        "\t\tmodifier = { factor = 10 owner = { staid_aggressive_fleet_pressure = yes } }",
-        "\t\tmodifier = { factor = 6 owner = { staid_planetary_capacity_growth_ready = yes } }",
-        "\t\tmodifier = { factor = 6 owner = { staid_surplus_sink_pressure = yes } }",
-        "\t\tmodifier = { factor = 6 owner = { staid_resource_waste_pressure = yes } }",
-        "\t\tmodifier = { factor = 3 years_passed > 79 }",
-        "\t\tmodifier = { factor = 5 years_passed > 119 }",
-    ]
-    family_modifiers = {
-        "consumer_goods_repair": "\t\tmodifier = { factor = 18 owner = { country_uses_consumer_goods = yes NOT = { staid_consumer_goods_runway_safe = yes } } }",
-        "alloy_scaling": "\t\tmodifier = { factor = 8 owner = { has_monthly_income = { resource = alloys value < 500 } } }",
-        "research_scaling": "\t\tmodifier = { factor = 8 owner = { staid_research_under_curve = yes } }",
-        "energy_scaling": "\t\tmodifier = { factor = 8 owner = { has_monthly_income = { resource = energy value < 500 } } }",
-        "mineral_scaling": "\t\tmodifier = { factor = 8 owner = { has_monthly_income = { resource = minerals value < 500 } } }",
-        "strategic_resource_scaling": "\t\tmodifier = { factor = 8 owner = { staid_advanced_component_resource_support_ready = yes } }",
-    }
-    if family in family_modifiers:
-        modifiers.append(family_modifiers[family])
-    for modifier in modifiers:
-        block = insert_top_level_ai_weight_modifier(block, modifier)
+    if family == "military_capacity":
+        raise ValueError("Military-capacity objects must use hard eligibility gates, not dataset construction scoring")
+    # With economic plans active, building ai_weight blocks are not consumed.
+    # Preserve parent coefficient/additional values and only supply the
+    # economic-plan resource mapping this generated surface actually owns.
     block = replace_top_level_child_block(block, "ai_resource_production", dataset_ai_resource_production_block(row))
     return (
         f"# staid_dataset_job_pressure = family:{family} jobs:{row['jobs_created_total_estimate']} "
@@ -5374,7 +5440,7 @@ def dataset_ai_resource_production_amounts(row: dict[str, Any]) -> dict[str, int
         if re.search(rf"(?:^|\|)[^|]*_{re.escape(resource)}_produces_(?:add|mult)(?:\||$)", modifier_text):
             amounts[resource] = max(amounts.get(resource, 0.0), 1.0)
     family = str(row.get("pressure_family") or dataset_job_pressure_family(row))
-    job_units = max(1.0, float(row.get("jobs_created_total_estimate") or 0) / 100.0)
+    job_units = max(1.0, float(row.get("jobs_created_total_estimate") or 0))
     if not amounts:
         for resource in AI_RESOURCE_PRODUCTION_FAMILY_DEFAULTS.get(family, ("energy", "minerals")):
             amounts[resource] = max(amounts.get(resource, 0.0), job_units)
@@ -5448,6 +5514,8 @@ def dataset_job_pressure_override_rows(limit: int = DATASET_JOB_PRESSURE_OBJECT_
         }[row["object_type"]]
         generated_file = MOD_ROOT / "common" / folder / f"zzzz_staid_13_dataset_job_pressure_{folder}.txt"
         family = dataset_job_pressure_family(row)
+        if family == "military_capacity":
+            continue
         policy = building_policy.get(row["object_id"], {})
         candidates.append(
             {
@@ -5460,10 +5528,16 @@ def dataset_job_pressure_override_rows(limit: int = DATASET_JOB_PRESSURE_OBJECT_
                 "generated_file": generated_file.as_posix(),
             }
         )
+    def stable_legacy_ordering_value(item: dict[str, Any]) -> float:
+        raw_workforce = sum(_json_object_amounts(str(item.get("jobs_created_json", ""))).values())
+        normalized_jobs = float(item.get("jobs_created_total_estimate") or 0)
+        legacy_job_value = max(0.0, raw_workforce - normalized_jobs) * GENERIC_JOB_MONTHLY_VALUE * 100 * 12
+        return float(item["roi_2250_to_2350_estimate"]) + legacy_job_value
+
     candidates.sort(
         key=lambda item: (
-            float(item["roi_2250_to_2350_estimate"]),
-            float(item["jobs_created_total_estimate"]),
+            stable_legacy_ordering_value(item),
+            sum(_json_object_amounts(str(item.get("jobs_created_json", ""))).values()),
             item["object_id"],
         ),
         reverse=True,
@@ -5513,8 +5587,8 @@ def dataset_job_pressure_override_artifacts() -> list[dict[str, Any]]:
         body = [
             "# Generated by tools/generate_stellar_ai_director_patch.py.",
             "# Full-object overrides copied from active-stack construction winners.",
-            "# Dataset-driven job pressure: if a planet has unemployed pops and no free jobs, build economically viable job providers instead of leaving pops idle.",
-            "# Source potential/allow/possible blocks still own prerequisites and legality.",
+            "# Dataset-driven economic-plan mapping: preserve source construction scoring and expose verified output through ai_resource_production.",
+            "# Source potential/allow/possible blocks own prerequisites and legality; military-capacity objects are excluded and require hard eligibility gates.",
             f"# Source dataset: {ECONOMIC_VALUATION_DATASET_CSV.relative_to(REPO_ROOT).as_posix()}",
             f"# Build-plan consumer policy: {BUILD_PLAN_CONSUMER_POLICY_CSV.relative_to(REPO_ROOT).as_posix()}",
             "",
@@ -6156,10 +6230,37 @@ def gigas_habitat_zone_slot_compat_districts_text() -> str:
         for object_id in object_ids:
             block = extract_top_level_object_text(source_text, object_id)
             block = strip_unsupported_district_keys(block)
+            # District object gates execute from colony scope in 4.4. The
+            # parent Gigas source uses bare planet flags, so copied full-object
+            # overrides must restore the explicit planet scope switch.
+            block = re.sub(
+                r"\bhas_planet_flag\s*=\s*([A-Za-z0-9_.:+-]+)",
+                r"planet = { has_planet_flag = \1 }",
+                block,
+            )
             block = inject_zone_slots(block, GIGAS_HABITAT_ZONE_SLOT_DISTRICTS[object_id])
             lines.append(block.rstrip())
             lines.append("")
     return "\n".join(lines).rstrip() + "\n"
+
+
+def director_ai_budget_weight_block(block: str, target: dict[str, Any]) -> str:
+    base_weights = {
+        "influence_expenditure_claims": "0.20",
+        "influence_expenditure_claims_militarist": "0.10",
+        "influence_expenditure_claims_fanatic_militarist": "0.15",
+    }
+    object_id = str(target["object_id"])
+    if object_id not in base_weights:
+        return block
+    weight = f"""\
+\tweight = {{
+\t\tweight = {base_weights[object_id]}
+\t\tmodifier = {{ factor = 3 staid_influence_claim_pressure = yes }}
+\t\tmodifier = {{ factor = 12 staid_boxed_in_claim_urgency = yes }}
+\t\tmodifier = {{ factor = 2 has_resource = {{ type = influence amount > 900 }} }}
+\t}}"""
+    return replace_top_level_child_block(block, "weight", weight)
 
 
 def route_override_object_text(target: dict[str, Any], object_names: dict[str, set[str]] | None = None) -> str:
@@ -6176,7 +6277,7 @@ def route_override_object_text(target: dict[str, Any], object_names: dict[str, s
     if target["object_type"] in {"building", "district"}:
         block = director_infrastructure_weight_block(block, target)
     elif target["object_type"] == "ai_budget":
-        block = remove_top_level_child_block(block, "ai_weight")
+        block = director_ai_budget_weight_block(block, target)
     elif target["object_type"] == "federation_type" and target["object_id"] == "research_federation":
         block = research_federation_weight_block(block)
     else:
@@ -6250,7 +6351,17 @@ def route_override_report_text(rows: list[dict[str, Any]]) -> str:
 
 
 def generate_route_override_artifacts() -> list[dict[str, Any]]:
-    rows = route_override_target_rows()
+    rows = [
+        row
+        for row in route_override_target_rows()
+        if row["object_type"] not in {"building", "district"}
+    ]
+    for stale_path in (
+        MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt",
+        MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt",
+        MOD_ROOT / "common" / "buildings" / "zzzz_staid_07_pop_assembly_buildings.txt",
+    ):
+        stale_path.unlink(missing_ok=True)
     object_names = collect_object_names()
     grouped: dict[Path, list[dict[str, Any]]] = {}
     for row in rows:
@@ -6505,6 +6616,202 @@ def planetary_diversity_buildings_text() -> str:
             lines.append(block.rstrip())
             lines.append("")
     text = "\n".join(lines).rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def planetary_diversity_naval_capacity_buildings_text() -> str:
+    source_path = (
+        mod_source_root_for_id("1732447147")
+        / "common"
+        / "buildings"
+        / "pd_arc_buildings.txt"
+    )
+    source_text = read_text(source_path)
+    base = extract_top_level_object_text(source_text, "building_navel_base")
+    command = extract_top_level_object_text(source_text, "building_navel_command")
+    ai_build_gate = """\t\tOR = {
+\t\t\thas_carrier_flag = ignore_ai_building_limitations
+\t\t\towner = { is_ai = no }
+\t\t\tAND = {
+\t\t\t\towner = { staid_naval_capacity_expansion_ready = yes }
+\t\t\t\tNOT = { has_research_designation = yes }
+\t\t\t}
+\t\t}"""
+    base = replace_top_level_child_block(
+        base,
+        "potential",
+        """\tpotential = {
+\t\texists = owner
+\t\tNOR = {
+\t\t\thas_modifier = slave_colony
+\t\t\thas_modifier = resort_colony
+\t\t\thas_modifier = penal_colony
+\t\t}
+"""
+        + ai_build_gate
+        + """
+\t}""",
+    )
+    command = replace_top_level_child_block(
+        command,
+        "allow",
+        """\tallow = {
+\t\thas_upgraded_capital = yes
+"""
+        + ai_build_gate
+        + """
+\t}""",
+    )
+    destroy_trigger = """\tdestroy_trigger = {
+\t\texists = owner
+\t\thas_research_designation = yes
+\t\towner = { is_ai = yes }
+\t}"""
+    base = replace_top_level_child_block(base, "destroy_trigger", destroy_trigger)
+    command = replace_top_level_child_block(command, "destroy_trigger", destroy_trigger)
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Narrow full-object override of Planetary Diversity - More Arcologies naval administration buildings.
+# Vanilla 4.4 construction uses potential/allow as hard AI eligibility filters; building ai_weight is inactive
+# while economic plans are enabled. Human placement is preserved. AI construction requires a real naval-capacity
+# emergency, is forbidden on research-designated colonies, and existing AI research-world copies are destroyed.
+
+""" + base.rstrip() + "\n\n" + command.rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def fortress_colony_types_text() -> str:
+    source_path = VANILLA_COMMON_ROOT / "colony_types" / "00_colony_types.txt"
+    source_text = read_text(source_path)
+    blocks = []
+    for object_id in ("col_fortress", "col_habitat_fortress"):
+        block = extract_top_level_object_text(source_text, object_id)
+        placement_gate = "\t\t\t\tstaid_fortress_planet_strategically_placed = yes"
+        if object_id == "col_habitat_fortress":
+            placement_gate = """\t\t\t\tOR = {
+\t\t\t\t\tstaid_fortress_planet_strategically_placed = yes
+\t\t\t\t\thas_building = building_order_keep
+\t\t\t\t\thas_building = building_order_castle
+\t\t\t\t}"""
+        ai_gate = """\t\tOR = {
+\t\t\towner = { is_ai = no }
+\t\t\tAND = {
+\t\t\t\towner = { staid_fortress_designation_ready = yes }
+""" + placement_gate + """
+\t\t\t}
+\t\t}"""
+        blocks.append(append_child_block_clause(block, "potential", ai_gate).rstrip())
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Narrow current-vanilla full-object overrides for AI fortress designations.
+# Human designation access is preserved. AI fortress worlds require a solvent economy,
+# enough colonies to spare one, meaningful naval-capacity use, and a real defensive need.
+
+@stickiness = 10
+
+""" + "\n\n".join(blocks) + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def research_plan_colony_types_text() -> str:
+    source_path = VANILLA_COMMON_ROOT / "colony_types" / "00_colony_types.txt"
+    source_text = read_text(source_path)
+    city = extract_top_level_object_text(source_text, "col_city")
+    research = extract_top_level_object_text(source_text, "col_research")
+    city = append_child_block_clause(
+        city,
+        "potential",
+        """\t\tOR = {
+\t\t\towner = { is_ai = no }
+\t\t\tplanet = { NOT = { has_planet_flag = staid_research_plan_claimed } }
+\t\t}""",
+    )
+    research = append_child_block_clause(
+        research,
+        "potential",
+        """\t\tOR = {
+\t\t\towner = { is_ai = no }
+\t\t\tplanet = { has_planet_flag = staid_research_plan_claimed }
+\t\t}""",
+    )
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Narrow current-vanilla full-object overrides for the colony build-out plan.
+# Humans retain vanilla designation access. AI research roles are persistent
+# plan commitments maintained by the monthly Director event; claimed worlds
+# cannot fall back to the generic Urban designation.
+
+@stickiness = 10
+@stickiness_low = 5
+@zone_rural = 10
+
+""" + city.rstrip() + "\n\n" + research.rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def fortress_army_buildings_text() -> str:
+    source_path = VANILLA_COMMON_ROOT / "buildings" / "09_army_buildings.txt"
+    source_text = read_text(source_path)
+    stronghold = extract_top_level_object_text(source_text, "building_stronghold")
+    fortress = extract_top_level_object_text(source_text, "building_fortress")
+    stronghold = replace_top_level_child_block(
+        stronghold,
+        "allow",
+        """\tallow = {
+\t\texists = owner
+\t\tOR = {
+\t\t\thas_carrier_flag = ignore_ai_building_limitations
+\t\t\towner = { is_ai = no }
+\t\t\tAND = {
+\t\t\t\towner = { staid_fortress_designation_ready = yes }
+\t\t\t\tstaid_fortress_planet_strategically_placed = yes
+\t\t\t\tOR = {
+\t\t\t\t\thas_any_fortress_zone = yes
+\t\t\t\t\tAND = {
+\t\t\t\t\t\tnum_buildings = { type = building_stronghold value < 2 }
+\t\t\t\t\t\tnum_buildings = { type = building_fortress value < 2 }
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t}
+\t\t}
+\t}""",
+    )
+    fortress = replace_top_level_child_block(
+        fortress,
+        "allow",
+        """\tallow = {
+\t\thas_upgraded_capital = yes
+\t\tOR = {
+\t\t\towner = { is_ai = no }
+\t\t\tAND = {
+\t\t\t\towner = { staid_fortress_designation_ready = yes }
+\t\t\t\tstaid_fortress_planet_strategically_placed = yes
+\t\t\t}
+\t\t}
+\t}""",
+    )
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Narrow current-vanilla full-object overrides for stronghold construction and upgrades.
+# Human and explicit carrier bypasses are preserved. AI military buildings require the
+# same strategic/economic readiness gate as fortress designation and fortress zones.
+
+""" + stronghold.rstrip() + "\n\n" + fortress.rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def fortress_zone_inline_script_text() -> str:
+    source_path = VANILLA_COMMON_ROOT / "inline_scripts" / "zones" / "shared_fortress_zone.txt"
+    source_text = read_text(source_path)
+    ai_gate = """\tOR = {
+\t\towner = { is_ai = no }
+\t\tAND = {
+\t\t\towner = { staid_fortress_designation_ready = yes }
+\t\t\tstaid_fortress_planet_strategically_placed = yes
+\t\t}
+\t}"""
+    text = append_child_block_clause(source_text, "potential", ai_gate, parent_depth=0)
     parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
     return text
 
@@ -6870,7 +7177,8 @@ def threat_response_localisation_text() -> str:
 def threat_response_feasibility_note_text() -> str:
     return """# Stellar AI Director Threat Response Feasibility
 
-Target game version: Stellaris PC 4.4.5 stable/current local install.
+Primary development target: Stellaris PC 4.4.5.
+Required compatibility/runtime baseline: installed Pegasus v4.4.4 (5505).
 Local install inspected: `C:/Steam/steamapps/common/Stellaris`.
 
 ## Verified Primitives
@@ -7318,7 +7626,14 @@ def collect_generated_conflict_rows(
     mod_root: Path = MOD_ROOT,
     snapshot_root: Path = SNAPSHOT_ROOT,
 ) -> list[dict[str, Any]]:
-    object_names = collect_object_names(snapshot_root)
+    playset = build_active_playset_snapshot()
+    mod_root_resolved = mod_root.resolve()
+    parent_roots = [
+        Path(row["root"])
+        for row in _valuation_stack_roots(playset)
+        if Path(row["root"]).resolve() != mod_root_resolved
+    ]
+    object_names = collect_object_names(snapshot_root, inventory_roots=parent_roots)
     rows: list[dict[str, Any]] = []
     common = mod_root / "common"
     if not common.exists():
@@ -7335,10 +7650,12 @@ def collect_generated_conflict_rows(
                 continue
             generated_file = file_path.relative_to(mod_root).as_posix()
             for assignment in block_assignments(parsed):
-                if assignment.key.startswith("@"):
+                object_id = assignment_object_id(object_type, assignment)
+                if not object_id or object_id.startswith("@"):
                     continue
-                parent_has_object = assignment.key in object_names.get(object_type, set())
-                if parent_has_object and "Full-object override" in text:
+                parent_has_object = object_id in object_names.get(object_type, set())
+                lower_text = text.lower()
+                if parent_has_object and "full-object" in lower_text and "override" in lower_text:
                     classification = "intentional_director_override"
                     reason = "generated file declares full-object override ownership"
                 elif parent_has_object:
@@ -7350,7 +7667,7 @@ def collect_generated_conflict_rows(
                 rows.append(
                     {
                         "object_type": object_type,
-                        "object_name": assignment.key,
+                        "object_name": object_id,
                         "generated_file": generated_file,
                         "parent_has_object": "yes" if parent_has_object else "no",
                         "classification": classification,
@@ -7428,6 +7745,9 @@ def collect_generated_reference_rows(
             continue
         for assignment in iter_assignments(parsed):
             value = atom_value(assignment.value)
+            if value and re.fullmatch(r"\$[A-Za-z0-9_.:-]+\$", value):
+                # Legal parameter of a scripted value/effect, not an object ID.
+                continue
             if assignment.key == "has_technology" and value:
                 add_row(file_path, "technology", value, assignment.key)
             elif assignment.key in {"resource", "has_deficit"} and value:
@@ -7515,6 +7835,8 @@ FORBIDDEN_GENERATED_SURFACES = (
 )
 RESEARCHED_GENERATED_SURFACE_ALLOWLIST = {
     Path("common/component_templates"),
+    Path("common/personalities"),
+    Path("common/ship_sizes"),
 }
 
 
@@ -7717,7 +8039,8 @@ def collect_generated_file_audit_rows(mod_root: Path = MOD_ROOT) -> list[dict[st
         text = read_text(file_path)
         placeholder_count = unresolved_template_placeholder_count(
             text,
-            allow_scripted_effect_parameters=folder in {"inline_scripts", "scripted_effects", "scripted_modifiers"},
+            allow_scripted_effect_parameters=folder
+            in {"inline_scripts", "script_values", "scripted_effects", "scripted_modifiers"},
         )
         parse_status = "not_checked"
         top_level_object_count = 0
@@ -8354,14 +8677,15 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
     economy_path = repo_root / "mods/StellarAIDirector/common/economic_plans/zzzz_staid_additive_economic_plan.txt"
     triggers_path = repo_root / "mods/StellarAIDirector/common/scripted_triggers/zzz_staid_decision_state_triggers.txt"
     tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
-    buildings_path = repo_root / "mods/StellarAIDirector/common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt"
-    districts_path = repo_root / "mods/StellarAIDirector/common/districts/zzzz_staid_06_research_infrastructure_districts.txt"
     decisions_path = repo_root / "mods/StellarAIDirector/common/decisions/zzzz_staid_12_planetary_diversity_outpost_decisions.txt"
+    naval_gate_path = repo_root / "mods/StellarAIDirector/common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt"
     required_economy_terms = {
         "Stellar AI Director planetary capacity reserve",
         "Stellar AI Director Planetary Diversity outpost reserve",
+        "Stellar AI Director safe research baseline",
         "staid_planetary_capacity_growth_ready = yes",
         "staid_planetary_diversity_outpost_investment_ready = yes",
+        "staid_research_construction_priority_ready = yes",
         "pops = 400000",
         "minerals = 500",
     }
@@ -8375,24 +8699,23 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
     }
     required_note_terms = {
         "planetary-capacity policy",
-        "direct research infrastructure overrides",
+        "safe research economic-plan demand",
+        "hard naval-capacity eligibility",
         "planetary diversity outpost decisions",
     }
     if not (
         economy_path.exists()
         and triggers_path.exists()
         and tuning_path.exists()
-        and buildings_path.exists()
-        and districts_path.exists()
         and decisions_path.exists()
+        and naval_gate_path.exists()
     ):
         return False
     try:
         parse_file(economy_path)
         parse_file(triggers_path)
-        parse_file(buildings_path)
-        parse_file(districts_path)
         parse_file(decisions_path)
+        parse_file(naval_gate_path)
     except PDXParseError:
         return False
     economy = read_text(economy_path)
@@ -8400,20 +8723,18 @@ def planetary_capacity_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bo
     tuning = (
         read_text(tuning_path)
         + "\n"
-        + read_text(buildings_path)
-        + "\n"
-        + read_text(districts_path)
-        + "\n"
         + read_text(decisions_path)
+        + "\n"
+        + read_text(naval_gate_path)
     ).lower()
     return (
         all(term in economy for term in required_economy_terms)
         and all(term in triggers for term in required_trigger_terms)
         and all(term in tuning for term in required_note_terms)
-        and "building_research_lab_3" in tuning
-        and "district_hab_science" in tuning
         and "decision_build_pd_research_base" in tuning
         and "availability owns prerequisites" in tuning
+        and "building_navel_base" in tuning
+        and "not = { has_research_designation = yes }" in tuning
     )
 
 
@@ -9349,7 +9670,16 @@ def opening_growth_policies_text() -> str:
     diplomatic_block = find_verified_source_object_block("policies", "diplomatic_stance")
     bombardment_block = find_verified_source_object_block("policies", "orbital_bombardment")
     surrender_block = find_verified_source_object_block("policies", "orbital_bombardment_accept_surrender")
-    cooperative_modifier = "\t\t\tmodifier = { factor = 12 staid_opening_route_research_priority = yes NOT = { staid_security_existential = yes } }"
+    cooperative_modifier = """\t\t\tmodifier = {
+\t\t\t\tfactor = 2
+\t\t\t\tstaid_is_opening_phase = yes
+\t\t\t\tstaid_opening_any_research_route = yes
+\t\t\t\tNOT = { staid_security_existential = yes }
+\t\t\t\tNOT = { staid_militarist_conquest_strategy = yes }
+\t\t\t\tNOT = { has_ai_personality_behaviour = conqueror }
+\t\t\t\tNOT = { has_ai_personality_behaviour = subjugator }
+\t\t\t\tnum_rivals = 0
+\t\t\t}"""
     mercantile_modifier = "\t\t\tmodifier = { factor = 5 staid_opening_trade_to_research = yes }"
     expansionist_modifier = "\t\t\tmodifier = { factor = 4 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }"
     supremacist_modifier = "\t\t\tmodifier = { factor = 18 staid_militarist_conquest_strategy = yes }"
@@ -9493,7 +9823,7 @@ def standalone_parity_inventory_rows() -> list[dict[str, str]]:
             "surface": "colony_types_designations_planet_roles",
             "classification": "targeted_reimplement",
             "baseline_status": "implemented_for_baseline",
-            "director_evidence": "common/scripted_triggers/zzzz_staid_12_planetary_diversity_value_triggers.txt; common/decisions/zzzz_staid_12_planetary_diversity_outpost_decisions.txt; common/buildings/zzzz_staid_12_planetary_diversity_buildings.txt",
+            "director_evidence": "common/decisions/zzzz_staid_12_planetary_diversity_outpost_decisions.txt; common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt; common/economic_plans/zzzz_staid_additive_economic_plan.txt",
             "stellar_ai_reference": "Stellar AI/active-stack planet automation was used as parity context, but no broad colony_type rewrite is emitted.",
             "parity_note": "Director supports high-value planetary diversity/outpost and capacity pressure while deferring broad colony-type/personality-style rewrites.",
         },
@@ -9577,6 +9907,71 @@ def generate_standalone_parity_inventory_artifacts() -> list[dict[str, str]]:
     return rows
 
 
+def strategic_subsystem_audit_rows() -> list[dict[str, str]]:
+    version_contract = "4.4.5_forward|4.4.4_required_runtime"
+    rows = [
+        ("data_pipeline", "data", "Current active-stack winners and normalized economic facts feed generated strategy.", "research:stellar-ai-director-economic-valuation-2026-07-07.csv; research:stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv", "active playset; current winning PDXScript objects; benefit policy matrix", "Director generator", "director_internal", "all", "winner provenance; blocker accounting; consumer proof status", "data_foundation", "Canonical dataset handles and stale-source keys still need continuous validation.", "Audit winner selection, normalization, filters, and generated-source feedback on every regeneration."),
+        ("resource_survival", "economy", "Repair energy, mineral, consumer-goods, food, and alloy deficits through earned income before discretionary growth.", "mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt; research:stellar-ai-director-relative-economic-standards-2026-07-09.csv", "vanilla deficit/monthly-income/fleet-power triggers; relative standards dataset", "37 mutually exclusive colony/fleet repair subplans plus shared income-and-stockpile runway gates", "source_proven", "regular|machine|hive|individual_machine", "resource-use gates; colony-scale headroom; fleet replacement burden; food reserve exception; market purchases cannot satisfy income gates", "corrected_static", "Runtime recovery speed and band calibration remain unproven for the current playtest.", "Measure deficit duration, research throttling, rebuild time, and recovery across archetypes and empire sizes."),
+        ("research_capacity", "economy", "Preserve consumer-goods runway and build research capacity only when support resources are safe.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt; mod:common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt", "research-capacity datasets; vanilla research-zone potential gates", "economic plan plus building ai_resource_production", "source_proven", "regular|machine|hive|individual_machine", "staid_research_construction_priority_ready; source potential/allow", "corrected_static", "The exact engine score composition among coefficient, additive weight, and ai_resource_production still needs runtime proof.", "Reconstruct candidate scoring and inspect research-world build choices in playtest saves."),
+        ("colony_construction", "economy", "Bias eligible buildings and districts by modeled output without inventing inactive building ai_weight control.", "mod:common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt; mod:common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt", "economic valuation; consumer policy; source hard gates", "building/district ai_resource_production", "source_proven", "all_supported_planet_owners", "potential/allow preserved; military-capacity excluded", "implemented_static_needs_runtime", "Player Planetary Automation files are not proven AI-empire construction consumers.", "Trace actual candidate selection and keep automation policy separate unless a call site is proven."),
+        ("colony_designation", "economy", "Align construction pressure with research, forge, factory, mining, energy, food, unity, trade, and special-world roles.", "research:stellar-ai-director-colony-role-targets-2026-07-09.csv; mod:common/colony_types/zzzzz_staid_15_fortress_economic_hard_gates.txt; mod:common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt", "active colony types; role target dataset; vanilla bottleneck trigger", "designation potential plus hard zone/building eligibility", "source_proven", "regular|machine|hive|special_worlds", "fortress economy/colony-count/threat/topology readiness; research-world naval exclusion", "corrected_static", "Fortress waste and non-bottleneck placement are hard-gated, but the remaining broad designation choice and special-world role selection are not yet reconstructed.", "Audit every remaining colony type winner, selection weight, and role-specific eligible candidate set."),
+        ("budget_management", "economy", "Reserve alloys, minerals, and strategic resources for viable construction and fleet pipelines.", "mod:common/ai_budget/zzz_staid_alloys_budget.txt; mod:common/ai_budget/zzz_staid_gigas_resource_budgets.txt; mod:common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt", "vanilla and mod expenditure categories", "ai_budget desired_min/desired_max/expenditure", "source_proven", "all", "deficit gates; positive-alloy fleet gate; defensive emergency bypass; prerequisite readiness", "corrected_static", "The base ship and upgrade budgets now stop during unaffordable peacetime deficits; overlap with mod-specific expenditure categories still needs runtime audit.", "Test simultaneous fleet, planet, and megastructure demand across positive, deficit, and wartime emergency states."),
+        ("influence_market", "economy", "Spend capped influence on claims/expansion and limit Director market activity to cap-prevention overflow sales.", "mod:events/zzz_staid_market_and_fleet_safety_events.txt; mod:common/script_values/zzz_staid_roi_values.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "influence pressure; vanilla market_resource_price; resource_stockpile_percent; Gigas Kugelblitz storage stages", "claim ai_weight plus Director-owned 90%-of-cap overflow sale and storage-cap investment gate; no Director market-buy path", "source_proven", "regular|gestalt|subject", "claim viability; no deficit; positive earned income; fixed reserve; 90% actual storage cap", "corrected_static", "Vanilla AI emergency buying and diplomatic trade composition remain engine-side; Director production gates require earned income as well as stockpile.", "Inventory enclave, subject/federation, irregular-event, liability-reduction, and diplomatic trade channels; observe whether emergency buying persists after repair income becomes available."),
+        ("territorial_expansion", "grand_strategy", "Recognize boxed-in empires and convert spatial constraint into expansion or conquest pressure.", "mod:common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/ai_budget/zzzz_staid_08_site_limited_expansion_ai_budget.txt", "border access; colony sites; claims; relative power", "expansion budgets plus boxed-in claim expenditure", "source_proven", "regular|gestalt|pacifist|genocidal", "available sites; claim legality; pacifist exclusion; influence reserve", "partial_audit", "Boxed-in empires with fewer than five colonies now strongly fund legal claims, but no proven direct consumer chooses and starts the resulting war.", "Trace a live boxed-in case from claim purchase through usable war goal, preparation, and declaration."),
+        ("war_selection", "grand_strategy", "Choose legal, profitable, weak targets and escalate when peaceful expansion is exhausted.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "relative power; claims; war goals; borders; threat", "claim budget only; none proven for direct declaration", "mixed", "regular|genocidal|raider|pacifist", "war legality; fleet/economic readiness; target value", "gap_identified", "The claim/CB prerequisite receives boxed-in urgency, but Director still does not directly rank targets or declare ordinary expansion wars.", "Audit personalities, diplomatic actions, casus belli, war goals, and the hardcoded declaration chain before any forced-war implementation."),
+        ("diplomacy_personality", "grand_strategy", "Adapt aggression, cooperation, rivalry, and pact behavior to ethics, power, and strategic need.", "mod:common/policies/zzzz_staid_10_opening_growth_policies.txt", "vanilla personalities and diplomatic action weights", "diplomatic stance policy only", "mixed", "all", "ethics; genocidal legality; subject status", "gap_identified", "Personality and diplomatic-action objects remain intentionally unmodified and therefore cannot realize several Director pressures.", "Reconstruct active personality and diplomatic-action winners, then patch only source-proven bottlenecks."),
+        ("fleet_doctrine", "military", "Scale fleet spending to threat and payoff without bankrupting research or civilian production.", "mod:common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt; mod:common/ai_budget/zzz_staid_alloys_budget.txt", "relative power; naval capacity; alloy income/runway; war state", "economic plan and alloy ship expenditure budget", "source_proven", "regular|machine|hive|genocidal", "positive alloy income; core deficit; defensive emergency; approved military routes", "corrected_static", "Runtime fleet-manager reinforcement behavior and fleet splitting remain outside current proof.", "Audit fleet templates, reinforcement, merging, and military construction against economic runway."),
+        ("hostile_targets", "military", "Treat bosses and lethal fauna separately from ordinary enemy empires and remember failed attacks.", "mod:common/defines/zzzz_staid_14_high_scale_ai_defines.txt; mod:events/zzzz_staid_boss_defeat_escalation_events.txt", "vanilla boss flags; active-stack outlier fleet flags; battle-loss on_action", "boss military-power defines plus defeat escalation", "source_proven", "all_ai_empires", "BOSS/ULTRA_BOSS thresholds; exact survivor flag escalation", "corrected_static", "Only confirmed outlier flags receive adaptive post-loss escalation; the full active-stack boss inventory is not yet classified.", "Classify every is_boss/is_ultra_boss entity and verify AI pathing after a failed attack."),
+        ("ship_design", "military", "Preserve viable component/combat-computer choices across SFT, NSC3, ESC, and Gigas.", "mod:common/component_templates/000_SFT_00_utilities_roles.txt; mod:common/on_actions/zzzz_staid_sft_design_refresh_on_actions.txt", "Spacefleet Tactica parity sources; active component graph", "component ai_weight and auto-design refresh", "mixed", "all_ship_builders", "component legality; add-on equivalence", "partial_audit", "Section templates, ship-size edits, and advanced modded hull designs remain unverified.", "Run ship graph validation and audit generated designs per unlocked hull tier."),
+        ("technology_routes", "progression", "Research economic prerequisites, fleet payoff, megastructure, and modded unlock routes in viable order.", "mod:common/technology/zzzz_staid_01_unlock_technology_technology.txt", "route override dataset; prerequisites; unlock flags", "technology ai_weight", "source_proven", "regular|machine|hive|special_origins", "route prerequisites; resource readiness; feature flags", "implemented_static_needs_runtime", "Competing routes and archetype-inapplicable technologies need a full negative-path audit.", "Validate every route prerequisite graph and empire applicability gate."),
+        ("ascension_strategy", "progression", "Choose traditions, ascension perks, and ascension paths that fit the empire and current strategic bottleneck.", "mod:common/traditions/zzzz_staid_02_perks_traditions_traditions.txt; mod:common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt", "route overrides; perk/tradition prerequisites", "tradition and ascension-perk ai_weight", "source_proven", "regular|machine|hive|psionic|cybernetic|synthetic|biological", "prerequisites and source potential", "partial_audit", "Current overrides push selected routes but do not yet express a mutually coherent empire-specific ascension plan.", "Audit all path exclusions, prerequisites, synergies, and extreme-empire preferences."),
+        ("megastructure_strategy", "progression", "Sequence high-return megastructures only when prerequisites, economy, and sites are ready.", "mod:common/megastructures/zzzz_staid_03_megastructures_megastructures.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "ROI datasets; site limits; route graph", "megastructure ai_weight plus economic plans/budgets", "mixed", "all_eligible", "prerequisites; site availability; resource runway", "implemented_static_needs_runtime", "Concurrent projects, repair/upgrade decisions, and unique mod chains need adversarial sequencing tests.", "Audit each chain from technology through site, budget, build, and upgrade completion."),
+        ("crisis_response", "military", "Convert economy and fleet production for real crises without permanently starving development.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:events/zzz_staid_threat_response_events.txt", "crisis country types; relative power; war goals", "threat events and crisis economic subplans", "mixed", "all_non_crisis_ai", "threat classification; economic readiness; cooldowns", "partial_audit", "Vanilla and modded crises, fallen empires, and pseudo-crisis bosses are not yet exhaustively separated.", "Inventory crisis actors and verify response activation, target legality, and recovery after threat removal."),
+        ("starbase_defense", "military", "Build shipyards and static defense where strategically useful without crowding civilian research worlds.", "mod:common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt; mod:common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt", "route dataset; chokepoints; threat state", "starbase building/module ai_weight and economic plans", "source_proven", "all_starbase_owners", "deficit safety; threat readiness; source potential", "implemented_static_needs_runtime", "Chokepoint value, defensive platform affordability, and modded starbase slot competition need validation.", "Audit module/building selection at border, shipyard, trade, and interior starbases."),
+        ("invasion_bombardment", "military", "Use bombardment and armies appropriate to conquest objectives and empire ethics.", "mod:common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt", "bombardment stances; army and transport AI", "bombardment stance ai_weight", "mixed", "militarist|raider|genocidal|pacifist", "ethics; civic; legal stance", "gap_identified", "Army recruitment, transport escort, invasion thresholds, and planet target choice are not Director-owned.", "Audit army, invasion, transport, and bombardment consumers as one end-to-end conquest lane."),
+        ("machine_hive_gestalt", "archetype", "Use correct upkeep/resources, jobs, growth, unity, and ascension routes for gestalts and individual machines.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "country_uses_* triggers; machine/hive route gates", "economic plans and route weights", "mixed", "machine|individual_machine|hive", "consumer-goods and food use gates; owner type", "partial_audit", "Individual machines, rogue servitors, assimilators, exterminators, and hive variants need separate strategy matrices.", "Build an archetype capability matrix and add negative tests for inapplicable resources and routes."),
+        ("genocidal_extremes", "archetype", "Favor rapid conquest and war economy for purifiers, exterminators, swarms, and other no-diplomacy empires.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "civics; personality; war legality", "war-support economic subplans", "mixed", "fanatic_purifier|determined_exterminator|devouring_swarm", "economy runway; target power; total-war legality", "gap_identified", "No dedicated direct target/declaration logic or civic-specific strategic plan is yet proven.", "Audit civic triggers, total-war goals, fleet timing, and post-conquest stabilization."),
+        ("pacifist_isolationist", "archetype", "Pursue habitats, diplomacy, vassalization, and internal scaling when offensive war is illegal or undesirable.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "ethics; war philosophy; expansion sites", "economic plans only", "mixed", "pacifist|inward_perfection", "war legality; habitat prerequisites; diplomacy access", "gap_identified", "Alternative boxed-in growth paths are not yet coherently ranked against claims and war pressure.", "Define legal expansion ladders for pacifist and isolationist states."),
+        ("megacorp_trade", "archetype", "Prioritize trade, branch offices, commercial pacts, and compact growth without sacrificing research support.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "trade income; authority; branch-office and diplomacy surfaces", "economic plans", "mixed", "megacorp|trade_focused", "market access; trade capacity; diplomacy legality", "partial_audit", "Branch-office target selection, commercial pacts, criminal syndicates, and trade-policy transitions are not fully modeled.", "Audit trade and branch-office consumers plus megacorp-specific influence spending."),
+        ("nomad_arkship", "archetype", "Avoid planet-only assumptions and support Arkship, Wayline, and nomadic economic surfaces.", "research:stellar-ai-director-nomad-arkship-compatibility-audit-2026-07-09.md", "4.4 Arkship/Wayline sources", "source objects preserved; limited Director routing", "mixed", "nomad|arkship", "country type; colony ownership; special resources", "partial_audit", "Several colony, construction, budget, and war assumptions still require nomad-specific negative paths.", "Trace every planet-scoped trigger and construction lane for nomad applicability."),
+        ("subjects_overlords", "archetype", "Respect subject restrictions and value loyalty, specialization, contracts, integration, and defensive obligations.", "none", "subject contracts; diplomatic actions; overlord holdings", "none Director-owned", "absent", "subject|overlord", "contract legality; loyalty; independence status", "gap_identified", "Subject and overlord strategic decisions have not yet received a dedicated Director pass.", "Inventory subject/federation consumers and define empire-role-specific priorities."),
+        ("special_origins", "archetype", "Avoid breaking origin-specific economies, planets, ships, event gates, and victory paths.", "research:stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv", "origin/civic/event gates in winning objects", "source potential/allow preserved", "mixed", "frameworld|birch|ring|clone|knights|other_special", "source gates; event flags; origin ownership", "partial_audit", "Preserving source gates prevents illegal candidates but does not prove strategically correct origin-specific planning.", "Create a capability matrix for every active-stack origin that changes the economic or military substrate."),
+        ("compatibility_winners", "integration", "Ensure Director overrides the intended object and preserves required parent-mod behavior.", "research:stellar-ai-director-generated-conflicts-2026-07-04.csv; research:stellar-ai-director-generated-reference-audit-2026-07-04.csv", "Irony load order; active playset; generated file audit", "Stellaris object loader", "source_proven", "all", "winner checks; reference resolution; forbidden surfaces", "implemented_static_needs_runtime", "Static winner proof cannot establish runtime semantics for every modded object.", "Re-run conflict/reference audits after each generator change and add targeted smoke checks for high-risk surfaces."),
+        ("runtime_telemetry", "validation", "Observe whether strategic pressures activate and produce the intended economic, construction, diplomatic, and military outcomes.", "research:STAID_MANUAL_STATIC_VALIDATION.md", "logs; saves; observer checkpoints; user playtest reports", "none at runtime unless observer tooling is explicitly enabled", "unproven", "all", "commands_at_date disabled outside approved runs", "gap_identified", "Current changes are statically validated; the ongoing user playtest is the primary runtime evidence for this build.", "Define save/log checkpoints for deficits, build choices, war declarations, boss attacks, and archetype behavior."),
+    ]
+    columns = (
+        "subsystem_id", "scope", "intended_behavior", "director_artifacts", "upstream_inputs",
+        "engine_consumer", "consumer_authority", "empire_archetypes", "safety_gates", "audit_status",
+        "known_gap", "next_action",
+    )
+    return [dict(zip(columns, row)) | {"version_contract": version_contract} for row in rows]
+
+
+def strategic_subsystem_audit_text(rows: list[dict[str, str]]) -> str:
+    lines = [
+        "# Stellar AI Director Strategic Subsystem Audit",
+        "",
+        "Generated 2026-07-09. This is the canonical boundary map for the continuing audit. `implemented` is not inferred from the existence of data: each row records the actual consumer, proof level, remaining gap, and next action.",
+        "",
+        "Version contract: develop toward Stellaris 4.4.5 while retaining error-free runtime compatibility with the pinned 4.4.4 playset.",
+        "",
+        "| subsystem | scope | consumer authority | audit status | known gap | next action |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['subsystem_id']} | {row['scope']} | {row['consumer_authority']} | {row['audit_status']} | {row['known_gap']} | {row['next_action']} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def generate_strategic_subsystem_audit_artifacts() -> list[dict[str, str]]:
+    rows = strategic_subsystem_audit_rows()
+    write_csv(STRATEGIC_SUBSYSTEM_AUDIT_CSV, rows)
+    write_text_file(STRATEGIC_SUBSYSTEM_AUDIT_MD, strategic_subsystem_audit_text(rows))
+    return rows
+
+
 def generated_version_inventory_text(playset: dict[str, Any]) -> str:
     required_lines = [
         f"- {mod_id}: {row['name']} present={row['present']} load_position={row['load_position']}"
@@ -9590,7 +9985,9 @@ def generated_version_inventory_text(playset: dict[str, Any]) -> str:
 
 Generated by `tools/generate_stellar_ai_director_patch.py`.
 
-- Target live strategy version: Stellaris PC 4.4.5 stable/current local install; launcher metadata remains `v4.4.*` for the stable 4.4 line.
+- Primary development target: Stellaris PC 4.4.5.
+- Required compatibility/runtime baseline: installed Pegasus v4.4.4 (5505); generated gameplay surfaces must remain error-free and functional on this pinned playset until its incompatible mods update.
+- Launcher metadata remains `v4.4.*` for the stable 4.4 line.
 - Static validation scope: no Stellaris launch, observer game, benchmark scenario, screenshot, or save checkpoint is required by this generated pass.
 - Launcher descriptor support line: `supported_version="v4.4.*"`.
 - Active Irony collection: `{playset.get('collection_name', '')}`.
@@ -9629,7 +10026,7 @@ Generated by `tools/generate_stellar_ai_director_patch.py`.
 
 ## Compatibility Contract
 
-- Target: current live 4.4.5 launcher surface, with `v4.4.*` descriptor compatibility retained for the stable 4.4 line.
+- Primary target: Stellaris 4.4.5; required live compatibility baseline: pinned Pegasus v4.4.4 (5505), with `v4.4.*` descriptor compatibility retained for the stable 4.4 line.
 - Strategy style: computed scripted triggers and AI weights first; persistent flags or event forcing are reserved for verified cooldowns and runtime memory only.
 - Policy scope: this pass modifies `diplomatic_stance` AI weights only, because that object extracts and parses cleanly from the installed vanilla policy file.
 - Edict scope: this pass modifies installed vanilla edict AI weights for research, exploration, energy, mineral, food, and border-defense pressure.
@@ -9667,6 +10064,54 @@ Manual runtime questions left out of scope:
 - Whether research-pact and Research Federation behavior emerges strongly enough from diplomatic stance weights alone.
 - Whether NSC3/ESC doctrine technology weights need direct component or ship-size overrides after runtime observation.
 """
+
+
+def standalone_aggression_personalities_text() -> str:
+    vanilla_path = VANILLA_COMMON_ROOT / "personalities" / "00_personalities.txt"
+    reference_root = mod_source_root_for_id("3610149307")
+    reference_path = reference_root / "common" / "personalities" / "00_personalities.txt"
+    variable_path = reference_root / "common" / "scripted_variables" / "stellarai_scripted_variables.txt"
+    vanilla_text = read_text(vanilla_path)
+    reference_text = read_text(reference_path)
+    reference_variables = collect_variables(read_text(variable_path))
+    blocks: list[str] = []
+    for object_id, aggression in STANDALONE_AGGRESSION_PERSONALITY_VALUES.items():
+        reference_block = extract_top_level_object_text(reference_text, object_id)
+        reference_values: dict[str, float] = {}
+        for field in ("aggressiveness", "bravery", "military_spending"):
+            match = re.search(rf"(?m)^\s*{field}\s*=\s*([^\s#]+)", reference_block)
+            if match is None:
+                raise ValueError(f"Stellar AI reference personality {object_id} has no {field} scalar")
+            reference_value = parse_numeric(match.group(1), reference_variables)
+            if not isinstance(reference_value, (int, float)):
+                raise ValueError(
+                    f"Stellar AI personality evidence for {object_id}.{field} is not numeric: {reference_value}"
+                )
+            reference_values[field] = float(reference_value)
+        if not math.isclose(reference_values["aggressiveness"], aggression, rel_tol=0.0, abs_tol=1e-9):
+            raise ValueError(
+                f"Stellar AI aggression evidence drift for {object_id}: "
+                f"expected {aggression}, got {reference_values['aggressiveness']}"
+            )
+        vanilla_block = extract_top_level_object_text(vanilla_text, object_id)
+        generated_block = vanilla_block
+        for field, value in reference_values.items():
+            generated_block = replace_or_insert_top_level_scalar(
+                generated_block,
+                field,
+                f"\t{field} = {value:g}",
+            )
+        blocks.append(generated_block.rstrip())
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Current-vanilla full-object personality overrides restoring the native war
+# behavior signals lost when Stellar AI stopped being a runtime dependency.
+# Evidence: Stellar AI 0.10 for Stellaris 4.4.x. Aggressiveness, bravery, and
+# military spending follow that reference; all other current-vanilla fields remain.
+# War declarations still use the engine planner, legal casus belli, and war goals.
+
+""" + "\n\n".join(blocks) + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
 
 
 def high_scale_ai_defines_text() -> str:
@@ -9708,7 +10153,14 @@ NAI = {
 	AI_AGGRESSIVENESS_BASE = 50
 	AI_AGGRESSIVENESS_BOXED_IN_MULT = 18
 	AI_AGGRESSIVENESS_NO_COLONY_TARGET_MULT = 12
+	# Preserve aggressive normal-empire wars. Boss and ultra-boss fleets use
+	# their own engine readiness gates below and must not inherit this risk.
 	ENEMY_FLEET_POWER_MULT = 0.55
+	# Proactively clear weak hostile fauna and civilian mining fleets near the
+	# border. Bosses remain blocked by the separate military-power gates.
+	AI_HOSTILE_FLEET_DISTANCE = 3
+	BOSS_MILITARY_POWER = 100000
+	ULTRA_BOSS_MILITARY_POWER = 500000
 	WAR_DECLARATION_MINIMUM_SCORE = 0.05
 	WAR_DECLARATION_MALUS = 0.05
 	WAR_DECLARATION_MAX_DISTANCE = 200
@@ -9794,6 +10246,17 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     thresholds = generated_thresholds(rows)
     playset = build_active_playset_snapshot()
     write_json(RESEARCH_ROOT / "stellar-ai-director-active-playset-2026-07-04.json", playset)
+    # Remove superseded construction-weight outputs before rebuilding the
+    # active-stack valuation index. Otherwise a single generator run can index
+    # files that it deletes later and leave the dataset internally stale.
+    for stale_path in (
+        MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt",
+        MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt",
+        MOD_ROOT / "common" / "buildings" / "zzzz_staid_07_pop_assembly_buildings.txt",
+        MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_12_planetary_diversity_value_triggers.txt",
+        MOD_ROOT / "common" / "buildings" / "zzzz_staid_12_planetary_diversity_buildings.txt",
+    ):
+        stale_path.unlink(missing_ok=True)
     generate_economic_valuation_dataset()
     normalize_economic_valuation_dataset_pair()
     write_economic_valuation_evidence_summary()
@@ -9816,10 +10279,6 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         fleet_doctrine_triggers_text(),
     )
     write_text_file(
-        MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_12_planetary_diversity_value_triggers.txt",
-        planetary_diversity_role_triggers_text(),
-    )
-    write_text_file(
         MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt",
         opening_growth_policies_text(),
     )
@@ -9830,6 +10289,14 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt", ai_budget_text(thresholds))
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt", gigas_resource_budget_text())
     write_text_file(MOD_ROOT / "common" / "defines" / "zzzz_staid_14_high_scale_ai_defines.txt", high_scale_ai_defines_text())
+    write_text_file(
+        MOD_ROOT / "common" / "personalities" / "zzzzz_staid_16_standalone_war_pressure.txt",
+        standalone_aggression_personalities_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "ship_sizes" / "zzzzz_staid_17_mem_surveyor_outpost_compat.txt",
+        mem_surveyor_outpost_ship_size_text(),
+    )
     write_text_file(
         MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_minerals_planet_construction_budget.txt",
         minerals_planet_construction_budget_text(),
@@ -9843,10 +10310,11 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         MOD_ROOT / "common" / "districts" / "zzzz_staid_09_gigas_habitat_zone_slot_compat_districts.txt",
         gigas_habitat_zone_slot_compat_districts_text(),
     )
-    write_text_file(
+    for stale_path in (
+        MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_12_planetary_diversity_value_triggers.txt",
         MOD_ROOT / "common" / "buildings" / "zzzz_staid_12_planetary_diversity_buildings.txt",
-        planetary_diversity_buildings_text(),
-    )
+    ):
+        stale_path.unlink(missing_ok=True)
     write_text_file(
         MOD_ROOT / "common" / "decisions" / "zzzz_staid_12_planetary_diversity_outpost_decisions.txt",
         planetary_diversity_outpost_decisions_text(),
@@ -9860,12 +10328,40 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         market_and_fleet_safety_on_actions_text(),
     )
     write_text_file(MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt", market_and_fleet_safety_events_text())
+    write_text_file(
+        MOD_ROOT / "common" / "on_actions" / "zzzz_staid_boss_defeat_escalation_on_actions.txt",
+        boss_defeat_escalation_on_actions_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "events" / "zzzz_staid_boss_defeat_escalation_events.txt",
+        boss_defeat_escalation_events_text(),
+    )
     write_text_file(MOD_ROOT / "common" / "script_values" / "zzz_staid_roi_values.txt", script_values_text(thresholds))
     write_stellarai_inline_script_dependencies()
     write_sft_equivalence_files()
     write_planetary_diversity_profile_artifacts()
     generate_route_override_artifacts()
     dataset_job_pressure_override_artifacts()
+    write_text_file(
+        MOD_ROOT / "common" / "buildings" / "zzzzz_staid_14_pd_naval_capacity_hard_gates.txt",
+        planetary_diversity_naval_capacity_buildings_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "colony_types" / "zzzzz_staid_15_fortress_economic_hard_gates.txt",
+        fortress_colony_types_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "colony_types" / "zzzzz_staid_16_research_buildout_plan.txt",
+        research_plan_colony_types_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "buildings" / "zzzzz_staid_15_fortress_economic_hard_gates.txt",
+        fortress_army_buildings_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "inline_scripts" / "zones" / "shared_fortress_zone.txt",
+        fortress_zone_inline_script_text(),
+    )
     write_text_file(
         RESEARCH_ROOT / "stellar-ai-director-implementation-notes-2026-07-04.md",
         implementation_notes_text(playset, thresholds),
@@ -9874,6 +10370,8 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(MOD_STACK_COMPATIBILITY_MD, mod_stack_compatibility_text(playset))
     write_text_file(MANUAL_STATIC_VALIDATION_MD, manual_static_validation_text())
     generate_standalone_parity_inventory_artifacts()
+    generate_relative_economic_standard_artifacts()
+    generate_strategic_subsystem_audit_artifacts()
     notes_root = MOD_ROOT / "notes"
     write_text_file(notes_root / "load-order.md", load_order_note_text(playset))
     write_text_file(notes_root / "conflicts.md", conflicts_note_text())
@@ -9903,43 +10401,330 @@ dependencies={{
 '''
 
 
+RELATIVE_SCALE_BANDS = (
+    (None, 6),
+    (6, 15),
+    (15, 30),
+    (30, 50),
+    (50, None),
+)
+
+RELATIVE_COLONY_RESOURCE_TARGETS = {
+    "energy": {
+        "income": (25, 75, 150, 300, 600),
+        "stockpile": (1500, 3000, 6000, 10000, 15000),
+    },
+    "minerals": {
+        "income": (25, 75, 150, 300, 600),
+        "stockpile": (1500, 3000, 6000, 10000, 15000),
+    },
+    "alloys": {
+        "income": (75, 150, 300, 600, 1200),
+        "stockpile": (1500, 3000, 6000, 10000, 15000),
+    },
+    "consumer_goods": {
+        "income": (10, 25, 60, 120, 250),
+        "stockpile": (1000, 2000, 4000, 8000, 12000),
+    },
+    "food": {
+        # Food is principally an upkeep buffer: require positive balance, but
+        # scale reserves rather than demanding a large net monthly surplus.
+        "stockpile": (750, 1500, 3000, 6000, 12000),
+    },
+}
+
+RELATIVE_ALLOY_FLEET_TARGETS = {
+    "income": (
+        (None, 10000, 75),
+        (10000, 50000, 150),
+        (50000, 200000, 300),
+        (200000, 500000, 600),
+        (500000, 1000000, 1200),
+        (1000000, None, 2000),
+    ),
+    "stockpile": (
+        (None, 10000, 1500),
+        (10000, 50000, 3000),
+        (50000, 200000, 6000),
+        (200000, 500000, 10000),
+        (500000, 1000000, 15000),
+        (1000000, None, 20000),
+    ),
+}
+
+RELATIVE_BIOSHIP_FOOD_FLEET_TARGETS = {
+    "income": (
+        (None, 10000, 25),
+        (10000, 50000, 75),
+        (50000, 200000, 150),
+        (200000, 500000, 300),
+        (500000, 1000000, 600),
+        (1000000, None, 1000),
+    ),
+    "stockpile": RELATIVE_ALLOY_FLEET_TARGETS["stockpile"],
+}
+
+TWO_MONTH_DEFICIT_BANDS = (
+    (1000, 2000),
+    (500, 1000),
+    (250, 500),
+    (100, 200),
+    (50, 100),
+    (25, 50),
+    (0, 25),
+)
+
+
+def _scaled_resource_gate_text(
+    trigger_id: str,
+    metric: str,
+    bands: Iterable[tuple[int | None, int | None, int]],
+    resource: str,
+    measure: str,
+) -> str:
+    lines = [f"{trigger_id} = {{", "\tOR = {"]
+    for lower, upper, target in bands:
+        lines.append("\t\tAND = {")
+        if lower is not None:
+            lines.append(f"\t\t\t{metric} >= {lower}")
+        if upper is not None:
+            lines.append(f"\t\t\t{metric} < {upper}")
+        if measure == "income":
+            lines.append(f"\t\t\thas_monthly_income = {{ resource = {resource} value > {target} }}")
+        else:
+            lines.append(f"\t\t\tresource_stockpile_compare = {{ resource = {resource} value > {target} }}")
+        lines.append("\t\t}")
+    lines.extend(["\t}", "}"])
+    return "\n".join(lines)
+
+
+def _two_month_runway_trigger_text(resource: str) -> str:
+    lines = [f"staid_{resource}_two_month_runway_unsafe = {{", "\tOR = {", f"\t\thas_deficit = {resource}"]
+    for deficit, stockpile in TWO_MONTH_DEFICIT_BANDS:
+        operator = "<" if deficit == 0 else "<="
+        income = 0 if deficit == 0 else -deficit
+        lines.extend(
+            [
+                "\t\tAND = {",
+                f"\t\t\thas_monthly_income = {{ resource = {resource} value {operator} {income} }}",
+                f"\t\t\tresource_stockpile_compare = {{ resource = {resource} value < {stockpile} }}",
+                "\t\t}",
+            ]
+        )
+    lines.extend(["\t}", "}"])
+    return "\n".join(lines)
+
+
+def relative_economic_runway_triggers_text() -> str:
+    blocks = [
+        "# Country-scope relative economic standards. Colony bands scale civilian",
+        "# construction/upkeep capacity; fleet-power bands separately scale alloy",
+        "# replacement income and reserves. Both alloy standards must pass.",
+    ]
+    for resource, targets in RELATIVE_COLONY_RESOURCE_TARGETS.items():
+        for measure, values in targets.items():
+            bands = [
+                (lower, upper, int(values[index]))
+                for index, (lower, upper) in enumerate(RELATIVE_SCALE_BANDS)
+            ]
+            blocks.append(
+                _scaled_resource_gate_text(
+                    f"staid_scaled_{resource}_{measure}_safe",
+                    "num_owned_planets",
+                    bands,
+                    resource,
+                    measure,
+                )
+            )
+    for measure, bands in RELATIVE_ALLOY_FLEET_TARGETS.items():
+        blocks.append(
+            _scaled_resource_gate_text(
+                f"staid_scaled_alloy_fleet_{measure}_safe",
+                "fleet_power",
+                bands,
+                "alloys",
+                measure,
+            )
+        )
+    for measure, bands in RELATIVE_BIOSHIP_FOOD_FLEET_TARGETS.items():
+        blocks.append(
+            _scaled_resource_gate_text(
+                f"staid_scaled_bioship_food_fleet_{measure}_safe",
+                "fleet_power",
+                bands,
+                "food",
+                measure,
+            )
+        )
+    for resource in ("energy", "minerals", "alloys", "trade", "consumer_goods", "food"):
+        blocks.append(_two_month_runway_trigger_text(resource))
+    text = "\n\n".join(blocks) + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def relative_economic_standard_rows() -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for resource, targets in RELATIVE_COLONY_RESOURCE_TARGETS.items():
+        for measure, values in targets.items():
+            for index, (lower, upper) in enumerate(RELATIVE_SCALE_BANDS):
+                rows.append(
+                    {
+                        "basis": "owned_colonies",
+                        "resource": resource,
+                        "measure": measure,
+                        "lower_inclusive": "" if lower is None else lower,
+                        "upper_exclusive": "" if upper is None else upper,
+                        "target": values[index],
+                        "consumer_trigger": f"staid_scaled_{resource}_{measure}_safe",
+                        "rationale": (
+                            "maintenance balance plus scaled reserve"
+                            if resource == "food"
+                            else "civilian economy scale and construction/upkeep headroom"
+                        ),
+                    }
+                )
+    for measure, bands in RELATIVE_ALLOY_FLEET_TARGETS.items():
+        for lower, upper, target in bands:
+            rows.append(
+                {
+                    "basis": "current_fleet_power",
+                    "resource": "alloys",
+                    "measure": measure,
+                    "lower_inclusive": "" if lower is None else lower,
+                    "upper_exclusive": "" if upper is None else upper,
+                    "target": target,
+                    "consumer_trigger": f"staid_scaled_alloy_fleet_{measure}_safe",
+                    "rationale": (
+                        "fleet replacement throughput"
+                        if measure == "income"
+                        else "capped military operating float; surplus remains investable"
+                    ),
+                }
+            )
+    for measure, bands in RELATIVE_BIOSHIP_FOOD_FLEET_TARGETS.items():
+        for lower, upper, target in bands:
+            rows.append(
+                {
+                    "basis": "bio_ship_fleet_power",
+                    "resource": "food",
+                    "measure": measure,
+                    "lower_inclusive": "" if lower is None else lower,
+                    "upper_exclusive": "" if upper is None else upper,
+                    "target": target,
+                    "consumer_trigger": f"staid_scaled_bioship_food_fleet_{measure}_safe",
+                    "rationale": (
+                        "biological-ship replacement throughput"
+                        if measure == "income"
+                        else "capped biological-fleet operating float; surplus remains investable"
+                    ),
+                }
+            )
+    return rows
+
+
+def relative_economic_standards_text(rows: list[dict[str, Any]]) -> str:
+    lines = [
+        "# Stellar AI Director Relative Economic Standards",
+        "",
+        "Generated 2026-07-09 for the 4.4.5-forward / 4.4.4-compatible Director build.",
+        "",
+        "These are country-scope, piecewise relative standards. Colony bands scale civilian-resource headroom. Alloy safety must pass both the colony band and the current-fleet-power income band, so a large empire or fleet cannot qualify on an early-game flat floor. Stockpile targets are capped operating floats, not full replacement-cost warehouses. Ordinary food economies require positive monthly balance and a colony-scaled reserve; biological-ship empires additionally scale food income and operating reserves with fleet power.",
+        "",
+        "| basis | resource | measure | lower inclusive | upper exclusive | target | consumer trigger | rationale |",
+        "| --- | --- | --- | ---: | ---: | ---: | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['basis']} | {row['resource']} | {row['measure']} | {row['lower_inclusive']} | "
+            f"{row['upper_exclusive']} | {row['target']} | `{row['consumer_trigger']}` | {row['rationale']} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Interpretation",
+            "",
+            "- The thresholds are net monthly income after upkeep, not gross production.",
+            "- Current fleet power deliberately lowers the military replacement-income band after catastrophic losses, while the colony band still requires a large empire to retain strong baseline throughput.",
+            "- Biological-ship empires use the colony alloy band for non-ship infrastructure but replace the alloy fleet burden with a food fleet burden.",
+            "- The largest alloy/biological-food military float is 20,000. Surplus above the operating float remains available to megastructures, fleet construction, and other high-return sinks; no normal state attempts to pre-fund an entire fleet replacement.",
+            "- A much larger reserve should only be introduced later behind explicit strategic evidence such as imminent total-war exposure or a known catastrophic battle, not as a default scale rule.",
+            "- These are safety gates for discretionary expansion, research scaling, fleet growth, and fortress investment; deficit-repair plans remain active below them.",
+            "- The economic plan generates 37 mutually exclusive colony/fleet repair bands. Each unsafe gate requires both earned monthly income and an operating float, so a market purchase can delay depletion but cannot make the economy count as repaired.",
+            "- Hard-shortage detection approximates two months of runway with deficit-magnitude bands because Stellaris exposes income and stockpile comparisons but not stockpile/income division.",
+            "- Core repair subplans request domestic resource income directly and contain no trade-income target. Director-owned market code has no buy path; its only market action is a positive-income, no-deficit overflow sale above the fixed reserve and 90% of the mods-included storage cap.",
+            "- Near-cap pressure also opens the source-proven Kugelblitz storage route when megastructure commitment is otherwise safe; storage expansion buys investment time but does not replace income repair.",
+            "- Runtime observation is still required to tune band boundaries against the active mod stack.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def generate_relative_economic_standard_artifacts() -> list[dict[str, Any]]:
+    rows = relative_economic_standard_rows()
+    write_csv(RELATIVE_ECONOMIC_STANDARDS_CSV, rows)
+    write_text_file(RELATIVE_ECONOMIC_STANDARDS_MD, relative_economic_standards_text(rows))
+    return rows
+
+
+def research_colony_plan_triggers_text() -> str:
+    return '''# Planet-scope colony build-out plan selectors. The first research role
+# is reserved even before construction is affordable; further roles require
+# the Director's consumer-goods and energy runway gate.
+staid_good_research_candidate = {
+\tis_scope_type = planet
+\tOR = {
+\t\tcheck_modifier_value = { modifier = planet_researchers_produces_mult value > 0.09 }
+\t\tcheck_modifier_value = { modifier = planet_researchers_physics_research_produces_mult value > 0.09 }
+\t\tcheck_modifier_value = { modifier = planet_researchers_society_research_produces_mult value > 0.09 }
+\t\tcheck_modifier_value = { modifier = planet_researchers_engineering_research_produces_mult value > 0.09 }
+\t\thas_any_research_zone = yes
+\t\thas_building = building_research_lab_1
+\t\thas_building = building_research_lab_2
+\t\thas_building = building_research_lab_3
+\t}
+}
+
+staid_research_plan_candidate = {
+\tis_scope_type = planet
+\tis_colony = yes
+\tis_capital = no
+\tis_special_colony_type = no
+\texists = owner
+\towner = {
+\t\tis_ai = yes
+\t\tis_nomadic = no
+\t}
+\tNOT = { has_planet_flag = staid_research_plan_claimed }
+\tNOT = { is_planet_class = pc_nanotech }
+\tNOR = {
+\t\tuses_district_set = city_world
+\t\tuses_district_set = ring_world
+\t\tuses_district_set = habitat
+\t\tuses_district_set = cosmogenesis_world
+\t}
+}
+'''
+
+
 def triggers_text(thresholds: dict[str, int]) -> str:
     text = '''# Generated by tools/generate_stellar_ai_director_patch.py.
 # Deterministic state gates for late-game investment decisions.
 
+''' + relative_economic_runway_triggers_text() + research_colony_plan_triggers_text() + '''
 staid_core_deficit_short_runway = {
 \tOR = {
-\t\thas_deficit = energy
-\t\thas_deficit = minerals
-\t\thas_deficit = alloys
-\t\thas_deficit = trade
-\t\tAND = { country_uses_consumer_goods = yes has_deficit = consumer_goods }
-\t\tAND = { country_uses_food = yes has_deficit = food }
-\t\tAND = {
-\t\t\tNOT = { has_monthly_income = { resource = energy value > 0 } }
-\t\t\tresource_stockpile_compare = { resource = energy value < 2400 }
-\t\t}
-\t\tAND = {
-\t\t\tNOT = { has_monthly_income = { resource = minerals value > 0 } }
-\t\t\tresource_stockpile_compare = { resource = minerals value < 2400 }
-\t\t}
-\t\tAND = {
-\t\t\tNOT = { has_monthly_income = { resource = alloys value > 0 } }
-\t\t\tresource_stockpile_compare = { resource = alloys value < 2400 }
-\t\t}
-\t\tAND = {
-\t\t\tNOT = { has_monthly_income = { resource = trade value > 0 } }
-\t\t\tresource_stockpile_compare = { resource = trade value < 2400 }
-\t\t}
+\t\tstaid_energy_two_month_runway_unsafe = yes
+\t\tstaid_minerals_two_month_runway_unsafe = yes
+\t\tstaid_alloys_two_month_runway_unsafe = yes
+\t\tstaid_trade_two_month_runway_unsafe = yes
 \t\tAND = {
 \t\t\tcountry_uses_consumer_goods = yes
-\t\t\tNOT = { has_monthly_income = { resource = consumer_goods value > 0 } }
-\t\t\tresource_stockpile_compare = { resource = consumer_goods value < 2400 }
+\t\t\tstaid_consumer_goods_two_month_runway_unsafe = yes
 \t\t}
 \t\tAND = {
 \t\t\tcountry_uses_food = yes
-\t\t\tNOT = { has_monthly_income = { resource = food value > 0 } }
-\t\t\tresource_stockpile_compare = { resource = food value < 2400 }
+\t\t\tstaid_food_two_month_runway_unsafe = yes
 \t\t}
 \t}
 }
@@ -9949,28 +10734,66 @@ staid_consumer_goods_runway_safe = {
 \t\tNOT = { country_uses_consumer_goods = yes }
 \t\tAND = {
 \t\t\tNOT = { has_deficit = consumer_goods }
-\t\t\thas_monthly_income = { resource = consumer_goods value > 75 }
-\t\t\tresource_stockpile_compare = { resource = consumer_goods value > 1500 }
+\t\t\tstaid_scaled_consumer_goods_income_safe = yes
+\t\t\tstaid_scaled_consumer_goods_stockpile_safe = yes
 \t\t}
 \t}
+}
+
+staid_energy_runway_safe = {
+\tNOT = { has_deficit = energy }
+\tstaid_scaled_energy_income_safe = yes
+\tstaid_scaled_energy_stockpile_safe = yes
+}
+
+staid_mineral_runway_safe = {
+\tNOT = { has_deficit = minerals }
+\tstaid_scaled_minerals_income_safe = yes
+\tstaid_scaled_minerals_stockpile_safe = yes
+}
+
+staid_alloy_colony_runway_safe = {
+\tNOT = { has_deficit = alloys }
+\tstaid_scaled_alloys_income_safe = yes
+\tstaid_scaled_alloys_stockpile_safe = yes
+}
+
+staid_alloy_runway_safe = {
+\tstaid_alloy_colony_runway_safe = yes
+\tOR = {
+\t\tcountry_uses_bio_ships = yes
+\t\tAND = {
+\t\t\tstaid_scaled_alloy_fleet_income_safe = yes
+\t\t\tstaid_scaled_alloy_fleet_stockpile_safe = yes
+\t\t}
+\t}
+}
+
+staid_food_colony_runway_safe = {
+\tNOT = { has_deficit = food }
+\thas_monthly_income = { resource = food value > 0 }
+\tstaid_scaled_food_stockpile_safe = yes
 }
 
 staid_food_runway_safe = {
 \tOR = {
 \t\tNOT = { country_uses_food = yes }
 \t\tAND = {
-\t\t\tNOT = { has_deficit = food }
-\t\t\thas_monthly_income = { resource = food value > 25 }
-\t\t\tresource_stockpile_compare = { resource = food value > 1500 }
+\t\t\tstaid_food_colony_runway_safe = yes
+\t\t\tOR = {
+\t\t\t\tNOT = { country_uses_bio_ships = yes }
+\t\t\t\tAND = {
+\t\t\t\t\tstaid_scaled_bioship_food_fleet_income_safe = yes
+\t\t\t\t\tstaid_scaled_bioship_food_fleet_stockpile_safe = yes
+\t\t\t\t}
+\t\t\t}
 \t\t}
 \t}
 }
 
 staid_research_input_runway_safe = {
 \tstaid_consumer_goods_runway_safe = yes
-\tNOT = { has_deficit = energy }
-\thas_monthly_income = { resource = energy value > 100 }
-\tresource_stockpile_compare = { resource = energy value > 3000 }
+\tstaid_energy_runway_safe = yes
 }
 
 staid_research_minimum_input_runway_safe = {
@@ -9995,12 +10818,8 @@ staid_research_diplomacy_priority_ready = {
 staid_basic_economy_runway_safe = {
 \tstaid_research_input_runway_safe = yes
 \tstaid_food_runway_safe = yes
-\tNOT = { has_deficit = minerals }
-\tNOT = { has_deficit = alloys }
-\thas_monthly_income = { resource = minerals value > 100 }
-\thas_monthly_income = { resource = alloys value > 75 }
-\tresource_stockpile_compare = { resource = minerals value > 3000 }
-\tresource_stockpile_compare = { resource = alloys value > 3000 }
+\tstaid_mineral_runway_safe = yes
+\tstaid_alloy_runway_safe = yes
 }
 
 staid_trade_capacity_safe = {
@@ -10171,34 +10990,55 @@ staid_shipyard_payoff_ready = {
 staid_fleet_buildup_economy_safe = {
 \tis_nomadic = no
 \tNOT = { staid_catastrophic_collapse_mode = yes }
-\tused_naval_capacity_percent < 1.85
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_basic_economy_runway_safe = yes
+\thas_monthly_income = { resource = alloys value > 0 }
+\tused_naval_capacity_percent < 1.40
+}
+
+staid_emergency_fleet_spending_required = {
+\tNOT = { staid_catastrophic_collapse_mode = yes }
 \tOR = {
-\t\thas_monthly_income = { resource = alloys value > 40 }
-\t\tresource_stockpile_compare = { resource = alloys value > 1500 }
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
-\t\thas_monthly_income = { resource = energy value > 40 }
-\t\tresource_stockpile_compare = { resource = energy value > 1500 }
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
+\t\trecently_lost_war = yes
 \t\tAND = {
-\t\t\tresource_stockpile_compare = { resource = alloys value > 15000 }
-\t\t\tresource_stockpile_compare = { resource = energy value > 8000 }
+\t\t\tis_at_war = yes
+\t\t\tOR = {
+\t\t\t\thighest_threat > 35
+\t\t\t\tused_naval_capacity_percent < 0.85
+\t\t\t}
 \t\t}
 \t\tAND = {
-\t\t\tused_naval_capacity_percent < 1.25
-\t\t\thas_monthly_income = { resource = alloys value > 40 }
-\t\t\thas_monthly_income = { resource = energy value > 40 }
+\t\t\thighest_threat > 60
+\t\t\tused_naval_capacity_percent < 0.85
 \t\t}
-\t\tAND = {
-\t\t\tused_naval_capacity_percent < 1.25
-\t\t\thas_monthly_income = { resource = alloys value > 40 }
-\t\t\thas_monthly_income = { resource = energy value > 40 }
-\t\t}
-\t\tstaid_high_scale_snowball_pressure = yes
 \t}
+}
+
+staid_fortress_designation_ready = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_basic_economy_runway_safe = yes
+\tNOT = { has_deficit = alloys }
+\thas_monthly_income = { resource = alloys value > 0 }
+\tnum_owned_planets >= 6
+\tused_naval_capacity_percent > 0.70
+\tOR = {
+\t\tis_at_war = yes
+\t\trecently_lost_war = yes
+\t\thighest_threat > 50
+\t\tAND = {
+\t\t\tnum_owned_planets >= 10
+\t\t\thighest_threat > 25
+\t\t}
+\t}
+}
+
+# Planet scope. Stellaris computes bottlenecks from the current hyperlane graph;
+# vanilla planet-scope decisions use the same planet -> solar_system scope change.
+staid_fortress_planet_strategically_placed = {
+\texists = owner
+\tsolar_system = { is_bottleneck_system = yes }
 }
 
 staid_resource_waste_pressure = {
@@ -10299,30 +11139,20 @@ staid_research_under_curve = {
 staid_research_construction_priority_ready = {
 \tis_nomadic = no
 \tNOT = { staid_catastrophic_collapse_mode = yes }
+\tstaid_research_minimum_input_runway_safe = yes
 \tOR = {
 \t\tstaid_research_input_runway_safe = yes
 \t\tstaid_high_scale_snowball_pressure = yes
-\t\tAND = {
-\t\t\tstaid_research_under_curve = yes
-\t\t\tstaid_research_minimum_input_runway_safe = yes
-\t\t}
+\t\tstaid_research_under_curve = yes
 \t}
 }
 
 staid_surplus_sink_pressure = {
 \tNOT = { staid_catastrophic_collapse_mode = yes }
-\tOR = {
-\t\tstaid_research_input_runway_safe = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
-\t\tNOT = { has_deficit = alloys }
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
-\t\tNOT = { has_deficit = energy }
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_research_minimum_input_runway_safe = yes
+\tNOT = { has_deficit = alloys }
+\tNOT = { has_deficit = energy }
 \tOR = {
 \t\tstaid_resource_waste_pressure = yes
 \t\tstaid_high_scale_snowball_pressure = yes
@@ -10498,6 +11328,7 @@ staid_storage_cap_build_priority_ready = {
 	staid_megastructure_commit_safe = yes
 	has_technology = giga_tech_kugelblitz
 	OR = {
+		country_near_tangible_resource_cap = yes
 		staid_resource_waste_pressure = yes
 		staid_high_scale_snowball_pressure = yes
 		resource_stockpile_compare = { resource = energy value > 25000 }
@@ -10652,11 +11483,11 @@ staid_shipyard_expansion_ready = {
 
 staid_fleet_payoff_exploitation_ready = {
 \tNOT = { staid_catastrophic_collapse_mode = yes }
-\tused_naval_capacity_percent < 1.85
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_fleet_buildup_economy_safe = yes
 \tOR = {
 \t\tAND = { is_at_war = yes highest_threat > 35 }
-\t\tAND = { used_naval_capacity_percent < 1.25 has_monthly_income = { resource = alloys value > 80 } }
-\t\tAND = { resource_stockpile_compare = { resource = alloys value > 10000 } resource_stockpile_compare = { resource = energy value > 5000 } }
+\t\tAND = { staid_aggressive_fleet_pressure = yes resource_stockpile_compare = { resource = alloys value > 12000 } resource_stockpile_compare = { resource = energy value > 5000 } }
 \t}
 }
 
@@ -10868,38 +11699,69 @@ staid_crisis_starbase_pressure = {
 staid_aggressive_fleet_pressure = {
 \tis_nomadic = no
 \tNOT = { staid_catastrophic_collapse_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_basic_economy_runway_safe = yes
 \tOR = {
 \t\thas_ethic = ethic_militarist
 \t\thas_ethic = ethic_fanatic_militarist
 \t\thas_ethic = ethic_xenophobe
 \t\thas_ethic = ethic_fanatic_xenophobe
 \t\thas_valid_civic = civic_barbaric_despoilers
-\t\tAND = {
-\t\t\tNOT = { has_ethic = ethic_pacifist }
-\t\t\tNOT = { has_ethic = ethic_fanatic_pacifist }
-\t\t\tused_naval_capacity_percent < 1.10
-\t\t}
+\t\tAND = { is_at_war = yes highest_threat > 35 }
 \t}
-\tused_naval_capacity_percent < 1.90
+\tused_naval_capacity_percent < 1.40
 }
 
 staid_militarist_conquest_strategy = {
 \tis_nomadic = no
 \tNOT = { staid_catastrophic_collapse_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_basic_economy_runway_safe = yes
 \tOR = {
 \t\thas_ethic = ethic_militarist
 \t\thas_ethic = ethic_fanatic_militarist
 \t\thas_valid_civic = civic_barbaric_despoilers
 \t\thas_ethic = ethic_xenophobe
 \t\thas_ethic = ethic_fanatic_xenophobe
-\t\tAND = {
-\t\t\tNOT = { has_ethic = ethic_pacifist }
-\t\t\tNOT = { has_ethic = ethic_fanatic_pacifist }
-\t\t\tyears_passed > 9
-\t\t\tused_naval_capacity_percent < 1.15
-\t\t}
 \t}
-\tused_naval_capacity_percent < 1.95
+\tused_naval_capacity_percent < 1.40
+}
+
+staid_influence_claim_pressure = {
+\tis_nomadic = no
+\tis_at_war = no
+\tNOT = { has_ethic = ethic_pacifist }
+\tNOT = { has_ethic = ethic_fanatic_pacifist }
+\thas_potential_claims = yes
+\thas_resource = { type = influence amount > 500 }
+\tOR = {
+\t\tNOT = { has_ai_expansion_plan = yes }
+\t\thas_resource = { type = influence amount > 900 }
+\t}
+}
+
+staid_boxed_in_claim_urgency = {
+\tis_nomadic = no
+\tis_at_war = no
+\tNOT = { has_ethic = ethic_pacifist }
+\tNOT = { has_ethic = ethic_fanatic_pacifist }
+\thas_potential_claims = yes
+\tnum_owned_planets < 5
+\tNOT = { has_ai_expansion_plan = yes }
+\thas_resource = { type = influence amount > 250 }
+}
+
+staid_naval_capacity_expansion_ready = {
+\tis_nomadic = no
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_basic_economy_runway_safe = yes
+\tused_naval_capacity_percent > 0.90
+\tOR = {
+\t\tAND = { is_at_war = yes highest_threat > 35 }
+\t\trecently_lost_war = yes
+\t\thighest_threat > 60
+\t}
 }
 
 staid_raiding_pop_growth_strategy = {
@@ -11039,6 +11901,43 @@ staid_homeland_under_attack = {
     )
 
 
+def fleet_alloy_budget_text() -> str:
+    source_path = VANILLA_COMMON_ROOT / "ai_budget" / "00_alloys_budget.txt"
+    source_text = read_text(source_path)
+    ships = extract_top_level_object_text(source_text, "alloys_expenditure_ships")
+    upgrades = extract_top_level_object_text(source_text, "alloys_expenditure_ship_upgrades")
+    ships = replace_top_level_child_block(
+        ships,
+        "potential",
+        """\tpotential = {
+\t\tOR = {
+\t\t\tstaid_fleet_buildup_economy_safe = yes
+\t\t\tstaid_emergency_fleet_spending_required = yes
+\t\t}
+\t}""",
+    )
+    upgrades = replace_top_level_child_block(
+        upgrades,
+        "potential",
+        """\tpotential = {
+\t\tis_at_war = no
+\t\tstaid_fleet_buildup_economy_safe = yes
+\t\tany_owned_fleet = {
+\t\t\tcontroller = { is_same_value = root }
+\t\t\tcan_be_upgraded = yes
+\t\t}
+\t}""",
+    )
+    text = """# Current-vanilla full-object overrides for alloy-funded ship construction and upgrades.
+# The vanilla weights and crisis/war multipliers are preserved, but the expenditure categories
+# are inactive when the civilian economy or alloy income cannot support additional fleet spending.
+# A narrow defensive emergency gate can still fund new ships during a real military crisis.
+
+""" + ships.rstrip() + "\n\n" + upgrades.rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
 def ai_budget_text(thresholds: dict[str, int]) -> str:
     text = '''# Generated by tools/generate_stellar_ai_director_patch.py.
 # Full-object override: intentionally replaces upstream megastructure alloy
@@ -11102,7 +12001,7 @@ alloys_expenditure_megastructures = {
 \t}
 }
 '''
-    return text
+    return text.rstrip() + "\n\n" + fleet_alloy_budget_text()
 
 
 def gigas_resource_budget_text() -> str:
@@ -11166,6 +12065,144 @@ supertensiles_upkeep_megastructures = {
 '''
 
 
+def _repair_band_window_lines(
+    metric: str,
+    lower: int | None,
+    upper: int | None,
+    indent: str = "\t\t\t",
+) -> list[str]:
+    lines: list[str] = []
+    if lower is not None:
+        lines.append(f"{indent}{metric} >= {lower}")
+    if upper is not None:
+        lines.append(f"{indent}{metric} < {upper}")
+    return lines
+
+
+def _relative_repair_subplan_text(
+    *,
+    name: str,
+    gate_lines: Iterable[str],
+    metric: str,
+    lower: int | None,
+    upper: int | None,
+    resource: str,
+    income_target: int,
+) -> str:
+    band_label = f"{lower or 0}-{upper - 1}" if upper is not None else f"{lower}+"
+    lines = [
+        "\tsubplan = {",
+        "\t\tscaling = yes",
+        f'\t\tset_name = "Stellar AI Director {name} {band_label}"',
+        "\t\tpotential = {",
+    ]
+    lines.extend(f"\t\t\t{line}" for line in gate_lines)
+    lines.extend(_repair_band_window_lines(metric, lower, upper))
+    lines.extend(
+        [
+            "\t\t}",
+            "\t\tincome = {",
+            f"\t\t\t{resource} = {income_target}",
+            "\t\t}",
+            "\t}",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def relative_economic_repair_subplans_text() -> str:
+    """Generate income-led repair pressure that market purchases cannot satisfy."""
+    blocks = [
+        "\t# Relative repair plans require both earned monthly income and an operating",
+        "\t# float. Buying stockpile on the market cannot clear an unsafe income gate.",
+    ]
+    colony_specs = (
+        ("energy income repair", "staid_energy_runway_safe", "energy", RELATIVE_COLONY_RESOURCE_TARGETS["energy"]["income"]),
+        (
+            "mineral income repair",
+            "staid_mineral_runway_safe",
+            "minerals",
+            RELATIVE_COLONY_RESOURCE_TARGETS["minerals"]["income"],
+        ),
+        (
+            "consumer goods income repair",
+            "staid_consumer_goods_runway_safe",
+            "consumer_goods",
+            RELATIVE_COLONY_RESOURCE_TARGETS["consumer_goods"]["income"],
+        ),
+        (
+            "colony alloy income repair",
+            "staid_alloy_colony_runway_safe",
+            "alloys",
+            RELATIVE_COLONY_RESOURCE_TARGETS["alloys"]["income"],
+        ),
+        (
+            "food operating-float repair",
+            "staid_food_colony_runway_safe",
+            "food",
+            (25, 50, 100, 200, 400),
+        ),
+    )
+    for name, gate, resource, targets in colony_specs:
+        for index, (lower, upper) in enumerate(RELATIVE_SCALE_BANDS):
+            gate_lines = [f"NOT = {{ {gate} = yes }}"]
+            if resource == "consumer_goods":
+                gate_lines.insert(0, "country_uses_consumer_goods = yes")
+            elif resource == "food":
+                gate_lines.insert(0, "country_uses_food = yes")
+            blocks.append(
+                _relative_repair_subplan_text(
+                    name=name,
+                    gate_lines=gate_lines,
+                    metric="num_owned_planets",
+                    lower=lower,
+                    upper=upper,
+                    resource=resource,
+                    income_target=int(targets[index]),
+                )
+            )
+
+    for lower, upper, target in RELATIVE_ALLOY_FLEET_TARGETS["income"]:
+        blocks.append(
+            _relative_repair_subplan_text(
+                name="fleet replacement alloy repair",
+                gate_lines=(
+                    "country_uses_bio_ships = no",
+                    "OR = {",
+                    "\tNOT = { staid_scaled_alloy_fleet_income_safe = yes }",
+                    "\tNOT = { staid_scaled_alloy_fleet_stockpile_safe = yes }",
+                    "}",
+                ),
+                metric="fleet_power",
+                lower=lower,
+                upper=upper,
+                resource="alloys",
+                income_target=target,
+            )
+        )
+
+    for lower, upper, target in RELATIVE_BIOSHIP_FOOD_FLEET_TARGETS["income"]:
+        blocks.append(
+            _relative_repair_subplan_text(
+                name="bio-ship replacement food repair",
+                gate_lines=(
+                    "country_uses_food = yes",
+                    "country_uses_bio_ships = yes",
+                    "OR = {",
+                    "\tNOT = { staid_scaled_bioship_food_fleet_income_safe = yes }",
+                    "\tNOT = { staid_scaled_bioship_food_fleet_stockpile_safe = yes }",
+                    "}",
+                ),
+                metric="fleet_power",
+                lower=lower,
+                upper=upper,
+                resource="food",
+                income_target=target,
+            )
+        )
+    return "\n\n".join(blocks)
+
+
 def economic_plan_text() -> str:
     return '''# Generated by tools/generate_stellar_ai_director_patch.py.
 # Full-object override: intentionally replaces `basic_economy_plan` with a
@@ -11177,9 +12214,6 @@ basic_economy_plan = {
 \tai_weight = { weight = 5000 }
 
 \tincome = {
-\t\tphysics_research = 400
-\t\tsociety_research = 400
-\t\tengineering_research = 600
 \t\talloys = 120
 \t\tconsumer_goods = 150
 \t\tfood = 60
@@ -11189,10 +12223,18 @@ basic_economy_plan = {
 \t\ttrade = 75
 \t}
 
-\tfocus = {
-\t\tphysics_research = 150
-\t\tsociety_research = 150
-\t\tengineering_research = 250
+\tsubplan = {
+\t\toptional = yes
+\t\tscaling = yes
+\t\tset_name = "Stellar AI Director safe research baseline"
+\t\tpotential = {
+\t\t\tstaid_research_construction_priority_ready = yes
+\t\t}
+\t\tincome = {
+\t\t\tphysics_research = 400
+\t\t\tsociety_research = 400
+\t\t\tengineering_research = 600
+\t\t}
 \t}
 
 \tsubplan = {
@@ -11200,6 +12242,7 @@ basic_economy_plan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director opening direct research route"
 \t\tpotential = {
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t\tstaid_opening_direct_research = yes
 \t\t}
 \t\tincome = {
@@ -11216,6 +12259,7 @@ basic_economy_plan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director opening trade to research route"
 \t\tpotential = {
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t\tstaid_opening_trade_to_research = yes
 \t\t}
 \t\tincome = {
@@ -11232,6 +12276,7 @@ basic_economy_plan = {
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director opening growth to research route"
 \t\tpotential = {
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t\tOR = {
 \t\t\t\tstaid_opening_hive_growth_research = yes
 \t\t\t\tstaid_opening_machine_growth_research = yes
@@ -11249,34 +12294,7 @@ basic_economy_plan = {
 \t\t}
 \t}
 
-\tsubplan = {
-\t\tscaling = yes
-\t\tset_name = "Stellar AI Director consumer goods runway repair"
-\t\tpotential = {
-\t\t\tcountry_uses_consumer_goods = yes
-\t\t\tNOT = { staid_consumer_goods_runway_safe = yes }
-\t\t}
-\t\tincome = {
-\t\t\tconsumer_goods = 500
-\t\t\tminerals = 350
-\t\t\tenergy = 250
-\t\t\ttrade = 200
-\t\t}
-\t}
-
-\tsubplan = {
-\t\tscaling = yes
-\t\tset_name = "Stellar AI Director food break-even repair"
-\t\tpotential = {
-\t\t\tcountry_uses_food = yes
-\t\t\tNOT = { staid_food_runway_safe = yes }
-\t\t}
-\t\tincome = {
-\t\t\tfood = 300
-\t\t\tenergy = 100
-\t\t\ttrade = 75
-\t\t}
-\t}
+__STAID_RELATIVE_ECONOMIC_REPAIR_SUBPLANS__
 
 \tsubplan = {
 \t\tscaling = yes
@@ -11284,11 +12302,7 @@ basic_economy_plan = {
 \t\tpotential = {
 \t\t\tyears_passed < 50
 \t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
-\t\t\tOR = {
-\t\t\t\tstaid_research_input_runway_safe = yes
-\t\t\t\tstaid_high_scale_snowball_pressure = yes
-\t\t\t\tstaid_construction_spenddown_pressure = yes
-\t\t\t}
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 350
@@ -11304,11 +12318,7 @@ basic_economy_plan = {
 \t\tpotential = {
 \t\t\tyears_passed > 44
 \t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
-\t\t\tOR = {
-\t\t\t\tstaid_research_input_runway_safe = yes
-\t\t\t\tstaid_high_scale_snowball_pressure = yes
-\t\t\t\tstaid_construction_spenddown_pressure = yes
-\t\t\t}
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 1500
@@ -11320,7 +12330,6 @@ basic_economy_plan = {
 \t\t\tunity = 300
 \t\t\ttrade = 150
 \t\t}
-\t\tnaval_cap = 600
 \t}
 
 \tsubplan = {
@@ -11329,11 +12338,7 @@ basic_economy_plan = {
 \t\tpotential = {
 \t\t\tyears_passed > 79
 \t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
-\t\t\tOR = {
-\t\t\t\tstaid_research_input_runway_safe = yes
-\t\t\t\tstaid_high_scale_snowball_pressure = yes
-\t\t\t\tstaid_construction_spenddown_pressure = yes
-\t\t\t}
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 4500
@@ -11345,7 +12350,6 @@ basic_economy_plan = {
 \t\t\tunity = 600
 \t\t\ttrade = 250
 \t\t}
-\t\tnaval_cap = 1500
 \t}
 
 \tsubplan = {
@@ -11354,11 +12358,7 @@ basic_economy_plan = {
 \t\tpotential = {
 \t\t\tyears_passed > 119
 \t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
-\t\t\tOR = {
-\t\t\t\tstaid_research_input_runway_safe = yes
-\t\t\t\tstaid_high_scale_snowball_pressure = yes
-\t\t\t\tstaid_construction_spenddown_pressure = yes
-\t\t\t}
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 10000
@@ -11370,7 +12370,6 @@ basic_economy_plan = {
 \t\t\tunity = 1200
 \t\t\ttrade = 400
 \t\t}
-\t\tnaval_cap = 3500
 \t}
 
 \tsubplan = {
@@ -11378,6 +12377,8 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director pathological snowball reserve"
 \t\tpotential = {
 \t\t\tstaid_high_scale_snowball_pressure = yes
+\t\t\tstaid_basic_economy_runway_safe = yes
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {
 \t\t\tphysics_research = 20000
@@ -11391,7 +12392,6 @@ basic_economy_plan = {
 \t\t\tunity = 2500
 \t\t\ttrade = 1500
 \t\t}
-\t\tnaval_cap = 8000
 \t\tpops = 1000000
 \t}
 
@@ -11400,6 +12400,7 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director construction spenddown reserve"
 \t\tpotential = {
 \t\t\tstaid_construction_spenddown_pressure = yes
+\t\t\tstaid_basic_economy_runway_safe = yes
 \t\t}
 \t\tincome = {
 \t\t\tminerals = 30000
@@ -11407,13 +12408,9 @@ basic_economy_plan = {
 \t\t\tconsumer_goods = 6000
 \t\t\talloys = 8000
 \t\t\tfood = 2000
-\t\t\tphysics_research = 12000
-\t\t\tsociety_research = 12000
-\t\t\tengineering_research = 18000
 \t\t\tunity = 5000
 \t\t\ttrade = 3000
 \t\t}
-\t\tnaval_cap = 5000
 \t\tpops = 1000000
 \t}
 
@@ -11432,9 +12429,6 @@ basic_economy_plan = {
 \t\t\tconsumer_goods = 2500
 \t\t\talloys = 3000
 \t\t\tfood = 1200
-\t\t\tphysics_research = 6000
-\t\t\tsociety_research = 6000
-\t\t\tengineering_research = 9000
 \t\t\tunity = 2000
 \t\t\ttrade = 1200
 \t\t}
@@ -11455,9 +12449,6 @@ basic_economy_plan = {
 \t\t\tenergy = 10000
 \t\t\tconsumer_goods = 3000
 \t\t\talloys = 4000
-\t\t\tphysics_research = 8000
-\t\t\tsociety_research = 8000
-\t\t\tengineering_research = 12000
 \t\t\tunity = 2500
 \t\t\ttrade = 1500
 \t\t}
@@ -11481,13 +12472,9 @@ basic_economy_plan = {
 \t\t\tenergy = 16000
 \t\t\tconsumer_goods = 5000
 \t\t\talloys = 7000
-\t\t\tphysics_research = 12000
-\t\t\tsociety_research = 12000
-\t\t\tengineering_research = 18000
 \t\t\tunity = 4000
 \t\t\ttrade = 2500
 \t\t}
-\t\tnaval_cap = 5000
 \t\tpops = 1000000
 \t}
 
@@ -11509,7 +12496,6 @@ basic_economy_plan = {
 \t\t\tgiga_sr_amb_megaconstruction = 10
 \t\t\ttrade = 1000
 \t\t}
-\t\tnaval_cap = 4000
 \t}
 
 \tsubplan = {
@@ -11762,7 +12748,6 @@ basic_economy_plan = {
 \t\t\tenergy = 300
 \t\t\ttrade = 150
 \t\t}
-\t\tnaval_cap = 800
 \t}
 
 \tsubplan = {
@@ -11787,7 +12772,6 @@ basic_economy_plan = {
 \t\t\tphysics_research = 450
 \t\t\ttrade = 250
 \t\t}
-\t\tnaval_cap = 1200
 \t}
 
 \tsubplan = {
@@ -11827,6 +12811,7 @@ basic_economy_plan = {
 \t\tset_name = "Stellar AI Director Planetary Diversity outpost reserve"
 \t\tpotential = {
 \t\t\tstaid_planetary_diversity_outpost_investment_ready = yes
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {
 \t\t\tminerals = 800
@@ -11851,7 +12836,6 @@ basic_economy_plan = {
 \t\t\tminerals = 1200
 \t\t\ttrade = 500
 \t\t}
-\t\tnaval_cap = 1000
 \t}
 
 \tsubplan = {
@@ -11867,10 +12851,12 @@ basic_economy_plan = {
 \t\t\tminerals = 1800
 \t\t\ttrade = 800
 \t\t}
-\t\tnaval_cap = 2000
 \t}
 }
-'''
+'''.replace(
+        "__STAID_RELATIVE_ECONOMIC_REPAIR_SUBPLANS__",
+        relative_economic_repair_subplans_text(),
+    )
 
 
 def market_cap_breaker_sale_text(resource: str, reserve: int, amount: int, extra_limit: str) -> str:
@@ -11880,10 +12866,11 @@ def market_cap_breaker_sale_text(resource: str, reserve: int, amount: int, extra
 \t\t\t\tNOT = {{ has_deficit = {resource} }}
 \t\t\t\thas_monthly_income = {{ resource = {resource} value > 0 }}
 \t\t\t\tresource_stockpile_compare = {{ resource = {resource} value > {reserve} }}
+\t\t\t\tresource_stockpile_percent = {{ resource = {resource} value >= 0.9 }}
 \t\t\t}}
 \t\t\tset_variable = {{
 \t\t\t\twhich = staid_market_trade_value
-\t\t\t\tvalue = value:stellarai_market_sell_value|RESOURCE|{resource}|AMOUNT|{amount}|
+\t\t\t\tvalue = value:staid_market_sell_value|RESOURCE|{resource}|AMOUNT|{amount}|
 \t\t\t}}
 \t\t\tif = {{
 \t\t\t\tlimit = {{ check_variable = {{ which = staid_market_trade_value value > 0 }} }}
@@ -11904,6 +12891,230 @@ on_monthly_pulse = {
 \t\tstaid_economy_safety.1
 \t}
 }
+
+'''
+
+
+def mem_surveyor_outpost_ship_size_text() -> str:
+    """Copy the active outpost winner and block one unresolved MEM event system for AI only."""
+    starbase_extended = mod_source_root_for_id("3250900527") / "common" / "ship_sizes" / "nsc_starbases.txt"
+    vanilla = VANILLA_COMMON_ROOT / "ship_sizes" / "00_ship_sizes.txt"
+    source_path = starbase_extended if starbase_extended.exists() else vanilla
+    source_text = read_text(source_path)
+    block = extract_top_level_object_text(source_text, "starbase_outpost")
+    block = replace_top_level_child_block(
+        block,
+        "possible_construction",
+        '''\tpossible_construction = {
+\t\t# The MEM Surveyor home system can look empty while its neutral event probe
+\t\t# roams elsewhere. Do not let AI outpost planners persistently target it
+\t\t# before the owning country has completed the Alkree-homeworld discovery.
+\t\tOR = {
+\t\t\tfrom = { is_ai = no }
+\t\t\tsolar_system = { NOT = { has_star_flag = mem_surveyor_home_system } }
+\t\t\tfrom = { has_country_flag = mem_surveyor_found_alkree_homeworld }
+\t\t}
+\t}''',
+    )
+    definitions = source_file_variable_definitions(source_text)
+    used = sorted(used_at_variables_in_text(block))
+    local_definitions = "\n".join(definitions[name] for name in used if name in definitions)
+    return (
+        "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
+        "# Active-winner compatibility copy; player construction remains unchanged.\n"
+        f"# Source: {source_path.as_posix()}\n\n"
+        + (local_definitions + "\n\n" if local_definitions else "")
+        + block.rstrip()
+        + "\n"
+    )
+
+
+def boss_defeat_escalation_on_actions_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Defeat-driven boss escalation. This hook is event-only and never changes
+# normal-empire war scoring or runs on a periodic pulse.
+
+on_space_battle_lost = {
+	events = {
+		staid_boss_safety.1
+	}
+}
+'''
+
+
+def boss_defeat_escalation_events_text() -> str:
+    return '''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Active-stack compatibility: Gigas Rogue Eeloo and Ancient Systems Forgos
+# are unusually strong fleets already marked as bosses by their parent mods.
+# When either defeats an AI fleet, persistently promote that exact surviving
+# fleet to the engine's ultra-boss readiness tier before another attempt.
+
+namespace = staid_boss_safety
+
+country_event = {
+	id = staid_boss_safety.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_ai = yes
+		exists = fromfromfrom
+		fromfromfrom = {
+			OR = {
+				has_fleet_flag = eeloofleet
+				has_fleet_flag = legendary_guardian_fleet
+			}
+			NOT = { has_fleet_flag = staid_escalated_ultra_boss }
+		}
+	}
+
+	immediate = {
+		fromfromfrom = {
+			# set_fleet_settings resets omitted settings. Both parent fleets use
+			# spawn_debris = no, so preserve it while replacing boss with ultra-boss.
+			set_fleet_settings = {
+				spawn_debris = no
+				is_ultra_boss = yes
+			}
+			set_fleet_flag = staid_escalated_ultra_boss
+		}
+	}
+}
+'''
+
+
+def research_plan_target_count(colonies: int) -> int:
+    if colonies < 3:
+        return 0
+    if colonies < 5:
+        return 1
+    return colonies // 2
+
+
+def research_plan_claim_step_text(min_colonies: int, target_count: int, require_runway: bool) -> str:
+    runway_gate = "\n\t\t\t\tstaid_research_construction_priority_ready = yes" if require_runway else ""
+    return '''\t\tif = {
+\t\t\tlimit = {$RUNWAY_GATE$
+\t\t\t\tnum_owned_planets >= $MIN_COLONIES$
+\t\t\t\tcount_owned_planet = {
+\t\t\t\t\tlimit = {
+\t\t\t\t\t\thas_planet_flag = staid_research_plan_claimed
+\t\t\t\t\t}
+\t\t\t\t\tcount < $TARGET_COUNT$
+\t\t\t\t}
+\t\t\t}
+\t\t\trandom_owned_planet = {
+\t\t\t\tlimit = {
+\t\t\t\t\tstaid_research_plan_candidate = yes
+\t\t\t\t}
+\t\t\t\tweights = {
+\t\t\t\t\tbase = 10
+\t\t\t\t\tmodifier = {
+\t\t\t\t\t\tfactor = 30
+\t\t\t\t\t\tstaid_good_research_candidate = yes
+\t\t\t\t\t}
+\t\t\t\t\tmodifier = {
+\t\t\t\t\t\tfactor = 12
+\t\t\t\t\t\thas_designation = col_city
+\t\t\t\t\t}
+\t\t\t\t\tmodifier = {
+\t\t\t\t\t\tfactor = 0.35
+\t\t\t\t\t\tOR = {
+\t\t\t\t\t\t\thas_designation = col_factory
+\t\t\t\t\t\t\thas_designation = col_foundry
+\t\t\t\t\t\t\thas_designation = col_industrial
+\t\t\t\t\t\t\thas_designation = col_generator
+\t\t\t\t\t\t\thas_designation = col_mining
+\t\t\t\t\t\t\thas_designation = col_farming
+\t\t\t\t\t\t}
+\t\t\t\t\t}
+\t\t\t\t\tmodifier = {
+\t\t\t\t\t\tfactor = 0.05
+\t\t\t\t\t\thas_designation = col_fortress
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t\tset_planet_flag = staid_research_plan_claimed
+\t\t\t}
+\t\t}
+'''.replace("$RUNWAY_GATE$", runway_gate).replace("$MIN_COLONIES$", str(min_colonies)).replace(
+        "$TARGET_COUNT$", str(target_count)
+    )
+
+
+def research_plan_ratio_claims_text() -> str:
+    return '''\t\t# From five colonies onward, maintain floor(colonies / 2) research
+\t\t# commitments. The runway gate pauses new claims during consumer-goods
+\t\t# or energy stress without erasing the long-term colony plan.
+\t\tif = {
+\t\t\tlimit = {
+\t\t\t\tnum_owned_planets >= 5
+\t\t\t\tstaid_research_construction_priority_ready = yes
+\t\t\t}
+\t\t\texport_trigger_value_to_variable = {
+\t\t\t\ttrigger = count_owned_planet
+\t\t\t\tparameters = {
+\t\t\t\t\tlimit = { planet = { is_colony = yes } }
+\t\t\t\t}
+\t\t\t\tvariable = staid_research_plan_target
+\t\t\t\trounded = yes
+\t\t\t}
+\t\t\tdivide_variable = { which = staid_research_plan_target value = 2 }
+\t\t\tfloor_variable = staid_research_plan_target
+\t\t\texport_trigger_value_to_variable = {
+\t\t\t\ttrigger = count_owned_planet
+\t\t\t\tparameters = {
+\t\t\t\t\tlimit = {
+\t\t\t\t\t\thas_planet_flag = staid_research_plan_claimed
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t\tvariable = staid_research_plan_current
+\t\t\t\trounded = yes
+\t\t\t}
+\t\t\tsubtract_variable = {
+\t\t\t\twhich = staid_research_plan_target
+\t\t\t\tvalue = staid_research_plan_current
+\t\t\t}
+\t\t\tif = {
+\t\t\t\tlimit = { check_variable = { which = staid_research_plan_target value > 0 } }
+\t\t\t\twhile = {
+\t\t\t\t\tcount = staid_research_plan_target
+\t\t\t\t\trandom_owned_planet = {
+\t\t\t\t\t\tlimit = {
+\t\t\t\t\t\t\tstaid_research_plan_candidate = yes
+\t\t\t\t\t\t}
+\t\t\t\t\t\tweights = {
+\t\t\t\t\t\t\tbase = 10
+\t\t\t\t\t\t\tmodifier = {
+\t\t\t\t\t\t\t\tfactor = 30
+\t\t\t\t\t\t\t\tstaid_good_research_candidate = yes
+\t\t\t\t\t\t\t}
+\t\t\t\t\t\t\tmodifier = {
+\t\t\t\t\t\t\t\tfactor = 12
+\t\t\t\t\t\t\t\thas_designation = col_city
+\t\t\t\t\t\t\t}
+\t\t\t\t\t\t\tmodifier = {
+\t\t\t\t\t\t\t\tfactor = 0.35
+\t\t\t\t\t\t\t\tOR = {
+\t\t\t\t\t\t\t\t\thas_designation = col_factory
+\t\t\t\t\t\t\t\t\thas_designation = col_foundry
+\t\t\t\t\t\t\t\t\thas_designation = col_industrial
+\t\t\t\t\t\t\t\t\thas_designation = col_generator
+\t\t\t\t\t\t\t\t\thas_designation = col_mining
+\t\t\t\t\t\t\t\t\thas_designation = col_farming
+\t\t\t\t\t\t\t\t}
+\t\t\t\t\t\t\t}
+\t\t\t\t\t\t\tmodifier = {
+\t\t\t\t\t\t\t\tfactor = 0.05
+\t\t\t\t\t\t\t\thas_designation = col_fortress
+\t\t\t\t\t\t\t}
+\t\t\t\t\t\t}
+\t\t\t\t\t\tset_planet_flag = staid_research_plan_claimed
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t}
+\t\t\tclear_variable = staid_research_plan_target
+\t\t\tclear_variable = staid_research_plan_current
+\t\t}
 '''
 
 
@@ -11912,7 +13123,11 @@ def market_and_fleet_safety_events_text() -> str:
         market_cap_breaker_sale_text(resource, reserve, amount, extra_limit)
         for resource, reserve, amount, extra_limit in MARKET_CAP_BREAKER_SALES
     )
+    research_claim_steps = research_plan_claim_step_text(3, 1, False)
+    research_ratio_claims = research_plan_ratio_claims_text()
+    outpost_watchdog = outpost_order_watchdog_event_text()
     return f'''# Generated by tools/generate_stellar_ai_director_patch.py.
+# Monthly economy/fleet safety plus persistent colony build-out commitments.
 # Uses vanilla `set_mia = mia_return_home` only after a two-pulse stranded-fleet gate.
 
 namespace = staid_economy_safety
@@ -11937,6 +13152,8 @@ event = {{
 \t\t\t}}
 \t\t\tcountry_event = {{ id = staid_economy_safety.2 }}
 \t\t\tcountry_event = {{ id = staid_economy_safety.3 }}
+\t\t\tcountry_event = {{ id = staid_economy_safety.4 }}
+\t\t\tcountry_event = {{ id = staid_economy_safety.5 }}
 \t\t}}
 \t}}
 }}
@@ -11993,6 +13210,85 @@ country_event = {{
 \t\t}}
 \t}}
 }}
+
+country_event = {{
+\tid = staid_economy_safety.4
+\thide_window = yes
+\tis_triggered_only = yes
+
+\timmediate = {{
+\t\t# Preserve existing research roles as explicit plan commitments.
+\t\tevery_owned_planet = {{
+\t\t\tlimit = {{
+\t\t\t\tis_colony = yes
+\t\t\t\tis_capital = no
+\t\t\t\tOR = {{
+\t\t\t\t\thas_designation = col_research
+\t\t\t\t\thas_designation = col_habitat_research
+\t\t\t\t\thas_designation = col_ring_research
+\t\t\t\t}}
+\t\t\t}}
+\t\t\tset_planet_flag = staid_research_plan_claimed
+\t\t}}
+\t\tevery_owned_planet = {{
+\t\t\tlimit = {{
+\t\t\t\tis_capital = yes
+\t\t\t\thas_planet_flag = staid_research_plan_claimed
+\t\t\t}}
+\t\t\tremove_planet_flag = staid_research_plan_claimed
+\t\t}}
+
+{research_claim_steps}
+{research_ratio_claims}
+\t}}
+}}
+
+{outpost_watchdog}
+'''
+
+
+def outpost_order_watchdog_event_text() -> str:
+    return '''# Generic fallback for any modded or vanilla system that leaves an AI
+# constructor carrying the same non-progressing outpost order for a full year.
+# During the one-year backoff, reissued outpost orders are cleared monthly;
+# mining, research, and other constructor orders remain available.
+country_event = {
+\tid = staid_economy_safety.5
+\thide_window = yes
+\tis_triggered_only = yes
+
+\timmediate = {
+\t\tevery_owned_fleet = {
+\t\t\tlimit = { has_fleet_order = build_orbital_station_order }
+\t\t\tif = {
+\t\t\t\tlimit = { has_fleet_flag = staid_outpost_retry_backoff }
+\t\t\t\tclear_orders = yes
+\t\t\t\tset_variable = { which = staid_outpost_order_months value = 0 }
+\t\t\t}
+\t\t\telse = {
+\t\t\t\tchange_variable = { which = staid_outpost_order_months value = 1 }
+\t\t\t\tif = {
+\t\t\t\t\tlimit = {
+\t\t\t\t\t\tcheck_variable = { which = staid_outpost_order_months value >= 12 }
+\t\t\t\t\t}
+\t\t\t\t\tclear_orders = yes
+\t\t\t\t\tset_variable = { which = staid_outpost_order_months value = 0 }
+\t\t\t\t\tset_timed_fleet_flag = {
+\t\t\t\t\t\tflag = staid_outpost_retry_backoff
+\t\t\t\t\t\tdays = 360
+\t\t\t\t\t}
+\t\t\t\t}
+\t\t\t}
+\t\t}
+\t\tevery_owned_fleet = {
+\t\t\tlimit = {
+\t\t\t\tNOT = { has_fleet_order = build_orbital_station_order }
+\t\t\t\thas_variable = staid_outpost_order_months
+\t\t\t}
+\t\t\tset_variable = { which = staid_outpost_order_months value = 0 }
+\t\t}
+\t}
+}
 '''
 
 
@@ -12011,6 +13307,20 @@ staid_shipyard_payoff_stockpile_alloys = {thresholds["shipyard_stockpile_alloys"
 staid_shipyard_payoff_income_alloys = {thresholds["shipyard_income_alloys"]}
 staid_roi_matrix_eligible_rows = {thresholds["eligible_roi_rows"]}
 staid_safe_deficit_runway_months = 24
+
+# Director-owned market valuation. Do not depend on identifiers from the
+# separately authored Stellar AI mod.
+staid_market_sell_value = {{
+\tcomplex_trigger_modifier = {{
+\t\ttrigger = market_resource_price
+\t\tparameters = {{
+\t\t\tresource = $RESOURCE$
+\t\t\tamount = $AMOUNT$
+\t\t\ttrade_type = market_sell
+\t\t}}
+\t\tmode = add
+\t}}
+}}
 '''
 
 
@@ -12077,13 +13387,12 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
   their owner's space while the homeland is under wartime pressure.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
-- Adds a planetary-capacity economic subplan plus direct research lab and
-  habitat science district construction weights for safe mineral/energy-backed
-  tall growth without broad job automation rewrites or trade logistics collapse.
-- Adds targeted More Arcologies naval-administration building pressure for
-  `building_navel_base` and `building_navel_command` through the dataset
-  job-pressure generator; broad zone, colony-designation, and Rogue Council
-  rewrites remain excluded.
+- Adds planetary-capacity and safe research economic-plan demand while leaving
+  vanilla designation/zone eligibility to select legal research infrastructure.
+- Adds hard AI eligibility for More Arcologies `building_navel_base` and
+  `building_navel_command`: naval expansion must be strategically ready and
+  research-designated worlds are excluded. Inactive building `ai_weight`
+  modifiers are not used as plan enforcement.
 - Adds mandatory unlock-research pressure so AI empires keep pushing
   engineering/research/unity toward Mega Engineering, Mega Shipyard,
   planetcraft/systemcraft chains, NSC hulls, and ESC component tiers.
@@ -12099,7 +13408,7 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Adds threat/economy-gated starbase defense pressure for copied safe parent
   starbase modules and buildings while keeping Starbase Extended Waystation
   section and ship/component surfaces outside Director ownership.
-- Records 4.4.5 Nomad/Arkship compatibility as a targeted opening-research
+- Records 4.4.4 Nomad/Arkship compatibility as a targeted opening-research
   lane plus normal-empire-only high-scale pressure; the Director does not own
   Nomad colony types, Arkship ship sizes, Arkship component templates,
   Waystation sections, Waylines, Contracts, or Operational Reserve objects.
@@ -12248,7 +13557,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Market Cap-Breaker Policy",
             "",
-            "The Stellar AI parity-reference monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in marketable resources: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, nanites, and verified market-priced Gigas sentient metal. Alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.",
+            "The Stellar AI parity-reference monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in resources with both a finite stockpile maximum and verified market tradability: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, and Gigas sentient metal. Nanites, alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.",
             "",
             "## Stranded-Fleet Recovery Policy",
             "",
@@ -12264,7 +13573,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Planetary-Capacity Policy",
             "",
-            "Expanded planet and building capacity is covered through a safe country-level economic-plan subplan plus direct research infrastructure overrides for Stellar AI research labs and the vanilla habitat science district. The policy raises mineral/energy, pop, and empire-size targets only when recovery and short-runway deficit gates are clear, then pushes labs/habitat science with copied source objects and Director-owned coefficients.",
+            "Expanded planet and building capacity is covered through safe country-level economic-plan demand. Research demand is enabled only behind consumer-goods, energy, and deficit runway gates; vanilla research-zone eligibility remains the hard construction boundary. More Arcologies naval buildings use explicit AI eligibility that excludes research-designated worlds.",
             "",
             "## NSC3/ESC Design Policy",
             "",
@@ -12281,7 +13590,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "- Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.",
             "- Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.",
             "- Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.",
-            "- Direct research infrastructure overrides are emitted for copied Stellar AI research labs and the habitat science district; broad job automation and generic planet-building rewrites remain deferred.",
+            "- Research infrastructure uses safe economic-plan demand plus vanilla research-zone eligibility; inactive building `ai_weight` is not treated as the primary construction planner.",
             "- ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.",
             "- Exotic Gigas superprojects remain outside the main decision path until the core reserve/commit/payoff loop is observer-tested, but their special-resource budget objects are gated by Director survival/recovery state.",
         ]
@@ -12340,7 +13649,8 @@ def load_order_note_text(playset: dict[str, Any]) -> str:
             "- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally defines the Director-owned `alloys_expenditure_megastructures` budget using Stellar AI parity evidence without requiring Stellar AI to load.",
             "- `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally overrides Gigas `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures` budgets.",
             "- `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets.",
-            "- `common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt` intentionally copies selected safe parent buildings, including More Arcologies naval-administration buildings, when the source object is present in the active indexed mod stack.",
+            "- `common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt` maps selected nonmilitary parent buildings to `ai_resource_production`; military-capacity objects are excluded from this generated pressure path.",
+            "- `common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt` narrowly overrides More Arcologies naval administration buildings with AI strategic-readiness and research-world exclusion gates.",
             "- Additive scripted triggers, script values, and economic-plan subplans use the `staid_` namespace and should not conflict with parent object IDs.",
         ]
     )
@@ -12359,8 +13669,7 @@ def conflicts_note_text() -> str:
 - `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt` and `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` intentionally replace copied AP/tradition objects with Director route AI weights.
 - `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` intentionally replaces copied Gigas/vanilla-compatible megastructure starts for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft priority.
 - `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` intentionally replaces copied ESC starbase reactor support with Director crisis-starbase pressure.
-- `common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt` intentionally replaces copied Stellar AI research lab, institute, supercomputer, and archaeostudies objects with Director research-throughput construction coefficients while preserving parent rare-resource guards.
-- `common/districts/zzzz_staid_06_research_infrastructure_districts.txt` intentionally replaces copied vanilla `district_hab_science` with Director crowded-tall habitat research construction weight.
+- `common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt` narrowly replaces More Arcologies `building_navel_base` and `building_navel_command` so AI naval-capacity construction requires strategic readiness and cannot consume research-world slots.
 
 ## Expected Additive Surfaces
 
@@ -12370,6 +13679,8 @@ def conflicts_note_text() -> str:
 - `common/script_values/zzz_staid_threat_response_values.txt`
 - `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`
 - `events/zzz_staid_market_and_fleet_safety_events.txt`
+- `common/on_actions/zzzz_staid_boss_defeat_escalation_on_actions.txt`
+- `events/zzzz_staid_boss_defeat_escalation_events.txt`
 - `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`
 - `common/on_actions/zzz_staid_threat_response_on_actions.txt`
 - `events/zzz_staid_threat_response_events.txt`
@@ -12391,7 +13702,7 @@ def conflicts_note_text() -> str:
 ## Strategic V2 Compatibility Reviews
 
 - Starbase Extended review: Director-owned starbase defense pressure is limited to copied safe module/building surfaces and generated economy gates. Parent-owned Waystation sections, ship sizes, component templates, and related starbase/ship loader surfaces remain out of scope because the active conflict matrix shows high-risk parent conflicts there.
-- Planetary Diversity / More Arcologies review: `building_navel_base` and `building_navel_command` are now intentional copied building overrides through the dataset job-pressure generator. `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites are blocked until their AI, UI, and load-order semantics are proven.
+- Planetary Diversity / More Arcologies review: `building_navel_base` and `building_navel_command` use narrow hard AI eligibility, not dataset weight pressure. `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked until their AI, UI, and load-order semantics are proven.
 - Nomad/Arkship review: Director has one additive targeted opening route for Arkship research and otherwise keeps high-scale pressure normal-empire-only. It does not override Nomad colony types, Arkship ship sizes, Arkship component templates, Waystation sections, Waylines, Contracts, or Operational Reserve objects.
 
 ## Review Rules
@@ -12559,7 +13870,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.",
         "- User-directed 2026-07-08 aggression tuning keeps local war aggression above vanilla (`AI_AGGRESSIVENESS_BASE = 50`) but restores vanilla distance penalty (`WAR_DECLARATION_MALUS = 0.05`) and caps war declaration range at 200 jumps to avoid inefficient galaxy-crossing wars.",
         "- Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.",
-        "- Hostile space fauna clearance is tracked as a dedicated follow-up lane: cheap crystalline/amoeba/drone-style blockers should be cleared early for territory, resources, and event research, while high-risk leviathan targets need separate classification.",
+        "- Hostile space fauna uses the engine's separate boss readiness lane: ordinary wars retain `ENEMY_FLEET_POWER_MULT = 0.55`, while boss and ultra-boss readiness are 100000 and 500000 military power. Confirmed Rogue Eeloo and Legendary Guardian fleets escalate to ultra-boss after defeating an AI fleet.",
         "",
         "## Unlock-Research Policy",
         "",
@@ -12575,17 +13886,15 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "## Planetary-Capacity Policy",
         "",
         "- Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.",
-        "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.5 rejects in active economic-plan files.",
-        "- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.",
-        "- Research labs keep a hard zero gate unless `staid_research_construction_priority_ready` is true, which allows full runway, high-scale surplus, or under-curve research with minimum CG/energy runway; they then add extra pressure for `staid_research_under_curve`, `staid_opening_route_research_priority`, and `staid_surplus_sink_pressure`. Habitat science districts keep the tall-capacity gate and add under-curve research pressure.",
-        "- Pop assembly buildings keep the `staid_pop_assembly_snowball_ready` hard gate, then add path-specific pressure for valid robot/synth, machine, clone/biological, hive, and progenitor-hive assembly routes.",
+        "- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which the current Stellaris 4.4.4 economic-plan surface rejects.",
+        "- Safe research economic-plan demand is gated by `staid_research_construction_priority_ready`; vanilla research-zone eligibility remains the hard building boundary. The Director no longer emits research or pop-assembly building `ai_weight` files as if they were an authoritative planner.",
         "- Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.",
         "- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.",
         "- Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.",
         "- Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.",
         "- Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting, Discovery/Diplomacy/AP support, and cooperative diplomatic stance only; direct research-agreement action and personality rewrites remain gated until separately proven.",
-        "- Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.",
-        "- More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` are copied through the dataset job-pressure path, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked until their runtime and UI semantics are proven.",
+        "- Planetary Diversity outpost decisions retain source-owned availability and Director decision weights; obsolete generated PD building-weight and role-trigger files are removed.",
+        "- More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` use hard AI strategic-readiness and research-world exclusion gates, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked.",
         "- Arkship carrier planets are excluded from copied Planetary Diversity outpost decisions, and later high-scale planetary pressure remains normal-empire-only where the Nomad/Arkship audit found no safe shared surface.",
         "",
         "## Nomad/Arkship Compatibility Policy",
@@ -12624,6 +13933,69 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
     return "\n".join(lines) + "\n"
 
 
+COLONY_TYPE_PLANET_ONLY_FLAG_OPERATIONS = frozenset(
+    {
+        "has_planet_flag",
+        "set_planet_flag",
+        "remove_planet_flag",
+    }
+)
+
+
+def generated_colony_root_scope_errors(mod_root: Path = MOD_ROOT) -> list[str]:
+    errors: list[str] = []
+    colony_root_surfaces = tuple(
+        path
+        for path in (
+            mod_root / "common" / "colony_types",
+            mod_root / "common" / "districts",
+        )
+        if path.exists()
+    )
+    if not colony_root_surfaces:
+        return errors
+
+    scope_switches = {
+        "planet": "planet",
+        "owner": "country",
+        "owner_or_space_owner": "country",
+        "space_owner": "country",
+        "solar_system": "galactic_object",
+        "fleet": "fleet",
+        "ship": "ship",
+        "leader": "leader",
+        "pop": "pop",
+    }
+
+    def walk(block: PDXBlock, scope: str, file_path: Path, object_id: str, trail: tuple[str, ...]) -> None:
+        for assignment in block_assignments(block):
+            key = assignment.key
+            next_trail = (*trail, key)
+            if key in COLONY_TYPE_PLANET_ONLY_FLAG_OPERATIONS and scope != "planet":
+                relative = file_path.relative_to(mod_root).as_posix()
+                errors.append(
+                    f"{relative}: object {object_id} uses planet-only {key} from {scope} scope at "
+                    f"{'/'.join(next_trail)}; wrap it in planet = {{ ... }}"
+                )
+            if isinstance(assignment.value, PDXBlock):
+                normalized_key = key[:-1] if key.endswith("?") else key
+                child_scope = scope_switches.get(normalized_key, scope)
+                walk(assignment.value, child_scope, file_path, object_id, next_trail)
+
+    for surface_root in colony_root_surfaces:
+        for file_path in sorted(surface_root.rglob("*.txt")):
+            try:
+                parsed = parse_file(file_path)
+            except PDXParseError as exc:
+                errors.append(str(exc))
+                continue
+            for assignment in block_assignments(parsed):
+                if assignment.key.startswith("@") or not isinstance(assignment.value, PDXBlock):
+                    continue
+                walk(assignment.value, "colony", file_path, assignment.key, ())
+    return errors
+
+
 def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
     errors: list[str] = []
     errors.extend(stale_stellar_ai_dependency_errors(MOD_ROOT, RESEARCH_ROOT))
@@ -12653,6 +14025,7 @@ def validate_generated_patch(snapshot_root: Path = SNAPSHOT_ROOT) -> list[str]:
             f"{MOD_ROOT / row['generated_file']}:{row['line']}: unresolved source-local variable {row['variable']}"
         )
     errors.extend(validate_staid_scripted_trigger_cycles(MOD_ROOT))
+    errors.extend(generated_colony_root_scope_errors(MOD_ROOT))
     for file_path in generated_files:
         try:
             parsed = parse_file(file_path)

@@ -250,7 +250,16 @@ diplomatic_stance = {
 				factor = 3.0
 				has_country_flag = fallen_empire_hive_control
 			}
-			modifier = { factor = 12 staid_opening_route_research_priority = yes NOT = { staid_security_existential = yes } }
+			modifier = {
+				factor = 2
+				staid_is_opening_phase = yes
+				staid_opening_any_research_route = yes
+				NOT = { staid_security_existential = yes }
+				NOT = { staid_militarist_conquest_strategy = yes }
+				NOT = { has_ai_personality_behaviour = conqueror }
+				NOT = { has_ai_personality_behaviour = subjugator }
+				num_rivals = 0
+			}
 		}
 	}
 

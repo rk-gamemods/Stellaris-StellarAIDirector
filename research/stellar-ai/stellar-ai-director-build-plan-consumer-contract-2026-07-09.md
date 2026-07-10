@@ -2,7 +2,8 @@
 
 Date: 2026-07-09
 
-Target game version: Stellaris PC 4.4.5 stable/current local install.
+Primary development target: Stellaris PC 4.4.5. Required compatibility/runtime
+baseline: pinned Pegasus v4.4.4 (5505).
 
 Scope: static source-backed contract for consuming the generated Stellar AI
 Director economic/building model. This note does not prove runtime behavior and
@@ -78,22 +79,32 @@ Current Director evidence:
    - Treat full `basic_economy_plan` replacement as high-risk and intentional;
      the current Director already does this as a mod-stack-specific override.
 
-2. Colony automation is the direct consumer surface for designation-specific
-   construction ordering.
-   - If generated later, a Director `common/colony_automation` file should use
-     `available`, `prio_districts`, `prio_zones`, and ordered `buildings` lists.
-   - Use readiness rows to decide which buildings may appear in these lists.
-   - Do not assume a colony-automation building list can express demolition,
-     refactoring, or temporary replacement behavior; the vanilla examples show
-     construction ordering, not a refactor command language.
+2. Colony automation is not a proven AI-empire construction consumer.
+   - Current evidence identifies `common/colony_automation` as Planetary and
+     Sector Automation with designation-specific `available`, `prio_districts`,
+     `prio_zones`, and ordered `buildings` lists.
+   - No inspected source proves AI-controlled empires consume those lists as a
+     strict build-plan whitelist. Do not generate Director colony automation as
+     an AI strategy fix without a current vanilla call site or runtime trace.
+   - The syntax remains useful evidence for player automation ordering only.
 
 3. Building `ai_weight` is not a valid primary consumer surface for this model
    while economic plans are active.
    - Do not emit per-building `ai_weight` as the main strategy channel.
    - Only revisit building `ai_weight` if a future source-backed design disables
-     or replaces economic-plan usage for the relevant behavior.
+   or replaces economic-plan usage for the relevant behavior.
 
-4. Building availability gates are hard filters, not scoring hints.
+4. Construction scoring fields are distinct from building `ai_weight`.
+   - `ai_resource_production` maps an object's output into economic-plan demand.
+   - `ai_weight_coefficient` and `additional_ai_weight` participate in
+     construction scoring and must preserve source intent unless a narrow,
+     source-backed override owns them.
+   - Global construction defines such as deficit, focus, resource-production,
+     naval-cap, opportunity-cost, and build-threshold multipliers shape the
+     computed score. They are secondary policy inputs, not a strict colony
+     whitelist.
+
+5. Building availability gates are hard filters, not scoring hints.
    - `potential` controls whether the building is displayed in the construction
      list.
    - `allow` controls whether construction is permitted or grayed out.
@@ -103,7 +114,7 @@ Current Director evidence:
    - `can_build = no` objects are not build-plan candidates even when their
      benefits are useful to the accounting model.
 
-5. Destroy, conversion, and demolition are not discretionary replacement proof.
+6. Destroy, conversion, and demolition are not discretionary replacement proof.
    - `destroy_trigger` and `convert_to` are source-backed game-driven state
      transitions when their triggers fire.
    - `can_demolish` describes whether a building is demolishable, but the
@@ -114,7 +125,7 @@ Current Director evidence:
      no-regret unless the consumer adds a separate source-backed replacement
      mechanism or runtime proof.
 
-6. Fallback policy is conservative by default.
+7. Fallback policy is conservative by default.
    - A fallback may be emitted when it is base/scripted available, same-role,
      terminal or intentionally nonterminal, and not blocked by unresolved
      accounting rows.
@@ -126,7 +137,7 @@ Current Director evidence:
      `runtime_required`. Until that column exists, treat fallback rows as
      conservative suggestions only.
 
-7. Benefit taxonomy rows are not all directly scorable.
+8. Benefit taxonomy rows are not all directly scorable.
    - `numeric_preserved` rows may feed formulas only after their class-specific
      consumer rule is defined.
    - `detected_unvalued` and `not_observed` rows must remain detected-only
@@ -135,7 +146,7 @@ Current Director evidence:
      targets. Non-resource benefits need explicit class rules before they affect
      construction ordering.
 
-8. Blocker accounting is a stop sign for final consumption.
+9. Blocker accounting is a stop sign for final consumption.
    - Unresolved variables and unvalued benefit formulas must either be resolved,
      explicitly excluded, or policy-classified before their objects become final
      generated build-plan facts.
@@ -160,8 +171,13 @@ rules deterministically:
   path is attached.
 - Keep economic-plan subplan names stable so additive merges and targeted
   overwrites are predictable.
-- Validate that every generated colony automation building ID exists in the
-  modeled building dataset and has a source-backed availability phase.
+- Do not emit AI-strategy `common/colony_automation` files until an AI-empire
+  consumer is source-proven. If player automation support is intentionally
+  added later, validate every referenced ID and label that scope explicitly.
+- Preserve parent `ai_weight_coefficient` and `additional_ai_weight` unless a
+  narrow override documents the active construction-score contract.
+- Require military-capacity objects to use explicit hard eligibility when they
+  can consume specialized economic-world slots.
 
 ## Milestone Status
 
@@ -172,9 +188,12 @@ rules deterministically:
 - M13 answer: fallback buildings are source-backed candidates, but their
   replacement lifetime is conservative. Do not assume temporary fallback
   replacement from vanilla colony automation syntax alone.
-- M15 answer: economic plans consume strategic resource pressure; colony
-  automation consumes designation-specific construction ordering; building
-  `ai_weight` is not the primary consumer while economic plans are active.
+- M15 corrected answer: economic plans consume strategic resource pressure;
+  `ai_resource_production`, coefficients/additive score fields, designation
+  affinity, and global construction defines shape candidate scores; hard
+  `potential`/`allow` gates define eligibility. Building `ai_weight` is inactive
+  with economic plans, and no strict AI-empire colony-automation whitelist has
+  been proven.
 
 ## Open Work
 
@@ -186,3 +205,8 @@ rules deterministically:
   unresolved consumer statuses.
 - Do not tune build priorities from rows tied to the 396 remaining blockers.
   Finish variable resolution and benefit-formula policy first.
+- Reconstruct the active construction-score contract from current vanilla
+  defines and object fields, then map each generated dataset column to a proven
+  consumer or mark it evidence-only.
+- Prove or reject any AI-empire use of `common/colony_automation` through a
+  current vanilla reference or an explicitly approved runtime trace.

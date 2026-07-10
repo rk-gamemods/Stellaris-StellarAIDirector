@@ -80,7 +80,7 @@ Stellaris 4.4 treats `trade` as a standard advanced resource and the market reso
 
 ## Market Cap-Breaker Policy
 
-The Stellar AI parity-reference monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in marketable resources: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, nanites, and verified market-priced Gigas sentient metal. Alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.
+The Stellar AI parity-reference monthly market script sells only a small bounded number of surplus batches. The Director adds a late-loading monthly safety event for large positive-income overflow in resources with both a finite stockpile maximum and verified market tradability: minerals, food, consumer goods, volatile motes, exotic gases, rare crystals, Zro, dark matter, and Gigas sentient metal. Nanites, alloys, energy, unity, negative mass, and ambiguous non-market Gigas construction resources are intentionally excluded from direct forced selling.
 
 ## Stranded-Fleet Recovery Policy
 
@@ -96,7 +96,7 @@ Defensive starbase investment is expressed as additive `basic_economy_plan` subp
 
 ## Planetary-Capacity Policy
 
-Expanded planet and building capacity is covered through a safe country-level economic-plan subplan plus direct research infrastructure overrides for Stellar AI research labs and the vanilla habitat science district. The policy raises mineral/energy, pop, and empire-size targets only when recovery and short-runway deficit gates are clear, then pushes labs/habitat science with copied source objects and Director-owned coefficients.
+Expanded planet and building capacity is covered through safe country-level economic-plan demand. Research demand is enabled only behind consumer-goods, energy, and deficit runway gates; vanilla research-zone eligibility remains the hard construction boundary. More Arcologies naval buildings use explicit AI eligibility that excludes research-designated worlds.
 
 ## NSC3/ESC Design Policy
 
@@ -113,6 +113,6 @@ The V1 threat-response feature adds observer opinion, timed flags, and a capped 
 - Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.
 - Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.
 - Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.
-- Direct research infrastructure overrides are emitted for copied Stellar AI research labs and the habitat science district; broad job automation and generic planet-building rewrites remain deferred.
+- Research infrastructure uses safe economic-plan demand plus vanilla research-zone eligibility; inactive building `ai_weight` is not treated as the primary construction planner.
 - ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 - Exotic Gigas superprojects remain outside the main decision path until the core reserve/commit/payoff loop is observer-tested, but their special-resource budget objects are gated by Director survival/recovery state.

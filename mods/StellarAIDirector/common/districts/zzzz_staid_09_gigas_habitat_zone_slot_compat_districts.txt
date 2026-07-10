@@ -189,12 +189,12 @@ district_giga_hab_science = {
 
 	show_on_uncolonized = {
 		uses_district_set = giga_habitat
-		has_planet_flag = giga_interstellar_hab
+		planet = { has_planet_flag = giga_interstellar_hab }
 	}
 
 	potential = {
 		uses_district_set = giga_habitat
-		has_planet_flag = giga_interstellar_hab
+		planet = { has_planet_flag = giga_interstellar_hab }
 	}
 
 	resources = {
@@ -215,10 +215,10 @@ district_giga_hab_science = {
 	}
 
 	### Interstellar Habitat
-	triggered_planet_modifier = { potential = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = no } }					modifier = { job_giga_interstellar_researcher_add = 4 } }
-	triggered_planet_modifier = { potential = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = yes } }					modifier = { job_giga_interstellar_researcher_drone_add = 4 } }
-	triggered_desc = {				trigger = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = no } }					text = "job_giga_interstellar_researcher_effect_desc" }
-	triggered_desc = {				trigger = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = yes } }					text = "job_giga_interstellar_researcher_drone_effect_desc" }
+	triggered_planet_modifier = { potential = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = no } }					modifier = { job_giga_interstellar_researcher_add = 4 } }
+	triggered_planet_modifier = { potential = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = yes } }					modifier = { job_giga_interstellar_researcher_drone_add = 4 } }
+	triggered_desc = {				trigger = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = no } }					text = "job_giga_interstellar_researcher_effect_desc" }
+	triggered_desc = {				trigger = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = yes } }					text = "job_giga_interstellar_researcher_drone_effect_desc" }
 }
 
 district_giga_hab_scavenger = {
@@ -230,12 +230,12 @@ district_giga_hab_scavenger = {
 
 	show_on_uncolonized = {
 		uses_district_set = giga_habitat
-		has_planet_flag = giga_interstellar_hab
+		planet = { has_planet_flag = giga_interstellar_hab }
 	}
 
 	potential = {
 		uses_district_set = giga_habitat
-		has_planet_flag = giga_interstellar_hab
+		planet = { has_planet_flag = giga_interstellar_hab }
 	}
 
 	resources = {
@@ -254,10 +254,10 @@ district_giga_hab_scavenger = {
 	triggered_planet_modifier = { modifier = { planet_housing_add = 200 } }
 
 	### Interstellar Habitat
-	triggered_planet_modifier = { potential = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = yes } }	modifier = { job_giga_interstellar_scavenger_drone_add = 2 } }
-	triggered_planet_modifier = { potential = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = no } }	modifier = { job_giga_interstellar_scavenger_add = 2 } }
-	triggered_desc = {				trigger = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = yes } }	text = "job_giga_interstellar_scavenger_drone_effect_desc" }
-	triggered_desc = {				trigger = { has_planet_flag = giga_interstellar_hab exists = owner owner = { is_gestalt = no } }	text = "job_giga_interstellar_scavenger_effect_desc" }
+	triggered_planet_modifier = { potential = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = yes } }	modifier = { job_giga_interstellar_scavenger_drone_add = 2 } }
+	triggered_planet_modifier = { potential = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = no } }	modifier = { job_giga_interstellar_scavenger_add = 2 } }
+	triggered_desc = {				trigger = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = yes } }	text = "job_giga_interstellar_scavenger_drone_effect_desc" }
+	triggered_desc = {				trigger = { planet = { has_planet_flag = giga_interstellar_hab } exists = owner owner = { is_gestalt = no } }	text = "job_giga_interstellar_scavenger_effect_desc" }
 }
 
 # Source: common/districts/giga_orbital.txt

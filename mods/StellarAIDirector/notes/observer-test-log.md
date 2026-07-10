@@ -5,10 +5,10 @@ Selected collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary 
 ## Repeatable Setup
 
 - Galaxy size: Tiny Irony-launched smoke save.
-- AI count: inferred from save country count (66 initialized countries).
+- AI count: inferred from save country count (89 initialized countries).
 - Difficulty: Cadet smoke setup from launch run notes.
 - Crisis settings: inherited selected playset defaults for the smoke save.
-- Mod order evidence: required parents are recorded in `notes/load-order.md`; save mod list contains 117 mods.
+- Mod order evidence: required parents are recorded in `notes/load-order.md`; save mod list contains 116 mods.
 
 ## Historical Smoke Checkpoints
 
@@ -37,11 +37,11 @@ Selected collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary 
 
 Short Irony-launched save summary: `stellar-ai-director-observer-smoke-save-summary-2026-07-04.md`.
 
-- Save date: 2202.07.01.
+- Save date: 2227.07.01.
 - Director listed in save mod list: True.
-- Short smoke passes: True.
-- Player metrics: `{"economy_power": 540.44128, "empire_size": 51.0, "fleet_size": 15.0, "navy_coverage": 0.58823, "num_sapient_pops": 5276.0, "tech_power": 277.5, "used_naval_capacity": 15.0}`.
-- Player monthly income: `{"alloys": 15.2, "consumer_goods": 62.602, "energy": 166.524, "engineering_research": 16.728, "food": 119.737, "influence": 4.176, "minerals": 68.246, "physics_research": 21.228, "society_research": 16.728, "trade": 152.165, "unity": 43.527}`.
+- Short smoke passes: False.
+- Player metrics: `{}`.
+- Player monthly income: `{}`.
 - High-ROI path observed: False.
 
 This short-smoke evidence is retained as historical context only. Generated

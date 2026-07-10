@@ -58,13 +58,12 @@ Missing required Steam parents during generation: none.
   their owner's space while the homeland is under wartime pressure.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
-- Adds a planetary-capacity economic subplan plus direct research lab and
-  habitat science district construction weights for safe mineral/energy-backed
-  tall growth without broad job automation rewrites or trade logistics collapse.
-- Adds targeted More Arcologies naval-administration building pressure for
-  `building_navel_base` and `building_navel_command` through the dataset
-  job-pressure generator; broad zone, colony-designation, and Rogue Council
-  rewrites remain excluded.
+- Adds planetary-capacity and safe research economic-plan demand while leaving
+  vanilla designation/zone eligibility to select legal research infrastructure.
+- Adds hard AI eligibility for More Arcologies `building_navel_base` and
+  `building_navel_command`: naval expansion must be strategically ready and
+  research-designated worlds are excluded. Inactive building `ai_weight`
+  modifiers are not used as plan enforcement.
 - Adds mandatory unlock-research pressure so AI empires keep pushing
   engineering/research/unity toward Mega Engineering, Mega Shipyard,
   planetcraft/systemcraft chains, NSC hulls, and ESC component tiers.
@@ -80,7 +79,7 @@ Missing required Steam parents during generation: none.
 - Adds threat/economy-gated starbase defense pressure for copied safe parent
   starbase modules and buildings while keeping Starbase Extended Waystation
   section and ship/component surfaces outside Director ownership.
-- Records 4.4.5 Nomad/Arkship compatibility as a targeted opening-research
+- Records 4.4.4 Nomad/Arkship compatibility as a targeted opening-research
   lane plus normal-empire-only high-scale pressure; the Director does not own
   Nomad colony types, Arkship ship sizes, Arkship component templates,
   Waystation sections, Waylines, Contracts, or Operational Reserve objects.

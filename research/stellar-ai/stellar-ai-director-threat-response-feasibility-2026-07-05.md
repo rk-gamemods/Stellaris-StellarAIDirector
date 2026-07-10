@@ -1,6 +1,7 @@
 # Stellar AI Director Threat Response Feasibility
 
-Target game version: Stellaris PC 4.4.5 stable/current local install.
+Primary development target: Stellaris PC 4.4.5.
+Required compatibility/runtime baseline: installed Pegasus v4.4.4 (5505).
 Local install inspected: `C:/Steam/steamapps/common/Stellaris`.
 
 ## Verified Primitives

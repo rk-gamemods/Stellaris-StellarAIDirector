@@ -8,9 +8,6 @@ basic_economy_plan = {
 	ai_weight = { weight = 5000 }
 
 	income = {
-		physics_research = 400
-		society_research = 400
-		engineering_research = 600
 		alloys = 120
 		consumer_goods = 150
 		food = 60
@@ -20,10 +17,18 @@ basic_economy_plan = {
 		trade = 75
 	}
 
-	focus = {
-		physics_research = 150
-		society_research = 150
-		engineering_research = 250
+	subplan = {
+		optional = yes
+		scaling = yes
+		set_name = "Stellar AI Director safe research baseline"
+		potential = {
+			staid_research_construction_priority_ready = yes
+		}
+		income = {
+			physics_research = 400
+			society_research = 400
+			engineering_research = 600
+		}
 	}
 
 	subplan = {
@@ -31,6 +36,7 @@ basic_economy_plan = {
 		scaling = yes
 		set_name = "Stellar AI Director opening direct research route"
 		potential = {
+			staid_research_construction_priority_ready = yes
 			staid_opening_direct_research = yes
 		}
 		income = {
@@ -47,6 +53,7 @@ basic_economy_plan = {
 		scaling = yes
 		set_name = "Stellar AI Director opening trade to research route"
 		potential = {
+			staid_research_construction_priority_ready = yes
 			staid_opening_trade_to_research = yes
 		}
 		income = {
@@ -63,6 +70,7 @@ basic_economy_plan = {
 		scaling = yes
 		set_name = "Stellar AI Director opening growth to research route"
 		potential = {
+			staid_research_construction_priority_ready = yes
 			OR = {
 				staid_opening_hive_growth_research = yes
 				staid_opening_machine_growth_research = yes
@@ -80,32 +88,538 @@ basic_economy_plan = {
 		}
 	}
 
+	# Relative repair plans require both earned monthly income and an operating
+
+	# float. Buying stockpile on the market cannot clear an unsafe income gate.
+
 	subplan = {
 		scaling = yes
-		set_name = "Stellar AI Director consumer goods runway repair"
+		set_name = "Stellar AI Director energy income repair 0-5"
 		potential = {
-			country_uses_consumer_goods = yes
-			NOT = { staid_consumer_goods_runway_safe = yes }
+			NOT = { staid_energy_runway_safe = yes }
+			num_owned_planets < 6
 		}
 		income = {
-			consumer_goods = 500
-			minerals = 350
-			energy = 250
-			trade = 200
+			energy = 25
 		}
 	}
 
 	subplan = {
 		scaling = yes
-		set_name = "Stellar AI Director food break-even repair"
+		set_name = "Stellar AI Director energy income repair 6-14"
+		potential = {
+			NOT = { staid_energy_runway_safe = yes }
+			num_owned_planets >= 6
+			num_owned_planets < 15
+		}
+		income = {
+			energy = 75
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director energy income repair 15-29"
+		potential = {
+			NOT = { staid_energy_runway_safe = yes }
+			num_owned_planets >= 15
+			num_owned_planets < 30
+		}
+		income = {
+			energy = 150
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director energy income repair 30-49"
+		potential = {
+			NOT = { staid_energy_runway_safe = yes }
+			num_owned_planets >= 30
+			num_owned_planets < 50
+		}
+		income = {
+			energy = 300
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director energy income repair 50+"
+		potential = {
+			NOT = { staid_energy_runway_safe = yes }
+			num_owned_planets >= 50
+		}
+		income = {
+			energy = 600
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director mineral income repair 0-5"
+		potential = {
+			NOT = { staid_mineral_runway_safe = yes }
+			num_owned_planets < 6
+		}
+		income = {
+			minerals = 25
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director mineral income repair 6-14"
+		potential = {
+			NOT = { staid_mineral_runway_safe = yes }
+			num_owned_planets >= 6
+			num_owned_planets < 15
+		}
+		income = {
+			minerals = 75
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director mineral income repair 15-29"
+		potential = {
+			NOT = { staid_mineral_runway_safe = yes }
+			num_owned_planets >= 15
+			num_owned_planets < 30
+		}
+		income = {
+			minerals = 150
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director mineral income repair 30-49"
+		potential = {
+			NOT = { staid_mineral_runway_safe = yes }
+			num_owned_planets >= 30
+			num_owned_planets < 50
+		}
+		income = {
+			minerals = 300
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director mineral income repair 50+"
+		potential = {
+			NOT = { staid_mineral_runway_safe = yes }
+			num_owned_planets >= 50
+		}
+		income = {
+			minerals = 600
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director consumer goods income repair 0-5"
+		potential = {
+			country_uses_consumer_goods = yes
+			NOT = { staid_consumer_goods_runway_safe = yes }
+			num_owned_planets < 6
+		}
+		income = {
+			consumer_goods = 10
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director consumer goods income repair 6-14"
+		potential = {
+			country_uses_consumer_goods = yes
+			NOT = { staid_consumer_goods_runway_safe = yes }
+			num_owned_planets >= 6
+			num_owned_planets < 15
+		}
+		income = {
+			consumer_goods = 25
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director consumer goods income repair 15-29"
+		potential = {
+			country_uses_consumer_goods = yes
+			NOT = { staid_consumer_goods_runway_safe = yes }
+			num_owned_planets >= 15
+			num_owned_planets < 30
+		}
+		income = {
+			consumer_goods = 60
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director consumer goods income repair 30-49"
+		potential = {
+			country_uses_consumer_goods = yes
+			NOT = { staid_consumer_goods_runway_safe = yes }
+			num_owned_planets >= 30
+			num_owned_planets < 50
+		}
+		income = {
+			consumer_goods = 120
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director consumer goods income repair 50+"
+		potential = {
+			country_uses_consumer_goods = yes
+			NOT = { staid_consumer_goods_runway_safe = yes }
+			num_owned_planets >= 50
+		}
+		income = {
+			consumer_goods = 250
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director colony alloy income repair 0-5"
+		potential = {
+			NOT = { staid_alloy_colony_runway_safe = yes }
+			num_owned_planets < 6
+		}
+		income = {
+			alloys = 75
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director colony alloy income repair 6-14"
+		potential = {
+			NOT = { staid_alloy_colony_runway_safe = yes }
+			num_owned_planets >= 6
+			num_owned_planets < 15
+		}
+		income = {
+			alloys = 150
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director colony alloy income repair 15-29"
+		potential = {
+			NOT = { staid_alloy_colony_runway_safe = yes }
+			num_owned_planets >= 15
+			num_owned_planets < 30
+		}
+		income = {
+			alloys = 300
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director colony alloy income repair 30-49"
+		potential = {
+			NOT = { staid_alloy_colony_runway_safe = yes }
+			num_owned_planets >= 30
+			num_owned_planets < 50
+		}
+		income = {
+			alloys = 600
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director colony alloy income repair 50+"
+		potential = {
+			NOT = { staid_alloy_colony_runway_safe = yes }
+			num_owned_planets >= 50
+		}
+		income = {
+			alloys = 1200
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director food operating-float repair 0-5"
 		potential = {
 			country_uses_food = yes
-			NOT = { staid_food_runway_safe = yes }
+			NOT = { staid_food_colony_runway_safe = yes }
+			num_owned_planets < 6
+		}
+		income = {
+			food = 25
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director food operating-float repair 6-14"
+		potential = {
+			country_uses_food = yes
+			NOT = { staid_food_colony_runway_safe = yes }
+			num_owned_planets >= 6
+			num_owned_planets < 15
+		}
+		income = {
+			food = 50
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director food operating-float repair 15-29"
+		potential = {
+			country_uses_food = yes
+			NOT = { staid_food_colony_runway_safe = yes }
+			num_owned_planets >= 15
+			num_owned_planets < 30
+		}
+		income = {
+			food = 100
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director food operating-float repair 30-49"
+		potential = {
+			country_uses_food = yes
+			NOT = { staid_food_colony_runway_safe = yes }
+			num_owned_planets >= 30
+			num_owned_planets < 50
+		}
+		income = {
+			food = 200
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director food operating-float repair 50+"
+		potential = {
+			country_uses_food = yes
+			NOT = { staid_food_colony_runway_safe = yes }
+			num_owned_planets >= 50
+		}
+		income = {
+			food = 400
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director fleet replacement alloy repair 0-9999"
+		potential = {
+			country_uses_bio_ships = no
+			OR = {
+				NOT = { staid_scaled_alloy_fleet_income_safe = yes }
+				NOT = { staid_scaled_alloy_fleet_stockpile_safe = yes }
+			}
+			fleet_power < 10000
+		}
+		income = {
+			alloys = 75
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director fleet replacement alloy repair 10000-49999"
+		potential = {
+			country_uses_bio_ships = no
+			OR = {
+				NOT = { staid_scaled_alloy_fleet_income_safe = yes }
+				NOT = { staid_scaled_alloy_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 10000
+			fleet_power < 50000
+		}
+		income = {
+			alloys = 150
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director fleet replacement alloy repair 50000-199999"
+		potential = {
+			country_uses_bio_ships = no
+			OR = {
+				NOT = { staid_scaled_alloy_fleet_income_safe = yes }
+				NOT = { staid_scaled_alloy_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 50000
+			fleet_power < 200000
+		}
+		income = {
+			alloys = 300
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director fleet replacement alloy repair 200000-499999"
+		potential = {
+			country_uses_bio_ships = no
+			OR = {
+				NOT = { staid_scaled_alloy_fleet_income_safe = yes }
+				NOT = { staid_scaled_alloy_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 200000
+			fleet_power < 500000
+		}
+		income = {
+			alloys = 600
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director fleet replacement alloy repair 500000-999999"
+		potential = {
+			country_uses_bio_ships = no
+			OR = {
+				NOT = { staid_scaled_alloy_fleet_income_safe = yes }
+				NOT = { staid_scaled_alloy_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 500000
+			fleet_power < 1000000
+		}
+		income = {
+			alloys = 1200
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director fleet replacement alloy repair 1000000+"
+		potential = {
+			country_uses_bio_ships = no
+			OR = {
+				NOT = { staid_scaled_alloy_fleet_income_safe = yes }
+				NOT = { staid_scaled_alloy_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 1000000
+		}
+		income = {
+			alloys = 2000
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director bio-ship replacement food repair 0-9999"
+		potential = {
+			country_uses_food = yes
+			country_uses_bio_ships = yes
+			OR = {
+				NOT = { staid_scaled_bioship_food_fleet_income_safe = yes }
+				NOT = { staid_scaled_bioship_food_fleet_stockpile_safe = yes }
+			}
+			fleet_power < 10000
+		}
+		income = {
+			food = 25
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director bio-ship replacement food repair 10000-49999"
+		potential = {
+			country_uses_food = yes
+			country_uses_bio_ships = yes
+			OR = {
+				NOT = { staid_scaled_bioship_food_fleet_income_safe = yes }
+				NOT = { staid_scaled_bioship_food_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 10000
+			fleet_power < 50000
+		}
+		income = {
+			food = 75
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director bio-ship replacement food repair 50000-199999"
+		potential = {
+			country_uses_food = yes
+			country_uses_bio_ships = yes
+			OR = {
+				NOT = { staid_scaled_bioship_food_fleet_income_safe = yes }
+				NOT = { staid_scaled_bioship_food_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 50000
+			fleet_power < 200000
+		}
+		income = {
+			food = 150
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director bio-ship replacement food repair 200000-499999"
+		potential = {
+			country_uses_food = yes
+			country_uses_bio_ships = yes
+			OR = {
+				NOT = { staid_scaled_bioship_food_fleet_income_safe = yes }
+				NOT = { staid_scaled_bioship_food_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 200000
+			fleet_power < 500000
 		}
 		income = {
 			food = 300
-			energy = 100
-			trade = 75
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director bio-ship replacement food repair 500000-999999"
+		potential = {
+			country_uses_food = yes
+			country_uses_bio_ships = yes
+			OR = {
+				NOT = { staid_scaled_bioship_food_fleet_income_safe = yes }
+				NOT = { staid_scaled_bioship_food_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 500000
+			fleet_power < 1000000
+		}
+		income = {
+			food = 600
+		}
+	}
+
+	subplan = {
+		scaling = yes
+		set_name = "Stellar AI Director bio-ship replacement food repair 1000000+"
+		potential = {
+			country_uses_food = yes
+			country_uses_bio_ships = yes
+			OR = {
+				NOT = { staid_scaled_bioship_food_fleet_income_safe = yes }
+				NOT = { staid_scaled_bioship_food_fleet_stockpile_safe = yes }
+			}
+			fleet_power >= 1000000
+		}
+		income = {
+			food = 1000
 		}
 	}
 
@@ -115,11 +629,7 @@ basic_economy_plan = {
 		potential = {
 			years_passed < 50
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			OR = {
-				staid_research_input_runway_safe = yes
-				staid_high_scale_snowball_pressure = yes
-				staid_construction_spenddown_pressure = yes
-			}
+			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			physics_research = 350
@@ -135,11 +645,7 @@ basic_economy_plan = {
 		potential = {
 			years_passed > 44
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			OR = {
-				staid_research_input_runway_safe = yes
-				staid_high_scale_snowball_pressure = yes
-				staid_construction_spenddown_pressure = yes
-			}
+			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			physics_research = 1500
@@ -151,7 +657,6 @@ basic_economy_plan = {
 			unity = 300
 			trade = 150
 		}
-		naval_cap = 600
 	}
 
 	subplan = {
@@ -160,11 +665,7 @@ basic_economy_plan = {
 		potential = {
 			years_passed > 79
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			OR = {
-				staid_research_input_runway_safe = yes
-				staid_high_scale_snowball_pressure = yes
-				staid_construction_spenddown_pressure = yes
-			}
+			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			physics_research = 4500
@@ -176,7 +677,6 @@ basic_economy_plan = {
 			unity = 600
 			trade = 250
 		}
-		naval_cap = 1500
 	}
 
 	subplan = {
@@ -185,11 +685,7 @@ basic_economy_plan = {
 		potential = {
 			years_passed > 119
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			OR = {
-				staid_research_input_runway_safe = yes
-				staid_high_scale_snowball_pressure = yes
-				staid_construction_spenddown_pressure = yes
-			}
+			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			physics_research = 10000
@@ -201,7 +697,6 @@ basic_economy_plan = {
 			unity = 1200
 			trade = 400
 		}
-		naval_cap = 3500
 	}
 
 	subplan = {
@@ -209,6 +704,8 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director pathological snowball reserve"
 		potential = {
 			staid_high_scale_snowball_pressure = yes
+			staid_basic_economy_runway_safe = yes
+			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			physics_research = 20000
@@ -222,7 +719,6 @@ basic_economy_plan = {
 			unity = 2500
 			trade = 1500
 		}
-		naval_cap = 8000
 		pops = 1000000
 	}
 
@@ -231,6 +727,7 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director construction spenddown reserve"
 		potential = {
 			staid_construction_spenddown_pressure = yes
+			staid_basic_economy_runway_safe = yes
 		}
 		income = {
 			minerals = 30000
@@ -238,13 +735,9 @@ basic_economy_plan = {
 			consumer_goods = 6000
 			alloys = 8000
 			food = 2000
-			physics_research = 12000
-			society_research = 12000
-			engineering_research = 18000
 			unity = 5000
 			trade = 3000
 		}
-		naval_cap = 5000
 		pops = 1000000
 	}
 
@@ -263,9 +756,6 @@ basic_economy_plan = {
 			consumer_goods = 2500
 			alloys = 3000
 			food = 1200
-			physics_research = 6000
-			society_research = 6000
-			engineering_research = 9000
 			unity = 2000
 			trade = 1200
 		}
@@ -286,9 +776,6 @@ basic_economy_plan = {
 			energy = 10000
 			consumer_goods = 3000
 			alloys = 4000
-			physics_research = 8000
-			society_research = 8000
-			engineering_research = 12000
 			unity = 2500
 			trade = 1500
 		}
@@ -312,13 +799,9 @@ basic_economy_plan = {
 			energy = 16000
 			consumer_goods = 5000
 			alloys = 7000
-			physics_research = 12000
-			society_research = 12000
-			engineering_research = 18000
 			unity = 4000
 			trade = 2500
 		}
-		naval_cap = 5000
 		pops = 1000000
 	}
 
@@ -340,7 +823,6 @@ basic_economy_plan = {
 			giga_sr_amb_megaconstruction = 10
 			trade = 1000
 		}
-		naval_cap = 4000
 	}
 
 	subplan = {
@@ -593,7 +1075,6 @@ basic_economy_plan = {
 			energy = 300
 			trade = 150
 		}
-		naval_cap = 800
 	}
 
 	subplan = {
@@ -618,7 +1099,6 @@ basic_economy_plan = {
 			physics_research = 450
 			trade = 250
 		}
-		naval_cap = 1200
 	}
 
 	subplan = {
@@ -658,6 +1138,7 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director Planetary Diversity outpost reserve"
 		potential = {
 			staid_planetary_diversity_outpost_investment_ready = yes
+			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			minerals = 800
@@ -682,7 +1163,6 @@ basic_economy_plan = {
 			minerals = 1200
 			trade = 500
 		}
-		naval_cap = 1000
 	}
 
 	subplan = {
@@ -698,6 +1178,5 @@ basic_economy_plan = {
 			minerals = 1800
 			trade = 800
 		}
-		naval_cap = 2000
 	}
 }

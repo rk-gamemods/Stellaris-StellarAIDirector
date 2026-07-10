@@ -9,8 +9,7 @@
 - `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt` and `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` intentionally replace copied AP/tradition objects with Director route AI weights.
 - `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` intentionally replaces copied Gigas/vanilla-compatible megastructure starts for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft priority.
 - `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` intentionally replaces copied ESC starbase reactor support with Director crisis-starbase pressure.
-- `common/buildings/zzzz_staid_06_research_infrastructure_buildings.txt` intentionally replaces copied Stellar AI research lab, institute, supercomputer, and archaeostudies objects with Director research-throughput construction coefficients while preserving parent rare-resource guards.
-- `common/districts/zzzz_staid_06_research_infrastructure_districts.txt` intentionally replaces copied vanilla `district_hab_science` with Director crowded-tall habitat research construction weight.
+- `common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt` narrowly replaces More Arcologies `building_navel_base` and `building_navel_command` so AI naval-capacity construction requires strategic readiness and cannot consume research-world slots.
 
 ## Expected Additive Surfaces
 
@@ -20,6 +19,8 @@
 - `common/script_values/zzz_staid_threat_response_values.txt`
 - `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`
 - `events/zzz_staid_market_and_fleet_safety_events.txt`
+- `common/on_actions/zzzz_staid_boss_defeat_escalation_on_actions.txt`
+- `events/zzzz_staid_boss_defeat_escalation_events.txt`
 - `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`
 - `common/on_actions/zzz_staid_threat_response_on_actions.txt`
 - `events/zzz_staid_threat_response_events.txt`
@@ -41,7 +42,7 @@
 ## Strategic V2 Compatibility Reviews
 
 - Starbase Extended review: Director-owned starbase defense pressure is limited to copied safe module/building surfaces and generated economy gates. Parent-owned Waystation sections, ship sizes, component templates, and related starbase/ship loader surfaces remain out of scope because the active conflict matrix shows high-risk parent conflicts there.
-- Planetary Diversity / More Arcologies review: `building_navel_base` and `building_navel_command` are now intentional copied building overrides through the dataset job-pressure generator. `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites are blocked until their AI, UI, and load-order semantics are proven.
+- Planetary Diversity / More Arcologies review: `building_navel_base` and `building_navel_command` use narrow hard AI eligibility, not dataset weight pressure. `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked until their AI, UI, and load-order semantics are proven.
 - Nomad/Arkship review: Director has one additive targeted opening route for Arkship research and otherwise keeps high-scale pressure normal-empire-only. It does not override Nomad colony types, Arkship ship sizes, Arkship component templates, Waystation sections, Waylines, Contracts, or Operational Reserve objects.
 
 ## Review Rules

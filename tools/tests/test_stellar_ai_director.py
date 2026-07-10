@@ -20,23 +20,32 @@ from stellar_ai_director_lib import (
     EmpireState,
     GENERATED_VERSION_INVENTORY_MD,
     MANUAL_STATIC_VALIDATION_MD,
+    MARKET_CAP_BREAKER_SALES,
     MOD_ROOT,
     MOD_STACK_COMPATIBILITY_MD,
     OBJECT_ATLAS_CSV,
     POLICY_MATRIX_CSV,
     RESEARCH_ROOT,
+    RELATIVE_ECONOMIC_STANDARDS_CSV,
+    RELATIVE_ECONOMIC_STANDARDS_MD,
     SNAPSHOT_ROOT,
     STANDALONE_PARITY_INVENTORY_CSV,
     STANDALONE_PARITY_INVENTORY_MD,
+    STRATEGIC_SUBSYSTEM_AUDIT_CSV,
+    STRATEGIC_SUBSYSTEM_AUDIT_MD,
     SFT_EQUIVALENCE_AUDIT_CSV,
     SFT_EQUIVALENCE_AUDIT_MD,
     STELLARAI_INLINE_SCRIPT_DEPENDENCIES,
+    STANDALONE_AGGRESSION_PERSONALITY_VALUES,
+    STELLARIS_INSTALL_ROOT,
     _collect_job_adds,
+    append_child_block_clause,
     block_assignments,
     collect_generated_conflict_rows,
     collect_generated_file_audit_rows,
     collect_generated_reference_rows,
     collect_object_names,
+    collect_variables,
     economic_valuation_evidence_passes,
     economic_valuation_dataset_passes,
     build_plan_consumer_policy_buildings,
@@ -44,11 +53,14 @@ from stellar_ai_director_lib import (
     build_plan_consumer_policy_selected_objects,
     dataset_job_pressure_override_rows,
     dataset_ai_resource_production_amounts,
+    dataset_job_pressure_family,
+    dataset_job_pressure_weight_block,
     extract_top_level_object_text,
     fresh_economic_valuation_source_facts,
     generated_unresolved_at_variable_rows,
     generate_economic_valuation_dataset,
     generate_mod_files,
+    generated_colony_root_scope_errors,
     generate_object_atlas_artifacts,
     build_plan_consumer_policy_allows_dataset_object,
     build_plan_consumer_policy_selected_object_rows,
@@ -57,12 +69,16 @@ from stellar_ai_director_lib import (
     NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD,
     nonconstruction_economic_valuation_dataset_passes,
     parse_file,
+    parse_numeric,
     parse_pdx,
     resource_waste_pressure,
+    research_plan_target_count,
     research_under_curve,
+    relative_economic_standard_rows,
     forbidden_generated_surface_errors,
     stale_stellar_ai_dependency_errors,
     surplus_sink_pressure,
+    strategic_subsystem_audit_rows,
     validate_staid_scripted_trigger_cycles,
     validate_generated_patch,
     validate_object_atlas_artifacts,
@@ -395,6 +411,15 @@ class GeneratedModValidityTests(unittest.TestCase):
         rows = collect_generated_conflict_rows(MOD_ROOT, SNAPSHOT_ROOT)
         variable_rows = [row for row in rows if row["object_name"].startswith("@")]
         self.assertEqual(variable_rows, [])
+        by_object = {(row["object_type"], row["object_name"]): row for row in rows}
+        for object_key in (
+            ("building", "building_stronghold"),
+            ("building", "building_fortress"),
+            ("colony_type", "col_fortress"),
+            ("colony_type", "col_habitat_fortress"),
+        ):
+            self.assertEqual(by_object[object_key]["parent_has_object"], "yes")
+            self.assertEqual(by_object[object_key]["classification"], "intentional_director_override")
 
     def test_active_stack_economic_valuation_dataset_covers_buildings_zones_and_districts(self):
         rows = generate_economic_valuation_dataset()
@@ -730,6 +755,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         expected_columns = {
             "row_family",
             "consumer_surface",
+            "consumer_proof_status",
             "object_type",
             "object_id",
             "role",
@@ -752,6 +778,24 @@ class GeneratedModValidityTests(unittest.TestCase):
         row_families = {row["row_family"] for row in policy_rows}
         self.assertTrue({"building", "role_target", "benefit_class"}.issubset(row_families))
         self.assertFalse([row for row in policy_rows if not row["consumer_surface"]])
+        self.assertFalse([row for row in policy_rows if not row["consumer_proof_status"]])
+        self.assertFalse([row for row in policy_rows if "colony_automation" in row["consumer_surface"]])
+        self.assertEqual(
+            {
+                row["consumer_surface"]
+                for row in policy_rows
+                if row["row_family"] == "building"
+            },
+            {"building_or_district_ai_resource_production_filter"},
+        )
+        self.assertEqual(
+            {
+                row["consumer_proof_status"]
+                for row in policy_rows
+                if row["row_family"] == "benefit_class"
+            },
+            {"not_consumed"},
+        )
         self.assertFalse([row for row in policy_rows if not row["consumer_modeling_status"]])
         self.assertFalse([row for row in policy_rows if not row["next_action"]])
 
@@ -787,7 +831,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             RESEARCH_CAPACITY_DEVELOPMENT_CSV: 547,
             RESEARCH_CAPACITY_PLAN_CSV: 24,
             RESEARCH_CAPACITY_ROLES_CSV: 247,
-            RESEARCH_CAPACITY_INFRASTRUCTURE_CSV: 1333,
+            RESEARCH_CAPACITY_INFRASTRUCTURE_CSV: 1335,
             RESEARCH_CAPACITY_RESOURCE_COVERAGE_CSV: 21,
             RESEARCH_CAPACITY_READINESS_CSV: 826,
             RESEARCH_CAPACITY_BENEFITS_CSV: 1924,
@@ -873,13 +917,17 @@ class GeneratedModValidityTests(unittest.TestCase):
     def test_dataset_job_pressure_overrides_use_live_valuation_rows(self):
         rows = dataset_job_pressure_override_rows()
         row_ids = {row["object_id"] for row in rows}
+        row_by_id = {row["object_id"]: row for row in rows}
         self.assertGreaterEqual(len(rows), 50)
         self.assertTrue(all(float(row["jobs_created_total_estimate"]) > 0 for row in rows))
         self.assertTrue(all(float(row["roi_2250_to_2350_estimate"]) > 0 for row in rows))
         self.assertIn("consumer_goods_repair", {row["pressure_family"] for row in rows})
+        self.assertNotIn("military_capacity", {row["pressure_family"] for row in rows})
         self.assertIn("building_negative_mass_factory_2", row_ids)
         self.assertIn("building_giga_pcc_scrap_pile", row_ids)
         self.assertIn("building_sentinel_posts", row_ids)
+        self.assertNotIn("building_navel_base", row_ids)
+        self.assertNotIn("building_navel_command", row_ids)
         self.assertNotIn("building_pd_rogue_council", row_ids)
         self.assertTrue(all(row["object_type"] != "zone" for row in rows))
 
@@ -893,21 +941,17 @@ class GeneratedModValidityTests(unittest.TestCase):
             text = file_path.read_text(encoding="utf-8")
             combined_text += text
             self.assertIn("staid_dataset_job_pressure", text)
-            self.assertIn("num_unemployed > 0", text)
-            self.assertIn("free_jobs < 1", text)
-            self.assertIn("ai_weight_coefficient", text)
+            self.assertIn("ai_resource_production = {", text)
             parse_file(file_path)
         self.assertIn("family:consumer_goods_repair", combined_text)
         self.assertIn("building_negative_mass_factory_2", combined_text)
         self.assertIn("building_giga_pcc_scrap_pile", combined_text)
         self.assertIn("building_sentinel_posts", combined_text)
         self.assertNotIn("building_pd_rogue_council", combined_text)
-        self.assertIn("staid_high_scale_snowball_pressure", combined_text)
-        self.assertIn(
-            "owner = { country_uses_consumer_goods = yes NOT = { staid_consumer_goods_runway_safe = yes } }",
-            combined_text,
-        )
-        self.assertNotIn("factor = 0.35 owner = { staid_core_deficit_short_runway = yes }", combined_text)
+        self.assertNotIn("family:military_capacity", combined_text)
+        self.assertNotIn("building_navel_base", combined_text)
+        self.assertNotIn("building_navel_command", combined_text)
+        self.assertNotIn("staid_naval_capacity_expansion_ready", combined_text)
         for invalid_marker in (
             "has_unemployed_pop_of_category",
             "job_acot_",
@@ -941,6 +985,154 @@ class GeneratedModValidityTests(unittest.TestCase):
             "WAR_DECLARATION_MAX_DISTANCE",
         ):
             self.assertRegex(text, rf"\b{user_tuned_define}\s*=")
+        self.assertIn("ENEMY_FLEET_POWER_MULT = 0.55", text)
+        self.assertIn("AI_HOSTILE_FLEET_DISTANCE = 3", text)
+        self.assertIn("BOSS_MILITARY_POWER = 100000", text)
+        self.assertIn("ULTRA_BOSS_MILITARY_POWER = 500000", text)
+        self.assertIn("AI_AGGRESSIVENESS_BASE = 50", text)
+        self.assertIn("WAR_DECLARATION_MALUS = 0.05", text)
+        self.assertIn("WAR_DECLARATION_MAX_DISTANCE = 200", text)
+
+    def test_standalone_personalities_restore_dependency_aggression_without_forced_wars(self):
+        path = MOD_ROOT / "common" / "personalities" / "zzzzz_staid_16_standalone_war_pressure.txt"
+        self.assertTrue(path.exists(), f"{path} was not generated")
+        parse_file(path)
+        text = path.read_text(encoding="utf-8")
+        vanilla = (
+            STELLARIS_INSTALL_ROOT / "common" / "personalities" / "00_personalities.txt"
+        ).read_text(encoding="utf-8-sig")
+        reference_root = mod_source_root_for_id("3610149307")
+        reference = (reference_root / "common" / "personalities" / "00_personalities.txt").read_text(
+            encoding="utf-8-sig"
+        )
+        reference_variables = collect_variables(
+            (reference_root / "common" / "scripted_variables" / "stellarai_scripted_variables.txt").read_text(
+                encoding="utf-8-sig"
+            )
+        )
+        for object_id, aggression in STANDALONE_AGGRESSION_PERSONALITY_VALUES.items():
+            generated_block = extract_top_level_object_text(text, object_id)
+            vanilla_block = extract_top_level_object_text(vanilla, object_id)
+            reference_block = extract_top_level_object_text(reference, object_id)
+            for field in ("aggressiveness", "bravery", "military_spending"):
+                reference_match = re.search(rf"(?m)^\s*{field}\s*=\s*([^\s#]+)", reference_block)
+                self.assertIsNotNone(reference_match, f"Missing Stellar AI reference field {object_id}.{field}")
+                reference_value = parse_numeric(reference_match.group(1), reference_variables)
+                expected = re.escape(f"{float(reference_value):g}")
+                self.assertRegex(generated_block, rf"(?m)^\s*{field}\s*=\s*{expected}\s*$")
+            self.assertRegex(generated_block, rf"(?m)^\s*aggressiveness\s*=\s*{re.escape(f'{aggression:g}')}\s*$")
+            generated_without_war_fields = "\n".join(
+                line
+                for line in generated_block.splitlines()
+                if not any(f"{field} =" in line for field in ("aggressiveness", "bravery", "military_spending"))
+            )
+            vanilla_without_war_fields = "\n".join(
+                line
+                for line in vanilla_block.splitlines()
+                if not any(f"{field} =" in line for field in ("aggressiveness", "bravery", "military_spending"))
+            )
+            self.assertEqual(generated_without_war_fields, vanilla_without_war_fields)
+        for forbidden in ("declare_war", "create_war", "add_casus_belli", "add_claim"):
+            self.assertNotIn(forbidden, text)
+
+    def test_research_buildout_plan_claims_roles_and_blocks_urban_fallback(self):
+        colony_types_path = MOD_ROOT / "common" / "colony_types" / "zzzzz_staid_16_research_buildout_plan.txt"
+        events_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
+        triggers_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        for path in (colony_types_path, events_path, triggers_path):
+            self.assertTrue(path.exists(), f"{path} was not generated")
+            parse_file(path)
+        colony_types = colony_types_path.read_text(encoding="utf-8")
+        events = events_path.read_text(encoding="utf-8")
+        triggers = triggers_path.read_text(encoding="utf-8")
+        city = extract_top_level_object_text(colony_types, "col_city")
+        research = extract_top_level_object_text(colony_types, "col_research")
+        self.assertIn("owner = { is_ai = no }", city)
+        self.assertIn("planet = { NOT = { has_planet_flag = staid_research_plan_claimed } }", city)
+        self.assertIn("owner = { is_ai = no }", research)
+        self.assertIn("planet = { has_planet_flag = staid_research_plan_claimed }", research)
+        for marker in (
+            "country_event = { id = staid_economy_safety.4 }",
+            "num_owned_planets >= 3",
+            "count < 1",
+            "num_owned_planets >= 5",
+            "trigger = count_owned_planet",
+            "variable = staid_research_plan_target",
+            "divide_variable = { which = staid_research_plan_target value = 2 }",
+            "floor_variable = staid_research_plan_target",
+            "subtract_variable = {",
+            "count = staid_research_plan_target",
+            "factor = 12",
+            "has_designation = col_city",
+            "staid_research_construction_priority_ready = yes",
+            "set_planet_flag = staid_research_plan_claimed",
+        ):
+            self.assertIn(marker, events)
+        for invalid_nested_planet_scope in (
+            "planet = { staid_research_plan_candidate = yes }",
+            "planet = { staid_good_research_candidate = yes }",
+            "planet = { has_designation = col_city }",
+            "planet = { has_designation = col_fortress }",
+            "planet = { has_planet_flag = staid_research_plan_claimed }",
+            "planet = { set_planet_flag = staid_research_plan_claimed }",
+            "planet = { remove_planet_flag = staid_research_plan_claimed }",
+        ):
+            self.assertNotIn(invalid_nested_planet_scope, events)
+        for marker in (
+            "staid_good_research_candidate = {",
+            "staid_research_plan_candidate = {",
+            "is_scope_type = planet",
+            "NOT = { has_planet_flag = staid_research_plan_claimed }",
+        ):
+            self.assertIn(marker, triggers)
+        self.assertEqual(
+            [research_plan_target_count(colonies) for colonies in (2, 3, 4, 5, 6, 7, 8, 50)],
+            [0, 1, 1, 2, 3, 3, 4, 25],
+        )
+
+    def test_all_generated_colony_root_surfaces_scope_planet_flag_operations(self):
+        self.assertEqual(generated_colony_root_scope_errors(MOD_ROOT), [])
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            mod_root = Path(temp_dir) / "ScopeRegression"
+            colony_type_root = mod_root / "common" / "colony_types"
+            district_root = mod_root / "common" / "districts"
+            colony_type_root.mkdir(parents=True)
+            district_root.mkdir(parents=True)
+            (colony_type_root / "scope_regression.txt").write_text(
+                """
+                col_scope_regression = {
+                    potential = {
+                        OR = {
+                            has_planet_flag = wrong_scope
+                            planet = { has_planet_flag = correct_scope }
+                        }
+                        set_planet_flag = wrong_effect_scope
+                        remove_planet_flag = wrong_effect_scope
+                    }
+                }
+                """,
+                encoding="utf-8",
+            )
+            (district_root / "scope_regression.txt").write_text(
+                """
+                district_scope_regression = {
+                    potential = {
+                        has_planet_flag = wrong_district_scope
+                        planet = { has_planet_flag = correct_district_scope }
+                    }
+                }
+                """,
+                encoding="utf-8",
+            )
+
+            errors = generated_colony_root_scope_errors(mod_root)
+
+        self.assertEqual(len(errors), 4)
+        self.assertTrue(any("planet-only has_planet_flag from colony scope" in error for error in errors))
+        self.assertTrue(any("planet-only set_planet_flag from colony scope" in error for error in errors))
+        self.assertTrue(any("planet-only remove_planet_flag from colony scope" in error for error in errors))
+        self.assertTrue(any("common/districts/scope_regression.txt" in error for error in errors))
 
     def test_minerals_planet_construction_budget_spends_harder_when_rich_or_crowded(self):
         budget_path = MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_minerals_planet_construction_budget.txt"
@@ -1094,8 +1286,19 @@ class GeneratedModValidityTests(unittest.TestCase):
         policy_text = policy.read_text(encoding="utf-8")
         self.assertIn("diplomatic_stance", policy_text)
         self.assertIn("diplo_stance_cooperative", policy_text)
-        self.assertIn("staid_opening_route_research_priority", policy_text)
         self.assertIn("diplo_stance_cooperative_nomad", policy_text)
+        self.assertNotIn("staid_opening_route_research_priority", policy_text)
+        self.assertNotIn("factor = 12", policy_text)
+        for marker in (
+            "factor = 2",
+            "staid_is_opening_phase = yes",
+            "staid_opening_any_research_route = yes",
+            "NOT = { staid_militarist_conquest_strategy = yes }",
+            "NOT = { has_ai_personality_behaviour = conqueror }",
+            "NOT = { has_ai_personality_behaviour = subjugator }",
+            "num_rivals = 0",
+        ):
+            self.assertIn(marker, policy_text)
 
         edicts_text = edicts.read_text(encoding="utf-8")
         for marker in (
@@ -1159,29 +1362,198 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("staid_planetary_diversity_outpost_investment_ready", triggers_text)
         self.assertIn("Stellar AI Director Planetary Diversity outpost reserve", economy_text)
 
-    def test_planetary_diversity_modifier_profiles_drive_building_roles(self):
+    def test_planetary_diversity_naval_capacity_uses_hard_ai_eligibility(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_12_planetary_diversity_value_triggers.txt"
         building_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_12_planetary_diversity_buildings.txt"
+        naval_path = MOD_ROOT / "common" / "buildings" / "zzzzz_staid_14_pd_naval_capacity_hard_gates.txt"
         profile_path = RESEARCH_ROOT / "stellar-ai-director-planetary-diversity-profile-2026-07-07.md"
-        for path in (trigger_path, building_path):
-            self.assertTrue(path.exists(), f"Missing generated PD profile surface: {path}")
-            parse_file(path)
-
-        trigger_text = trigger_path.read_text(encoding="utf-8")
-        building_text = building_path.read_text(encoding="utf-8")
+        self.assertFalse(trigger_path.exists())
+        self.assertFalse(building_path.exists())
+        self.assertTrue(naval_path.exists())
+        parse_file(naval_path)
+        naval_text = naval_path.read_text(encoding="utf-8")
         profile_text = profile_path.read_text(encoding="utf-8")
         for marker in (
-            "staid_pd_planet_research_value",
-            "staid_pd_planet_alloys_value",
-            "staid_pd_planet_minerals_value",
-            "staid_pd_planet_energy_value",
-            "staid_pd_planet_growth_value",
+            "building_navel_base = {",
+            "building_navel_command = {",
+            "owner = { staid_naval_capacity_expansion_ready = yes }",
+            "NOT = { has_research_designation = yes }",
+            "has_research_designation = yes",
+            "owner = { is_ai = yes }",
         ):
-            self.assertIn(marker, trigger_text)
-        self.assertIn("building_megalfora_lab", building_text)
-        self.assertIn("pd_economic_role = research", building_text)
+            self.assertIn(marker, naval_text)
+        self.assertNotIn("ai_weight = {", naval_text)
         self.assertIn("strategic value horizon year", (MOD_ROOT / "notes" / "tuning-notes.md").read_text(encoding="utf-8"))
         self.assertIn("Hostile Space Fauna Clearance", profile_text)
+
+    def test_append_child_block_clause_preserves_existing_source_logic(self):
+        source = """sample = {
+\tpotential = {
+\t\texists = owner
+\t}
+\tweight = 2
+}
+"""
+        updated = append_child_block_clause(source, "potential", "\t\towner = { is_ai = no }")
+        self.assertIn("\t\texists = owner\n\t\towner = { is_ai = no }\n\t}", updated)
+        self.assertIn("\tweight = 2", updated)
+        parse_pdx(updated)
+
+    def test_fortress_fleet_and_boxed_in_claim_regression_gates_are_generated(self):
+        fortress_paths = (
+            MOD_ROOT / "common" / "colony_types" / "zzzzz_staid_15_fortress_economic_hard_gates.txt",
+            MOD_ROOT / "common" / "buildings" / "zzzzz_staid_15_fortress_economic_hard_gates.txt",
+            MOD_ROOT / "common" / "inline_scripts" / "zones" / "shared_fortress_zone.txt",
+        )
+        for path in fortress_paths:
+            self.assertTrue(path.exists(), f"Missing generated fortress hard gate: {path}")
+            parse_file(path)
+            text = path.read_text(encoding="utf-8")
+            self.assertIn("staid_fortress_designation_ready", text)
+            self.assertIn("staid_fortress_planet_strategically_placed", text)
+            self.assertIn("owner = { is_ai = no }", text)
+
+        colony_text = fortress_paths[0].read_text(encoding="utf-8")
+        building_text = fortress_paths[1].read_text(encoding="utf-8")
+        self.assertIn("col_fortress = {", colony_text)
+        self.assertIn("col_habitat_fortress = {", colony_text)
+        self.assertIn("has_building = building_order_keep", colony_text)
+        self.assertIn("has_building = building_order_castle", colony_text)
+        self.assertIn("building_stronghold = {", building_text)
+        self.assertIn("building_fortress = {", building_text)
+        self.assertNotIn("ai_weight = {", colony_text + building_text)
+
+        triggers_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        triggers = triggers_path.read_text(encoding="utf-8")
+        fortress_trigger = triggers[
+            triggers.index("staid_fortress_designation_ready = {") : triggers.index(
+                "staid_resource_waste_pressure = {"
+            )
+        ]
+        for marker in (
+            "NOT = { has_deficit = alloys }",
+            "has_monthly_income = { resource = alloys value > 0 }",
+            "num_owned_planets >= 6",
+            "used_naval_capacity_percent > 0.70",
+            "highest_threat > 50",
+        ):
+            self.assertIn(marker, fortress_trigger)
+        for marker in (
+            "staid_research_input_runway_safe = yes",
+            "staid_food_runway_safe = yes",
+            "staid_mineral_runway_safe = yes",
+            "staid_alloy_colony_runway_safe = yes",
+            "staid_alloy_runway_safe = yes",
+            "staid_energy_runway_safe = yes",
+        ):
+            self.assertIn(marker, triggers)
+        scaled_alloy_colonies = extract_top_level_object_text(triggers, "staid_scaled_alloys_income_safe")
+        scaled_alloy_fleet = extract_top_level_object_text(triggers, "staid_scaled_alloy_fleet_income_safe")
+        scaled_food_colony = extract_top_level_object_text(triggers, "staid_food_colony_runway_safe")
+        scaled_food = extract_top_level_object_text(triggers, "staid_food_runway_safe")
+        for marker in (
+            "num_owned_planets < 6",
+            "has_monthly_income = { resource = alloys value > 75 }",
+            "num_owned_planets >= 50",
+            "has_monthly_income = { resource = alloys value > 1200 }",
+        ):
+            self.assertIn(marker, scaled_alloy_colonies)
+        for marker in (
+            "fleet_power < 10000",
+            "fleet_power >= 1000000",
+            "has_monthly_income = { resource = alloys value > 2000 }",
+        ):
+            self.assertIn(marker, scaled_alloy_fleet)
+        self.assertIn("has_monthly_income = { resource = food value > 0 }", scaled_food_colony)
+        self.assertIn("staid_scaled_food_stockpile_safe = yes", scaled_food_colony)
+        self.assertIn("staid_food_colony_runway_safe = yes", scaled_food)
+        self.assertIn("NOT = { country_uses_bio_ships = yes }", scaled_food)
+        self.assertIn("staid_scaled_bioship_food_fleet_income_safe = yes", scaled_food)
+        placement_trigger = triggers[
+            triggers.index("staid_fortress_planet_strategically_placed = {") : triggers.index(
+                "staid_resource_waste_pressure = {"
+            )
+        ]
+        self.assertIn("exists = owner", placement_trigger)
+        self.assertIn("solar_system = { is_bottleneck_system = yes }", placement_trigger)
+
+        alloy_budget_path = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt"
+        alloy_budget = alloy_budget_path.read_text(encoding="utf-8")
+        for marker in (
+            "alloys_expenditure_ships = {",
+            "alloys_expenditure_ship_upgrades = {",
+            "staid_fleet_buildup_economy_safe = yes",
+            "staid_emergency_fleet_spending_required = yes",
+        ):
+            self.assertIn(marker, alloy_budget)
+
+        claim_budget = (
+            MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_08_site_limited_expansion_ai_budget.txt"
+        ).read_text(encoding="utf-8")
+        self.assertIn("modifier = { factor = 12 staid_boxed_in_claim_urgency = yes }", claim_budget)
+        boxed_in_trigger = triggers[
+            triggers.index("staid_boxed_in_claim_urgency = {") : triggers.index(
+                "staid_naval_capacity_expansion_ready = {"
+            )
+        ]
+        for marker in (
+            "has_potential_claims = yes",
+            "num_owned_planets < 5",
+            "NOT = { has_ai_expansion_plan = yes }",
+            "has_resource = { type = influence amount > 250 }",
+        ):
+            self.assertIn(marker, boxed_in_trigger)
+
+    def test_relative_economic_standards_scale_by_colonies_and_fleet_burden(self):
+        self.assertTrue(RELATIVE_ECONOMIC_STANDARDS_CSV.exists())
+        self.assertTrue(RELATIVE_ECONOMIC_STANDARDS_MD.exists())
+        rows = relative_economic_standard_rows()
+        self.assertEqual(len(rows), 69)
+        self.assertFalse(
+            [
+                row
+                for row in rows
+                if row["basis"] == "owned_colonies"
+                and row["resource"] == "food"
+                and row["measure"] == "income"
+            ],
+            "Ordinary food should scale reserve, not demand a large net monthly surplus.",
+        )
+        colony_alloy_income = [
+            row
+            for row in rows
+            if row["basis"] == "owned_colonies"
+            and row["resource"] == "alloys"
+            and row["measure"] == "income"
+        ]
+        self.assertEqual([row["target"] for row in colony_alloy_income], [75, 150, 300, 600, 1200])
+        fleet_alloy_income = [
+            row
+            for row in rows
+            if row["basis"] == "current_fleet_power" and row["measure"] == "income"
+        ]
+        self.assertEqual([row["target"] for row in fleet_alloy_income], [75, 150, 300, 600, 1200, 2000])
+        million_fleet_reserve = next(
+            row
+            for row in rows
+            if row["basis"] == "current_fleet_power"
+            and row["measure"] == "stockpile"
+            and row["lower_inclusive"] == 1000000
+        )
+        self.assertEqual(million_fleet_reserve["target"], 20000)
+        self.assertLessEqual(
+            max(row["target"] for row in rows if row["measure"] == "stockpile"),
+            20000,
+            "Normal relative standards must remain operating floats, not full replacement warehouses.",
+        )
+        million_bioship_food_income = next(
+            row
+            for row in rows
+            if row["basis"] == "bio_ship_fleet_power"
+            and row["measure"] == "income"
+            and row["lower_inclusive"] == 1000000
+        )
+        self.assertEqual(million_bioship_food_income["target"], 1000)
 
     def test_militarist_conquest_and_raiding_surfaces_are_generated(self):
         triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").read_text(
@@ -1207,20 +1579,13 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_raiding_pop_acquisition_priority",
         ):
             self.assertIn(marker, triggers)
-        conquest_block = triggers[
-            triggers.index("staid_militarist_conquest_strategy = {") : triggers.index(
-                "staid_raiding_pop_growth_strategy = {"
-            )
-        ]
-        raiding_block = triggers[
-            triggers.index("staid_raiding_pop_growth_strategy = {") : triggers.index(
-                "staid_raiding_pop_acquisition_priority = {"
-            )
-        ]
-        self.assertIn("used_naval_capacity_percent < 1.95", conquest_block)
+        conquest_block = extract_top_level_object_text(triggers, "staid_militarist_conquest_strategy")
+        raiding_block = extract_top_level_object_text(triggers, "staid_raiding_pop_growth_strategy")
+        self.assertIn("used_naval_capacity_percent < 1.40", conquest_block)
         self.assertIn("used_naval_capacity_percent < 2.00", raiding_block)
         self.assertIn("staid_catastrophic_collapse_mode", conquest_block + raiding_block)
-        self.assertNotIn("staid_core_deficit_short_runway", conquest_block + raiding_block)
+        self.assertIn("NOT = { staid_core_deficit_short_runway = yes }", conquest_block)
+        self.assertIn("staid_basic_economy_runway_safe = yes", conquest_block)
         self.assertNotIn("staid_survival_mode", conquest_block + raiding_block)
         self.assertNotIn("recently_lost_war", conquest_block + raiding_block)
         for marker in (
@@ -1382,7 +1747,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             {
                 "object_id": "building_test_research_jobs",
                 "object_type": "building",
-                "jobs_created_total_estimate": "300",
+                "jobs_created_total_estimate": "3",
                 "direct_monthly_output_json": "{}",
                 "modifier_keys": "job_researcher_add|planet_researchers_physics_research_produces_add",
                 "pressure_family": "research_scaling",
@@ -1403,6 +1768,111 @@ class GeneratedModValidityTests(unittest.TestCase):
             }
         )
         self.assertEqual(direct_amounts, {"consumer_goods": 35})
+
+    def test_dataset_job_pressure_uses_economic_plan_mapping_and_rejects_military_objects(self):
+        military_row = {
+            "object_id": "building_navel_base",
+            "object_type": "building",
+            "category": "army",
+            "jobs_created_json": '{"job_pd_naval_admin":300.0}',
+            "direct_monthly_output_json": "{}",
+            "modifier_keys": "",
+            "jobs_created_total_estimate": "3",
+            "roi_2250_to_2350_estimate": "20000",
+            "data_quality_flags": "has_jobs",
+        }
+        self.assertEqual(dataset_job_pressure_family(military_row), "military_capacity")
+        with self.assertRaisesRegex(ValueError, "hard eligibility gates"):
+            dataset_job_pressure_weight_block("building_navel_base = {\n}\n", military_row)
+
+        research_row = {
+            **military_row,
+            "object_id": "building_test_research",
+            "category": "research",
+            "jobs_created_json": '{"job_researcher":300.0}',
+            "pressure_family": "research_scaling",
+        }
+        source_block = """building_test_research = {
+\tai_weight_coefficient = 1.2
+\tadditional_ai_weight = 25
+}
+"""
+        research_block = dataset_job_pressure_weight_block(source_block, research_row)
+        self.assertIn("ai_resource_production = {", research_block)
+        self.assertIn("ai_weight_coefficient = 1.2", research_block)
+        self.assertIn("additional_ai_weight = 25", research_block)
+        self.assertNotIn("ai_weight = {", research_block)
+        self.assertNotIn("owner = { staid_", research_block)
+
+    def test_deficits_suppress_discretionary_research_and_fleet_pressure_but_prioritize_repairs(self):
+        trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
+        claim_budget_path = MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_08_site_limited_expansion_ai_budget.txt"
+        for path in (trigger_path, economy_path, claim_budget_path):
+            parse_file(path)
+
+        triggers = trigger_path.read_text(encoding="utf-8")
+        research_gate = extract_top_level_object_text(triggers, "staid_research_construction_priority_ready")
+        surplus_gate = extract_top_level_object_text(triggers, "staid_surplus_sink_pressure")
+        aggressive_gate = extract_top_level_object_text(triggers, "staid_aggressive_fleet_pressure")
+        conquest_gate = extract_top_level_object_text(triggers, "staid_militarist_conquest_strategy")
+        naval_gate = extract_top_level_object_text(triggers, "staid_naval_capacity_expansion_ready")
+        claim_gate = extract_top_level_object_text(triggers, "staid_influence_claim_pressure")
+
+        self.assertIn("staid_research_minimum_input_runway_safe = yes", research_gate)
+        self.assertNotIn("staid_high_scale_snowball_pressure = yes\n\t\tAND", research_gate)
+        self.assertIn("NOT = { staid_core_deficit_short_runway = yes }", surplus_gate)
+        self.assertIn("staid_basic_economy_runway_safe = yes", aggressive_gate)
+        self.assertNotIn("used_naval_capacity_percent < 1.10", aggressive_gate)
+        self.assertIn("has_ethic = ethic_militarist", conquest_gate)
+        self.assertNotIn("years_passed > 9", conquest_gate)
+        self.assertIn("used_naval_capacity_percent > 0.90", naval_gate)
+        self.assertIn("is_at_war = yes", naval_gate)
+        self.assertIn("has_potential_claims = yes", claim_gate)
+        self.assertIn("amount > 500", claim_gate)
+        self.assertIn("NOT = { has_ai_expansion_plan = yes }", claim_gate)
+
+        economy = economy_path.read_text(encoding="utf-8")
+        self.assertIn("Stellar AI Director consumer goods income repair 0-5", economy)
+        self.assertIn("Stellar AI Director colony alloy income repair 0-5", economy)
+        self.assertIn("Stellar AI Director fleet replacement alloy repair 0-9999", economy)
+        base_plan = economy[: economy.index("\n\tsubplan = {")]
+        self.assertNotIn("physics_research", base_plan)
+        approved_naval_subplans = {
+            "Stellar AI Director militarist conquest fleet reserve",
+            "Stellar AI Director raiding pop acquisition reserve",
+            "Stellar AI Director hostile fauna clearance reserve",
+            "Stellar AI Director threat readiness reserve",
+        }
+        subplans = economy.split("\n\tsubplan = {")[1:]
+        for subplan in subplans:
+            if "physics_research" in subplan or "society_research" in subplan or "engineering_research" in subplan:
+                self.assertTrue(
+                    any(
+                        gate in subplan
+                        for gate in (
+                            "staid_research_construction_priority_ready = yes",
+                            "staid_research_input_runway_safe = yes",
+                            "staid_research_minimum_input_runway_safe = yes",
+                        )
+                    ),
+                    subplan[:240],
+                )
+            if "naval_cap =" in subplan:
+                self.assertTrue(
+                    any(f'set_name = "{name}"' in subplan for name in approved_naval_subplans),
+                    subplan[:240],
+                )
+        self.assertFalse(
+            [row["object_id"] for row in dataset_job_pressure_override_rows() if row["pressure_family"] == "military_capacity"]
+        )
+        self.assertIn("staid_alloy_runway_safe = yes", triggers)
+
+        claim_budget = claim_budget_path.read_text(encoding="utf-8")
+        general_claims = extract_top_level_object_text(claim_budget, "influence_expenditure_claims")
+        self.assertIn("weight = 0.20", general_claims)
+        self.assertIn("factor = 3", general_claims)
+        self.assertIn("staid_influence_claim_pressure = yes", general_claims)
 
     def test_dataset_job_pressure_rows_are_build_plan_policy_consumable(self):
         self.assertTrue(BUILD_PLAN_CONSUMER_POLICY_CSV.exists())
@@ -1489,7 +1959,8 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("modifier = { factor = 35 staid_construction_spenddown_pressure = yes }", budget)
         self.assertIn("resource_stockpile_compare = { resource = minerals value > 25000 }", budget)
         self.assertIn("ai_resource_production = {", pressure)
-        self.assertIn("owner = { staid_construction_spenddown_pressure = yes }", pressure)
+        self.assertNotIn("owner = { staid_construction_spenddown_pressure = yes }", pressure)
+        self.assertNotIn("owner = { staid_basic_economy_runway_safe = yes", pressure)
         self.assertNotIn("factor = 0 owner = { AND = { staid_survival_mode = yes", pressure)
         trigger_text = (MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").read_text(
             encoding="utf-8"
@@ -1512,6 +1983,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn("Generated by `tools/generate_stellar_ai_director_patch.py`", text)
         inventory = GENERATED_VERSION_INVENTORY_MD.read_text(encoding="utf-8")
         self.assertIn("4.4.5", inventory)
+        self.assertIn("4.4.4", inventory)
         self.assertIn("v4.4.*", inventory)
         compatibility = MOD_STACK_COMPATIBILITY_MD.read_text(encoding="utf-8")
         self.assertIn("computed scripted triggers", compatibility)
@@ -1552,27 +2024,96 @@ class GeneratedModValidityTests(unittest.TestCase):
         market_events = (MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt").read_text(
             encoding="utf-8"
         )
+        market_values = (MOD_ROOT / "common" / "script_values" / "zzz_staid_roi_values.txt").read_text(
+            encoding="utf-8"
+        )
         for marker in (
             "staid_resource_waste_pressure",
             "resource_stockpile_compare = { resource = minerals value > 25000 }",
             "resource_stockpile_compare = { resource = consumer_goods value > 18000 }",
             "staid_consumer_goods_runway_safe",
+            "staid_energy_runway_safe",
+            "staid_mineral_runway_safe",
+            "staid_alloy_colony_runway_safe",
+            "staid_food_colony_runway_safe",
             "staid_food_runway_safe",
+            "staid_energy_two_month_runway_unsafe",
+            "has_monthly_income = { resource = energy value <= -500 }",
+            "resource_stockpile_compare = { resource = energy value < 1000 }",
+            "staid_consumer_goods_two_month_runway_unsafe = yes",
             "staid_research_input_runway_safe",
             "staid_research_minimum_input_runway_safe",
             "staid_research_construction_priority_ready",
-            "Stellar AI Director consumer goods runway repair",
-            "Stellar AI Director food break-even repair",
+            "Stellar AI Director energy income repair 0-5",
+            "Stellar AI Director mineral income repair 50+",
+            "Stellar AI Director consumer goods income repair 0-5",
+            "Stellar AI Director colony alloy income repair 50+",
+            "Stellar AI Director food operating-float repair 0-5",
+            "Stellar AI Director fleet replacement alloy repair 1000000+",
+            "Stellar AI Director bio-ship replacement food repair 1000000+",
             "staid_research_under_curve",
             "Stellar AI Director capped stockpile research conversion",
             "Stellar AI Director 2360 engineering catchup",
-            "value:stellarai_market_sell_value|RESOURCE|minerals|AMOUNT|5000|",
-            "value:stellarai_market_sell_value|RESOURCE|giga_sr_sentient_metal|AMOUNT|250|",
+            "value:staid_market_sell_value|RESOURCE|minerals|AMOUNT|5000|",
+            "value:staid_market_sell_value|RESOURCE|giga_sr_sentient_metal|AMOUNT|250|",
+            "staid_market_sell_value = {",
+            "trade_type = market_sell",
+            "resource_stockpile_percent = { resource = minerals value >= 0.9 }",
+            "country_near_tangible_resource_cap = yes",
             "staid_high_scale_snowball_pressure",
             "Stellar AI Director pathological snowball reserve",
             "Stellar AI Director megastructure spam reserve",
         ):
-            self.assertIn(marker, triggers + economy + market_events)
+            self.assertIn(marker, triggers + economy + market_events + market_values)
+
+        generated_runtime_text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for root in (MOD_ROOT / "common", MOD_ROOT / "events")
+            for path in root.rglob("*.txt")
+        )
+        self.assertNotIn(
+            "stellarai_market_",
+            generated_runtime_text,
+            "The Director must not depend on the separately authored Stellar AI mod.",
+        )
+        self.assertNotIn("trade_type = market_buy", generated_runtime_text)
+        self.assertNotIn("market_buy_cost", generated_runtime_text)
+        self.assertNotIn(
+            "resource_stockpile_percent = { resource = nanites",
+            market_events,
+            "Nanites are non-tradable and have no maximum stockpile in Stellaris 4.4.4.",
+        )
+        self.assertNotIn(
+            "value:staid_market_sell_value|RESOURCE|nanites|",
+            market_events,
+            "Cap-breaker sales may only include market-tradable resources with a finite maximum.",
+        )
+        repair_section = economy[
+            economy.index("# Relative repair plans require both earned monthly income")
+            : economy.index('set_name = "Stellar AI Director early modded research rush"')
+        ]
+        self.assertNotIn(
+            "\t\t\ttrade =",
+            repair_section,
+            "Core deficit repair must request domestic resource income, not market currency.",
+        )
+
+    def test_market_cap_breaker_resources_are_tradable_and_have_finite_caps(self):
+        resource_roots = (
+            STELLARIS_INSTALL_ROOT / "common" / "strategic_resources",
+            mod_source_root_for_id("1121692237") / "common" / "strategic_resources",
+        )
+        source_text = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for root in resource_roots
+            for path in sorted(root.glob("*.txt"))
+        )
+
+        for resource, _reserve, _amount, _extra_limit in MARKET_CAP_BREAKER_SALES:
+            with self.subTest(resource=resource):
+                resource_block = extract_top_level_object_text(source_text, resource)
+                self.assertRegex(resource_block, r"(?m)^\s*tradable\s*=\s*yes\s*$")
+                self.assertRegex(resource_block, r"(?m)^\s*max\s*=\s*[1-9][0-9]*(?:\.[0-9]+)?\s*$")
 
     def test_director_does_not_auto_confirm_gigas_startup_settings(self):
         forbidden_paths = (
@@ -1618,6 +2159,70 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
+    def test_mem_surveyor_outpost_gate_and_generic_order_backoff_are_generated(self):
+        outpost_path = (
+            MOD_ROOT / "common" / "ship_sizes" / "zzzzz_staid_17_mem_surveyor_outpost_compat.txt"
+        )
+        event_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
+        parse_file(outpost_path)
+        parse_file(event_path)
+        outpost = outpost_path.read_text(encoding="utf-8")
+        events = event_path.read_text(encoding="utf-8")
+
+        for marker in (
+            "starbase_outpost = {",
+            "from = { is_ai = no }",
+            "has_star_flag = mem_surveyor_home_system",
+            "has_country_flag = mem_surveyor_found_alkree_homeworld",
+        ):
+            self.assertIn(marker, outpost)
+        for marker in (
+            "id = staid_economy_safety.5",
+            "has_fleet_order = build_orbital_station_order",
+            "check_variable = { which = staid_outpost_order_months value >= 12 }",
+            "clear_orders = yes",
+            "flag = staid_outpost_retry_backoff",
+            "days = 360",
+        ):
+            self.assertIn(marker, events)
+
+        clear_order_files = [
+            path
+            for root in (MOD_ROOT / "common", MOD_ROOT / "events")
+            for path in root.rglob("*.txt")
+            if "clear_orders" in path.read_text(encoding="utf-8")
+        ]
+        self.assertEqual(clear_order_files, [event_path])
+
+    def test_boss_defeat_escalation_uses_boss_lane_without_weakening_normal_wars(self):
+        on_action_path = MOD_ROOT / "common" / "on_actions" / "zzzz_staid_boss_defeat_escalation_on_actions.txt"
+        event_path = MOD_ROOT / "events" / "zzzz_staid_boss_defeat_escalation_events.txt"
+        defines_path = MOD_ROOT / "common" / "defines" / "zzzz_staid_14_high_scale_ai_defines.txt"
+        for path in (on_action_path, event_path, defines_path):
+            parse_file(path)
+
+        on_action = on_action_path.read_text(encoding="utf-8")
+        event = event_path.read_text(encoding="utf-8")
+        defines = defines_path.read_text(encoding="utf-8")
+        self.assertIn("on_space_battle_lost = {", on_action)
+        self.assertIn("staid_boss_safety.1", on_action)
+        self.assertNotIn("on_monthly_pulse", on_action)
+        for marker in (
+            "is_ai = yes",
+            "exists = fromfromfrom",
+            "has_fleet_flag = eeloofleet",
+            "has_fleet_flag = legendary_guardian_fleet",
+            "NOT = { has_fleet_flag = staid_escalated_ultra_boss }",
+            "set_fleet_settings = {",
+            "spawn_debris = no",
+            "is_ultra_boss = yes",
+            "set_fleet_flag = staid_escalated_ultra_boss",
+        ):
+            self.assertIn(marker, event)
+        self.assertIn("ENEMY_FLEET_POWER_MULT = 0.55", defines)
+        self.assertIn("BOSS_MILITARY_POWER = 100000", defines)
+        self.assertIn("ULTRA_BOSS_MILITARY_POWER = 500000", defines)
+
     def test_route_overrides_carry_source_local_variables(self):
         technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
         megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"
@@ -1653,58 +2258,17 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertNotIn(marker, macro_test_site_block)
 
-    def test_research_and_pop_assembly_buildings_have_owner_economy_gates(self):
+    def test_research_and_pop_assembly_strategy_does_not_emit_inactive_building_ai_weights(self):
         research_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt"
         research_district_path = MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt"
         pop_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_07_pop_assembly_buildings.txt"
-        parse_file(research_path)
-        parse_file(research_district_path)
-        parse_file(pop_path)
-        research_text = research_path.read_text(encoding="utf-8")
-        research_district_text = research_district_path.read_text(encoding="utf-8")
-        pop_text = pop_path.read_text(encoding="utf-8")
-        self.assertIn(
-            "modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }",
-            research_text,
-        )
-        for marker in (
-            "modifier = { factor = 14 owner = { staid_research_under_curve = yes } }",
-            "modifier = { factor = 8 owner = { staid_opening_route_research_priority = yes } }",
-            "modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }",
-        ):
-            self.assertIn(marker, research_text)
-        self.assertIn(
-            "modifier = { factor = 0 owner = { NOT = { staid_research_construction_priority_ready = yes } } }",
-            research_district_text,
-        )
-        self.assertIn(
-            "modifier = { factor = 8 owner = { staid_research_under_curve = yes } }",
-            research_district_text,
-        )
-        self.assertIn(
-            "modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }",
-            pop_text,
-        )
-        for marker in (
-            "modifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
-            "modifier = { factor = 4 owner = { is_materialist = yes } }",
-            "modifier = { factor = 7 owner = { OR = { is_machine_empire = yes is_individual_machine = yes } } }",
-            "modifier = { factor = 5 owner = { OR = { has_technology = tech_cloning has_cloning_tradition = yes } } }",
-            "modifier = { factor = 3 owner = { has_ascension_perk = ap_engineered_evolution } }",
-            "modifier = { factor = 6 owner = { is_hive_empire = yes } }",
-            "modifier = { factor = 0 owner = { has_origin = origin_progenitor_hive } }",
-            "modifier = { factor = 8 owner = { has_origin = origin_progenitor_hive } }",
-        ):
-            self.assertIn(marker, pop_text)
-        for marker in (
-            "is_regular_empire = yes",
-            "NOT = { has_policy_flag = robots_outlawed }",
-            "OR = {\n\t\t\t\tis_machine_empire = yes\n\t\t\t\tis_individual_machine = yes",
-            "is_hive_empire = yes",
-            "NOT = { has_origin = origin_progenitor_hive }",
-            "has_origin = origin_progenitor_hive",
-        ):
-            self.assertIn(marker, pop_text)
+        self.assertFalse(research_path.exists())
+        self.assertFalse(research_district_path.exists())
+        self.assertFalse(pop_path.exists())
+        economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
+        economy = economy_path.read_text(encoding="utf-8")
+        self.assertIn("Stellar AI Director safe research baseline", economy)
+        self.assertIn("staid_research_construction_priority_ready = yes", economy)
 
     def test_habitat_route_override_repairs_gigas_spawn_effect_parameters(self):
         megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"
@@ -1791,7 +2355,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertNotIn("staid_militarist_conquest_strategy = yes", defense_ready)
         self.assertNotIn("staid_high_scale_snowball_pressure = yes", defense_ready)
         self.assertIn("alloys = 2200", economy)
-        self.assertIn("naval_cap = 1000", economy)
+        self.assertNotIn("naval_cap = 1000", economy)
         self.assertIn("Stellar AI Director crisis starbase reserve", economy)
         self.assertIn("staid_starbase_defense_economy_safe = yes", economy)
         for marker in (
@@ -1956,9 +2520,9 @@ class GeneratedModValidityTests(unittest.TestCase):
             "has_technology = tech_Dreadnought_1",
             "alloys = 900",
             "engineering_research = 900",
-            "naval_cap = 1200",
         ):
             self.assertIn(marker, nsc3_hull_block)
+        self.assertNotIn("naval_cap =", nsc3_hull_block)
 
     def test_unity_to_research_paths_are_source_backed(self):
         traditions_path = MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt"
@@ -2001,7 +2565,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertEqual(unresolved, [])
         self.assertNotIn("generic unity hoard", combined.lower())
 
-    def test_fleet_conversion_gates_have_income_pressure_lane(self):
+    def test_fleet_conversion_gates_require_deficit_safe_economy(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         parse_file(trigger_path)
         text = trigger_path.read_text(encoding="utf-8")
@@ -2014,20 +2578,19 @@ class GeneratedModValidityTests(unittest.TestCase):
         for block in (shipyard_block, fleet_block):
             self.assertIn("NOT = { staid_catastrophic_collapse_mode = yes }", block)
             self.assertNotIn("staid_survival_mode = yes", block)
-            self.assertNotIn("staid_core_deficit_short_runway = yes", block)
         self.assertIn("used_naval_capacity_percent < 1.60", shipyard_block)
         self.assertIn("has_monthly_income = { resource = alloys value > 80 }", shipyard_block)
         self.assertNotIn("staid_militarist_conquest_strategy = yes", shipyard_block)
         self.assertNotIn("staid_raiding_pop_growth_strategy = yes", shipyard_block)
-        self.assertIn("used_naval_capacity_percent < 1.85", fleet_block)
-        self.assertIn("has_monthly_income = { resource = alloys value > 40 }", fleet_block)
-        self.assertIn("has_monthly_income = { resource = energy value > 40 }", fleet_block)
+        self.assertIn("NOT = { staid_core_deficit_short_runway = yes }", fleet_block)
+        self.assertIn("staid_basic_economy_runway_safe = yes", fleet_block)
+        self.assertIn("used_naval_capacity_percent < 1.40", fleet_block)
         self.assertNotIn("staid_aggressive_fleet_pressure = yes", fleet_block)
         self.assertNotIn("staid_militarist_conquest_strategy = yes", fleet_block)
         self.assertNotIn("staid_raiding_pop_growth_strategy = yes", fleet_block)
         self.assertNotIn("has_monthly_income = { resource = alloys value > 200 }", shipyard_block)
         self.assertIn("resource_stockpile_compare = { resource = alloys value >", shipyard_block)
-        self.assertIn("resource_stockpile_compare = { resource = energy value > 8000 }", fleet_block)
+        self.assertNotIn("staid_high_scale_snowball_pressure = yes", fleet_block)
 
     def test_support_economy_bridge_keeps_resource_bottlenecks_first_class(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
@@ -2036,6 +2599,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         parse_file(economy_path)
         text = trigger_path.read_text(encoding="utf-8")
         economy = economy_path.read_text(encoding="utf-8")
+        alloy_block = text[text.index("staid_alloy_runway_safe = {") : text.index("staid_food_runway_safe = {")]
         basic_block = text[text.index("staid_basic_economy_runway_safe = {") : text.index("staid_trade_capacity_safe = {")]
         advanced_block = text[
             text.index("staid_advanced_component_resource_support_ready = {") : text.index(
@@ -2048,12 +2612,16 @@ class GeneratedModValidityTests(unittest.TestCase):
         for marker in (
             "staid_research_input_runway_safe = yes",
             "staid_food_runway_safe = yes",
-            "NOT = { has_deficit = minerals }",
-            "NOT = { has_deficit = alloys }",
-            "has_monthly_income = { resource = minerals value > 100 }",
-            "has_monthly_income = { resource = alloys value > 75 }",
+            "staid_mineral_runway_safe = yes",
+            "staid_alloy_runway_safe = yes",
         ):
             self.assertIn(marker, basic_block)
+        for marker in (
+            "staid_alloy_colony_runway_safe = yes",
+            "staid_scaled_alloy_fleet_income_safe = yes",
+            "staid_scaled_alloy_fleet_stockpile_safe = yes",
+        ):
+            self.assertIn(marker, alloy_block)
         for marker in (
             "NOT = { staid_core_deficit_short_runway = yes }",
             "staid_basic_economy_runway_safe = yes",
@@ -2087,51 +2655,27 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertNotIn("Stellar AI Director generic trade sell", text)
         self.assertNotIn("Stellar AI Director generic trade buy", text)
 
-    def test_research_infrastructure_overrides_drive_labs_and_habitat_science(self):
+    def test_research_infrastructure_relies_on_vanilla_hard_zone_gates_and_safe_plan_demand(self):
         buildings_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt"
         districts_path = MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt"
-        parse_file(buildings_path)
-        parse_file(districts_path)
-        buildings_text = buildings_path.read_text(encoding="utf-8")
-        districts_text = districts_path.read_text(encoding="utf-8")
-        for marker in (
-            "# policy_route = research_throughput_infrastructure",
-            "building_research_lab_1 = {",
-            "building_research_lab_2 = {",
-            "building_research_lab_3 = {",
-            "building_institute = {",
-            "building_supercomputer = {",
-            "building_archaeostudies_faculty = {",
-            "ai_weight_coefficient = 18",
-            "additional_ai_weight = 3200",
-            "script = stellarai/rare_resource_guard_modifiers",
-            "staid_research_construction_priority_ready",
-            "modifier = { factor = 8 has_designation = col_research }",
-            "modifier = { factor = 6 has_designation = col_habitat_research }",
-            "modifier = { factor = 6 has_designation = col_ring_research }",
-            "modifier = { factor = 6 has_designation = col_ecu_research }",
-            "modifier = { factor = 5 has_designation = col_nomad_research }",
-            "modifier = { factor = 14 owner = { staid_research_under_curve = yes } }",
-            "modifier = { factor = 10 owner = { years_passed > 79 staid_research_under_curve = yes } }",
-            "modifier = { factor = 8 owner = { staid_surplus_sink_pressure = yes } }",
-        ):
-            self.assertIn(marker, buildings_text)
-        for marker in (
-            "# policy_route = research_throughput_infrastructure",
-            "district_hab_science = {",
-            "ai_weight_coefficient = 12",
-            "additional_ai_weight = 1800",
-            "modifier = { factor = 8 has_designation = col_habitat_research }",
-            "modifier = { factor = 8 owner = { staid_research_under_curve = yes } }",
-            "modifier = { factor = 5 owner = { years_passed > 79 staid_research_under_curve = yes } }",
-        ):
-            self.assertIn(marker, districts_text)
+        self.assertFalse(buildings_path.exists())
+        self.assertFalse(districts_path.exists())
+        economy = (
+            MOD_ROOT
+            / "common"
+            / "economic_plans"
+            / "zzzz_staid_additive_economic_plan.txt"
+        ).read_text(encoding="utf-8")
+        baseline_start = economy.index('set_name = "Stellar AI Director safe research baseline"')
+        baseline_end = economy.find("\n\tsubplan = {", baseline_start)
+        baseline = economy[baseline_start:baseline_end]
+        self.assertIn("staid_research_construction_priority_ready = yes", baseline)
+        self.assertIn("physics_research = 400", baseline)
 
     def test_packaged_stellarai_inline_script_dependencies_cover_generated_references(self):
         generated_text = "\n".join(path.read_text(encoding="utf-8") for path in (MOD_ROOT / "common").rglob("*.txt"))
         referenced_scripts = set(re.findall(r"script\s*=\s*\"?stellarai/([A-Za-z0-9_/-]+)\"?", generated_text))
         expected_scripts = set(STELLARAI_INLINE_SCRIPT_DEPENDENCIES)
-        self.assertTrue(referenced_scripts)
         self.assertTrue(referenced_scripts.issubset(expected_scripts))
         for script_name in referenced_scripts:
             self.assertTrue(
@@ -2182,6 +2726,67 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(policy_rows, "Policy matrix did not contain any rows.")
         missing = sorted({row["object_id"] for row in policy_rows if row["object_id"] not in atlas_ids})
         self.assertEqual(missing, [])
+        obsolete_source_files = {
+            "common\\buildings\\zzzz_staid_06_research_infrastructure_buildings.txt",
+            "common\\buildings\\zzzz_staid_12_planetary_diversity_buildings.txt",
+        }
+        self.assertFalse(
+            [row for row in policy_rows if row["source_file"] in obsolete_source_files],
+            "Benefit policy matrix retained source-winner keys for deleted Director overrides.",
+        )
+
+    def test_strategic_subsystem_audit_is_complete_and_consumer_explicit(self):
+        self.assertTrue(STRATEGIC_SUBSYSTEM_AUDIT_CSV.exists())
+        self.assertTrue(STRATEGIC_SUBSYSTEM_AUDIT_MD.exists())
+        rows = strategic_subsystem_audit_rows()
+        self.assertEqual(len(rows), 28)
+        self.assertEqual(len({row["subsystem_id"] for row in rows}), len(rows))
+        required = {
+            "data_pipeline",
+            "resource_survival",
+            "research_capacity",
+            "colony_construction",
+            "colony_designation",
+            "budget_management",
+            "influence_market",
+            "territorial_expansion",
+            "war_selection",
+            "diplomacy_personality",
+            "fleet_doctrine",
+            "hostile_targets",
+            "ship_design",
+            "technology_routes",
+            "ascension_strategy",
+            "megastructure_strategy",
+            "crisis_response",
+            "starbase_defense",
+            "invasion_bombardment",
+            "machine_hive_gestalt",
+            "genocidal_extremes",
+            "pacifist_isolationist",
+            "megacorp_trade",
+            "nomad_arkship",
+            "subjects_overlords",
+            "special_origins",
+            "compatibility_winners",
+            "runtime_telemetry",
+        }
+        by_id = {row["subsystem_id"]: row for row in rows}
+        self.assertEqual(set(by_id), required)
+        self.assertEqual(by_id["war_selection"]["consumer_authority"], "mixed")
+        self.assertEqual(by_id["subjects_overlords"]["consumer_authority"], "absent")
+        self.assertEqual(by_id["runtime_telemetry"]["consumer_authority"], "unproven")
+        self.assertNotIn("colony_automation", by_id["colony_construction"]["engine_consumer"])
+        self.assertFalse([row for row in rows if not row["known_gap"] or not row["next_action"]])
+
+        for row in rows:
+            for artifact in (item.strip() for item in row["director_artifacts"].split(";")):
+                if artifact == "none":
+                    continue
+                prefix, relative = artifact.split(":", 1)
+                root = MOD_ROOT if prefix == "mod" else RESEARCH_ROOT
+                self.assertIn(prefix, {"mod", "research"}, artifact)
+                self.assertTrue((root / relative).exists(), f"Missing audit artifact {artifact}")
 
     def test_route_override_surfaces_cover_required_families(self):
         with (RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.csv").open(
@@ -2197,7 +2802,6 @@ class GeneratedModValidityTests(unittest.TestCase):
             "science_kilo_snowball_core",
             "research_megastructure_core",
             "planetary_computer_research_core",
-            "pop_assembly_snowball_core",
             "ring_world_growth_core",
             "storage_cap_core",
             "planetcraft_route",
@@ -2209,7 +2813,6 @@ class GeneratedModValidityTests(unittest.TestCase):
             "conquest_escape_route",
             "apex_site_preservation_core",
             "fallen_empire_benchmark_route",
-            "research_throughput_infrastructure",
             "research_diplomacy_core",
         }
         self.assertTrue(required_routes.issubset(covered_routes))
@@ -2222,23 +2825,17 @@ class GeneratedModValidityTests(unittest.TestCase):
     def test_snowball_checkpoint_routes_cover_research_surface_storage_and_early_kilos(self):
         technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
         megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"
-        buildings_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_07_pop_assembly_buildings.txt"
-        districts_path = MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt"
         claim_budget_path = MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_08_site_limited_expansion_ai_budget.txt"
         federation_path = MOD_ROOT / "common" / "federation_types" / "zzzz_staid_15_research_diplomacy_federation_types.txt"
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         parse_file(technology_path)
         parse_file(megastructure_path)
-        parse_file(buildings_path)
-        parse_file(districts_path)
         parse_file(claim_budget_path)
         parse_file(federation_path)
         parse_file(trigger_path)
         text = (
             technology_path.read_text(encoding="utf-8")
             + megastructure_path.read_text(encoding="utf-8")
-            + buildings_path.read_text(encoding="utf-8")
-            + districts_path.read_text(encoding="utf-8")
             + claim_budget_path.read_text(encoding="utf-8")
             + federation_path.read_text(encoding="utf-8")
             + trigger_path.read_text(encoding="utf-8")
@@ -2280,10 +2877,6 @@ class GeneratedModValidityTests(unittest.TestCase):
             "dyson_sphere_0_o_star = {",
             "neutronium_gigaforge_0 = {",
             "nidavellir_forge_0 = {",
-            "district_giga_pcc_science = {",
-            "building_robot_assembly_plant = {",
-            "building_clone_vats = {",
-            "building_spawning_pool = {",
             "influence_expenditure_claims = {",
             "influence_expenditure_claims_militarist = {",
             "influence_expenditure_claims_fanatic_militarist = {",
@@ -2292,7 +2885,6 @@ class GeneratedModValidityTests(unittest.TestCase):
             "# policy_route = science_kilo_snowball_core",
             "# policy_route = research_megastructure_core",
             "# policy_route = planetary_computer_research_core",
-            "# policy_route = pop_assembly_snowball_core",
             "# policy_route = ring_world_growth_core",
             "# policy_route = storage_cap_core",
             "# policy_route = apex_site_preservation_core",
@@ -2358,7 +2950,11 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertNotIn("action_form_research_agreement", generated_common_text)
 
         self.assertFalse((MOD_ROOT / "common" / "diplomatic_actions").exists())
-        self.assertFalse((MOD_ROOT / "common" / "personalities").exists())
+        personality_files = sorted((MOD_ROOT / "common" / "personalities").glob("*.txt"))
+        self.assertEqual(
+            [path.name for path in personality_files],
+            ["zzzzz_staid_16_standalone_war_pressure.txt"],
+        )
 
     def test_megastructure_upgrade_stages_are_prioritized_over_new_starts(self):
         megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"

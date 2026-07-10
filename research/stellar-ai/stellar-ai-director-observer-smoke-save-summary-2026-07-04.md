@@ -1,10 +1,10 @@
 # Stellar AI Director Observer Smoke Save Summary
 
-Save: `C:\Users\Admin\Documents\Paradox Interactive\Stellaris\save games\unitednationsofearth_-15512622\autosave_2202.07.01.sav`
-Date: 2202.07.01
+Save: `C:\Users\Admin\Documents\Paradox Interactive\Stellaris\save games\unitedcevantiannation15_107936172\autosave_2227.07.01.sav`
+Date: 2227.07.01
 Version: Pegasus v4.4.4
-Empire: United Nations of Earth
-Short smoke passes: True
+Empire: United Cevantian Nation 15
+Short smoke passes: False
 High-ROI path observed: False
 
 ## Required Mods
@@ -16,19 +16,19 @@ High-ROI path observed: False
 
 ## Save Metrics
 
-- Mod count: 117
-- Player country: 0
-- Country count: 66
-- Initialized countries: 66
-- Player metrics: {"economy_power": 540.44128, "empire_size": 51.0, "fleet_size": 15.0, "navy_coverage": 0.58823, "num_sapient_pops": 5276.0, "tech_power": 277.5, "used_naval_capacity": 15.0}
-- Player monthly income: {"alloys": 15.2, "consumer_goods": 62.602, "energy": 166.524, "engineering_research": 16.728, "food": 119.737, "influence": 4.176, "minerals": 68.246, "physics_research": 21.228, "society_research": 16.728, "trade": 152.165, "unity": 43.527}
+- Mod count: 116
+- Player country: missing
+- Country count: 89
+- Initialized countries: 89
+- Player metrics: {}
+- Player monthly income: {}
 
 ## Checks
 
 - save_reaches_2202_01_01: pass
 - director_mod_listed: pass
-- player_country_found: pass
+- player_country_found: fail
 - initialized_country_count_positive: pass
-- player_metrics_found: pass
+- player_metrics_found: fail
 
-Short Irony-launched save evidence only; this does not satisfy the late-game high-ROI observer acceptance by itself.
+Short Irony-launched save evidence is retained as historical context only; strategic v2 still requires a final constrained observer run for long-run efficacy proof.

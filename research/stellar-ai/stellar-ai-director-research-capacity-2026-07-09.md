@@ -11,7 +11,7 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 - Districts/zones with net consumer-goods output: 8
 - Colony role target rows: 247
 - Technologies with research-relevant modifiers indexed: 18
-- Strategic infrastructure target rows: 1333
+- Strategic infrastructure target rows: 1335
 - Resource coverage rows: 21
 - Build-plan readiness rows: 826
 - Strategic benefit taxonomy rows: 1924
@@ -36,21 +36,21 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 | 3 | `building_pinniped_sanctuary` | 105.0 | 16.0 | Stellaris vanilla |
 | 4 | `building_giga_institute_2` | 81.0 | 0 | Gigastructural Engineering & More (4.4) |
 | 5 | `building_giga_supercomputer_2` | 81.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 6 | `building_wet_td_bio_lab` | 68.25 | 9.0 | Stellar AI Director |
-| 7 | `building_superhab_lab` | 64.5 | 9.0 | Stellar AI Director |
+| 6 | `building_wet_td_bio_lab` | 68.25 | 9.0 | Planetary Diversity |
+| 7 | `building_superhab_lab` | 64.5 | 9.0 | Planetary Diversity |
 | 8 | `building_fe_lab_2` | 60.0 | 0 | Stellaris vanilla |
 | 9 | `building_giga_iodizium_research` | 60.0 | 0 | Gigastructural Engineering & More (4.4) |
 | 10 | `building_giga_institute_1` | 54.0 | 0 | Gigastructural Engineering & More (4.4) |
 | 11 | `building_giga_supercomputer_1` | 54.0 | 0 | Gigastructural Engineering & More (4.4) |
-| 12 | `building_cryo_lab` | 49.125 | 4.5 | Stellar AI Director |
+| 12 | `building_cryo_lab` | 49.125 | 4.5 | Planetary Diversity |
 | 13 | `building_order_keep` | 48.0 | 16.0 | Stellaris vanilla |
 | 14 | `building_augmentation_center` | 40.0 | 8.0 | Stellaris vanilla |
-| 15 | `building_karst_lab` | 36.0 | 9.0 | Stellar AI Director |
-| 16 | `building_navel_command` | 36.0 | 12.0 | Planetary Diversity - More Arcologies |
-| 17 | `building_supercon_lab` | 34.125 | 4.5 | Stellar AI Director |
-| 18 | `building_aquifer_lab` | 32.25 | 4.5 | Stellar AI Director |
-| 19 | `building_biolumen_lab` | 32.25 | 4.5 | Stellar AI Director |
-| 20 | `building_lichen_lab` | 32.25 | 4.5 | Stellar AI Director |
+| 15 | `building_karst_lab` | 36.0 | 9.0 | Planetary Diversity |
+| 16 | `building_navel_command` | 36.0 | 12.0 | Stellar AI Director |
+| 17 | `building_supercon_lab` | 34.125 | 4.5 | Planetary Diversity |
+| 18 | `building_aquifer_lab` | 32.25 | 4.5 | Planetary Diversity |
+| 19 | `building_biolumen_lab` | 32.25 | 4.5 | Planetary Diversity |
+| 20 | `building_lichen_lab` | 32.25 | 4.5 | Planetary Diversity |
 
 ## Top Consumer-Goods Districts/Zones
 
@@ -94,7 +94,7 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 | --- | --- | ---: | --- | --- |
 | starbase_migration_support | `starbase_building:transit_hub` | 350.0 | migration_source|starbase_migration_support | Stellaris vanilla |
 | habitat_growth_center | `building:building_clone_army_clone_vat` | 1110.0 | capital_or_empire_unique_candidate|habitat_growth_center|has_destroy_trigger | Stellaris vanilla |
-| habitat_growth_center | `building:building_clone_vats` | 450.0 | habitat_growth_center|has_destroy_trigger | Stellar AI Director |
+| habitat_growth_center | `building:building_clone_vats` | 450.0 | habitat_growth_center|has_destroy_trigger | Stellaris vanilla |
 | habitat_growth_center | `building:building_mem_lost_emperor_ancient_palace` | 285.0 | capital_or_empire_unique_candidate|habitat_growth_center|has_destroy_trigger | More Events Mod |
 | habitat_growth_center | `building:building_mem_ancestors_grudge_robot_factory` | 135.0 | capital_or_empire_unique_candidate|habitat_growth_center | More Events Mod |
 | habitat_growth_center | `building:building_genomic_facility` | 100.0 | habitat_growth_center|has_destroy_trigger | Stellaris vanilla |
@@ -107,8 +107,8 @@ Job-producing modifiers are normalized from Stellaris 4.x workforce units using 
 | habitat_support_center | `building:building_hab_system_capital` | 15.0 | cannot_demolish|capital_or_empire_unique_candidate|habitat_support_candidate | Stellaris vanilla |
 | habitat_support_center | `building:building_giga_gas_giant_habitation_module` | 5.0 | habitat_support_candidate|has_destroy_trigger | Gigastructural Engineering & More (4.4) |
 | habitat_support_center | `building:building_giga_habitat_zro_harvester` | 5.0 | habitat_support_candidate | Gigastructural Engineering & More (4.4) |
-| habitat_support_center | `building:building_superhab_farm` | 5.0 | habitat_support_candidate|has_destroy_trigger | Stellar AI Director |
-| habitat_support_center | `building:building_superhab_foundry` | 5.0 | habitat_support_candidate|has_destroy_trigger | Stellar AI Director |
+| habitat_support_center | `building:building_superhab_farm` | 5.0 | habitat_support_candidate|has_destroy_trigger | Planetary Diversity |
+| habitat_support_center | `building:building_superhab_foundry` | 5.0 | habitat_support_candidate|has_destroy_trigger | Planetary Diversity |
 | capital_world | `building:building_grand_embassy` | 60.0 | capital_or_empire_unique_candidate|has_destroy_trigger | Stellaris vanilla |
 | capital_world | `building:building_order_keep` | 60.0 | cannot_demolish|capital_or_empire_unique_candidate|has_destroy_trigger|migration_destination | Stellaris vanilla |
 | capital_world | `building:building_embassy` | 35.0 | capital_or_empire_unique_candidate|has_destroy_trigger | Stellaris vanilla |

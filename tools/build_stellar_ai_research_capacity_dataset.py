@@ -2187,7 +2187,8 @@ def consumer_policy_rows(
         rows.append(
             {
                 "row_family": "building",
-                "consumer_surface": "colony_automation",
+                "consumer_surface": "building_or_district_ai_resource_production_filter",
+                "consumer_proof_status": "director_generator_proven",
                 "object_type": "building",
                 "object_id": str(row["building_id"]),
                 "role": str(row["primary_role"]),
@@ -2226,12 +2227,7 @@ def consumer_policy_rows(
             benefit_counts.get(key, {"numeric": 0, "policy_required": 0})["policy_required"] for key in selected_keys
         )
         source_scope = str(row["source_scope"])
-        if source_scope.startswith("build_plan_candidate"):
-            consumer_surface = "economic_plan|colony_automation"
-        elif source_scope.startswith("development") or source_scope.startswith("strategic_family"):
-            consumer_surface = "economic_plan|colony_automation_policy"
-        else:
-            consumer_surface = "economic_plan"
+        consumer_surface = "economic_plan|building_or_district_ai_resource_production_filter"
         if blocker_count > 0:
             consumer_modeling_status = "blocked_unresolved_modeling"
             can_consume_now = "no"
@@ -2244,6 +2240,7 @@ def consumer_policy_rows(
             {
                 "row_family": "role_target",
                 "consumer_surface": consumer_surface,
+                "consumer_proof_status": "director_generator_proven",
                 "object_type": "role_target",
                 "object_id": f"{row['role']}:{row['source_scope']}:{row['colony_class']}",
                 "role": str(row["role"]),
@@ -2278,7 +2275,8 @@ def consumer_policy_rows(
         rows.append(
             {
                 "row_family": "benefit_class",
-                "consumer_surface": "economic_plan|colony_automation_policy",
+                "consumer_surface": "modeling_policy_only",
+                "consumer_proof_status": "not_consumed",
                 "object_type": "benefit_class",
                 "object_id": benefit_class,
                 "role": "",

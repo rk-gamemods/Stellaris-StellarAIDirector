@@ -235,9 +235,9 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## research_megastructure_core
 
-- Objects: 212
-- Dependency edges: 610
-- Policy rows: 212
+- Objects: 221
+- Dependency edges: 630
+- Policy rows: 221
 - Manual/external dependency targets: 59
 
 | object | type | support | action | source |
@@ -262,6 +262,15 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `building_research_lab_3` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
 | `building_research_upkeep_1` | building | parent_ai_complete | observe | `common/buildings/05_research_buildings.txt` |
 | `esc_building_central_research_bureau` | building | parent_ai_absent | observe | `common/buildings/esc_buildings_general.txt` |
+| `col_ecu_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
+| `col_habitat_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/~stellarai_colony_types.txt` |
+| `col_habitat_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
+| `col_katzen_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/katzen_colony_types.txt` |
+| `col_nomad_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
+| `col_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/~stellarai_colony_types.txt` |
+| `col_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
+| `col_ring_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/~stellarai_colony_types.txt` |
+| `col_ring_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
 | `d_artifacts_research_1` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
 | `d_artifacts_research_2` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
 | `d_artifacts_research_3` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
@@ -273,15 +282,6 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `district_arcology_research_engineering` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
 | `district_arcology_research_physics` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
 | `district_arcology_research_society` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_hive_research` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_hive_research_engineering` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_hive_research_physics` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_hive_research_society` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_nexus_research` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_nexus_research_engineering` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_nexus_research_physics` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_nexus_research_society` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
-| `district_ring_world_research` | district | parent_ai_absent | observe | `common/districts/06_swap_districts.txt` |
 
 ## planetary_computer_research_core
 
@@ -455,10 +455,10 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## gigas_special_resource_core
 
-- Objects: 174
-- Dependency edges: 317
-- Policy rows: 174
-- Manual/external dependency targets: 52
+- Objects: 176
+- Dependency edges: 322
+- Policy rows: 176
+- Manual/external dependency targets: 54
 
 | object | type | support | action | source |
 | --- | --- | --- | --- | --- |
@@ -505,9 +505,9 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## research_throughput_infrastructure
 
-- Objects: 270
-- Dependency edges: 688
-- Policy rows: 270
+- Objects: 279
+- Dependency edges: 708
+- Policy rows: 279
 - Manual/external dependency targets: 56
 
 | object | type | support | action | source |
@@ -545,13 +545,13 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `building_supercomputer` | building | parent_ai_absent | observe | `common/buildings/05_research_buildings.txt` |
 | `esc_building_central_research_bureau` | building | parent_ai_absent | observe | `common/buildings/esc_buildings_general.txt` |
 | `esc_building_technology_institute` | building | parent_ai_absent | observe | `common/buildings/esc_buildings_general.txt` |
-| `decision_giga_pcc_science_district` | decision | parent_ai_partial | manual_review | `common/decisions/giga_ai_helpers.txt` |
-| `d_artifacts_research_1` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
-| `d_artifacts_research_2` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
-| `d_artifacts_research_3` | deposit | parent_ai_complete | observe | `common/deposits/06_ancient_relics_deposits.txt` |
-| `d_giga_job_upkeep_researchers_neg` | deposit | parent_ai_complete | observe | `common/deposits/giga_job_size_deposits.txt` |
-| `d_giga_job_upkeep_researchers_pos` | deposit | parent_ai_complete | observe | `common/deposits/giga_job_size_deposits.txt` |
-| `d_payback_habitat_research` | deposit | parent_ai_absent | observe | `common/deposits/09_first_contact_deposits.txt` |
+| `col_ecu_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
+| `col_habitat_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/~stellarai_colony_types.txt` |
+| `col_habitat_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
+| `col_katzen_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/katzen_colony_types.txt` |
+| `col_nomad_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
+| `col_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/~stellarai_colony_types.txt` |
+| `col_research` | colony_type | parent_ai_unknown | manual_review | `common/colony_types/00_colony_types.txt` |
 
 ## research_diplomacy_core
 
@@ -806,10 +806,10 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## crowded_tall_route
 
-- Objects: 1697
-- Dependency edges: 3166
-- Policy rows: 1697
-- Manual/external dependency targets: 528
+- Objects: 1717
+- Dependency edges: 3192
+- Policy rows: 1717
+- Manual/external dependency targets: 529
 
 | object | type | support | action | source |
 | --- | --- | --- | --- | --- |

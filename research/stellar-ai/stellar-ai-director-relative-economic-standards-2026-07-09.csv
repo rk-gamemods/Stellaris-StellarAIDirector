@@ -1,0 +1,70 @@
+basis,resource,measure,lower_inclusive,upper_exclusive,target,consumer_trigger,rationale
+owned_colonies,energy,income,,6,25,staid_scaled_energy_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,income,6,15,75,staid_scaled_energy_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,income,15,30,150,staid_scaled_energy_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,income,30,50,300,staid_scaled_energy_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,income,50,,600,staid_scaled_energy_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,stockpile,,6,1500,staid_scaled_energy_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,stockpile,6,15,3000,staid_scaled_energy_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,stockpile,15,30,6000,staid_scaled_energy_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,stockpile,30,50,10000,staid_scaled_energy_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,energy,stockpile,50,,15000,staid_scaled_energy_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,income,,6,25,staid_scaled_minerals_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,income,6,15,75,staid_scaled_minerals_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,income,15,30,150,staid_scaled_minerals_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,income,30,50,300,staid_scaled_minerals_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,income,50,,600,staid_scaled_minerals_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,stockpile,,6,1500,staid_scaled_minerals_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,stockpile,6,15,3000,staid_scaled_minerals_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,stockpile,15,30,6000,staid_scaled_minerals_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,stockpile,30,50,10000,staid_scaled_minerals_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,minerals,stockpile,50,,15000,staid_scaled_minerals_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,income,,6,75,staid_scaled_alloys_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,income,6,15,150,staid_scaled_alloys_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,income,15,30,300,staid_scaled_alloys_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,income,30,50,600,staid_scaled_alloys_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,income,50,,1200,staid_scaled_alloys_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,stockpile,,6,1500,staid_scaled_alloys_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,stockpile,6,15,3000,staid_scaled_alloys_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,stockpile,15,30,6000,staid_scaled_alloys_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,stockpile,30,50,10000,staid_scaled_alloys_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,alloys,stockpile,50,,15000,staid_scaled_alloys_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,income,,6,10,staid_scaled_consumer_goods_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,income,6,15,25,staid_scaled_consumer_goods_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,income,15,30,60,staid_scaled_consumer_goods_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,income,30,50,120,staid_scaled_consumer_goods_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,income,50,,250,staid_scaled_consumer_goods_income_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,stockpile,,6,1000,staid_scaled_consumer_goods_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,stockpile,6,15,2000,staid_scaled_consumer_goods_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,stockpile,15,30,4000,staid_scaled_consumer_goods_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,stockpile,30,50,8000,staid_scaled_consumer_goods_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,consumer_goods,stockpile,50,,12000,staid_scaled_consumer_goods_stockpile_safe,civilian economy scale and construction/upkeep headroom
+owned_colonies,food,stockpile,,6,750,staid_scaled_food_stockpile_safe,maintenance balance plus scaled reserve
+owned_colonies,food,stockpile,6,15,1500,staid_scaled_food_stockpile_safe,maintenance balance plus scaled reserve
+owned_colonies,food,stockpile,15,30,3000,staid_scaled_food_stockpile_safe,maintenance balance plus scaled reserve
+owned_colonies,food,stockpile,30,50,6000,staid_scaled_food_stockpile_safe,maintenance balance plus scaled reserve
+owned_colonies,food,stockpile,50,,12000,staid_scaled_food_stockpile_safe,maintenance balance plus scaled reserve
+current_fleet_power,alloys,income,,10000,75,staid_scaled_alloy_fleet_income_safe,fleet replacement throughput
+current_fleet_power,alloys,income,10000,50000,150,staid_scaled_alloy_fleet_income_safe,fleet replacement throughput
+current_fleet_power,alloys,income,50000,200000,300,staid_scaled_alloy_fleet_income_safe,fleet replacement throughput
+current_fleet_power,alloys,income,200000,500000,600,staid_scaled_alloy_fleet_income_safe,fleet replacement throughput
+current_fleet_power,alloys,income,500000,1000000,1200,staid_scaled_alloy_fleet_income_safe,fleet replacement throughput
+current_fleet_power,alloys,income,1000000,,2000,staid_scaled_alloy_fleet_income_safe,fleet replacement throughput
+current_fleet_power,alloys,stockpile,,10000,1500,staid_scaled_alloy_fleet_stockpile_safe,capped military operating float; surplus remains investable
+current_fleet_power,alloys,stockpile,10000,50000,3000,staid_scaled_alloy_fleet_stockpile_safe,capped military operating float; surplus remains investable
+current_fleet_power,alloys,stockpile,50000,200000,6000,staid_scaled_alloy_fleet_stockpile_safe,capped military operating float; surplus remains investable
+current_fleet_power,alloys,stockpile,200000,500000,10000,staid_scaled_alloy_fleet_stockpile_safe,capped military operating float; surplus remains investable
+current_fleet_power,alloys,stockpile,500000,1000000,15000,staid_scaled_alloy_fleet_stockpile_safe,capped military operating float; surplus remains investable
+current_fleet_power,alloys,stockpile,1000000,,20000,staid_scaled_alloy_fleet_stockpile_safe,capped military operating float; surplus remains investable
+bio_ship_fleet_power,food,income,,10000,25,staid_scaled_bioship_food_fleet_income_safe,biological-ship replacement throughput
+bio_ship_fleet_power,food,income,10000,50000,75,staid_scaled_bioship_food_fleet_income_safe,biological-ship replacement throughput
+bio_ship_fleet_power,food,income,50000,200000,150,staid_scaled_bioship_food_fleet_income_safe,biological-ship replacement throughput
+bio_ship_fleet_power,food,income,200000,500000,300,staid_scaled_bioship_food_fleet_income_safe,biological-ship replacement throughput
+bio_ship_fleet_power,food,income,500000,1000000,600,staid_scaled_bioship_food_fleet_income_safe,biological-ship replacement throughput
+bio_ship_fleet_power,food,income,1000000,,1000,staid_scaled_bioship_food_fleet_income_safe,biological-ship replacement throughput
+bio_ship_fleet_power,food,stockpile,,10000,1500,staid_scaled_bioship_food_fleet_stockpile_safe,capped biological-fleet operating float; surplus remains investable
+bio_ship_fleet_power,food,stockpile,10000,50000,3000,staid_scaled_bioship_food_fleet_stockpile_safe,capped biological-fleet operating float; surplus remains investable
+bio_ship_fleet_power,food,stockpile,50000,200000,6000,staid_scaled_bioship_food_fleet_stockpile_safe,capped biological-fleet operating float; surplus remains investable
+bio_ship_fleet_power,food,stockpile,200000,500000,10000,staid_scaled_bioship_food_fleet_stockpile_safe,capped biological-fleet operating float; surplus remains investable
+bio_ship_fleet_power,food,stockpile,500000,1000000,15000,staid_scaled_bioship_food_fleet_stockpile_safe,capped biological-fleet operating float; surplus remains investable
+bio_ship_fleet_power,food,stockpile,1000000,,20000,staid_scaled_bioship_food_fleet_stockpile_safe,capped biological-fleet operating float; surplus remains investable

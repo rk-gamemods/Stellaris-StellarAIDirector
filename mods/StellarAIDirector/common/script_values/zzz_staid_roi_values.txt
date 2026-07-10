@@ -12,3 +12,17 @@ staid_shipyard_payoff_stockpile_alloys = 12000
 staid_shipyard_payoff_income_alloys = 150
 staid_roi_matrix_eligible_rows = 140
 staid_safe_deficit_runway_months = 24
+
+# Director-owned market valuation. Do not depend on identifiers from the
+# separately authored Stellar AI mod.
+staid_market_sell_value = {
+	complex_trigger_modifier = {
+		trigger = market_resource_price
+		parameters = {
+			resource = $RESOURCE$
+			amount = $AMOUNT$
+			trade_type = market_sell
+		}
+		mode = add
+	}
+}

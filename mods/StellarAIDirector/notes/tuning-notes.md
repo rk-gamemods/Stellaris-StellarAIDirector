@@ -61,7 +61,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.
 - User-directed 2026-07-08 aggression tuning keeps local war aggression above vanilla (`AI_AGGRESSIVENESS_BASE = 50`) but restores vanilla distance penalty (`WAR_DECLARATION_MALUS = 0.05`) and caps war declaration range at 200 jumps to avoid inefficient galaxy-crossing wars.
 - Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.
-- Hostile space fauna clearance is tracked as a dedicated follow-up lane: cheap crystalline/amoeba/drone-style blockers should be cleared early for territory, resources, and event research, while high-risk leviathan targets need separate classification.
+- Hostile space fauna uses the engine's separate boss readiness lane: ordinary wars retain `ENEMY_FLEET_POWER_MULT = 0.55`, while boss and ultra-boss readiness are 100000 and 500000 military power. Confirmed Rogue Eeloo and Legendary Guardian fleets escalate to ultra-boss after defeating an AI fleet.
 
 ## Unlock-Research Policy
 
@@ -77,17 +77,15 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 ## Planetary-Capacity Policy
 
 - Expanded planet/building capacity is covered through a country-level economic-plan subplan once mineral, energy, and trade logistics runway are safe.
-- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which Stellaris 4.4.5 rejects in active economic-plan files.
-- Direct research infrastructure overrides now cover copied Stellar AI research labs and the habitat science district; broad job automation rewrites remain a required follow-up when a specific missing parent surface is proven.
-- Research labs keep a hard zero gate unless `staid_research_construction_priority_ready` is true, which allows full runway, high-scale surplus, or under-curve research with minimum CG/energy runway; they then add extra pressure for `staid_research_under_curve`, `staid_opening_route_research_priority`, and `staid_surplus_sink_pressure`. Habitat science districts keep the tall-capacity gate and add under-curve research pressure.
-- Pop assembly buildings keep the `staid_pop_assembly_snowball_ready` hard gate, then add path-specific pressure for valid robot/synth, machine, clone/biological, hive, and progenitor-hive assembly routes.
+- The generated subplan uses supported `pops` and income targets only; do not emit `empire_size`, which the current Stellaris 4.4.4 economic-plan surface rejects.
+- Safe research economic-plan demand is gated by `staid_research_construction_priority_ready`; vanilla research-zone eligibility remains the hard building boundary. The Director no longer emits research or pop-assembly building `ai_weight` files as if they were an authoritative planner.
 - Planetary Diversity outpost decisions are copied into generated decision overrides with Director-owned weights for moon, mining, food, energy, and research outposts; the research family strongly favors the capital because the opening strategy treats the capital as the first research hub.
 - Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.
 - Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.
 - Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.
 - Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting, Discovery/Diplomacy/AP support, and cooperative diplomatic stance only; direct research-agreement action and personality rewrites remain gated until separately proven.
-- Planetary Diversity static modifiers, deposits, and buildings are classified into generated role triggers (`staid_pd_planet_*_value`) so planet specialization can react to research, alloy, mineral, energy, food, trade, unity, growth, and defense value instead of treating PD planets as generic colonies.
-- More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` are copied through the dataset job-pressure path, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked until their runtime and UI semantics are proven.
+- Planetary Diversity outpost decisions retain source-owned availability and Director decision weights; obsolete generated PD building-weight and role-trigger files are removed.
+- More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` use hard AI strategic-readiness and research-world exclusion gates, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked.
 - Arkship carrier planets are excluded from copied Planetary Diversity outpost decisions, and later high-scale planetary pressure remains normal-empire-only where the Nomad/Arkship audit found no safe shared surface.
 
 ## Nomad/Arkship Compatibility Policy
