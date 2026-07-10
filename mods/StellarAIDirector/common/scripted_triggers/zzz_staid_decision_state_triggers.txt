@@ -594,11 +594,10 @@ staid_food_two_month_runway_unsafe = {
 		}
 	}
 }
-# Planet-scope colony build-out plan selectors. The first research role
+# Colony/carrier-scope build-out plan selectors. The first research role
 # is reserved even before construction is affordable; further roles require
 # the Director's consumer-goods and energy runway gate.
 staid_good_research_candidate = {
-	is_scope_type = planet
 	OR = {
 		check_modifier_value = { modifier = planet_researchers_produces_mult value > 0.09 }
 		check_modifier_value = { modifier = planet_researchers_physics_research_produces_mult value > 0.09 }
@@ -612,7 +611,6 @@ staid_good_research_candidate = {
 }
 
 staid_research_plan_candidate = {
-	is_scope_type = planet
 	is_colony = yes
 	is_capital = no
 	is_special_colony_type = no

@@ -1122,14 +1122,30 @@ class GeneratedModValidityTests(unittest.TestCase):
         for marker in (
             "staid_good_research_candidate = {",
             "staid_research_plan_candidate = {",
-            "is_scope_type = planet",
             "NOT = { has_carrier_flag = staid_research_plan_claimed }",
         ):
             self.assertIn(marker, triggers)
+        self.assertNotIn("is_scope_type = planet", triggers)
         self.assertEqual(
             [research_plan_target_count(colonies) for colonies in (2, 3, 4, 5, 6, 7, 8, 50)],
             [0, 1, 1, 2, 3, 3, 4, 25],
         )
+
+    def test_ai_science_designs_do_not_select_cloaking_components(self):
+        path = MOD_ROOT / "common" / "component_templates" / "zzzzz_staid_science_cloaking_ai_safety.txt"
+        self.assertTrue(path.exists(), f"{path} was not generated")
+        parse_file(path)
+        text = path.read_text(encoding="utf-8")
+        for component_key in (
+            "SCIENCE_CLOAKING_1",
+            "SCIENCE_CLOAKING_2",
+            "SCIENCE_CLOAKING_3",
+            "SCIENCE_CLOAKING_DARK_MATTER",
+            "SCIENCE_CLOAKING_PSI",
+        ):
+            self.assertIn(f'key = "{component_key}"', text)
+        self.assertEqual(text.count("weight = 0"), 5)
+        self.assertNotIn("SCIENCE_CLOAKING_EMPTY", text)
 
     def test_all_generated_colony_root_surfaces_scope_planet_flag_operations(self):
         self.assertEqual(generated_colony_root_scope_errors(MOD_ROOT), [])
