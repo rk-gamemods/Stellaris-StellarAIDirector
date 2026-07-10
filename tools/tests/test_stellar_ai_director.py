@@ -37,6 +37,7 @@ from stellar_ai_director_lib import (
     SFT_EQUIVALENCE_AUDIT_MD,
     STELLARAI_INLINE_SCRIPT_DEPENDENCIES,
     STANDALONE_AGGRESSION_PERSONALITY_VALUES,
+    WAR_PLANNING_444_PROVENANCE_CSV,
     STELLARIS_INSTALL_ROOT,
     _collect_job_adds,
     append_child_block_clause,
@@ -310,6 +311,7 @@ class GeneratedModValidityTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as temp_dir:
             mod_root = Path(temp_dir) / "StellarAIDirector"
+            (mod_root / "common" / "country_types").mkdir(parents=True)
             (mod_root / "common" / "diplomatic_actions").mkdir(parents=True)
             (mod_root / "common" / "component_templates").mkdir(parents=True)
             (mod_root / "common" / "ship_designs").mkdir(parents=True)
@@ -320,8 +322,9 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertEqual(len(errors), 2)
         self.assertTrue(any("diplomatic_actions" in error for error in errors))
         self.assertTrue(any("ship_designs" in error for error in errors))
-        self.assertEqual(len(strict_errors), 3)
+        self.assertEqual(len(strict_errors), 4)
         self.assertTrue(any("component_templates" in error for error in strict_errors))
+        self.assertTrue(any("country_types" in error for error in strict_errors))
 
     def test_sft_addon_equivalence_preserves_active_ship_build_logic(self):
         addon_equivalence = (
@@ -985,13 +988,45 @@ class GeneratedModValidityTests(unittest.TestCase):
             "WAR_DECLARATION_MAX_DISTANCE",
         ):
             self.assertRegex(text, rf"\b{user_tuned_define}\s*=")
-        self.assertIn("ENEMY_FLEET_POWER_MULT = 0.55", text)
+        self.assertIn("AI_NAVAL_CAP_SCORE_MULT = 15", text)
+        self.assertIn("AI_WAR_PREPARATION_MIN_MONTHS = 12", text)
+        self.assertIn("AI_WAR_PREPARATION_MAX_MONTHS = 30", text)
+        self.assertIn("AI_AGGRESSIVENESS_BASE = 25", text)
+        self.assertIn("AI_AGGRESSIVENESS_PROPAGATOR_BOXED_IN_MULT = 12", text)
+        self.assertIn("AI_AGGRESSIVENESS_BOXED_IN_MULT = 8", text)
+        self.assertIn("AI_AGGRESSIVENESS_NO_COLONY_TARGET_MULT = 2", text)
+        self.assertIn("ENEMY_FLEET_POWER_MULT = 1.2", text)
         self.assertIn("AI_HOSTILE_FLEET_DISTANCE = 3", text)
         self.assertIn("BOSS_MILITARY_POWER = 100000", text)
         self.assertIn("ULTRA_BOSS_MILITARY_POWER = 500000", text)
-        self.assertIn("AI_AGGRESSIVENESS_BASE = 50", text)
+        self.assertIn("WAR_DECLARATION_MALUS_DISTANCE = 25", text)
         self.assertIn("WAR_DECLARATION_MALUS = 0.05", text)
-        self.assertIn("WAR_DECLARATION_MAX_DISTANCE = 200", text)
+        self.assertIn("WAR_DECLARATION_MINIMUM_SCORE = 0.5", text)
+        self.assertIn("WAR_DECLARATION_MAX_DISTANCE = 50", text)
+        self.assertIn("OFFENSE_VS_DEFENSE_STRATEGY_ALLOTMENT = 1.0", text)
+
+    def test_default_country_type_removes_preplanner_war_deadlock_gates(self):
+        path = MOD_ROOT / "common" / "country_types" / "zzzzz_staid_18_native_war_readiness.txt"
+        self.assertTrue(path.exists(), f"{path} was not generated")
+        parse_file(path)
+        generated = path.read_text(encoding="utf-8")
+        generated_block = extract_top_level_object_text(generated, "default")
+        vanilla = (
+            STELLARIS_INSTALL_ROOT / "common" / "country_types" / "00_country_types.txt"
+        ).read_text(encoding="utf-8-sig")
+        vanilla_block = extract_top_level_object_text(vanilla, "default")
+        expected = re.sub(r"(?m)^\s*min_navy_for_wars\s*=.*(?:\n|$)", "", vanilla_block)
+        expected = re.sub(
+            r"(?m)^(\s*)min_assault_armies_for_wars\s*=.*$",
+            r"\1min_assault_armies_for_wars = 0",
+            expected,
+            count=1,
+        )
+
+        self.assertEqual(generated_block, expected)
+        self.assertNotIn("min_navy_for_wars", generated_block)
+        self.assertRegex(generated_block, r"(?m)^\s*min_assault_armies_for_wars\s*=\s*0\s*$")
+        self.assertRegex(generated_block, r"(?m)^\s*declare_war\s*=\s*yes\s*$")
 
     def test_standalone_personalities_restore_dependency_aggression_without_forced_wars(self):
         path = MOD_ROOT / "common" / "personalities" / "zzzzz_staid_16_standalone_war_pressure.txt"
@@ -1134,7 +1169,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertTrue(any("planet-only remove_planet_flag from colony scope" in error for error in errors))
         self.assertTrue(any("common/districts/scope_regression.txt" in error for error in errors))
 
-    def test_minerals_planet_construction_budget_spends_harder_when_rich_or_crowded(self):
+    def test_minerals_planet_construction_budget_does_not_starve_other_spending(self):
         budget_path = MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_minerals_planet_construction_budget.txt"
         self.assertTrue(budget_path.exists(), f"{budget_path} was not generated")
         parse_file(budget_path)
@@ -1146,18 +1181,103 @@ class GeneratedModValidityTests(unittest.TestCase):
             "category = planets",
             "staid_high_scale_snowball_pressure",
             "staid_core_deficit_short_runway",
+            "modifier = { factor = 0.65 staid_war_logistics_pressure = yes }",
             "any_owned_planet = { num_unemployed > 0 free_jobs < 1 }",
-            "weight = 28.0",
-            "modifier = { factor = 40 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }",
-            "modifier = { add = 300000 any_owned_planet = { free_building_slots > 0 num_unemployed > 0 } }",
+            "weight = 1.0",
+            "weight = 0.8",
+            "weight = 0.6",
+            "modifier = { add = 0.75 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }",
             "resource_stockpile_compare = { resource = minerals value > 25000 }",
         ):
             self.assertIn(marker, text)
+        for starve_marker in ("weight = 28.0", "factor = 40", "desired_min", "desired_max", "add = 300000"):
+            self.assertNotIn(starve_marker, text)
+
+    def test_army_recruitment_uses_native_budget_without_scripted_actions(self):
+        budget_path = MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_army_recruitment_budget.txt"
+        event_path = MOD_ROOT / "events" / "zzzz_staid_army_reserve_events.txt"
+        on_action_path = MOD_ROOT / "common" / "on_actions" / "zzzz_staid_army_reserve_on_actions.txt"
+        self.assertTrue(budget_path.exists(), f"{budget_path} was not generated")
+        parse_file(budget_path)
+        self.assertFalse(event_path.exists(), "Scripted army creation is forbidden")
+        self.assertFalse(on_action_path.exists(), "Scripted army creation is forbidden")
+
+        budget = budget_path.read_text(encoding="utf-8")
+        country_type = (
+            MOD_ROOT / "common" / "country_types" / "zzzzz_staid_18_native_war_readiness.txt"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("weight = 0.20", budget)
+        self.assertIn("weight = 0.10", budget)
+        self.assertIn("desired_min = {", budget)
+        self.assertIn("base = 200", budget)
+        self.assertIn("add = 300", budget)
+        self.assertIn("add = 500", budget)
+        self.assertNotIn("desired_max", budget)
+        self.assertNotIn("country_uses_bio_ships = no", budget)
+        self.assertIn("min_assault_armies_for_wars = 0", country_type)
+        for forbidden_action in ("create_army", "declare_war", "add_claim", "add_casus_belli"):
+            self.assertNotIn(forbidden_action, budget)
 
     def test_mod_source_root_falls_back_to_live_workshop_when_snapshot_missing(self):
         root = mod_source_root_for_id("819148835")
         self.assertTrue(root.exists())
         self.assertIn("819148835", str(root))
+
+    def test_working_war_planning_kernel_covers_boxed_army_and_high_cap_failure_modes(self):
+        kernel_path = MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_20_strategy_kernel_triggers.txt"
+        claims_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        policy_path = MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt"
+        alloy_path = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt"
+        for path in (kernel_path, claims_path, policy_path, alloy_path):
+            self.assertTrue(path.exists(), f"Missing native war solution file: {path}")
+            parse_file(path)
+
+        kernel = kernel_path.read_text(encoding="utf-8")
+        claims = claims_path.read_text(encoding="utf-8")
+        policies = policy_path.read_text(encoding="utf-8")
+        alloys = alloy_path.read_text(encoding="utf-8")
+        for marker in (
+            "staid_is_diplomatic_opening_phase = {",
+            "years_passed < 40",
+            "staid_boxed_in_war_pressure = {",
+            "has_ai_expansion_plan = no",
+            "staid_native_war_posture_active = {",
+            "staid_war_logistics_pressure = {",
+            "staid_peacetime_high_naval_capacity_guard = {",
+            "used_naval_capacity_percent >= 0.80",
+        ):
+            self.assertIn(marker, kernel)
+        boxed_claim = claims[
+            claims.index("staid_boxed_in_claim_urgency = {") : claims.index(
+                "staid_naval_capacity_expansion_ready = {"
+            )
+        ]
+        self.assertIn("staid_boxed_in_war_pressure = yes", boxed_claim)
+        self.assertNotIn("num_owned_planets < 5", boxed_claim)
+        self.assertIn("factor = 8 staid_boxed_in_war_pressure = yes", policies)
+        self.assertIn("factor = 0 staid_native_war_posture_active = yes", policies)
+        self.assertIn("NOT = { staid_peacetime_high_naval_capacity_guard = yes }", alloys)
+        for forbidden in ("declare_war", "create_war", "create_army", "add_claim", "add_casus_belli"):
+            self.assertNotIn(forbidden, kernel + claims + policies + alloys)
+
+    def test_war_planning_full_object_provenance_is_generated(self):
+        self.assertTrue(WAR_PLANNING_444_PROVENANCE_CSV.exists())
+        with WAR_PLANNING_444_PROVENANCE_CSV.open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        object_ids = {row["object_id"] for row in rows}
+        self.assertTrue(set(STANDALONE_AGGRESSION_PERSONALITY_VALUES).issubset(object_ids))
+        for required in (
+            "default",
+            "diplomatic_stance",
+            "orbital_bombardment",
+            "orbital_bombardment_accept_surrender",
+            "minerals_expenditure_armies",
+            "minerals_expenditure_planets_low",
+            "alloys_expenditure_ships",
+        ):
+            self.assertIn(required, object_ids)
+        self.assertTrue(all(row["pegasus_444_vanilla_source"] for row in rows))
 
     def test_pdx_parser_accepts_anonymous_nested_policy_blocks(self):
         parse_pdx(
@@ -1911,7 +2031,7 @@ class GeneratedModValidityTests(unittest.TestCase):
                         continue
                     object_id = row.get("object_id", "")
                     object_type = row.get("object_type", "")
-                    token = object_id if object_type == "building" else f"{object_type}:{object_id}"
+                    token = f"{object_type}:{object_id}"
                     special_object_class[token] = colony_class
 
         leaks = []
@@ -1955,9 +2075,11 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("staid_construction_spenddown_pressure = {", pressure + (
             MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         ).read_text(encoding="utf-8"))
-        self.assertIn("modifier = { factor = 40 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }", budget)
-        self.assertIn("modifier = { factor = 35 staid_construction_spenddown_pressure = yes }", budget)
+        self.assertIn("modifier = { add = 0.75 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }", budget)
+        self.assertIn("modifier = { add = 0.50 staid_construction_spenddown_pressure = yes }", budget)
         self.assertIn("resource_stockpile_compare = { resource = minerals value > 25000 }", budget)
+        self.assertNotIn("factor = 40", budget)
+        self.assertNotIn("factor = 35", budget)
         self.assertIn("ai_resource_production = {", pressure)
         self.assertNotIn("owner = { staid_construction_spenddown_pressure = yes }", pressure)
         self.assertNotIn("owner = { staid_basic_economy_runway_safe = yes", pressure)
@@ -2219,7 +2341,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "set_fleet_flag = staid_escalated_ultra_boss",
         ):
             self.assertIn(marker, event)
-        self.assertIn("ENEMY_FLEET_POWER_MULT = 0.55", defines)
+        self.assertIn("ENEMY_FLEET_POWER_MULT = 1.2", defines)
         self.assertIn("BOSS_MILITARY_POWER = 100000", defines)
         self.assertIn("ULTRA_BOSS_MILITARY_POWER = 500000", defines)
 

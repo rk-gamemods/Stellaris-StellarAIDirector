@@ -1665,8 +1665,7 @@ staid_boxed_in_claim_urgency = {
 	NOT = { has_ethic = ethic_pacifist }
 	NOT = { has_ethic = ethic_fanatic_pacifist }
 	has_potential_claims = yes
-	num_owned_planets < 5
-	NOT = { has_ai_expansion_plan = yes }
+	staid_boxed_in_war_pressure = yes
 	has_resource = { type = influence amount > 250 }
 }
 

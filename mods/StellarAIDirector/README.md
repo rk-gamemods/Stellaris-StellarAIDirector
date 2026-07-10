@@ -31,14 +31,35 @@ Missing required Steam parents during generation: none.
   `common/economic_plans`, construction-pressure defines and budgets,
   research/economy/fleet conversion, market/runway safety, claim/war-support
   reserves, and high-scale modded progression hooks.
-- Deferred standalone enhancements: broad personality rewrites, diplomatic
-  action overrides, direct NSC3/ESC ship-design handling, advanced war chain
-  behavior, and runtime observer proof.
+- Remaining standalone limits: direct diplomatic-action overrides, direct
+  NSC3/ESC ship-design handling, executable-only target/reachability details,
+  and runtime observer proof.
 
 ## Scope
 
 - Adds scripted decision-state triggers for survival, recovery, megastructure
   prep, safe commit, surplus-sink pressure, and shipyard payoff exploitation.
+- Overrides the regular `default` country type to remove Pegasus 4.4.4's
+  pre-planner readiness deadlock: the 50% desired-navy requirement is omitted
+  and the six-assault-army requirement is set to zero. Every other field is
+  copied from the current vanilla object, and native target selection, casus
+  belli, war goals, relative-strength checks, preparation, declarations, and
+  fleet execution remain engine-owned. Regenerate and revalidate this
+  full-object override after changing Stellaris versions.
+- Copies the 20 ordinary/crisis personality objects from Pegasus 4.4.4 and
+  substitutes only the working Stellar AI 0.10 `aggressiveness`, `bravery`, and
+  `military_spending` values. Native behavior flags, diplomacy fields, design
+  preferences, and selection rules remain intact.
+- Gives diplomacy a bounded sub-40-year peaceful opening that exits immediately
+  for war pressure or physical containment. Boxed-in empires strongly prefer
+  Belligerent or Supremacist posture and retain claim pressure after five colonies.
+- Replaces the native mineral army budgets with a modest uncapped reserve. The
+  engine still chooses legal army types and counts; armies are not a declaration
+  prerequisite and no unit is created by script.
+- Applies the Pegasus 4.4.4 high-naval-capacity workaround: normal peacetime new
+  ship spending pauses at 80% used capacity while upgrades, war, crisis, and
+  defensive-emergency spending remain available. This avoids feeding fresh games
+  into the executable bug that Paradox fixed in 4.4.5.
 - Reimplements the megastructure alloy budget object with explicit emergency
   exits and larger reserves for Gigas/NSC3-scale projects.
 - Replaces the base economic plan with a mod-set-specific high-scale survival
@@ -124,13 +145,15 @@ Run:
 
 ```powershell
 python tools/generate_stellar_ai_director_patch.py
+python tools/validate_staid_444_war_solution.py
 python tools/validate_stellar_ai_director_patch.py
 python -m unittest discover -s tools/tests
 ```
 
 Static validation proves generated file safety, known-reference coverage, and
 deterministic policy contracts.
-Observer proof remains a separate final gate for the strategic v2 packet: the
-current branch still needs the constrained observer run to prove that at least
-one AI empire can reach the intended high-scale economy and 3,000+ total
-research per month before 2350 without hidden AI economic bonuses.
+War-planning runtime proof remains one final fresh-game observer gate: run the
+normal 4.4.4 playset for roughly 20–30 years with every regular empire under AI
+control, then confirm multiple ordinary wars, a boxed-in breakout attempt, useful
+but non-excessive offensive armies, and a functioning economy. Longer economic
+and research benchmarking remains a separate Director quality goal.

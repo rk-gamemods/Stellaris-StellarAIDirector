@@ -15,6 +15,9 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | planetary trade capacity income floor | 50 | minimum monthly trade before planetary-capacity and megastructure-prep gates add logistics pressure |
 | surplus trade capacity income floor | 100 | minimum monthly trade before surplus sink pressure can activate |
 | fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |
+| 4.4.4 peacetime new-ship guard | 0.80 used naval capacity | avoid entering the executable high-capacity war-declaration defect; war/emergency bypasses |
+| native army reserve | 200 minerals base; +300 boxed; +300 conquest/raiding; +500 war/existential | fund useful assault-army recruitment without forcing units or capping demand |
+| war preparation window | 12–30 months | restore working native preparation rather than one-month declaration churn |
 | strategic value horizon year | 2350 | long-lived economic, military, and modifier payoffs are weighted by remaining months before this goal date |
 | static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |
 | static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |
@@ -31,7 +34,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | threat readiness alloys cap | 7 | maximum added alloys target from third-party threat readiness |
 | threat readiness energy cap | 6 | maximum added energy target from third-party threat readiness |
 | threat readiness naval cap | 40 | maximum added naval-cap target from third-party threat readiness |
-| eligible ROI rows | 140 | source sample used for threshold generation |
+| eligible ROI rows | 24 | source sample used for threshold generation |
 
 ## Static-Defense Policy
 
@@ -59,9 +62,11 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).
 - Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.
 - Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.
-- User-directed 2026-07-08 aggression tuning keeps local war aggression above vanilla (`AI_AGGRESSIVENESS_BASE = 50`) but restores vanilla distance penalty (`WAR_DECLARATION_MALUS = 0.05`) and caps war declaration range at 200 jumps to avoid inefficient galaxy-crossing wars.
+- War declaration globals return to the working native 4.4.4 envelope: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, minimum score 0.5, and offense/defense allotment 1.0. Boxed-in multipliers remain bounded above vanilla at 8/12.
+- Normal peacetime new-ship spending pauses at 80% used naval capacity, while upgrades, war, crisis, and defensive-emergency spending bypass the guard. This is the native-data workaround for the executable high-cap declaration defect later fixed in 4.4.5.
+- Native army budgets reserve 200 minerals at baseline, with bounded additions for boxed-in, conquest/raiding, war, and existential-defense states. No desired_max caps recruitment and no army is created by script.
 - Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.
-- Hostile space fauna uses the engine's separate boss readiness lane: ordinary wars retain `ENEMY_FLEET_POWER_MULT = 0.55`, while boss and ultra-boss readiness are 100000 and 500000 military power. Confirmed Rogue Eeloo and Legendary Guardian fleets escalate to ultra-boss after defeating an AI fleet.
+- Hostile space fauna continues to use the engine's separate boss readiness lane at 100000/500000 military power. Ordinary empire confidence uses the native `ENEMY_FLEET_POWER_MULT = 1.2`; boss readiness is not made easier by the war-planner repair.
 
 ## Unlock-Research Policy
 
@@ -83,7 +88,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.
 - Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.
 - Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.
-- Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting, Discovery/Diplomacy/AP support, and cooperative diplomatic stance only; direct research-agreement action and personality rewrites remain gated until separately proven.
+- Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting and Discovery/Diplomacy/AP support remain, while the cooperative stance is restricted to the temporary diplomatic opening and exits for native war pressure. Direct research-agreement actions remain gated.
 - Planetary Diversity outpost decisions retain source-owned availability and Director decision weights; obsolete generated PD building-weight and role-trigger files are removed.
 - More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` use hard AI strategic-readiness and research-world exclusion gates, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked.
 - Arkship carrier planets are excluded from copied Planetary Diversity outpost decisions, and later high-scale planetary pressure remains normal-empire-only where the Nomad/Arkship audit found no safe shared surface.

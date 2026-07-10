@@ -95,6 +95,7 @@ NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD = (
 )
 ECONOMIC_VALUATION_EVIDENCE_MD = RESEARCH_ROOT / "stellar-ai-director-economic-valuation-evidence-2026-07-07.md"
 BUILD_PLAN_CONSUMER_POLICY_CSV = RESEARCH_ROOT / "stellar-ai-director-build-plan-consumer-policy-2026-07-09.csv"
+WAR_PLANNING_444_PROVENANCE_CSV = RESEARCH_ROOT / "stellar-ai-director-war-planning-444-provenance-2026-07-10.csv"
 OBJECT_ATLAS_COVERAGE_MD = OBJECT_ATLAS_ROOT / "coverage-report-2026-07-06.md"
 ROUTE_REPORT_MD = OBJECT_ATLAS_ROOT / "route-reports-2026-07-06.md"
 
@@ -314,6 +315,7 @@ GENERATED_SURFACE_FOLDERS = {
     "component_sets": "component_set",
     "component_tags": "component_tag",
     "component_templates": "component_template",
+    "country_types": "country_type",
     "bombardment_stances": "bombardment_stance",
     "buildings": "building",
     "colony_types": "colony_type",
@@ -4982,51 +4984,70 @@ def replace_or_insert_top_level_scalar(block_text: str, child_key: str, replacem
     return "\n".join(output) + "\n"
 
 
-def insert_top_level_ai_weight_modifier(block_text: str, modifier_line: str) -> str:
-    if modifier_line in block_text:
+def insert_top_level_child_modifier(
+    block_text: str,
+    child_key: str,
+    modifier_text: str,
+) -> str:
+    """Insert a modifier immediately before a top-level child block closes."""
+    if modifier_text in block_text:
         return block_text
     lines = block_text.rstrip().splitlines()
     output: list[str] = []
     depth = 0
     index = 0
-    ai_weight_pattern = re.compile(r"^[ \t]*ai_weight[ \t]*=")
+    child_pattern = re.compile(
+        rf"^[ \t]*{re.escape(child_key)}[ \t]*=",
+        re.IGNORECASE,
+    )
     inserted = False
     while index < len(lines):
         line = lines[index]
-        if depth == 1 and ai_weight_pattern.match(line):
+        if depth == 1 and child_pattern.match(line):
             output.append(line)
             depth += _brace_delta(line)
             index += 1
-            ai_lines: list[str] = []
+            child_lines: list[str] = []
             while index < len(lines) and depth > 1:
                 current = lines[index]
                 next_depth = depth + _brace_delta(current)
                 if next_depth == 1 and current.strip() == "}":
-                    ai_lines.append(modifier_line)
+                    child_lines.extend(modifier_text.rstrip().splitlines())
                     inserted = True
-                ai_lines.append(current)
+                child_lines.append(current)
                 depth = next_depth
                 index += 1
-            output.extend(ai_lines)
+            output.extend(child_lines)
             continue
         output.append(line)
         depth += _brace_delta(line)
         index += 1
-    if inserted:
-        return "\n".join(output) + "\n"
-
-    closing_index = len(output) - 1
-    while closing_index >= 0 and not re.match(r"^[ \t]*}\s*$", output[closing_index]):
-        closing_index -= 1
-    if closing_index < 0:
-        raise ValueError("Generated block has no final closing brace for ai_weight insertion")
-    output[closing_index:closing_index] = [
-        "\tai_weight = {",
-        "\t\tfactor = 1",
-        modifier_line,
-        "\t}",
-    ]
+    if not inserted:
+        raise ValueError(f"Generated block has no top-level {child_key} block")
     return "\n".join(output) + "\n"
+
+
+def insert_top_level_ai_weight_modifier(block_text: str, modifier_line: str) -> str:
+    """Compatibility wrapper for existing policy-generation callers."""
+    try:
+        return insert_top_level_child_modifier(block_text, "ai_weight", modifier_line)
+    except ValueError:
+        # Some source objects genuinely have no AI weight. Preserve the historic
+        # fallback rather than silently dropping the requested policy signal.
+        lines = block_text.rstrip().splitlines()
+        closing_index = len(lines) - 1
+        while closing_index >= 0 and not re.match(r"^[ \t]*}\s*$", lines[closing_index]):
+            closing_index -= 1
+        if closing_index < 0:
+            raise ValueError("Generated block has no final closing brace for ai_weight insertion")
+        lines[closing_index:closing_index] = [
+            "\tai_weight = {",
+            "\t\tfactor = 1",
+            modifier_line,
+            "\t}",
+        ]
+        return "\n".join(lines) + "\n"
+
 
 
 def insert_top_level_ai_weight_modifiers(block_text: str, modifier_lines: list[str]) -> str:
@@ -5066,8 +5087,8 @@ def find_verified_source_object_block(common_folder: str, object_id: str, mod_id
 
 
 def insert_policy_option_ai_weight_modifier(block_text: str, option_name: str, modifier_line: str) -> str:
-    if modifier_line in block_text:
-        return block_text
+    # Deduplicate within the target option, not across the whole policy object.
+    # Several options intentionally receive the same boxed-in/war-posture rule.
     lines = block_text.rstrip().splitlines()
     output: list[str] = []
     depth = 0
@@ -5384,7 +5405,7 @@ def build_plan_consumer_policy_allows_dataset_object(
             and not build_plan_consumer_policy_excludes_dataset_object(row, policy)
         )
     if object_type == "district":
-        token = f"district:{object_id}"
+        token = f"{object_type}:{object_id}"
         if token not in selected_objects:
             return False
         if str(row.get("colony_class", "")) in SPECIAL_COLONY_CLASSES:
@@ -7826,6 +7847,7 @@ CURRENT_STANDALONE_DOCS = (
     Path("notes/load-order.md"),
 )
 FORBIDDEN_GENERATED_SURFACES = (
+    Path("common/country_types"),
     Path("common/diplomatic_actions"),
     Path("common/personalities"),
     Path("common/ship_designs"),
@@ -7835,6 +7857,7 @@ FORBIDDEN_GENERATED_SURFACES = (
 )
 RESEARCHED_GENERATED_SURFACE_ALLOWLIST = {
     Path("common/component_templates"),
+    Path("common/country_types"),
     Path("common/personalities"),
     Path("common/ship_sizes"),
 }
@@ -9515,99 +9538,168 @@ staid_opening_any_research_route = {
 
 def strategy_kernel_triggers_text() -> str:
     return '''# Generated by tools/generate_stellar_ai_director_patch.py.
-# Computed strategic state shared by economy, policy, edict, technology, and fleet weights.
+# Computed strategic state shared by economy, policy, edict, technology, fleet,
+# and native war-planning weights. No trigger in this file mutates game state.
 
 staid_is_opening_phase = {
-\tyears_passed < 75
+	years_passed < 75
+}
+
+# Stellar AI 0.10 used a roughly forty-year peaceful expansion opening, but
+# explicitly exited that posture when war or physical containment demanded it.
+# Director keeps its longer economic opening while using this narrower trigger
+# only for diplomacy and war-support spending.
+staid_is_diplomatic_opening_phase = {
+	years_passed < 40
+	is_at_war = no
+	NOT = { staid_boxed_in_war_pressure = yes }
 }
 
 staid_is_midgame_scaling_phase = {
-\tyears_passed > 44
-\tyears_passed < 120
+	years_passed > 44
+	years_passed < 120
 }
 
 staid_is_crisis_scaling_phase = {
-\tyears_passed > 119
+	years_passed > 119
 }
 
 staid_has_safe_basic_stockpiles = {
-\tNOT = { has_deficit = energy }
-\tNOT = { has_deficit = minerals }
-\tNOT = { has_deficit = food }
-\tNOT = { has_deficit = consumer_goods }
-\tresource_stockpile_percent = { resource = energy value > 0.10 }
-\tresource_stockpile_percent = { resource = minerals value > 0.10 }
+	NOT = { has_deficit = energy }
+	NOT = { has_deficit = minerals }
+	NOT = { has_deficit = food }
+	NOT = { has_deficit = consumer_goods }
+	resource_stockpile_percent = { resource = energy value > 0.10 }
+	resource_stockpile_percent = { resource = minerals value > 0.10 }
 }
 
 staid_can_afford_research_push = {
-\tNOT = { staid_catastrophic_collapse_mode = yes }
-\tOR = {
-\t\tstaid_has_safe_basic_stockpiles = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t\tstaid_construction_spenddown_pressure = yes
-\t}
-\tOR = {
-\t\tstaid_research_input_runway_safe = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t\tstaid_construction_spenddown_pressure = yes
-\t}
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	OR = {
+		staid_has_safe_basic_stockpiles = yes
+		staid_high_scale_snowball_pressure = yes
+		staid_construction_spenddown_pressure = yes
+	}
+	OR = {
+		staid_research_input_runway_safe = yes
+		staid_high_scale_snowball_pressure = yes
+		staid_construction_spenddown_pressure = yes
+	}
 }
 
 staid_security_threatened = {
-\tOR = {
-\t\thas_country_flag = staid_tr_defensive_readiness_low
-\t\tstaid_crisis_starbase_pressure = yes
-\t}
+	OR = {
+		has_country_flag = staid_tr_defensive_readiness_low
+		staid_crisis_starbase_pressure = yes
+	}
 }
 
 staid_security_existential = {
-\tOR = {
-\t\tstaid_crisis_starbase_pressure = yes
-\t\tAND = {
-\t\t\tstaid_security_threatened = yes
-\t\t\tNOT = { staid_shipyard_payoff_ready = yes }
-\t\t}
-\t}
+	OR = {
+		staid_crisis_starbase_pressure = yes
+		AND = {
+			staid_security_threatened = yes
+			NOT = { staid_shipyard_payoff_ready = yes }
+		}
+	}
+}
+
+# Native boxed-in proxy. Stellaris exposes whether the AI still has a peaceful
+# expansion plan, but not a scriptable "blocking empire" target weight. The
+# engine's boxed-in declaration multiplier and adjacent claims then decide the
+# actual target. This deliberately applies before the old <5-colony cutoff.
+staid_boxed_in_war_pressure = {
+	is_nomadic = no
+	is_at_war = no
+	has_country_flag = has_encountered_other_empire
+	has_ai_expansion_plan = no
+	NOT = { has_ethic = ethic_pacifist }
+	NOT = { has_ethic = ethic_fanatic_pacifist }
+	OR = {
+		has_ai_personality_behaviour = propagator
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = opportunist
+		num_owned_planets < 8
+	}
+}
+
+staid_native_war_posture_active = {
+	NOT = { is_pacifist = yes }
+	OR = {
+		staid_boxed_in_war_pressure = yes
+		staid_militarist_conquest_strategy = yes
+		staid_raiding_pop_growth_strategy = yes
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = purger
+		has_ai_personality_behaviour = opportunist
+	}
+}
+
+# Shared mineral/alloy competition signal. This reserves logistics capacity but
+# never creates armies, fleets, claims, casus belli, targets, or wars.
+staid_war_logistics_pressure = {
+	OR = {
+		is_at_war = yes
+		recently_lost_war = yes
+		staid_boxed_in_war_pressure = yes
+		staid_militarist_conquest_strategy = yes
+		staid_raiding_pop_growth_strategy = yes
+		staid_security_threatened = yes
+	}
+}
+
+# Pegasus 4.4.5 fixed an executable defect where high naval capacity could
+# suppress declarations. 4.4.4 cannot receive that code fix, so the native
+# workaround is to stop peacetime ship expansion before fleets sit permanently
+# at full capacity. Wartime, crisis, and defensive-emergency spending bypass it.
+staid_peacetime_high_naval_capacity_guard = {
+	is_at_war = no
+	used_naval_capacity_percent >= 0.80
+	NOT = { recently_lost_war = yes }
+	NOT = { staid_security_existential = yes }
+	NOT = { has_ascension_perk = ap_become_the_crisis }
 }
 
 staid_megastructure_prereq_release = {
-\tstaid_megastructure_prep_ready = yes
-\tstaid_can_afford_research_push = yes
+	staid_megastructure_prep_ready = yes
+	staid_can_afford_research_push = yes
 }
 
 staid_megastructure_alloy_release = {
-\tstaid_megastructure_commit_safe = yes
-\tNOT = { staid_security_existential = yes }
+	staid_megastructure_commit_safe = yes
+	NOT = { staid_security_existential = yes }
 }
 
 staid_fleet_defensive_minimum_mode = {
-\tOR = {
-\t\tstaid_security_threatened = yes
-\t\tstaid_shipyard_expansion_ready = yes
-\t}
+	OR = {
+		staid_security_threatened = yes
+		staid_shipyard_expansion_ready = yes
+	}
 }
 
 staid_fleet_strategic_aggression_mode = {
-\tOR = {
-\t\tstaid_fleet_payoff_exploitation_ready = yes
-\t\tAND = {
-\t\t\tused_naval_capacity_percent < 1.40
-\t\t\thas_monthly_income = { resource = alloys value > 80 }
-\t\t}
-\t\tstaid_hostile_fauna_clearance_strategy = yes
-\t}
-\tNOT = { staid_security_existential = yes }
+	OR = {
+		staid_fleet_payoff_exploitation_ready = yes
+		AND = {
+			used_naval_capacity_percent < 1.40
+			has_monthly_income = { resource = alloys value > 80 }
+		}
+		staid_hostile_fauna_clearance_strategy = yes
+	}
+	NOT = { staid_security_existential = yes }
 }
 
 staid_fleet_survival_emergency_mode = {
-\tstaid_security_existential = yes
+	staid_security_existential = yes
 }
 
 staid_opening_route_research_priority = {
-\tOR = {
-\t\tstaid_opening_any_research_route = yes
-\t\tstaid_research_under_curve = yes
-\t}
+	OR = {
+		staid_opening_any_research_route = yes
+		staid_research_under_curve = yes
+	}
 }
 '''
 
@@ -9670,45 +9762,66 @@ def opening_growth_policies_text() -> str:
     diplomatic_block = find_verified_source_object_block("policies", "diplomatic_stance")
     bombardment_block = find_verified_source_object_block("policies", "orbital_bombardment")
     surrender_block = find_verified_source_object_block("policies", "orbital_bombardment_accept_surrender")
-    cooperative_modifier = """\t\t\tmodifier = {
+
+    cooperative_opening = """\t\t\tmodifier = {
 \t\t\t\tfactor = 2
-\t\t\t\tstaid_is_opening_phase = yes
+\t\t\t\tstaid_is_diplomatic_opening_phase = yes
 \t\t\t\tstaid_opening_any_research_route = yes
 \t\t\t\tNOT = { staid_security_existential = yes }
-\t\t\t\tNOT = { staid_militarist_conquest_strategy = yes }
-\t\t\t\tNOT = { has_ai_personality_behaviour = conqueror }
-\t\t\t\tNOT = { has_ai_personality_behaviour = subjugator }
+\t\t\t\tNOT = { staid_native_war_posture_active = yes }
 \t\t\t\tnum_rivals = 0
 \t\t\t}"""
-    mercantile_modifier = "\t\t\tmodifier = { factor = 5 staid_opening_trade_to_research = yes }"
-    expansionist_modifier = "\t\t\tmodifier = { factor = 4 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }"
-    supremacist_modifier = "\t\t\tmodifier = { factor = 18 staid_militarist_conquest_strategy = yes }"
-    conquest_bombardment_modifier = "\t\t\tmodifier = { factor = 18 staid_militarist_conquest_strategy = yes }"
-    opening_bombardment_modifier = "\t\t\tmodifier = { factor = 8 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }"
-    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_cooperative", cooperative_modifier)
-    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_cooperative_nomad", cooperative_modifier)
-    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_modifier)
-    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_modifier)
-    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_supremacist", supremacist_modifier)
-    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_supremacist_nomad", supremacist_modifier)
+    cooperative_exit = "\t\t\tmodifier = { factor = 0 staid_native_war_posture_active = yes }"
+    belligerent_native = "\t\t\tmodifier = { factor = 2 staid_native_war_posture_active = yes }"
+    belligerent_boxed = "\t\t\tmodifier = { factor = 8 staid_boxed_in_war_pressure = yes }"
+    mercantile_opening = "\t\t\tmodifier = { factor = 5 staid_opening_trade_to_research = yes staid_is_diplomatic_opening_phase = yes }"
+    mercantile_exit = "\t\t\tmodifier = { factor = 0.25 staid_native_war_posture_active = yes }"
+    expansionist_opening = "\t\t\tmodifier = { factor = 4 staid_opening_military_to_pops = yes staid_is_diplomatic_opening_phase = yes staid_has_safe_basic_stockpiles = yes }"
+    expansionist_exit = "\t\t\tmodifier = { factor = 0.25 staid_native_war_posture_active = yes }"
+    expansionist_boxed = "\t\t\tmodifier = { factor = 0.10 staid_boxed_in_war_pressure = yes }"
+    supremacist_native = "\t\t\tmodifier = { factor = 6 staid_native_war_posture_active = yes }"
+    supremacist_boxed = "\t\t\tmodifier = { factor = 8 staid_boxed_in_war_pressure = yes }"
+
+    for option in ("diplo_stance_belligerent", "diplo_stance_belligerent_nomad"):
+        try:
+            diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, belligerent_native)
+            diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, belligerent_boxed)
+        except ValueError:
+            if option.endswith("_nomad"):
+                continue
+            raise
+    for option in ("diplo_stance_cooperative", "diplo_stance_cooperative_nomad"):
+        diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, cooperative_opening)
+        diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, cooperative_exit)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_opening)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_exit)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_opening)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_exit)
+    diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_boxed)
+    for option in ("diplo_stance_supremacist", "diplo_stance_supremacist_nomad"):
+        diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, supremacist_native)
+        diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, supremacist_boxed)
+
+    conquest_bombardment = "\t\t\tmodifier = { factor = 18 staid_militarist_conquest_strategy = yes }"
+    opening_bombardment = "\t\t\tmodifier = { factor = 8 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }"
     bombardment_block = insert_policy_option_ai_weight_modifier(
-        bombardment_block, "orbital_bombardment_indiscriminate", conquest_bombardment_modifier
+        bombardment_block, "orbital_bombardment_indiscriminate", conquest_bombardment
     )
     bombardment_block = insert_policy_option_ai_weight_modifier(
-        bombardment_block, "orbital_bombardment_indiscriminate", opening_bombardment_modifier
+        bombardment_block, "orbital_bombardment_indiscriminate", opening_bombardment
     )
-    forbidden_ai_weight = """		ai_weight = {
-			base = 1
-			modifier = { factor = 80 staid_raiding_pop_growth_strategy = yes }
-			modifier = { factor = 20 staid_militarist_conquest_strategy = yes }
-			modifier = { factor = 8 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }
-			modifier = {
-				factor = 0.01
-				NOT = { staid_raiding_pop_growth_strategy = yes }
-				NOT = { staid_militarist_conquest_strategy = yes }
-				NOT = { staid_opening_military_to_pops = yes }
-			}
-		}"""
+    forbidden_ai_weight = """\t\tai_weight = {
+\t\t\tbase = 1
+\t\t\tmodifier = { factor = 80 staid_raiding_pop_growth_strategy = yes }
+\t\t\tmodifier = { factor = 20 staid_militarist_conquest_strategy = yes }
+\t\t\tmodifier = { factor = 8 staid_opening_military_to_pops = yes staid_has_safe_basic_stockpiles = yes }
+\t\t\tmodifier = {
+\t\t\t\tfactor = 0.01
+\t\t\t\tNOT = { staid_raiding_pop_growth_strategy = yes }
+\t\t\t\tNOT = { staid_militarist_conquest_strategy = yes }
+\t\t\t\tNOT = { staid_opening_military_to_pops = yes }
+\t\t\t}
+\t\t}"""
     surrender_block = replace_policy_option_ai_weight(
         surrender_block, "orbital_bombardment_surrender_forbidden", forbidden_ai_weight
     )
@@ -9717,7 +9830,8 @@ def opening_growth_policies_text() -> str:
     parse_pdx(text)
     return (
         "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
-        "# Verified full-object policy overrides from installed vanilla diplomatic and orbital bombardment policies.\n\n"
+        "# Pegasus 4.4.4 full-object policy overrides. Native option legality and all non-AI fields are preserved.\n"
+        "# The peaceful opening exits at war pressure; boxed-in empires strongly prefer Belligerent/Supremacist posture.\n\n"
         + text
     )
 
@@ -9829,11 +9943,11 @@ def standalone_parity_inventory_rows() -> list[dict[str, str]]:
         },
         {
             "surface": "personalities_diplomacy_war",
-            "classification": "defer_except_safe_war_support",
-            "baseline_status": "partial_baseline",
-            "director_evidence": "common/scripted_triggers/zzz_staid_threat_response_triggers.txt; events/zzz_staid_threat_response_events.txt; common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt; economic-plan war support reserves",
-            "stellar_ai_reference": "Stellar AI personality/diplomacy behavior remains reference-only; direct personality and diplomatic-action overrides are high-risk gated.",
-            "parity_note": "Baseline covers defensive readiness, conquest/raiding reserves, and threat response without direct war declarations, diplomatic actions, or personality rewrites.",
+            "classification": "absorb_reimplement_native",
+            "baseline_status": "implemented_static_needs_runtime",
+            "director_evidence": "common/personalities/zzzzz_staid_16_standalone_war_pressure.txt; common/policies/zzzz_staid_10_opening_growth_policies.txt; common/country_types/zzzzz_staid_18_native_war_readiness.txt; common/ai_budget/zzzz_staid_14_army_recruitment_budget.txt; common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt",
+            "stellar_ai_reference": "Stellar AI 0.10 personality values and temporary peaceful-opening pattern are absorbed without a runtime dependency.",
+            "parity_note": "Director now owns complete 4.4.4 personality copies, native posture transitions, boxed-in claim/logistics pressure, and pre-planner readiness repair while declarations, CBs, war goals, target choice, and fleets remain engine-owned.",
         },
         {
             "surface": "policies_edicts_defines",
@@ -9873,7 +9987,7 @@ def standalone_parity_inventory_rows() -> list[dict[str, str]]:
             "baseline_status": "non_baseline_gap",
             "director_evidence": "mods/StellarAIDirector/notes/tuning-notes.md; research/stellar-ai/stellar-ai-director-open-roadmap-2026-07-07.md; research/stellar-ai/stellar-ai-director-sft-equivalence-audit-2026-07-09.md",
             "stellar_ai_reference": "Stellar AI does not settle active-stack section-template, ship-size, Gigas runtime, or observer-proof questions.",
-            "parity_note": "SFT component/combat-computer logic is now absorbed separately; direct section-template emission, ship-size edits, broad ship-design overrides, advanced Gigas optimization, personalities, diplomatic actions, and observer proof remain gated.",
+            "parity_note": "SFT component/combat-computer logic is absorbed separately; direct section-template emission, ship-size edits, broad ship-design overrides, advanced Gigas optimization, diplomatic actions, and observer proof remain gated. Native personality war behavior is now implemented in the dedicated 4.4.4 layer.",
         },
     ]
 
@@ -9917,9 +10031,9 @@ def strategic_subsystem_audit_rows() -> list[dict[str, str]]:
         ("colony_designation", "economy", "Align construction pressure with research, forge, factory, mining, energy, food, unity, trade, and special-world roles.", "research:stellar-ai-director-colony-role-targets-2026-07-09.csv; mod:common/colony_types/zzzzz_staid_15_fortress_economic_hard_gates.txt; mod:common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt", "active colony types; role target dataset; vanilla bottleneck trigger", "designation potential plus hard zone/building eligibility", "source_proven", "regular|machine|hive|special_worlds", "fortress economy/colony-count/threat/topology readiness; research-world naval exclusion", "corrected_static", "Fortress waste and non-bottleneck placement are hard-gated, but the remaining broad designation choice and special-world role selection are not yet reconstructed.", "Audit every remaining colony type winner, selection weight, and role-specific eligible candidate set."),
         ("budget_management", "economy", "Reserve alloys, minerals, and strategic resources for viable construction and fleet pipelines.", "mod:common/ai_budget/zzz_staid_alloys_budget.txt; mod:common/ai_budget/zzz_staid_gigas_resource_budgets.txt; mod:common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt", "vanilla and mod expenditure categories", "ai_budget desired_min/desired_max/expenditure", "source_proven", "all", "deficit gates; positive-alloy fleet gate; defensive emergency bypass; prerequisite readiness", "corrected_static", "The base ship and upgrade budgets now stop during unaffordable peacetime deficits; overlap with mod-specific expenditure categories still needs runtime audit.", "Test simultaneous fleet, planet, and megastructure demand across positive, deficit, and wartime emergency states."),
         ("influence_market", "economy", "Spend capped influence on claims/expansion and limit Director market activity to cap-prevention overflow sales.", "mod:events/zzz_staid_market_and_fleet_safety_events.txt; mod:common/script_values/zzz_staid_roi_values.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "influence pressure; vanilla market_resource_price; resource_stockpile_percent; Gigas Kugelblitz storage stages", "claim ai_weight plus Director-owned 90%-of-cap overflow sale and storage-cap investment gate; no Director market-buy path", "source_proven", "regular|gestalt|subject", "claim viability; no deficit; positive earned income; fixed reserve; 90% actual storage cap", "corrected_static", "Vanilla AI emergency buying and diplomatic trade composition remain engine-side; Director production gates require earned income as well as stockpile.", "Inventory enclave, subject/federation, irregular-event, liability-reduction, and diplomatic trade channels; observe whether emergency buying persists after repair income becomes available."),
-        ("territorial_expansion", "grand_strategy", "Recognize boxed-in empires and convert spatial constraint into expansion or conquest pressure.", "mod:common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/ai_budget/zzzz_staid_08_site_limited_expansion_ai_budget.txt", "border access; colony sites; claims; relative power", "expansion budgets plus boxed-in claim expenditure", "source_proven", "regular|gestalt|pacifist|genocidal", "available sites; claim legality; pacifist exclusion; influence reserve", "partial_audit", "Boxed-in empires with fewer than five colonies now strongly fund legal claims, but no proven direct consumer chooses and starts the resulting war.", "Trace a live boxed-in case from claim purchase through usable war goal, preparation, and declaration."),
+        ("territorial_expansion", "grand_strategy", "Recognize boxed-in empires and convert spatial constraint into expansion or conquest pressure.", "mod:common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/ai_budget/zzzz_staid_08_site_limited_expansion_ai_budget.txt; mod:common/policies/zzzz_staid_10_opening_growth_policies.txt", "border access; colony sites; claims; relative power", "native boxed-in declaration multiplier plus claim, stance, personality, and logistics weights", "source_proven", "regular|gestalt|pacifist|genocidal", "available sites; claim legality; pacifist exclusion; influence reserve", "implemented_static_needs_runtime", "The executable owns the exact blocking-country target and closed-border reachability calculation; script exposes no verified target-specific override.", "Use the single fresh 20–30-year observer acceptance run to verify a strong boxed-in empire attacks its blocking neighbor."),
         ("war_selection", "grand_strategy", "Choose legal, profitable, weak targets and escalate when peaceful expansion is exhausted.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "relative power; claims; war goals; borders; threat", "claim budget only; none proven for direct declaration", "mixed", "regular|genocidal|raider|pacifist", "war legality; fleet/economic readiness; target value", "gap_identified", "The claim/CB prerequisite receives boxed-in urgency, but Director still does not directly rank targets or declare ordinary expansion wars.", "Audit personalities, diplomatic actions, casus belli, war goals, and the hardcoded declaration chain before any forced-war implementation."),
-        ("diplomacy_personality", "grand_strategy", "Adapt aggression, cooperation, rivalry, and pact behavior to ethics, power, and strategic need.", "mod:common/policies/zzzz_staid_10_opening_growth_policies.txt", "vanilla personalities and diplomatic action weights", "diplomatic stance policy only", "mixed", "all", "ethics; genocidal legality; subject status", "gap_identified", "Personality and diplomatic-action objects remain intentionally unmodified and therefore cannot realize several Director pressures.", "Reconstruct active personality and diplomatic-action winners, then patch only source-proven bottlenecks."),
+        ("diplomacy_personality", "grand_strategy", "Adapt aggression, cooperation, rivalry, and pact behavior to ethics, power, and strategic need.", "mod:common/personalities/zzzzz_staid_16_standalone_war_pressure.txt; mod:common/policies/zzzz_staid_10_opening_growth_policies.txt", "Pegasus 4.4.4 personalities; Stellar AI 0.10 personality values; vanilla policy weights", "full personality objects plus diplomatic-stance policy", "source_proven", "all", "ethics; genocidal legality; subject status", "implemented_static_needs_runtime", "Direct diplomatic-action acceptance overrides remain intentionally untouched; rivalry and target selection remain native.", "Check only final load-order winners, then use the single observer acceptance run for behavioral proof."),
         ("fleet_doctrine", "military", "Scale fleet spending to threat and payoff without bankrupting research or civilian production.", "mod:common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt; mod:common/ai_budget/zzz_staid_alloys_budget.txt", "relative power; naval capacity; alloy income/runway; war state", "economic plan and alloy ship expenditure budget", "source_proven", "regular|machine|hive|genocidal", "positive alloy income; core deficit; defensive emergency; approved military routes", "corrected_static", "Runtime fleet-manager reinforcement behavior and fleet splitting remain outside current proof.", "Audit fleet templates, reinforcement, merging, and military construction against economic runway."),
         ("hostile_targets", "military", "Treat bosses and lethal fauna separately from ordinary enemy empires and remember failed attacks.", "mod:common/defines/zzzz_staid_14_high_scale_ai_defines.txt; mod:events/zzzz_staid_boss_defeat_escalation_events.txt", "vanilla boss flags; active-stack outlier fleet flags; battle-loss on_action", "boss military-power defines plus defeat escalation", "source_proven", "all_ai_empires", "BOSS/ULTRA_BOSS thresholds; exact survivor flag escalation", "corrected_static", "Only confirmed outlier flags receive adaptive post-loss escalation; the full active-stack boss inventory is not yet classified.", "Classify every is_boss/is_ultra_boss entity and verify AI pathing after a failed attack."),
         ("ship_design", "military", "Preserve viable component/combat-computer choices across SFT, NSC3, ESC, and Gigas.", "mod:common/component_templates/000_SFT_00_utilities_roles.txt; mod:common/on_actions/zzzz_staid_sft_design_refresh_on_actions.txt", "Spacefleet Tactica parity sources; active component graph", "component ai_weight and auto-design refresh", "mixed", "all_ship_builders", "component legality; add-on equivalence", "partial_audit", "Section templates, ship-size edits, and advanced modded hull designs remain unverified.", "Run ship graph validation and audit generated designs per unlocked hull tier."),
@@ -9928,7 +10042,7 @@ def strategic_subsystem_audit_rows() -> list[dict[str, str]]:
         ("megastructure_strategy", "progression", "Sequence high-return megastructures only when prerequisites, economy, and sites are ready.", "mod:common/megastructures/zzzz_staid_03_megastructures_megastructures.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "ROI datasets; site limits; route graph", "megastructure ai_weight plus economic plans/budgets", "mixed", "all_eligible", "prerequisites; site availability; resource runway", "implemented_static_needs_runtime", "Concurrent projects, repair/upgrade decisions, and unique mod chains need adversarial sequencing tests.", "Audit each chain from technology through site, budget, build, and upgrade completion."),
         ("crisis_response", "military", "Convert economy and fleet production for real crises without permanently starving development.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:events/zzz_staid_threat_response_events.txt", "crisis country types; relative power; war goals", "threat events and crisis economic subplans", "mixed", "all_non_crisis_ai", "threat classification; economic readiness; cooldowns", "partial_audit", "Vanilla and modded crises, fallen empires, and pseudo-crisis bosses are not yet exhaustively separated.", "Inventory crisis actors and verify response activation, target legality, and recovery after threat removal."),
         ("starbase_defense", "military", "Build shipyards and static defense where strategically useful without crowding civilian research worlds.", "mod:common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt; mod:common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt", "route dataset; chokepoints; threat state", "starbase building/module ai_weight and economic plans", "source_proven", "all_starbase_owners", "deficit safety; threat readiness; source potential", "implemented_static_needs_runtime", "Chokepoint value, defensive platform affordability, and modded starbase slot competition need validation.", "Audit module/building selection at border, shipyard, trade, and interior starbases."),
-        ("invasion_bombardment", "military", "Use bombardment and armies appropriate to conquest objectives and empire ethics.", "mod:common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt", "bombardment stances; army and transport AI", "bombardment stance ai_weight", "mixed", "militarist|raider|genocidal|pacifist", "ethics; civic; legal stance", "gap_identified", "Army recruitment, transport escort, invasion thresholds, and planet target choice are not Director-owned.", "Audit army, invasion, transport, and bombardment consumers as one end-to-end conquest lane."),
+        ("invasion_bombardment", "military", "Use bombardment and armies appropriate to conquest objectives and empire ethics.", "mod:common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt; mod:common/ai_budget/zzzz_staid_14_army_recruitment_budget.txt; mod:common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt", "bombardment stances; native army and transport AI; mineral budget competition", "bombardment stance ai_weight plus uncapped native army mineral reserve", "mixed", "militarist|raider|genocidal|pacifist", "ethics; civic; legal stance; economy", "implemented_static_needs_runtime", "Transport escort, invasion thresholds, army-type choice, and planet target choice remain executable-owned.", "Use the single observer acceptance run to confirm useful but non-excessive offensive armies."),
         ("machine_hive_gestalt", "archetype", "Use correct upkeep/resources, jobs, growth, unity, and ascension routes for gestalts and individual machines.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "country_uses_* triggers; machine/hive route gates", "economic plans and route weights", "mixed", "machine|individual_machine|hive", "consumer-goods and food use gates; owner type", "partial_audit", "Individual machines, rogue servitors, assimilators, exterminators, and hive variants need separate strategy matrices.", "Build an archetype capability matrix and add negative tests for inapplicable resources and routes."),
         ("genocidal_extremes", "archetype", "Favor rapid conquest and war economy for purifiers, exterminators, swarms, and other no-diplomacy empires.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "civics; personality; war legality", "war-support economic subplans", "mixed", "fanatic_purifier|determined_exterminator|devouring_swarm", "economy runway; target power; total-war legality", "gap_identified", "No dedicated direct target/declaration logic or civic-specific strategic plan is yet proven.", "Audit civic triggers, total-war goals, fleet timing, and post-conquest stabilization."),
         ("pacifist_isolationist", "archetype", "Pursue habitats, diplomacy, vassalization, and internal scaling when offensive war is illegal or undesirable.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "ethics; war philosophy; expansion sites", "economic plans only", "mixed", "pacifist|inward_perfection", "war legality; habitat prerequisites; diplomacy access", "gap_identified", "Alternative boxed-in growth paths are not yet coherently ranked against claims and war pressure.", "Define legal expansion ladders for pacifist and isolationist states."),
@@ -10103,10 +10217,12 @@ def standalone_aggression_personalities_text() -> str:
             )
         blocks.append(generated_block.rstrip())
     text = """# Generated by tools/generate_stellar_ai_director_patch.py.
-# Current-vanilla full-object personality overrides restoring the native war
+# Pegasus 4.4.4 full-object personality overrides restoring the native war
 # behavior signals lost when Stellar AI stopped being a runtime dependency.
-# Evidence: Stellar AI 0.10 for Stellaris 4.4.x. Aggressiveness, bravery, and
-# military spending follow that reference; all other current-vanilla fields remain.
+# Provenance: 4.4.4 common/personalities/00_personalities.txt plus Stellar AI
+# 0.10 common/personalities/00_personalities.txt and scripted variables.
+# Aggressiveness, bravery, and military spending follow that working reference;
+# behavior flags, diplomacy fields, design preferences, and selection rules stay vanilla.
 # War declarations still use the engine planner, legal casus belli, and war goals.
 
 """ + "\n\n".join(blocks) + "\n"
@@ -10114,12 +10230,46 @@ def standalone_aggression_personalities_text() -> str:
     return text
 
 
+def native_war_readiness_country_type_text() -> str:
+    """Remove Pegasus country-type gates that deadlock before target selection."""
+    vanilla_path = VANILLA_COMMON_ROOT / "country_types" / "00_country_types.txt"
+    vanilla_default = extract_top_level_object_text(read_text(vanilla_path), "default")
+    # Pegasus 4.4.4 defaults regular empires to 50% desired navy and six
+    # assault armies before the native planner may consider any war. Omitting
+    # min_navy_for_wars uses the documented 4.4.4 default of zero and remains
+    # compatible with 4.4.5, where Paradox removed that parameter entirely.
+    generated_default = re.sub(
+        r"(?m)^\s*min_navy_for_wars\s*=.*(?:\n|$)",
+        "",
+        vanilla_default,
+    )
+    generated_default, replacements = re.subn(
+        r"(?m)^(\s*)min_assault_armies_for_wars\s*=.*$",
+        r"\1min_assault_armies_for_wars = 0",
+        generated_default,
+        count=1,
+    )
+    if replacements != 1:
+        raise ValueError("Vanilla default country type has no min_assault_armies_for_wars gate")
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Full-object current-vanilla override of the regular `default` country type.
+# Provenance: Pegasus 4.4.4 common/country_types/00_country_types.txt.
+# The stock 0.5 navy and six-assault-army declaration gates produced a hard
+# deadlock in the active stack: no ordinary AI passed both after 32 years.
+# This removes only those pre-planner gates; native targets, CBs, war goals,
+# strength evaluation, preparation, declaration, and fleet execution remain.
+
+""" + generated_default.rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
 def high_scale_ai_defines_text() -> str:
     return """# Generated by tools/generate_stellar_ai_director_patch.py.
-# Full-object define override: removes vanilla construction and war hesitation
-# that assumes a much smaller economy than the active Gigas/NSC3/ESC mod stack.
-# User-directed 2026-07-08 tuning: keep local war aggression high, but do not
-# encourage long-distance wars or galaxy-crossing fleet commitments.
+# Director economic/construction defines remain high-scale. War-planning defines
+# are restored to the native Pegasus 4.4.4 envelope used by working Stellar AI
+# 0.10, except for a bounded boxed-in multiplier. This avoids global overwar while
+# retaining strong local breakout pressure.
 
 NAI = {
 	AI_FREE_JOBS_DISTRICT_BUILD_CAP = 2000
@@ -10132,7 +10282,8 @@ NAI = {
 	AI_CRIME_REDUCTION_SCORE_MULT = 4
 	AI_ADMIN_CAP_SCORE_MULT = 6
 	AI_POPS_SCORE_MULT = 0.25
-	AI_NAVAL_CAP_SCORE_MULT = 25
+	# Vanilla value. Avoids inflating capacity into the 4.4.4 high-cap planner bug.
+	AI_NAVAL_CAP_SCORE_MULT = 15
 	AI_UPGRADE_SCORE_MULT = 10
 	AI_RESOURCE_TARGET_EXPIRATION_MONTHS = 6
 	AI_RESOURCE_TARGET_VALID_THRESHOLD = 0.90
@@ -10148,23 +10299,24 @@ NAI = {
 	AI_UNBUILT_DISTRICT_BOOST_POP_THRESHOLD = 250
 	AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 8.0
 	AI_STORAGE_BUILDING_CAPPED_RESOURCE_BOOST = 1000
-	AI_WAR_PREPARATION_MIN_MONTHS = 1
-	AI_WAR_PREPARATION_MAX_MONTHS = 4
-	AI_AGGRESSIVENESS_BASE = 50
-	AI_AGGRESSIVENESS_BOXED_IN_MULT = 18
-	AI_AGGRESSIVENESS_NO_COLONY_TARGET_MULT = 12
-	# Preserve aggressive normal-empire wars. Boss and ultra-boss fleets use
-	# their own engine readiness gates below and must not inherit this risk.
-	ENEMY_FLEET_POWER_MULT = 0.55
-	# Proactively clear weak hostile fauna and civilian mining fleets near the
-	# border. Bosses remain blocked by the separate military-power gates.
+
+	# Working Stellar AI did not replace these global declaration defines; its
+	# reliable wars came from complete personalities and supported economies.
+	AI_WAR_PREPARATION_MIN_MONTHS = 12
+	AI_WAR_PREPARATION_MAX_MONTHS = 30
+	AI_AGGRESSIVENESS_BASE = 25
+	AI_AGGRESSIVENESS_PROPAGATOR_BOXED_IN_MULT = 12
+	AI_AGGRESSIVENESS_BOXED_IN_MULT = 8
+	AI_AGGRESSIVENESS_NO_COLONY_TARGET_MULT = 2
+	ENEMY_FLEET_POWER_MULT = 1.2
 	AI_HOSTILE_FLEET_DISTANCE = 3
 	BOSS_MILITARY_POWER = 100000
 	ULTRA_BOSS_MILITARY_POWER = 500000
-	WAR_DECLARATION_MINIMUM_SCORE = 0.05
+	WAR_DECLARATION_MAX_DISTANCE = 50
+	WAR_DECLARATION_MALUS_DISTANCE = 25
 	WAR_DECLARATION_MALUS = 0.05
-	WAR_DECLARATION_MAX_DISTANCE = 200
-	OFFENSE_VS_DEFENSE_STRATEGY_ALLOTMENT = 3.0
+	WAR_DECLARATION_MINIMUM_SCORE = 0.5
+	OFFENSE_VS_DEFENSE_STRATEGY_ALLOTMENT = 1.0
 }
 """
 
@@ -10184,61 +10336,106 @@ def minerals_planet_construction_budget_text() -> str:
 
 	weight = {{
 		weight = {base_weight}
-		modifier = {{ factor = 12 staid_planetary_capacity_growth_ready = yes }}
-		modifier = {{ factor = 12 staid_core_deficit_short_runway = yes }}
-		modifier = {{ factor = 35 staid_construction_spenddown_pressure = yes }}
-		modifier = {{ factor = 18 staid_resource_waste_pressure = yes }}
-		modifier = {{ factor = 24 staid_high_scale_snowball_pressure = yes }}
-		modifier = {{ factor = 40 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
-		modifier = {{ factor = 30 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
-		modifier = {{ factor = 20 resource_stockpile_compare = {{ resource = minerals value > 10000 }} }}
-		modifier = {{ factor = 30 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
-	}}
-
-	desired_min = {{
-		base = 2000
-		modifier = {{ add = 5000 staid_core_deficit_short_runway = yes }}
-		modifier = {{ add = 10000 staid_planetary_capacity_growth_ready = yes }}
-		modifier = {{ add = 150000 staid_construction_spenddown_pressure = yes }}
-		modifier = {{ add = 25000 staid_high_scale_snowball_pressure = yes }}
-		modifier = {{ add = 100000 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
-		modifier = {{ add = 100000 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
-		modifier = {{ add = 75000 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
-	}}
-
-	desired_max = {{
-		base = 10000
-		modifier = {{ add = 20000 staid_core_deficit_short_runway = yes }}
-		modifier = {{ add = 40000 staid_planetary_capacity_growth_ready = yes }}
-		modifier = {{ add = 500000 staid_construction_spenddown_pressure = yes }}
-		modifier = {{ add = 100000 staid_high_scale_snowball_pressure = yes }}
-		modifier = {{ add = 300000 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
-		modifier = {{ add = 300000 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
-		modifier = {{ add = 250000 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
+		# Preserve jobs and deficit recovery, but yield budget share while the
+		# empire needs armies or other war logistics.
+		modifier = {{ factor = 0.65 staid_war_logistics_pressure = yes }}
+		modifier = {{ add = 0.20 staid_planetary_capacity_growth_ready = yes }}
+		modifier = {{ add = 0.20 staid_core_deficit_short_runway = yes }}
+		modifier = {{ add = 0.50 staid_construction_spenddown_pressure = yes }}
+		modifier = {{ add = 0.25 staid_resource_waste_pressure = yes }}
+		modifier = {{ add = 0.30 staid_high_scale_snowball_pressure = yes }}
+		modifier = {{ add = 0.75 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
+		modifier = {{ add = 0.50 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
+		modifier = {{ add = 0.20 resource_stockpile_compare = {{ resource = minerals value > 10000 }} }}
+		modifier = {{ add = 0.30 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
 	}}
 }}
 """
 
     return (
         "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
-        "# Full-object override: vanilla makes planet mineral spending less attractive as stockpiles grow.\n"
-        "# The Director reverses that for high-scale modded economies so idle pops and empty slots become spend pressure.\n"
+        "# Full-object Pegasus 4.4.4 planet-budget overrides. Vanilla low/medium/high base weights are preserved.\n"
+        "# War logistics temporarily receive room without disabling unemployment, deficit, or stockpile spending.\n"
         + object_text(
             "minerals_expenditure_planets_low",
-            8.0,
+            1.0,
             "\t\tresource_stockpile_compare = { resource = minerals value < 1000 }",
         )
         + object_text(
             "minerals_expenditure_planets_med",
-            14.0,
+            0.8,
             "\t\tresource_stockpile_compare = { resource = minerals value >= 1000 }\n\t\tresource_stockpile_compare = { resource = minerals value < 2000 }",
         )
         + object_text(
             "minerals_expenditure_planets_high",
-            28.0,
+            0.6,
             "\t\tresource_stockpile_compare = { resource = minerals value >= 2000 }",
         )
     )
+
+
+def army_recruitment_budget_text() -> str:
+    return """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Full-object replacement of the two Pegasus 4.4.4 mineral army budget entries.
+# Provenance: common/ai_budget/00_minerals_budget.txt.
+# A small native mineral reserve makes the first useful offensive armies possible
+# without making armies a declaration prerequisite or imposing a recruitment cap.
+
+minerals_expenditure_armies = {
+	resource = minerals
+	type = expenditure
+	category = armies
+
+	potential = {
+		is_nomadic = no
+	}
+
+	weight = {
+		weight = 0.20
+		modifier = { factor = 3 staid_war_logistics_pressure = yes }
+		modifier = { factor = 1.5 highest_threat > 20 }
+		modifier = { factor = 0.25 staid_catastrophic_collapse_mode = yes }
+	}
+
+	# Reserve minerals, not units. The engine remains free to recruit fewer or
+	# more armies according to legal army types, invasion demand, and economy.
+	desired_min = {
+		base = 200
+		modifier = { add = 300 staid_boxed_in_war_pressure = yes }
+		modifier = {
+			add = 300
+			OR = {
+				staid_militarist_conquest_strategy = yes
+				staid_raiding_pop_growth_strategy = yes
+			}
+		}
+		modifier = {
+			add = 500
+			OR = {
+				is_at_war = yes
+				staid_security_existential = yes
+			}
+		}
+	}
+}
+
+minerals_expenditure_armies_threatened = {
+	resource = minerals
+	type = expenditure
+	category = armies
+
+	potential = {
+		is_nomadic = no
+		highest_threat > 20
+	}
+
+	weight = {
+		weight = 0.10
+		modifier = { factor = 2 staid_security_existential = yes }
+		modifier = { factor = 0.25 staid_catastrophic_collapse_mode = yes }
+	}
+}
+"""
 
 
 def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
@@ -10255,6 +10452,8 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         MOD_ROOT / "common" / "buildings" / "zzzz_staid_07_pop_assembly_buildings.txt",
         MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_12_planetary_diversity_value_triggers.txt",
         MOD_ROOT / "common" / "buildings" / "zzzz_staid_12_planetary_diversity_buildings.txt",
+        MOD_ROOT / "common" / "on_actions" / "zzzz_staid_army_reserve_on_actions.txt",
+        MOD_ROOT / "events" / "zzzz_staid_army_reserve_events.txt",
     ):
         stale_path.unlink(missing_ok=True)
     generate_economic_valuation_dataset()
@@ -10294,6 +10493,10 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         standalone_aggression_personalities_text(),
     )
     write_text_file(
+        MOD_ROOT / "common" / "country_types" / "zzzzz_staid_18_native_war_readiness.txt",
+        native_war_readiness_country_type_text(),
+    )
+    write_text_file(
         MOD_ROOT / "common" / "ship_sizes" / "zzzzz_staid_17_mem_surveyor_outpost_compat.txt",
         mem_surveyor_outpost_ship_size_text(),
     )
@@ -10301,6 +10504,11 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_minerals_planet_construction_budget.txt",
         minerals_planet_construction_budget_text(),
     )
+    write_text_file(
+        MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_army_recruitment_budget.txt",
+        army_recruitment_budget_text(),
+    )
+    write_war_planning_444_provenance()
     write_text_file(MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt", economic_plan_text())
     write_text_file(
         MOD_ROOT / "common" / "scripted_effects" / "zzz_staid_gigas_habitat_compat_effects.txt",
@@ -10383,6 +10591,179 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     generate_file_audit_artifacts()
     generate_conflict_classification_artifacts()
     generate_reference_audit_artifacts()
+
+
+def war_planning_444_provenance_rows() -> list[dict[str, str]]:
+    """Return one provenance row for every war-package full-object override.
+
+    Custom scripted triggers are intentionally absent: they are new Director
+    objects, not copied vanilla objects. The NAI define group is included as a
+    separate override surface even though Stellaris defines are not object
+    blocks in the same sense as personalities, policies, budgets, or country
+    types.
+    """
+    rows: list[dict[str, str]] = []
+    for object_id in STANDALONE_AGGRESSION_PERSONALITY_VALUES:
+        rows.append(
+            {
+                "generated_path": "mods/StellarAIDirector/common/personalities/zzzzz_staid_16_standalone_war_pressure.txt",
+                "object_type": "personality",
+                "object_id": object_id,
+                "pegasus_444_vanilla_source": "common/personalities/00_personalities.txt",
+                "working_reference_source": "Workshop 3610149307 v0.10/common/personalities/00_personalities.txt; common/scripted_variables/stellarai_scripted_variables.txt",
+                "replacement_policy": "vanilla 4.4.4 full object; replace aggressiveness, bravery, military_spending with verified working-reference values",
+                "compatibility_note": "regenerate from pinned 4.4.4 source; conflicts with any later personality overhaul",
+            }
+        )
+
+    override_rows = (
+        (
+            "mods/StellarAIDirector/common/country_types/zzzzz_staid_18_native_war_readiness.txt",
+            "country_type",
+            "default",
+            "common/country_types/00_country_types.txt",
+            "Stellaris 4.4.4 default country type; 4.4.5 removal of min_navy_for_wars is later-fix evidence",
+            "vanilla 4.4.4 full object; omit min_navy_for_wars and set min_assault_armies_for_wars to zero",
+            "fresh-game native planner fix; regenerate after any version change",
+        ),
+        (
+            "mods/StellarAIDirector/common/policies/zzzz_staid_10_opening_growth_policies.txt",
+            "policy",
+            "diplomatic_stance",
+            "common/policies/00_policies.txt",
+            "Stellaris 4.4.4 policy object; Stellar AI 0.10 phase-transition pattern",
+            "vanilla 4.4.4 full object; add temporary opening exit and boxed-in/native-war-posture weights",
+            "conflicts with any later diplomatic-stance overhaul; no forced policy changes",
+        ),
+        (
+            "mods/StellarAIDirector/common/policies/zzzz_staid_10_opening_growth_policies.txt",
+            "policy",
+            "orbital_bombardment",
+            "common/policies/00_policies.txt",
+            "Stellaris 4.4.4 policy object",
+            "vanilla 4.4.4 full object; preserve Director bombardment weighting already owned by this file",
+            "included because the replacement policy file must remain a complete current-version object set",
+        ),
+        (
+            "mods/StellarAIDirector/common/policies/zzzz_staid_10_opening_growth_policies.txt",
+            "policy",
+            "orbital_bombardment_accept_surrender",
+            "common/policies/00_policies.txt",
+            "Stellaris 4.4.4 policy object",
+            "vanilla 4.4.4 full object; preserve Director surrender weighting already owned by this file",
+            "included because the replacement policy file must remain a complete current-version object set",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzzz_staid_14_army_recruitment_budget.txt",
+            "ai_budget",
+            "minerals_expenditure_armies",
+            "common/ai_budget/00_minerals_budget.txt",
+            "Stellaris 4.4.4 mineral budget; Stellar AI 0.10 native-budget pattern",
+            "vanilla 4.4.4 full object; increase weight and add uncapped native desired_min reserves",
+            "does not create armies and has no desired_max recruitment cap",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzzz_staid_14_army_recruitment_budget.txt",
+            "ai_budget",
+            "minerals_expenditure_armies_threatened",
+            "common/ai_budget/00_minerals_budget.txt",
+            "Stellaris 4.4.4 mineral budget",
+            "vanilla 4.4.4 full object; preserve threat lane with bounded Director modifiers",
+            "native recruitment only; no scripted units",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt",
+            "ai_budget",
+            "minerals_expenditure_planets_low",
+            "common/ai_budget/00_minerals_budget.txt",
+            "Stellaris 4.4.4 mineral budget",
+            "vanilla 4.4.4 full object plus Director economic pressure; yield part of share during war logistics",
+            "prevents construction from starving native army recruitment",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt",
+            "ai_budget",
+            "minerals_expenditure_planets_med",
+            "common/ai_budget/00_minerals_budget.txt",
+            "Stellaris 4.4.4 mineral budget",
+            "vanilla 4.4.4 full object plus Director economic pressure; yield part of share during war logistics",
+            "prevents construction from starving native army recruitment",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt",
+            "ai_budget",
+            "minerals_expenditure_planets_high",
+            "common/ai_budget/00_minerals_budget.txt",
+            "Stellaris 4.4.4 mineral budget",
+            "vanilla 4.4.4 full object plus Director economic pressure; yield part of share during war logistics",
+            "prevents construction from starving native army recruitment",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
+            "ai_budget",
+            "alloys_expenditure_megastructures",
+            "common/ai_budget/00_alloys_budget.txt",
+            "Workshop 3610149307 v0.10/common/ai_budget/00_alloys_budget.txt; prior Director high-scale reserve policy",
+            "full object replacement retained byte-for-byte from Director economic system",
+            "preserves Gigas/NSC3 megastructure reserve behavior; not part of war throttling",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
+            "ai_budget",
+            "alloys_expenditure_ships",
+            "common/ai_budget/00_alloys_budget.txt",
+            "Stellaris 4.4.4 ship budget; 4.4.5 high-naval-cap declaration fix is later-fix evidence",
+            "vanilla 4.4.4 full object plus Director economy gates and peacetime >=80% naval-cap guard",
+            "native executable workaround; emergency and wartime spending bypass the guard",
+        ),
+        (
+            "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
+            "ai_budget",
+            "alloys_expenditure_ship_upgrades",
+            "common/ai_budget/00_alloys_budget.txt",
+            "Stellaris 4.4.4 ship-upgrade budget",
+            "vanilla 4.4.4 full object plus existing Director safe-economy gate",
+            "upgrades remain available while new peacetime hull spending is guarded",
+        ),
+        (
+            "mods/StellarAIDirector/common/defines/zzzz_staid_14_high_scale_ai_defines.txt",
+            "define_group",
+            "NAI",
+            "common/defines/00_defines.txt",
+            "Stellaris 4.4.4 NAI values; 4.4.5 high-naval-cap declaration fix is later-fix evidence",
+            "restore near-vanilla 4.4.4 declaration/preparation/fleet-confidence envelope while preserving Director construction and boss values",
+            "define groups overwrite globally; load Director after parent AI mods and do not stack another war-defines mod",
+        ),
+    )
+    for generated_path, object_type, object_id, vanilla_source, reference_source, policy, note in override_rows:
+        rows.append(
+            {
+                "generated_path": generated_path,
+                "object_type": object_type,
+                "object_id": object_id,
+                "pegasus_444_vanilla_source": vanilla_source,
+                "working_reference_source": reference_source,
+                "replacement_policy": policy,
+                "compatibility_note": note,
+            }
+        )
+    return rows
+
+
+def write_war_planning_444_provenance() -> None:
+    write_csv(
+        WAR_PLANNING_444_PROVENANCE_CSV,
+        war_planning_444_provenance_rows(),
+        [
+            "generated_path",
+            "object_type",
+            "object_id",
+            "pegasus_444_vanilla_source",
+            "working_reference_source",
+            "replacement_policy",
+            "compatibility_note",
+        ],
+    )
 
 
 def descriptor_text() -> str:
@@ -11746,8 +12127,7 @@ staid_boxed_in_claim_urgency = {
 \tNOT = { has_ethic = ethic_pacifist }
 \tNOT = { has_ethic = ethic_fanatic_pacifist }
 \thas_potential_claims = yes
-\tnum_owned_planets < 5
-\tNOT = { has_ai_expansion_plan = yes }
+\tstaid_boxed_in_war_pressure = yes
 \thas_resource = { type = influence amount > 250 }
 }
 
@@ -11911,8 +12291,11 @@ def fleet_alloy_budget_text() -> str:
         "potential",
         """\tpotential = {
 \t\tOR = {
-\t\t\tstaid_fleet_buildup_economy_safe = yes
 \t\t\tstaid_emergency_fleet_spending_required = yes
+\t\t\tAND = {
+\t\t\t\tstaid_fleet_buildup_economy_safe = yes
+\t\t\t\tNOT = { staid_peacetime_high_naval_capacity_guard = yes }
+\t\t\t}
 \t\t}
 \t}""",
     )
@@ -11928,10 +12311,11 @@ def fleet_alloy_budget_text() -> str:
 \t\t}
 \t}""",
     )
-    text = """# Current-vanilla full-object overrides for alloy-funded ship construction and upgrades.
-# The vanilla weights and crisis/war multipliers are preserved, but the expenditure categories
-# are inactive when the civilian economy or alloy income cannot support additional fleet spending.
-# A narrow defensive emergency gate can still fund new ships during a real military crisis.
+    text = """# Pegasus 4.4.4 full-object overrides for alloy-funded ship construction and upgrades.
+# The vanilla weights and war/crisis multipliers remain. Peacetime construction
+# stops at 80% used naval capacity unless an emergency bypass applies, preventing
+# fresh games from entering the executable high-cap declaration failure later
+# fixed by Paradox. Upgrades remain legal because they do not increase fleet size.
 
 """ + ships.rstrip() + "\n\n" + upgrades.rstrip() + "\n"
     parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
@@ -13360,14 +13744,35 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
   `common/economic_plans`, construction-pressure defines and budgets,
   research/economy/fleet conversion, market/runway safety, claim/war-support
   reserves, and high-scale modded progression hooks.
-- Deferred standalone enhancements: broad personality rewrites, diplomatic
-  action overrides, direct NSC3/ESC ship-design handling, advanced war chain
-  behavior, and runtime observer proof.
+- Remaining standalone limits: direct diplomatic-action overrides, direct
+  NSC3/ESC ship-design handling, executable-only target/reachability details,
+  and runtime observer proof.
 
 ## Scope
 
 - Adds scripted decision-state triggers for survival, recovery, megastructure
   prep, safe commit, surplus-sink pressure, and shipyard payoff exploitation.
+- Overrides the regular `default` country type to remove Pegasus 4.4.4's
+  pre-planner readiness deadlock: the 50% desired-navy requirement is omitted
+  and the six-assault-army requirement is set to zero. Every other field is
+  copied from the current vanilla object, and native target selection, casus
+  belli, war goals, relative-strength checks, preparation, declarations, and
+  fleet execution remain engine-owned. Regenerate and revalidate this
+  full-object override after changing Stellaris versions.
+- Copies the 20 ordinary/crisis personality objects from Pegasus 4.4.4 and
+  substitutes only the working Stellar AI 0.10 `aggressiveness`, `bravery`, and
+  `military_spending` values. Native behavior flags, diplomacy fields, design
+  preferences, and selection rules remain intact.
+- Gives diplomacy a bounded sub-40-year peaceful opening that exits immediately
+  for war pressure or physical containment. Boxed-in empires strongly prefer
+  Belligerent or Supremacist posture and retain claim pressure after five colonies.
+- Replaces the native mineral army budgets with a modest uncapped reserve. The
+  engine still chooses legal army types and counts; armies are not a declaration
+  prerequisite and no unit is created by script.
+- Applies the Pegasus 4.4.4 high-naval-capacity workaround: normal peacetime new
+  ship spending pauses at 80% used capacity while upgrades, war, crisis, and
+  defensive-emergency spending remain available. This avoids feeding fresh games
+  into the executable bug that Paradox fixed in 4.4.5.
 - Reimplements the megastructure alloy budget object with explicit emergency
   exits and larger reserves for Gigas/NSC3-scale projects.
 - Replaces the base economic plan with a mod-set-specific high-scale survival
@@ -13453,16 +13858,18 @@ Run:
 
 ```powershell
 python tools/generate_stellar_ai_director_patch.py
+python tools/validate_staid_444_war_solution.py
 python tools/validate_stellar_ai_director_patch.py
 python -m unittest discover -s tools/tests
 ```
 
 Static validation proves generated file safety, known-reference coverage, and
 deterministic policy contracts.
-Observer proof remains a separate final gate for the strategic v2 packet: the
-current branch still needs the constrained observer run to prove that at least
-one AI empire can reach the intended high-scale economy and 3,000+ total
-research per month before 2350 without hidden AI economic bonuses.
+War-planning runtime proof remains one final fresh-game observer gate: run the
+normal 4.4.4 playset for roughly 20–30 years with every regular empire under AI
+control, then confirm multiple ordinary wars, a boxed-in breakout attempt, useful
+but non-excessive offensive armies, and a functioning economy. Longer economic
+and research benchmarking remains a separate Director quality goal.
 '''
 
 
@@ -13528,7 +13935,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "Baseline absorbed/reimplemented surfaces: AI budgets, `basic_economy_plan`, construction pressure, research/economy/fleet conversion, market/runway safety, claim/war support reserves, and high-scale modded progression hooks.",
             "",
-            "Deferred non-baseline surfaces: broad personality rewrites, diplomatic-action overrides, direct ship-design/component/section handling for NSC3/ESC, advanced war-chain behavior, and runtime observer proof.",
+            "Deferred non-baseline surfaces: diplomatic-action overrides, direct ship-design/component/section handling for NSC3/ESC, executable target-specific reachability internals, and runtime observer proof. Complete 4.4.4 personality objects and native war-support budgets are now implemented.",
         ]
     )
     lines.extend(
@@ -13824,6 +14231,9 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "| planetary trade capacity income floor | 50 | minimum monthly trade before planetary-capacity and megastructure-prep gates add logistics pressure |",
         "| surplus trade capacity income floor | 100 | minimum monthly trade before surplus sink pressure can activate |",
         "| fleet buildup naval cap ceiling | 1.05 | stop pushing fleet payoff when naval usage is already above target |",
+        "| 4.4.4 peacetime new-ship guard | 0.80 used naval capacity | avoid entering the executable high-capacity war-declaration defect; war/emergency bypasses |",
+        "| native army reserve | 200 minerals base; +300 boxed; +300 conquest/raiding; +500 war/existential | fund useful assault-army recruitment without forcing units or capping demand |",
+        "| war preparation window | 12–30 months | restore working native preparation rather than one-month declaration churn |",
         "| strategic value horizon year | 2350 | long-lived economic, military, and modifier payoffs are weighted by remaining months before this goal date |",
         "| static-defense stockpile alloys | 3000 | minimum reserve before country-level starbase defense economy target |",
         "| static-defense income alloys | 60 | monthly alloy floor for defensive starbase reserve |",
@@ -13868,9 +14278,11 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).",
         "- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.",
         "- Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.",
-        "- User-directed 2026-07-08 aggression tuning keeps local war aggression above vanilla (`AI_AGGRESSIVENESS_BASE = 50`) but restores vanilla distance penalty (`WAR_DECLARATION_MALUS = 0.05`) and caps war declaration range at 200 jumps to avoid inefficient galaxy-crossing wars.",
+        "- War declaration globals return to the working native 4.4.4 envelope: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, minimum score 0.5, and offense/defense allotment 1.0. Boxed-in multipliers remain bounded above vanilla at 8/12.",
+        "- Normal peacetime new-ship spending pauses at 80% used naval capacity, while upgrades, war, crisis, and defensive-emergency spending bypass the guard. This is the native-data workaround for the executable high-cap declaration defect later fixed in 4.4.5.",
+        "- Native army budgets reserve 200 minerals at baseline, with bounded additions for boxed-in, conquest/raiding, war, and existential-defense states. No desired_max caps recruitment and no army is created by script.",
         "- Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.",
-        "- Hostile space fauna uses the engine's separate boss readiness lane: ordinary wars retain `ENEMY_FLEET_POWER_MULT = 0.55`, while boss and ultra-boss readiness are 100000 and 500000 military power. Confirmed Rogue Eeloo and Legendary Guardian fleets escalate to ultra-boss after defeating an AI fleet.",
+        "- Hostile space fauna continues to use the engine's separate boss readiness lane at 100000/500000 military power. Ordinary empire confidence uses the native `ENEMY_FLEET_POWER_MULT = 1.2`; boss readiness is not made easier by the war-planner repair.",
         "",
         "## Unlock-Research Policy",
         "",
@@ -13892,7 +14304,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Planetary Diversity decision availability owns tech, site, and button prerequisites. Director weights do not duplicate those checks; if the button is available and the mineral/energy runway is safe, the AI is pushed to use the matching outpost.",
         "- Permanent and long-lived scaling investments use a 2350 horizon: the same outpost, building, tech, megastructure, or buff is worth far more in 2220 than in 2320 because every remaining year multiplies its payoff.",
         "- Unity-to-research pressure targets source-backed Discovery, Diplomacy, Technological Ascendancy, Master Builders, Galactic Wonders, and Gigastructural Constructs paths instead of hoarding unity generically.",
-        "- Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting, Discovery/Diplomacy/AP support, and cooperative diplomatic stance only; direct research-agreement action and personality rewrites remain gated until separately proven.",
+        "- Research diplomacy pressure stays on the safe lane: copied Research Cooperative federation weighting and Discovery/Diplomacy/AP support remain, while the cooperative stance is restricted to the temporary diplomatic opening and exits for native war pressure. Direct research-agreement actions remain gated.",
         "- Planetary Diversity outpost decisions retain source-owned availability and Director decision weights; obsolete generated PD building-weight and role-trigger files are removed.",
         "- More Arcologies support is intentionally narrow: `building_navel_base` and `building_navel_command` use hard AI strategic-readiness and research-world exclusion gates, while `building_pd_rogue_council`, More Arcologies zones, and broad colony/designation rewrites remain blocked.",
         "- Arkship carrier planets are excluded from copied Planetary Diversity outpost decisions, and later high-scale planetary pressure remains normal-empire-only where the Nomad/Arkship audit found no safe shared surface.",
