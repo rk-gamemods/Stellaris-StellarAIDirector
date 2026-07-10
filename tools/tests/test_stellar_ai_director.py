@@ -1241,13 +1241,14 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_is_diplomatic_opening_phase = {",
             "years_passed < 40",
             "staid_boxed_in_war_pressure = {",
-            "has_ai_expansion_plan = no",
+            "has_bordering_system = no",
             "staid_native_war_posture_active = {",
             "staid_war_logistics_pressure = {",
             "staid_peacetime_high_naval_capacity_guard = {",
             "used_naval_capacity_percent >= 0.80",
         ):
             self.assertIn(marker, kernel)
+        self.assertNotRegex(kernel, r"(?m)^\s*has_ai_expansion_plan\s*=")
         boxed_claim = claims[
             claims.index("staid_boxed_in_claim_urgency = {") : claims.index(
                 "staid_naval_capacity_expansion_ready = {"

@@ -9604,15 +9604,17 @@ staid_security_existential = {
 	}
 }
 
-# Native boxed-in proxy. Stellaris exposes whether the AI still has a peaceful
-# expansion plan, but not a scriptable "blocking empire" target weight. The
-# engine's boxed-in declaration multiplier and adjacent claims then decide the
-# actual target. This deliberately applies before the old <5-colony cutoff.
+# Topology-backed boxed-in state. The vanilla `has_bordering_system` scripted
+# trigger checks owned border systems for an intel-visible, unowned, peacefully
+# claimable hyperlane neighbor. Do not use `has_ai_expansion_plan`: TEST_2231
+# proved that internal planning state can remain active after every peaceful
+# territorial exit is gone. Native targets, CBs, war goals, and declarations
+# remain engine-owned.
 staid_boxed_in_war_pressure = {
 	is_nomadic = no
 	is_at_war = no
 	has_country_flag = has_encountered_other_empire
-	has_ai_expansion_plan = no
+	has_bordering_system = no
 	NOT = { has_ethic = ethic_pacifist }
 	NOT = { has_ethic = ethic_fanatic_pacifist }
 	OR = {

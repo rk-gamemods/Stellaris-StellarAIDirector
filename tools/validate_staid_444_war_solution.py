@@ -194,7 +194,8 @@ def _validate_high_capacity_workaround(errors: list[str]) -> None:
 def _validate_boxed_in_and_policy_exit(errors: list[str]) -> None:
     kernel = _read(WAR_FILES[8])
     boxed = extract_top_level_object_text(kernel, "staid_boxed_in_war_pressure")
-    _require("has_ai_expansion_plan = no" in boxed, "boxed-in pressure is not tied to no expansion plan", errors)
+    _require("has_bordering_system = no" in boxed, "boxed-in pressure is not tied to blocked border topology", errors)
+    _require("has_ai_expansion_plan" not in boxed, "boxed-in pressure still uses the internal expansion-plan proxy", errors)
     _require("has_ai_personality_behaviour = propagator" in boxed,
              "boxed-in pressure lost propagator behavior", errors)
     _require("has_ai_personality_behaviour = conqueror" in boxed,
