@@ -10302,6 +10302,14 @@ NAI = {
 	AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 8.0
 	AI_STORAGE_BUILDING_CAPPED_RESOURCE_BOOST = 1000
 
+	# Early strategic reconnaissance: vanilla already requests five science ships
+	# for the first 30 years. Spread their auto-explore targets aggressively,
+	# avoid redundant home-space coverage, and permit routes through accessible
+	# foreign systems so at least two explorers can push in opposite directions.
+	AUTO_EXPLORE_ATTRACTION_SCORE = 1000
+	AUTO_EXPLORE_COLLABORATION_PENALTY = 2000
+	AUTO_EXPLORE_SYSTEM_OWNED = 100
+
 	# Working Stellar AI did not replace these global declaration defines; its
 	# reliable wars came from complete personalities and supported economies.
 	AI_WAR_PREPARATION_MIN_MONTHS = 12
