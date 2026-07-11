@@ -116,5 +116,10 @@ col_research = {
 			}
 			mode = add
 		}
+		# A plan claim is a designation commitment, not merely eligibility.
+		modifier = {
+			add = 100000
+			has_carrier_flag = staid_research_plan_claimed
+		}
 	}
 }

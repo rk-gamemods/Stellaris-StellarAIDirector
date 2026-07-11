@@ -1089,6 +1089,8 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("NOT = { has_carrier_flag = staid_research_plan_claimed }", city)
         self.assertIn("owner = { is_ai = no }", research)
         self.assertIn("has_carrier_flag = staid_research_plan_claimed", research)
+        self.assertIn("add = 100000", research)
+        self.assertIn("A plan claim is a designation commitment", research)
         for obsolete_planet_flag_operation in (
             "has_planet_flag = staid_research_plan_claimed",
             "set_planet_flag = staid_research_plan_claimed",
