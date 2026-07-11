@@ -4,7 +4,7 @@ Date: 2026-07-11
 
 Target: Stellaris Pegasus 4.4.4 (checksum 5505), Stellar AI Director
 
-Branch inspected: `codex/science-route-and-research-reassignment` at `8826d53e`
+Branch: `codex/science-route-and-research-reassignment`
 
 Runtime launch performed: no
 
@@ -13,17 +13,23 @@ Runtime launch performed: no
 The reported loop is real, repeatable in the newest save sequence, and is not
 fixed by preventing AI science ships from fitting cloaking components.
 
-Pegasus 4.4.4 does not expose a native AI data surface for destination-specific
-route failure memory. The exposed native auto-explore controls are three scalar
-scores. They cannot remember that one fleet failed in one system, suppress only
-that route, or re-enable it when access or detection materially changes.
+Correction: the original investigation missed the native
+`ai_should_restrict_system` game rule and the system-scope
+`has_access_fleet = <country>` trigger. Destination-specific retry memory is
+still not exposed, but it is not required for the evidenced closed-access loop.
+The engine can exclude a currently inaccessible system before route selection.
 
-The only source-backed route to destination-specific memory uses the
-`on_crossing_border` and `on_fleet_went_mia` hooks plus a fleet event and a
-namespaced flag. That would cross this repository's native-AI-only production
-boundary, which explicitly prohibits events, on_actions, and scripted fleet
-orders as AI competence substitutes. Therefore no production implementation was
-made in this investigation.
+The production fix now adds one branch to the active Forgotten Empires winner:
+a regular AI restricts a contacted, foreign-owned system while at peace when
+`has_access_fleet = root` is false. The condition is evaluated from current
+state, so war or restored access lifts it without events, flags, timers, or
+cleanup. The obsolete science-cloak weight override was removed.
+
+Compatibility boundary: the copied winner retains Forgotten Empires inline
+scripts and therefore requires Forgotten Empires to remain enabled before the
+Director. The current live playset satisfies that condition. If that parent is
+removed, this override must be regenerated or replaced; the present descriptor
+does not declare the parent as a hard dependency.
 
 ## Save evidence
 
@@ -68,20 +74,20 @@ Save hashes:
    - `AUTO_EXPLORE_ATTRACTION_SCORE = 1000` (vanilla: 200)
    - `AUTO_EXPLORE_COLLABORATION_PENALTY = 2000` (vanilla: 750)
    - `AUTO_EXPLORE_SYSTEM_OWNED = 100` (vanilla: 1000)
-2. `science_cloaking_ai_safety_components_text()` copies all five vanilla
-   science cloaking components and replaces their AI design weight with zero.
+2. `science_route_system_restriction_game_rule_text()` preserves the active
+   Forgotten Empires `ai_should_restrict_system` object and adds one first
+   branch for contacted, foreign-owned, inaccessible peacetime systems.
 
-The first change makes foreign-owned systems ten times less costly to the
-auto-explore scorer than vanilla. It can increase pressure toward the Fallen
-Empire route. The second change is the rejected workaround: it weakens AI ship
-capability and does not implement failure memory. The newest save also proves
-that forced-decloak loops remain observable despite that generated override.
+The first change remains a global exploration preference and cannot distinguish
+open access from closed borders. The second change supplies that missing legal
+access distinction before route selection. The former cloak component override,
+which set all five science-cloak AI weights to zero, has been deleted; vanilla
+science cloaking is available again.
 
-Restoring the vanilla foreign-system penalty and removing the cloak suppression
-would be native-compliant cleanup, but neither is an evidence-backed complete
-fix for retry memory. The former changes only a global score; it cannot blacklist
-one failed route or distinguish open access from closed borders. It must not be
-reported as solving the loop.
+The access rule is designed to prevent the evidenced inaccessible-system loop.
+It does not claim to solve unrelated MIA causes for systems where
+`has_access_fleet` is true, and
+the global auto-explore scores are unchanged by this correction.
 
 ## Exact native 4.4.4 surface inventory
 
@@ -96,9 +102,14 @@ AUTO_EXPLORE_COLLABORATION_PENALTY = 750
 AUTO_EXPLORE_SYSTEM_OWNED = 1000
 ```
 
-An exact search across current vanilla `common/` and `events/` found no other
-PDXScript auto-explore selection, failure-memory, destination blacklist, or
-retry-backoff object. Other occurrences are message types and Nomad ship UI.
+Those are the direct auto-explore scoring defines, but they are not the complete
+native route-eligibility surface. `common/game_rules/00_rules.txt:1545-1619`
+defines `ai_should_restrict_system` with `THIS = system` and `ROOT = country`;
+the game describes a positive result as restricting and therefore avoiding the
+system. Generated trigger documentation defines `has_access_fleet = <target>`
+for testing whether the target country may enter that system. Together they
+provide a stateless, access-aware preselection guard. They do not provide
+failure memory or a general retry-backoff API.
 
 ### MIA hook
 
@@ -142,7 +153,7 @@ CWTools also documents `clear_orders = yes` on Fleet scope and
 `set_timed_fleet_flag`. These hooks and effects can implement route memory, but
 they are event-driven control, not native AI weighting.
 
-## Why a compliant native fix cannot meet the requested behavior
+## Superseded conclusion: destination retry memory
 
 The required behavior needs all four capabilities below:
 
@@ -153,15 +164,18 @@ The required behavior needs all four capabilities below:
 | Remember failure per fleet and destination | no | namespaced dynamic fleet flag |
 | Cancel only a repeated failed order | no | Fleet-scope `clear_orders` |
 
-No personality, economic plan, AI budget, component weight, or NAI define joins
-these capabilities. A scalar foreign-system penalty can only reduce all foreign
-travel. Disabling cloaking can only remove a capability. Neither learns from a
-failed route.
+No native surface joins these four capabilities into destination-specific retry
+memory. That remains true, but the observed loop does not require learned retry
+memory when the destination is already illegal under current diplomatic access.
+`ai_should_restrict_system` can prevent that destination from being selected in
+the first place. Disabling cloaking was therefore rejected as an unnecessary
+loss of capability.
 
-## Narrow exception design (not implemented)
+## Rejected after-the-fact interceptor (not implemented)
 
-If the native-AI-only boundary is explicitly amended for this defect, the
-narrowest design is event-driven and contains no scripted movement orders:
+This event-driven design was considered before the native restriction rule was
+found. It is retained only as historical evidence and must not be implemented
+for the closed-access case:
 
 1. Register one hidden fleet event on `on_crossing_border` and one on
    `on_fleet_went_mia`.
@@ -183,9 +197,9 @@ narrowest design is event-driven and contains no scripted movement orders:
    event-driven; any destination lookup must run only for an affected AI science
    fleet.
 
-Even this design needs a focused runtime test. Static sources prove hook scopes,
-flag syntax, and order cancellation; they cannot prove that the native planner
-will choose a different target immediately after its stale order is cleared.
+It clears an order only after the planner has already issued it, so the planner
+can immediately reissue the same order. That hides the symptom at additional
+cost instead of preventing the bad destination choice.
 
 ## Knowledge-base query result
 
@@ -223,11 +237,19 @@ Useful KB improvements for this question would be:
 - create an explicit gap when a save-serialized field such as `mia_type` has no
   documented script predicate, instead of silently returning unrelated matches.
 
+Correction applied 2026-07-11: the knowledge base now indexes and relates
+`ai_should_restrict_system`, `has_access_fleet`, their system/root-country scope
+composition, and the distinction between static restriction semantics and
+runtime proof. The earlier “only three scalar controls” conclusion is explicitly
+recorded as incomplete.
+
 ## Validation boundary
 
 - Save sequence and hashes: verified read-only.
 - Vanilla 4.4.4 definitions and event examples: verified read-only.
 - Director generator/test state: verified against the refreshed JCodeMunch index.
-- Knowledge-base identity and query behavior: verified read-only; no KB write.
-- Production mod: unchanged.
-- Runtime behavior of the proposed exception: not tested and not claimed.
+- Knowledge-base correction: applied and validated in the dedicated KB branch.
+- Production mod: generated native game-rule override added; obsolete cloak
+  suppression removed; focused regression and static patch validator passed.
+- Runtime behavior of `ai_should_restrict_system` under auto-explore and live
+  access transitions: not tested and not claimed.

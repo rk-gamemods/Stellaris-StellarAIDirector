@@ -325,6 +325,7 @@ GENERATED_SURFACE_FOLDERS = {
     "edicts": "edict",
     "economic_plans": "economic_plan",
     "federation_types": "federation_type",
+    "game_rules": "game_rule",
     "megastructures": "megastructure",
     "opinion_modifiers": "opinion_modifier",
     "on_actions": "on_action",
@@ -6055,7 +6056,9 @@ def generated_unresolved_at_variable_rows(mod_root: Path = MOD_ROOT) -> list[dic
         return rows
     global_defined = set(common_scripted_variable_definitions(common))
     global_defined.update(common_scripted_variable_definitions(STELLARIS_INSTALL_ROOT / "common"))
-    for mod_id in ATLAS_SOURCE_MODS:
+    # The generated game-rule override preserves Forgotten Empires' references
+    # to its globally loaded scripted variables instead of redefining them.
+    for mod_id in (*ATLAS_SOURCE_MODS, "3728581560"):
         try:
             global_defined.update(common_scripted_variable_definitions(mod_source_root_for_id(mod_id) / "common"))
         except ValueError:
@@ -10618,6 +10621,7 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         MOD_ROOT / "common" / "buildings" / "zzzz_staid_12_planetary_diversity_buildings.txt",
         MOD_ROOT / "common" / "on_actions" / "zzzz_staid_army_reserve_on_actions.txt",
         MOD_ROOT / "events" / "zzzz_staid_army_reserve_events.txt",
+        MOD_ROOT / "common" / "component_templates" / "zzzzz_staid_science_cloaking_ai_safety.txt",
     ):
         stale_path.unlink(missing_ok=True)
     generate_economic_valuation_dataset()
@@ -10663,6 +10667,10 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(
         MOD_ROOT / "common" / "ship_sizes" / "zzzzz_staid_17_mem_surveyor_outpost_compat.txt",
         mem_surveyor_outpost_ship_size_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "game_rules" / "zzzzz_staid_science_route_system_restriction.txt",
+        science_route_system_restriction_game_rule_text(),
     )
     write_text_file(
         MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_14_minerals_planet_construction_budget.txt",
@@ -10712,10 +10720,6 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         market_and_fleet_safety_on_actions_text(),
     )
     write_text_file(MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt", market_and_fleet_safety_events_text())
-    write_text_file(
-        MOD_ROOT / "common" / "component_templates" / "zzzzz_staid_science_cloaking_ai_safety.txt",
-        science_cloaking_ai_safety_components_text(),
-    )
     write_text_file(
         MOD_ROOT / "common" / "on_actions" / "zzzz_staid_boss_defeat_escalation_on_actions.txt",
         boss_defeat_escalation_on_actions_text(),
@@ -11270,34 +11274,40 @@ staid_research_plan_candidate = {
 '''
 
 
-def science_cloaking_ai_safety_components_text() -> str:
-    """Keep AI science auto-designs from selecting routes that force-decloak them."""
-    source_path = VANILLA_COMMON_ROOT / "component_templates" / "00_utilities_aux_first_contact.txt"
-    source_text = read_text(source_path)
-    component_keys = (
-        "SCIENCE_CLOAKING_1",
-        "SCIENCE_CLOAKING_2",
-        "SCIENCE_CLOAKING_3",
-        "SCIENCE_CLOAKING_DARK_MATTER",
-        "SCIENCE_CLOAKING_PSI",
-    )
-    blocks: list[str] = []
-    for match in re.finditer(r"(?m)^utility_component_template\s*=\s*\{", source_text):
-        open_brace = source_text.find("{", match.start())
-        balanced_block = _extract_balanced_block_at(source_text, open_brace)
-        block = source_text[match.start() : open_brace] + balanced_block
-        key_match = re.search(r'(?m)^\s*key\s*=\s*"([^"]+)"', block)
-        if key_match and key_match.group(1) in component_keys:
-            block = replace_top_level_child_block(block, "ai_weight", "\tai_weight = {\n\t\tweight = 0\n\t}")
-            blocks.append(block.rstrip())
-    if len(blocks) != len(component_keys):
-        raise ValueError(f"Expected {len(component_keys)} science cloaking components, found {len(blocks)}")
+def science_route_system_restriction_game_rule_text() -> str:
+    """Restrict inaccessible contacted systems before native AI route selection."""
+    source_path = mod_source_root_for_id("3728581560") / "common" / "game_rules" / "scfe_game_rules.txt"
+    source_object = extract_top_level_object_text(read_text(source_path), "ai_should_restrict_system")
+    expected_source_sha256 = "2f0c0512ef0ec300f6ad53c643683a234fb09a695bd66a0cc938f3ed327c586a"
+    source_sha256 = hashlib.sha256(source_object.encode("utf-8")).hexdigest()
+    if source_sha256 != expected_source_sha256:
+        raise ValueError(
+            f"Forgotten Empires ai_should_restrict_system changed: expected {expected_source_sha256}, got {source_sha256}"
+        )
+    object_marker = "ai_should_restrict_system = {\n    OR = {\n"
+    if source_object.count(object_marker) != 1:
+        raise ValueError(f"Expected one ai_should_restrict_system OR marker in {source_path}")
+    access_branch = '''        AND = {
+            root = {
+                is_country_type = default
+            }
+            exists = owner
+            owner = {
+                NOT = { is_same_value = root }
+                has_communications = root
+                NOT = { is_at_war_with = root }
+            }
+            NOT = { has_access_fleet = root }
+        }
+'''
+    patched_object = source_object.replace(object_marker, object_marker + access_branch, 1)
+    parse_pdx(patched_object)
     return (
         "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
-        "# Full-object vanilla 4.4 overrides: AI science auto-designs must use the empty cloak slot.\n"
-        "# TEST_2238.03.07 proved cloaked survey routes can retain their order after forced decloaking.\n\n"
-        + "\n\n".join(blocks)
-        + "\n"
+        "# Full-object override copied from the active Forgotten Empires 3728581560 winner.\n"
+        "# Only Director delta: default AI empires avoid contacted foreign systems they cannot enter while at peace.\n"
+        "# Current access is evaluated by the native game rule; this stores no retry state and does not disable cloaking.\n\n"
+        + patched_object
     )
 
 
