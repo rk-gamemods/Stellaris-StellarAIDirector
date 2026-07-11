@@ -65,17 +65,6 @@ staid_security_existential = {
 	}
 }
 
-# War raises the bar for colonization instead of disabling it. Peace keeps the
-# vanilla path; wartime expansion requires the Director's colony/fleet-scaled
-# income and reserve standards and no immediate existential emergency.
-staid_wartime_colony_expansion_safe = {
-	is_at_war = yes
-	NOT = { staid_catastrophic_collapse_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
-	NOT = { staid_security_existential = yes }
-	staid_basic_economy_runway_safe = yes
-}
-
 # Topology-backed boxed-in state. The vanilla `has_bordering_system` scripted
 # trigger checks owned border systems for an intel-visible, unowned, peacefully
 # claimable hyperlane neighbor. Do not use `has_ai_expansion_plan`: TEST_2231

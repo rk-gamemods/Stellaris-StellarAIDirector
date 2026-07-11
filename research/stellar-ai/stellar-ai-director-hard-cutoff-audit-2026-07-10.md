@@ -9,15 +9,18 @@
 
 ## Adopted decision rule
 
-Peace uses the native colony-expansion path. War raises the admission threshold:
+The 2026-07-11 `test_2241.02.27` habitat evidence supersedes the earlier
+relative wartime rule. The Director must not add any war-state gate after the
+engine has produced a native colonization plan:
 
-`colonize during war = native colonization plan AND native species/affordability gates AND relative economy safe AND no short-runway deficit AND no existential emergency`
+`fund colony ship = native colonization plan AND native species/affordability gates`
 
-`staid_basic_economy_runway_safe` supplies the relative component. Its mineral,
-alloy, consumer-goods, food, and energy requirements scale through the existing
-colony-count and fleet-power standards rather than one flat stockpile number.
-`staid_security_existential` prevents surplus-looking empires from colonizing
-while the Director's immediate defensive-emergency state is active.
+The engine's `ai_colonize_plans > 0` check remains the candidate gate. Vanilla
+food/mineral/energy income checks, resource thresholds, empire-type checks,
+and the colony budget's desired minimum/maximum remain unchanged. Removing the
+Director-only wartime gate does not force a plan, grant resources, or issue a
+colonization order; it only prevents the Director from vetoing an existing
+native plan.
 
 ## Confirmed harmful cutoff
 
@@ -26,7 +29,7 @@ In the observed 4.4.4 saves, Empire Zero remained at four colonies throughout a
 two-year continuous war despite `colonize=yes`, several valid controlled colony
 targets, no colony ship, and stockpiles around 9–10k energy, 30–37k minerals,
 22–24k food, 39–42k consumer goods, and 32–37k alloys. This is the proven gate
-replaced by the relative wartime rule above.
+removed by the native-plan-preserving rule above.
 
 ## Other hard gates reviewed
 
@@ -66,6 +69,6 @@ that pipeline and a discoverable AI-economy/budget classification.
 ## Validation boundary
 
 Static validation can prove parsing, object replacement, preserved native
-gates, and presence of the relative exception. Only a subsequent game save can
-prove that a wartime AI with a valid plan actually builds and uses a colony
-ship, and that a threatened or resource-tight wartime AI remains restrained.
+candidate/affordability gates, and absence of any additional Director wartime
+veto. Only a subsequent game save can prove that a wartime AI with a valid plan
+actually builds and uses a colony ship.

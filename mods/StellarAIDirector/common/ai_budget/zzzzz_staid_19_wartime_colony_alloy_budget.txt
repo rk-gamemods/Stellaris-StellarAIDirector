@@ -1,6 +1,6 @@
 # Vanilla Pegasus 4.4.4 blocks this budget while at war before midgame.
-# Keep every native colonization-plan and affordability gate. Replace the hard
-# wartime exclusion with a relative economy and survival-safety exception.
+# Keep every native colonization-plan and affordability gate, removing only
+# that wartime exclusion so long wars cannot freeze otherwise valid expansion.
 alloys_expenditure_colonies_expand = {
 	resource = alloys
 	type = expenditure
@@ -8,10 +8,6 @@ alloys_expenditure_colonies_expand = {
 
 	potential = {
 		is_nomadic = no
-		OR = {
-			is_at_war = no
-			staid_wartime_colony_expansion_safe = yes
-		}
 		ai_colonize_plans > 0
 		OR = {
 			AND = {

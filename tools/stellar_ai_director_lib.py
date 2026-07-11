@@ -9650,17 +9650,6 @@ staid_security_existential = {
 	}
 }
 
-# War raises the bar for colonization instead of disabling it. Peace keeps the
-# vanilla path; wartime expansion requires the Director's colony/fleet-scaled
-# income and reserve standards and no immediate existential emergency.
-staid_wartime_colony_expansion_safe = {
-	is_at_war = yes
-	NOT = { staid_catastrophic_collapse_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
-	NOT = { staid_security_existential = yes }
-	staid_basic_economy_runway_safe = yes
-}
-
 # Topology-backed boxed-in state. The vanilla `has_bordering_system` scripted
 # trigger checks owned border systems for an intel-visible, unowned, peacefully
 # claimable hyperlane neighbor. Do not use `has_ai_expansion_plan`: TEST_2231
@@ -10506,10 +10495,10 @@ minerals_expenditure_armies_threatened = {
 
 
 def wartime_colony_alloy_budget_text() -> str:
-    """Permit economically safe native colony funding during early wars."""
+    """Preserve native colony funding while a pre-midgame AI is at war."""
     return """# Vanilla Pegasus 4.4.4 blocks this budget while at war before midgame.
-# Keep every native colonization-plan and affordability gate. Replace the hard
-# wartime exclusion with a relative economy and survival-safety exception.
+# Keep every native colonization-plan and affordability gate, removing only
+# that wartime exclusion so long wars cannot freeze otherwise valid expansion.
 alloys_expenditure_colonies_expand = {
 	resource = alloys
 	type = expenditure
@@ -10517,10 +10506,6 @@ alloys_expenditure_colonies_expand = {
 
 	potential = {
 		is_nomadic = no
-		OR = {
-			is_at_war = no
-			staid_wartime_colony_expansion_safe = yes
-		}
 		ai_colonize_plans > 0
 		OR = {
 			AND = {
