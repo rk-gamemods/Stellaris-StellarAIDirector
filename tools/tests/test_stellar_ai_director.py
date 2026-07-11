@@ -1643,6 +1643,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "alloys_expenditure_ship_upgrades = {",
             "staid_fleet_buildup_economy_safe = yes",
             "staid_emergency_fleet_spending_required = yes",
+            "years_passed < 10",
         ):
             self.assertIn(marker, alloy_budget)
 

@@ -12343,6 +12343,9 @@ def fleet_alloy_budget_text() -> str:
         "potential",
         """\tpotential = {
 \t\tOR = {
+\t\t\t# This shared budget also funds civilian science ships. Do not let
+\t\t\t# military readiness gates suppress the opening exploration window.
+\t\t\tyears_passed < 10
 \t\t\tstaid_emergency_fleet_spending_required = yes
 \t\t\tAND = {
 \t\t\t\tstaid_fleet_buildup_economy_safe = yes
