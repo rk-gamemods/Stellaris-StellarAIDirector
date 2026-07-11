@@ -246,15 +246,25 @@ class GeneratedModValidityTests(unittest.TestCase):
         bad_rows = [row for row in rows if row["status"] != "ok"]
         self.assertEqual(bad_rows, [])
 
-    def test_wartime_colony_budget_removes_only_the_war_exclusion(self):
+    def test_wartime_colony_budget_uses_relative_economic_safety(self):
         path = MOD_ROOT / "common" / "ai_budget" / "zzzzz_staid_19_wartime_colony_alloy_budget.txt"
         text = path.read_text(encoding="utf-8")
         parse_file(path)
         self.assertIn("alloys_expenditure_colonies_expand = {", text)
         self.assertIn("ai_colonize_plans > 0", text)
         self.assertIn("is_nomadic = no", text)
-        self.assertNotIn("is_at_war", text)
+        self.assertIn("is_at_war = no", text)
+        self.assertIn("staid_wartime_colony_expansion_safe = yes", text)
         self.assertNotIn("mid_game_years_passed", text)
+
+        triggers = (
+            MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_20_strategy_kernel_triggers.txt"
+        ).read_text(encoding="utf-8")
+        self.assertIn("staid_wartime_colony_expansion_safe = {", triggers)
+        self.assertIn("is_at_war = yes", triggers)
+        self.assertIn("staid_basic_economy_runway_safe = yes", triggers)
+        self.assertIn("NOT = { staid_core_deficit_short_runway = yes }", triggers)
+        self.assertIn("NOT = { staid_security_existential = yes }", triggers)
 
     def test_descriptor_omits_stellar_ai_dependency_after_standalone_parity(self):
         descriptor = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8")
