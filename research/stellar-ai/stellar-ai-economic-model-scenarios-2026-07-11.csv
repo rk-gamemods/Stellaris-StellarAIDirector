@@ -1,0 +1,11 @@
+scenario,phase,months,investments_per_month,aggressive_expansion,at_war,bio_ships,income_energy,income_minerals,income_food,income_consumer_goods,income_alloys,income_unity,income_research,stockpile_energy,stockpile_minerals,stockpile_food,stockpile_consumer_goods,stockpile_alloys,stockpile_unity,increment_energy,increment_minerals,increment_food,increment_consumer_goods,increment_alloys,increment_unity,increment_research
+early_balanced,early,120,3,false,false,false,45,125,12,35,65,35,250,1500,2000,1200,1000,800,900,12,15,12,8,8,6,45
+early_expansion,early,120,4,true,false,false,30,40,8,20,30,20,160,900,500,700,500,300,400,12,15,12,8,8,6,45
+research_cg_constrained,mid,120,4,false,false,false,180,180,20,-8,280,100,1000,4000,5000,3000,200,3000,2000,15,18,12,10,12,8,60
+research_energy_constrained,mid,120,4,false,false,false,-15,180,20,80,300,100,1100,300,5000,3000,2500,3000,2000,15,18,12,10,12,8,60
+food_surplus_trap,mid,120,4,false,false,false,300,250,775,180,350,150,1500,12000,13000,30000,10000,12000,6000,15,18,12,10,12,8,60
+food_deficit_recovery,mid,120,4,false,false,false,180,180,-35,80,260,90,900,3000,4000,100,2500,2500,1800,15,18,12,10,12,8,60
+midgame_fleet_pivot,mid,120,4,false,true,false,220,180,15,110,80,100,900,5000,5000,3000,3000,1000,2000,15,18,12,10,12,8,60
+rich_wartime_research,mid,120,5,false,true,false,800,500,50,350,600,250,1800,30000,25000,15000,18000,20000,12000,18,20,12,12,15,10,75
+late_research_scale,late,180,5,false,false,false,700,500,30,300,900,300,3500,30000,30000,12000,15000,25000,15000,20,22,12,14,18,12,90
+bioship_food_burden,late,180,5,false,true,true,500,350,20,180,400,200,2500,18000,18000,1000,9000,12000,9000,20,22,40,14,18,12,90
