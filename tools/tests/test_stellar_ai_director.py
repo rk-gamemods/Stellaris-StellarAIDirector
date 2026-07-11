@@ -28,6 +28,7 @@ from stellar_ai_director_lib import (
     RESEARCH_ROOT,
     RELATIVE_ECONOMIC_STANDARDS_CSV,
     RELATIVE_ECONOMIC_STANDARDS_MD,
+    ROUTE_OVERRIDE_TARGETS,
     SNAPSHOT_ROOT,
     STANDALONE_PARITY_INVENTORY_CSV,
     STANDALONE_PARITY_INVENTORY_MD,
@@ -41,7 +42,9 @@ from stellar_ai_director_lib import (
     STELLARIS_INSTALL_ROOT,
     _collect_job_adds,
     append_child_block_clause,
+    atlas_object_has_ai_signal,
     block_assignments,
+    block_contains_assignment,
     collect_generated_conflict_rows,
     collect_generated_file_audit_rows,
     collect_generated_reference_rows,
@@ -56,6 +59,7 @@ from stellar_ai_director_lib import (
     dataset_ai_resource_production_amounts,
     dataset_job_pressure_family,
     dataset_job_pressure_weight_block,
+    director_ai_weight_block,
     extract_top_level_object_text,
     fresh_economic_valuation_source_facts,
     generated_unresolved_at_variable_rows,
@@ -72,6 +76,7 @@ from stellar_ai_director_lib import (
     parse_file,
     parse_numeric,
     parse_pdx,
+    remove_top_level_child_block,
     resource_waste_pressure,
     research_plan_target_count,
     research_under_curve,
@@ -184,6 +189,95 @@ class ActiveStackEconomicValuationMaintenanceTests(unittest.TestCase):
         )
 
 
+class RouteOverrideUnitTests(unittest.TestCase):
+    def test_gigas_habitat_route_preserves_parent_hard_safety_vetoes(self):
+        target = next(
+            target
+            for target in ROUTE_OVERRIDE_TARGETS
+            if target["mod_id"] == "1121692237"
+            and target["object_type"] == "megastructure"
+            and target["object_id"] == "habitat_central_complex"
+        )
+
+        text = director_ai_weight_block(target)
+        parse_pdx(text)
+        active_gigas_path = Path(
+            r"C:\Steam\steamapps\workshop\content\281990\1121692237\common\megastructures\zz_b_habitats.txt"
+        )
+        active_parent = extract_top_level_object_text(
+            active_gigas_path.read_text(encoding="utf-8-sig"),
+            "habitat_central_complex",
+        )
+
+        def factor_zero_modifier_values(container_text, root_key):
+            parsed = parse_pdx(container_text)
+            root_value = block_assignments(parsed, root_key)[0].value
+            ai_weight = (
+                root_value
+                if root_key == "ai_weight"
+                else block_assignments(root_value, "ai_weight")[0].value
+            )
+            return {
+                repr(assignment.value)
+                for assignment in block_assignments(ai_weight, "modifier")
+                if block_contains_assignment(assignment.value, "factor", "0")
+            }
+
+        active_parent_vetoes = factor_zero_modifier_values(
+            active_parent,
+            "habitat_central_complex",
+        )
+        generated_vetoes = factor_zero_modifier_values(text, "ai_weight")
+
+        self.assertIn("\t\tfactor = 125000", text)
+        self.assertIn("\t\t# policy_route = crowded_tall_route", text)
+        self.assertEqual(len(active_parent_vetoes), 3)
+        self.assertTrue(
+            active_parent_vetoes.issubset(generated_vetoes),
+            "Every active Gigas habitat hard veto must survive the Director route override.",
+        )
+        for marker in (
+            "has_country_flag = has_recently_built_habitat",
+            "any_planet_within_border",
+            "is_planet_class = pc_habitat",
+            "starbase = { NOT = { has_starbase_size >= starbase_starport } }",
+        ):
+            self.assertIn(marker, active_parent)
+            self.assertIn(marker, text)
+        for parent_veto in (
+            """\t\tmodifier = {
+\t\t\tfactor = 0
+\t\t\tfrom = {
+\t\t\t\tnor = {
+\t\t\t\t\thas_void_dweller_origin = yes
+\t\t\t\t\thas_origin = origin_toxic_knights
+\t\t\t\t}
+\t\t\t\thas_country_flag = has_recently_built_habitat
+\t\t\t}
+\t\t}""",
+            """\t\tmodifier = {
+\t\t\t# AI shouldn't build habitats if they have any uncolonised habitats.
+\t\t\tfactor = 0
+\t\t\towner = {
+\t\t\t\tany_planet_within_border = {
+\t\t\t\t\tis_planet_class = pc_habitat
+\t\t\t\t\tis_colony = no
+\t\t\t\t}
+\t\t\t}
+\t\t}""",
+            """\t\tmodifier = {
+\t\t\t# AI shouldn't build habitats if they don't have starports in the system
+\t\t\t# unless they have either the Void Dwellers origin or Voidborn AP.
+\t\t\tfactor = 0
+\t\t\towner = {
+\t\t\t\tis_void_dweller_empire = no
+\t\t\t}
+\t\t\tstarbase = { NOT = { has_starbase_size >= starbase_starport } }
+\t\t}""",
+        ):
+            self.assertIn(parent_veto, text)
+
+
 RESEARCH_CAPACITY_BUILDINGS_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-buildings-2026-07-09.csv"
 RESEARCH_CAPACITY_JOBS_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-jobs-2026-07-09.csv"
 RESEARCH_CAPACITY_DEVELOPMENT_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-development-2026-07-09.csv"
@@ -275,7 +369,9 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn("has_designation = col_research", block)
             self.assertIn("owner = { is_ai = yes }", block)
         vanilla_lab = extract_top_level_object_text(
-            (VANILLA_COMMON_ROOT / "buildings" / "05_research_buildings.txt").read_text(encoding="utf-8"),
+            (STELLARIS_INSTALL_ROOT / "common" / "buildings" / "05_research_buildings.txt").read_text(
+                encoding="utf-8"
+            ),
             "building_research_lab_1",
         )
         self.assertIn("has_any_research_zone = yes", vanilla_lab)
@@ -452,6 +548,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         for object_key in (
             ("building", "building_stronghold"),
             ("building", "building_fortress"),
+            ("colony_automation_exception", "giga_rogue_ai_planet"),
             ("colony_type", "col_fortress"),
             ("colony_type", "col_habitat_fortress"),
         ):
@@ -1341,14 +1438,94 @@ class GeneratedModValidityTests(unittest.TestCase):
         parse_file(path)
         text = path.read_text(encoding="utf-8")
         block = extract_top_level_object_text(text, "building_medical_2")
-        destroy_start = block.index("\tdestroy_trigger = {")
-        destroy = block[destroy_start : block.index("\tinline_script = {", destroy_start)]
-        self.assertIn("owner = { is_regular_empire = no }", destroy)
-        self.assertNotIn("planet_stability > 70", destroy)
-        self.assertNotIn("free_amenities > 20", destroy)
+        parsed = parse_pdx(block)
+        medical = block_assignments(parsed, "building_medical_2")[0].value
+        destroy = block_assignments(medical, "destroy_trigger")[0].value
+        owner = block_assignments(destroy, "owner")[0].value
+        self.assertTrue(block_contains_assignment(owner, "is_regular_empire", "no"))
+        self.assertNotIn("planet_stability > 70", block)
+        self.assertNotIn("free_amenities > 20", block)
         self.assertIn("building_sets = {", block)
         self.assertIn("resources = {", block)
         self.assertIn('"tech_frontier_health"', block)
+
+    def test_colony_automation_exception_targets_preserve_parent_legality(self):
+        exception_paths = [
+            STELLARIS_INSTALL_ROOT / "common" / "colony_automation_exceptions" / "00_crisis_exceptions.txt",
+            SNAPSHOT_ROOT
+            / "1121692237-gigastructural-engineering-more-44"
+            / "common"
+            / "colony_automation_exceptions"
+            / "01_giga_exceptions.txt",
+            SNAPSHOT_ROOT
+            / "1121692237-gigastructural-engineering-more-44"
+            / "common"
+            / "colony_automation_exceptions"
+            / "giga_frameworld_exceptions.txt",
+            SNAPSHOT_ROOT
+            / "1121692237-gigastructural-engineering-more-44"
+            / "common"
+            / "colony_automation_exceptions"
+            / "giga_rogue_ai.txt",
+        ]
+        exception_text = "\n".join(read_text(path) for path in exception_paths)
+        uncommented = "\n".join(line.split("#", 1)[0] for line in exception_text.splitlines())
+        requested_objects = set(re.findall(r"\bbuilding\s*=\s*(building_[A-Za-z0-9_]+)", uncommented))
+        requested_objects.update(
+            match.group(1)
+            for match in re.finditer(r"(?m)^\s*(district_[A-Za-z0-9_]+)\s*$", uncommented)
+        )
+
+        def child_value_repr(block_text, object_id, child_key):
+            parsed = parse_pdx(block_text)
+            object_value = block_assignments(parsed, object_id)[0].value
+            children = block_assignments(object_value, child_key)
+            return repr(children[0].value) if children else None
+
+        dataset_rows = [
+            row for row in dataset_job_pressure_override_rows() if row["object_id"] in requested_objects
+        ]
+        dataset_object_ids = {row["object_id"] for row in dataset_rows}
+        self.assertTrue(
+            {"building_colony_shelter", "district_hab_housing"}.issubset(dataset_object_ids),
+            "The exception audit must exercise both building and district full-object overrides.",
+        )
+        for row in dataset_rows:
+            source_block = extract_top_level_object_text(read_text(Path(row["source_path"])), row["object_id"])
+            generated_block = extract_top_level_object_text(
+                read_text(Path(row["generated_file"])), row["object_id"]
+            )
+            for child_key in ("potential", "allow", "possible"):
+                self.assertEqual(
+                    child_value_repr(generated_block, row["object_id"], child_key),
+                    child_value_repr(source_block, row["object_id"], child_key),
+                    f"{row['object_id']} changed {child_key} required by colony automation exceptions.",
+                )
+
+        generated_exception_overlaps = {
+            row["object_name"]
+            for row in collect_generated_conflict_rows(MOD_ROOT, SNAPSHOT_ROOT)
+            if row["object_name"] in requested_objects
+        }
+        self.assertEqual(
+            generated_exception_overlaps - dataset_object_ids,
+            {"building_medical_2", "building_stronghold"},
+            "Every non-dataset override requested by an automation exception needs an explicit compatibility review.",
+        )
+
+        medical_source = extract_top_level_object_text(
+            read_text(STELLARIS_INSTALL_ROOT / "common" / "buildings" / "07_amenity_buildings.txt"),
+            "building_medical_2",
+        )
+        medical_generated = extract_top_level_object_text(
+            read_text(MOD_ROOT / "common" / "buildings" / "zzzzz_staid_17_medical_center_churn_fix.txt"),
+            "building_medical_2",
+        )
+        for child_key in ("potential", "allow", "possible"):
+            self.assertEqual(
+                child_value_repr(medical_generated, "building_medical_2", child_key),
+                child_value_repr(medical_source, "building_medical_2", child_key),
+            )
 
     def test_mod_source_root_falls_back_to_live_workshop_when_snapshot_missing(self):
         root = mod_source_root_for_id("819148835")
@@ -1684,7 +1861,72 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("has_building = building_order_castle", colony_text)
         self.assertIn("building_stronghold = {", building_text)
         self.assertIn("building_fortress = {", building_text)
+        self.assertIn("has_modifier = giga_rogue_ai_computer", building_text)
         self.assertNotIn("ai_weight = {", colony_text + building_text)
+
+    def test_gigas_rogue_ai_automation_handler_is_preserved_and_unblocked(self):
+        generated_path = (
+            MOD_ROOT
+            / "common"
+            / "colony_automation_exceptions"
+            / "zzzzz_staid_01_gigas_rogue_ai.txt"
+        )
+        source_path = (
+            SNAPSHOT_ROOT
+            / "1121692237-gigastructural-engineering-more-44"
+            / "common"
+            / "colony_automation_exceptions"
+            / "giga_rogue_ai.txt"
+        )
+        active_source_path = (
+            Path(r"C:\Steam\steamapps\workshop\content\281990\1121692237")
+            / "common"
+            / "colony_automation_exceptions"
+            / "giga_rogue_ai.txt"
+        )
+        self.assertTrue(generated_path.exists(), f"Missing generated Gigas rogue-AI handler: {generated_path}")
+        self.assertTrue(active_source_path.exists(), f"Missing active Gigas rogue-AI handler: {active_source_path}")
+        parse_file(generated_path)
+        generated_handler = extract_top_level_object_text(
+            generated_path.read_text(encoding="utf-8"), "giga_rogue_ai_planet"
+        )
+        source_handler = extract_top_level_object_text(source_path.read_text(encoding="utf-8"), "giga_rogue_ai_planet")
+        active_source_handler = extract_top_level_object_text(
+            active_source_path.read_text(encoding="utf-8"), "giga_rogue_ai_planet"
+        )
+        self.assertEqual(
+            source_handler.rstrip(),
+            active_source_handler.rstrip(),
+            "Refresh the vetted Gigas snapshot before Director replaces a changed active Workshop handler.",
+        )
+        self.assertEqual(generated_handler.rstrip(), source_handler.rstrip())
+        self.assertIn("building = building_stronghold", generated_handler)
+        exception_files = sorted(path.name for path in generated_path.parent.glob("*.txt"))
+        self.assertEqual(exception_files, [generated_path.name])
+        descriptor_text = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8")
+        self.assertNotIn('replace_path = "common/colony_automation_exceptions"', descriptor_text)
+
+        building_path = MOD_ROOT / "common" / "buildings" / "zzzzz_staid_15_fortress_economic_hard_gates.txt"
+        stronghold = extract_top_level_object_text(
+            building_path.read_text(encoding="utf-8"), "building_stronghold"
+        )
+        self.assertIn("has_modifier = giga_rogue_ai_computer", stronghold)
+        self.assertIn("num_buildings = { type = building_stronghold value < 2 }", stronghold)
+        self.assertIn("num_buildings = { type = building_fortress value < 2 }", stronghold)
+        parsed_stronghold = parse_pdx(stronghold)
+        stronghold_value = block_assignments(parsed_stronghold, "building_stronghold")[0].value
+        allow_value = block_assignments(stronghold_value, "allow")[0].value
+        outer_or = block_assignments(allow_value, "OR")[0].value
+        ai_branch = block_assignments(outer_or, "AND")[0].value
+        ai_gates = block_assignments(ai_branch, "OR")
+        self.assertEqual(len(ai_gates), 2)
+        self.assertTrue(block_assignments(ai_gates[0].value, "has_modifier"))
+        cap_branch = block_assignments(ai_gates[1].value, "AND")[0].value
+        self.assertEqual(len(block_assignments(cap_branch, "num_buildings")), 2)
+        fortress = extract_top_level_object_text(
+            building_path.read_text(encoding="utf-8"), "building_fortress"
+        )
+        self.assertIn("has_modifier = giga_rogue_ai_computer", fortress)
 
         triggers_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         triggers = triggers_path.read_text(encoding="utf-8")
@@ -2359,6 +2601,17 @@ class GeneratedModValidityTests(unittest.TestCase):
             market_events,
             "Cap-breaker sales may only include market-tradable resources with a finite maximum.",
         )
+        for scripted_outpost_marker in (
+            "staid_economy_safety.5",
+            "staid_outpost_order_months",
+            "staid_outpost_retry_backoff",
+            "has_fleet_order = build_orbital_station_order",
+        ):
+            self.assertNotIn(
+                scripted_outpost_marker,
+                generated_runtime_text,
+                "The Director must leave constructor outpost orders to the native AI planner.",
+            )
         repair_section = economy[
             economy.index("# Relative repair plans require both earned monthly income")
             : economy.index('set_name = "Stellar AI Director early modded research rush"')
@@ -2430,33 +2683,83 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertIn(marker, text)
 
-    def test_mem_surveyor_outpost_gate_and_generic_order_backoff_are_generated(self):
+    def test_mem_surveyor_outpost_gate_preserves_targeted_native_exception_only(self):
         outpost_path = (
             MOD_ROOT / "common" / "ship_sizes" / "zzzzz_staid_17_mem_surveyor_outpost_compat.txt"
         )
         event_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
+        mem_event_path = Path(r"C:\Steam\steamapps\workshop\content\281990\727000451\events\mem_surveyor.txt")
+        active_parent_path = Path(
+            r"C:\Steam\steamapps\workshop\content\281990\3250900527\common\ship_sizes\sbx_3_0_starbases.txt"
+        )
         parse_file(outpost_path)
         parse_file(event_path)
         outpost = outpost_path.read_text(encoding="utf-8")
         events = event_path.read_text(encoding="utf-8")
+        mem_events = mem_event_path.read_text(encoding="utf-8-sig")
+
+        self.assertIn(
+            f"# Source: {active_parent_path.as_posix()}",
+            outpost,
+            "The compatibility override must be generated from the active Starbase Extended winner.",
+        )
+        generated_block = extract_top_level_object_text(outpost, "starbase_outpost")
+        active_parent_block = extract_top_level_object_text(
+            active_parent_path.read_text(encoding="utf-8-sig"),
+            "starbase_outpost",
+        )
+        self.assertEqual(
+            re.sub(
+                r"\s+",
+                "",
+                remove_top_level_child_block(generated_block, "possible_construction"),
+            ),
+            re.sub(
+                r"\s+",
+                "",
+                remove_top_level_child_block(active_parent_block, "possible_construction"),
+            ),
+            "Only possible_construction may differ from the active outpost parent.",
+        )
 
         for marker in (
             "starbase_outpost = {",
             "from = { is_ai = no }",
             "has_star_flag = mem_surveyor_home_system",
-            "has_country_flag = mem_surveyor_found_alkree_homeworld",
+            "has_carrier_flag = mem_surveyor_alkree_homeworld",
+            "has_modifier = mem_surveyor_alkree_homeworld",
         ):
             self.assertIn(marker, outpost)
+        self.assertNotIn("mem_surveyor_found_alkree_homeworld", outpost)
+        self.assertNotIn("mem_surveyor_studied_ruins", outpost)
+        homeworld_start = mem_events.index("\tid = mem_surveyor.300")
+        homeworld_resolution = mem_events[
+            homeworld_start : mem_events.index("\tid = mem_surveyor.303", homeworld_start)
+        ]
+        for marker in (
+            "modifier = mem_surveyor_alkree_homeworld",
+            "days = -1",
+            "id = mem_surveyor.301",
+            "has_research_station = yes",
+            "days = 3600",
+        ):
+            self.assertIn(
+                marker,
+                homeworld_resolution,
+                "The targeted construction gate must release on MEM's reachable anomaly-resolution state.",
+            )
         for marker in (
             "id = staid_economy_safety.5",
             "has_fleet_order = build_orbital_station_order",
-            "check_variable = { which = staid_outpost_order_months value >= 12 }",
+            "staid_outpost_order_months",
+            "staid_outpost_retry_backoff",
             "clear_orders = yes",
-            "flag = staid_outpost_retry_backoff",
-            "days = 360",
         ):
-            self.assertIn(marker, events)
-        self.assertNotIn("has_variable = staid_outpost_order_months", events)
+            self.assertNotIn(
+                marker,
+                events,
+                "The targeted MEM construction restriction must not grow into a generic order-cancellation watchdog.",
+            )
 
         clear_order_files = [
             path
@@ -2464,7 +2767,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             for path in root.rglob("*.txt")
             if "clear_orders" in path.read_text(encoding="utf-8")
         ]
-        self.assertEqual(clear_order_files, [event_path])
+        self.assertEqual(clear_order_files, [])
 
     def test_boss_defeat_escalation_uses_boss_lane_without_weakening_normal_wars(self):
         on_action_path = MOD_ROOT / "common" / "on_actions" / "zzzz_staid_boss_defeat_escalation_on_actions.txt"
@@ -2798,18 +3101,33 @@ class GeneratedModValidityTests(unittest.TestCase):
 
     def test_unity_to_research_paths_are_source_backed(self):
         traditions_path = MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt"
+        categories_path = (
+            MOD_ROOT
+            / "common"
+            / "tradition_categories"
+            / "zzzz_staid_02_perks_traditions_tradition_categories.txt"
+        )
         perks_path = MOD_ROOT / "common" / "ascension_perks" / "zzzz_staid_02_perks_traditions_ascension_perks.txt"
         parse_file(traditions_path)
+        parse_file(categories_path)
         parse_file(perks_path)
         traditions_text = traditions_path.read_text(encoding="utf-8")
+        categories_text = categories_path.read_text(encoding="utf-8")
         perks_text = perks_path.read_text(encoding="utf-8")
-        combined = traditions_text + perks_text
+        combined = traditions_text + categories_text + perks_text
         for marker in (
-            "# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt",
-            "tr_discovery_adopt = {",
-            "tr_discovery_finish = {",
-            "# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt",
-            "tr_diplomacy_finish = {",
+            "# policy_route = research_diplomacy_core; source = common/tradition_categories/00_discovery.txt",
+            "tradition_discovery = {",
+            "# policy_route = research_diplomacy_core; source = common/tradition_categories/00_diplomacy.txt",
+            "tradition_diplomacy = {",
+            "tradition_supremacy = {",
+            "tradition_prosperity = {",
+            "tradition_adaptability = {",
+            "tradition_mercantile = {",
+            "tr_discovery_science_division = {",
+            "tr_discovery_faith_in_science = {",
+            "tr_diplomacy_the_federation = {",
+            "tr_diplomacy_eminent_diplomats = {",
             "# policy_route = research_diplomacy_core; source = common/ascension_perks/00_ascension_perks.txt",
             "ap_technological_ascendancy = {",
             "# policy_route = economy_megastructure_core; source = common/ascension_perks/00_ascension_perks.txt",
@@ -2821,12 +3139,144 @@ class GeneratedModValidityTests(unittest.TestCase):
             "modifier = { factor = 0 NOT = { staid_core_unlock_research_priority_ready = yes } }",
         ):
             self.assertIn(marker, combined)
+
+        category_cases = (
+            ("tradition_discovery", "00_discovery.txt", "research_diplomacy_core", "staid_research_diplomacy_priority_ready"),
+            ("tradition_diplomacy", "00_diplomacy.txt", "research_diplomacy_core", "staid_research_diplomacy_priority_ready"),
+            ("tradition_supremacy", "00_supremacy.txt", "conquest_escape_route", "staid_aggressive_fleet_pressure"),
+            ("tradition_prosperity", "00_prosperity.txt", "economy_megastructure_core", "staid_core_unlock_research_priority_ready"),
+            ("tradition_adaptability", "00_adaptability.txt", "crowded_tall_route", "staid_planetary_capacity_growth_ready"),
+            ("tradition_mercantile", "00_commerce.txt", "crowded_tall_route", "staid_planetary_capacity_growth_ready"),
+        )
+        for object_id, source_file, route_id, route_gate in category_cases:
+            generated_block = extract_top_level_object_text(categories_text, object_id)
+            source_block = extract_top_level_object_text(
+                read_text(STELLARIS_INSTALL_ROOT / "common" / "tradition_categories" / source_file),
+                object_id,
+            )
+            route_comment = f"\t\t# policy_route = {route_id}; preserve vanilla category and node selection\n"
+            route_modifier = f"\t\tmodifier = {{ factor = 4 {route_gate} = yes }}\n"
+            self.assertIn(route_comment.rstrip(), generated_block)
+            self.assertIn(route_modifier.rstrip(), generated_block)
+            self.assertEqual(
+                "\n".join(
+                    line.rstrip()
+                    for line in generated_block.replace(route_comment, "").replace(route_modifier, "").splitlines()
+                ).rstrip(),
+                "\n".join(line.rstrip() for line in source_block.splitlines()).rstrip(),
+                f"{object_id} must preserve every parent category rule except the additive route boost.",
+            )
+            for forbidden in (
+                "staid_survival_mode",
+                "staid_recovery_mode",
+                f"NOT = {{ {route_gate} = yes }}",
+                "years_passed >",
+            ):
+                self.assertNotIn(forbidden, generated_block)
+
+        selectable_node_cases = (
+            ("tr_discovery_to_boldly_go", "00_discovery.txt"),
+            ("tr_discovery_databank_uplinks", "00_discovery.txt"),
+            ("tr_discovery_science_division", "00_discovery.txt"),
+            ("tr_discovery_polytechnic_education", "00_discovery.txt"),
+            ("tr_discovery_faith_in_science", "00_discovery.txt"),
+            ("tr_diplomacy_the_federation", "00_diplomacy.txt"),
+            ("tr_diplomacy_entente_coordination", "00_diplomacy.txt"),
+            ("tr_diplomacy_diplomatic_networking", "00_diplomacy.txt"),
+            ("tr_diplomacy_direct_diplomacy", "00_diplomacy.txt"),
+            ("tr_diplomacy_eminent_diplomats", "00_diplomacy.txt"),
+        )
+        route_comment = "\t\t# policy_route = research_diplomacy_core; preserve vanilla category and node selection\n"
+        route_modifier = "\t\tmodifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }\n"
+        for object_id, source_file in selectable_node_cases:
+            generated_block = extract_top_level_object_text(traditions_text, object_id)
+            source_block = extract_top_level_object_text(
+                read_text(STELLARIS_INSTALL_ROOT / "common" / "traditions" / source_file),
+                object_id,
+            )
+            self.assertIn(route_comment.rstrip(), generated_block)
+            self.assertIn(route_modifier.rstrip(), generated_block)
+            self.assertEqual(
+                "\n".join(
+                    line.rstrip()
+                    for line in generated_block.replace(route_comment, "").replace(route_modifier, "").splitlines()
+                ).rstrip(),
+                "\n".join(line.rstrip() for line in source_block.splitlines()).rstrip(),
+                f"{object_id} must preserve every parent rule except the additive route boost.",
+            )
+
+        tradition_targets = {
+            target["object_id"]
+            for target in ROUTE_OVERRIDE_TARGETS
+            if target["object_type"] == "tradition"
+        }
+        self.assertEqual(tradition_targets, {object_id for object_id, _ in selectable_node_cases})
+        automatic_rewards = {
+            "tr_discovery_adopt",
+            "tr_discovery_finish",
+            "tr_diplomacy_finish",
+            "tr_supremacy_adopt",
+            "tr_prosperity_adopt",
+            "tr_adaptability_adopt",
+            "tr_mercantile_adopt",
+        }
+        self.assertFalse(tradition_targets & automatic_rewards)
+        for object_id in automatic_rewards:
+            self.assertNotIn(f"{object_id} = {{", traditions_text)
+
+        discovery_source = parse_pdx(
+            read_text(STELLARIS_INSTALL_ROOT / "common" / "traditions" / "00_discovery.txt")
+        )
+        discovery_finish = block_assignments(discovery_source, "tr_discovery_finish")[0].value
+        discovery_node = block_assignments(discovery_source, "tr_discovery_science_division")[0].value
+        self.assertFalse(atlas_object_has_ai_signal(discovery_finish, "tradition"))
+        self.assertTrue(atlas_object_has_ai_signal(discovery_node, "tradition"))
+        with OBJECT_ATLAS_CSV.open(encoding="utf-8", newline="") as handle:
+            atlas_by_id = {
+                row["object_id"]: row
+                for row in csv.DictReader(handle)
+                if row["mod_id"] == "vanilla"
+                and row["object_id"]
+                in {
+                    "tr_discovery_finish",
+                    "tr_mercantile_adopt",
+                    "tr_prosperity_adopt",
+                    "tr_discovery_science_division",
+                }
+            }
+        for object_id in ("tr_discovery_finish", "tr_mercantile_adopt", "tr_prosperity_adopt"):
+            self.assertEqual(atlas_by_id[object_id]["source_has_ai_weight"], "no")
+            self.assertEqual(atlas_by_id[object_id]["parent_ai_support"], "parent_ai_absent")
+        self.assertEqual(atlas_by_id["tr_discovery_science_division"]["source_has_ai_weight"], "yes")
+        self.assertNotIn(
+            "modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }",
+            traditions_text + categories_text,
+        )
+        self.assertFalse(
+            [
+                target
+                for target in ROUTE_OVERRIDE_TARGETS
+                if target["object_id"] == "unity_expenditure_traditions"
+            ],
+            "A 1-unity legal choice cannot be repaired by changing the tradition budget.",
+        )
+        vanilla_unity_budget = extract_top_level_object_text(
+            read_text(STELLARIS_INSTALL_ROOT / "common" / "ai_budget" / "00_unity_budget.txt"),
+            "unity_expenditure_traditions",
+        )
+        self.assertIn("weight = 0.8", vanilla_unity_budget)
+        director_budget_text = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in sorted((MOD_ROOT / "common" / "ai_budget").glob("*.txt"))
+        )
+        self.assertNotIn("unity_expenditure_traditions = {", director_budget_text)
         reference_rows = collect_generated_reference_rows(MOD_ROOT)
         unresolved = [
             row
             for row in reference_rows
             if row["generated_file"]
             in {
+                "common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt",
                 "common/traditions/zzzz_staid_02_perks_traditions_traditions.txt",
                 "common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt",
             }
@@ -2836,6 +3286,8 @@ class GeneratedModValidityTests(unittest.TestCase):
         ]
         self.assertEqual(unresolved, [])
         self.assertNotIn("generic unity hoard", combined.lower())
+        self.assertNotIn("tr_discovery_finish = {", traditions_text + categories_text)
+        self.assertNotIn("tr_diplomacy_finish = {", traditions_text + categories_text)
 
     def test_fleet_conversion_gates_require_deficit_safe_economy(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
@@ -3188,17 +3640,24 @@ class GeneratedModValidityTests(unittest.TestCase):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         policy_path = MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt"
         traditions_path = MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt"
+        categories_path = (
+            MOD_ROOT
+            / "common"
+            / "tradition_categories"
+            / "zzzz_staid_02_perks_traditions_tradition_categories.txt"
+        )
         ascension_path = MOD_ROOT / "common" / "ascension_perks" / "zzzz_staid_02_perks_traditions_ascension_perks.txt"
         parse_file(federation_path)
         parse_file(trigger_path)
         parse_file(policy_path)
         parse_file(traditions_path)
+        parse_file(categories_path)
         parse_file(ascension_path)
 
         text = federation_path.read_text(encoding="utf-8")
         trigger_text = trigger_path.read_text(encoding="utf-8")
         policy_text = policy_path.read_text(encoding="utf-8")
-        traditions_text = traditions_path.read_text(encoding="utf-8")
+        categories_text = categories_path.read_text(encoding="utf-8")
         ascension_text = ascension_path.read_text(encoding="utf-8")
         generated_common_text = "\n".join(
             path.read_text(encoding="utf-8")
@@ -3215,8 +3674,14 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("has_active_tradition = tr_discovery_federations_finish", research_federation)
         self.assertIn("staid_research_diplomacy_priority_ready = {", trigger_text)
         self.assertIn("diplo_stance_cooperative", policy_text)
-        self.assertIn("tr_discovery_federations_finish", traditions_text)
-        self.assertIn("tr_diplomacy_finish", traditions_text)
+        vanilla_discovery = read_text(
+            STELLARIS_INSTALL_ROOT / "common" / "traditions" / "00_discovery.txt"
+        )
+        self.assertIn("tr_discovery_federations_finish", vanilla_discovery)
+        self.assertIn("tradition_discovery = {", categories_text)
+        self.assertIn("tradition_diplomacy = {", categories_text)
+        self.assertNotIn("tr_discovery_finish = {", categories_text)
+        self.assertNotIn("tr_diplomacy_finish = {", categories_text)
         self.assertIn("ap_technological_ascendancy", ascension_text)
         self.assertIn("staid_research_diplomacy_priority_ready = yes", generated_common_text)
         self.assertNotIn("action_form_research_agreement", generated_common_text)

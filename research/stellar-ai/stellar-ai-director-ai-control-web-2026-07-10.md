@@ -238,6 +238,8 @@ Research scaling requires all of the following:
 6. ascension perks that match the empire's actual route and available content;
 7. megastructure and ship-component follow-through so unlocks become productive assets.
 
+Tradition route pressure belongs on `common/tradition_categories` tree-selection `ai_weight`, while automatic adoption/finish rewards remain untouched. Preserve the parent category's potential, personality/ethic weights, AP-pending suppression, and internal selectable-node graph. Route steering must be a bounded positive modifier, not a replacement base or factor-zero exclusion.
+
 Technology weight cannot solve a missing prerequisite, unavailable object, invalid scope, unaffordable researcher upkeep, or absent research colony.
 
 Ascension selection must be archetype-aware:
@@ -364,9 +366,11 @@ For repeated failure:
 
 1. identify the engine rejection or system state when possible;
 2. classify known special systems with targeted handlers;
-3. apply exponential or stepped backoff to unknown failures;
-4. release the construction ship to another valid target;
-5. retain a bounded retry memory so save growth and permanent abandonment are avoided.
+3. express known eligibility through the narrowest native construction or planner gate;
+4. leave unknown failures to the native planner unless a source-backed native control surface exists;
+5. keep diagnosis outside production gameplay state.
+
+Correction from the 2299 expansion incident: the former monthly generic outpost watchdog could not distinguish travel, construction progress, and actual failure. Its 12-month timeout matched the active outpost's 360-day base build time before travel, so it canceled valid orders and then erased reissued orders during a 360-day backoff. That scripted cancellation path is removed. The original special-system intent remains as a targeted MEM Surveyor `possible_construction` branch: AI construction is blocked only while the home-system ruins anomaly is unresolved, then reopens when the Alkree carrier planet has both its initializer carrier flag and the permanent `mem_surveyor_alkree_homeworld` modifier applied by MEM event 300. The old country-flag release was unreachable in the active MEM chain and could permanently abandon the system.
 
 ## Archetype overlays
 

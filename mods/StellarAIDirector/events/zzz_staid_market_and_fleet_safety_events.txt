@@ -25,7 +25,6 @@ event = {
 			country_event = { id = staid_economy_safety.2 }
 			country_event = { id = staid_economy_safety.3 }
 			country_event = { id = staid_economy_safety.4 }
-			country_event = { id = staid_economy_safety.5 }
 		}
 	}
 }
@@ -401,46 +400,5 @@ country_event = {
 			clear_variable = staid_research_plan_current
 		}
 
-	}
-}
-
-# Generic fallback for any modded or vanilla system that leaves an AI
-# constructor carrying the same non-progressing outpost order for a full year.
-# During the one-year backoff, reissued outpost orders are cleared monthly;
-# mining, research, and other constructor orders remain available.
-country_event = {
-	id = staid_economy_safety.5
-	hide_window = yes
-	is_triggered_only = yes
-
-	immediate = {
-		every_owned_fleet = {
-			limit = { has_fleet_order = build_orbital_station_order }
-			if = {
-				limit = { has_fleet_flag = staid_outpost_retry_backoff }
-				clear_orders = yes
-				set_variable = { which = staid_outpost_order_months value = 0 }
-			}
-			else = {
-				change_variable = { which = staid_outpost_order_months value = 1 }
-				if = {
-					limit = {
-						check_variable = { which = staid_outpost_order_months value >= 12 }
-					}
-					clear_orders = yes
-					set_variable = { which = staid_outpost_order_months value = 0 }
-					set_timed_fleet_flag = {
-						flag = staid_outpost_retry_backoff
-						days = 360
-					}
-				}
-			}
-		}
-		every_owned_fleet = {
-			limit = {
-				NOT = { has_fleet_order = build_orbital_station_order }
-			}
-			set_variable = { which = staid_outpost_order_months value = 0 }
-		}
 	}
 }

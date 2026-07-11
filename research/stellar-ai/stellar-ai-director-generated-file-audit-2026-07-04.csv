@@ -2,12 +2,17 @@ generated_file,folder,object_type,path_status,parse_status,top_level_object_coun
 common/ai_budget/zzz_staid_alloys_budget.txt,ai_budget,ai_budget,ok,ok,3,0,ok,valid generated PDXScript surface
 common/ai_budget/zzz_staid_gigas_resource_budgets.txt,ai_budget,ai_budget,ok,ok,3,0,ok,valid generated PDXScript surface
 common/ai_budget/zzzz_staid_08_site_limited_expansion_ai_budget.txt,ai_budget,ai_budget,ok,ok,3,0,ok,valid generated PDXScript surface
+common/ai_budget/zzzz_staid_14_army_recruitment_budget.txt,ai_budget,ai_budget,ok,ok,2,0,ok,valid generated PDXScript surface
 common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt,ai_budget,ai_budget,ok,ok,3,0,ok,valid generated PDXScript surface
+common/ai_budget/zzzz_staid_15_opening_leader_recruitment_budget.txt,ai_budget,ai_budget,ok,ok,1,0,ok,valid generated PDXScript surface
+common/ai_budget/zzzzz_staid_19_wartime_colony_alloy_budget.txt,ai_budget,ai_budget,ok,ok,1,0,ok,valid generated PDXScript surface
 common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt,ascension_perks,ascension_perk,ok,ok,7,0,ok,valid generated PDXScript surface
 common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt,bombardment_stances,bombardment_stance,ok,ok,1,0,ok,valid generated PDXScript surface
 common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt,buildings,building,ok,ok,166,0,ok,valid generated PDXScript surface
 common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt,buildings,building,ok,ok,2,0,ok,valid generated PDXScript surface
 common/buildings/zzzzz_staid_15_fortress_economic_hard_gates.txt,buildings,building,ok,ok,2,0,ok,valid generated PDXScript surface
+common/buildings/zzzzz_staid_17_medical_center_churn_fix.txt,buildings,building,ok,ok,1,0,ok,valid generated PDXScript surface
+common/colony_automation_exceptions/zzzzz_staid_01_gigas_rogue_ai.txt,colony_automation_exceptions,colony_automation_exception,ok,ok,1,0,ok,valid generated PDXScript surface
 common/colony_types/zzzzz_staid_15_fortress_economic_hard_gates.txt,colony_types,colony_type,ok,ok,3,0,ok,valid generated PDXScript surface
 common/colony_types/zzzzz_staid_16_research_buildout_plan.txt,colony_types,colony_type,ok,ok,5,0,ok,valid generated PDXScript surface
 common/component_sets/00_SFT_weapon_set.txt,component_sets,component_set,ok,ok,15,0,ok,valid generated PDXScript surface
@@ -22,6 +27,7 @@ common/component_templates/000_SFT_00_weapons_missiles.txt,component_templates,c
 common/component_templates/000_SFT_00_weapons_projectile.txt,component_templates,component_template,ok,ok,15,0,ok,valid generated PDXScript surface
 common/component_templates/000_SFT_COMP.txt,component_templates,component_template,ok,ok,16,0,ok,valid generated PDXScript surface
 common/component_templates/zzz_SFT_GE_ehof_computer_max.txt,component_templates,component_template,ok,ok,1,0,ok,valid generated PDXScript surface
+common/country_types/zzzzz_staid_18_native_war_readiness.txt,country_types,country_type,ok,ok,1,0,ok,valid generated PDXScript surface
 common/decisions/zzzz_staid_12_planetary_diversity_outpost_decisions.txt,decisions,decision,ok,ok,14,0,ok,valid generated PDXScript surface
 common/defines/zzzz_staid_14_high_scale_ai_defines.txt,defines,define,ok,ok,1,0,ok,valid generated PDXScript surface
 common/districts/zzzz_staid_09_gigas_habitat_zone_slot_compat_districts.txt,districts,district,ok,ok,19,0,ok,valid generated PDXScript surface
@@ -29,6 +35,7 @@ common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt,districts,dist
 common/economic_plans/zzzz_staid_additive_economic_plan.txt,economic_plans,economic_plan,ok,ok,1,0,ok,valid generated PDXScript surface
 common/edicts/zzzz_staid_10_opening_growth_edicts.txt,edicts,edict,ok,ok,13,0,ok,valid generated PDXScript surface
 common/federation_types/zzzz_staid_15_research_diplomacy_federation_types.txt,federation_types,federation_type,ok,ok,5,0,ok,valid generated PDXScript surface
+common/game_rules/zzzzz_staid_science_route_system_restriction.txt,game_rules,game_rule,ok,ok,1,0,ok,valid generated PDXScript surface
 common/inline_scripts/esc_computers/IN_LINE_esc_com_01_SW_n.txt,inline_scripts,,ok,ok,7,0,ok,valid generated PDXScript surface
 common/inline_scripts/esc_computers/IN_LINE_esc_com_01_SW_nb.txt,inline_scripts,,ok,ok,7,0,ok,valid generated PDXScript surface
 common/inline_scripts/esc_computers/IN_LINE_esc_com_01_SW_p.txt,inline_scripts,,ok,ok,7,0,ok,valid generated PDXScript surface
@@ -112,7 +119,7 @@ common/scripted_triggers/zzz_staid_decision_state_triggers.txt,scripted_triggers
 common/scripted_triggers/zzz_staid_threat_response_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,18,0,ok,valid generated PDXScript surface
 common/scripted_triggers/zzzz_staid_10_opening_strategy_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,10,0,ok,valid generated PDXScript surface
 common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,5,0,ok,valid generated PDXScript surface
-common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,13,0,ok,valid generated PDXScript surface
+common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt,scripted_triggers,scripted_trigger,ok,ok,18,0,ok,valid generated PDXScript surface
 common/scripted_triggers/zzzz_staid_sft_addon_equivalence.txt,scripted_triggers,scripted_trigger,ok,ok,4,0,ok,valid generated PDXScript surface
 common/scripted_variables/00_00_tech_AIW.txt,scripted_variables,scripted_variable,ok,ok,4,0,ok,valid generated PDXScript surface
 common/scripted_variables/00_SFTz_RTFD.txt,scripted_variables,scripted_variable,ok,ok,1,0,ok,valid generated PDXScript surface
@@ -130,9 +137,11 @@ common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt,star
 common/static_modifiers/00_SFTm_ship_speed.txt,static_modifiers,static_modifier,ok,ok,1,0,ok,valid generated PDXScript surface
 common/static_modifiers/00_SFTm_special_component.txt,static_modifiers,static_modifier,ok,ok,13,0,ok,valid generated PDXScript surface
 common/technology/zzzz_staid_01_unlock_technology_technology.txt,technology,technology,ok,ok,97,0,ok,valid generated PDXScript surface
-common/traditions/zzzz_staid_02_perks_traditions_traditions.txt,traditions,tradition,ok,ok,7,0,ok,valid generated PDXScript surface
+common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt,tradition_categories,tradition_category,ok,ok,7,0,ok,valid generated PDXScript surface
+common/traditions/zzzz_staid_02_perks_traditions_traditions.txt,traditions,tradition,ok,ok,10,0,ok,valid generated PDXScript surface
+common/zones/zzzzz_staid_20_research_world_zone_priority.txt,zones,zone,ok,ok,4,0,ok,valid generated PDXScript surface
 events/SFT_event_ship_design.txt,events,events,ok,ok,7,0,ok,valid generated PDXScript surface
-events/zzz_staid_market_and_fleet_safety_events.txt,events,events,ok,ok,6,0,ok,valid generated PDXScript surface
+events/zzz_staid_market_and_fleet_safety_events.txt,events,events,ok,ok,5,0,ok,valid generated PDXScript surface
 events/zzz_staid_threat_response_events.txt,events,events,ok,ok,3,0,ok,valid generated PDXScript surface
 events/zzzz_staid_boss_defeat_escalation_events.txt,events,events,ok,ok,2,0,ok,valid generated PDXScript surface
 localisation/english/staid_threat_response_l_english.yml,localisation,localisation,ok,ok,20,0,ok,valid generated PDXScript surface

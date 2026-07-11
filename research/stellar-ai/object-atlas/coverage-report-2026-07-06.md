@@ -17,10 +17,10 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 
 ## Artifact Counts
 
-- Atlas rows: 31348
-- Dependency edges: 34831
-- Parent-AI support rows: 31348
-- Policy rows: 8284
+- Atlas rows: 31410
+- Dependency edges: 34851
+- Parent-AI support rows: 31410
+- Policy rows: 8346
 - Parser gaps: 0
 
 ## Counts By Mod And Type
@@ -45,6 +45,7 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 | Gigastructural Engineering & More (4.4) | ai_budget | 46 |
 | Gigastructural Engineering & More (4.4) | ascension_perk | 9 |
 | Gigastructural Engineering & More (4.4) | building | 132 |
+| Gigastructural Engineering & More (4.4) | colony_automation_exception | 3 |
 | Gigastructural Engineering & More (4.4) | colony_type | 13 |
 | Gigastructural Engineering & More (4.4) | component_template | 276 |
 | Gigastructural Engineering & More (4.4) | country_type | 35 |
@@ -68,6 +69,7 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 | Gigastructural Engineering & More (4.4) | starbase_module | 4 |
 | Gigastructural Engineering & More (4.4) | technology | 300 |
 | Gigastructural Engineering & More (4.4) | tradition | 24 |
+| Gigastructural Engineering & More (4.4) | tradition_category | 3 |
 | NSC3 | ascension_perk | 3 |
 | NSC3 | component_template | 208 |
 | NSC3 | edict | 1 |
@@ -84,6 +86,7 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 | NSC3 | starbase_module | 19 |
 | NSC3 | technology | 60 |
 | NSC3 | tradition | 7 |
+| NSC3 | tradition_category | 1 |
 | Starbase Extended 3.0 | component_template | 9 |
 | Starbase Extended 3.0 | scripted_trigger | 2 |
 | Starbase Extended 3.0 | section_template | 33 |
@@ -104,6 +107,7 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 | Stellaris vanilla 4.4.4 | ai_budget | 199 |
 | Stellaris vanilla 4.4.4 | ascension_perk | 49 |
 | Stellaris vanilla 4.4.4 | building | 498 |
+| Stellaris vanilla 4.4.4 | colony_automation_exception | 22 |
 | Stellaris vanilla 4.4.4 | colony_type | 100 |
 | Stellaris vanilla 4.4.4 | component_template | 1500 |
 | Stellaris vanilla 4.4.4 | country_type | 100 |
@@ -128,3 +132,4 @@ Static coverage for the first real AI knowledge layer. This report is not runtim
 | Stellaris vanilla 4.4.4 | starbase_module | 94 |
 | Stellaris vanilla 4.4.4 | technology | 698 |
 | Stellaris vanilla 4.4.4 | tradition | 234 |
+| Stellaris vanilla 4.4.4 | tradition_category | 33 |

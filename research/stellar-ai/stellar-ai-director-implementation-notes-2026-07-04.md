@@ -13,7 +13,7 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |
 | fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |
 | route unlock overrides | `common/technology/zzzz_staid_01_unlock_technology_technology.txt` | high | full-object copied source overrides add Director AI weights for Mega Engineering, Mega Shipyard, Gigas, NSC3, ESC, and starbase unlock chains |
-| AP/tradition route overrides | `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` | medium | full-object copied source overrides add Director AI weights for Gigas, planetcraft, conquest escape, economy, and crowded tall routes |
+| AP/tradition category/node route overrides | `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt`, `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` | medium | full-object copied source overrides preserve parent selection logic and add bounded Director route pressure to perks, categories, and selectable nodes |
 | megastructure route overrides | `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` | high | full-object copied source overrides add Director AI weights for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft starts |
 | starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt`, `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` | medium | additive economy reserves plus copied ESC starbase reactor AI weight support when crisis pressure is safe |
 | planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |
@@ -88,7 +88,7 @@ The Director does not issue normal fleet orders. Runtime evidence points to flee
 
 ## Unlock-Research Policy
 
-The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Full-object copied source overrides now add direct AI weights for those route unlocks and for selected AP/tradition route pressure.
+The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Full-object copied source overrides now add direct AI weights for those route unlocks and bounded pressure on selected AP/tradition categories and selectable nodes.
 
 ## Static-Defense Policy
 
@@ -110,7 +110,7 @@ The V1 threat-response feature adds observer opinion, timed flags, and a capped 
 
 ## v1 Boundaries
 
-- Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.
+- Direct technology/AP/tradition category/node object overrides are emitted from copied source objects for the supported high-scale route families; automatic adoption/finish rewards remain untouched.
 - Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.
 - Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.
 - Research infrastructure uses safe economic-plan demand plus vanilla research-zone eligibility; inactive building `ai_weight` is not treated as the primary construction planner.

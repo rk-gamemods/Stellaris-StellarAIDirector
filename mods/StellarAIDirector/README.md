@@ -95,7 +95,7 @@ Missing required Steam parents during generation: none.
   join wars, add punitive casus belli, or override diplomatic actions.
 - Adds full-object route overrides for Mega Engineering, Mega Shipyard, Gigas
   planetcraft/systemcraft unlocks, NSC3 hull unlocks, ESC high-tier component
-  unlocks, AP/tradition pressure, economy megastructures, planetcraft, war moon,
+  unlocks, AP/tradition category/node pressure, economy megastructures, planetcraft, war moon,
   systemcraft, and ESC starbase reactor support.
 - Adds threat/economy-gated starbase defense pressure for copied safe parent
   starbase modules and buildings while keeping Starbase Extended Waystation

@@ -6,145 +6,189 @@
 # Generated surface: common/traditions
 
 
-# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_absent; source_ai_weight = no
-tr_discovery_adopt = {
-	unlocks_agenda = agenda_chart_the_unknown
-	custom_tooltip = tr_discovery_adopt_desc
+# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_discovery_to_boldly_go = {
 	modifier = {
-		ship_anomaly_research_speed_mult = 0.20
+		science_ship_survey_speed = 0.35
+		shipclass_science_ship_disengage_mult = 0.5
+	}
+
+	tradition_swap = {
+		name = tr_discovery_to_boldly_go_machine
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_machine_empire = yes
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	tradition_swap = {
+		name = tr_discovery_to_boldly_go_hive
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_hive_empire = yes
+		}
+
+		weight = {
+			factor = 1
+		}
 	}
 
 	ai_weight = {
-		factor = 115000
-
-		# policy_route = research_diplomacy_core
-		# source_object = tradition:tr_discovery_adopt
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }
+		factor = 5000	# AI should prefer this one first, more useful early
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
 	}
 }
 
 
 # policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
-tr_discovery_finish = {
+tr_discovery_databank_uplinks = {
+	possible = {
+		has_tradition = tr_discovery_to_boldly_go
+	}
+
+	custom_tooltip = tr_discovery_databank_uplinks_desc
 	modifier = {
-		all_technology_research_speed = 0.10
-		ascension_perks_add = 1
+		station_researchers_produces_mult = 0.20
+		starbase_constructions_physics_research_produces_mult = 0.20
+		starbase_constructions_society_research_produces_mult = 0.20
+		starbase_constructions_engineering_research_produces_mult = 0.20
 	}
 
 	tradition_swap = {
-		name = tr_discovery_federations_finish
-		inherit_icon = yes
-		inherit_name = yes
-		custom_tooltip = tr_discovery_federations_finish_desc
-		trigger = {
-			has_federations_dlc = yes
-		}
-		modifier = {
-			all_technology_research_speed = 0.10
-			ascension_perks_add = 1
-		}
-		weight = {
-			factor = 1
-		}
-	}
-
-	ai_weight = {
-		factor = 170000
-
-		# policy_route = research_diplomacy_core
-		# source_object = tradition:tr_discovery_finish
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }
-		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
-	}
-}
-
-
-# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt; parent_ai = parent_ai_absent; source_ai_weight = no
-tr_diplomacy_finish = {
-	modifier = {
-		federation_experience_add = 2
-		diplo_weight_mult = 0.10
-		country_official_cap_add = 1
-		ascension_perks_add = 1
-	}
-
-	ai_weight = {
-		factor = 120000
-
-		# policy_route = research_diplomacy_core
-		# source_object = tradition:tr_diplomacy_finish
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 0 NOT = { staid_research_diplomacy_priority_ready = yes } }
-		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
-	}
-}
-
-
-# policy_route = conquest_escape_route; source = common/traditions/00_supremacy.txt; parent_ai = parent_ai_absent; source_ai_weight = no
-tr_supremacy_adopt = {
-	unlocks_agenda = agenda_military_buildup
-	modifier = {
-		country_naval_cap_add = 20
-		army_damage_mult = 0.20
-	}
-
-	ai_weight = {
-		factor = 90000
-
-		# policy_route = conquest_escape_route
-		# source_object = tradition:tr_supremacy_adopt
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 0 NOT = { staid_aggressive_fleet_pressure = yes } }
-		modifier = { factor = 4 staid_aggressive_fleet_pressure = yes }
-		modifier = { factor = 4 years_passed > 44 }
-		modifier = { factor = 7 years_passed > 79 }
-		modifier = { factor = 11 years_passed > 119 }
-		modifier = { factor = 4 years_passed < 30 }
-		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
-		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
-		modifier = { factor = 10 staid_site_limited_expansion_ready = yes }
-		modifier = { factor = 5 staid_fleet_buildup_economy_safe = yes }
-		modifier = { factor = 8 staid_militarist_conquest_strategy = yes }
-		modifier = { factor = 6 has_ethic = ethic_militarist }
-		modifier = { factor = 12 has_ethic = ethic_fanatic_militarist }
-	}
-}
-
-
-# policy_route = economy_megastructure_core; source = common/traditions/00_prosperity.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
-tr_prosperity_adopt = {
-	unlocks_agenda = agenda_favored_society
-	modifier = {
-		station_gatherers_produces_mult = 0.20
-	}
-
-	tradition_swap = {
-		name = tr_prosperity_adopt_nomad
+		name = tr_discovery_databank_uplinks_nomads
 		inherit_icon = yes
 		trigger = {
 			is_nomadic = yes
-			is_eager_explorer_empire = no
 		}
 		modifier = {
-			arkship_harvest_resources_produces_mult = 0.10
-			starbase_stockpile_capacity_mult = 0.25
-			shipsize_nomads_constructor_stockpile_capacity_mult = 0.25
+			starbase_collected_system_physics_research_mult = 0.2
+			starbase_collected_system_society_research_mult = 0.2
+			starbase_collected_system_engineering_research_mult = 0.2
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	ai_weight = {
+		factor = 5000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_discovery_science_division = {
+	modifier = {
+		num_tech_alternatives_add = 1
+		country_scientist_cap_add = 1
+		scientist_initial_skill = 1
+	}
+
+	tradition_swap = {
+		name = tr_discovery_science_division_machine
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_machine_empire = yes
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	tradition_swap = {
+		name = tr_discovery_science_division_hive
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_hive_empire = yes
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	ai_weight = {
+		factor = 1000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_discovery_polytechnic_education = {
+	possible = {
+		has_tradition = tr_discovery_science_division
+	}
+
+	modifier = {
+		scientist_exp_gain = 0.2
+		leader_scientists_upkeep_mult = -0.15
+	}
+
+
+
+	tradition_swap = {
+		name = tr_discovery_polytechnic_education_machine
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_machine_empire = yes
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	tradition_swap = {
+		name = tr_discovery_polytechnic_education_hive
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_hive_empire = yes
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	ai_weight = {
+		factor = 5000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_discovery.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_discovery_faith_in_science = {
+	possible = {
+		has_tradition = tr_discovery_polytechnic_education
+	}
+
+	custom_tooltip = tr_discovery_faith_in_science_tt
+
+	tradition_swap = {
+		name = tr_discovery_faith_in_science_machine
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_machine_empire = yes
 		}
 		weight = {
 			factor = 1
@@ -152,95 +196,24 @@ tr_prosperity_adopt = {
 	}
 
 	tradition_swap = {
-		name = tr_prosperity_adopt_nomad_eager_explorer
+		name = tr_discovery_faith_in_science_hive
+		inherit_effects = yes
 		inherit_icon = yes
-		inherit_effects = no
 		trigger = {
-			is_nomadic = yes
-			is_eager_explorer_empire = yes
-		}
-		modifier = {
-			arkship_harvest_resources_produces_mult = 0.10
-			starbase_stockpile_capacity_mult = 0.25
-			shipsize_nomads_constructor_stockpile_capacity_mult = 0.25
-			shipsize_nomads_engineer_vessel_stockpile_capacity_mult = 0.25
-		}
-		weight = {
-			factor = 1
-		}
-	}
-
-	ai_weight = {
-		factor = 85000
-
-		# policy_route = economy_megastructure_core
-		# source_object = tradition:tr_prosperity_adopt
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 0 NOT = { staid_core_unlock_research_priority_ready = yes } }
-		modifier = { factor = 4 staid_core_unlock_research_priority_ready = yes }
-		modifier = { factor = 3 years_passed > 44 }
-		modifier = { factor = 5 years_passed > 79 }
-		modifier = { factor = 8 years_passed > 119 }
-		modifier = { factor = 3 years_passed < 30 }
-		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
-	}
-}
-
-
-# policy_route = crowded_tall_route; source = common/traditions/00_adaptability.txt; parent_ai = parent_ai_absent; source_ai_weight = no
-tr_adaptability_adopt = {
-	unlocks_agenda = agenda_conquer_nature
-	triggered_modifier = {
-		potential = {
+			is_hive_empire = yes
 			is_wilderness_empire = no
 		}
-		pop_housing_usage_mult = -0.10
-	}
-
-	triggered_modifier = {
-		potential = {
-			is_wilderness_empire = yes
+		weight = {
+			factor = 1
 		}
-		building_time_mult = -0.10
-	}
-
-	ai_weight = {
-		factor = 75000
-
-		# policy_route = crowded_tall_route
-		# source_object = tradition:tr_adaptability_adopt
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 0 NOT = { staid_planetary_capacity_growth_ready = yes } }
-		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
-		modifier = { factor = 5 years_passed < 30 }
-		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
-		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
-	}
-}
-
-
-# policy_route = crowded_tall_route; source = common/traditions/00_mercantile.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
-tr_mercantile_adopt = {
-	unlocks_agenda = agenda_open_markets
-	modifier = {
-		planet_traders_upkeep_mult = -0.2
 	}
 
 	tradition_swap = {
-		name = tr_mercantile_nomads_adopt
+		name = tr_discovery_faith_in_science_wilderness
+		inherit_effects = yes
 		inherit_icon = yes
-		inherit_name = yes
 		trigger = {
-			is_nomadic = yes
-		}
-		modifier = {
-			planet_traders_upkeep_mult = -0.1
-			nomadic_contract_value_mult = 0.15
+			is_wilderness_empire = yes
 		}
 		weight = {
 			factor = 1
@@ -248,19 +221,154 @@ tr_mercantile_adopt = {
 	}
 
 	ai_weight = {
-		factor = 65000
+		factor = 5000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
 
-		# policy_route = crowded_tall_route
-		# source_object = tradition:tr_mercantile_adopt
-		modifier = { factor = 0 staid_survival_mode = yes }
-		modifier = { factor = 0.35 staid_recovery_mode = yes }
-		modifier = { factor = 0 NOT = { staid_planetary_capacity_growth_ready = yes } }
-		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
-		modifier = { factor = 2 years_passed > 44 }
-		modifier = { factor = 3 years_passed > 79 }
-		modifier = { factor = 5 years_passed > 119 }
-		modifier = { factor = 5 years_passed < 30 }
-		modifier = { factor = 3 AND = { years_passed > 29 years_passed < 60 } }
-		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_diplomacy_the_federation = {
+#	custom_tooltip = tr_diplomacy_the_federation_desc
+
+	modifier = {
+		cohesion_add = 1
+		envoys_add = 1
+	}
+
+	on_enabled = {
+		if = {
+			limit = {
+				NOT = {
+					has_technology = tech_federation_code
+				}
+			}
+			add_tech_progress = {
+				tech = tech_federation_code
+				progress = 0.25
+			}
+		}
+	}
+
+	ai_weight = {
+		factor = 10000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_diplomacy_entente_coordination = {
+	possible = {
+		has_tradition = tr_diplomacy_the_federation
+	}
+
+	modifier = {
+		federation_naval_cap_contribution_mult = 1.00
+		country_border_friction_mult = -0.25
+	}
+
+	tradition_swap = {
+		inherit_name = yes
+		inherit_icon = yes
+		trigger = {
+			is_nomadic = yes
+		}
+
+		modifier = {
+			federation_naval_cap_contribution_mult = 1.00
+			nomadic_contract_value_mult = 0.25
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	ai_weight = {
+		factor = 1000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_diplomacy_diplomatic_networking = {
+	custom_tooltip = tr_diplomacy_diplomatic_networking_desc
+	#Effects in diplomacy_economy
+
+	tradition_swap = {
+		name = tr_diplomacy_diplomatic_networking_gestalt
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_gestalt = yes
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	ai_weight = {
+		factor = 5000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_diplomacy_direct_diplomacy = {
+	possible = {
+		has_tradition = tr_diplomacy_diplomatic_networking
+	}
+
+	modifier = {
+		country_trust_cap_add = 50
+		country_trust_growth = 0.33
+	}
+
+	ai_weight = {
+		factor = 5000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+	}
+}
+
+
+# policy_route = research_diplomacy_core; source = common/traditions/00_diplomacy.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tr_diplomacy_eminent_diplomats = {
+	possible = {
+		has_tradition = tr_diplomacy_diplomatic_networking
+	}
+
+	custom_tooltip = tr_diplomacy_eminent_diplomats_desc
+
+	modifier = {
+		diplo_action_acceptance_add = 5
+		# 2nd half is in action.325
+	}
+
+	tradition_swap = {
+		name = tr_diplomacy_eminent_diplomats_gestalt
+		inherit_effects = yes
+		inherit_icon = yes
+		trigger = {
+			is_gestalt = yes
+		}
+
+		weight = {
+			factor = 1
+		}
+	}
+
+	ai_weight = {
+		factor = 5000
+		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
+		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
 	}
 }

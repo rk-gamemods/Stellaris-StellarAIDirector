@@ -231,6 +231,7 @@ ROI_TARGETS = [
 INTEGRATION_SURFACE_FOLDERS = {
     "technology": ("technology", "P6"),
     "ascension_perks": ("ascension_perk", "P6"),
+    "tradition_categories": ("tradition_category", "P6"),
     "traditions": ("tradition", "P6"),
     "megastructures": ("megastructure", "P7"),
     "starbase_modules": ("starbase_module", "P9"),
@@ -244,9 +245,11 @@ ATLAS_COMMON_SURFACES = {
     "technology": "technology",
     "technologies": "technology",
     "ascension_perks": "ascension_perk",
+    "tradition_categories": "tradition_category",
     "traditions": "tradition",
     "megastructures": "megastructure",
     "buildings": "building",
+    "colony_automation_exceptions": "colony_automation_exception",
     "colony_types": "colony_type",
     "districts": "district",
     "pop_jobs": "pop_job",
@@ -318,6 +321,7 @@ GENERATED_SURFACE_FOLDERS = {
     "country_types": "country_type",
     "bombardment_stances": "bombardment_stance",
     "buildings": "building",
+    "colony_automation_exceptions": "colony_automation_exception",
     "colony_types": "colony_type",
     "decisions": "decision",
     "defines": "define",
@@ -342,6 +346,7 @@ GENERATED_SURFACE_FOLDERS = {
     "starbase_modules": "starbase_module",
     "static_modifiers": "static_modifier",
     "technology": "technology",
+    "tradition_categories": "tradition_category",
     "traditions": "tradition",
     "zones": "zone",
 }
@@ -587,7 +592,7 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "esc_tech_strikecraft_5", "object_type": "technology", "mod_id": "2648658105", "route_id": "esc_component_route", "weight": 140000, "file_key": "01_unlock_technology"},
     {"object_id": "esc_tech_dreadnought_computer", "object_type": "technology", "mod_id": "2648658105", "route_id": "esc_component_route", "weight": 130000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_starbase_6", "object_type": "technology", "mod_id": "3250900527", "route_id": "fallen_empire_benchmark_route", "weight": 135000, "file_key": "01_unlock_technology"},
-    # AP and tradition pressure for routes that Stellaris otherwise treats as optional flavor.
+    # AP and native tradition category/node pressure for routes that Stellaris otherwise treats as optional flavor.
     {"object_id": "ap_technological_ascendancy", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "research_diplomacy_core", "weight": 150000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_master_builders", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "economy_megastructure_core", "weight": 125000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_galactic_wonders", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "economy_megastructure_core", "weight": 150000, "file_key": "02_perks_traditions"},
@@ -595,13 +600,24 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "ap_celestial_printing", "object_type": "ascension_perk", "mod_id": "1121692237", "route_id": "planetcraft_route", "weight": 180000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_lord_of_war", "object_type": "ascension_perk", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 80000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_nihilistic_acquisition", "object_type": "ascension_perk", "mod_id": "vanilla", "route_id": "raiding_pop_acquisition_route", "weight": 170000, "file_key": "02_perks_traditions"},
-    {"object_id": "tr_discovery_adopt", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 115000, "file_key": "02_perks_traditions"},
-    {"object_id": "tr_discovery_finish", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 170000, "file_key": "02_perks_traditions"},
-    {"object_id": "tr_diplomacy_finish", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_diplomacy.txt", "route_id": "research_diplomacy_core", "weight": 120000, "file_key": "02_perks_traditions"},
-    {"object_id": "tr_supremacy_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 90000, "file_key": "02_perks_traditions"},
-    {"object_id": "tr_prosperity_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "economy_megastructure_core", "weight": 85000, "file_key": "02_perks_traditions"},
-    {"object_id": "tr_adaptability_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 75000, "file_key": "02_perks_traditions"},
-    {"object_id": "tr_mercantile_adopt", "object_type": "tradition", "mod_id": "vanilla", "route_id": "crowded_tall_route", "weight": 65000, "file_key": "02_perks_traditions"},
+    {"object_id": "tradition_discovery", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tradition_diplomacy", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_diplomacy.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tradition_supremacy", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_supremacy.txt", "route_id": "conquest_escape_route", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tradition_prosperity", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_prosperity.txt", "route_id": "economy_megastructure_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tradition_adaptability", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_adaptability.txt", "route_id": "crowded_tall_route", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tradition_mercantile", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_commerce.txt", "route_id": "crowded_tall_route", "weight": 4, "file_key": "02_perks_traditions"},
+    # Selectable nodes retain the research/diplomacy route after a tree is adopted.
+    # Adoption and finish rewards are automatic engine effects and must never be targeted.
+    {"object_id": "tr_discovery_to_boldly_go", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_discovery_databank_uplinks", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_discovery_science_division", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_discovery_polytechnic_education", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_discovery_faith_in_science", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_diplomacy_the_federation", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_diplomacy.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_diplomacy_entente_coordination", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_diplomacy.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_diplomacy_diplomatic_networking", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_diplomacy.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_diplomacy_direct_diplomacy", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_diplomacy.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tr_diplomacy_eminent_diplomats", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_diplomacy.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
     {"object_id": "influence_expenditure_claims", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 145000, "file_key": "08_site_limited_expansion"},
     {"object_id": "influence_expenditure_claims_militarist", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 165000, "file_key": "08_site_limited_expansion"},
     {"object_id": "influence_expenditure_claims_fanatic_militarist", "object_type": "ai_budget", "mod_id": "vanilla", "route_id": "conquest_escape_route", "weight": 185000, "file_key": "08_site_limited_expansion"},
@@ -3244,6 +3260,15 @@ def block_has_any_assignment(value: PDXValue, keys: set[str]) -> bool:
     return isinstance(value, PDXBlock) and any(assignment.key in keys for assignment in iter_assignments(value))
 
 
+def atlas_object_has_ai_signal(value: PDXValue, object_type: str) -> bool:
+    """Classify actual AI choice support without mistaking nested swap weights for it."""
+    if not isinstance(value, PDXBlock):
+        return False
+    if object_type == "tradition":
+        return any(assignment.key == "ai_weight" for assignment in block_assignments(value))
+    return block_has_any_assignment(value, ATLAS_AI_SIGNAL_KEYS)
+
+
 def assignment_atoms(value: PDXValue) -> list[str]:
     if isinstance(value, PDXAtom):
         return [value.value]
@@ -3374,7 +3399,8 @@ def atlas_object_row(
             elif assignment.key in {"potential", "allow", "possible", "trigger"}:
                 potential_allow_gates.append(assignment.key)
     strategic_role = strategic_role_for_object(object_id, object_type)
-    support_status = parent_ai_support_status("yes" if block_has_any_assignment(value, ATLAS_AI_SIGNAL_KEYS) else "no", strategic_role)
+    has_ai_signal = atlas_object_has_ai_signal(value, object_type)
+    support_status = parent_ai_support_status("yes" if has_ai_signal else "no", strategic_role)
     route_ids = object_route_ids(object_id, object_type)
     director_action = director_action_for_object(object_type, strategic_role, support_status)
     return {
@@ -3384,8 +3410,8 @@ def atlas_object_row(
         "mod_name": root["mod_name"],
         "source_file": source_file,
         "load_winner": load_winner,
-        "source_has_ai_weight": "yes" if block_has_any_assignment(value, ATLAS_AI_SIGNAL_KEYS) else "no",
-        "ai_weight_summary": "ai_signal_present" if block_has_any_assignment(value, ATLAS_AI_SIGNAL_KEYS) else "",
+        "source_has_ai_weight": "yes" if has_ai_signal else "no",
+        "ai_weight_summary": "ai_signal_present" if has_ai_signal else "",
         "cost": compact_resource_map(cost),
         "upkeep": compact_resource_map(upkeep),
         "produces": compact_resource_map(produces),
@@ -5900,7 +5926,7 @@ def route_gate_for_target(target: dict[str, Any]) -> str:
     if target["object_type"] == "megastructure" and target["object_id"] == "kugelblitz_0":
         return "staid_kugelblitz_new_start_budget_ready"
     route_id = str(target["route_id"])
-    if target["object_type"] in {"technology", "ascension_perk", "tradition"}:
+    if target["object_type"] in {"technology", "ascension_perk", "tradition", "tradition_category"}:
         return ROUTE_RESEARCH_GATES.get(route_id, "staid_surplus_sink_pressure")
     return ROUTE_BUILD_GATES.get(route_id, "staid_surplus_sink_pressure")
 
@@ -5961,6 +5987,52 @@ def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
     return lines
 
 
+def parent_ai_hard_safety_modifiers(target: dict[str, Any]) -> list[str]:
+    if (
+        target.get("mod_id") != "1121692237"
+        or target.get("object_type") != "megastructure"
+        or target.get("object_id") != "habitat_central_complex"
+    ):
+        return []
+
+    # Preserve the active Gigas habitat hard vetoes while Director replaces the
+    # parent's positive preference with its crowded-tall route preference.
+    return [
+        "\t# ai spam reduction",
+        "\tmodifier = {",
+        "\t\tfactor = 0",
+        "\t\tfrom = {",
+        "\t\t\tnor = {",
+        "\t\t\t\thas_void_dweller_origin = yes",
+        "\t\t\t\thas_origin = origin_toxic_knights",
+        "\t\t\t}",
+        "\t\t\thas_country_flag = has_recently_built_habitat",
+        "\t\t}",
+        "\t}",
+        "",
+        "\tmodifier = {",
+        "\t\t# AI shouldn't build habitats if they have any uncolonised habitats.",
+        "\t\tfactor = 0",
+        "\t\towner = {",
+        "\t\t\tany_planet_within_border = {",
+        "\t\t\t\tis_planet_class = pc_habitat",
+        "\t\t\t\tis_colony = no",
+        "\t\t\t}",
+        "\t\t}",
+        "\t}",
+        "",
+        "\tmodifier = {",
+        "\t\t# AI shouldn't build habitats if they don't have starports in the system",
+        "\t\t# unless they have either the Void Dwellers origin or Voidborn AP.",
+        "\t\tfactor = 0",
+        "\t\towner = {",
+        "\t\t\tis_void_dweller_empire = no",
+        "\t\t}",
+        "\t\tstarbase = { NOT = { has_starbase_size >= starbase_starport } }",
+        "\t}",
+    ]
+
+
 def director_ai_weight_block(target: dict[str, Any]) -> str:
     lines = [
         "\tai_weight = {",
@@ -5969,9 +6041,22 @@ def director_ai_weight_block(target: dict[str, Any]) -> str:
         f"\t\t# policy_route = {target['route_id']}",
         f"\t\t# source_object = {target['object_type']}:{target['object_id']}",
     ]
+    lines.extend(line.replace("\t", "\t\t", 1) for line in parent_ai_hard_safety_modifiers(target))
     lines.extend(line.replace("\t", "\t\t", 1) for line in route_weight_modifiers(target))
     lines.append("\t}")
     return "\n".join(lines) + "\n"
+
+
+def native_tradition_route_weight_block(block: str, target: dict[str, Any]) -> str:
+    """Boost a native tradition category or selectable node without replacing its policy."""
+    route_gate = route_gate_for_target(target)
+    return insert_top_level_ai_weight_modifiers(
+        block,
+        [
+            f"\t\t# policy_route = {target['route_id']}; preserve vanilla category and node selection",
+            f"\t\tmodifier = {{ factor = {target['weight']} {route_gate} = yes }}",
+        ],
+    )
 
 
 AT_VARIABLE_RE = re.compile(r"(?<![\w])@[A-Za-z0-9_]+(?![\w])")
@@ -6302,6 +6387,8 @@ def route_override_object_text(target: dict[str, Any], object_names: dict[str, s
         block = director_infrastructure_weight_block(block, target)
     elif target["object_type"] == "ai_budget":
         block = director_ai_budget_weight_block(block, target)
+    elif target["object_type"] in {"tradition_category", "tradition"}:
+        block = native_tradition_route_weight_block(block, target)
     elif target["object_type"] == "federation_type" and target["object_id"] == "research_federation":
         block = research_federation_weight_block(block)
     else:
@@ -6834,8 +6921,13 @@ def fortress_army_buildings_text() -> str:
 \t\t\thas_carrier_flag = ignore_ai_building_limitations
 \t\t\towner = { is_ai = no }
 \t\t\tAND = {
-\t\t\t\towner = { staid_fortress_designation_ready = yes }
-\t\t\t\tstaid_fortress_planet_strategically_placed = yes
+\t\t\t\tOR = {
+\t\t\t\t\thas_modifier = giga_rogue_ai_computer
+\t\t\t\t\tAND = {
+\t\t\t\t\t\towner = { staid_fortress_designation_ready = yes }
+\t\t\t\t\t\tstaid_fortress_planet_strategically_placed = yes
+\t\t\t\t\t}
+\t\t\t\t}
 \t\t\t\tOR = {
 \t\t\t\t\thas_any_fortress_zone = yes
 \t\t\t\t\tAND = {
@@ -6854,6 +6946,7 @@ def fortress_army_buildings_text() -> str:
 \t\thas_upgraded_capital = yes
 \t\tOR = {
 \t\t\towner = { is_ai = no }
+\t\t\thas_modifier = giga_rogue_ai_computer
 \t\t\tAND = {
 \t\t\t\towner = { staid_fortress_designation_ready = yes }
 \t\t\t\tstaid_fortress_planet_strategically_placed = yes
@@ -6864,9 +6957,29 @@ def fortress_army_buildings_text() -> str:
     text = """# Generated by tools/generate_stellar_ai_director_patch.py.
 # Narrow current-vanilla full-object overrides for stronghold construction and upgrades.
 # Human and explicit carrier bypasses are preserved. AI military buildings require the
-# same strategic/economic readiness gate as fortress designation and fortress zones.
+# same strategic/economic readiness gate as fortress designation and fortress zones,
+# except for Gigas's rogue-AI planetary computer automation emergency.
 
 """ + stronghold.rstrip() + "\n\n" + fortress.rstrip() + "\n"
+    parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
+    return text
+
+
+def gigas_rogue_ai_automation_exception_text() -> str:
+    source_path = (
+        SNAPSHOT_ROOT
+        / "1121692237-gigastructural-engineering-more-44"
+        / "common"
+        / "colony_automation_exceptions"
+        / "giga_rogue_ai.txt"
+    )
+    handler = extract_top_level_object_text(read_text(source_path), "giga_rogue_ai_planet")
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Exact Gigas 4.4 rogue-AI planetary computer automation handler full-object override.
+# Director loads after Gigas, so it preserves the parent handler while the matching
+# stronghold override explicitly permits this emergency to construct its defenses.
+
+""" + handler.rstrip() + "\n"
     parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
     return text
 
@@ -8839,13 +8952,14 @@ def unlock_priority_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
     tuning_path = repo_root / "mods/StellarAIDirector/notes/tuning-notes.md"
     technology_path = repo_root / "mods/StellarAIDirector/common/technology/zzzz_staid_01_unlock_technology_technology.txt"
     ascension_path = repo_root / "mods/StellarAIDirector/common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt"
+    categories_path = repo_root / "mods/StellarAIDirector/common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt"
     traditions_path = repo_root / "mods/StellarAIDirector/common/traditions/zzzz_staid_02_perks_traditions_traditions.txt"
     reference_audit_path = repo_root / "research/stellar-ai/stellar-ai-director-generated-reference-audit-2026-07-04.csv"
-    required_paths = [economy_path, triggers_path, tuning_path, reference_audit_path, technology_path, ascension_path, traditions_path]
+    required_paths = [economy_path, triggers_path, tuning_path, reference_audit_path, technology_path, ascension_path, categories_path, traditions_path]
     if not all(path.exists() for path in required_paths):
         return False
     try:
-        for path in (economy_path, triggers_path, technology_path, ascension_path, traditions_path):
+        for path in (economy_path, triggers_path, technology_path, ascension_path, categories_path, traditions_path):
             parse_file(path)
     except PDXParseError:
         return False
@@ -8854,7 +8968,17 @@ def unlock_priority_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
             return False
     economy = read_text(economy_path)
     triggers = read_text(triggers_path)
-    tuning = (read_text(tuning_path) + "\n" + read_text(technology_path) + "\n" + read_text(ascension_path) + "\n" + read_text(traditions_path)).lower()
+    tuning = (
+        read_text(tuning_path)
+        + "\n"
+        + read_text(technology_path)
+        + "\n"
+        + read_text(ascension_path)
+        + "\n"
+        + read_text(categories_path)
+        + "\n"
+        + read_text(traditions_path)
+    ).lower()
     return (
         "Stellar AI Director modded unlock research reserve" in economy
         and "staid_core_unlock_research_priority_ready = yes" in economy
@@ -8862,10 +8986,11 @@ def unlock_priority_policy_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         and "has_technology = tech_mega_engineering" in triggers
         and "has_technology = tech_mega_shipyard" in triggers
         and "unlock-research policy" in tuning
-        and "direct technology/ap/tradition route overrides are emitted" in tuning
+        and "direct technology/ap/tradition category/node route overrides are emitted" in tuning
         and "tech_mega_engineering" in tuning
         and "ap_celestial_printing" in tuning
-        and "tr_supremacy_adopt" in tuning
+        and "tradition_supremacy" in tuning
+        and "tr_discovery_science_division" in tuning
     )
 
 
@@ -9120,7 +9245,7 @@ def generated_surface_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         and not any(row.get("classification") == "unexpected_parent_object_collision" for row in conflict_rows)
         and {"additive_director_object", "intentional_director_override"}.issubset(classifications)
         and "generated full-object route overrides now cover" in tuning
-        and "direct technology/ap/tradition route overrides are emitted" in tuning
+        and "direct technology/ap/tradition category/node route overrides are emitted" in tuning
         and "esc starbase reactor override" in tuning
     )
 
@@ -10012,7 +10137,7 @@ def standalone_parity_inventory_rows() -> list[dict[str, str]]:
             "surface": "research_economy_fleet_conversion",
             "classification": "reimplement",
             "baseline_status": "implemented",
-            "director_evidence": "common/technology/zzzz_staid_01_unlock_technology_technology.txt; common/traditions/zzzz_staid_02_perks_traditions_traditions.txt; common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt; fleet-throughput economic subplans",
+            "director_evidence": "common/technology/zzzz_staid_01_unlock_technology_technology.txt; common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt; common/traditions/zzzz_staid_02_perks_traditions_traditions.txt; common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt; fleet-throughput economic subplans",
             "stellar_ai_reference": "Stellar AI research/economy spine used as parity reference for mandatory unlock and fleet payoff routing.",
             "parity_note": "Director pushes Mega Engineering, Mega Shipyard, Gigas, NSC3, ESC, AP/tradition, and fleet-throughput routes directly.",
         },
@@ -10089,7 +10214,7 @@ def strategic_subsystem_audit_rows() -> list[dict[str, str]]:
         ("hostile_targets", "military", "Treat bosses and lethal fauna separately from ordinary enemy empires and remember failed attacks.", "mod:common/defines/zzzz_staid_14_high_scale_ai_defines.txt; mod:events/zzzz_staid_boss_defeat_escalation_events.txt", "vanilla boss flags; active-stack outlier fleet flags; battle-loss on_action", "boss military-power defines plus defeat escalation", "source_proven", "all_ai_empires", "BOSS/ULTRA_BOSS thresholds; exact survivor flag escalation", "corrected_static", "Only confirmed outlier flags receive adaptive post-loss escalation; the full active-stack boss inventory is not yet classified.", "Classify every is_boss/is_ultra_boss entity and verify AI pathing after a failed attack."),
         ("ship_design", "military", "Preserve viable component/combat-computer choices across SFT, NSC3, ESC, and Gigas.", "mod:common/component_templates/000_SFT_00_utilities_roles.txt; mod:common/on_actions/zzzz_staid_sft_design_refresh_on_actions.txt", "Spacefleet Tactica parity sources; active component graph", "component ai_weight and auto-design refresh", "mixed", "all_ship_builders", "component legality; add-on equivalence", "partial_audit", "Section templates, ship-size edits, and advanced modded hull designs remain unverified.", "Run ship graph validation and audit generated designs per unlocked hull tier."),
         ("technology_routes", "progression", "Research economic prerequisites, fleet payoff, megastructure, and modded unlock routes in viable order.", "mod:common/technology/zzzz_staid_01_unlock_technology_technology.txt", "route override dataset; prerequisites; unlock flags", "technology ai_weight", "source_proven", "regular|machine|hive|special_origins", "route prerequisites; resource readiness; feature flags", "implemented_static_needs_runtime", "Competing routes and archetype-inapplicable technologies need a full negative-path audit.", "Validate every route prerequisite graph and empire applicability gate."),
-        ("ascension_strategy", "progression", "Choose traditions, ascension perks, and ascension paths that fit the empire and current strategic bottleneck.", "mod:common/traditions/zzzz_staid_02_perks_traditions_traditions.txt; mod:common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt", "route overrides; perk/tradition prerequisites", "tradition and ascension-perk ai_weight", "source_proven", "regular|machine|hive|psionic|cybernetic|synthetic|biological", "prerequisites and source potential", "partial_audit", "Current overrides push selected routes but do not yet express a mutually coherent empire-specific ascension plan.", "Audit all path exclusions, prerequisites, synergies, and extreme-empire preferences."),
+        ("ascension_strategy", "progression", "Choose traditions, ascension perks, and ascension paths that fit the empire and current strategic bottleneck.", "mod:common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt; mod:common/traditions/zzzz_staid_02_perks_traditions_traditions.txt; mod:common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt", "route overrides; perk/tradition prerequisites", "tradition category/node and ascension-perk ai_weight", "source_proven", "regular|machine|hive|psionic|cybernetic|synthetic|biological", "prerequisites and source potential", "partial_audit", "Current overrides push selected routes but do not yet express a mutually coherent empire-specific ascension plan.", "Audit all path exclusions, prerequisites, synergies, and extreme-empire preferences."),
         ("megastructure_strategy", "progression", "Sequence high-return megastructures only when prerequisites, economy, and sites are ready.", "mod:common/megastructures/zzzz_staid_03_megastructures_megastructures.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "ROI datasets; site limits; route graph", "megastructure ai_weight plus economic plans/budgets", "mixed", "all_eligible", "prerequisites; site availability; resource runway", "implemented_static_needs_runtime", "Concurrent projects, repair/upgrade decisions, and unique mod chains need adversarial sequencing tests.", "Audit each chain from technology through site, budget, build, and upgrade completion."),
         ("crisis_response", "military", "Convert economy and fleet production for real crises without permanently starving development.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:events/zzz_staid_threat_response_events.txt", "crisis country types; relative power; war goals", "threat events and crisis economic subplans", "mixed", "all_non_crisis_ai", "threat classification; economic readiness; cooldowns", "partial_audit", "Vanilla and modded crises, fallen empires, and pseudo-crisis bosses are not yet exhaustively separated.", "Inventory crisis actors and verify response activation, target legality, and recovery after threat removal."),
         ("starbase_defense", "military", "Build shipyards and static defense where strategically useful without crowding civilian research worlds.", "mod:common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt; mod:common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt", "route dataset; chokepoints; threat state", "starbase building/module ai_weight and economic plans", "source_proven", "all_starbase_owners", "deficit safety; threat readiness; source potential", "implemented_static_needs_runtime", "Chokepoint value, defensive platform affordability, and modded starbase slot competition need validation.", "Audit module/building selection at border, shipyard, trade, and interior starbases."),
@@ -10753,6 +10878,10 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(
         MOD_ROOT / "common" / "buildings" / "zzzzz_staid_15_fortress_economic_hard_gates.txt",
         fortress_army_buildings_text(),
+    )
+    write_text_file(
+        MOD_ROOT / "common" / "colony_automation_exceptions" / "zzzzz_staid_01_gigas_rogue_ai.txt",
+        gigas_rogue_ai_automation_exception_text(),
     )
     write_text_file(
         MOD_ROOT / "common" / "inline_scripts" / "zones" / "shared_fortress_zone.txt",
@@ -13568,22 +13697,39 @@ on_monthly_pulse = {
 
 def mem_surveyor_outpost_ship_size_text() -> str:
     """Copy the active outpost winner and block one unresolved MEM event system for AI only."""
-    starbase_extended = mod_source_root_for_id("3250900527") / "common" / "ship_sizes" / "nsc_starbases.txt"
+    active_starbase_extended = (
+        Path(r"C:\Steam\steamapps\workshop\content\281990\3250900527")
+        / "common"
+        / "ship_sizes"
+        / "sbx_3_0_starbases.txt"
+    )
+    snapshot_starbase_extended = (
+        mod_source_root_for_id("3250900527") / "common" / "ship_sizes" / "nsc_starbases.txt"
+    )
     vanilla = VANILLA_COMMON_ROOT / "ship_sizes" / "00_ship_sizes.txt"
-    source_path = starbase_extended if starbase_extended.exists() else vanilla
+    source_path = next(
+        path
+        for path in (active_starbase_extended, snapshot_starbase_extended, vanilla)
+        if path.exists()
+    )
     source_text = read_text(source_path)
     block = extract_top_level_object_text(source_text, "starbase_outpost")
     block = replace_top_level_child_block(
         block,
         "possible_construction",
         '''\tpossible_construction = {
-\t\t# The MEM Surveyor home system can look empty while its neutral event probe
-\t\t# roams elsewhere. Do not let AI outpost planners persistently target it
-\t\t# before the owning country has completed the Alkree-homeworld discovery.
+\t\t# Keep the MEM Surveyor home system unclaimed only while its ruins anomaly
+\t\t# is unresolved. Event mem_surveyor.300 adds this permanent planet modifier
+\t\t# and then asks for a research station, so construction must reopen here.
 \t\tOR = {
 \t\t\tfrom = { is_ai = no }
 \t\t\tsolar_system = { NOT = { has_star_flag = mem_surveyor_home_system } }
-\t\t\tfrom = { has_country_flag = mem_surveyor_found_alkree_homeworld }
+\t\t\tsolar_system = {
+\t\t\t\tany_system_planet = {
+\t\t\t\t\thas_carrier_flag = mem_surveyor_alkree_homeworld
+\t\t\t\t\thas_modifier = mem_surveyor_alkree_homeworld
+\t\t\t\t}
+\t\t\t}
 \t\t}
 \t}''',
     )
@@ -13796,7 +13942,6 @@ def market_and_fleet_safety_events_text() -> str:
     )
     research_claim_steps = research_plan_claim_step_text(3, 1, False)
     research_ratio_claims = research_plan_ratio_claims_text()
-    outpost_watchdog = outpost_order_watchdog_event_text()
     return f'''# Generated by tools/generate_stellar_ai_director_patch.py.
 # Monthly economy/fleet safety plus persistent colony build-out commitments.
 # Uses vanilla `set_mia = mia_return_home` only after a two-pulse stranded-fleet gate.
@@ -13824,7 +13969,6 @@ event = {{
 \t\t\tcountry_event = {{ id = staid_economy_safety.2 }}
 \t\t\tcountry_event = {{ id = staid_economy_safety.3 }}
 \t\t\tcountry_event = {{ id = staid_economy_safety.4 }}
-\t\t\tcountry_event = {{ id = staid_economy_safety.5 }}
 \t\t}}
 \t}}
 }}
@@ -13913,52 +14057,6 @@ country_event = {{
 {research_ratio_claims}
 \t}}
 }}
-
-{outpost_watchdog}
-'''
-
-
-def outpost_order_watchdog_event_text() -> str:
-    return '''# Generic fallback for any modded or vanilla system that leaves an AI
-# constructor carrying the same non-progressing outpost order for a full year.
-# During the one-year backoff, reissued outpost orders are cleared monthly;
-# mining, research, and other constructor orders remain available.
-country_event = {
-\tid = staid_economy_safety.5
-\thide_window = yes
-\tis_triggered_only = yes
-
-\timmediate = {
-\t\tevery_owned_fleet = {
-\t\t\tlimit = { has_fleet_order = build_orbital_station_order }
-\t\t\tif = {
-\t\t\t\tlimit = { has_fleet_flag = staid_outpost_retry_backoff }
-\t\t\t\tclear_orders = yes
-\t\t\t\tset_variable = { which = staid_outpost_order_months value = 0 }
-\t\t\t}
-\t\t\telse = {
-\t\t\t\tchange_variable = { which = staid_outpost_order_months value = 1 }
-\t\t\t\tif = {
-\t\t\t\t\tlimit = {
-\t\t\t\t\t\tcheck_variable = { which = staid_outpost_order_months value >= 12 }
-\t\t\t\t\t}
-\t\t\t\t\tclear_orders = yes
-\t\t\t\t\tset_variable = { which = staid_outpost_order_months value = 0 }
-\t\t\t\t\tset_timed_fleet_flag = {
-\t\t\t\t\t\tflag = staid_outpost_retry_backoff
-\t\t\t\t\t\tdays = 360
-\t\t\t\t\t}
-\t\t\t\t}
-\t\t\t}
-\t\t}
-\t\tevery_owned_fleet = {
-\t\t\tlimit = {
-\t\t\t\tNOT = { has_fleet_order = build_orbital_station_order }
-\t\t\t}
-\t\t\tset_variable = { which = staid_outpost_order_months value = 0 }
-\t\t}
-\t}
-}
 '''
 
 
@@ -14094,7 +14192,7 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
   join wars, add punitive casus belli, or override diplomatic actions.
 - Adds full-object route overrides for Mega Engineering, Mega Shipyard, Gigas
   planetcraft/systemcraft unlocks, NSC3 hull unlocks, ESC high-tier component
-  unlocks, AP/tradition pressure, economy megastructures, planetcraft, war moon,
+  unlocks, AP/tradition category/node pressure, economy megastructures, planetcraft, war moon,
   systemcraft, and ESC starbase reactor support.
 - Adds threat/economy-gated starbase defense pressure for copied safe parent
   starbase modules and buildings while keeping Starbase Extended Waystation
@@ -14176,7 +14274,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |",
         "| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |",
         "| route unlock overrides | `common/technology/zzzz_staid_01_unlock_technology_technology.txt` | high | full-object copied source overrides add Director AI weights for Mega Engineering, Mega Shipyard, Gigas, NSC3, ESC, and starbase unlock chains |",
-        "| AP/tradition route overrides | `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` | medium | full-object copied source overrides add Director AI weights for Gigas, planetcraft, conquest escape, economy, and crowded tall routes |",
+        "| AP/tradition category/node route overrides | `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt`, `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` | medium | full-object copied source overrides preserve parent selection logic and add bounded Director route pressure to perks, categories, and selectable nodes |",
         "| megastructure route overrides | `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` | high | full-object copied source overrides add Director AI weights for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft starts |",
         "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt`, `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` | medium | additive economy reserves plus copied ESC starbase reactor AI weight support when crisis pressure is safe |",
         "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
@@ -14258,7 +14356,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Unlock-Research Policy",
             "",
-            "The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Full-object copied source overrides now add direct AI weights for those route unlocks and for selected AP/tradition route pressure.",
+            "The Director treats modded unlock research as mandatory survival pressure. Core targets include Mega Engineering, Mega Shipyard, Gigas planetcraft/systemcraft chains, NSC3 large hull infrastructure, ESC high-tier components, and the economy techs needed to feed them. Full-object copied source overrides now add direct AI weights for those route unlocks and bounded pressure on selected AP/tradition categories and selectable nodes.",
             "",
             "## Static-Defense Policy",
             "",
@@ -14280,7 +14378,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## v1 Boundaries",
             "",
-            "- Direct technology/AP/tradition object overrides are emitted from copied source objects for the supported high-scale route families.",
+            "- Direct technology/AP/tradition category/node object overrides are emitted from copied source objects for the supported high-scale route families; automatic adoption/finish rewards remain untouched.",
             "- Direct Mega Shipyard, economy megastructure, planetcraft, war moon, and systemcraft object weights are emitted from copied source objects and paired with economy/reserve gates.",
             "- Direct starbase support includes copied ESC starbase reactor AI weight plus country-level static-defense economy targets.",
             "- Research infrastructure uses safe economic-plan demand plus vanilla research-zone eligibility; inactive building `ai_weight` is not treated as the primary construction planner.",
@@ -14359,7 +14457,7 @@ def conflicts_note_text() -> str:
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally replaces upstream Gigas special-resource megastructure budget objects: `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
 - `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
 - `common/technology/zzzz_staid_01_unlock_technology_technology.txt` intentionally replaces copied vanilla/Gigas/NSC3/ESC/Starbase Extended technology objects with Director route AI weights.
-- `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt` and `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` intentionally replace copied AP/tradition objects with Director route AI weights.
+- `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt`, and `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` intentionally replace copied AP/category/selectable-node objects with bounded Director route AI weights; automatic adoption/finish rewards are not overridden.
 - `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` intentionally replaces copied Gigas/vanilla-compatible megastructure starts for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft priority.
 - `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` intentionally replaces copied ESC starbase reactor support with Director crisis-starbase pressure.
 - `common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt` narrowly replaces More Arcologies `building_navel_base` and `building_navel_command` so AI naval-capacity construction requires strategic readiness and cannot consume research-world slots.
@@ -14573,7 +14671,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "## Unlock-Research Policy",
         "",
         "- The unlock-research policy is mandatory survival pressure after the opening curve, not a surplus-only luxury; it keeps physics, society, engineering, and unity pressure on until core Mega Engineering, Mega Shipyard, Gigas, NSC3, and ESC unlock paths are reachable.",
-        "- Direct technology/AP/tradition route overrides are emitted from copied source objects and trace back to the policy matrix and route override report.",
+        "- Direct technology/AP/tradition category/node route overrides are emitted from copied source objects and trace back to the policy matrix and route override report.",
         "",
         "## Mega/Giga Build Priority Policy",
         "",

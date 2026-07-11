@@ -319,9 +319,9 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## pop_assembly_snowball_core
 
-- Objects: 70
-- Dependency edges: 126
-- Policy rows: 70
+- Objects: 72
+- Dependency edges: 128
+- Policy rows: 72
 - Manual/external dependency targets: 21
 
 | object | type | support | action | source |
@@ -335,6 +335,8 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `building_robot_assembly_complex` | building | parent_ai_absent | build | `common/buildings/01_pop_assembly_buildings.txt` |
 | `building_robot_assembly_plant` | building | parent_ai_absent | build | `common/buildings/01_pop_assembly_buildings.txt` |
 | `building_spawning_pool` | building | parent_ai_absent | observe | `common/buildings/01_pop_assembly_buildings.txt` |
+| `automate_hive_spawning_pool` | colony_automation_exception | parent_ai_unknown | manual_review | `common/colony_automation_exceptions/00_crisis_exceptions.txt` |
+| `automate_robotic_pop_assembly` | colony_automation_exception | parent_ai_unknown | manual_review | `common/colony_automation_exceptions/00_crisis_exceptions.txt` |
 | `decision_discourage_growth` | decision | parent_ai_partial | manual_review | `common/decisions/01_political_decisions.txt` |
 | `decision_enact_robot_assembly_control` | decision | parent_ai_partial | manual_review | `common/decisions/01_political_decisions.txt` |
 | `decision_end_discourage_growth` | decision | parent_ai_partial | manual_review | `common/decisions/01_political_decisions.txt` |
@@ -364,8 +366,6 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `giga_calculate_extra_growth_base` | scripted_value | parent_ai_partial | observe | `common/script_values/giga_extra_growth_values.txt` |
 | `giga_calculate_extra_growth_eta` | scripted_value | parent_ai_partial | observe | `common/script_values/giga_extra_growth_values.txt` |
 | `giga_calculate_extra_growth_internal` | scripted_value | parent_ai_partial | observe | `common/script_values/giga_extra_growth_values.txt` |
-| `giga_calculate_extra_growth_modifiers` | scripted_value | parent_ai_absent | observe | `common/script_values/giga_extra_growth_values.txt` |
-| `giga_calculate_extra_growth_required` | scripted_value | parent_ai_absent | observe | `common/script_values/giga_extra_growth_values.txt` |
 
 ## ring_world_growth_core
 
@@ -555,9 +555,9 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## research_diplomacy_core
 
-- Objects: 14
-- Dependency edges: 23
-- Policy rows: 14
+- Objects: 15
+- Dependency edges: 24
+- Policy rows: 15
 - Manual/external dependency targets: 2
 
 | object | type | support | action | source |
@@ -576,6 +576,7 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `tr_diplomacy_entente_coordination` | tradition | parent_ai_partial | research | `common/traditions/00_diplomacy.txt` |
 | `tr_diplomacy_finish` | tradition | parent_ai_absent | research | `common/traditions/00_diplomacy.txt` |
 | `tr_diplomacy_the_federation` | tradition | parent_ai_partial | research | `common/traditions/00_diplomacy.txt` |
+| `tradition_diplomacy` | tradition_category | parent_ai_partial | manual_review | `common/tradition_categories/00_diplomacy.txt` |
 
 ## planetcraft_route
 
@@ -806,9 +807,9 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## crowded_tall_route
 
-- Objects: 1717
-- Dependency edges: 3192
-- Policy rows: 1717
+- Objects: 1724
+- Dependency edges: 3199
+- Policy rows: 1724
 - Manual/external dependency targets: 529
 
 | object | type | support | action | source |
@@ -856,10 +857,10 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## conquest_escape_route
 
-- Objects: 657
-- Dependency edges: 1273
-- Policy rows: 657
-- Manual/external dependency targets: 342
+- Objects: 659
+- Dependency edges: 1276
+- Policy rows: 659
+- Manual/external dependency targets: 343
 
 | object | type | support | action | source |
 | --- | --- | --- | --- | --- |
@@ -956,9 +957,9 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 
 ## hostile_space_fauna_clearance_route
 
-- Objects: 455
-- Dependency edges: 858
-- Policy rows: 455
+- Objects: 456
+- Dependency edges: 859
+- Policy rows: 456
 - Manual/external dependency targets: 260
 
 | object | type | support | action | source |
@@ -984,6 +985,7 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `building_crystal_plant_2` | building | parent_ai_absent | observe | `common/buildings/12_event_buildings.txt` |
 | `esc_building_crystal_farm_1` | building | parent_ai_complete | observe | `common/buildings/esc_buildings_resources.txt` |
 | `esc_building_crystal_farm_2` | building | parent_ai_complete | observe | `common/buildings/esc_buildings_resources.txt` |
+| `automate_crystal_deficit_management` | colony_automation_exception | parent_ai_unknown | manual_review | `common/colony_automation_exceptions/00_crisis_exceptions.txt` |
 | `amoeba` | country_type | parent_ai_unknown | manual_review | `common/country_types/00_country_types.txt` |
 | `amoeba_borderless` | country_type | parent_ai_unknown | manual_review | `common/country_types/00_country_types.txt` |
 | `amoeba_faction` | country_type | parent_ai_unknown | manual_review | `common/country_types/00_country_types.txt` |
@@ -1002,7 +1004,6 @@ Generated from atlas route hints, dependency edges, and policy rows. This is a s
 | `d_crystaline_growths` | deposit | parent_ai_absent | observe | `common/deposits/15_strange_worlds_deposits.txt` |
 | `d_crystalline_caverns` | deposit | parent_ai_complete | observe | `common/deposits/01_planetary_deposits.txt` |
 | `d_crystalline_glacier` | deposit | parent_ai_complete | observe | `common/deposits/02_event_planetary_deposits.txt` |
-| `d_esc_mantle_rare_crystal_cluster` | deposit | parent_ai_absent | observe | `common/deposits/nhsc_deposits.txt` |
 
 ## apex_site_preservation_core
 

@@ -71,7 +71,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 ## Unlock-Research Policy
 
 - The unlock-research policy is mandatory survival pressure after the opening curve, not a surplus-only luxury; it keeps physics, society, engineering, and unity pressure on until core Mega Engineering, Mega Shipyard, Gigas, NSC3, and ESC unlock paths are reachable.
-- Direct technology/AP/tradition route overrides are emitted from copied source objects and trace back to the policy matrix and route override report.
+- Direct technology/AP/tradition category/node route overrides are emitted from copied source objects and trace back to the policy matrix and route override report.
 
 ## Mega/Giga Build Priority Policy
 
