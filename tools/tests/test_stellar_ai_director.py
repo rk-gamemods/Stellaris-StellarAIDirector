@@ -246,6 +246,16 @@ class GeneratedModValidityTests(unittest.TestCase):
         bad_rows = [row for row in rows if row["status"] != "ok"]
         self.assertEqual(bad_rows, [])
 
+    def test_wartime_colony_budget_removes_only_the_war_exclusion(self):
+        path = MOD_ROOT / "common" / "ai_budget" / "zzzzz_staid_19_wartime_colony_alloy_budget.txt"
+        text = path.read_text(encoding="utf-8")
+        parse_file(path)
+        self.assertIn("alloys_expenditure_colonies_expand = {", text)
+        self.assertIn("ai_colonize_plans > 0", text)
+        self.assertIn("is_nomadic = no", text)
+        self.assertNotIn("is_at_war", text)
+        self.assertNotIn("mid_game_years_passed", text)
+
     def test_descriptor_omits_stellar_ai_dependency_after_standalone_parity(self):
         descriptor = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8")
         dependency_block = re.search(r"dependencies=\{\n(?P<body>.*?)\n\}", descriptor, re.DOTALL)
