@@ -1169,21 +1169,15 @@ class GeneratedModValidityTests(unittest.TestCase):
             [0, 1, 1, 2, 3, 3, 4, 25],
         )
 
-    def test_ai_science_designs_do_not_select_cloaking_components(self):
+    def test_director_does_not_suppress_science_cloaking_components(self):
         path = MOD_ROOT / "common" / "component_templates" / "zzzzz_staid_science_cloaking_ai_safety.txt"
-        self.assertTrue(path.exists(), f"{path} was not generated")
-        parse_file(path)
-        text = path.read_text(encoding="utf-8")
-        for component_key in (
-            "SCIENCE_CLOAKING_1",
-            "SCIENCE_CLOAKING_2",
-            "SCIENCE_CLOAKING_3",
-            "SCIENCE_CLOAKING_DARK_MATTER",
-            "SCIENCE_CLOAKING_PSI",
-        ):
-            self.assertIn(f'key = "{component_key}"', text)
-        self.assertEqual(text.count("weight = 0"), 5)
-        self.assertNotIn("SCIENCE_CLOAKING_EMPTY", text)
+        self.assertFalse(path.exists(), "The obsolete AI cloak-disable override must stay deleted.")
+        for component_path in (MOD_ROOT / "common" / "component_templates").glob("*.txt"):
+            self.assertNotIn(
+                "SCIENCE_CLOAKING_",
+                component_path.read_text(encoding="utf-8"),
+                f"The Director must not suppress vanilla science cloaking in {component_path}.",
+            )
 
     def test_all_generated_colony_root_surfaces_scope_planet_flag_operations(self):
         self.assertEqual(generated_colony_root_scope_errors(MOD_ROOT), [])
