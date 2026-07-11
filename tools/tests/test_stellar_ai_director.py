@@ -1246,6 +1246,34 @@ class GeneratedModValidityTests(unittest.TestCase):
         for forbidden_action in ("create_army", "declare_war", "add_claim", "add_casus_belli"):
             self.assertNotIn(forbidden_action, budget)
 
+    def test_opening_leader_budget_funds_scientists_for_empty_science_ships(self):
+        path = MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_15_opening_leader_recruitment_budget.txt"
+        self.assertTrue(path.exists(), f"{path} was not generated")
+        parse_file(path)
+        text = path.read_text(encoding="utf-8")
+        self.assertIn("unity_expenditure_leaders = {", text)
+        self.assertIn("category = leaders", text)
+        self.assertIn("factor = 5", text)
+        self.assertIn("years_passed < 20", text)
+        self.assertIn("base = 1000", text)
+        for forbidden_action in ("create_leader", "create_ship", "set_fleet_order"):
+            self.assertNotIn(forbidden_action, text)
+
+    def test_medical_center_override_breaks_vanilla_upgrade_destroy_loop(self):
+        path = MOD_ROOT / "common" / "buildings" / "zzzzz_staid_17_medical_center_churn_fix.txt"
+        self.assertTrue(path.exists(), f"{path} was not generated")
+        parse_file(path)
+        text = path.read_text(encoding="utf-8")
+        block = extract_top_level_object_text(text, "building_medical_2")
+        destroy_start = block.index("\tdestroy_trigger = {")
+        destroy = block[destroy_start : block.index("\tinline_script = {", destroy_start)]
+        self.assertIn("owner = { is_regular_empire = no }", destroy)
+        self.assertNotIn("planet_stability > 70", destroy)
+        self.assertNotIn("free_amenities > 20", destroy)
+        self.assertIn("building_sets = {", block)
+        self.assertIn("resources = {", block)
+        self.assertIn('"tech_frontier_health"', block)
+
     def test_mod_source_root_falls_back_to_live_workshop_when_snapshot_missing(self):
         root = mod_source_root_for_id("819148835")
         self.assertTrue(root.exists())
