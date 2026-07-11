@@ -266,6 +266,28 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("NOT = { staid_core_deficit_short_runway = yes }", triggers)
         self.assertIn("NOT = { staid_security_existential = yes }", triggers)
 
+    def test_research_worlds_prioritize_zones_that_unlock_research_labs(self):
+        path = MOD_ROOT / "common" / "zones" / "zzzzz_staid_20_research_world_zone_priority.txt"
+        self.assertTrue(path.exists(), f"{path} was not generated")
+        parse_file(path)
+        text = path.read_text(encoding="utf-8")
+        for zone_id in (
+            "zone_research",
+            "zone_research_physics",
+            "zone_research_society",
+            "zone_research_engineering",
+        ):
+            block = extract_top_level_object_text(text, zone_id)
+            self.assertIn("additional_ai_weight = {", block)
+            self.assertIn("add = 100000", block)
+            self.assertIn("has_designation = col_research", block)
+            self.assertIn("owner = { is_ai = yes }", block)
+        vanilla_lab = extract_top_level_object_text(
+            (VANILLA_COMMON_ROOT / "buildings" / "05_research_buildings.txt").read_text(encoding="utf-8"),
+            "building_research_lab_1",
+        )
+        self.assertIn("has_any_research_zone = yes", vanilla_lab)
+
     def test_descriptor_omits_stellar_ai_dependency_after_standalone_parity(self):
         descriptor = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8")
         dependency_block = re.search(r"dependencies=\{\n(?P<body>.*?)\n\}", descriptor, re.DOTALL)
