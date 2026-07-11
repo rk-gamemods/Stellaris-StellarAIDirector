@@ -12874,7 +12874,7 @@ basic_economy_plan = {
 \tincome = {
 \t\talloys = 120
 \t\tconsumer_goods = 150
-\t\tfood = 60
+\t\tfood = 10
 \t\tenergy = 150
 \t\tminerals = 150
 \t\tunity = 120
@@ -13249,11 +13249,14 @@ __STAID_RELATIVE_ECONOMIC_REPAIR_SUBPLANS__
 \t\t\tstaid_militarist_conquest_strategy = yes
 \t\t}
 \t\tincome = {
-\t\t\talloys = 6000
-\t\t\tenergy = 3500
-\t\t\tminerals = 2500
-\t\t\tunity = 1000
-\t\t\ttrade = 800
+\t\t\talloys = 600
+\t\t\tenergy = 350
+\t\t\tminerals = 250
+\t\t\tunity = 100
+\t\t\ttrade = 80
+\t\t\tphysics_research = 200
+\t\t\tsociety_research = 200
+\t\t\tengineering_research = 310
 \t\t}
 \t\tnaval_cap = 6000
 \t}

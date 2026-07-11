@@ -10,7 +10,7 @@ basic_economy_plan = {
 	income = {
 		alloys = 120
 		consumer_goods = 150
-		food = 60
+		food = 10
 		energy = 150
 		minerals = 150
 		unity = 120
@@ -918,11 +918,14 @@ basic_economy_plan = {
 			staid_militarist_conquest_strategy = yes
 		}
 		income = {
-			alloys = 6000
-			energy = 3500
-			minerals = 2500
-			unity = 1000
-			trade = 800
+			alloys = 600
+			energy = 350
+			minerals = 250
+			unity = 100
+			trade = 80
+			physics_research = 200
+			society_research = 200
+			engineering_research = 310
 		}
 		naval_cap = 6000
 	}

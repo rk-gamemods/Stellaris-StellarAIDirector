@@ -75,7 +75,7 @@ the largest proportional shortfall against the active PDX targets, with the
 existing research/resource urgency multipliers retained only as a simplified
 planner response. Those multipliers do not change the PDX targets being tested.
 
-## Current PDX-derived result
+## Initial PDX-derived failure
 
 The first PDX-driven run produced the following results:
 
@@ -92,7 +92,7 @@ The first PDX-driven run produced the following results:
 | Late research scale | 3.4719 | Yes | 66 | Fail: normal food above +50 |
 | Bio-ship burden | 1.0871 | No | 60 | Fail: research below 2:1 |
 
-These failures are evidence about the current generated targets under the stated
+These failures were evidence about the generated targets under the stated
 scenario mapping. They replace the earlier abstract-model result, which passed
 because Python itself imposed the desired 2:1 ratio and low food floor. That
 earlier method could not serve as a test of the mod and has been removed.
@@ -101,7 +101,31 @@ The first immediately visible PDX cause is the base plan's `food = 60`. Every
 normal scenario that starts below it is pulled above the desired normal ceiling.
 The wartime cases also activate a large alloy/energy military reserve without a
 matching research target, allowing the research ratio to fall far below 2:1.
-This diagnostic does not itself change those PDX values.
+The implementation pass subsequently changed those PDX values.
+
+## Corrected PDX-derived result
+
+The generator now sets the normal base food target to +10. The militarist
+reserve was reduced from crisis-scale flat targets to an operational reserve
+(`alloys 600`, `energy 350`, `minerals 250`, `unity 100`, `trade 80`) and now
+adds 710 total research target across the three research fields.
+
+| Scenario | Final research / ordinary | Support safe | Final food | Result |
+|---|---:|:---:|---:|---|
+| Early balanced | 3.2803 | Yes | 12 | Pass |
+| Early expansion | 3.2057 | Yes | 20 | Pass |
+| CG constrained | 3.1065 | Yes | 20 | Pass |
+| Energy constrained | 3.1059 | Yes | 20 | Pass |
+| Food surplus trap | 2.2886 | Yes | 775 | Pass: no additional food pressure |
+| Food deficit recovery | 3.1039 | Yes | 13 | Pass |
+| Midgame fleet pivot | 2.1679 | Yes | 15 | Pass |
+| Rich wartime research | 2.0324 | Yes | 50 | Pass |
+| Late research scale | 3.4970 | Yes | 30 | Pass |
+| Bio-ship burden | 2.9452 | Yes | 20 | Pass |
+
+The opt-in PDX diagnostic now exits successfully: every modeled scenario keeps
+support safe and finishes at or above the 2:1 research ratio, while normal food
+does not receive new pressure above +50.
 
 ## Artifacts
 

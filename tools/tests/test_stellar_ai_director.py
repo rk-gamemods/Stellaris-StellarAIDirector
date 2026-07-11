@@ -1889,7 +1889,8 @@ class GeneratedModValidityTests(unittest.TestCase):
         for marker in (
             'set_name = "Stellar AI Director militarist conquest fleet reserve"',
             'set_name = "Stellar AI Director raiding pop acquisition reserve"',
-            "alloys = 6000",
+            "alloys = 600",
+            "engineering_research = 310",
             "naval_cap = 6000",
             "alloys = 4500",
             "naval_cap = 4500",
