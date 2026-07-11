@@ -7,6 +7,7 @@ files. Run without arguments from the repository root.
 from __future__ import annotations
 
 import csv
+import re
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
@@ -17,21 +18,18 @@ RESEARCH = ROOT / "research" / "stellar-ai"
 SCENARIOS = RESEARCH / "stellar-ai-economic-model-scenarios-2026-07-11.csv"
 TIMELINE = RESEARCH / "stellar-ai-economic-model-timeline-2026-07-11.csv"
 SUMMARY = RESEARCH / "stellar-ai-economic-model-summary-2026-07-11.csv"
+PDX_PLAN = ROOT / "mods" / "StellarAIDirector" / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
 
-ORDINARY = ("energy", "minerals", "food", "consumer_goods", "alloys", "unity")
+ORDINARY = ("energy", "minerals", "food", "consumer_goods", "alloys", "unity", "trade")
 RESOURCES = ORDINARY + ("research",)
-
-PHASE_FLOORS = {
-    "early": {"energy": 40, "minerals": 120, "food": 10, "consumer_goods": 30, "alloys": 60, "unity": 30, "research": 300},
-    "mid": {"energy": 100, "minerals": 150, "food": 10, "consumer_goods": 60, "alloys": 250, "unity": 80, "research": 1200},
-    "late": {"energy": 250, "minerals": 200, "food": 10, "consumer_goods": 120, "alloys": 600, "unity": 150, "research": 4000},
-}
-
-# Approximate marginal support burden derived from the project's research
-# capacity model. These are model parameters, not claimed engine constants.
-RESEARCH_ENERGY_SUPPORT = 0.15
-RESEARCH_CG_SUPPORT = 0.03
 RESEARCH_RATIO = 2.0
+
+PHASE_SUBPLANS = {
+    "early": ("Stellar AI Director safe research baseline", "Stellar AI Director early modded research rush"),
+    "mid": ("Stellar AI Director safe research baseline", "Stellar AI Director midgame megastructure rush"),
+    "late": ("Stellar AI Director safe research baseline", "Stellar AI Director crisis-scale giga rush"),
+}
+WAR_SUBPLAN = "Stellar AI Director militarist conquest fleet reserve"
 
 
 @dataclass(frozen=True)
@@ -46,6 +44,63 @@ class Scenario:
     income: dict[str, float]
     stockpile: dict[str, float]
     increments: dict[str, float]
+
+
+@dataclass(frozen=True)
+class PdxPolicy:
+    source: Path
+    base_income: dict[str, float]
+    subplan_income: dict[str, dict[str, float]]
+
+
+def _braced_block(text: str, open_brace: int) -> tuple[str, int]:
+    depth = 0
+    for index in range(open_brace, len(text)):
+        if text[index] == "{":
+            depth += 1
+        elif text[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return text[open_brace + 1 : index], index + 1
+    raise ValueError(f"Unclosed PDX block beginning at byte {open_brace}")
+
+
+def _named_blocks(text: str, key: str) -> list[str]:
+    blocks: list[str] = []
+    pattern = re.compile(rf"(?m)^\s*{re.escape(key)}\s*=\s*\{{")
+    for match in pattern.finditer(text):
+        block, _ = _braced_block(text, match.end() - 1)
+        blocks.append(block)
+    return blocks
+
+
+def _income(block: str) -> dict[str, float]:
+    matches = _named_blocks(block, "income")
+    if not matches:
+        return {resource: 0.0 for resource in RESOURCES}
+    values = {resource: 0.0 for resource in RESOURCES}
+    for key, raw_value in re.findall(r"(?m)^\s*([a-zA-Z0-9_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*$", matches[0]):
+        if key in values:
+            values[key] += float(raw_value)
+        elif key in {"physics_research", "society_research", "engineering_research"}:
+            values["research"] += float(raw_value)
+    return values
+
+
+def load_pdx_policy(path: Path = PDX_PLAN) -> PdxPolicy:
+    text = re.sub(r"(?m)#.*$", "", path.read_text(encoding="utf-8-sig"))
+    plan_match = re.search(r"(?m)^basic_economy_plan\s*=\s*\{", text)
+    if not plan_match:
+        raise ValueError(f"basic_economy_plan not found in {path}")
+    plan, _ = _braced_block(text, plan_match.end() - 1)
+    first_subplan = re.search(r"(?m)^\s*subplan\s*=\s*\{", plan)
+    base_region = plan[: first_subplan.start()] if first_subplan else plan
+    subplans: dict[str, dict[str, float]] = {}
+    for block in _named_blocks(plan, "subplan"):
+        name_match = re.search(r'(?m)^\s*set_name\s*=\s*"([^"]+)"', block)
+        if name_match:
+            subplans[name_match.group(1)] = _income(block)
+    return PdxPolicy(path, _income(base_region), subplans)
 
 
 def _bool(value: str) -> bool:
@@ -66,40 +121,29 @@ def load_scenarios(path: Path = SCENARIOS) -> list[Scenario]:
                 aggressive_expansion=_bool(row["aggressive_expansion"]),
                 at_war=_bool(row["at_war"]),
                 bio_ships=_bool(row["bio_ships"]),
-                income={resource: float(row[f"income_{resource}"]) for resource in RESOURCES},
-                stockpile={resource: float(row[f"stockpile_{resource}"]) for resource in ORDINARY},
-                increments={resource: float(row[f"increment_{resource}"]) for resource in RESOURCES},
+                income={resource: float(row.get(f"income_{resource}", 0) or 0) for resource in RESOURCES},
+                stockpile={resource: float(row.get(f"stockpile_{resource}", 0) or 0) for resource in ORDINARY},
+                increments={resource: float(row.get(f"increment_{resource}", 0) or 0) for resource in RESOURCES},
             )
         )
     return scenarios
 
 
-def targets(scenario: Scenario, income: dict[str, float]) -> dict[str, float]:
-    result = dict(PHASE_FLOORS[scenario.phase])
-    result["food"] = 50 if scenario.bio_ships else 10
-    if scenario.aggressive_expansion:
-        result["minerals"] *= 1.75 if scenario.phase == "early" else 1.25
+def targets(scenario: Scenario, policy: PdxPolicy) -> dict[str, float]:
+    result = dict(policy.base_income)
+    selected = list(PHASE_SUBPLANS[scenario.phase])
     if scenario.at_war:
-        result["alloys"] *= 1.5
-    result["energy"] = max(result["energy"], income["research"] * RESEARCH_ENERGY_SUPPORT)
-    result["consumer_goods"] = max(result["consumer_goods"], income["research"] * RESEARCH_CG_SUPPORT)
-    ordinary_positive = sum(max(income[resource], 0.0) for resource in ORDINARY)
-    result["research"] = max(result["research"], RESEARCH_RATIO * ordinary_positive)
+        selected.append(WAR_SUBPLAN)
+    for name in selected:
+        if name not in policy.subplan_income:
+            raise ValueError(f"Required PDX subplan not found: {name}")
+        for resource, value in policy.subplan_income[name].items():
+            result[resource] += value
     return result
 
 
-def choose_investment(scenario: Scenario, income: dict[str, float], stockpile: dict[str, float]) -> tuple[str | None, dict[str, float]]:
-    current_targets = targets(scenario, income)
-    projected_research = income["research"] + scenario.increments["research"]
-    # Give support resources a one-step look-ahead target. Without this, the
-    # controller can correctly block the next research increment while also
-    # seeing no current energy/CG shortfall, leaving all three lanes idle.
-    current_targets["energy"] = max(
-        current_targets["energy"], projected_research * RESEARCH_ENERGY_SUPPORT
-    )
-    current_targets["consumer_goods"] = max(
-        current_targets["consumer_goods"], projected_research * RESEARCH_CG_SUPPORT
-    )
+def choose_investment(scenario: Scenario, policy: PdxPolicy, income: dict[str, float], stockpile: dict[str, float]) -> tuple[str | None, dict[str, float]]:
+    current_targets = targets(scenario, policy)
     scores: dict[str, float] = {}
     for resource in RESOURCES:
         target = current_targets[resource]
@@ -123,22 +167,13 @@ def choose_investment(scenario: Scenario, income: dict[str, float], stockpile: d
     scores["unity"] *= 1.0
     scores["food"] *= 1.0
 
-    # Research may push aggressively only when the next marginal increment is
-    # already supportable. This prevents alternating bands from letting science
-    # outrun the energy/consumer-goods economy by one planning cycle.
-    if (
-        income["energy"] < max(PHASE_FLOORS[scenario.phase]["energy"], projected_research * RESEARCH_ENERGY_SUPPORT)
-        or income["consumer_goods"]
-        < max(PHASE_FLOORS[scenario.phase]["consumer_goods"], projected_research * RESEARCH_CG_SUPPORT)
-    ):
-        scores["research"] = 0.0
-
     viable = [resource for resource in RESOURCES if scenario.increments[resource] > 0]
     choice = max(viable, key=lambda resource: (scores[resource], resource == "research"))
     return (choice if scores[choice] > 0 else None), current_targets
 
 
-def simulate(scenario: Scenario) -> tuple[list[dict[str, object]], dict[str, object]]:
+def simulate(scenario: Scenario, policy: PdxPolicy | None = None) -> tuple[list[dict[str, object]], dict[str, object]]:
+    policy = policy or load_pdx_policy()
     income = dict(scenario.income)
     stockpile = dict(scenario.stockpile)
     investments: Counter[str] = Counter()
@@ -147,7 +182,7 @@ def simulate(scenario: Scenario) -> tuple[list[dict[str, object]], dict[str, obj
 
     for month in range(1, scenario.months + 1):
         for _ in range(scenario.investments_per_month):
-            resource, _ = choose_investment(scenario, income, stockpile)
+            resource, _ = choose_investment(scenario, policy, income, stockpile)
             if resource is None:
                 break
             income[resource] += scenario.increments[resource]
@@ -155,7 +190,7 @@ def simulate(scenario: Scenario) -> tuple[list[dict[str, object]], dict[str, obj
         for resource in ORDINARY:
             stockpile[resource] = max(0.0, stockpile[resource] + income[resource])
             minimum_stockpile[resource] = min(minimum_stockpile[resource], stockpile[resource])
-        current_targets = targets(scenario, income)
+        current_targets = targets(scenario, policy)
         ordinary_positive = sum(max(income[resource], 0.0) for resource in ORDINARY)
         timeline.append(
             {
@@ -168,7 +203,7 @@ def simulate(scenario: Scenario) -> tuple[list[dict[str, object]], dict[str, obj
         )
 
     ordinary_positive = sum(max(income[resource], 0.0) for resource in ORDINARY)
-    final_targets = targets(scenario, income)
+    final_targets = targets(scenario, policy)
     summary: dict[str, object] = {
         "scenario": scenario.name,
         "phase": scenario.phase,
@@ -177,6 +212,7 @@ def simulate(scenario: Scenario) -> tuple[list[dict[str, object]], dict[str, obj
         "ratio_target_met": income["research"] >= RESEARCH_RATIO * ordinary_positive,
         "food_overproduction": income["food"] > (100 if scenario.bio_ships else 50),
         "support_safe": income["energy"] >= final_targets["energy"] and income["consumer_goods"] >= final_targets["consumer_goods"],
+        "pdx_source": str(policy.source.relative_to(ROOT)).replace("\\", "/"),
         **{f"final_income_{resource}": round(income[resource], 3) for resource in RESOURCES},
         **{f"investment_{resource}": investments[resource] for resource in RESOURCES},
         **{f"minimum_stockpile_{resource}": round(minimum_stockpile[resource], 3) for resource in ORDINARY},
@@ -193,15 +229,16 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
 
 
 def main() -> None:
+    policy = load_pdx_policy()
     all_timeline: list[dict[str, object]] = []
     all_summary: list[dict[str, object]] = []
     for scenario in load_scenarios():
-        timeline, summary = simulate(scenario)
+        timeline, summary = simulate(scenario, policy)
         all_timeline.extend(timeline)
         all_summary.append(summary)
     write_csv(TIMELINE, all_timeline)
     write_csv(SUMMARY, all_summary)
-    print(f"Simulated {len(all_summary)} scenarios; wrote {TIMELINE.name} and {SUMMARY.name}")
+    print(f"Simulated {len(all_summary)} scenarios from {policy.source.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
