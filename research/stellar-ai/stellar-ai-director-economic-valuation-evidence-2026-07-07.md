@@ -1,6 +1,6 @@
 # Stellar AI Director Economic Valuation Evidence
 
-Generated: 2026-07-11T20:51:23.137368+00:00
+Generated: 2026-07-09T19:30:26.882013+00:00
 
 This is the merged evidence index for economic AI decisions. The construction dataset owns planet-local construction surfaces. The companion nonconstruction dataset owns the rest of the economy-facing AI surfaces and intentionally does not duplicate buildings, zones, districts, or megastructures.
 
@@ -29,7 +29,7 @@ Validation contract:
 - pop_job: 501
 - resource: 36
 - starbase_building: 207
-- starbase_module: 185
+- starbase_module: 187
 - technology: 1534
 - tradition: 269
 
@@ -48,7 +48,7 @@ Configured nonconstruction object types not present in the current file: none
 - pop_job: 501
 - resource: 36
 - starbase_building: 207
-- starbase_module: 185
+- starbase_module: 187
 - technology: 1534
 - tradition: 269
 - zone: 261

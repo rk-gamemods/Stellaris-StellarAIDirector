@@ -28,12 +28,13 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | market cap-breaker minerals reserve | 50000 | sell large positive-income mineral overflow before caps void income |
 | market cap-breaker food/consumer goods reserve | 30000 | sell large positive-income food/CG overflow while preserving large buffers |
 | market cap-breaker strategic reserve | 800-2500 | sell marketable strategic overflow only above high reserves |
+| stranded fleet warning duration | 70 days | require a second monthly proof before forcing vanilla MIA return-home |
 | threat response relation flag days | 7200 | duration for observer/aggressor and observer/victim threat state |
 | threat response economy ratio cap | 20 | maximum share of fleet-throughput reserve available to third-party threat readiness |
 | threat readiness alloys cap | 7 | maximum added alloys target from third-party threat readiness |
 | threat readiness energy cap | 6 | maximum added energy target from third-party threat readiness |
 | threat readiness naval cap | 40 | maximum added naval-cap target from third-party threat readiness |
-| eligible ROI rows | 140 | source sample used for threshold generation |
+| eligible ROI rows | 24 | source sample used for threshold generation |
 
 ## Static-Defense Policy
 
@@ -62,7 +63,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.
 - Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.
 - War declaration globals return to the working native 4.4.4 envelope: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, minimum score 0.5, and offense/defense allotment 1.0. Boxed-in multipliers remain bounded above vanilla at 8/12.
-- Normal peacetime new-ship spending pauses at 80% used naval capacity, while upgrades, war, crisis, and defensive-emergency spending bypass the guard. This is the native-data workaround for the executable high-cap declaration defect later fixed in the 4.5 Cygnus Open Beta.
+- Normal peacetime new-ship spending pauses at 80% used naval capacity, while upgrades, war, crisis, and defensive-emergency spending bypass the guard. This is the native-data workaround for the executable high-cap declaration defect later fixed in 4.4.5.
 - Native army budgets reserve 200 minerals at baseline, with bounded additions for boxed-in, conquest/raiding, war, and existential-defense states. No desired_max caps recruitment and no army is created by script.
 - Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.
 - Hostile space fauna continues to use the engine's separate boss readiness lane at 100000/500000 military power. Ordinary empire confidence uses the native `ENEMY_FLEET_POWER_MULT = 1.2`; boss readiness is not made easier by the war-planner repair.
@@ -113,9 +114,10 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 ## Stranded-Fleet Recovery Policy
 
-- The Director does not issue movement, stance, MIA, or pathfinding orders from script.
-- The removed two-pulse handler was intended for post-war access pockets, but its foreign-space predicate also selected current enemy territory.
-- Native pathfinding, border access, and MIA behavior now own both active-war travel and post-war recovery.
+- The Director does not attempt normal movement/pathfinding orders from script.
+- Idle, out-of-combat, MIA-eligible AI fleets outside their owner's space are marked only while `staid_homeland_under_attack` is true.
+- A marked fleet must still satisfy the same stranded gate on a later monthly pulse before `set_mia = mia_return_home` fires.
+- The gate is intended for post-war access/pocket failures where a strong fleet is trapped away from a collapsing homeland, not for active offensive fleets.
 
 ## Safe Tuning Rules
 

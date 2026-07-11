@@ -345,7 +345,6 @@ GENERATED_SURFACE_FOLDERS = {
     "starbase_buildings": "starbase_building",
     "starbase_modules": "starbase_module",
     "static_modifiers": "static_modifier",
-    "strategic_resources": "resource",
     "technology": "technology",
     "tradition_categories": "tradition_category",
     "traditions": "tradition",
@@ -5310,6 +5309,7 @@ AI_RESOURCE_PRODUCTION_RESOURCE_HINTS = (
     "giga_sr_supertensiles",
 )
 
+
 def dataset_job_pressure_family(row: dict[str, Any]) -> str:
     text = " ".join(
         str(row.get(key, "")).lower()
@@ -9826,7 +9826,7 @@ staid_war_logistics_pressure = {
 	}
 }
 
-# The 4.5 Cygnus Open Beta fixed an executable defect where high naval capacity could
+# Pegasus 4.4.5 fixed an executable defect where high naval capacity could
 # suppress declarations. 4.4.4 cannot receive that code fix, so the native
 # workaround is to stop peacetime ship expansion before fleets sit permanently
 # at full capacity. Wartime, crisis, and defensive-emergency spending bypass it.
@@ -10205,7 +10205,7 @@ def strategic_subsystem_audit_rows() -> list[dict[str, str]]:
         ("research_capacity", "economy", "Preserve consumer-goods runway and build research capacity only when support resources are safe.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt; mod:common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt", "research-capacity datasets; vanilla research-zone potential gates", "economic plan plus building ai_resource_production", "source_proven", "regular|machine|hive|individual_machine", "staid_research_construction_priority_ready; source potential/allow", "corrected_static", "The exact engine score composition among coefficient, additive weight, and ai_resource_production still needs runtime proof.", "Reconstruct candidate scoring and inspect research-world build choices in playtest saves."),
         ("colony_construction", "economy", "Bias eligible buildings and districts by modeled output without inventing inactive building ai_weight control.", "mod:common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt; mod:common/districts/zzzz_staid_13_dataset_job_pressure_districts.txt", "economic valuation; consumer policy; source hard gates", "building/district ai_resource_production", "source_proven", "all_supported_planet_owners", "potential/allow preserved; military-capacity excluded", "implemented_static_needs_runtime", "Player Planetary Automation files are not proven AI-empire construction consumers.", "Trace actual candidate selection and keep automation policy separate unless a call site is proven."),
         ("colony_designation", "economy", "Align construction pressure with research, forge, factory, mining, energy, food, unity, trade, and special-world roles.", "research:stellar-ai-director-colony-role-targets-2026-07-09.csv; mod:common/colony_types/zzzzz_staid_15_fortress_economic_hard_gates.txt; mod:common/buildings/zzzzz_staid_14_pd_naval_capacity_hard_gates.txt", "active colony types; role target dataset; vanilla bottleneck trigger", "designation potential plus hard zone/building eligibility", "source_proven", "regular|machine|hive|special_worlds", "fortress economy/colony-count/threat/topology readiness; research-world naval exclusion", "corrected_static", "Fortress waste and non-bottleneck placement are hard-gated, but the remaining broad designation choice and special-world role selection are not yet reconstructed.", "Audit every remaining colony type winner, selection weight, and role-specific eligible candidate set."),
-        ("budget_management", "economy", "Reserve alloys, minerals, and strategic resources for viable construction and fleet pipelines.", "mod:common/ai_budget/zzz_staid_alloys_budget.txt; mod:common/ai_budget/zzz_staid_gigas_resource_budgets.txt; mod:common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt; mod:common/strategic_resources/zzzz_staid_21_strategic_resource_recovery.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "vanilla and mod expenditure categories; Stellar AI strategic ai_wants and recovery bands; deterministic delayed-construction model", "ai_budget desired_min/desired_max/expenditure plus native strategic demand and phase-specific income targets", "source_proven_modeled", "all", "independent per-resource deficit/income/stockpile gates; positive-alloy fleet gate; defensive emergency bypass; prerequisite readiness", "corrected_static_modeled", "The strategic lane proves proactive recovery and bridge affordability but actual market purchase quantity remains executable-owned; overlap with mod-specific expenditure categories still needs runtime audit.", "Test simultaneous fleet, planet, megastructure, and strategic-resource demand in a separately approved copied-save observer run."),
+        ("budget_management", "economy", "Reserve alloys, minerals, and strategic resources for viable construction and fleet pipelines.", "mod:common/ai_budget/zzz_staid_alloys_budget.txt; mod:common/ai_budget/zzz_staid_gigas_resource_budgets.txt; mod:common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt", "vanilla and mod expenditure categories", "ai_budget desired_min/desired_max/expenditure", "source_proven", "all", "deficit gates; positive-alloy fleet gate; defensive emergency bypass; prerequisite readiness", "corrected_static", "The base ship and upgrade budgets now stop during unaffordable peacetime deficits; overlap with mod-specific expenditure categories still needs runtime audit.", "Test simultaneous fleet, planet, and megastructure demand across positive, deficit, and wartime emergency states."),
         ("influence_market", "economy", "Spend capped influence on claims/expansion and limit Director market activity to cap-prevention overflow sales.", "mod:events/zzz_staid_market_and_fleet_safety_events.txt; mod:common/script_values/zzz_staid_roi_values.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "influence pressure; vanilla market_resource_price; resource_stockpile_percent; Gigas Kugelblitz storage stages", "claim ai_weight plus Director-owned 90%-of-cap overflow sale and storage-cap investment gate; no Director market-buy path", "source_proven", "regular|gestalt|subject", "claim viability; no deficit; positive earned income; fixed reserve; 90% actual storage cap", "corrected_static", "Vanilla AI emergency buying and diplomatic trade composition remain engine-side; Director production gates require earned income as well as stockpile.", "Inventory enclave, subject/federation, irregular-event, liability-reduction, and diplomatic trade channels; observe whether emergency buying persists after repair income becomes available."),
         ("territorial_expansion", "grand_strategy", "Recognize boxed-in empires and convert spatial constraint into expansion or conquest pressure.", "mod:common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/ai_budget/zzzz_staid_08_site_limited_expansion_ai_budget.txt; mod:common/policies/zzzz_staid_10_opening_growth_policies.txt", "border access; colony sites; claims; relative power", "native boxed-in declaration multiplier plus claim, stance, personality, and logistics weights", "source_proven", "regular|gestalt|pacifist|genocidal", "available sites; claim legality; pacifist exclusion; influence reserve", "implemented_static_needs_runtime", "The executable owns the exact blocking-country target and closed-border reachability calculation; script exposes no verified target-specific override.", "Use the single fresh 20–30-year observer acceptance run to verify a strong boxed-in empire attacks its blocking neighbor."),
         ("war_selection", "grand_strategy", "Choose legal, profitable, weak targets and escalate when peaceful expansion is exhausted.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "relative power; claims; war goals; borders; threat", "claim budget only; none proven for direct declaration", "mixed", "regular|genocidal|raider|pacifist", "war legality; fleet/economic readiness; target value", "gap_identified", "The claim/CB prerequisite receives boxed-in urgency, but Director still does not directly rank targets or declare ordinary expansion wars.", "Audit personalities, diplomatic actions, casus belli, war goals, and the hardcoded declaration chain before any forced-war implementation."),
@@ -10413,7 +10413,7 @@ def native_war_readiness_country_type_text() -> str:
     # Pegasus 4.4.4 defaults regular empires to 50% desired navy and six
     # assault armies before the native planner may consider any war. Omitting
     # min_navy_for_wars uses the documented 4.4.4 default of zero and remains
-    # compatible with the later 4.5 Cygnus Open Beta, where Paradox removed that parameter entirely.
+    # compatible with 4.4.5, where Paradox removed that parameter entirely.
     generated_default = re.sub(
         r"(?m)^\s*min_navy_for_wars\s*=.*(?:\n|$)",
         "",
@@ -10820,10 +10820,6 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_war_planning_444_provenance()
     write_text_file(MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt", economic_plan_text())
     write_text_file(
-        MOD_ROOT / "common" / "strategic_resources" / "zzzz_staid_21_strategic_resource_recovery.txt",
-        strategic_resource_recovery_text(),
-    )
-    write_text_file(
         MOD_ROOT / "common" / "scripted_effects" / "zzz_staid_gigas_habitat_compat_effects.txt",
         gigas_habitat_compat_scripted_effects_text(),
     )
@@ -10943,7 +10939,7 @@ def war_planning_444_provenance_rows() -> list[dict[str, str]]:
             "country_type",
             "default",
             "common/country_types/00_country_types.txt",
-            "Stellaris 4.4.4 default country type; 4.5 Cygnus Open Beta removal of min_navy_for_wars is later-fix evidence",
+            "Stellaris 4.4.4 default country type; 4.4.5 removal of min_navy_for_wars is later-fix evidence",
             "vanilla 4.4.4 full object; omit min_navy_for_wars and set min_assault_armies_for_wars to zero",
             "fresh-game native planner fix; regenerate after any version change",
         ),
@@ -11033,7 +11029,7 @@ def war_planning_444_provenance_rows() -> list[dict[str, str]]:
             "ai_budget",
             "alloys_expenditure_ships",
             "common/ai_budget/00_alloys_budget.txt",
-            "Stellaris 4.4.4 ship budget; 4.5 Cygnus Open Beta high-naval-cap declaration fix is later-fix evidence",
+            "Stellaris 4.4.4 ship budget; 4.4.5 high-naval-cap declaration fix is later-fix evidence",
             "vanilla 4.4.4 full object plus Director economy gates and peacetime >=80% naval-cap guard",
             "native executable workaround; emergency and wartime spending bypass the guard",
         ),
@@ -11051,7 +11047,7 @@ def war_planning_444_provenance_rows() -> list[dict[str, str]]:
             "define_group",
             "NAI",
             "common/defines/00_defines.txt",
-            "Stellaris 4.4.4 NAI values; 4.5 Cygnus Open Beta high-naval-cap declaration fix is later-fix evidence",
+            "Stellaris 4.4.4 NAI values; 4.4.5 high-naval-cap declaration fix is later-fix evidence",
             "restore near-vanilla 4.4.4 declaration/preparation/fleet-confidence envelope while preserving Director construction and boss values",
             "define groups overwrite globally; load Director after parent AI mods and do not stack another war-defines mod",
         ),
@@ -12866,30 +12862,6 @@ def medical_center_churn_fix_text() -> str:
     )
 
 
-def strategic_resource_recovery_text() -> str:
-    """Embed Stellar AI's three ordinary strategic-resource demand objects."""
-    source_path = (
-        mod_source_root_for_id("3610149307")
-        / "common"
-        / "strategic_resources"
-        / "00_strategic_resources.txt"
-    )
-    source_text = read_text(source_path)
-    blocks = [
-        extract_top_level_object_text(source_text, resource).rstrip()
-        for resource in ("volatile_motes", "exotic_gases", "rare_crystals")
-    ]
-    return (
-        "# Generated by tools/generate_stellar_ai_director_patch.py.\n"
-        "# Full-object Stellar AI 0.10 / Pegasus 4.4.4 parity overrides.\n"
-        "# Only these three ordinary strategic resources are copied: their non-AI\n"
-        "# fields match vanilla, while ai_wants restores deficit and low-income demand.\n"
-        f"# Source: {source_path.as_posix()}\n\n"
-        + "\n\n".join(blocks)
-        + "\n"
-    )
-
-
 def _repair_band_window_lines(
     metric: str,
     lower: int | None,
@@ -13028,92 +13000,6 @@ def relative_economic_repair_subplans_text() -> str:
     return "\n\n".join(blocks)
 
 
-STRATEGIC_RESOURCE_RECOVERY_PHASES = (
-    (
-        "opening",
-        ("years_passed < 45",),
-        {
-            "volatile_motes": (1, 40, 3),
-            "exotic_gases": (2, 60, 4),
-            "rare_crystals": (1, 40, 3),
-        },
-    ),
-    (
-        "advanced",
-        ("years_passed > 44", "years_passed < 80"),
-        {
-            "volatile_motes": (2, 90, 6),
-            "exotic_gases": (4, 140, 8),
-            "rare_crystals": (2, 90, 6),
-        },
-    ),
-    (
-        "endgame",
-        ("years_passed > 79", "years_passed < 120"),
-        {
-            "volatile_motes": (4, 180, 12),
-            "exotic_gases": (8, 280, 16),
-            "rare_crystals": (4, 180, 12),
-        },
-    ),
-    (
-        "beyond endgame",
-        ("years_passed > 119",),
-        {
-            "volatile_motes": (8, 360, 24),
-            "exotic_gases": (16, 560, 32),
-            "rare_crystals": (8, 360, 24),
-        },
-    ),
-)
-
-STRATEGIC_RESOURCE_RECOVERY_TECHS = {
-    "volatile_motes": ("tech_mine_volatile_motes", "tech_volatile_motes"),
-    "exotic_gases": ("tech_mine_exotic_gases", "tech_exotic_gases"),
-    "rare_crystals": ("tech_mine_rare_crystals", "tech_rare_crystals"),
-}
-
-
-def strategic_resource_recovery_subplans_text() -> str:
-    """Port Stellar AI recovery bands into the Director's dominant basic plan."""
-    blocks = [
-        "\t# Stellar AI native strategic-resource recovery, phase-mapped into the",
-        "\t# Director's intentionally dominant high-scale basic economy plan.",
-    ]
-    for phase, window_lines, resource_specs in STRATEGIC_RESOURCE_RECOVERY_PHASES:
-        for resource, (income_floor, stockpile_floor, target) in resource_specs.items():
-            mine_tech, synthesis_tech = STRATEGIC_RESOURCE_RECOVERY_TECHS[resource]
-            lines = [
-                "\tsubplan = {",
-                "\t\toptional = yes",
-                "\t\tscaling = yes",
-                f'\t\tset_name = "Stellar AI Director {phase} strategic resource recovery - {resource}"',
-                "\t\tpotential = {",
-            ]
-            lines.extend(f"\t\t\t{line}" for line in window_lines)
-            lines.extend(
-                [
-                    "\t\t\tOR = {",
-                    f"\t\t\t\thas_technology = {mine_tech}",
-                    f"\t\t\t\thas_technology = {synthesis_tech}",
-                    f"\t\t\t\tresource_stockpile_compare = {{ resource = {resource} value > 0 }}",
-                    "\t\t\t}",
-                    "\t\t\tOR = {",
-                    f"\t\t\t\thas_deficit = {resource}",
-                    f"\t\t\t\tNOT = {{ has_monthly_income = {{ resource = {resource} value > {income_floor} }} }}",
-                    f"\t\t\t\tresource_stockpile_compare = {{ resource = {resource} value < {stockpile_floor} }}",
-                    "\t\t\t}",
-                    "\t\t}",
-                    "\t\tincome = {",
-                    f"\t\t\t{resource} = {target}",
-                    "\t\t}",
-                    "\t}",
-                ]
-            )
-            blocks.append("\n".join(lines))
-    return "\n\n".join(blocks)
-
-
 def economic_plan_text() -> str:
     return '''# Generated by tools/generate_stellar_ai_director_patch.py.
 # Full-object override: intentionally replaces `basic_economy_plan` with a
@@ -13206,8 +13092,6 @@ basic_economy_plan = {
 \t}
 
 __STAID_RELATIVE_ECONOMIC_REPAIR_SUBPLANS__
-
-__STAID_STRATEGIC_RESOURCE_RECOVERY_SUBPLANS__
 
 \tsubplan = {
 \t\tscaling = yes
@@ -13772,9 +13656,6 @@ __STAID_STRATEGIC_RESOURCE_RECOVERY_SUBPLANS__
 '''.replace(
         "__STAID_RELATIVE_ECONOMIC_REPAIR_SUBPLANS__",
         relative_economic_repair_subplans_text(),
-    ).replace(
-        "__STAID_STRATEGIC_RESOURCE_RECOVERY_SUBPLANS__",
-        strategic_resource_recovery_subplans_text(),
     )
 
 
@@ -13803,7 +13684,7 @@ def market_cap_breaker_sale_text(resource: str, reserve: int, amount: int, extra
 
 def market_and_fleet_safety_on_actions_text() -> str:
     return '''# Generated by tools/generate_stellar_ai_director_patch.py.
-# Monthly Director safety layer for market cap breaking and colony-plan upkeep.
+# Monthly Director safety layer for market cap breaking and stranded fleet recovery.
 
 on_monthly_pulse = {
 \tevents = {
@@ -14062,8 +13943,8 @@ def market_and_fleet_safety_events_text() -> str:
     research_claim_steps = research_plan_claim_step_text(3, 1, False)
     research_ratio_claims = research_plan_ratio_claims_text()
     return f'''# Generated by tools/generate_stellar_ai_director_patch.py.
-# Monthly market safety plus persistent colony build-out commitments.
-# Fleet movement and MIA recovery remain entirely native engine responsibilities.
+# Monthly economy/fleet safety plus persistent colony build-out commitments.
+# Uses vanilla `set_mia = mia_return_home` only after a two-pulse stranded-fleet gate.
 
 namespace = staid_economy_safety
 
@@ -14086,6 +13967,7 @@ event = {{
 \t\t\t\t}}
 \t\t\t}}
 \t\t\tcountry_event = {{ id = staid_economy_safety.2 }}
+\t\t\tcountry_event = {{ id = staid_economy_safety.3 }}
 \t\t\tcountry_event = {{ id = staid_economy_safety.4 }}
 \t\t}}
 \t}}
@@ -14098,6 +13980,49 @@ country_event = {{
 
 \timmediate = {{
 {sales}
+\t}}
+}}
+
+country_event = {{
+\tid = staid_economy_safety.3
+\thide_window = yes
+\tis_triggered_only = yes
+
+\timmediate = {{
+\t\tif = {{
+\t\t\tlimit = {{
+\t\t\t\tstaid_homeland_under_attack = yes
+\t\t\t}}
+\t\t\tevery_owned_fleet = {{
+\t\t\t\tlimit = {{
+\t\t\t\t\tcan_go_mia = yes
+\t\t\t\t\tis_fleet_idle = yes
+\t\t\t\t\tis_in_combat = no
+\t\t\t\t\tfleet_power > 1000
+\t\t\t\t\tsolar_system = {{
+\t\t\t\t\t\texists = space_owner
+\t\t\t\t\t\tspace_owner = {{ NOT = {{ is_same_value = root }} }}
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t\tif = {{
+\t\t\t\t\tlimit = {{ has_fleet_flag = staid_stranded_fleet_warning }}
+\t\t\t\t\tremove_fleet_flag = staid_stranded_fleet_warning
+\t\t\t\t\tset_mia = mia_return_home
+\t\t\t\t}}
+\t\t\t\telse = {{
+\t\t\t\t\tset_timed_fleet_flag = {{
+\t\t\t\t\t\tflag = staid_stranded_fleet_warning
+\t\t\t\t\t\tdays = 70
+\t\t\t\t\t}}
+\t\t\t\t}}
+\t\t\t}}
+\t\t}}
+\t\telse = {{
+\t\t\tevery_owned_fleet = {{
+\t\t\t\tlimit = {{ has_fleet_flag = staid_stranded_fleet_warning }}
+\t\t\t\tremove_fleet_flag = staid_stranded_fleet_warning
+\t\t\t}}
+\t\t}}
 \t}}
 }}
 
@@ -14231,17 +14156,12 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Applies the Pegasus 4.4.4 high-naval-capacity workaround: normal peacetime new
   ship spending pauses at 80% used capacity while upgrades, war, crisis, and
   defensive-emergency spending remain available. This avoids feeding fresh games
-  into the executable bug that Paradox fixed in the 4.5 Cygnus Open Beta.
+  into the executable bug that Paradox fixed in 4.4.5.
 - Reimplements the megastructure alloy budget object with explicit emergency
   exits and larger reserves for Gigas/NSC3-scale projects.
 - Replaces the base economic plan with a mod-set-specific high-scale survival
   plan that forces research, alloy, trade, naval-cap, tall-scaling, and
   megastructure pressure on a mid-2300s crisis curve.
-- Restores Stellar AI's independent volatile-mote, exotic-gas, and rare-crystal
-  demand objects plus its phase-specific positive-income/stockpile recovery
-  bands. The deterministic economy model verifies prevention, delayed producer
-  completion, construction/upkeep costs, and market-bridge affordability without
-  changing the Director's ordinary-resource doctrine.
 - Adds economic-plan targets for alloy reserves, Gigas special resources,
   and static-defense/starbase pressure when empires need to climb toward
   Gigas/NSC3/ESC-scale economy and fleet power.
@@ -14251,10 +14171,9 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Adds a monthly market cap-breaker for AI empires that are wasting large
   positive-income stockpiles, converting marketable overflow into trade
   currency instead of letting storage caps void the income.
-- Removes the legacy two-pulse stranded-fleet event. Its intended post-war
-  rescue gate also matched idle fleets in active enemy territory and could
-  recall an offensive fleet during homeland pressure; movement and MIA recovery
-  now remain native engine responsibilities.
+- Adds a two-pulse stranded-fleet recovery guard that uses vanilla
+  `set_mia = mia_return_home` only for idle, MIA-eligible AI fleets outside
+  their owner's space while the homeland is under wartime pressure.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
 - Adds planetary-capacity and safe research economic-plan demand while leaving
@@ -14361,7 +14280,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
         "| trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |",
         "| cap-breaker market safety | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | additive monthly event sells large marketable positive-income overflow using Stellar AI market value script instead of allowing capped resources to void income |",
-        "| native fleet-control restoration | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | the former two-pulse scripted MIA exception is removed; native mission assignment, access, and MIA behavior own active-war and post-war fleet movement |",
+        "| stranded-fleet recovery | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | two-pulse guard marks idle MIA-eligible fleets outside owner space under homeland attack, then uses vanilla `set_mia = mia_return_home` if still stranded |",
         "| ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |",
         "| threat-response values/triggers | `common/script_values/zzz_staid_threat_response_values.txt`, `common/scripted_triggers/zzz_staid_threat_response_triggers.txt` | low | additive `staid_tr_` namespace with unknown-war-goal inertness and foreign-affairs safety gates |",
         "| threat-response opinions/events | `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`, `common/on_actions/zzz_staid_threat_response_on_actions.txt`, `events/zzz_staid_threat_response_events.txt` | medium | event-dispatched opinion/readiness response gated by attacker leader, awareness, participant exclusion, and forbidden-effect validation |",
@@ -14433,7 +14352,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
             "",
             "## Stranded-Fleet Recovery Policy",
             "",
-            "The Director does not issue fleet orders. The former two-pulse `set_mia = mia_return_home` exception was intended for post-war access pockets, but its foreign-space test also matched active enemy territory and could recall an offensive fleet during homeland pressure. The exception is removed; native pathfinding, access, and MIA handling own recovery.",
+            "The Director does not issue normal fleet orders. Runtime evidence points to fleets stranded after access changes or war-end border changes, so the generated safety layer uses the vanilla-supported `set_mia = mia_return_home` mechanic behind a two-pulse guard. A fleet must be AI-owned, idle, out of combat, `can_go_mia = yes`, outside its owner's space, and still marked on the next monthly pulse while the country has wartime homeland pressure before forced MIA recovery fires.",
             "",
             "## Unlock-Research Policy",
             "",
@@ -14709,6 +14628,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "| market cap-breaker minerals reserve | 50000 | sell large positive-income mineral overflow before caps void income |",
         "| market cap-breaker food/consumer goods reserve | 30000 | sell large positive-income food/CG overflow while preserving large buffers |",
         "| market cap-breaker strategic reserve | 800-2500 | sell marketable strategic overflow only above high reserves |",
+        "| stranded fleet warning duration | 70 days | require a second monthly proof before forcing vanilla MIA return-home |",
         f"| threat response relation flag days | {THREAT_RELATION_FLAG_DAYS} | duration for observer/aggressor and observer/victim threat state |",
         f"| threat response economy ratio cap | {int(THREAT_ECONOMY_RATIO_CAP * 100)} | maximum share of fleet-throughput reserve available to third-party threat readiness |",
         f"| threat readiness alloys cap | {THREAT_ECONOMY_MAX['alloys']} | maximum added alloys target from third-party threat readiness |",
@@ -14743,7 +14663,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.",
         "- Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.",
         "- War declaration globals return to the working native 4.4.4 envelope: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, minimum score 0.5, and offense/defense allotment 1.0. Boxed-in multipliers remain bounded above vanilla at 8/12.",
-        "- Normal peacetime new-ship spending pauses at 80% used naval capacity, while upgrades, war, crisis, and defensive-emergency spending bypass the guard. This is the native-data workaround for the executable high-cap declaration defect later fixed in the 4.5 Cygnus Open Beta.",
+        "- Normal peacetime new-ship spending pauses at 80% used naval capacity, while upgrades, war, crisis, and defensive-emergency spending bypass the guard. This is the native-data workaround for the executable high-cap declaration defect later fixed in 4.4.5.",
         "- Native army budgets reserve 200 minerals at baseline, with bounded additions for boxed-in, conquest/raiding, war, and existential-defense states. No desired_max caps recruitment and no army is created by script.",
         "- Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.",
         "- Hostile space fauna continues to use the engine's separate boss readiness lane at 100000/500000 military power. Ordinary empire confidence uses the native `ENEMY_FLEET_POWER_MULT = 1.2`; boss readiness is not made easier by the war-planner repair.",
@@ -14794,9 +14714,10 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "## Stranded-Fleet Recovery Policy",
         "",
-        "- The Director does not issue movement, stance, MIA, or pathfinding orders from script.",
-        "- The removed two-pulse handler was intended for post-war access pockets, but its foreign-space predicate also selected current enemy territory.",
-        "- Native pathfinding, border access, and MIA behavior now own both active-war travel and post-war recovery.",
+        "- The Director does not attempt normal movement/pathfinding orders from script.",
+        "- Idle, out-of-combat, MIA-eligible AI fleets outside their owner's space are marked only while `staid_homeland_under_attack` is true.",
+        "- A marked fleet must still satisfy the same stranded gate on a later monthly pulse before `set_mia = mia_return_home` fires.",
+        "- The gate is intended for post-war access/pocket failures where a strong fleet is trapped away from a collapsing homeland, not for active offensive fleets.",
         "",
         "## Safe Tuning Rules",
         "",

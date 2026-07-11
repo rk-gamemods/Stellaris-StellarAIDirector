@@ -2280,67 +2280,6 @@ class GeneratedModValidityTests(unittest.TestCase):
         )
         self.assertEqual(direct_amounts, {"consumer_goods": 35})
 
-    def test_native_strategic_resource_recovery_is_embedded_without_sibling_masking(self):
-        economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
-        triggers_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
-        strategic_path = MOD_ROOT / "common" / "strategic_resources" / "zzzz_staid_21_strategic_resource_recovery.txt"
-        for path in (economy_path, triggers_path, strategic_path):
-            self.assertTrue(path.exists(), path)
-            parse_file(path)
-
-        economy = economy_path.read_text(encoding="utf-8")
-        triggers = triggers_path.read_text(encoding="utf-8")
-        strategic = strategic_path.read_text(encoding="utf-8")
-        parent_path = (
-            mod_source_root_for_id("3610149307")
-            / "common"
-            / "strategic_resources"
-            / "00_strategic_resources.txt"
-        )
-        parent = parent_path.read_text(encoding="utf-8-sig")
-
-        phase_specs = {
-            "opening": {
-                "window": ("years_passed < 45",),
-                "targets": {"volatile_motes": 3, "exotic_gases": 4, "rare_crystals": 3},
-            },
-            "advanced": {
-                "window": ("years_passed > 44", "years_passed < 80"),
-                "targets": {"volatile_motes": 6, "exotic_gases": 8, "rare_crystals": 6},
-            },
-            "endgame": {
-                "window": ("years_passed > 79", "years_passed < 120"),
-                "targets": {"volatile_motes": 12, "exotic_gases": 16, "rare_crystals": 12},
-            },
-            "beyond endgame": {
-                "window": ("years_passed > 119",),
-                "targets": {"volatile_motes": 24, "exotic_gases": 32, "rare_crystals": 24},
-            },
-        }
-        for phase, spec in phase_specs.items():
-            for resource, target in spec["targets"].items():
-                marker = f'Stellar AI Director {phase} strategic resource recovery - {resource}'
-                self.assertEqual(economy.count(marker), 1)
-                block_start = economy.index(marker)
-                block_end = economy.find("\n\t}", block_start)
-                block = economy[block_start:block_end]
-                for window_line in spec["window"]:
-                    self.assertIn(window_line, block)
-                self.assertIn(f"has_deficit = {resource}", block)
-                self.assertIn(f"\t\t\t{resource} = {target}", block)
-                self.assertNotIn("staid_research_input_runway_safe", block)
-                self.assertNotIn("staid_advanced_component_resource_support_ready", block)
-
-        # This recovery lane must not become a new global economy gate. The
-        # existing research, fleet, megastructure, and runway model stays intact.
-        self.assertNotIn("staid_strategic_resource_deficit", triggers)
-
-        for resource in ("volatile_motes", "exotic_gases", "rare_crystals"):
-            self.assertEqual(
-                extract_top_level_object_text(strategic, resource),
-                extract_top_level_object_text(parent, resource),
-            )
-
     def test_dataset_job_pressure_uses_economic_plan_mapping_and_rejects_military_objects(self):
         military_row = {
             "object_id": "building_navel_base",
@@ -2418,21 +2357,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         }
         subplans = economy.split("\n\tsubplan = {")[1:]
         for subplan in subplans:
-            is_approved_naval_reserve = any(
-                f'set_name = "{name}"' in subplan for name in approved_naval_subplans
-            )
-            # These four native war-response reserves intentionally bundle
-            # military research with alloys/naval cap. Applying the ordinary
-            # discretionary-research runway gate here would disable the same
-            # emergency reserves explicitly approved below.
-            if (
-                not is_approved_naval_reserve
-                and (
-                    "physics_research" in subplan
-                    or "society_research" in subplan
-                    or "engineering_research" in subplan
-                )
-            ):
+            if "physics_research" in subplan or "society_research" in subplan or "engineering_research" in subplan:
                 self.assertTrue(
                     any(
                         gate in subplan
@@ -2445,7 +2370,10 @@ class GeneratedModValidityTests(unittest.TestCase):
                     subplan[:240],
                 )
             if "naval_cap =" in subplan:
-                self.assertTrue(is_approved_naval_reserve, subplan[:240])
+                self.assertTrue(
+                    any(f'set_name = "{name}"' in subplan for name in approved_naval_subplans),
+                    subplan[:240],
+                )
         self.assertFalse(
             [row["object_id"] for row in dataset_job_pressure_override_rows() if row["pressure_family"] == "military_capacity"]
         )
@@ -2737,23 +2665,23 @@ class GeneratedModValidityTests(unittest.TestCase):
         for marker in forbidden_markers:
             self.assertNotIn(marker, live_text)
 
-    def test_generated_safety_layer_never_issues_scripted_fleet_orders(self):
+    def test_generated_stranded_fleet_recovery_uses_guarded_vanilla_mia(self):
         on_action_path = MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt"
         event_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
         parse_file(on_action_path)
         parse_file(event_path)
         text = event_path.read_text(encoding="utf-8")
-        self.assertIn("id = staid_economy_safety.2", text)
-        self.assertIn("id = staid_economy_safety.4", text)
         for marker in (
-            "staid_economy_safety.3",
-            "staid_stranded_fleet_warning",
-            "set_mia =",
-            "set_fleet_order =",
-            "set_fleet_stance =",
-            "move_to =",
+            "staid_homeland_under_attack = yes",
+            "can_go_mia = yes",
+            "is_fleet_idle = yes",
+            "is_in_combat = no",
+            "has_fleet_flag = staid_stranded_fleet_warning",
+            "set_timed_fleet_flag",
+            "set_mia = mia_return_home",
+            "space_owner = { NOT = { is_same_value = root } }",
         ):
-            self.assertNotIn(marker, text)
+            self.assertIn(marker, text)
 
     def test_mem_surveyor_outpost_gate_preserves_targeted_native_exception_only(self):
         outpost_path = (

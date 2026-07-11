@@ -113,7 +113,7 @@ staid_war_logistics_pressure = {
 	}
 }
 
-# The 4.5 Cygnus Open Beta fixed an executable defect where high naval capacity could
+# Pegasus 4.4.5 fixed an executable defect where high naval capacity could
 # suppress declarations. 4.4.4 cannot receive that code fix, so the native
 # workaround is to stop peacetime ship expansion before fleets sit permanently
 # at full capacity. Wartime, crisis, and defensive-emergency spending bypass it.

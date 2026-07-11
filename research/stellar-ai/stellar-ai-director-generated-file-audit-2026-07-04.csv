@@ -136,13 +136,12 @@ common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt,
 common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt,starbase_modules,starbase_module,ok,ok,10,0,ok,valid generated PDXScript surface
 common/static_modifiers/00_SFTm_ship_speed.txt,static_modifiers,static_modifier,ok,ok,1,0,ok,valid generated PDXScript surface
 common/static_modifiers/00_SFTm_special_component.txt,static_modifiers,static_modifier,ok,ok,13,0,ok,valid generated PDXScript surface
-common/strategic_resources/zzzz_staid_21_strategic_resource_recovery.txt,strategic_resources,resource,ok,ok,3,0,ok,valid generated PDXScript surface
 common/technology/zzzz_staid_01_unlock_technology_technology.txt,technology,technology,ok,ok,97,0,ok,valid generated PDXScript surface
 common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt,tradition_categories,tradition_category,ok,ok,7,0,ok,valid generated PDXScript surface
 common/traditions/zzzz_staid_02_perks_traditions_traditions.txt,traditions,tradition,ok,ok,10,0,ok,valid generated PDXScript surface
 common/zones/zzzzz_staid_20_research_world_zone_priority.txt,zones,zone,ok,ok,4,0,ok,valid generated PDXScript surface
 events/SFT_event_ship_design.txt,events,events,ok,ok,7,0,ok,valid generated PDXScript surface
-events/zzz_staid_market_and_fleet_safety_events.txt,events,events,ok,ok,4,0,ok,valid generated PDXScript surface
+events/zzz_staid_market_and_fleet_safety_events.txt,events,events,ok,ok,5,0,ok,valid generated PDXScript surface
 events/zzz_staid_threat_response_events.txt,events,events,ok,ok,3,0,ok,valid generated PDXScript surface
 events/zzzz_staid_boss_defeat_escalation_events.txt,events,events,ok,ok,2,0,ok,valid generated PDXScript surface
 localisation/english/staid_threat_response_l_english.yml,localisation,localisation,ok,ok,20,0,ok,valid generated PDXScript surface

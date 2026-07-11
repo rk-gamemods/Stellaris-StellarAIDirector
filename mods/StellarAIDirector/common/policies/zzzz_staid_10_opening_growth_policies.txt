@@ -253,6 +253,7 @@ diplomatic_stance = {
 				factor = 3.0
 				has_country_flag = fallen_empire_hive_control
 			}
+
 			modifier = {
 				factor = 2
 				staid_is_diplomatic_opening_phase = yes
@@ -378,6 +379,7 @@ diplomatic_stance = {
 				factor = 0.01
 				has_ascension_perk = ap_become_the_crisis
 			}
+
 			modifier = { factor = 4 staid_opening_military_to_pops = yes staid_is_diplomatic_opening_phase = yes staid_has_safe_basic_stockpiles = yes }
 			modifier = { factor = 0.25 staid_native_war_posture_active = yes }
 			modifier = { factor = 0.10 staid_boxed_in_war_pressure = yes }
@@ -493,6 +495,7 @@ diplomatic_stance = {
 					has_valid_civic = civic_private_military_companies
 				}
 			}
+
 			modifier = { factor = 5 staid_opening_trade_to_research = yes staid_is_diplomatic_opening_phase = yes }
 			modifier = { factor = 0.25 staid_native_war_posture_active = yes }
 		}
@@ -636,6 +639,7 @@ diplomatic_stance = {
 					}
 				}
 			}
+
 			modifier = { factor = 6 staid_native_war_posture_active = yes }
 			modifier = { factor = 8 staid_boxed_in_war_pressure = yes }
 		}
@@ -1730,6 +1734,7 @@ orbital_bombardment_accept_surrender = {
 			orbital_bombardment_surrender_forbidden
 		}
 		modifier = {}
+
 
 
 		ai_weight = {

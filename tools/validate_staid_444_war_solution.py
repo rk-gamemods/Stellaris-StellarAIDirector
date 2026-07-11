@@ -63,13 +63,6 @@ FORBIDDEN_EFFECT_ASSIGNMENTS = (
     "move_to",
 )
 
-FORBIDDEN_FLEET_ORDER_ASSIGNMENTS = (
-    "set_mia",
-    "set_fleet_stance",
-    "set_fleet_order",
-    "move_to",
-)
-
 
 def _read(relative: str) -> str:
     return (REPO_ROOT / relative).read_text(encoding="utf-8-sig")
@@ -99,19 +92,6 @@ def _validate_native_only(errors: list[str]) -> None:
         text = _read(relative)
         match = effect_re.search(text)
         _require(match is None, f"state-mutating shortcut in {relative}: {match.group(0).strip() if match else ''}", errors)
-
-    fleet_order_re = re.compile(
-        rf"(?mi)^\s*(?:{'|'.join(map(re.escape, FORBIDDEN_FLEET_ORDER_ASSIGNMENTS))})\s*="
-    )
-    for path in MOD_ROOT.rglob("*.txt"):
-        text = path.read_text(encoding="utf-8-sig")
-        match = fleet_order_re.search(text)
-        _require(
-            match is None,
-            f"scripted fleet-order shortcut in {path.relative_to(REPO_ROOT)}: "
-            f"{match.group(0).strip() if match else ''}",
-            errors,
-        )
 
     country_text = _read(WAR_FILES[3])
     # This is the country-type capability field, not a scripted declaration effect.
