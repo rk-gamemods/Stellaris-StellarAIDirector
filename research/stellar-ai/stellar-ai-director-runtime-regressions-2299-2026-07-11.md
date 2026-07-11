@@ -68,6 +68,67 @@ The final active exception map contains 24 unique objects: 22 vanilla objects, G
 
 The local Stellaris knowledge base was healthy and useful for version-attested object identity and locating vanilla budget/building surfaces. It did not contain decisive runtime semantics for automatic tradition finishers, constructor order progress, Gigas attacks, or MEM's event-chain defect. The save copies, installed vanilla/mod sources, generated trigger documentation, active-stack conflict inventory, git/Open Brain history, and current runtime logs were therefore decisive. This usefulness boundary should be retained in Open Brain rather than treating the knowledge base as either globally sufficient or globally useless.
 
+## Strategic-Resource Prevention and Repair
+
+The untouched `autosave_2290.07.01.sav` was copied before inspection. Original
+and copy both hash to
+`8F6DB9643D71488A55128FDC82F86105082A35AF3DBE0A430912C4D3473894C7`.
+Country 0 had 209.341 gross exotic-gas production, 348.608 upkeep, -139.267
+net income, and 721.753 stockpiled gas. Volatile motes and rare crystals were
+strongly positive. The gas burden was mostly pop/job upkeep after species 136
+acquired `trait_exotic_metabolism`; only nine of 29 colonies had a refinery.
+
+Director intentionally full-replaces `basic_economy_plan`, but its standalone
+parity pass omitted Stellar AI's independent strategic-resource recovery
+subplans. It also omitted Stellar AI's three `ai_wants` overrides. This was a
+latent standalone-parity gap, not evidence that the ordinary-resource model was
+wrong. The correction copies only Stellar AI's volatile-mote, exotic-gas, and
+rare-crystal resource objects and embeds its four mutually exclusive
+per-resource recovery bands in the Director plan. No broad strategic-deficit
+trigger gates research, fleets, megastructures, or the existing ESC readiness
+lane; healthy sibling resources stay untouched.
+
+The deterministic PDX-driven simulator now models gross production, upkeep and
+growth, raw/visible stockpiles, delayed producer queues, total capacity,
+construction minerals, completion energy upkeep, and conservative native-market
+bridge affordability. Its ten pre-existing ordinary scenarios retain exact
+monthly and summary hashes. The save-calibrated shock needs 13 refinery
+equivalents, completes in month 17, restores +25.826 gas income, costs 6,500
+minerals plus 39 energy upkeep, and needs a 1,506.519 gas bridge. At the vanilla
+maximum price fluctuation plus base fee, that bridge is bounded at 97,923.735
+trade, below the copied save's 476,959.614 trade reserve. The model does not
+inject that bridge or claim a purchase amount; restored native `ai_wants` owns
+the actual market decision.
+
+Prevention is the primary acceptance case. Starting at +9 gas with +0.034
+monthly upkeep growth, the source-derived endgame +8 floor activates in month
+30 while income remains positive, starts one producer, completes it in month
+46, and never depletes the 721.753 stockpile. Isolated motes, gas, crystals, and
+compound-deficit cases all recover without investing in healthy siblings.
+
+## Reachable-War Deadlock
+
+The untouched `autosave_2305.01.01.sav` copy and original both hash to
+`5A57B1210D6D2368593A32AE017B770982D4F635F7E7491D8752BB013990361D`.
+Country 0 recognizes the reachable offensive total-war opponent, has a healthy
+74.7k main fleet and 113 embarked armies, and faces only about 55.2k aggregate
+enemy military/static power. All offensive objectives are four to eleven hops
+away and the adjacent frontier objective receives native own-border priority.
+Declaration distance, fleet confidence, army quantity, and the unreachable weak
+Chosen pocket do not explain the idle fleets.
+
+The only source-proven Director regression was its legacy monthly stranded-fleet
+event. During homeland pressure it treated any idle fleet in foreign space as
+stranded, including fleets in current enemy territory, and could force
+`mia_return_home`. That event, dispatch, warning flag, and direct fleet mutation
+are removed; native mission assignment, access, and MIA handling again own both
+active-war and post-war movement. No exposed native data key justifies changing
+the working declaration distance, enemy-power multiplier, own-border priority,
+or offense/defense allocation. If the copied save remains idle with the handler
+removed, the remaining cause is executable/hidden planner state and requires an
+explicitly approved copied-save runtime A/B rather than another speculative
+global tuning change.
+
 ## Static Validation and Remaining Risk
 
 Required static checks cover PDX parsing, exact Gigas handler parity, active-Workshop drift, stronghold cap nesting, exception overlap legality, absence of the generic outpost watchdog, reachable MEM release state, active Starbase Extended parent parity, tradition category/node parent parity, absence of tradition reward overrides, preservation of Gigas habitat safety rules, generated file/conflict/reference audits, Python compilation, and diff whitespace.

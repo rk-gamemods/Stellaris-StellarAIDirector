@@ -2,7 +2,7 @@
 
 Status: ok
 Collection: 4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity
-Before snapshot: `C:\Users\Admin\Documents\GIT\GameMods\StellarisMods\research\stellar-ai\irony-selected-collection-before-director-20260705T002858Z.json`
+Before snapshot: `C:\wt\staid444-topology\research\stellar-ai\irony-selected-collection-before-director-20260705T002858Z.json`
 Mod count before: 115
 Mod count after: 116
 Director position: 116

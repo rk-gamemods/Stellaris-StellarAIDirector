@@ -23,14 +23,31 @@ def main() -> int:
     print(f"PDX source: {policy.source}")
     for scenario in load_scenarios():
         _, result = simulate(scenario, policy)
-        print(
-            f"{scenario.name}: ratio={result['research_to_ordinary_ratio']:.4f} "
-            f"support_safe={result['support_safe']} food={result['final_income_food']}"
-        )
+        if scenario.control:
+            print(
+                f"{scenario.name}: ratio={result['research_to_ordinary_ratio']:.4f} "
+                f"support_safe={result['support_safe']} food={result['final_income_food']}"
+            )
+        else:
+            print(
+                f"{scenario.name}: eventual={result['strategic_eventual_recovery']} "
+                f"unbridged={result['strategic_construction_only_survives']} "
+                f"market_bridge={result['strategic_market_bridge_affordable']} "
+                f"bridge_cost={result['total_bridge_market_cost']:.3f}"
+            )
         if not result["ratio_target_met"]:
             failures.append(f"{scenario.name}: research ratio below 2:1")
         if not scenario.bio_ships and scenario.income["food"] <= 50 and result["final_income_food"] > 50:
             failures.append(f"{scenario.name}: normal food income exceeds +50")
+        if not result["ordinary_model_safe"]:
+            failures.append(f"{scenario.name}: strategic construction destabilizes ordinary support")
+        if not scenario.control and not result["strategic_eventual_recovery"]:
+            failures.append(f"{scenario.name}: strategic production does not recover")
+        if not scenario.control and not result["strategic_recovery_financed"]:
+            failures.append(f"{scenario.name}: recovery bridge is not financed")
+        if scenario.name == "strategic_gas_prevention_growth":
+            if not result["strategic_construction_only_survives"] or result["total_bridge_market_cost"] != 0:
+                failures.append(f"{scenario.name}: proactive handler failed to prevent depletion")
     if failures:
         print("\nPDX policy failures:")
         for failure in failures:

@@ -64,9 +64,12 @@ that active subplan goals are added to the base plan:
 | Late | safe research baseline; crisis-scale giga rush |
 | At war | phase subplans plus militarist conquest fleet reserve |
 
-This is an explicit scenario mapping. The harness does not pretend to execute
-arbitrary PDX triggers. Expanding trigger evaluation is future work; every
-selected subplan name must exist in the current generated PDX or the diagnostic
+This remains an explicit mapping for the ordinary-resource lane. The strategic
+lane evaluates the exact, deliberately narrow trigger subset used by the twelve
+restored Stellar AI recovery subplans: source-derived `years_passed` windows,
+resource availability, `has_deficit`, monthly-income floors, and stockpile
+floors. It does not claim to be a general PDX interpreter. Every selected or
+evaluated subplan name must exist in the current generated PDX or the diagnostic
 stops with an error.
 
 The scenario CSV supplies starting incomes, stockpiles, marginal investment
@@ -74,6 +77,63 @@ increments, duration, and state labels. Each abstract investment is assigned to
 the largest proportional shortfall against the active PDX targets, with the
 existing research/resource urgency multipliers retained only as a simplified
 planner response. Those multipliers do not change the PDX targets being tested.
+
+## Strategic-resource extension
+
+Strategic-resource construction is a separate delayed lane; it is never routed
+through the legacy instant-investment allocator. For volatile motes, exotic
+gases, and rare crystals the model tracks gross production, upkeep, optional
+monthly upkeep growth, live net income, raw and visible stockpiles, project
+starts, pending output, completion month, total producer capacity, mineral
+construction cost, and post-completion energy upkeep.
+
+The deterministic monthly order is:
+
+1. apply projects due at the start of the month and their completion vectors;
+2. apply strategic upkeep growth and recompute live net income;
+3. evaluate the single source-derived recovery band for the current year;
+4. queue feasible projects, counting pending output only for duplicate
+   prevention and never as live income;
+5. debit construction minerals;
+6. update `raw_stockpile += live_net`, clamp the visible stockpile at zero, and
+   record the maximum external bridge needed.
+
+A project started in month 1 with the vanilla 480-day/16-month construction
+delay completes at the start of month 17. Total capacity counts both pending and
+completed projects and cannot be reused as fictitious concurrent slots.
+
+## Prevention and shock-repair contracts
+
+The model intentionally distinguishes two outcomes:
+
+- A gradual shortage must activate at the positive income floor and complete
+  production before the raw stockpile reaches zero. This is the prevention
+  contract.
+- A sudden captured-pop or upkeep shock may require market purchases while
+  construction is pending. The model reports eventual production recovery,
+  construction-only survival, bridge quantity, and bridge affordability as
+  separate results; it never injects free resources into the trace.
+
+The 2290.07.01 copied-save calibration has 209.341 gross gas, 348.608 upkeep,
+-139.267 net income, and 721.753 stockpiled gas. Nine existing refineries imply
+12.699444 gas per refinery-equivalent. The endgame +16 target therefore needs
+13 additional projects. They cost 6,500 minerals and add 39 energy upkeep,
+complete in month 17, and need a 1,506.519 gas bridge. The zero-growth exact
+case reaches +25.825778 gas income; a separately labeled +0.034 upkeep-growth
+sensitivity needs a 1,511.143 bridge and still ends at +19.705778.
+
+The copied save also contains 476,959.614 market currency (`trade`). Vanilla
+4.4.4 defines strategic resources as 10 units per 100 trade at base price. At
+the +400 maximum price fluctuation and the 30% base market fee, the model uses a
+conservative 65 trade per gas. The exact shock bridge therefore costs at most
+97,923.735 trade under that bound and is affordable from the saved reserve.
+This proves financing capacity, not that the opaque engine will buy a specific
+amount; the restored native `ai_wants` object remains responsible for demand.
+
+The prevention case begins at +9 gas with +0.034 monthly upkeep growth. The
+source-derived endgame floor activates at month 30 while income is still
+positive, starts one project, completes it at month 46, and never depletes the
+initial stockpile. This is the primary acceptance condition.
 
 ## Initial PDX-derived failure
 
@@ -130,18 +190,26 @@ does not receive new pressure above +50.
 ## Artifacts
 
 - `stellar-ai-economic-model-scenarios-2026-07-11.csv`: scenario inputs.
+- `stellar-ai-strategic-resource-model-scenarios-2026-07-11.csv`: copied-save,
+  prevention, sensitivity, isolated-shortage, and compound-shortage inputs.
 - `stellar-ai-economic-model-timeline-2026-07-11.csv`: monthly PDX-driven trace.
 - `stellar-ai-economic-model-summary-2026-07-11.csv`: final result per scenario,
   including the PDX source path.
 - `tools/simulate_stellar_ai_economy.py`: PDX parser and deterministic model.
 - `tools/manual_checks/check_stellar_ai_economy_model.py`: opt-in doctrine check.
+- `tools/manual_checks/test_stellar_ai_economy_model.py`: exact legacy hashes,
+  trigger boundaries, build delay, bridge, cost, capacity, and sibling-isolation
+  regression tests.
 
 ## Limitations and next step
 
-This is not Stellaris engine emulation. It does not model pops, jobs, planet
-slots, build time, designation choice, market trades, reassignment, trigger
-evaluation, or competing active-stack economic plans. The abstract allocation
-response is useful for comparative planning, not runtime proof.
+This is not Stellaris engine emulation. It does not model individual pops,
+workforce assignment, exact planet-slot selection, dynamic market purchasing
+decisions, price movement caused by each trade, designation choice, or competing
+active-stack economic plans. Build time, capacity, construction/upkeep vectors,
+the relevant recovery triggers, and conservative bridge affordability are now
+modeled explicitly. The abstract planner remains comparative proof of policy
+logic, not proof of opaque runtime execution.
 
 The next design pass should change the generator's PDX economic bands, rerun
 this opt-in diagnostic, and compare the generated timeline. Only after the

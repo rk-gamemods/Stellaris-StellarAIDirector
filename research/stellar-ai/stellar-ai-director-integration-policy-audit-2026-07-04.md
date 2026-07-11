@@ -11,6 +11,7 @@ Generated from parsed P6-P11 parent source objects. This is a readiness and refe
 | P11 | warning | 867 |
 | P6 | deferred | 63 |
 | P6 | ready | 641 |
+| P6 | warning | 4 |
 | P7 | deferred | 815 |
 | P7 | ready | 180 |
 | P9 | ready | 207 |
@@ -26,6 +27,7 @@ Generated from parsed P6-P11 parent source objects. This is a readiness and refe
 | P6 | ap_tradition_unlock_path | deferred | 10 |
 | P6 | ap_tradition_unlock_path | ready | 33 |
 | P6 | audit_only | deferred | 53 |
+| P6 | audit_only | warning | 4 |
 | P6 | defensive_starbase_unlocks | ready | 2 |
 | P6 | mega_giga_unlock_chain | ready | 247 |
 | P6 | shipyard_fleet_throughput_unlocks | ready | 60 |

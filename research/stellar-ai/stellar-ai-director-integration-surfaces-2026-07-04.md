@@ -12,6 +12,7 @@ Generated from required parent source snapshots. Rows are evidence for P6-P11 po
 | P6 | ascension_perk | 12 |
 | P6 | technology | 661 |
 | P6 | tradition | 31 |
+| P6 | tradition_category | 4 |
 | P7 | megastructure | 995 |
 | P9 | starbase_building | 96 |
 | P9 | starbase_module | 111 |
