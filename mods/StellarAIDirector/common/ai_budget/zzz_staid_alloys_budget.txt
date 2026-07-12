@@ -4,10 +4,10 @@
 # global reserve must not crowd out outposts, ships, or other alloy lanes.
 
 # Pegasus 4.4.4 full-object overrides for alloy-funded ship construction and upgrades.
-# The vanilla weights and war/crisis multipliers remain. Peacetime construction
-# stops at 80% used naval capacity unless an emergency bypass applies, preventing
-# fresh games from entering the executable high-cap declaration failure later
-# fixed by Paradox. Upgrades remain legal because they do not increase fleet size.
+# The vanilla weights and war/crisis multipliers remain. At 80% used naval
+# capacity, peacetime construction receives a bounded share reduction instead
+# of becoming ineligible. This retains a cautious 4.4.4 workaround while weak
+# absolute fleets and civilian science-ship demand can still recover.
 
 alloys_expenditure_ships = {
 	resource = alloys
@@ -51,6 +51,12 @@ alloys_expenditure_ships = {
 				}
 			}
 		}
+		# Pegasus 4.4.4 high-capacity declaration workaround. Reduce, but do
+		# not eliminate, the ship lane so weak absolute fleets can still recover.
+		modifier = {
+			factor = 0.25
+			staid_peacetime_high_naval_capacity_guard = yes
+		}
 	}
 
 	desired_min = {
@@ -67,16 +73,9 @@ alloys_expenditure_ships = {
 	}
 
 	potential = {
-		OR = {
-			# This shared budget also funds civilian science ships. Do not let
-			# military readiness gates suppress the opening exploration window.
-			years_passed < 10
-			staid_emergency_fleet_spending_required = yes
-			AND = {
-				staid_fleet_buildup_economy_safe = yes
-				NOT = { staid_peacetime_high_naval_capacity_guard = yes }
-			}
-		}
+		# This category also funds civilian science ships. Keep the native lane
+		# available; affordability and competing budget shares govern execution.
+		always = yes
 	}
 }
 

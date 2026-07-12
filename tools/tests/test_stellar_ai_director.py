@@ -63,6 +63,7 @@ from stellar_ai_director_lib import (
     dataset_job_pressure_weight_block,
     director_ai_weight_block,
     extract_top_level_object_text,
+    fleet_alloy_budget_text,
     fresh_economic_valuation_source_facts,
     gigas_habitat_ai_weight_block,
     generated_unresolved_at_variable_rows,
@@ -434,6 +435,31 @@ class EconomicPlanBoundednessTests(unittest.TestCase):
             self.assertIn("Stellar AI Director mega alloy reserve", text)
             self.assertIn("Stellar AI Director giga special resource reserve", text)
         self.assertEqual(artifact, generated)
+
+
+class ShipBudgetAvailabilityTests(unittest.TestCase):
+    def test_ship_budget_stays_available_under_bounded_high_cap_dampening(self):
+        budget_path = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt"
+        parse_file(budget_path)
+        artifact = budget_path.read_text(encoding="utf-8")
+        ships = extract_top_level_object_text(artifact, "alloys_expenditure_ships")
+        generated_ships = extract_top_level_object_text(
+            fleet_alloy_budget_text(), "alloys_expenditure_ships"
+        )
+
+        for text in (ships, generated_ships):
+            self.assertIn("potential = {", text)
+            self.assertIn("always = yes", text)
+            self.assertIn("weight = 0.6", text)
+            self.assertIn("recently_lost_war = yes", text)
+            self.assertIn("is_at_war = yes", text)
+            self.assertIn("factor = 0.33", text)
+            self.assertIn("country_uses_bio_ships = yes", text)
+            self.assertIn("factor = 0.25", text)
+            self.assertIn("staid_peacetime_high_naval_capacity_guard = yes", text)
+            self.assertNotIn("NOT = { staid_peacetime_high_naval_capacity_guard = yes }", text)
+            self.assertNotIn("staid_fleet_buildup_economy_safe = yes", text)
+        self.assertEqual(ships, generated_ships)
 
 
 class GeneratedModValidityTests(unittest.TestCase):
@@ -1673,7 +1699,9 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertNotIn("num_owned_planets < 5", boxed_claim)
         self.assertIn("factor = 8 staid_boxed_in_war_pressure = yes", policies)
         self.assertIn("factor = 0 staid_native_war_posture_active = yes", policies)
-        self.assertIn("NOT = { staid_peacetime_high_naval_capacity_guard = yes }", alloys)
+        self.assertIn("factor = 0.25", alloys)
+        self.assertIn("staid_peacetime_high_naval_capacity_guard = yes", alloys)
+        self.assertNotIn("NOT = { staid_peacetime_high_naval_capacity_guard = yes }", alloys)
         for forbidden in ("declare_war", "create_war", "create_army", "add_claim", "add_casus_belli"):
             self.assertNotIn(forbidden, kernel + claims + policies + alloys)
 

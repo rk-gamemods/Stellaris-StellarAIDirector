@@ -56,12 +56,11 @@ Missing required Steam parents during generation: none.
 - Replaces the native mineral army budgets with a modest uncapped reserve. The
   engine still chooses legal army types and counts; armies are not a declaration
   prerequisite and no unit is created by script.
-- Applies the Pegasus 4.4.4 high-naval-capacity workaround: normal peacetime new
-  ship spending pauses at 80% used capacity while upgrades, war, crisis, and
-  defensive-emergency spending remain available. This avoids feeding fresh games
-  into the executable bug that Paradox fixed in 4.4.5.
-- Reimplements the megastructure alloy budget object with explicit emergency
-  exits and larger reserves for Gigas/NSC3-scale projects.
+- Applies a bounded Pegasus 4.4.4 high-naval-capacity workaround: the peacetime
+  ship-budget share is reduced to 25% at 80% used capacity, but the category
+  remains eligible so weak absolute fleets can still recover.
+- Leaves the generic megastructure alloy budget upstream/parent-owned while
+  retaining targeted Director route weights and Gigas special-resource support.
 - Replaces the base economic plan with a mod-set-specific high-scale survival
   plan that forces research, alloy, trade, naval-cap, tall-scaling, and
   megastructure pressure on a mid-2300s crisis curve.

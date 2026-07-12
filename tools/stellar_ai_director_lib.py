@@ -11030,8 +11030,8 @@ def war_planning_444_provenance_rows() -> list[dict[str, str]]:
             "alloys_expenditure_ships",
             "common/ai_budget/00_alloys_budget.txt",
             "Stellaris 4.4.4 ship budget; 4.4.5 high-naval-cap declaration fix is later-fix evidence",
-            "vanilla 4.4.4 full object plus Director economy gates and peacetime >=80% naval-cap guard",
-            "native executable workaround; emergency and wartime spending bypass the guard",
+            "vanilla 4.4.4 full object with an always-open category and bounded peacetime >=80% naval-cap dampening",
+            "native executable workaround reduces budget share without permanently blocking weak-fleet recovery",
         ),
         (
             "mods/StellarAIDirector/common/ai_budget/zzz_staid_alloys_budget.txt",
@@ -12642,17 +12642,20 @@ def fleet_alloy_budget_text() -> str:
         ships,
         "potential",
         """\tpotential = {
-\t\tOR = {
-\t\t\t# This shared budget also funds civilian science ships. Do not let
-\t\t\t# military readiness gates suppress the opening exploration window.
-\t\t\tyears_passed < 10
-\t\t\tstaid_emergency_fleet_spending_required = yes
-\t\t\tAND = {
-\t\t\t\tstaid_fleet_buildup_economy_safe = yes
-\t\t\t\tNOT = { staid_peacetime_high_naval_capacity_guard = yes }
-\t\t\t}
-\t\t}
+\t\t# This category also funds civilian science ships. Keep the native lane
+\t\t# available; affordability and competing budget shares govern execution.
+\t\talways = yes
 \t}""",
+    )
+    ships = insert_top_level_child_modifier(
+        ships,
+        "weight",
+        """\t\t# Pegasus 4.4.4 high-capacity declaration workaround. Reduce, but do
+\t\t# not eliminate, the ship lane so weak absolute fleets can still recover.
+\t\tmodifier = {
+\t\t\tfactor = 0.25
+\t\t\tstaid_peacetime_high_naval_capacity_guard = yes
+\t\t}""",
     )
     upgrades = replace_top_level_child_block(
         upgrades,
@@ -12667,10 +12670,10 @@ def fleet_alloy_budget_text() -> str:
 \t}""",
     )
     text = """# Pegasus 4.4.4 full-object overrides for alloy-funded ship construction and upgrades.
-# The vanilla weights and war/crisis multipliers remain. Peacetime construction
-# stops at 80% used naval capacity unless an emergency bypass applies, preventing
-# fresh games from entering the executable high-cap declaration failure later
-# fixed by Paradox. Upgrades remain legal because they do not increase fleet size.
+# The vanilla weights and war/crisis multipliers remain. At 80% used naval
+# capacity, peacetime construction receives a bounded share reduction instead
+# of becoming ineligible. This retains a cautious 4.4.4 workaround while weak
+# absolute fleets and civilian science-ship demand can still recover.
 
 """ + ships.rstrip() + "\n\n" + upgrades.rstrip() + "\n"
     parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
@@ -14199,12 +14202,11 @@ Missing required Steam parents during generation: {", ".join(missing) if missing
 - Replaces the native mineral army budgets with a modest uncapped reserve. The
   engine still chooses legal army types and counts; armies are not a declaration
   prerequisite and no unit is created by script.
-- Applies the Pegasus 4.4.4 high-naval-capacity workaround: normal peacetime new
-  ship spending pauses at 80% used capacity while upgrades, war, crisis, and
-  defensive-emergency spending remain available. This avoids feeding fresh games
-  into the executable bug that Paradox fixed in 4.4.5.
-- Reimplements the megastructure alloy budget object with explicit emergency
-  exits and larger reserves for Gigas/NSC3-scale projects.
+- Applies a bounded Pegasus 4.4.4 high-naval-capacity workaround: the peacetime
+  ship-budget share is reduced to 25% at 80% used capacity, but the category
+  remains eligible so weak absolute fleets can still recover.
+- Leaves the generic megastructure alloy budget upstream/parent-owned while
+  retaining targeted Director route weights and Gigas special-resource support.
 - Replaces the base economic plan with a mod-set-specific high-scale survival
   plan that forces research, alloy, trade, naval-cap, tall-scaling, and
   megastructure pressure on a mid-2300s crisis curve.
@@ -14713,7 +14715,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.",
         "- Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.",
         "- War declaration globals return to the working native 4.4.4 envelope: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, minimum score 0.5, and offense/defense allotment 1.0. Boxed-in multipliers remain bounded above vanilla at 8/12.",
-        "- Normal peacetime new-ship spending pauses at 80% used naval capacity, while upgrades, war, crisis, and defensive-emergency spending bypass the guard. This is the native-data workaround for the executable high-cap declaration defect later fixed in 4.4.5.",
+        "- Normal peacetime new-ship budget share falls to 25% at 80% used naval capacity but remains eligible. This bounded native-data workaround reduces exposure to the 4.4.4 executable high-cap declaration defect without permanently freezing weak absolute fleets.",
         "- Native army budgets reserve 200 minerals at baseline, with bounded additions for boxed-in, conquest/raiding, war, and existential-defense states. No desired_max caps recruitment and no army is created by script.",
         "- Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.",
         "- Hostile space fauna continues to use the engine's separate boss readiness lane at 100000/500000 military power. Ordinary empire confidence uses the native `ENEMY_FLEET_POWER_MULT = 1.2`; boss readiness is not made easier by the war-planner repair.",

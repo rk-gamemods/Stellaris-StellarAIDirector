@@ -78,7 +78,7 @@ new continuation-only slice with its own five-risk review.
 
 ## H02 — Global scaling megastructure income target
 
-Status: implemented on the research branch; static validation pending commit.
+Status: committed and pushed as `d8899d5e16af12ac80c6332d7086447baa5b0039`.
 
 Evidence:
 
@@ -129,3 +129,63 @@ Rollback boundary:
 
 Revert only the H02 commit. Never restore the fixed `8000/8000/5000` scaling
 vector without evidence that those simultaneous incomes match real demand.
+
+## H03 — Ship-budget eligibility and high-capacity damping
+
+Status: implemented on the research branch; static validation pending commit.
+
+Evidence:
+
+- The recovery baseline changed vanilla `alloys_expenditure_ships` from
+  `potential = { always = yes }` to a hard eligibility gate requiring either
+  the first ten years, a narrow emergency, or full economic runway below the
+  80% peacetime naval-capacity guard.
+- In the verified 2270 save, nine of ten AIs have less than 2,000 military
+  power, five have less than 1,000, and two have no combat fleet.
+- The ten AIs hold 103,754 alloys with positive aggregate income, but all 97
+  simultaneous shipyard slots are idle and no military ship is queued.
+- Several aggressive empires are at only 21–43% estimated naval capacity, so
+  their failure cannot be explained by the 80% guard alone. A hard economy
+  potential can close the ship lane despite abundant relevant resources.
+
+Decision:
+
+Restore the native always-available ship category. Preserve vanilla base,
+war/crisis, over-capacity, and biological-ship weights. At 80% used naval
+capacity, apply a factor of `0.25` through the existing cautious 4.4.4 guard
+instead of making the category ineligible. This slice does not add personality
+bonuses or force fleet templates, reinforcement, or construction orders.
+
+Top five risks and controls:
+
+1. **Weak economies may overbuild and incur unsustainable upkeep.** Retain the
+   vanilla base weight and affordability system; add no new low-cap multiplier
+   in this slice, and measure upkeep/runway alongside fleet growth.
+2. **The 4.4.4 high-capacity declaration defect may reappear.** Keep a strong
+   0.25 peacetime share factor at 80% and preserve a separate 4.4.4 rollback.
+   Do not remove it based only on unverified 4.4.5 notes.
+3. **The shared category may prioritize civilian science ships.** That is
+   native behavior and prevents opening exploration deadlock; telemetry must
+   separate civilian and military queue utilization.
+4. **Biological fleets may not be alloy-limited.** Preserve vanilla's
+   biological alloy factor and evaluate food income/upkeep before adding any
+   archetype pressure.
+5. **Budget eligibility may not create fleet-template demand.** Record template
+   targets, reinforcement queue, shipyard utilization, and actual military
+   power. If queues remain empty, fix the strongest verified native demand
+   surface rather than multiplying the budget blindly.
+
+Static acceptance:
+
+- The ship object contains `always = yes` and no runway or `NOT guard`
+  potential veto.
+- The 0.25 high-capacity factor and guard are present in the weight block.
+- Vanilla war/crisis and biological modifiers remain.
+- Generator output and checked-in artifact match; targeted tests and the
+  static validator do not dirty the worktree.
+
+Rollback boundary:
+
+Revert only the H03 commit to restore the hard 80% shutdown. If runtime upkeep
+fails, adjust the bounded weight factor in a new slice instead of restoring all
+economic runway vetoes.
