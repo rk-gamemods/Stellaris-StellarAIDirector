@@ -132,7 +132,7 @@ vector without evidence that those simultaneous incomes match real demand.
 
 ## H03 — Ship-budget eligibility and high-capacity damping
 
-Status: implemented on the research branch; static validation pending commit.
+Status: committed and pushed as `ff0d3d3a8ae42ab05250c449e4c59095adf20869`.
 
 Evidence:
 
@@ -189,3 +189,50 @@ Rollback boundary:
 Revert only the H03 commit to restore the hard 80% shutdown. If runtime upkeep
 fails, adjust the bounded weight factor in a new slice instead of restoring all
 economic runway vetoes.
+
+## H04 — Ship-upgrade budget eligibility
+
+Status: implemented on the research branch; static validation pending commit.
+
+Evidence:
+
+- Vanilla permits the ship-upgrade category only at peace and when an owned
+  fleet can actually be upgraded, with weight `0.2` and no desired minimum.
+- The recovery baseline added `staid_fleet_buildup_economy_safe` as a hard
+  potential requirement, so an unrelated runway judgment could suppress a
+  legal upgrade even when the required resources existed.
+- The verified 2270 save has higher serialized technology power than military
+  power for every AI and no active ship queue, making legal upgrade reachability
+  a required—but not sufficient—conversion path.
+
+Decision:
+
+Restore vanilla upgrade eligibility by removing only the broad runway veto.
+Keep the peace requirement, owned-fleet controller check, `can_be_upgraded`,
+vanilla weight, capacity modifier, and biological-ship modifier.
+
+Top five risks and controls:
+
+1. **Upgrades may consume alloys needed for new hulls.** Keep vanilla's lower
+   `0.2` share and no desired minimum; compare upgrade and new-hull queues.
+2. **Frequent design changes may create upgrade churn.** Track repeated upgrade
+   orders and component/design errors before changing weight.
+3. **Docked upgrading fleets may reduce readiness.** Preserve vanilla's
+   peacetime-only condition and inspect war transitions.
+4. **Modded components may require scarce strategic resources.** Let native
+   affordability decide; do not grant or market-buy resources by script.
+5. **Zero-fleet empires still cannot use this lane.** Treat template creation,
+   new-hull demand, and shipyard execution as separate evidence paths.
+
+Static acceptance:
+
+- The upgrade object retains `is_at_war = no`, controller ownership, and
+  `can_be_upgraded = yes`.
+- It contains no `staid_fleet_buildup_economy_safe` potential veto.
+- Generator output and checked-in artifact match; targeted tests and the
+  static validator do not dirty the worktree.
+
+Rollback boundary:
+
+Revert only H04 if upgrade churn or economic damage appears. Do not re-close
+new-hull spending from H03 as part of an upgrade-only rollback.

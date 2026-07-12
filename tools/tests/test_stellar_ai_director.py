@@ -462,6 +462,24 @@ class ShipBudgetAvailabilityTests(unittest.TestCase):
         self.assertEqual(ships, generated_ships)
 
 
+class ShipUpgradeBudgetAvailabilityTests(unittest.TestCase):
+    def test_ship_upgrade_budget_uses_native_eligibility_without_runway_veto(self):
+        budget_path = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt"
+        parse_file(budget_path)
+        artifact = budget_path.read_text(encoding="utf-8")
+        upgrades = extract_top_level_object_text(artifact, "alloys_expenditure_ship_upgrades")
+        generated_upgrades = extract_top_level_object_text(
+            fleet_alloy_budget_text(), "alloys_expenditure_ship_upgrades"
+        )
+
+        for text in (upgrades, generated_upgrades):
+            self.assertIn("weight = 0.2", text)
+            self.assertIn("is_at_war = no", text)
+            self.assertIn("can_be_upgraded = yes", text)
+            self.assertNotIn("staid_fleet_buildup_economy_safe = yes", text)
+        self.assertEqual(upgrades, generated_upgrades)
+
+
 class GeneratedModValidityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -2122,11 +2140,13 @@ class GeneratedModValidityTests(unittest.TestCase):
         for marker in (
             "alloys_expenditure_ships = {",
             "alloys_expenditure_ship_upgrades = {",
-            "staid_fleet_buildup_economy_safe = yes",
-            "staid_emergency_fleet_spending_required = yes",
-            "years_passed < 10",
+            "always = yes",
+            "factor = 0.25",
+            "can_be_upgraded = yes",
         ):
             self.assertIn(marker, alloy_budget)
+        self.assertNotIn("staid_fleet_buildup_economy_safe = yes", alloy_budget)
+        self.assertNotIn("staid_emergency_fleet_spending_required = yes", alloy_budget)
 
         claim_budget = (
             MOD_ROOT / "common" / "ai_budget" / "zzzz_staid_08_site_limited_expansion_ai_budget.txt"

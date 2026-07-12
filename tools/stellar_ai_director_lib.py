@@ -11039,8 +11039,8 @@ def war_planning_444_provenance_rows() -> list[dict[str, str]]:
             "alloys_expenditure_ship_upgrades",
             "common/ai_budget/00_alloys_budget.txt",
             "Stellaris 4.4.4 ship-upgrade budget",
-            "vanilla 4.4.4 full object plus existing Director safe-economy gate",
-            "upgrades remain available while new peacetime hull spending is guarded",
+            "vanilla 4.4.4 full object with native peace and can-upgrade eligibility",
+            "no broad runway veto; weight 0.2 and actual upgrade availability bound spending",
         ),
         (
             "mods/StellarAIDirector/common/defines/zzzz_staid_14_high_scale_ai_defines.txt",
@@ -12662,7 +12662,6 @@ def fleet_alloy_budget_text() -> str:
         "potential",
         """\tpotential = {
 \t\tis_at_war = no
-\t\tstaid_fleet_buildup_economy_safe = yes
 \t\tany_owned_fleet = {
 \t\t\tcontroller = { is_same_value = root }
 \t\t\tcan_be_upgraded = yes

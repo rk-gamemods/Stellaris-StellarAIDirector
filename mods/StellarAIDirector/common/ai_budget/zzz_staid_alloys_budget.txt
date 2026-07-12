@@ -103,7 +103,6 @@ alloys_expenditure_ship_upgrades = {
 
 	potential = {
 		is_at_war = no
-		staid_fleet_buildup_economy_safe = yes
 		any_owned_fleet = {
 			controller = { is_same_value = root }
 			can_be_upgraded = yes
