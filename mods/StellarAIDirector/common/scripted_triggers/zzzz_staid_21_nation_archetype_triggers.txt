@@ -3,6 +3,7 @@
 # Pegasus 4.4.4 personality source SHA256:
 # 1F89C8D6C9444F575526A8635DB59DF78140AD43401538214E6B62F685298BAA
 # Identity classification only: no weights, resources, state, or orders.
+# H08a parity: hard, strong, then supporting marker counts; precedence breaks ties.
 
 staid_archetype_eligible_country = {
 	is_country_type = default
@@ -24,6 +25,10 @@ staid_archetype_hard_extermination = {
 		has_valid_civic = civic_scorched_earth
 		has_valid_civic = civic_hive_scorched_earth
 		has_ascension_perk = ap_become_the_crisis
+		has_government = gov_devouring_swarm
+		has_government = gov_purity_assembly
+		has_government = gov_purity_order
+		has_government = gov_machine_terminator
 	}
 }
 
@@ -75,67 +80,1055 @@ staid_archetype_hard_conquest = {
 }
 
 staid_archetype_identity_conflict = {
+	calc_true_if = {
+		amount >= 2
+		staid_archetype_hard_extermination = yes
+		staid_archetype_hard_gestalt_growth = yes
+		staid_archetype_hard_defensive = yes
+		staid_archetype_hard_research = yes
+		staid_archetype_hard_diplomatic = yes
+		staid_archetype_hard_conquest = yes
+	}
+}
+
+staid_archetype_any_hard = {
 	OR = {
-		AND = {
-			staid_archetype_hard_extermination = yes
-			staid_archetype_hard_gestalt_growth = yes
-		}
-		AND = {
-			staid_archetype_hard_extermination = yes
-			staid_archetype_hard_defensive = yes
-		}
-		AND = {
-			staid_archetype_hard_extermination = yes
-			staid_archetype_hard_research = yes
-		}
-		AND = {
-			staid_archetype_hard_extermination = yes
-			staid_archetype_hard_diplomatic = yes
-		}
-		AND = {
-			staid_archetype_hard_extermination = yes
-			staid_archetype_hard_conquest = yes
-		}
-		AND = {
-			staid_archetype_hard_gestalt_growth = yes
-			staid_archetype_hard_defensive = yes
-		}
-		AND = {
-			staid_archetype_hard_gestalt_growth = yes
-			staid_archetype_hard_research = yes
-		}
-		AND = {
-			staid_archetype_hard_gestalt_growth = yes
-			staid_archetype_hard_diplomatic = yes
-		}
-		AND = {
-			staid_archetype_hard_gestalt_growth = yes
-			staid_archetype_hard_conquest = yes
-		}
-		AND = {
-			staid_archetype_hard_defensive = yes
-			staid_archetype_hard_research = yes
-		}
-		AND = {
-			staid_archetype_hard_defensive = yes
-			staid_archetype_hard_diplomatic = yes
-		}
-		AND = {
-			staid_archetype_hard_defensive = yes
-			staid_archetype_hard_conquest = yes
-		}
-		AND = {
-			staid_archetype_hard_research = yes
-			staid_archetype_hard_diplomatic = yes
-		}
-		AND = {
-			staid_archetype_hard_research = yes
-			staid_archetype_hard_conquest = yes
-		}
-		AND = {
-			staid_archetype_hard_diplomatic = yes
-			staid_archetype_hard_conquest = yes
-		}
+		staid_archetype_hard_extermination = yes
+		staid_archetype_hard_gestalt_growth = yes
+		staid_archetype_hard_defensive = yes
+		staid_archetype_hard_research = yes
+		staid_archetype_hard_diplomatic = yes
+		staid_archetype_hard_conquest = yes
+	}
+}
+
+staid_archetype_supporting_extermination_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ai_personality_behaviour = purger
+		has_ai_personality_behaviour = attack_neutrals
+	}
+}
+
+staid_archetype_supporting_extermination_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ai_personality_behaviour = purger
+		has_ai_personality_behaviour = attack_neutrals
+	}
+}
+
+staid_archetype_strong_gestalt_growth_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_gestalt_consciousness
+		has_authority = auth_hive_mind
+		has_authority = auth_machine_intelligence
+		is_wilderness_empire = yes
+	}
+}
+
+staid_archetype_strong_gestalt_growth_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ethic = ethic_gestalt_consciousness
+		has_authority = auth_hive_mind
+		has_authority = auth_machine_intelligence
+		is_wilderness_empire = yes
+	}
+}
+
+staid_archetype_strong_gestalt_growth_at_least_3 = {
+	calc_true_if = {
+		amount >= 3
+		has_ethic = ethic_gestalt_consciousness
+		has_authority = auth_hive_mind
+		has_authority = auth_machine_intelligence
+		is_wilderness_empire = yes
+	}
+}
+
+staid_archetype_strong_gestalt_growth_at_least_4 = {
+	calc_true_if = {
+		amount >= 4
+		has_ethic = ethic_gestalt_consciousness
+		has_authority = auth_hive_mind
+		has_authority = auth_machine_intelligence
+		is_wilderness_empire = yes
+	}
+}
+
+staid_archetype_strong_defensive_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_pacifist
+	}
+}
+
+staid_archetype_supporting_defensive_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_valid_civic = civic_environmentalist
+		has_ai_personality_behaviour = isolationist
+	}
+}
+
+staid_archetype_supporting_defensive_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_valid_civic = civic_environmentalist
+		has_ai_personality_behaviour = isolationist
+	}
+}
+
+staid_archetype_strong_research_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_fanatic_materialist
+		has_valid_civic = civic_technocracy
+	}
+}
+
+staid_archetype_strong_research_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ethic = ethic_fanatic_materialist
+		has_valid_civic = civic_technocracy
+	}
+}
+
+staid_archetype_supporting_research_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_materialist
+		has_valid_civic = civic_meritocracy
+	}
+}
+
+staid_archetype_supporting_research_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ethic = ethic_materialist
+		has_valid_civic = civic_meritocracy
+	}
+}
+
+staid_archetype_strong_diplomatic_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_fanatic_xenophile
+		has_ethic = ethic_fanatic_egalitarian
+		has_valid_civic = civic_free_haven
+		has_valid_civic = civic_diplomatic_corps
+		has_origin = origin_common_ground
+	}
+}
+
+staid_archetype_strong_diplomatic_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ethic = ethic_fanatic_xenophile
+		has_ethic = ethic_fanatic_egalitarian
+		has_valid_civic = civic_free_haven
+		has_valid_civic = civic_diplomatic_corps
+		has_origin = origin_common_ground
+	}
+}
+
+staid_archetype_strong_diplomatic_at_least_3 = {
+	calc_true_if = {
+		amount >= 3
+		has_ethic = ethic_fanatic_xenophile
+		has_ethic = ethic_fanatic_egalitarian
+		has_valid_civic = civic_free_haven
+		has_valid_civic = civic_diplomatic_corps
+		has_origin = origin_common_ground
+	}
+}
+
+staid_archetype_strong_diplomatic_at_least_4 = {
+	calc_true_if = {
+		amount >= 4
+		has_ethic = ethic_fanatic_xenophile
+		has_ethic = ethic_fanatic_egalitarian
+		has_valid_civic = civic_free_haven
+		has_valid_civic = civic_diplomatic_corps
+		has_origin = origin_common_ground
+	}
+}
+
+staid_archetype_strong_diplomatic_at_least_5 = {
+	calc_true_if = {
+		amount >= 5
+		has_ethic = ethic_fanatic_xenophile
+		has_ethic = ethic_fanatic_egalitarian
+		has_valid_civic = civic_free_haven
+		has_valid_civic = civic_diplomatic_corps
+		has_origin = origin_common_ground
+	}
+}
+
+staid_archetype_supporting_diplomatic_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_xenophile
+		has_ethic = ethic_egalitarian
+		has_ai_personality_behaviour = liberator
+		has_ai_personality_behaviour = multispecies
+		has_ai_personality_behaviour = uplifter
+	}
+}
+
+staid_archetype_supporting_diplomatic_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ethic = ethic_xenophile
+		has_ethic = ethic_egalitarian
+		has_ai_personality_behaviour = liberator
+		has_ai_personality_behaviour = multispecies
+		has_ai_personality_behaviour = uplifter
+	}
+}
+
+staid_archetype_supporting_diplomatic_at_least_3 = {
+	calc_true_if = {
+		amount >= 3
+		has_ethic = ethic_xenophile
+		has_ethic = ethic_egalitarian
+		has_ai_personality_behaviour = liberator
+		has_ai_personality_behaviour = multispecies
+		has_ai_personality_behaviour = uplifter
+	}
+}
+
+staid_archetype_supporting_diplomatic_at_least_4 = {
+	calc_true_if = {
+		amount >= 4
+		has_ethic = ethic_xenophile
+		has_ethic = ethic_egalitarian
+		has_ai_personality_behaviour = liberator
+		has_ai_personality_behaviour = multispecies
+		has_ai_personality_behaviour = uplifter
+	}
+}
+
+staid_archetype_supporting_diplomatic_at_least_5 = {
+	calc_true_if = {
+		amount >= 5
+		has_ethic = ethic_xenophile
+		has_ethic = ethic_egalitarian
+		has_ai_personality_behaviour = liberator
+		has_ai_personality_behaviour = multispecies
+		has_ai_personality_behaviour = uplifter
+	}
+}
+
+staid_archetype_strong_conquest_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_fanatic_authoritarian
+		has_valid_civic = civic_distinguished_admiralty
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_barbaric_despoilers
+		has_valid_civic = civic_machine_assimilator
+		has_origin = origin_hegemon
+	}
+}
+
+staid_archetype_strong_conquest_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_fanatic_authoritarian
+		has_valid_civic = civic_distinguished_admiralty
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_barbaric_despoilers
+		has_valid_civic = civic_machine_assimilator
+		has_origin = origin_hegemon
+	}
+}
+
+staid_archetype_strong_conquest_at_least_3 = {
+	calc_true_if = {
+		amount >= 3
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_fanatic_authoritarian
+		has_valid_civic = civic_distinguished_admiralty
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_barbaric_despoilers
+		has_valid_civic = civic_machine_assimilator
+		has_origin = origin_hegemon
+	}
+}
+
+staid_archetype_strong_conquest_at_least_4 = {
+	calc_true_if = {
+		amount >= 4
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_fanatic_authoritarian
+		has_valid_civic = civic_distinguished_admiralty
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_barbaric_despoilers
+		has_valid_civic = civic_machine_assimilator
+		has_origin = origin_hegemon
+	}
+}
+
+staid_archetype_strong_conquest_at_least_5 = {
+	calc_true_if = {
+		amount >= 5
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_fanatic_authoritarian
+		has_valid_civic = civic_distinguished_admiralty
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_barbaric_despoilers
+		has_valid_civic = civic_machine_assimilator
+		has_origin = origin_hegemon
+	}
+}
+
+staid_archetype_strong_conquest_at_least_6 = {
+	calc_true_if = {
+		amount >= 6
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_fanatic_authoritarian
+		has_valid_civic = civic_distinguished_admiralty
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_barbaric_despoilers
+		has_valid_civic = civic_machine_assimilator
+		has_origin = origin_hegemon
+	}
+}
+
+staid_archetype_strong_conquest_at_least_7 = {
+	calc_true_if = {
+		amount >= 7
+		has_ethic = ethic_fanatic_militarist
+		has_ethic = ethic_fanatic_authoritarian
+		has_valid_civic = civic_distinguished_admiralty
+		has_valid_civic = civic_nationalistic_zeal
+		has_valid_civic = civic_barbaric_despoilers
+		has_valid_civic = civic_machine_assimilator
+		has_origin = origin_hegemon
+	}
+}
+
+staid_archetype_supporting_conquest_at_least_1 = {
+	calc_true_if = {
+		amount >= 1
+		has_ethic = ethic_militarist
+		has_ethic = ethic_authoritarian
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = dominator
+		has_ai_personality_behaviour = propagator
+	}
+}
+
+staid_archetype_supporting_conquest_at_least_2 = {
+	calc_true_if = {
+		amount >= 2
+		has_ethic = ethic_militarist
+		has_ethic = ethic_authoritarian
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = dominator
+		has_ai_personality_behaviour = propagator
+	}
+}
+
+staid_archetype_supporting_conquest_at_least_3 = {
+	calc_true_if = {
+		amount >= 3
+		has_ethic = ethic_militarist
+		has_ethic = ethic_authoritarian
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = dominator
+		has_ai_personality_behaviour = propagator
+	}
+}
+
+staid_archetype_supporting_conquest_at_least_4 = {
+	calc_true_if = {
+		amount >= 4
+		has_ethic = ethic_militarist
+		has_ethic = ethic_authoritarian
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = dominator
+		has_ai_personality_behaviour = propagator
+	}
+}
+
+staid_archetype_supporting_conquest_at_least_5 = {
+	calc_true_if = {
+		amount >= 5
+		has_ethic = ethic_militarist
+		has_ethic = ethic_authoritarian
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = dominator
+		has_ai_personality_behaviour = propagator
+	}
+}
+
+staid_archetype_supporting_conquest_at_least_6 = {
+	calc_true_if = {
+		amount >= 6
+		has_ethic = ethic_militarist
+		has_ethic = ethic_authoritarian
+		has_ai_personality_behaviour = conqueror
+		has_ai_personality_behaviour = subjugator
+		has_ai_personality_behaviour = dominator
+		has_ai_personality_behaviour = propagator
+	}
+}
+
+staid_archetype_strong_extermination_ge_gestalt_growth = {
+	staid_archetype_strong_gestalt_growth_at_least_1 = no
+	staid_archetype_strong_gestalt_growth_at_least_2 = no
+	staid_archetype_strong_gestalt_growth_at_least_3 = no
+	staid_archetype_strong_gestalt_growth_at_least_4 = no
+}
+
+staid_archetype_strong_extermination_ge_defensive = {
+	staid_archetype_strong_defensive_at_least_1 = no
+}
+
+staid_archetype_strong_extermination_ge_research = {
+	staid_archetype_strong_research_at_least_1 = no
+	staid_archetype_strong_research_at_least_2 = no
+}
+
+staid_archetype_strong_extermination_ge_diplomatic = {
+	staid_archetype_strong_diplomatic_at_least_1 = no
+	staid_archetype_strong_diplomatic_at_least_2 = no
+	staid_archetype_strong_diplomatic_at_least_3 = no
+	staid_archetype_strong_diplomatic_at_least_4 = no
+	staid_archetype_strong_diplomatic_at_least_5 = no
+}
+
+staid_archetype_strong_extermination_ge_conquest = {
+	staid_archetype_strong_conquest_at_least_1 = no
+	staid_archetype_strong_conquest_at_least_2 = no
+	staid_archetype_strong_conquest_at_least_3 = no
+	staid_archetype_strong_conquest_at_least_4 = no
+	staid_archetype_strong_conquest_at_least_5 = no
+	staid_archetype_strong_conquest_at_least_6 = no
+	staid_archetype_strong_conquest_at_least_7 = no
+}
+
+staid_archetype_strong_gestalt_growth_ge_extermination = {
+	always = yes
+}
+
+staid_archetype_strong_gestalt_growth_ge_defensive = {
+	OR = {
+		staid_archetype_strong_defensive_at_least_1 = no
+		staid_archetype_strong_gestalt_growth_at_least_1 = yes
+	}
+}
+
+staid_archetype_strong_gestalt_growth_ge_research = {
+	OR = {
+		staid_archetype_strong_research_at_least_1 = no
+		staid_archetype_strong_gestalt_growth_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_research_at_least_2 = no
+		staid_archetype_strong_gestalt_growth_at_least_2 = yes
+	}
+}
+
+staid_archetype_strong_gestalt_growth_ge_diplomatic = {
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_1 = no
+		staid_archetype_strong_gestalt_growth_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_2 = no
+		staid_archetype_strong_gestalt_growth_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_3 = no
+		staid_archetype_strong_gestalt_growth_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_4 = no
+		staid_archetype_strong_gestalt_growth_at_least_4 = yes
+	}
+	staid_archetype_strong_diplomatic_at_least_5 = no
+}
+
+staid_archetype_strong_gestalt_growth_ge_conquest = {
+	OR = {
+		staid_archetype_strong_conquest_at_least_1 = no
+		staid_archetype_strong_gestalt_growth_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_2 = no
+		staid_archetype_strong_gestalt_growth_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_3 = no
+		staid_archetype_strong_gestalt_growth_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_4 = no
+		staid_archetype_strong_gestalt_growth_at_least_4 = yes
+	}
+	staid_archetype_strong_conquest_at_least_5 = no
+	staid_archetype_strong_conquest_at_least_6 = no
+	staid_archetype_strong_conquest_at_least_7 = no
+}
+
+staid_archetype_strong_defensive_ge_extermination = {
+	always = yes
+}
+
+staid_archetype_strong_defensive_ge_gestalt_growth = {
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_1 = no
+		staid_archetype_strong_defensive_at_least_1 = yes
+	}
+	staid_archetype_strong_gestalt_growth_at_least_2 = no
+	staid_archetype_strong_gestalt_growth_at_least_3 = no
+	staid_archetype_strong_gestalt_growth_at_least_4 = no
+}
+
+staid_archetype_strong_defensive_ge_research = {
+	OR = {
+		staid_archetype_strong_research_at_least_1 = no
+		staid_archetype_strong_defensive_at_least_1 = yes
+	}
+	staid_archetype_strong_research_at_least_2 = no
+}
+
+staid_archetype_strong_defensive_ge_diplomatic = {
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_1 = no
+		staid_archetype_strong_defensive_at_least_1 = yes
+	}
+	staid_archetype_strong_diplomatic_at_least_2 = no
+	staid_archetype_strong_diplomatic_at_least_3 = no
+	staid_archetype_strong_diplomatic_at_least_4 = no
+	staid_archetype_strong_diplomatic_at_least_5 = no
+}
+
+staid_archetype_strong_defensive_ge_conquest = {
+	OR = {
+		staid_archetype_strong_conquest_at_least_1 = no
+		staid_archetype_strong_defensive_at_least_1 = yes
+	}
+	staid_archetype_strong_conquest_at_least_2 = no
+	staid_archetype_strong_conquest_at_least_3 = no
+	staid_archetype_strong_conquest_at_least_4 = no
+	staid_archetype_strong_conquest_at_least_5 = no
+	staid_archetype_strong_conquest_at_least_6 = no
+	staid_archetype_strong_conquest_at_least_7 = no
+}
+
+staid_archetype_strong_research_ge_extermination = {
+	always = yes
+}
+
+staid_archetype_strong_research_ge_gestalt_growth = {
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_1 = no
+		staid_archetype_strong_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_2 = no
+		staid_archetype_strong_research_at_least_2 = yes
+	}
+	staid_archetype_strong_gestalt_growth_at_least_3 = no
+	staid_archetype_strong_gestalt_growth_at_least_4 = no
+}
+
+staid_archetype_strong_research_ge_defensive = {
+	OR = {
+		staid_archetype_strong_defensive_at_least_1 = no
+		staid_archetype_strong_research_at_least_1 = yes
+	}
+}
+
+staid_archetype_strong_research_ge_diplomatic = {
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_1 = no
+		staid_archetype_strong_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_2 = no
+		staid_archetype_strong_research_at_least_2 = yes
+	}
+	staid_archetype_strong_diplomatic_at_least_3 = no
+	staid_archetype_strong_diplomatic_at_least_4 = no
+	staid_archetype_strong_diplomatic_at_least_5 = no
+}
+
+staid_archetype_strong_research_ge_conquest = {
+	OR = {
+		staid_archetype_strong_conquest_at_least_1 = no
+		staid_archetype_strong_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_2 = no
+		staid_archetype_strong_research_at_least_2 = yes
+	}
+	staid_archetype_strong_conquest_at_least_3 = no
+	staid_archetype_strong_conquest_at_least_4 = no
+	staid_archetype_strong_conquest_at_least_5 = no
+	staid_archetype_strong_conquest_at_least_6 = no
+	staid_archetype_strong_conquest_at_least_7 = no
+}
+
+staid_archetype_strong_diplomatic_ge_extermination = {
+	always = yes
+}
+
+staid_archetype_strong_diplomatic_ge_gestalt_growth = {
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_1 = no
+		staid_archetype_strong_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_2 = no
+		staid_archetype_strong_diplomatic_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_3 = no
+		staid_archetype_strong_diplomatic_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_4 = no
+		staid_archetype_strong_diplomatic_at_least_4 = yes
+	}
+}
+
+staid_archetype_strong_diplomatic_ge_defensive = {
+	OR = {
+		staid_archetype_strong_defensive_at_least_1 = no
+		staid_archetype_strong_diplomatic_at_least_1 = yes
+	}
+}
+
+staid_archetype_strong_diplomatic_ge_research = {
+	OR = {
+		staid_archetype_strong_research_at_least_1 = no
+		staid_archetype_strong_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_research_at_least_2 = no
+		staid_archetype_strong_diplomatic_at_least_2 = yes
+	}
+}
+
+staid_archetype_strong_diplomatic_ge_conquest = {
+	OR = {
+		staid_archetype_strong_conquest_at_least_1 = no
+		staid_archetype_strong_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_2 = no
+		staid_archetype_strong_diplomatic_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_3 = no
+		staid_archetype_strong_diplomatic_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_4 = no
+		staid_archetype_strong_diplomatic_at_least_4 = yes
+	}
+	OR = {
+		staid_archetype_strong_conquest_at_least_5 = no
+		staid_archetype_strong_diplomatic_at_least_5 = yes
+	}
+	staid_archetype_strong_conquest_at_least_6 = no
+	staid_archetype_strong_conquest_at_least_7 = no
+}
+
+staid_archetype_strong_conquest_ge_extermination = {
+	always = yes
+}
+
+staid_archetype_strong_conquest_ge_gestalt_growth = {
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_1 = no
+		staid_archetype_strong_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_2 = no
+		staid_archetype_strong_conquest_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_3 = no
+		staid_archetype_strong_conquest_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_strong_gestalt_growth_at_least_4 = no
+		staid_archetype_strong_conquest_at_least_4 = yes
+	}
+}
+
+staid_archetype_strong_conquest_ge_defensive = {
+	OR = {
+		staid_archetype_strong_defensive_at_least_1 = no
+		staid_archetype_strong_conquest_at_least_1 = yes
+	}
+}
+
+staid_archetype_strong_conquest_ge_research = {
+	OR = {
+		staid_archetype_strong_research_at_least_1 = no
+		staid_archetype_strong_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_research_at_least_2 = no
+		staid_archetype_strong_conquest_at_least_2 = yes
+	}
+}
+
+staid_archetype_strong_conquest_ge_diplomatic = {
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_1 = no
+		staid_archetype_strong_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_2 = no
+		staid_archetype_strong_conquest_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_3 = no
+		staid_archetype_strong_conquest_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_4 = no
+		staid_archetype_strong_conquest_at_least_4 = yes
+	}
+	OR = {
+		staid_archetype_strong_diplomatic_at_least_5 = no
+		staid_archetype_strong_conquest_at_least_5 = yes
+	}
+}
+
+staid_archetype_supporting_extermination_ge_gestalt_growth = {
+	always = yes
+}
+
+staid_archetype_supporting_extermination_ge_defensive = {
+	OR = {
+		staid_archetype_supporting_defensive_at_least_1 = no
+		staid_archetype_supporting_extermination_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_defensive_at_least_2 = no
+		staid_archetype_supporting_extermination_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_extermination_ge_research = {
+	OR = {
+		staid_archetype_supporting_research_at_least_1 = no
+		staid_archetype_supporting_extermination_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_research_at_least_2 = no
+		staid_archetype_supporting_extermination_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_extermination_ge_diplomatic = {
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_1 = no
+		staid_archetype_supporting_extermination_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_2 = no
+		staid_archetype_supporting_extermination_at_least_2 = yes
+	}
+	staid_archetype_supporting_diplomatic_at_least_3 = no
+	staid_archetype_supporting_diplomatic_at_least_4 = no
+	staid_archetype_supporting_diplomatic_at_least_5 = no
+}
+
+staid_archetype_supporting_extermination_ge_conquest = {
+	OR = {
+		staid_archetype_supporting_conquest_at_least_1 = no
+		staid_archetype_supporting_extermination_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_conquest_at_least_2 = no
+		staid_archetype_supporting_extermination_at_least_2 = yes
+	}
+	staid_archetype_supporting_conquest_at_least_3 = no
+	staid_archetype_supporting_conquest_at_least_4 = no
+	staid_archetype_supporting_conquest_at_least_5 = no
+	staid_archetype_supporting_conquest_at_least_6 = no
+}
+
+staid_archetype_supporting_gestalt_growth_ge_extermination = {
+	staid_archetype_supporting_extermination_at_least_1 = no
+	staid_archetype_supporting_extermination_at_least_2 = no
+}
+
+staid_archetype_supporting_gestalt_growth_ge_defensive = {
+	staid_archetype_supporting_defensive_at_least_1 = no
+	staid_archetype_supporting_defensive_at_least_2 = no
+}
+
+staid_archetype_supporting_gestalt_growth_ge_research = {
+	staid_archetype_supporting_research_at_least_1 = no
+	staid_archetype_supporting_research_at_least_2 = no
+}
+
+staid_archetype_supporting_gestalt_growth_ge_diplomatic = {
+	staid_archetype_supporting_diplomatic_at_least_1 = no
+	staid_archetype_supporting_diplomatic_at_least_2 = no
+	staid_archetype_supporting_diplomatic_at_least_3 = no
+	staid_archetype_supporting_diplomatic_at_least_4 = no
+	staid_archetype_supporting_diplomatic_at_least_5 = no
+}
+
+staid_archetype_supporting_gestalt_growth_ge_conquest = {
+	staid_archetype_supporting_conquest_at_least_1 = no
+	staid_archetype_supporting_conquest_at_least_2 = no
+	staid_archetype_supporting_conquest_at_least_3 = no
+	staid_archetype_supporting_conquest_at_least_4 = no
+	staid_archetype_supporting_conquest_at_least_5 = no
+	staid_archetype_supporting_conquest_at_least_6 = no
+}
+
+staid_archetype_supporting_defensive_ge_extermination = {
+	OR = {
+		staid_archetype_supporting_extermination_at_least_1 = no
+		staid_archetype_supporting_defensive_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_extermination_at_least_2 = no
+		staid_archetype_supporting_defensive_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_defensive_ge_gestalt_growth = {
+	always = yes
+}
+
+staid_archetype_supporting_defensive_ge_research = {
+	OR = {
+		staid_archetype_supporting_research_at_least_1 = no
+		staid_archetype_supporting_defensive_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_research_at_least_2 = no
+		staid_archetype_supporting_defensive_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_defensive_ge_diplomatic = {
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_1 = no
+		staid_archetype_supporting_defensive_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_2 = no
+		staid_archetype_supporting_defensive_at_least_2 = yes
+	}
+	staid_archetype_supporting_diplomatic_at_least_3 = no
+	staid_archetype_supporting_diplomatic_at_least_4 = no
+	staid_archetype_supporting_diplomatic_at_least_5 = no
+}
+
+staid_archetype_supporting_defensive_ge_conquest = {
+	OR = {
+		staid_archetype_supporting_conquest_at_least_1 = no
+		staid_archetype_supporting_defensive_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_conquest_at_least_2 = no
+		staid_archetype_supporting_defensive_at_least_2 = yes
+	}
+	staid_archetype_supporting_conquest_at_least_3 = no
+	staid_archetype_supporting_conquest_at_least_4 = no
+	staid_archetype_supporting_conquest_at_least_5 = no
+	staid_archetype_supporting_conquest_at_least_6 = no
+}
+
+staid_archetype_supporting_research_ge_extermination = {
+	OR = {
+		staid_archetype_supporting_extermination_at_least_1 = no
+		staid_archetype_supporting_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_extermination_at_least_2 = no
+		staid_archetype_supporting_research_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_research_ge_gestalt_growth = {
+	always = yes
+}
+
+staid_archetype_supporting_research_ge_defensive = {
+	OR = {
+		staid_archetype_supporting_defensive_at_least_1 = no
+		staid_archetype_supporting_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_defensive_at_least_2 = no
+		staid_archetype_supporting_research_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_research_ge_diplomatic = {
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_1 = no
+		staid_archetype_supporting_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_2 = no
+		staid_archetype_supporting_research_at_least_2 = yes
+	}
+	staid_archetype_supporting_diplomatic_at_least_3 = no
+	staid_archetype_supporting_diplomatic_at_least_4 = no
+	staid_archetype_supporting_diplomatic_at_least_5 = no
+}
+
+staid_archetype_supporting_research_ge_conquest = {
+	OR = {
+		staid_archetype_supporting_conquest_at_least_1 = no
+		staid_archetype_supporting_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_conquest_at_least_2 = no
+		staid_archetype_supporting_research_at_least_2 = yes
+	}
+	staid_archetype_supporting_conquest_at_least_3 = no
+	staid_archetype_supporting_conquest_at_least_4 = no
+	staid_archetype_supporting_conquest_at_least_5 = no
+	staid_archetype_supporting_conquest_at_least_6 = no
+}
+
+staid_archetype_supporting_diplomatic_ge_extermination = {
+	OR = {
+		staid_archetype_supporting_extermination_at_least_1 = no
+		staid_archetype_supporting_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_extermination_at_least_2 = no
+		staid_archetype_supporting_diplomatic_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_diplomatic_ge_gestalt_growth = {
+	always = yes
+}
+
+staid_archetype_supporting_diplomatic_ge_defensive = {
+	OR = {
+		staid_archetype_supporting_defensive_at_least_1 = no
+		staid_archetype_supporting_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_defensive_at_least_2 = no
+		staid_archetype_supporting_diplomatic_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_diplomatic_ge_research = {
+	OR = {
+		staid_archetype_supporting_research_at_least_1 = no
+		staid_archetype_supporting_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_research_at_least_2 = no
+		staid_archetype_supporting_diplomatic_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_diplomatic_ge_conquest = {
+	OR = {
+		staid_archetype_supporting_conquest_at_least_1 = no
+		staid_archetype_supporting_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_conquest_at_least_2 = no
+		staid_archetype_supporting_diplomatic_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_supporting_conquest_at_least_3 = no
+		staid_archetype_supporting_diplomatic_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_supporting_conquest_at_least_4 = no
+		staid_archetype_supporting_diplomatic_at_least_4 = yes
+	}
+	OR = {
+		staid_archetype_supporting_conquest_at_least_5 = no
+		staid_archetype_supporting_diplomatic_at_least_5 = yes
+	}
+	staid_archetype_supporting_conquest_at_least_6 = no
+}
+
+staid_archetype_supporting_conquest_ge_extermination = {
+	OR = {
+		staid_archetype_supporting_extermination_at_least_1 = no
+		staid_archetype_supporting_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_extermination_at_least_2 = no
+		staid_archetype_supporting_conquest_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_conquest_ge_gestalt_growth = {
+	always = yes
+}
+
+staid_archetype_supporting_conquest_ge_defensive = {
+	OR = {
+		staid_archetype_supporting_defensive_at_least_1 = no
+		staid_archetype_supporting_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_defensive_at_least_2 = no
+		staid_archetype_supporting_conquest_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_conquest_ge_research = {
+	OR = {
+		staid_archetype_supporting_research_at_least_1 = no
+		staid_archetype_supporting_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_research_at_least_2 = no
+		staid_archetype_supporting_conquest_at_least_2 = yes
+	}
+}
+
+staid_archetype_supporting_conquest_ge_diplomatic = {
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_1 = no
+		staid_archetype_supporting_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_2 = no
+		staid_archetype_supporting_conquest_at_least_2 = yes
+	}
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_3 = no
+		staid_archetype_supporting_conquest_at_least_3 = yes
+	}
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_4 = no
+		staid_archetype_supporting_conquest_at_least_4 = yes
+	}
+	OR = {
+		staid_archetype_supporting_diplomatic_at_least_5 = no
+		staid_archetype_supporting_conquest_at_least_5 = yes
 	}
 }
 
@@ -143,16 +1136,99 @@ staid_archetype_candidate_extermination = {
 	OR = {
 		staid_archetype_hard_extermination = yes
 		AND = {
-			NOR = {
-				staid_archetype_hard_gestalt_growth = yes
-				staid_archetype_hard_defensive = yes
-				staid_archetype_hard_research = yes
-				staid_archetype_hard_diplomatic = yes
-				staid_archetype_hard_conquest = yes
+			staid_archetype_any_hard = no
+			OR = {
+				staid_archetype_supporting_extermination_at_least_1 = yes
 			}
 			OR = {
-				has_ai_personality_behaviour = purger
-				has_ai_personality_behaviour = attack_neutrals
+				AND = {
+					staid_archetype_strong_extermination_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_extermination = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_extermination_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_extermination = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_extermination_ge_research = yes
+					staid_archetype_strong_research_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_research = yes
+					staid_archetype_strong_research_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_research = yes
+					staid_archetype_supporting_research_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_research = yes
+					staid_archetype_strong_research_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_research = yes
+					staid_archetype_supporting_research_ge_extermination = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_extermination_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_extermination = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_extermination_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_extermination = no
+				}
+				AND = {
+					staid_archetype_strong_extermination_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_extermination = yes
+				}
 			}
 		}
 	}
@@ -162,16 +1238,93 @@ staid_archetype_candidate_gestalt_growth = {
 	OR = {
 		staid_archetype_hard_gestalt_growth = yes
 		AND = {
-			NOR = {
-				staid_archetype_hard_defensive = yes
-				staid_archetype_hard_research = yes
-				staid_archetype_hard_diplomatic = yes
-				staid_archetype_hard_conquest = yes
+			staid_archetype_any_hard = no
+			OR = {
+				staid_archetype_strong_gestalt_growth_at_least_1 = yes
 			}
 			OR = {
-				is_hive_empire = yes
-				is_machine_empire = yes
-				is_wilderness_empire = yes
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_gestalt_growth = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_gestalt_growth = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_research = yes
+					staid_archetype_strong_research_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_research = yes
+					staid_archetype_strong_research_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_research = yes
+					staid_archetype_supporting_research_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_research = yes
+					staid_archetype_strong_research_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_research = yes
+					staid_archetype_supporting_research_ge_gestalt_growth = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_gestalt_growth = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_gestalt_growth = no
+				}
+				AND = {
+					staid_archetype_strong_gestalt_growth_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_gestalt_growth = yes
+				}
 			}
 		}
 	}
@@ -181,15 +1334,88 @@ staid_archetype_candidate_defensive = {
 	OR = {
 		staid_archetype_hard_defensive = yes
 		AND = {
-			NOR = {
-				staid_archetype_hard_research = yes
-				staid_archetype_hard_diplomatic = yes
-				staid_archetype_hard_conquest = yes
-			}
-			has_federator_personality = no
+			staid_archetype_any_hard = no
 			OR = {
-				has_ai_personality_behaviour = isolationist
-				is_pacifist = yes
+				staid_archetype_strong_defensive_at_least_1 = yes
+				staid_archetype_supporting_defensive_at_least_1 = yes
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_defensive_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_defensive = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_defensive_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_defensive = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_defensive_ge_research = yes
+					staid_archetype_strong_research_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_research = yes
+					staid_archetype_strong_research_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_research = yes
+					staid_archetype_supporting_research_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_research = yes
+					staid_archetype_strong_research_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_research = yes
+					staid_archetype_supporting_research_ge_defensive = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_defensive_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_defensive = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_defensive_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_defensive = no
+				}
+				AND = {
+					staid_archetype_strong_defensive_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_defensive = yes
+				}
 			}
 		}
 	}
@@ -199,20 +1425,82 @@ staid_archetype_candidate_research = {
 	OR = {
 		staid_archetype_hard_research = yes
 		AND = {
-			NOR = {
-				staid_archetype_hard_diplomatic = yes
-				staid_archetype_hard_conquest = yes
-			}
-			has_federator_personality = no
-			NOR = {
-				has_ai_personality_behaviour = conqueror
-				has_ai_personality_behaviour = subjugator
-				has_ai_personality_behaviour = dominator
+			staid_archetype_any_hard = no
+			OR = {
+				staid_archetype_strong_research_at_least_1 = yes
+				staid_archetype_supporting_research_at_least_1 = yes
 			}
 			OR = {
-				has_valid_civic = civic_technocracy
-				has_ethic = ethic_materialist
-				has_ethic = ethic_fanatic_materialist
+				AND = {
+					staid_archetype_strong_research_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_research = no
+				}
+				AND = {
+					staid_archetype_strong_research_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_research = yes
+					staid_archetype_supporting_research_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_research = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_research_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_research = no
+				}
+				AND = {
+					staid_archetype_strong_research_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_research = yes
+					staid_archetype_supporting_research_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_research = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_research_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_research = no
+				}
+				AND = {
+					staid_archetype_strong_research_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_research = yes
+					staid_archetype_supporting_research_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_research = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_research_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_research = no
+				}
+				AND = {
+					staid_archetype_strong_research_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_research = yes
+					staid_archetype_supporting_research_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_research = no
+				}
+				AND = {
+					staid_archetype_strong_research_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_research = yes
+					staid_archetype_supporting_research_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_research = yes
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_research_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_research = no
+				}
+				AND = {
+					staid_archetype_strong_research_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_research = yes
+					staid_archetype_supporting_research_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_research = no
+				}
+				AND = {
+					staid_archetype_strong_research_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_research = yes
+					staid_archetype_supporting_research_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_research = yes
+				}
 			}
 		}
 	}
@@ -222,19 +1510,76 @@ staid_archetype_candidate_diplomatic = {
 	OR = {
 		staid_archetype_hard_diplomatic = yes
 		AND = {
-			staid_archetype_hard_conquest = no
-			NOR = {
-				has_ai_personality_behaviour = conqueror
+			staid_archetype_any_hard = no
+			OR = {
+				staid_archetype_strong_diplomatic_at_least_1 = yes
+				staid_archetype_supporting_diplomatic_at_least_1 = yes
 			}
 			OR = {
-				has_federator_personality = yes
-				has_ai_personality_behaviour = liberator
-				has_ai_personality_behaviour = multispecies
-				has_ai_personality_behaviour = uplifter
-				has_ethic = ethic_xenophile
-				has_ethic = ethic_fanatic_xenophile
-				has_ethic = ethic_egalitarian
-				has_ethic = ethic_fanatic_egalitarian
+				AND = {
+					staid_archetype_strong_diplomatic_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_diplomatic = no
+				}
+				AND = {
+					staid_archetype_strong_diplomatic_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_diplomatic = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_diplomatic = no
+				}
+				AND = {
+					staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_diplomatic = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_diplomatic_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_diplomatic = no
+				}
+				AND = {
+					staid_archetype_strong_diplomatic_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_diplomatic = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_diplomatic_ge_research = yes
+					staid_archetype_strong_research_ge_diplomatic = no
+				}
+				AND = {
+					staid_archetype_strong_diplomatic_ge_research = yes
+					staid_archetype_strong_research_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_research = yes
+					staid_archetype_supporting_research_ge_diplomatic = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_diplomatic_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_diplomatic = no
+				}
+				AND = {
+					staid_archetype_strong_diplomatic_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_diplomatic = no
+				}
+				AND = {
+					staid_archetype_strong_diplomatic_ge_conquest = yes
+					staid_archetype_strong_conquest_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_diplomatic = yes
+				}
 			}
 		}
 	}
@@ -243,16 +1588,73 @@ staid_archetype_candidate_diplomatic = {
 staid_archetype_candidate_conquest = {
 	OR = {
 		staid_archetype_hard_conquest = yes
-		has_ai_personality_behaviour = conqueror
-		has_ai_personality_behaviour = subjugator
-		has_ai_personality_behaviour = dominator
-		has_ai_personality_behaviour = propagator
-		has_ethic = ethic_militarist
-		has_ethic = ethic_fanatic_militarist
-		has_valid_civic = civic_distinguished_admiralty
-		has_valid_civic = civic_nationalistic_zeal
-		has_valid_civic = civic_barbaric_despoilers
-		has_valid_civic = civic_machine_assimilator
+		AND = {
+			staid_archetype_any_hard = no
+			OR = {
+				staid_archetype_strong_conquest_at_least_1 = yes
+				staid_archetype_supporting_conquest_at_least_1 = yes
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_conquest_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_conquest = no
+				}
+				AND = {
+					staid_archetype_strong_conquest_ge_extermination = yes
+					staid_archetype_strong_extermination_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_extermination = yes
+					staid_archetype_supporting_extermination_ge_conquest = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_conquest_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_conquest = no
+				}
+				AND = {
+					staid_archetype_strong_conquest_ge_gestalt_growth = yes
+					staid_archetype_strong_gestalt_growth_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_gestalt_growth = yes
+					staid_archetype_supporting_gestalt_growth_ge_conquest = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_conquest_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_conquest = no
+				}
+				AND = {
+					staid_archetype_strong_conquest_ge_defensive = yes
+					staid_archetype_strong_defensive_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_defensive = yes
+					staid_archetype_supporting_defensive_ge_conquest = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_conquest_ge_research = yes
+					staid_archetype_strong_research_ge_conquest = no
+				}
+				AND = {
+					staid_archetype_strong_conquest_ge_research = yes
+					staid_archetype_strong_research_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_research = yes
+					staid_archetype_supporting_research_ge_conquest = no
+				}
+			}
+			OR = {
+				AND = {
+					staid_archetype_strong_conquest_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_conquest = no
+				}
+				AND = {
+					staid_archetype_strong_conquest_ge_diplomatic = yes
+					staid_archetype_strong_diplomatic_ge_conquest = yes
+					staid_archetype_supporting_conquest_ge_diplomatic = yes
+					staid_archetype_supporting_diplomatic_ge_conquest = no
+				}
+			}
+		}
 	}
 }
 
@@ -265,55 +1667,30 @@ staid_archetype_extermination = {
 staid_archetype_gestalt_growth = {
 	staid_archetype_eligible_country = yes
 	staid_archetype_identity_conflict = no
-	NOR = {
-		staid_archetype_candidate_extermination = yes
-	}
 	staid_archetype_candidate_gestalt_growth = yes
 }
 
 staid_archetype_defensive = {
 	staid_archetype_eligible_country = yes
 	staid_archetype_identity_conflict = no
-	NOR = {
-		staid_archetype_candidate_extermination = yes
-		staid_archetype_candidate_gestalt_growth = yes
-	}
 	staid_archetype_candidate_defensive = yes
 }
 
 staid_archetype_research = {
 	staid_archetype_eligible_country = yes
 	staid_archetype_identity_conflict = no
-	NOR = {
-		staid_archetype_candidate_extermination = yes
-		staid_archetype_candidate_gestalt_growth = yes
-		staid_archetype_candidate_defensive = yes
-	}
 	staid_archetype_candidate_research = yes
 }
 
 staid_archetype_diplomatic = {
 	staid_archetype_eligible_country = yes
 	staid_archetype_identity_conflict = no
-	NOR = {
-		staid_archetype_candidate_extermination = yes
-		staid_archetype_candidate_gestalt_growth = yes
-		staid_archetype_candidate_defensive = yes
-		staid_archetype_candidate_research = yes
-	}
 	staid_archetype_candidate_diplomatic = yes
 }
 
 staid_archetype_conquest = {
 	staid_archetype_eligible_country = yes
 	staid_archetype_identity_conflict = no
-	NOR = {
-		staid_archetype_candidate_extermination = yes
-		staid_archetype_candidate_gestalt_growth = yes
-		staid_archetype_candidate_defensive = yes
-		staid_archetype_candidate_research = yes
-		staid_archetype_candidate_diplomatic = yes
-	}
 	staid_archetype_candidate_conquest = yes
 }
 

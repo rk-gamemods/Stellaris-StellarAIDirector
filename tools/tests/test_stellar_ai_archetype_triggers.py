@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+import csv
 import inspect
+import re
 import tempfile
 import unittest
-from collections import Counter
-from itertools import combinations
 from pathlib import Path
 from unittest import mock
 
@@ -19,7 +19,10 @@ from tools.stellar_ai_director_lib import (
     iter_assignments,
     parse_pdx,
 )
-from tools.stellar_ai_archetype_triggers import render_archetype_triggers
+from tools.stellar_ai_archetype_triggers import (
+    _evidence_assignments,
+    render_archetype_triggers,
+)
 from tools.stellar_ai_nation_model import (
     ARCHETYPE_PRECEDENCE,
     OUTSIDE_PRIMARY_PERSONALITIES,
@@ -27,10 +30,13 @@ from tools.stellar_ai_nation_model import (
     PRIMARY_PERSONALITY_GROUPS,
     REVIEWED_444_PERSONALITY_IDS,
     Archetype,
-    _ASCENSION_PERK_MARKERS,
-    _BEHAVIOR_MARKERS,
-    _CIVIC_MARKERS,
-    _ETHIC_MARKERS,
+    ClassificationStatus,
+    EvidenceStrength,
+    NationIdentity,
+    PersonalitySource,
+    ResolvedPersonalityProfile,
+    TriState,
+    classify_nation,
 )
 
 
@@ -42,6 +48,9 @@ ARTIFACT = (
     / "common"
     / "scripted_triggers"
     / "zzzz_staid_21_nation_archetype_triggers.txt"
+)
+ARCHETYPE_CASES = (
+    ROOT / "research" / "stellar-ai" / "stellar-ai-director-nation-archetype-cases.csv"
 )
 PRIMARY_ARCHETYPES = tuple(
     archetype
@@ -57,6 +66,135 @@ def atom_value(assignment: PDXAssignment) -> str:
     if not isinstance(assignment.value, PDXAtom):
         raise AssertionError(f"expected scalar assignment for {assignment.key}")
     return assignment.value.value
+
+
+def _tokens(value: str | None) -> tuple[str, ...]:
+    return tuple(token for token in (value or "").split("|") if token)
+
+
+def _optional(value: str | None) -> str | None:
+    return value or None
+
+
+def _identity_from_row(row: dict[str, str]) -> NationIdentity:
+    behaviors = _tokens(row.get("behaviors"))
+    personality = None
+    if behaviors:
+        personality = ResolvedPersonalityProfile(
+            behaviors=behaviors,
+            source=PersonalitySource(row["personality_source"]),
+            source_ref=row["source_ref"],
+        )
+    return NationIdentity(
+        country_type=row["country_type"],
+        personality_id=_optional(row.get("personality_id")),
+        ethics=_tokens(row.get("ethics")),
+        civics=_tokens(row.get("civics")),
+        ascension_perks=_tokens(row.get("ascension_perks")),
+        authority=_optional(row.get("authority")),
+        government=_optional(row.get("government")),
+        origin=_optional(row.get("origin")),
+        is_nomadic=TriState(row["is_nomadic"]),
+        is_wilderness=TriState(row["is_wilderness"]),
+        personality=personality,
+    )
+
+
+class _TriggerEvaluator:
+    """Evaluate the generated identity-only subset against one H08a identity."""
+
+    def __init__(self, top: dict[str, PDXAtom | PDXBlock], identity: NationIdentity):
+        self.top = top
+        self.identity = identity
+        self.cache: dict[str, bool] = {}
+
+    def trigger(self, name: str) -> bool:
+        if name not in self.cache:
+            value = self.top[name]
+            if not isinstance(value, PDXBlock):
+                raise AssertionError(f"expected trigger block for {name}")
+            self.cache[name] = self.block(value)
+        return self.cache[name]
+
+    def block(self, block: PDXBlock) -> bool:
+        return all(
+            self.assignment(assignment) for assignment in block_assignments(block)
+        )
+
+    def assignment(self, assignment: PDXAssignment) -> bool:
+        if assignment.key == "calc_true_if":
+            if not isinstance(assignment.value, PDXBlock):
+                raise AssertionError("expected calc_true_if block")
+            items = assignment.value.items
+            if len(items) < 3 or not all(
+                isinstance(item, PDXAtom) for item in items[:3]
+            ):
+                raise AssertionError("malformed calc_true_if amount clause")
+            amount_key, comparator, amount_value = (
+                item.value for item in items[:3] if isinstance(item, PDXAtom)
+            )
+            if amount_key != "amount" or comparator != ">=":
+                raise AssertionError("unsupported calc_true_if comparator")
+            conditions = items[3:]
+            if not all(isinstance(item, PDXAssignment) for item in conditions):
+                raise AssertionError("calc_true_if conditions must be assignments")
+            true_count = sum(
+                self.assignment(item)
+                for item in conditions
+                if isinstance(item, PDXAssignment)
+            )
+            return true_count >= int(amount_value)
+
+        if assignment.key in {"OR", "AND", "NOR", "NOT"}:
+            if not isinstance(assignment.value, PDXBlock):
+                raise AssertionError(f"expected block for {assignment.key}")
+            values = [
+                self.assignment(child) for child in block_assignments(assignment.value)
+            ]
+            if assignment.key == "OR":
+                return any(values)
+            if assignment.key == "AND":
+                return all(values)
+            if assignment.key == "NOR":
+                return not any(values)
+            return not all(values)
+
+        expected = atom_value(assignment)
+        if assignment.key in self.top:
+            return self.trigger(assignment.key) is (expected == "yes")
+        actual = self.predicate(assignment.key, expected)
+        return actual
+
+    def predicate(self, key: str, expected: str) -> bool:
+        identity = self.identity
+        if key == "always":
+            return expected == "yes"
+        if key == "is_country_type":
+            return identity.country_type == expected
+        if key == "is_nomadic":
+            actual = identity.is_nomadic is TriState.TRUE
+            return actual is (expected == "yes")
+        if key == "is_wilderness_empire":
+            actual = identity.is_wilderness is TriState.TRUE
+            return actual is (expected == "yes")
+        if key == "has_ai_personality":
+            return identity.personality_id == expected
+        if key == "has_ethic":
+            return expected in identity.ethics
+        if key == "has_valid_civic":
+            return expected in identity.civics
+        if key == "has_ascension_perk":
+            return expected in identity.ascension_perks
+        if key == "has_authority":
+            return identity.authority == expected
+        if key == "has_government":
+            return identity.government == expected
+        if key == "has_origin":
+            return identity.origin == expected
+        if key == "has_ai_personality_behaviour":
+            behaviors = identity.personality.behaviors if identity.personality else ()
+            return expected in behaviors
+        raise AssertionError(f"unsupported identity predicate: {key} = {expected}")
 
 
 class StellarAiArchetypeTriggerTests(unittest.TestCase):
@@ -104,39 +242,26 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
             rendered_personalities.isdisjoint(OUTSIDE_PRIMARY_PERSONALITIES)
         )
 
-    def test_hard_conflict_trigger_contains_every_pair_once(self) -> None:
+    def test_hard_conflict_counts_distinct_hard_archetypes_once(self) -> None:
         conflict = self.top["staid_archetype_identity_conflict"]
         self.assertIsInstance(conflict, PDXBlock)
-        or_assignment = block_assignments(conflict, "OR")
-        self.assertEqual(len(or_assignment), 1)
-        self.assertIsInstance(or_assignment[0].value, PDXBlock)
-        pair_blocks = block_assignments(or_assignment[0].value, "AND")
-        actual_pairs = {
-            frozenset(
-                assignment.key
-                for assignment in block_assignments(pair.value)
-                if assignment.key.startswith("staid_archetype_hard_")
-            )
-            for pair in pair_blocks
-            if isinstance(pair.value, PDXBlock)
-        }
+        calc_assignments = block_assignments(conflict, "calc_true_if")
+        self.assertEqual(len(calc_assignments), 1)
+        calc = calc_assignments[0].value
+        self.assertIsInstance(calc, PDXBlock)
+        amount_tokens = [
+            item.value for item in calc.items[:3] if isinstance(item, PDXAtom)
+        ]
+        self.assertEqual(amount_tokens, ["amount", ">=", "2"])
         hard_names = tuple(
             f"staid_archetype_hard_{archetype.value}"
             for archetype in PRIMARY_ARCHETYPES
         )
-        expected_pairs = {frozenset(pair) for pair in combinations(hard_names, 2)}
-        self.assertEqual(actual_pairs, expected_pairs)
-        self.assertEqual(len(pair_blocks), len(expected_pairs))
-        for pair in pair_blocks:
-            self.assertIsInstance(pair.value, PDXBlock)
-            references = block_assignments(pair.value)
-            self.assertEqual(len(references), 2)
-            self.assertTrue(
-                all(atom_value(reference) == "yes" for reference in references)
-            )
+        references = block_assignments(calc)
+        self.assertEqual([reference.key for reference in references], list(hard_names))
+        self.assertTrue(all(atom_value(reference) == "yes" for reference in references))
 
-    def test_primary_precedence_is_candidate_based_and_mutually_exclusive(self) -> None:
-        preceding_candidates: list[str] = []
+    def test_public_primaries_reference_only_the_exact_winner_candidate(self) -> None:
         for archetype in PRIMARY_ARCHETYPES:
             name = f"staid_archetype_{archetype.value}"
             block = self.top[name]
@@ -151,21 +276,15 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
             selected = block_assignments(block, candidate)
             self.assertEqual(len(selected), 1)
             self.assertEqual(atom_value(selected[0]), "yes")
-
-            nor_assignments = block_assignments(block, "NOR")
-            if not preceding_candidates:
-                self.assertEqual(nor_assignments, [])
-            else:
-                self.assertEqual(len(nor_assignments), 1)
-                self.assertIsInstance(nor_assignments[0].value, PDXBlock)
-                exclusions = block_assignments(nor_assignments[0].value)
-                excluded = {assignment.key for assignment in exclusions}
-                self.assertEqual(excluded, set(preceding_candidates))
-                self.assertEqual(len(exclusions), len(preceding_candidates))
-                self.assertTrue(
-                    all(atom_value(exclusion) == "yes" for exclusion in exclusions)
-                )
-            preceding_candidates.append(candidate)
+            assignments = block_assignments(block)
+            self.assertEqual(
+                [assignment.key for assignment in assignments],
+                [
+                    "staid_archetype_eligible_country",
+                    "staid_archetype_identity_conflict",
+                    candidate,
+                ],
+            )
 
     def test_balanced_is_eligible_fail_closed_fallback(self) -> None:
         balanced = self.top["staid_archetype_balanced"]
@@ -184,24 +303,100 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
         self.assertTrue(all(atom_value(exclusion) == "yes" for exclusion in exclusions))
         self.assertEqual(len(assignments), 2)
 
-    def test_mixed_diplomatic_conquest_signals_preserve_model_precedence(self) -> None:
-        diplomatic = self.top["staid_archetype_candidate_diplomatic"]
-        self.assertIsInstance(diplomatic, PDXBlock)
-        or_assignment = block_assignments(diplomatic, "OR")
-        self.assertEqual(len(or_assignment), 1)
-        self.assertIsInstance(or_assignment[0].value, PDXBlock)
-        fallback = block_assignments(or_assignment[0].value, "AND")
-        self.assertEqual(len(fallback), 1)
-        self.assertIsInstance(fallback[0].value, PDXBlock)
-        veto = block_assignments(fallback[0].value, "NOR")
-        self.assertEqual(len(veto), 1)
-        self.assertIsInstance(veto[0].value, PDXBlock)
-        vetoed_behaviors = {
-            atom_value(assignment)
-            for assignment in block_assignments(veto[0].value)
-            if assignment.key == "has_ai_personality_behaviour"
+    def selected_primary(self, identity: NationIdentity) -> Archetype | None:
+        evaluator = _TriggerEvaluator(self.top, identity)
+        selected = [
+            archetype
+            for archetype in ARCHETYPE_PRECEDENCE
+            if evaluator.trigger(f"staid_archetype_{archetype.value}")
+        ]
+        self.assertLessEqual(len(selected), 1, identity)
+        return selected[0] if selected else None
+
+    def assert_model_primary_parity(self, identity: NationIdentity) -> None:
+        classification = classify_nation(identity)
+        if classification.status is ClassificationStatus.EXCLUDED:
+            expected = None
+        elif classification.status is ClassificationStatus.CONFLICT:
+            expected = Archetype.BALANCED
+        else:
+            expected = classification.primary
+        self.assertEqual(self.selected_primary(identity), expected, identity)
+
+    def test_all_h08a_identity_fixtures_select_the_same_neutralized_primary(
+        self,
+    ) -> None:
+        with ARCHETYPE_CASES.open(encoding="utf-8", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        self.assertEqual(len(rows), 30)
+        for row in rows:
+            with self.subTest(case_id=row["case_id"]):
+                self.assert_model_primary_parity(_identity_from_row(row))
+
+    def test_adversarial_mixed_strength_identities_match_h08a_ranking(self) -> None:
+        cases = {
+            "strong_beats_earlier_supporting": NationIdentity(
+                ethics=("ethic_fanatic_militarist",),
+                personality=ResolvedPersonalityProfile(behaviors=("purger",)),
+            ),
+            "two_strong_beat_one_earlier_strong": NationIdentity(
+                ethics=("ethic_pacifist", "ethic_fanatic_materialist"),
+                civics=("civic_technocracy",),
+            ),
+            "supporting_breaks_equal_strong_toward_later": NationIdentity(
+                ethics=("ethic_militarist",),
+                civics=(
+                    "civic_technocracy",
+                    "civic_distinguished_admiralty",
+                ),
+            ),
+            "precedence_breaks_exact_tier_tie": NationIdentity(
+                civics=(
+                    "civic_technocracy",
+                    "civic_distinguished_admiralty",
+                ),
+            ),
+            "multiple_supporting_beat_earlier_single_support": NationIdentity(
+                personality=ResolvedPersonalityProfile(
+                    behaviors=("liberator", "dominator", "propagator")
+                ),
+            ),
+            "multiple_diplomatic_support_beat_later_single_support": NationIdentity(
+                personality=ResolvedPersonalityProfile(
+                    behaviors=("liberator", "uplifter", "dominator")
+                ),
+            ),
+            "gestalt_count_beats_defensive_count": NationIdentity(
+                ethics=("ethic_gestalt_consciousness", "ethic_pacifist"),
+                authority="auth_hive_mind",
+            ),
+            "hard_overrides_many_strong": NationIdentity(
+                ethics=(
+                    "ethic_fanatic_pacifist",
+                    "ethic_fanatic_militarist",
+                    "ethic_fanatic_authoritarian",
+                ),
+                civics=(
+                    "civic_distinguished_admiralty",
+                    "civic_nationalistic_zeal",
+                    "civic_barbaric_despoilers",
+                ),
+                origin="origin_hegemon",
+            ),
+            "hard_conflict_fails_neutral": NationIdentity(
+                civics=("civic_fanatic_purifiers", "civic_inwards_perfection")
+            ),
+            "unknown_identity_falls_back_neutral": NationIdentity(),
+            "nomadic_hard_identity_is_excluded": NationIdentity(
+                personality_id="fanatic_purifiers",
+                is_nomadic=TriState.TRUE,
+            ),
+            "diplomatic_origin_signal": NationIdentity(origin="origin_common_ground"),
+            "conquest_origin_signal": NationIdentity(origin="origin_hegemon"),
         }
-        self.assertEqual(vetoed_behaviors, {"conqueror"})
+        for name, identity in cases.items():
+            with self.subTest(case=name):
+                self.assert_model_primary_parity(identity)
 
     def test_trigger_graph_is_acyclic_and_has_bounded_depth(self) -> None:
         names = set(self.top)
@@ -230,182 +425,138 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
                 )
             return depths[name]
 
-        self.assertLessEqual(max(depth(name) for name in graph), 4)
+        self.assertLessEqual(max(depth(name) for name in graph), 5)
 
-    def test_every_trigger_reference_and_fixed_boolean_has_exact_polarity(self) -> None:
-        names = set(self.top)
-        actual_references = Counter(
-            (owner, assignment.key, atom_value(assignment))
-            for owner, block in self.top.items()
-            for assignment in iter_assignments(block)
-            if assignment.key in names
-        )
-        expected_references: Counter[tuple[str, str, str]] = Counter()
-
-        hard_names = tuple(
-            f"staid_archetype_hard_{archetype.value}"
+    def test_count_circuit_shape_and_reference_polarity_are_exact(self) -> None:
+        evidence = _evidence_assignments(PRIMARY_ARCHETYPES)
+        expected_thresholds = {
+            f"staid_archetype_{strength.value}_{archetype.value}_at_least_{count}"
             for archetype in PRIMARY_ARCHETYPES
-        )
-        for left, right in combinations(hard_names, 2):
-            expected_references[("staid_archetype_identity_conflict", left, "yes")] += 1
-            expected_references[
-                ("staid_archetype_identity_conflict", right, "yes")
-            ] += 1
-
-        for index, archetype in enumerate(PRIMARY_ARCHETYPES):
-            candidate = f"staid_archetype_candidate_{archetype.value}"
-            expected_references[(candidate, hard_names[index], "yes")] += 1
-            if archetype is Archetype.EXTERMINATION:
-                excluded_hard = hard_names[1:]
-            elif archetype is Archetype.GESTALT_GROWTH:
-                excluded_hard = hard_names[2:]
-            elif archetype is Archetype.DEFENSIVE:
-                excluded_hard = hard_names[3:]
-            elif archetype is Archetype.RESEARCH:
-                excluded_hard = hard_names[4:]
-            elif archetype is Archetype.DIPLOMATIC:
-                expected_references[(candidate, hard_names[-1], "no")] += 1
-                excluded_hard = ()
-            else:
-                excluded_hard = ()
-            for hard_name in excluded_hard:
-                expected_references[(candidate, hard_name, "yes")] += 1
-
-        preceding_candidates: list[str] = []
-        for archetype in PRIMARY_ARCHETYPES:
-            primary = f"staid_archetype_{archetype.value}"
-            candidate = f"staid_archetype_candidate_{archetype.value}"
-            expected_references[
-                (primary, "staid_archetype_eligible_country", "yes")
-            ] += 1
-            expected_references[
-                (primary, "staid_archetype_identity_conflict", "no")
-            ] += 1
-            expected_references[(primary, candidate, "yes")] += 1
-            for preceding in preceding_candidates:
-                expected_references[(primary, preceding, "yes")] += 1
-            preceding_candidates.append(candidate)
-
-        expected_references[
-            ("staid_archetype_balanced", "staid_archetype_eligible_country", "yes")
-        ] += 1
-        for primary in PRIMARY_TRIGGER_NAMES[:-1]:
-            expected_references[("staid_archetype_balanced", primary, "yes")] += 1
-
-        self.assertEqual(actual_references, expected_references)
-
-        fixed_keys = {
-            "is_country_type",
-            "is_nomadic",
-            "is_hive_empire",
-            "is_machine_empire",
-            "is_wilderness_empire",
-            "is_pacifist",
-            "has_federator_personality",
+            for strength in (EvidenceStrength.STRONG, EvidenceStrength.SUPPORTING)
+            for count in range(1, len(evidence[(archetype, strength)]) + 1)
         }
-        actual_fixed = Counter(
-            (owner, assignment.key, atom_value(assignment))
-            for owner, block in self.top.items()
-            for assignment in iter_assignments(block)
-            if assignment.key in fixed_keys
-        )
-        expected_fixed = Counter(
+        actual_thresholds = {
+            name
+            for name in self.top
+            if re.fullmatch(
+                r"staid_archetype_(?:strong|supporting)_.+_at_least_\d+", name
+            )
+        }
+        self.assertEqual(actual_thresholds, expected_thresholds)
+
+        for archetype in PRIMARY_ARCHETYPES:
+            for strength in (
+                EvidenceStrength.STRONG,
+                EvidenceStrength.SUPPORTING,
+            ):
+                markers = evidence[(archetype, strength)]
+                for count in range(1, len(markers) + 1):
+                    name = (
+                        f"staid_archetype_{strength.value}_{archetype.value}"
+                        f"_at_least_{count}"
+                    )
+                    threshold = self.top[name]
+                    self.assertIsInstance(threshold, PDXBlock)
+                    calc_assignments = block_assignments(threshold, "calc_true_if")
+                    self.assertEqual(len(calc_assignments), 1)
+                    calc = calc_assignments[0].value
+                    self.assertIsInstance(calc, PDXBlock)
+                    amount_tokens = [
+                        item.value
+                        for item in calc.items[:3]
+                        if isinstance(item, PDXAtom)
+                    ]
+                    self.assertEqual(amount_tokens, ["amount", ">=", str(count)])
+                    conditions = block_assignments(calc)
+                    rendered_conditions = [
+                        f"{condition.key} = {atom_value(condition)}"
+                        for condition in conditions
+                    ]
+                    self.assertEqual(rendered_conditions, list(markers))
+
+        expected_ge = {
+            f"staid_archetype_{strength.value}_{left.value}_ge_{right.value}"
+            for strength in (EvidenceStrength.STRONG, EvidenceStrength.SUPPORTING)
+            for left in PRIMARY_ARCHETYPES
+            for right in PRIMARY_ARCHETYPES
+            if left is not right
+        }
+        actual_ge = {
+            name
+            for name in self.top
+            if re.fullmatch(r"staid_archetype_(?:strong|supporting)_.+_ge_.+", name)
+        }
+        self.assertEqual(actual_ge, expected_ge)
+
+        for name in expected_ge:
+            block = self.top[name]
+            self.assertIsInstance(block, PDXBlock)
+            for reference in iter_assignments(block):
+                if reference.key in self.top:
+                    self.assertIn(reference.key, expected_thresholds)
+                    self.assertIn(atom_value(reference), {"yes", "no"})
+
+        any_hard = self.top["staid_archetype_any_hard"]
+        self.assertIsInstance(any_hard, PDXBlock)
+        hard_references = [
+            assignment
+            for assignment in iter_assignments(any_hard)
+            if assignment.key.startswith("staid_archetype_hard_")
+        ]
+        self.assertEqual(
+            {assignment.key for assignment in hard_references},
             {
-                ("staid_archetype_eligible_country", "is_country_type", "default"): 1,
-                ("staid_archetype_eligible_country", "is_nomadic", "no"): 1,
-                (
-                    "staid_archetype_candidate_gestalt_growth",
-                    "is_hive_empire",
-                    "yes",
-                ): 1,
-                (
-                    "staid_archetype_candidate_gestalt_growth",
-                    "is_machine_empire",
-                    "yes",
-                ): 1,
-                (
-                    "staid_archetype_candidate_gestalt_growth",
-                    "is_wilderness_empire",
-                    "yes",
-                ): 1,
-                ("staid_archetype_candidate_defensive", "is_pacifist", "yes"): 1,
-                (
-                    "staid_archetype_candidate_defensive",
-                    "has_federator_personality",
-                    "no",
-                ): 1,
-                (
-                    "staid_archetype_candidate_research",
-                    "has_federator_personality",
-                    "no",
-                ): 1,
-                (
-                    "staid_archetype_candidate_diplomatic",
-                    "has_federator_personality",
-                    "yes",
-                ): 1,
-            }
+                f"staid_archetype_hard_{archetype.value}"
+                for archetype in PRIMARY_ARCHETYPES
+            },
         )
-        self.assertEqual(actual_fixed, expected_fixed)
+        self.assertTrue(
+            all(atom_value(reference) == "yes" for reference in hard_references)
+        )
+
+        for archetype in PRIMARY_ARCHETYPES:
+            candidate = self.top[f"staid_archetype_candidate_{archetype.value}"]
+            self.assertIsInstance(candidate, PDXBlock)
+            hard = [
+                assignment
+                for assignment in iter_assignments(candidate)
+                if assignment.key == f"staid_archetype_hard_{archetype.value}"
+            ]
+            any_hard_references = [
+                assignment
+                for assignment in iter_assignments(candidate)
+                if assignment.key == "staid_archetype_any_hard"
+            ]
+            self.assertEqual([atom_value(item) for item in hard], ["yes"])
+            self.assertEqual([atom_value(item) for item in any_hard_references], ["no"])
 
     def test_artifact_uses_only_identity_predicates_and_known_markers(self) -> None:
         names = set(self.top)
-        allowed_keys = names | {
-            "OR",
-            "AND",
-            "NOR",
-            "NOT",
-            "is_country_type",
-            "is_nomadic",
-            "has_ai_personality",
-            "has_ai_personality_behaviour",
-            "has_valid_civic",
-            "has_ascension_perk",
-            "has_ethic",
-            "is_hive_empire",
-            "is_machine_empire",
-            "is_wilderness_empire",
-            "has_federator_personality",
-            "is_pacifist",
-        }
+        evidence = _evidence_assignments(PRIMARY_ARCHETYPES)
+        projected_values: dict[str, set[str]] = {}
+        for assignments in evidence.values():
+            for assignment in assignments:
+                predicate, value = assignment.split(" = ", 1)
+                projected_values.setdefault(predicate, set()).add(value)
+
+        allowed_keys = (
+            names
+            | set(projected_values)
+            | {
+                "OR",
+                "AND",
+                "NOR",
+                "NOT",
+                "calc_true_if",
+                "always",
+                "is_country_type",
+                "is_nomadic",
+            }
+        )
         assignment_keys = {assignment.key for assignment in iter_assignments(self.root)}
         self.assertEqual(assignment_keys - allowed_keys, set())
 
-        required_values = {
-            "has_ai_personality": set().union(*PRIMARY_PERSONALITY_GROUPS.values()),
-            "has_ai_personality_behaviour": set(_BEHAVIOR_MARKERS),
-            "has_valid_civic": {
-                "civic_fanatic_purifiers",
-                "civic_hive_devouring_swarm",
-                "civic_machine_terminator",
-                "civic_scorched_earth",
-                "civic_hive_scorched_earth",
-                "civic_inwards_perfection",
-                "civic_technocracy",
-                "civic_distinguished_admiralty",
-                "civic_nationalistic_zeal",
-                "civic_barbaric_despoilers",
-                "civic_machine_assimilator",
-            },
-            "has_ascension_perk": {"ap_become_the_crisis"},
-            "has_ethic": {
-                "ethic_fanatic_pacifist",
-                "ethic_materialist",
-                "ethic_fanatic_materialist",
-                "ethic_xenophile",
-                "ethic_fanatic_xenophile",
-                "ethic_egalitarian",
-                "ethic_fanatic_egalitarian",
-                "ethic_militarist",
-                "ethic_fanatic_militarist",
-            },
-        }
-        self.assertTrue(required_values["has_valid_civic"].issubset(_CIVIC_MARKERS))
-        self.assertTrue(
-            required_values["has_ascension_perk"].issubset(_ASCENSION_PERK_MARKERS)
-        )
-        self.assertTrue(required_values["has_ethic"].issubset(_ETHIC_MARKERS))
-        for predicate, expected in required_values.items():
+        for predicate, expected in projected_values.items():
             actual = {
                 atom_value(assignment)
                 for assignment in iter_assignments(self.root)

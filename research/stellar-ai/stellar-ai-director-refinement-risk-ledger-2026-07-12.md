@@ -822,3 +822,78 @@ Revert H08c independently by removing the two additive modifier families, the
 focused renderer/generator/tests, and this ledger section. H08a's offline model,
 H08b's identity-only triggers, and all earlier expansion/economic recovery
 slices remain intact.
+
+## H08d — Generated classifier parity for mixed-strength identity evidence
+
+Status: implemented as an identity-only correction to the H08b trigger graph.
+This slice changes no consumer factor, personality, budget, economic plan,
+event, state, resource, order, claim, war rule, or declaration.
+
+- The production classifier now mirrors H08a's lexicographic evidence model:
+  hard anchors dominate; otherwise strong-marker count dominates supporting
+  count; the original archetype precedence breaks exact ties.
+- Thirty-six native `calc_true_if` helpers count only the finite, source-mapped
+  H08a identity vocabulary. One additional counter detects two-or-more hard
+  archetypes directly. Pairwise greater-than-or-equal helpers then select one
+  deterministic candidate without numeric variables or persistent state.
+- Reviewed Pegasus 4.4.4 personality IDs remain hard anchors. Ethics, civics,
+  ascension perks, authorities, governments, origins, wilderness status, and
+  personality behaviors are projected from the same model tables used by H08a.
+- Every non-balanced public primary has exactly three conditions: eligible
+  default/non-nomadic country, no hard-identity conflict, and its unique
+  candidate. Older preceding-candidate `NOR` chains were removed after the
+  pairwise total order made them redundant, reducing the worst balanced path
+  from 42 candidate evaluations to 12.
+- H08c continues to consume only the unchanged hard-anchor, eligibility, and
+  conflict helpers. The conflict helper is now one six-input `calc_true_if`
+  instead of 15 pairwise branches, reducing its live expansion from 31 checks
+  to seven. No live mod consumer currently calls the expanded public primary
+  graph.
+
+Top five risks:
+
+1. **The generated marker vocabulary can drift from the offline model.** The
+   renderer imports the H08a marker tables directly, rejects duplicate
+   projections, verifies all reviewed personality IDs, and pins the exact
+   Pegasus 4.4.4 personality source hash.
+2. **Count comparisons can select the wrong hybrid archetype.** Tests evaluate
+   all 30 H08a identity fixtures plus 13 adversarial mixed-strength cases,
+   including fanatic-militarist/materialist and multi-signal pacifist research
+   combinations, through both model and generated-trigger semantics.
+3. **A correct classifier can still be too expensive.** `calc_true_if` replaces
+   combinatorial threshold expansion; the graph is acyclic with maximum depth
+   five, contains no country/planet/fleet iterators or pulse hooks, and public
+   primaries avoid redundant candidate chains. The generated artifact remains
+   51,273 bytes and requires runtime profiling before widespread use.
+4. **Hard conflicts or excluded countries can receive a confident strategy.**
+   Public non-balanced primaries require eligibility and `identity_conflict =
+   no`; balanced is a neutral fallback, while every behavior consumer must
+   retain its own conflict/eligibility gate where a factor is non-neutral.
+5. **Runtime behavior predicates lose offline provenance.** Stellaris exposes
+   the effective personality behavior but cannot distinguish H08a's
+   `save_time_winner_verified` from `current_source_resolved`. Runtime behavior
+   evidence is therefore conservatively supporting; reviewed personality IDs
+   remain the hard source of truth.
+
+Static acceptance:
+
+- The artifact has 118 unique top-level triggers, 37 exact `calc_true_if`
+  counters, no combinatorial threshold branches, no cycles, and maximum
+  reference depth five.
+- Public trigger IDs and all H08c hard/eligibility/conflict helper IDs remain
+  stable. The focused and broad generators share one renderer; focused output
+  is idempotent at SHA-256
+  `DB2CFAF3205063DA9D5CF5FB4ECD1BCBC0774F39C50912E202949F83B96B36BB`.
+- Focused H08a/H08d/H08c tests, parser validation, the static Director
+  validator, compilation, scoped Ruff/format checks, and `git diff --check`
+  must pass. CWTools remains not installed, so local parser/validator evidence
+  is not represented as a CWTools result.
+- Runtime classification behavior and performance remain gameplay/profile
+  questions; no observer run is authorized by this slice.
+
+Rollback boundary:
+
+Revert H08d independently by restoring the prior H08b renderer, focused tests,
+and generated trigger artifact and removing this ledger section. H08a's offline
+model, H08c's hard-anchor consumers, and every earlier gameplay fix remain
+intact.
