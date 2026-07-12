@@ -75,6 +75,47 @@ IDENTITY_STATIC_DEFENSE_PATHS = (
     / "starbase_modules"
     / "zzzz_staid_05_starbase_defense_starbase_modules.txt",
 )
+IDENTITY_SUBJECT_AGREEMENT_ROOT = MOD_ROOT / "common" / "agreement_presets"
+IDENTITY_SUBJECT_AGREEMENT_SOURCES = {
+    "00_agreement_presets.txt": (
+        "zzzz_staid_23_identity_specialist_base_agreement_presets.txt",
+        {
+            "preset_bulwark": "0958a6f04355d5c32ea68bb97a4ad89816270f8f8a058db0340fcbb49d5d3bfb",
+            "preset_scholarium": "1b5eee6266eb96226a03cad74042e92b10165f2658bd78adf0daa3aa81263a0c",
+            "preset_prospectorium": "a81b35bd053f09c125848516180787cdae78bd3651cf0ce157e7466cecdaf24b",
+        },
+    ),
+    "02_agreement_presets_ai_bulwark.txt": (
+        "zzzz_staid_23_identity_specialist_bulwark_ai.txt",
+        {
+            "preset_bulwark_nice_01": "1d0b371bb1bd30b2f96abd800f20ee93478ddddb2c7d1515e2505d6c65d5e8d8",
+            "preset_bulwark_nice_02": "0c77b708c62d3af775b58ebd37a0998fe596e7ac6256da7747ce3379fb465eb7",
+            "preset_bulwark_mean_01": "588839aff76c70955799198d03ecb22ff52317782dca3b895c472f7b94d76415",
+            "preset_bulwark_mean_02": "cb6711171c8be8dbb304904e5ea4427ca90c7b2b33e0b5128227c4a4d6881df7",
+            "preset_bulwark_mean_03": "11fd354bc74439503f40ea9f6ea0b59afb62e28a284640a64258d20e6fe52514",
+        },
+    ),
+    "03_agreement_presets_ai_scholarium.txt": (
+        "zzzz_staid_23_identity_specialist_scholarium_ai.txt",
+        {
+            "preset_scholarium_nice_01": "3705ad064057624416a7729f3b35aff9ad22617d330a5315e77e277af8596ce2",
+            "preset_scholarium_nice_02": "6e2eaa16149ee0e9421d5111476a4480f5aa0ffe8d9921a74a0ee49333f2c386",
+            "preset_scholarium_mean_01": "cc2d654cbb0a52568c16e34a9c4381282a73348c40786d0f53d0dc536ff365e8",
+            "preset_scholarium_mean_02": "42ba1d99e36527cecfd8d51bc81c3168e4cc2f4242753aa750f6ce868a32e23b",
+            "preset_scholarium_mean_03": "3c21728ae6fc286e6bab525a6981d0032bc8c1ed4be1131722b11868e99ba4dc",
+        },
+    ),
+    "04_agreement_presets_ai_prospectorium.txt": (
+        "zzzz_staid_23_identity_specialist_prospectorium_ai.txt",
+        {
+            "preset_prospectorium_nice_01": "da8880302f020094aebdc79a3a4977b718a0c9e41f74927b818ed5c1652121f9",
+            "preset_prospectorium_nice_02": "e89785b22c6988a73a92ef66598a83306ba26aa15c7fcbc91b02c10425bb39e5",
+            "preset_prospectorium_mean_01": "0267cfe4af58ada713378e9090d95aa48e541b81c417a4405e4fa3725aadbca4",
+            "preset_prospectorium_mean_02": "b1aa1b7f04c7f7fe264fb52dd72ee1d0f301b3338d5fe7e6b7bb9d256ff84ea6",
+            "preset_prospectorium_mean_03": "d07a8ffafaaeee98443152fa380615dc8c9831aba009217ad1b8d74edbb8d24d",
+        },
+    ),
+}
 ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     FLEET_ALLOY_BUDGET_PATH,
     TECHNOLOGY_ROUTE_OVERRIDE_PATH,
@@ -374,6 +415,7 @@ ATLAS_COMMON_SURFACES = {
     "technology": "technology",
     "technologies": "technology",
     "ascension_perks": "ascension_perk",
+    "agreement_presets": "agreement_preset",
     "tradition_categories": "tradition_category",
     "traditions": "tradition",
     "megastructures": "megastructure",
@@ -443,6 +485,7 @@ ROUTE_OBJECT_HINTS = {
 
 GENERATED_SURFACE_FOLDERS = {
     "ai_budget": "ai_budget",
+    "agreement_presets": "agreement_preset",
     "ascension_perks": "ascension_perk",
     "component_sets": "component_set",
     "component_tags": "component_tag",
@@ -6407,6 +6450,122 @@ def route_override_file_variables(file_rows: list[dict[str, Any]]) -> list[str]:
             f"{file_rows[0]['generated_file']}: {', '.join(missing)}"
         )
     return [variables[name] for name in sorted(variables)]
+
+
+def identity_subject_agreement_family(object_id: str) -> str:
+    for family in ("bulwark", "scholarium", "prospectorium"):
+        if object_id == f"preset_{family}" or object_id.startswith(
+            f"preset_{family}_"
+        ):
+            return family
+    raise ValueError(f"Unsupported identity specialist preset: {object_id}")
+
+
+def identity_subject_agreement_modifiers(
+    object_id: str,
+    weight_key: str,
+) -> list[str]:
+    """Return bounded evaluator-side identity preferences for one preset weight."""
+
+    family = identity_subject_agreement_family(object_id)
+    archetype = {
+        "bulwark": "defensive",
+        "scholarium": "research",
+        "prospectorium": "gestalt_growth",
+    }[family]
+    if weight_key not in {"overlord_weight", "subject_weight"}:
+        raise ValueError(f"Unsupported specialist preset weight: {weight_key}")
+    if weight_key == "subject_weight" and "_mean_" in object_id:
+        return []
+    common = (
+        "staid_archetype_identity_conflict = no "
+        "staid_archetype_eligible_country = yes "
+        "staid_basic_economy_runway_safe = yes "
+        "staid_survival_mode = no "
+        "staid_recovery_mode = no "
+        "staid_catastrophic_collapse_mode = no "
+        "staid_core_deficit_short_runway = no"
+    )
+    return [
+        f"\t\tmodifier = {{ factor = 1.15 staid_archetype_{archetype} = yes {common} }}",
+        f"\t\tmodifier = {{ factor = 1.05 staid_archetype_lead_secondary_{archetype} = yes {common} }}",
+    ]
+
+
+def identity_subject_agreement_object_text(
+    source_text: str,
+    object_id: str,
+    expected_sha256: str,
+) -> str:
+    block = extract_top_level_object_text(source_text, object_id)
+    actual_sha256 = hashlib.sha256(
+        normalize_text_file_content(block).encode("utf-8")
+    ).hexdigest()
+    if actual_sha256 != expected_sha256:
+        raise ValueError(
+            f"Active specialist preset drifted: {object_id} "
+            f"expected={expected_sha256} actual={actual_sha256}"
+        )
+    for weight_key in ("overlord_weight", "subject_weight"):
+        modifiers = identity_subject_agreement_modifiers(object_id, weight_key)
+        if modifiers:
+            block = append_child_block_clause(
+                block,
+                weight_key,
+                "\n".join(modifiers),
+            )
+    return block
+
+
+def render_identity_subject_agreement_artifacts() -> dict[Path, str]:
+    """Render four fail-closed agreement-preset files without writing them."""
+
+    source_root = STELLARIS_INSTALL_ROOT / "common" / "agreement_presets"
+    artifacts: dict[Path, str] = {}
+    for source_file, (output_file, object_hashes) in (
+        IDENTITY_SUBJECT_AGREEMENT_SOURCES.items()
+    ):
+        source_path = source_root / source_file
+        source_text = read_text(source_path)
+        output_path = IDENTITY_SUBJECT_AGREEMENT_ROOT / output_file
+        rows = [
+            {
+                "source_path": str(source_path),
+                "object_id": object_id,
+                "generated_file": str(output_path),
+            }
+            for object_id in object_hashes
+        ]
+        variables = route_override_file_variables(rows)
+        lines = [
+            "# Generated by tools/generate_stellar_ai_subject_agreements.py.",
+            f"# Full-object, hash-locked copies from common/agreement_presets/{source_file}.",
+            "# Only evaluator-side overlord_weight/subject_weight identity preferences are added.",
+            "# Terms, potential, acceptance, Nomad exclusions, and negative subject weights remain parent-owned.",
+            "",
+        ]
+        if variables:
+            lines.extend(variables)
+            lines.append("")
+        for object_id, expected_sha256 in object_hashes.items():
+            lines.append(f"# source_object_sha256 = {expected_sha256}")
+            lines.append(
+                identity_subject_agreement_object_text(
+                    source_text,
+                    object_id,
+                    expected_sha256,
+                ).rstrip()
+            )
+            lines.append("")
+        rendered = "\n".join(lines).rstrip() + "\n"
+        parse_pdx(rendered)
+        artifacts[output_path] = rendered
+    if len(artifacts) != 4 or sum(
+        len(object_hashes)
+        for _source_file, (_output_file, object_hashes) in IDENTITY_SUBJECT_AGREEMENT_SOURCES.items()
+    ) != 18:
+        raise ValueError("Identity specialist agreement manifest must remain 4 files / 18 objects")
+    return artifacts
 
 
 def strip_optional_absent_planet_classes(block: str, object_names: dict[str, set[str]]) -> str:
