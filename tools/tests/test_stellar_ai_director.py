@@ -90,7 +90,6 @@ from stellar_ai_director_lib import (
     parse_pdx,
     remove_top_level_child_block,
     resource_waste_pressure,
-    research_plan_target_count,
     research_under_curve,
     route_weight_modifiers,
     route_override_evidence_rows,
@@ -353,7 +352,7 @@ class NativeOwnershipRegressionTests(unittest.TestCase):
         parse_file(event_path)
         text = event_path.read_text(encoding="utf-8")
         self.assertIn("id = staid_economy_safety.2", text)
-        self.assertIn("id = staid_economy_safety.4", text)
+        self.assertNotIn("id = staid_economy_safety.4", text)
         for marker in (
             "staid_economy_safety.3",
             "staid_stranded_fleet_warning",
@@ -846,9 +845,12 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             block = extract_top_level_object_text(text, zone_id)
             self.assertIn("additional_ai_weight = {", block)
-            self.assertIn("add = 100000", block)
+            self.assertIn("add = 5", block)
+            self.assertNotIn("add = 100000", block)
             self.assertIn("has_designation = col_research", block)
             self.assertIn("owner = { is_ai = yes }", block)
+            self.assertNotIn("convert_to", block)
+            self.assertNotIn("destroy_trigger", block)
         vanilla_lab = extract_top_level_object_text(
             (STELLARIS_INSTALL_ROOT / "common" / "buildings" / "05_research_buildings.txt").read_text(
                 encoding="utf-8"
@@ -856,6 +858,14 @@ class GeneratedModValidityTests(unittest.TestCase):
             "building_research_lab_1",
         )
         self.assertIn("has_any_research_zone = yes", vanilla_lab)
+        vanilla_city = extract_top_level_object_text(
+            (STELLARIS_INSTALL_ROOT / "common" / "districts" / "00_urban_districts.txt").read_text(
+                encoding="utf-8"
+            ),
+            "district_city",
+        )
+        for slot_id in ("slot_city_government", "slot_city_01", "slot_city_02"):
+            self.assertEqual(vanilla_city.count(slot_id), 1)
 
     def test_descriptor_omits_stellar_ai_dependency_after_standalone_parity(self):
         descriptor = (MOD_ROOT / "descriptor.mod").read_text(encoding="utf-8")
@@ -1706,7 +1716,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         for forbidden in ("declare_war", "create_war", "add_casus_belli", "add_claim"):
             self.assertNotIn(forbidden, text)
 
-    def test_research_buildout_plan_claims_roles_and_blocks_urban_fallback(self):
+    def test_research_buildout_uses_native_quality_weights_and_one_third_soft_cap(self):
         colony_types_path = MOD_ROOT / "common" / "colony_types" / "zzzzz_staid_16_research_buildout_plan.txt"
         events_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
         triggers_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
@@ -1716,58 +1726,57 @@ class GeneratedModValidityTests(unittest.TestCase):
         colony_types = colony_types_path.read_text(encoding="utf-8")
         events = events_path.read_text(encoding="utf-8")
         triggers = triggers_path.read_text(encoding="utf-8")
-        city = extract_top_level_object_text(colony_types, "col_city")
         research = extract_top_level_object_text(colony_types, "col_research")
-        self.assertIn("owner = { is_ai = no }", city)
-        self.assertIn("NOT = { has_carrier_flag = staid_research_plan_claimed }", city)
-        self.assertIn("owner = { is_ai = no }", research)
-        self.assertIn("has_carrier_flag = staid_research_plan_claimed", research)
-        self.assertIn("add = 100000", research)
-        self.assertIn("A plan claim is a designation commitment", research)
-        for obsolete_planet_flag_operation in (
-            "has_planet_flag = staid_research_plan_claimed",
-            "set_planet_flag = staid_research_plan_claimed",
-            "remove_planet_flag = staid_research_plan_claimed",
-        ):
-            self.assertNotIn(obsolete_planet_flag_operation, colony_types + events + triggers)
         for marker in (
-            "country_event = { id = staid_economy_safety.4 }",
-            "num_owned_planets >= 3",
-            "count < 1",
-            "num_owned_planets >= 5",
-            "trigger = count_owned_planet",
-            "variable = staid_research_plan_target",
-            "divide_variable = { which = staid_research_plan_target value = 2 }",
-            "floor_variable = staid_research_plan_target",
-            "subtract_variable = {",
-            "count = staid_research_plan_target",
-            "factor = 12",
-            "has_designation = col_city",
-            "staid_research_construction_priority_ready = yes",
-            "set_carrier_flag = staid_research_plan_claimed",
+            "add = 15",
+            "staid_research_role_candidate = yes",
+            "factor = 0.2",
+            "staid_research_role_reachable = no",
+            "owner = { staid_research_designation_under_soft_cap = no }",
         ):
-            self.assertIn(marker, events)
-        for invalid_nested_planet_scope in (
-            "planet = { staid_research_plan_candidate = yes }",
-            "planet = { staid_good_research_candidate = yes }",
-            "planet = { has_designation = col_city }",
-            "planet = { has_designation = col_fortress }",
-            "planet = { has_planet_flag = staid_research_plan_claimed }",
-            "planet = { set_planet_flag = staid_research_plan_claimed }",
-            "planet = { remove_planet_flag = staid_research_plan_claimed }",
+            self.assertIn(marker, research)
+        for forbidden in (
+            "staid_research_plan_claimed",
+            "staid_economy_safety.4",
+            "staid_research_plan_target",
+            "staid_research_plan_current",
+            "set_carrier_flag",
+            "remove_carrier_flag",
+            "add = 100000",
         ):
-            self.assertNotIn(invalid_nested_planet_scope, events)
+            self.assertNotIn(forbidden, colony_types + events + triggers)
         for marker in (
             "staid_good_research_candidate = {",
-            "staid_research_plan_candidate = {",
-            "NOT = { has_carrier_flag = staid_research_plan_claimed }",
+            "staid_research_role_high_conversion_cost = {",
+            "staid_research_role_reachable = {",
+            "staid_research_designation_under_soft_cap = {",
+            "staid_research_role_candidate = {",
+            "num_owned_colonies >= 3",
+            "num_owned_colonies < 6",
+            "count < 1",
+            "num_owned_colonies >= 12",
+            "num_owned_colonies < 15",
+            "count < 4",
+            "count_owned_colony = {",
+            "limit = { has_designation = col_research }",
+            "num_districts = { type = district_city value > 0 }",
+            "has_any_generator_zone = no",
+            "has_any_trade_zone = no",
+            "has_any_agriculture_zone = no",
+            "has_any_industrial_zone = no",
+            "has_any_unity_zone = no",
+            "has_any_fortress_zone = no",
+            "has_any_generator_zone = yes",
+            "num_districts = { type = district_generator value > 3 }",
+            "NOT = { staid_catastrophic_collapse_mode = yes }",
+            "staid_energy_two_month_runway_unsafe = no",
+            "staid_consumer_goods_two_month_runway_unsafe = no",
         ):
             self.assertIn(marker, triggers)
+        self.assertNotIn("staid_research_construction_priority_ready = yes", triggers[
+            triggers.index("staid_research_role_candidate = {") :
+        ])
         self.assertNotIn("is_scope_type = planet", triggers)
-        self.assertEqual(
-            [research_plan_target_count(colonies) for colonies in (2, 3, 4, 5, 6, 7, 8, 50)],
-            [0, 1, 1, 2, 3, 3, 4, 25],
-        )
 
     def test_native_system_restriction_avoids_inaccessible_peacetime_routes_without_disabling_cloaks(self):
         cloak_override = MOD_ROOT / "common" / "component_templates" / "zzzzz_staid_science_cloaking_ai_safety.txt"

@@ -594,9 +594,8 @@ staid_food_two_month_runway_unsafe = {
 		}
 	}
 }
-# Colony/carrier-scope build-out plan selectors. The first research role
-# is reserved even before construction is affordable; further roles require
-# the Director's consumer-goods and energy runway gate.
+# Native colony-scope research role quality and country-scope soft ceiling.
+# This intentionally counts realized designations, never persistent event flags.
 staid_good_research_candidate = {
 	OR = {
 		check_modifier_value = { modifier = planet_researchers_produces_mult value > 0.09 }
@@ -610,7 +609,40 @@ staid_good_research_candidate = {
 	}
 }
 
-staid_research_plan_candidate = {
+staid_research_role_high_conversion_cost = {
+	OR = {
+		AND = {
+			has_any_generator_zone = yes
+			num_districts = { type = district_generator value > 3 }
+		}
+		AND = {
+			has_any_mining_zone = yes
+			num_districts = { type = district_mining value > 3 }
+		}
+		AND = {
+			has_any_agriculture_zone = yes
+			num_districts = { type = district_farming value > 3 }
+		}
+		AND = {
+			has_any_industrial_zone = yes
+			OR = {
+				num_districts = { type = district_city value > 3 }
+				num_districts = { type = district_hive value > 3 }
+				num_districts = { type = district_nexus value > 3 }
+			}
+		}
+		AND = {
+			has_any_trade_zone = yes
+			OR = {
+				num_districts = { type = district_city value > 3 }
+				num_districts = { type = district_hive value > 3 }
+				num_districts = { type = district_nexus value > 3 }
+			}
+		}
+	}
+}
+
+staid_research_role_reachable = {
 	is_colony = yes
 	is_capital = no
 	is_special_colony_type = no
@@ -619,13 +651,203 @@ staid_research_plan_candidate = {
 		is_ai = yes
 		is_nomadic = no
 	}
-	NOT = { has_carrier_flag = staid_research_plan_claimed }
 	NOT = { is_planet_class = pc_nanotech }
 	NOR = {
 		uses_district_set = city_world
 		uses_district_set = ring_world
 		uses_district_set = habitat
 		uses_district_set = cosmogenesis_world
+	}
+	staid_research_role_high_conversion_cost = no
+	OR = {
+		staid_good_research_candidate = yes
+		AND = {
+			num_districts = { type = district_city value > 0 }
+			has_any_generator_zone = no
+			has_any_mining_zone = no
+			has_any_agriculture_zone = no
+			has_any_industrial_zone = no
+			has_any_trade_zone = no
+			has_any_unity_zone = no
+			has_any_fortress_zone = no
+		}
+	}
+}
+
+staid_research_designation_under_soft_cap = {
+	OR = {
+	AND = {
+		num_owned_colonies >= 3
+		num_owned_colonies < 6
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 1
+		}
+	}
+	AND = {
+		num_owned_colonies >= 6
+		num_owned_colonies < 9
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 2
+		}
+	}
+	AND = {
+		num_owned_colonies >= 9
+		num_owned_colonies < 12
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 3
+		}
+	}
+	AND = {
+		num_owned_colonies >= 12
+		num_owned_colonies < 15
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 4
+		}
+	}
+	AND = {
+		num_owned_colonies >= 15
+		num_owned_colonies < 18
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 5
+		}
+	}
+	AND = {
+		num_owned_colonies >= 18
+		num_owned_colonies < 21
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 6
+		}
+	}
+	AND = {
+		num_owned_colonies >= 21
+		num_owned_colonies < 24
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 7
+		}
+	}
+	AND = {
+		num_owned_colonies >= 24
+		num_owned_colonies < 27
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 8
+		}
+	}
+	AND = {
+		num_owned_colonies >= 27
+		num_owned_colonies < 30
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 9
+		}
+	}
+	AND = {
+		num_owned_colonies >= 30
+		num_owned_colonies < 33
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 10
+		}
+	}
+	AND = {
+		num_owned_colonies >= 33
+		num_owned_colonies < 36
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 11
+		}
+	}
+	AND = {
+		num_owned_colonies >= 36
+		num_owned_colonies < 39
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 12
+		}
+	}
+	AND = {
+		num_owned_colonies >= 39
+		num_owned_colonies < 42
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 13
+		}
+	}
+	AND = {
+		num_owned_colonies >= 42
+		num_owned_colonies < 45
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 14
+		}
+	}
+	AND = {
+		num_owned_colonies >= 45
+		num_owned_colonies < 48
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 15
+		}
+	}
+	AND = {
+		num_owned_colonies >= 48
+		num_owned_colonies < 51
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 16
+		}
+	}
+	AND = {
+		num_owned_colonies >= 51
+		num_owned_colonies < 54
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 17
+		}
+	}
+	AND = {
+		num_owned_colonies >= 54
+		num_owned_colonies < 57
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 18
+		}
+	}
+	AND = {
+		num_owned_colonies >= 57
+		num_owned_colonies < 60
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 19
+		}
+	}
+	AND = {
+		num_owned_colonies >= 60
+		count_owned_colony = {
+			limit = { has_designation = col_research }
+			count < 20
+		}
+	}
+	}
+}
+
+staid_research_role_candidate = {
+	staid_research_role_reachable = yes
+	owner = {
+		NOT = { staid_catastrophic_collapse_mode = yes }
+		staid_energy_two_month_runway_unsafe = no
+		OR = {
+			country_uses_consumer_goods = no
+			staid_consumer_goods_two_month_runway_unsafe = no
+		}
+		staid_research_designation_under_soft_cap = yes
 	}
 }
 
