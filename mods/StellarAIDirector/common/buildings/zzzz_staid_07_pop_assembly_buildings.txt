@@ -7,6 +7,7 @@
 
 
 # Source-local variables required by copied parent objects.
+@b1_minerals = 400
 @b1_time = 360
 @b2_minerals = 600
 @b2_upkeep = 5
@@ -399,5 +400,202 @@ building_robot_assembly_complex = {
 		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
 		modifier = { factor = 1.5 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }
 		modifier = { factor = 1.15 owner = { is_materialist = yes } }
+	}
+}
+
+
+# policy_route = pop_assembly_snowball_core; source = common/buildings/01_pop_assembly_buildings.txt; parent_ai = parent_ai_absent; source_ai_weight = no
+building_spawning_pool = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+
+	category = pop_assembly
+
+	building_sets = {
+		government
+		urban
+	}
+
+	potential = {
+		exists = owner
+		owner = {
+			is_hive_empire = yes
+			is_wilderness_empire = no
+			NOT = { has_origin = origin_progenitor_hive }
+		}
+	}
+
+	destroy_trigger = {
+		exists = owner
+		owner = {
+			OR = {
+				is_hive_empire = no
+				has_origin = origin_progenitor_hive
+			}
+		}
+	}
+
+	inline_script = {
+		script = jobs/spawning_drone_add
+		AMOUNT = @building_static_jobs_low
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				has_technology = tech_gene_tailoring
+			}
+			any_owned_pop_group = {
+				has_auto_modding_trait = yes
+			}
+		}
+		modifier = {
+			auto_mod_monthly_add = 200
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = {
+				game_start_auto_mod_empire = yes
+			}
+			any_owned_pop_group = {
+				has_auto_modding_trait = yes
+			}
+		}
+		modifier = {
+			auto_mod_monthly_add = 200
+		}
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_cybernetics_synaptic_sub_processing }
+		}
+		modifier = {
+			job_augmentor_drone_add = 200
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+
+	convert_to = {
+		building_offspring_nest
+	}
+
+	triggered_desc = {
+		text = spawning_pool_tooltip
+	}
+	ai_weight_coefficient = 9
+	additional_ai_weight = 1000
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 1.25 owner = { is_hive_empire = yes } }
+		modifier = { factor = 0 owner = { has_origin = origin_progenitor_hive } }
+	}
+}
+
+
+# policy_route = pop_assembly_snowball_core; source = common/buildings/01_pop_assembly_buildings.txt; parent_ai = parent_ai_absent; source_ai_weight = no
+building_offspring_nest = {
+	base_buildtime = @b1_time
+	planet_limit = 1
+
+	category = pop_assembly
+
+	building_sets = {
+		government
+		urban
+	}
+
+	potential = {
+		owner? = {
+			has_origin = origin_progenitor_hive
+		}
+	}
+
+	allow = {
+		NOT = {
+			fleet.starbase? = {
+				has_starbase_building = arkship_offspring_outlook
+			}
+		}
+	}
+
+	destroy_trigger = {
+		OR = {
+			owner? = {
+				NOT = {
+					has_origin = origin_progenitor_hive
+				}
+			}
+			fleet.starbase? = {
+				has_starbase_building = arkship_offspring_outlook
+			}
+		}
+	}
+
+	#ruined_trigger = {
+	#	has_carrier_flag = offspring_defeated
+	#}
+
+	inline_script = {
+		script = jobs/spawning_drone_add
+		AMOUNT = @building_static_jobs_low
+	}
+
+	convert_to = {
+		building_spawning_pool
+	}
+
+	triggered_planet_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_active_tradition = tr_cybernetics_synaptic_sub_processing }
+		}
+		modifier = {
+			job_augmentor_drone_add = 200
+		}
+	}
+
+	resources = {
+		category = planet_buildings
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = rare_crystals
+			COST = @b1_minerals
+			NOMADIC_COST_MULT = @nomadic_minerals_to_strategic_ratio
+		}
+		upkeep = {
+			energy = 2
+		}
+	}
+
+	triggered_desc = {
+		text = offspring_nest_tooltip
+	}
+	ai_weight_coefficient = 7
+	additional_ai_weight = 800
+	ai_weight = {
+		factor = 1
+		modifier = { factor = 0 owner = { NOT = { staid_pop_assembly_snowball_ready = yes } } }
+		modifier = { factor = 1.5 owner = { has_origin = origin_progenitor_hive } }
 	}
 }

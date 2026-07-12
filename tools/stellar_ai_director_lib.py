@@ -97,6 +97,8 @@ IDENTITY_ORIGIN_ASSEMBLY_PATH = (
 IDENTITY_ORIGIN_ASSEMBLY_HASHES = {
     "building_robot_assembly_plant": "c8a593e0f6baff2378810456aeee0da7d02a17e8eec5cc7f2b18e01b69089068",
     "building_robot_assembly_complex": "bcbbdb1bcd8480aec6f877bc9f48c8b3c4b0d7217c8014d12afce294293baafc",
+    "building_spawning_pool": "cc852efb07eff10cf9d8f05776c00bca6bdb977b86c414782e33a499698f6a97",
+    "building_offspring_nest": "0c4fd0e3f47c2abdd882721da4ac7faf8474f3ee1b5e1e8b508a94f00152d14b",
 }
 IDENTITY_TRADITION_HASHES = {
     "tradition_synchronicity": "a3b9a73b8da1cbf1c07a5220d28b475ffd9545d747b149d0ef4065871652d51b",
@@ -872,8 +874,8 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "building_machine_assembly_plant", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 155000, "coefficient": "8", "additional_weight": "900", "file_key": "07_pop_assembly"},
     {"object_id": "building_machine_assembly_complex", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 175000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
     {"object_id": "building_clone_vats", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 170000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
-    {"object_id": "building_spawning_pool", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 160000, "coefficient": "9", "additional_weight": "1000", "file_key": "07_pop_assembly"},
-    {"object_id": "building_offspring_nest", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 150000, "coefficient": "7", "additional_weight": "800", "file_key": "07_pop_assembly"},
+    {"object_id": "building_spawning_pool", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 160000, "coefficient": "9", "additional_weight": "1000", "file_key": "07_pop_assembly", "special_origin_consumer": True},
+    {"object_id": "building_offspring_nest", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 150000, "coefficient": "7", "additional_weight": "800", "file_key": "07_pop_assembly", "special_origin_consumer": True},
     {"object_id": "district_giga_pcc_science", "object_type": "district", "mod_id": "1121692237", "source_file": "common/districts/giga_planetary_computer.txt", "route_id": "planetary_computer_research_core", "weight": 190000, "coefficient": "12", "additional_weight": "1800", "file_key": "06_research_infrastructure"},
     # Concrete build-priority objects for economy multipliers, Mega Shipyard, planetcraft, war moons, and systemcraft.
     {"object_id": "dyson_sphere_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_dyson_sphere.txt", "route_id": "economy_megastructure_core", "weight": 130000, "file_key": "03_megastructures"},
@@ -5577,11 +5579,11 @@ def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> 
                 "\t\tmodifier = { factor = 3 owner = { has_ascension_perk = ap_engineered_evolution } }",
             ),
             "building_spawning_pool": (
-                "\t\tmodifier = { factor = 6 owner = { is_hive_empire = yes } }",
+                "\t\tmodifier = { factor = 1.25 owner = { is_hive_empire = yes } }",
                 "\t\tmodifier = { factor = 0 owner = { has_origin = origin_progenitor_hive } }",
             ),
             "building_offspring_nest": (
-                "\t\tmodifier = { factor = 8 owner = { has_origin = origin_progenitor_hive } }",
+                "\t\tmodifier = { factor = 1.5 owner = { has_origin = origin_progenitor_hive } }",
             ),
         }
         for modifier in pop_assembly_modifiers.get(object_id, ()):

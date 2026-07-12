@@ -589,7 +589,7 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         ):
             self.assertNotIn(f"{excluded} = {{", production)
 
-    def test_mechanist_origin_assembly_consumers_are_emitted_exactly_and_fail_closed(
+    def test_special_origin_assembly_consumers_are_emitted_exactly_and_fail_closed(
         self,
     ) -> None:
         production = self.production[IDENTITY_ORIGIN_ASSEMBLY_PATH]
@@ -618,24 +618,40 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
                 IDENTITY_ORIGIN_ASSEMBLY_HASHES[object_id],
             )
             self.assertIn("staid_pop_assembly_snowball_ready = yes", generated_block)
-            self.assertIn("has_origin = origin_mechanists", generated_block)
-            self.assertIn("has_country_flag = synthetic_empire", generated_block)
-            self.assertIn("is_materialist = yes", generated_block)
-            self.assertEqual(generated_block.count("factor = 1.5"), 1)
-            self.assertEqual(generated_block.count("factor = 1.15"), 1)
-            for source_marker in (
+            if object_id.startswith("building_robot_"):
+                self.assertIn("has_origin = origin_mechanists", generated_block)
+                self.assertIn("has_country_flag = synthetic_empire", generated_block)
+                self.assertIn("is_materialist = yes", generated_block)
+                self.assertEqual(generated_block.count("factor = 1.5"), 1)
+                self.assertEqual(generated_block.count("factor = 1.15"), 1)
+            elif object_id == "building_spawning_pool":
+                self.assertIn("is_hive_empire = yes", generated_block)
+                self.assertIn("has_origin = origin_progenitor_hive", generated_block)
+                self.assertEqual(generated_block.count("factor = 1.25"), 1)
+                self.assertEqual(generated_block.count("factor = 0"), 2)
+            else:
+                self.assertEqual(object_id, "building_offspring_nest")
+                self.assertIn("has_origin = origin_progenitor_hive", generated_block)
+                self.assertEqual(generated_block.count("factor = 1.5"), 1)
+            source_markers = [
                 "category = pop_assembly",
-                "NOT = { has_policy_flag = robots_outlawed }",
-                "script = jobs/roboticist_add",
                 "script = buildings/nomadic_cost_switcher",
-            ):
+            ]
+            if object_id.startswith("building_robot_"):
+                source_markers.extend(
+                    (
+                        "NOT = { has_policy_flag = robots_outlawed }",
+                        "script = jobs/roboticist_add",
+                    )
+                )
+            else:
+                source_markers.append("script = jobs/spawning_drone_add")
+            for source_marker in source_markers:
                 self.assertIn(source_marker, generated_block)
         for excluded in (
             "building_machine_assembly_plant",
             "building_machine_assembly_complex",
             "building_clone_vats",
-            "building_spawning_pool",
-            "building_offspring_nest",
         ):
             self.assertNotIn(f"{excluded} = {{", production)
 
