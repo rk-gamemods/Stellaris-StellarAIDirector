@@ -54,6 +54,8 @@ tradition_discovery = {
 		}
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -114,6 +116,9 @@ tradition_diplomacy = {
 		}
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.08 staid_identity_rogue_servitor = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -175,6 +180,12 @@ tradition_supremacy = {
 		}
 		# policy_route = conquest_escape_route; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_aggressive_fleet_pressure = yes }
+		modifier = { factor = 1.08 staid_archetype_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_aggressive_fleet_pressure = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_aggressive_fleet_pressure = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.12 staid_archetype_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_aggressive_fleet_pressure = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_aggressive_fleet_pressure = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.12 staid_identity_barbaric_despoiler = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_aggressive_fleet_pressure = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.1 staid_identity_assimilator = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_aggressive_fleet_pressure = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -270,6 +281,9 @@ tradition_adaptability = {
 		}
 		# policy_route = crowded_tall_route; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 1.08 staid_archetype_defensive = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_planetary_capacity_growth_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_defensive = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_planetary_capacity_growth_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.12 staid_identity_inward_perfection = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_planetary_capacity_growth_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -307,5 +321,6 @@ tradition_mercantile = {
 		}
 		# policy_route = crowded_tall_route; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 1.15 staid_identity_megacorp = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_planetary_capacity_growth_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }

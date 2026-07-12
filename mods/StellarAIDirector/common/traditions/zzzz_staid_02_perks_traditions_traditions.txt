@@ -43,6 +43,8 @@ tr_discovery_to_boldly_go = {
 		factor = 5000	# AI should prefer this one first, more useful early
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -82,6 +84,8 @@ tr_discovery_databank_uplinks = {
 		factor = 5000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -124,6 +128,8 @@ tr_discovery_science_division = {
 		factor = 1000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -171,6 +177,8 @@ tr_discovery_polytechnic_education = {
 		factor = 5000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -224,6 +232,8 @@ tr_discovery_faith_in_science = {
 		factor = 5000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -255,6 +265,8 @@ tr_diplomacy_the_federation = {
 		factor = 10000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -291,6 +303,8 @@ tr_diplomacy_entente_coordination = {
 		factor = 1000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -317,6 +331,8 @@ tr_diplomacy_diplomatic_networking = {
 		factor = 5000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -336,6 +352,8 @@ tr_diplomacy_direct_diplomacy = {
 		factor = 5000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -370,5 +388,7 @@ tr_diplomacy_eminent_diplomats = {
 		factor = 5000
 		# policy_route = research_diplomacy_core; preserve vanilla category and node selection
 		modifier = { factor = 4 staid_research_diplomacy_priority_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }

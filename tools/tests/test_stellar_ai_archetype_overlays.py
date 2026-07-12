@@ -4,6 +4,7 @@ import contextlib
 import difflib
 import hashlib
 import io
+import re
 import sys
 import tempfile
 import unittest
@@ -21,6 +22,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     FLEET_ALLOY_BUDGET_PATH,
     FLEET_ARCHETYPE_FACTORS,
     FLEET_THREAT_RESPONSE_FACTOR,
+    IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     ROUTE_OVERRIDE_TARGETS,
     TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS,
     TECHNOLOGY_ARCHETYPE_ROUTE_FACTORS,
@@ -90,12 +92,12 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             row for row in cls.rows if row["object_type"] == "technology"
         ]
 
-    def test_fixed_allowlist_has_exactly_two_current_artifacts(self) -> None:
+    def test_fixed_allowlist_has_exactly_five_current_artifacts(self) -> None:
         self.assertEqual(
             tuple(self.production),
             ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
         )
-        self.assertEqual(len(self.production), 2)
+        self.assertEqual(len(self.production), 5)
         for path, rendered in self.production.items():
             self.assertEqual(
                 path.read_text(encoding="utf-8").replace("\r\n", "\n"),
@@ -112,6 +114,62 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         budget = self.zero[FLEET_ALLOY_BUDGET_PATH]
         self.assertIn("staid_wartime_fleet_surge_ready = yes", budget)
         self.assertNotIn("staid_archetype_hard_", budget)
+
+    def test_identity_strategy_vectors_are_bounded_and_state_free(self) -> None:
+        strategy_paths = ARCHETYPE_OVERLAY_ARTIFACT_PATHS[2:]
+        production = "\n".join(self.production[path] for path in strategy_paths)
+        zero = "\n".join(self.zero[path] for path in strategy_paths)
+        for marker in (
+            "staid_archetype_research = yes",
+            "staid_archetype_diplomatic = yes",
+            "staid_archetype_defensive = yes",
+            "staid_archetype_conquest = yes",
+            "staid_archetype_extermination = yes",
+            "staid_archetype_lead_secondary_research = yes",
+            "staid_archetype_lead_secondary_diplomatic = yes",
+            "staid_identity_megacorp = yes",
+            "staid_identity_inward_perfection = yes",
+            "staid_identity_barbaric_despoiler = yes",
+            "staid_identity_rogue_servitor = yes",
+            "staid_identity_assimilator = yes",
+        ):
+            self.assertIn(marker, production)
+            self.assertNotIn(marker, zero)
+        self.assertNotIn("staid_archetype_hard_", production)
+        identity_lines = [
+            line
+            for line in production.splitlines()
+            if re.search(
+                r"staid_(?:archetype_(?:lead_secondary_)?(?:research|diplomatic|defensive|conquest|extermination)|identity_(?:megacorp|inward_perfection|barbaric_despoiler|rogue_servitor|assimilator))",
+                line,
+            )
+        ]
+        self.assertTrue(identity_lines)
+        for line in identity_lines:
+            factor = re.search(r"factor = ([0-9.]+)", line)
+            self.assertIsNotNone(factor, line)
+            self.assertTrue(1.0 < float(factor.group(1)) <= 1.15)
+            for safety in (
+                "staid_archetype_identity_conflict = no",
+                "staid_archetype_eligible_country = yes",
+                "staid_survival_mode = no",
+                "staid_recovery_mode = no",
+                "staid_catastrophic_collapse_mode = no",
+                "staid_core_deficit_short_runway = no",
+            ):
+                self.assertIn(safety, line)
+        inserted = []
+        for path in IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS:
+            before = self.zero[path].replace("\r\n", "\n").splitlines()
+            after = self.production[path].replace("\r\n", "\n").splitlines()
+            matcher = difflib.SequenceMatcher(a=before, b=after, autojunk=False)
+            for tag, _i1, _i2, j1, j2 in matcher.get_opcodes():
+                self.assertIn(tag, {"equal", "insert"}, path)
+                if tag == "insert":
+                    inserted.extend(after[j1:j2])
+        delta = "\n".join(inserted)
+        for forbidden in ("country_event =", "set_country_flag =", "create_fleet ="):
+            self.assertNotIn(forbidden, delta)
 
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:
         inserted: list[str] = []
@@ -310,14 +368,9 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
                 block.index("staid_archetype_hard_"),
             )
 
-    def test_balanced_soft_only_and_conflicted_identities_are_neutral(self) -> None:
+    def test_balanced_and_conflicted_identities_are_neutral(self) -> None:
         combined = "\n".join(self.production.values())
         self.assertNotIn("staid_archetype_balanced", combined)
-        for archetype in FLEET_ARCHETYPE_FACTORS:
-            self.assertNotIn(f"staid_archetype_{archetype} = yes", combined)
-        self.assertNotIn("staid_archetype_research = yes", combined)
-        self.assertNotIn("staid_archetype_diplomatic = yes", combined)
-        self.assertNotIn("staid_archetype_defensive = yes", combined)
         self.assertGreaterEqual(
             combined.count("staid_archetype_identity_conflict = no"),
             len(FLEET_ARCHETYPE_FACTORS),

@@ -54,9 +54,15 @@ TECHNOLOGY_ROUTE_OVERRIDE_PATH = (
     / "technology"
     / "zzzz_staid_01_unlock_technology_technology.txt"
 )
+IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS = (
+    MOD_ROOT / "common" / "ascension_perks" / "zzzz_staid_02_perks_traditions_ascension_perks.txt",
+    MOD_ROOT / "common" / "tradition_categories" / "zzzz_staid_02_perks_traditions_tradition_categories.txt",
+    MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt",
+)
 ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     FLEET_ALLOY_BUDGET_PATH,
     TECHNOLOGY_ROUTE_OVERRIDE_PATH,
+    *IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
 )
 FLEET_ARCHETYPE_FACTORS = {
     "extermination": 1.12,
@@ -103,6 +109,35 @@ TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS = {
     "giga_tech_war_system_1",
     "tech_ring_world",
     "esc_tech_dreadnought_computer",
+}
+IDENTITY_STRATEGY_PRIMARY_FACTORS = {
+    "research": {
+        "ap_technological_ascendancy": 1.15,
+        "tradition_discovery": 1.15,
+        "tr_discovery_to_boldly_go": 1.15,
+        "tr_discovery_databank_uplinks": 1.15,
+        "tr_discovery_science_division": 1.15,
+        "tr_discovery_polytechnic_education": 1.15,
+        "tr_discovery_faith_in_science": 1.15,
+    },
+    "diplomatic": {
+        "tradition_diplomacy": 1.15,
+        "tr_diplomacy_the_federation": 1.15,
+        "tr_diplomacy_entente_coordination": 1.15,
+        "tr_diplomacy_diplomatic_networking": 1.15,
+        "tr_diplomacy_direct_diplomacy": 1.15,
+        "tr_diplomacy_eminent_diplomats": 1.15,
+    },
+    "defensive": {"tradition_adaptability": 1.08},
+    "conquest": {"ap_lord_of_war": 1.08, "tradition_supremacy": 1.08},
+    "extermination": {"ap_lord_of_war": 1.12, "tradition_supremacy": 1.12},
+}
+IDENTITY_STRATEGY_DEFINING_FACTORS = {
+    "staid_identity_megacorp": {"tradition_mercantile": 1.15},
+    "staid_identity_inward_perfection": {"tradition_adaptability": 1.12},
+    "staid_identity_barbaric_despoiler": {"tradition_supremacy": 1.12},
+    "staid_identity_rogue_servitor": {"tradition_diplomacy": 1.08},
+    "staid_identity_assimilator": {"tradition_supremacy": 1.10},
 }
 STRATEGIC_RESOURCE_DEFICIT_RECOVERY_PATH = (
     MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_21_strategic_resource_deficit_recovery.txt"
@@ -6100,6 +6135,52 @@ def technology_archetype_weight_modifiers(
     return lines
 
 
+def identity_strategy_weight_modifiers(target: dict[str, Any]) -> list[str]:
+    """Return bounded resolved-primary, secondary, and defining strategy vectors."""
+
+    if target["object_type"] not in {
+        "ascension_perk",
+        "tradition_category",
+        "tradition",
+    }:
+        return []
+    object_id = str(target["object_id"])
+    route_gate = route_gate_for_target(target)
+    common = (
+        "staid_archetype_identity_conflict = no "
+        "staid_archetype_eligible_country = yes "
+        f"{route_gate} = yes "
+        "staid_survival_mode = no "
+        "staid_recovery_mode = no "
+        "staid_catastrophic_collapse_mode = no "
+        "staid_core_deficit_short_runway = no"
+    )
+    factors_and_conditions: list[tuple[float, str]] = []
+    for archetype, object_factors in IDENTITY_STRATEGY_PRIMARY_FACTORS.items():
+        factor = object_factors.get(object_id)
+        if factor is None:
+            continue
+        factors_and_conditions.append(
+            (factor, f"staid_archetype_{archetype} = yes {common}")
+        )
+        factors_and_conditions.append(
+            (
+                1.05,
+                f"staid_archetype_lead_secondary_{archetype} = yes {common}",
+            )
+        )
+    for identity_trigger, object_factors in IDENTITY_STRATEGY_DEFINING_FACTORS.items():
+        factor = object_factors.get(object_id)
+        if factor is not None:
+            factors_and_conditions.append((factor, f"{identity_trigger} = yes {common}"))
+    if any(not 1.0 < factor <= 1.15 for factor, _condition in factors_and_conditions):
+        raise ValueError(f"Identity strategy factor escaped (1.0, 1.15]: {object_id}")
+    return [
+        route_modifier_line(factor, condition)
+        for factor, condition in factors_and_conditions
+    ]
+
+
 def route_weight_modifiers(
     target: dict[str, Any], *, archetype_overlay: bool = True
 ) -> list[str]:
@@ -6130,6 +6211,7 @@ def route_weight_modifiers(
     lines.extend(scope_route_modifier_for_target(target, line) for line in route_extra_modifiers_for_target(target))
     if archetype_overlay:
         lines.extend(technology_archetype_weight_modifiers(target))
+        lines.extend(identity_strategy_weight_modifiers(target))
     return lines
 
 
@@ -6197,16 +6279,24 @@ def director_ai_weight_block(
     return "\n".join(lines) + "\n"
 
 
-def native_tradition_route_weight_block(block: str, target: dict[str, Any]) -> str:
+def native_tradition_route_weight_block(
+    block: str,
+    target: dict[str, Any],
+    *,
+    archetype_overlay: bool = True,
+) -> str:
     """Boost a native tradition category or selectable node without replacing its policy."""
     route_gate = route_gate_for_target(target)
-    return insert_top_level_ai_weight_modifiers(
-        block,
-        [
-            f"\t\t# policy_route = {target['route_id']}; preserve vanilla category and node selection",
-            f"\t\tmodifier = {{ factor = {target['weight']} {route_gate} = yes }}",
-        ],
-    )
+    modifiers = [
+        f"\t\t# policy_route = {target['route_id']}; preserve vanilla category and node selection",
+        f"\t\tmodifier = {{ factor = {target['weight']} {route_gate} = yes }}",
+    ]
+    if archetype_overlay:
+        modifiers.extend(
+            line.replace("\t", "\t\t", 1)
+            for line in identity_strategy_weight_modifiers(target)
+        )
+    return insert_top_level_ai_weight_modifiers(block, modifiers)
 
 
 AT_VARIABLE_RE = re.compile(r"(?<![\w])@[A-Za-z0-9_]+(?![\w])")
@@ -6579,7 +6669,11 @@ def route_override_object_text(
     ):
         block = gigas_habitat_ai_weight_block(block, target)
     elif target["object_type"] in {"tradition_category", "tradition"}:
-        block = native_tradition_route_weight_block(block, target)
+        block = native_tradition_route_weight_block(
+            block,
+            target,
+            archetype_overlay=archetype_overlay,
+        )
     elif target["object_type"] == "federation_type" and target["object_id"] == "research_federation":
         block = research_federation_weight_block(block)
     else:
@@ -13440,6 +13534,19 @@ def render_archetype_consumer_artifacts(
             "Technology route rows violated the fixed H08c destination: "
             f"{sorted(str(path) for path in generated_paths)}"
         )
+    strategy_rows = [
+        row
+        for row in rows
+        if row["object_type"]
+        in {"ascension_perk", "tradition_category", "tradition"}
+    ]
+    strategy_rows_by_path: dict[Path, list[dict[str, Any]]] = defaultdict(list)
+    for row in strategy_rows:
+        strategy_rows_by_path[Path(str(row["generated_file"])).resolve()].append(row)
+    if set(strategy_rows_by_path) != {
+        path.resolve() for path in IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS
+    }:
+        raise ValueError("Identity strategy rows violated the fixed output allowlist")
     artifacts = {
         FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(
             ai_budget_text({}, archetype_overlay=archetype_overlay)
@@ -13449,6 +13556,11 @@ def render_archetype_consumer_artifacts(
             archetype_overlay=archetype_overlay,
         ),
     }
+    for path in IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS:
+        artifacts[path] = route_override_file_text(
+            strategy_rows_by_path[path.resolve()],
+            archetype_overlay=archetype_overlay,
+        )
     if tuple(artifacts) != ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
         raise ValueError(
             "Archetype consumer renderer violated its fixed output allowlist"
