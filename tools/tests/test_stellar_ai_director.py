@@ -2665,23 +2665,23 @@ class GeneratedModValidityTests(unittest.TestCase):
         for marker in forbidden_markers:
             self.assertNotIn(marker, live_text)
 
-    def test_generated_stranded_fleet_recovery_uses_guarded_vanilla_mia(self):
+    def test_generated_safety_layer_never_issues_scripted_fleet_orders(self):
         on_action_path = MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt"
         event_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
         parse_file(on_action_path)
         parse_file(event_path)
         text = event_path.read_text(encoding="utf-8")
+        self.assertIn("id = staid_economy_safety.2", text)
+        self.assertIn("id = staid_economy_safety.4", text)
         for marker in (
-            "staid_homeland_under_attack = yes",
-            "can_go_mia = yes",
-            "is_fleet_idle = yes",
-            "is_in_combat = no",
-            "has_fleet_flag = staid_stranded_fleet_warning",
-            "set_timed_fleet_flag",
-            "set_mia = mia_return_home",
-            "space_owner = { NOT = { is_same_value = root } }",
+            "staid_economy_safety.3",
+            "staid_stranded_fleet_warning",
+            "set_mia =",
+            "set_fleet_order =",
+            "set_fleet_stance =",
+            "move_to =",
         ):
-            self.assertIn(marker, text)
+            self.assertNotIn(marker, text)
 
     def test_mem_surveyor_outpost_gate_preserves_targeted_native_exception_only(self):
         outpost_path = (

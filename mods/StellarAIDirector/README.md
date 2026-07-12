@@ -74,9 +74,10 @@ Missing required Steam parents during generation: none.
 - Adds a monthly market cap-breaker for AI empires that are wasting large
   positive-income stockpiles, converting marketable overflow into trade
   currency instead of letting storage caps void the income.
-- Adds a two-pulse stranded-fleet recovery guard that uses vanilla
-  `set_mia = mia_return_home` only for idle, MIA-eligible AI fleets outside
-  their owner's space while the homeland is under wartime pressure.
+- Removes the legacy two-pulse stranded-fleet event. Its intended post-war
+  rescue gate also matched idle fleets in active enemy territory and could
+  recall an offensive fleet during homeland pressure; movement and MIA recovery
+  now remain native engine responsibilities.
 - Adds a fleet-throughput economic subplan so Mega Shipyard unlocks and strong
   surplus can become fleet power without ignoring energy/alloy/trade runway checks.
 - Adds planetary-capacity and safe research economic-plan demand while leaving

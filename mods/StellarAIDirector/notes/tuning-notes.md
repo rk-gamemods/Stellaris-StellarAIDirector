@@ -34,7 +34,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 | threat readiness alloys cap | 7 | maximum added alloys target from third-party threat readiness |
 | threat readiness energy cap | 6 | maximum added energy target from third-party threat readiness |
 | threat readiness naval cap | 40 | maximum added naval-cap target from third-party threat readiness |
-| eligible ROI rows | 24 | source sample used for threshold generation |
+| eligible ROI rows | 140 | source sample used for threshold generation |
 
 ## Static-Defense Policy
 
@@ -114,10 +114,9 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 ## Stranded-Fleet Recovery Policy
 
-- The Director does not attempt normal movement/pathfinding orders from script.
-- Idle, out-of-combat, MIA-eligible AI fleets outside their owner's space are marked only while `staid_homeland_under_attack` is true.
-- A marked fleet must still satisfy the same stranded gate on a later monthly pulse before `set_mia = mia_return_home` fires.
-- The gate is intended for post-war access/pocket failures where a strong fleet is trapped away from a collapsing homeland, not for active offensive fleets.
+- The Director does not issue movement, stance, MIA, or pathfinding orders from script.
+- The removed two-pulse handler was intended for post-war access pockets, but its foreign-space predicate also selected current enemy territory.
+- Native pathfinding, border access, and MIA behavior now own both active-war travel and post-war recovery.
 
 ## Safe Tuning Rules
 

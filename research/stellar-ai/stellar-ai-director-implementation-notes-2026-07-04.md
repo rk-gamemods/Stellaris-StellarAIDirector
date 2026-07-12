@@ -19,7 +19,7 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |
 | trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |
 | cap-breaker market safety | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | additive monthly event sells large marketable positive-income overflow using Stellar AI market value script instead of allowing capped resources to void income |
-| stranded-fleet recovery | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | two-pulse guard marks idle MIA-eligible fleets outside owner space under homeland attack, then uses vanilla `set_mia = mia_return_home` if still stranded |
+| native fleet-control restoration | `common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt`, `events/zzz_staid_market_and_fleet_safety_events.txt` | medium | the former two-pulse scripted MIA exception is removed; native mission assignment, access, and MIA behavior own active-war and post-war fleet movement |
 | ROI anchors | `common/script_values/zzz_staid_roi_values.txt` | low | additive namespaced values |
 | threat-response values/triggers | `common/script_values/zzz_staid_threat_response_values.txt`, `common/scripted_triggers/zzz_staid_threat_response_triggers.txt` | low | additive `staid_tr_` namespace with unknown-war-goal inertness and foreign-affairs safety gates |
 | threat-response opinions/events | `common/opinion_modifiers/zzz_staid_threat_response_opinions.txt`, `common/on_actions/zzz_staid_threat_response_on_actions.txt`, `events/zzz_staid_threat_response_events.txt` | medium | event-dispatched opinion/readiness response gated by attacker leader, awareness, participant exclusion, and forbidden-effect validation |
@@ -51,7 +51,7 @@ Stellar AI is no longer a required launch dependency. Its current local source r
 
 Baseline absorbed/reimplemented surfaces: AI budgets, `basic_economy_plan`, construction pressure, research/economy/fleet conversion, market/runway safety, claim/war support reserves, and high-scale modded progression hooks.
 
-Deferred non-baseline surfaces: broad personality rewrites, diplomatic-action overrides, direct ship-design/component/section handling for NSC3/ESC, advanced war-chain behavior, and runtime observer proof.
+Deferred non-baseline surfaces: diplomatic-action overrides, direct ship-design/component/section handling for NSC3/ESC, executable target-specific reachability internals, and runtime observer proof. Complete 4.4.4 personality objects and native war-support budgets are now implemented.
 
 ## Generated ROI Thresholds
 
@@ -84,7 +84,7 @@ The Stellar AI parity-reference monthly market script sells only a small bounded
 
 ## Stranded-Fleet Recovery Policy
 
-The Director does not issue normal fleet orders. Runtime evidence points to fleets stranded after access changes or war-end border changes, so the generated safety layer uses the vanilla-supported `set_mia = mia_return_home` mechanic behind a two-pulse guard. A fleet must be AI-owned, idle, out of combat, `can_go_mia = yes`, outside its owner's space, and still marked on the next monthly pulse while the country has wartime homeland pressure before forced MIA recovery fires.
+The Director does not issue fleet orders. The former two-pulse `set_mia = mia_return_home` exception was intended for post-war access pockets, but its foreign-space test also matched active enemy territory and could recall an offensive fleet during homeland pressure. The exception is removed; native pathfinding, access, and MIA handling own recovery.
 
 ## Unlock-Research Policy
 
