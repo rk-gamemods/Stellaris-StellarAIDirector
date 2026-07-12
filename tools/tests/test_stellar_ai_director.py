@@ -43,6 +43,7 @@ from stellar_ai_director_lib import (
     WAR_PLANNING_444_PROVENANCE_CSV,
     STELLARIS_INSTALL_ROOT,
     _collect_job_adds,
+    _economic_subplan_block,
     append_child_block_clause,
     ai_budget_text,
     atlas_object_has_ai_signal,
@@ -2616,7 +2617,6 @@ class GeneratedModValidityTests(unittest.TestCase):
             'set_name = "Stellar AI Director raiding pop acquisition reserve"',
             "alloys = 600",
             "engineering_research = 310",
-            "naval_cap = 6000",
             "alloys = 4500",
             "naval_cap = 4500",
             "factor = 18 staid_militarist_conquest_strategy = yes",
@@ -2755,6 +2755,74 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertNotIn("ai_weight = {", research_block)
         self.assertNotIn("owner = { staid_", research_block)
 
+    def test_archetype_economic_plans_are_bounded_and_not_clock_driven(self):
+        economy = (
+            MOD_ROOT
+            / "common"
+            / "economic_plans"
+            / "zzzz_staid_additive_economic_plan.txt"
+        ).read_text(encoding="utf-8")
+        retired = (
+            "early modded research rush",
+            "midgame megastructure rush",
+            "crisis-scale giga rush",
+            "planetcraft survival curve",
+            "pathological snowball reserve",
+        )
+        for name in retired:
+            self.assertNotIn(name, economy)
+
+        primary = (
+            "extermination",
+            "gestalt_growth",
+            "defensive",
+            "research",
+            "diplomatic",
+        )
+        secondary = (
+            "extermination",
+            "conquest",
+            "gestalt_growth",
+            "defensive",
+            "research",
+            "diplomatic",
+        )
+        names = [
+            *(f"Stellar AI Director primary {name} economy" for name in primary),
+            *(
+                f"Stellar AI Director lead secondary {name} economy"
+                for name in secondary
+            ),
+            "Stellar AI Director militarist conquest fleet reserve",
+        ]
+        for name in names:
+            block = _economic_subplan_block(economy, name)
+            self.assertTrue(block, name)
+            self.assertIn("optional = yes", block)
+            self.assertNotIn("scaling = yes", block)
+            self.assertIn("staid_basic_economy_runway_safe = yes", block)
+            self.assertIn(
+                "NOT = { staid_core_deficit_short_runway = yes }", block
+            )
+            self.assertIn("NOT = { staid_catastrophic_collapse_mode = yes }", block)
+            self.assertIn("is_at_war = no", block)
+            self.assertIn("NOT = { recently_lost_war = yes }", block)
+            self.assertNotIn("years_passed", block)
+            self.assertNotIn("naval_cap =", block)
+            self.assertNotIn("pops =", block)
+            self.assertNotIn("consumer_goods =", block)
+            if "_research =" in block:
+                self.assertIn(
+                    "staid_research_construction_priority_ready = yes", block
+                )
+
+        for name in (
+            "Stellar AI Director modded unlock research reserve",
+            "Stellar AI Director ESC component resource readiness",
+            "Stellar AI Director NSC3 hull readiness reserve",
+        ):
+            self.assertNotIn("years_passed", _economic_subplan_block(economy, name))
+
     def test_deficits_suppress_discretionary_research_and_fleet_pressure_but_prioritize_repairs(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
@@ -2801,11 +2869,15 @@ class GeneratedModValidityTests(unittest.TestCase):
             "Stellar AI Director opening direct research route",
             "Stellar AI Director opening trade to research route",
             "Stellar AI Director opening growth to research route",
-            "Stellar AI Director early modded research rush",
-            "Stellar AI Director midgame megastructure rush",
-            "Stellar AI Director crisis-scale giga rush",
-            "Stellar AI Director planetcraft survival curve",
-            "Stellar AI Director pathological snowball reserve",
+            "Stellar AI Director primary extermination economy",
+            "Stellar AI Director primary gestalt_growth economy",
+            "Stellar AI Director primary defensive economy",
+            "Stellar AI Director primary research economy",
+            "Stellar AI Director primary diplomatic economy",
+            "Stellar AI Director lead secondary extermination economy",
+            "Stellar AI Director lead secondary research economy",
+            "Stellar AI Director lead secondary diplomatic economy",
+            "Stellar AI Director militarist conquest fleet reserve",
             "Stellar AI Director modded unlock research reserve",
             "Stellar AI Director ESC component resource readiness",
             "Stellar AI Director capped stockpile research conversion",
@@ -2815,9 +2887,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "Stellar AI Director NSC3 hull readiness reserve",
             "Stellar AI Director Planetary Diversity outpost reserve",
         }
-        fleet_naval_mixed_subplans = {
-            "Stellar AI Director militarist conquest fleet reserve": "staid_militarist_conquest_strategy",
-        }
+        fleet_naval_mixed_subplans = {}
         research_runway_gates = (
             "staid_research_construction_priority_ready = yes",
             "staid_research_input_runway_safe = yes",
@@ -3056,7 +3126,6 @@ class GeneratedModValidityTests(unittest.TestCase):
             "resource_stockpile_percent = { resource = minerals value >= 0.9 }",
             "country_near_tangible_resource_cap = yes",
             "staid_high_scale_snowball_pressure",
-            "Stellar AI Director pathological snowball reserve",
         ):
             self.assertIn(marker, triggers + economy + market_events + market_values)
 
@@ -3097,7 +3166,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             )
         repair_section = economy[
             economy.index("# Relative repair plans require both earned monthly income")
-            : economy.index('set_name = "Stellar AI Director early modded research rush"')
+            : economy.index('set_name = "Stellar AI Director primary extermination economy"')
         ]
         self.assertNotIn(
             "\t\t\ttrade =",

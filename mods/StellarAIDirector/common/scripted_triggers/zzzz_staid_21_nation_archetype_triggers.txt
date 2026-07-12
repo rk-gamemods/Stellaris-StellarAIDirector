@@ -4,6 +4,7 @@
 # 1F89C8D6C9444F575526A8635DB59DF78140AD43401538214E6B62F685298BAA
 # Identity classification only: no weights, resources, state, or orders.
 # H08a parity: hard, strong, then supporting marker counts; precedence breaks ties.
+# H08e exposes at most one lead secondary and never replaces the primary.
 
 staid_archetype_eligible_country = {
 	is_country_type = default
@@ -1692,6 +1693,610 @@ staid_archetype_conquest = {
 	staid_archetype_eligible_country = yes
 	staid_archetype_identity_conflict = no
 	staid_archetype_candidate_conquest = yes
+}
+
+staid_archetype_lead_secondary_extermination = {
+	staid_archetype_eligible_country = yes
+	staid_archetype_identity_conflict = no
+	staid_archetype_extermination = no
+	OR = {
+		staid_archetype_hard_extermination = yes
+		staid_archetype_supporting_extermination_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_gestalt_growth = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_extermination_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_extermination = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_defensive = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_extermination_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_extermination = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_research = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_extermination_ge_research = yes
+				staid_archetype_strong_research_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_research = yes
+				staid_archetype_strong_research_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_research = yes
+				staid_archetype_supporting_research_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_research = yes
+				staid_archetype_strong_research_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_research = yes
+				staid_archetype_supporting_research_ge_extermination = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_diplomatic = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_extermination_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_extermination = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_conquest = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_extermination_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_extermination = no
+			}
+			AND = {
+				staid_archetype_strong_extermination_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_extermination = yes
+			}
+		}
+	}
+}
+
+staid_archetype_lead_secondary_gestalt_growth = {
+	staid_archetype_eligible_country = yes
+	staid_archetype_identity_conflict = no
+	staid_archetype_gestalt_growth = no
+	OR = {
+		staid_archetype_hard_gestalt_growth = yes
+		staid_archetype_strong_gestalt_growth_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_extermination = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_gestalt_growth = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_defensive = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_gestalt_growth = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_research = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_research = yes
+				staid_archetype_strong_research_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_research = yes
+				staid_archetype_strong_research_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_research = yes
+				staid_archetype_supporting_research_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_research = yes
+				staid_archetype_strong_research_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_research = yes
+				staid_archetype_supporting_research_ge_gestalt_growth = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_diplomatic = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_gestalt_growth = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_conquest = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_gestalt_growth = no
+			}
+			AND = {
+				staid_archetype_strong_gestalt_growth_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_gestalt_growth = yes
+			}
+		}
+	}
+}
+
+staid_archetype_lead_secondary_defensive = {
+	staid_archetype_eligible_country = yes
+	staid_archetype_identity_conflict = no
+	staid_archetype_defensive = no
+	OR = {
+		staid_archetype_hard_defensive = yes
+		staid_archetype_strong_defensive_at_least_1 = yes
+		staid_archetype_supporting_defensive_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_extermination = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_defensive_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_defensive = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_gestalt_growth = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_defensive_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_defensive = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_research = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_defensive_ge_research = yes
+				staid_archetype_strong_research_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_research = yes
+				staid_archetype_strong_research_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_research = yes
+				staid_archetype_supporting_research_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_research = yes
+				staid_archetype_strong_research_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_research = yes
+				staid_archetype_supporting_research_ge_defensive = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_diplomatic = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_defensive_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_defensive = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_conquest = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_defensive_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_defensive = no
+			}
+			AND = {
+				staid_archetype_strong_defensive_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_defensive = yes
+			}
+		}
+	}
+}
+
+staid_archetype_lead_secondary_research = {
+	staid_archetype_eligible_country = yes
+	staid_archetype_identity_conflict = no
+	staid_archetype_research = no
+	OR = {
+		staid_archetype_hard_research = yes
+		staid_archetype_strong_research_at_least_1 = yes
+		staid_archetype_supporting_research_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_extermination = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_research_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_research = no
+			}
+			AND = {
+				staid_archetype_strong_research_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_research = yes
+				staid_archetype_supporting_research_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_research = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_gestalt_growth = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_research_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_research = no
+			}
+			AND = {
+				staid_archetype_strong_research_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_research = yes
+				staid_archetype_supporting_research_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_research = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_defensive = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_research_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_research = no
+			}
+			AND = {
+				staid_archetype_strong_research_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_research = yes
+				staid_archetype_supporting_research_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_research = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_diplomatic = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_research_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_research = no
+			}
+			AND = {
+				staid_archetype_strong_research_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_research = yes
+				staid_archetype_supporting_research_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_research = no
+			}
+			AND = {
+				staid_archetype_strong_research_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_research = yes
+				staid_archetype_supporting_research_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_research = yes
+			}
+		}
+	}
+	OR = {
+		staid_archetype_conquest = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_research_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_research = no
+			}
+			AND = {
+				staid_archetype_strong_research_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_research = yes
+				staid_archetype_supporting_research_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_research = no
+			}
+			AND = {
+				staid_archetype_strong_research_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_research = yes
+				staid_archetype_supporting_research_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_research = yes
+			}
+		}
+	}
+}
+
+staid_archetype_lead_secondary_diplomatic = {
+	staid_archetype_eligible_country = yes
+	staid_archetype_identity_conflict = no
+	staid_archetype_diplomatic = no
+	OR = {
+		staid_archetype_hard_diplomatic = yes
+		staid_archetype_strong_diplomatic_at_least_1 = yes
+		staid_archetype_supporting_diplomatic_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_extermination = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_diplomatic_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_diplomatic = no
+			}
+			AND = {
+				staid_archetype_strong_diplomatic_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_diplomatic = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_gestalt_growth = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_diplomatic = no
+			}
+			AND = {
+				staid_archetype_strong_diplomatic_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_diplomatic = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_defensive = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_diplomatic_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_diplomatic = no
+			}
+			AND = {
+				staid_archetype_strong_diplomatic_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_diplomatic = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_research = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_diplomatic_ge_research = yes
+				staid_archetype_strong_research_ge_diplomatic = no
+			}
+			AND = {
+				staid_archetype_strong_diplomatic_ge_research = yes
+				staid_archetype_strong_research_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_research = yes
+				staid_archetype_supporting_research_ge_diplomatic = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_conquest = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_diplomatic_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_diplomatic = no
+			}
+			AND = {
+				staid_archetype_strong_diplomatic_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_diplomatic = no
+			}
+			AND = {
+				staid_archetype_strong_diplomatic_ge_conquest = yes
+				staid_archetype_strong_conquest_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_diplomatic = yes
+			}
+		}
+	}
+}
+
+staid_archetype_lead_secondary_conquest = {
+	staid_archetype_eligible_country = yes
+	staid_archetype_identity_conflict = no
+	staid_archetype_conquest = no
+	OR = {
+		staid_archetype_hard_conquest = yes
+		staid_archetype_strong_conquest_at_least_1 = yes
+		staid_archetype_supporting_conquest_at_least_1 = yes
+	}
+	OR = {
+		staid_archetype_extermination = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_conquest_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_conquest = no
+			}
+			AND = {
+				staid_archetype_strong_conquest_ge_extermination = yes
+				staid_archetype_strong_extermination_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_extermination = yes
+				staid_archetype_supporting_extermination_ge_conquest = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_gestalt_growth = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_conquest_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_conquest = no
+			}
+			AND = {
+				staid_archetype_strong_conquest_ge_gestalt_growth = yes
+				staid_archetype_strong_gestalt_growth_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_gestalt_growth = yes
+				staid_archetype_supporting_gestalt_growth_ge_conquest = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_defensive = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_conquest_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_conquest = no
+			}
+			AND = {
+				staid_archetype_strong_conquest_ge_defensive = yes
+				staid_archetype_strong_defensive_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_defensive = yes
+				staid_archetype_supporting_defensive_ge_conquest = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_research = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_conquest_ge_research = yes
+				staid_archetype_strong_research_ge_conquest = no
+			}
+			AND = {
+				staid_archetype_strong_conquest_ge_research = yes
+				staid_archetype_strong_research_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_research = yes
+				staid_archetype_supporting_research_ge_conquest = no
+			}
+		}
+	}
+	OR = {
+		staid_archetype_diplomatic = yes
+		OR = {
+			AND = {
+				staid_archetype_strong_conquest_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_conquest = no
+			}
+			AND = {
+				staid_archetype_strong_conquest_ge_diplomatic = yes
+				staid_archetype_strong_diplomatic_ge_conquest = yes
+				staid_archetype_supporting_conquest_ge_diplomatic = yes
+				staid_archetype_supporting_diplomatic_ge_conquest = no
+			}
+		}
+	}
 }
 
 staid_archetype_balanced = {

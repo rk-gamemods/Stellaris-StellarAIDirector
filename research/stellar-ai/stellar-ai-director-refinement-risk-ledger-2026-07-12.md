@@ -898,6 +898,98 @@ and generated trigger artifact and removing this ledger section. H08a's offline
 model, H08c's hard-anchor consumers, and every earlier gameplay fix remain
 intact.
 
+## H08e — Bounded public lead-secondary archetype
+
+Status: implemented as an inert identity-classification extension. This slice
+adds no weight, budget, economic plan, event, state, resource, order, claim,
+war rule, or declaration by itself. Any economy or behavior consumer remains a
+separate generator, validation, and rollback boundary.
+
+- Six public `staid_archetype_lead_secondary_<archetype>` triggers expose at
+  most the first item in H08a's ordered `classification.secondary` tuple.
+- A lead secondary must be eligible, conflict-free, supported by positive
+  identity evidence, and explicitly different from the selected primary.
+- Each trigger reuses the H08d strong/supporting greater-than-or-equal circuit.
+  For every competitor, it either ignores the one selected primary or proves
+  that the proposed lead secondary outranks that non-primary competitor.
+- Balanced has no secondary trigger because balanced owns no positive identity
+  evidence in H08a. Excluded, conflicted, insufficient-evidence, and
+  single-archetype identities therefore expose no lead secondary.
+
+Top five risks:
+
+1. **Two secondary triggers can be true at once.** The pairwise total order is
+   reused without a secondary-to-secondary chain, and tests evaluate all six
+   triggers together and reject more than one result.
+2. **The primary can leak back as its own secondary.** Every secondary trigger
+   requires its corresponding public primary to be false, and parity tests
+   assert that non-empty primary and secondary results differ.
+3. **The wrong hybrid identity can become the lead secondary.** All 30 H08a
+   fixtures and the adversarial mixed-strength set compare the generated result
+   directly with `classification.secondary[0]`, including hard-primary,
+   strong-count, supporting-count, and exact-precedence ties.
+4. **Neutral or invalid identities can receive a confident secondary.** The
+   layer retains the H08d eligibility and hard-conflict gates, requires positive
+   evidence for the proposed secondary, and has no balanced secondary object.
+5. **A correct secondary classifier can still be expensive when consumed.**
+   The six triggers add no iterator, pulse, event, or persistent state and keep
+   the graph acyclic at maximum depth five, but the generated artifact grows to
+   70,538 bytes. Each separate consumer must remain bounded and requires
+   runtime profiling before widespread use in frequently evaluated AI weights.
+
+Static acceptance:
+
+- The generated artifact has 124 unique top-level triggers, including exactly
+  six lead-secondary triggers, and remains acyclic at maximum reference depth
+  five.
+- The focused single-output generator owns the artifact and is idempotent at
+  SHA-256 `85334F5114FAEA4011A8A925E2E1F7ED9CE3CF35744D5BD8FD018B4350FF7042`.
+  The broad generator was not run.
+- Focused classifier tests, combined H08a/H08d/H08e/H08c tests, parser/static
+  validation, compilation, scoped Ruff/format checks, and `git diff --check`
+  must pass before commit. Runtime behavior and performance remain unproven.
+- H08d's personality-behavior provenance limitation remains: live behavior
+  predicates are conservatively supporting because the engine cannot expose
+  the offline `save_time_winner_verified` distinction.
+
+Rollback boundary: remove the six lead-secondary render blocks, their focused
+tests, this ledger section, and regenerate the one trigger artifact. H08a's
+offline secondary tuple, H08c's hard-anchor consumers, H08d's primary parity,
+and H09 remain intact.
+
+## H08f — Bounded identity economic consumers
+
+Status: implemented as dedicated primary archetype economic subplans plus one
+bounded lead-secondary subplan. Balanced identities retain the shared safe
+baseline. The conquest primary reuses the existing conquest reserve without
+its former `naval_cap = 6000` target. Five universal clock-driven research and
+snowball ramps are retired; modded-unlock, ESC, and NSC3 support now require
+real readiness or technology evidence rather than elapsed years.
+
+Top five risks:
+
+1. **Mixed identities can stack into an extreme target.** H08e proves exactly
+   one primary and at most one distinct lead secondary; secondary targets are
+   independently capped and ordinary plans are non-scaling.
+2. **Identity spending can delay recovery.** Every identity plan requires safe
+   basic runway, no short-runway core deficit, no collapse, peaceful status,
+   and no recent loss; research-bearing plans also require construction-ready
+   research inputs.
+3. **A target can request an unused resource.** Identity plans omit food and
+   consumer goods; resource-specific repair remains guarded by `country_uses_*`
+   predicates. Runtime proof must still check trade handling for unusual
+   machine or gestalt combinations.
+4. **Removing time ramps can weaken genuine late-game scaling.** Trigger-driven
+   unlock, stockpile-conversion, fleet-throughput, megastructure, crisis, and
+   relative repair plans remain. Runtime telemetry must decide whether a future
+   evidence-driven high-scale overlay is needed.
+5. **Economic-plan target composition is engine-owned.** Static tests prove
+   gates, cardinality, targets, syntax, and absence of clocks/state/orders; they
+   cannot prove final merged target selection or construction execution.
+
+Rollback boundary: revert the economic renderer, its focused generator/tests,
+and the one economic-plan artifact. Do not revert H08e classification or H09.
+
 ## H09a — Retire stateful threat-response runtime
 
 Status: implemented as a cleanup-only slice. The generator deletes the legacy

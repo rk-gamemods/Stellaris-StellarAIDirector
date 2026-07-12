@@ -181,6 +181,7 @@ def render_archetype_triggers(personality_path: Path) -> str:
         f"# {PEGASUS_444_PERSONALITY_SHA256}",
         "# Identity classification only: no weights, resources, state, or orders.",
         "# H08a parity: hard, strong, then supporting marker counts; precedence breaks ties.",
+        "# H08e exposes at most one lead secondary and never replaces the primary.",
         "",
     ]
 
@@ -200,6 +201,12 @@ def render_archetype_triggers(personality_path: Path) -> str:
 
     def candidate_name(archetype: Archetype) -> str:
         return f"staid_archetype_candidate_{archetype.value}"
+
+    def primary_name(archetype: Archetype) -> str:
+        return f"staid_archetype_{archetype.value}"
+
+    def lead_secondary_name(archetype: Archetype) -> str:
+        return f"staid_archetype_lead_secondary_{archetype.value}"
 
     def threshold_name(
         archetype: Archetype, strength: EvidenceStrength, count: int
@@ -333,13 +340,38 @@ def render_archetype_triggers(personality_path: Path) -> str:
 
     for archetype in primary_archetypes:
         add_trigger(
-            f"staid_archetype_{archetype.value}",
+            primary_name(archetype),
             (
                 "staid_archetype_eligible_country = yes",
                 "staid_archetype_identity_conflict = no",
                 f"{candidate_name(archetype)} = yes",
             ),
         )
+
+    for archetype in primary_archetypes:
+        active_evidence = [hard_name(archetype)] + [
+            threshold_name(archetype, strength, 1)
+            for strength in ranked_strengths
+            if evidence_assignments[(archetype, strength)]
+        ]
+        body = [
+            "staid_archetype_eligible_country = yes",
+            "staid_archetype_identity_conflict = no",
+            f"{primary_name(archetype)} = no",
+            *or_lines(f"{name} = yes" for name in active_evidence),
+        ]
+        for competitor in primary_archetypes:
+            if competitor is archetype:
+                continue
+            body.extend(
+                (
+                    "OR = {",
+                    f"\t{primary_name(competitor)} = yes",
+                    *_indent(outranks_lines(archetype, competitor)),
+                    "}",
+                )
+            )
+        add_trigger(lead_secondary_name(archetype), body)
 
     add_trigger(
         "staid_archetype_balanced",

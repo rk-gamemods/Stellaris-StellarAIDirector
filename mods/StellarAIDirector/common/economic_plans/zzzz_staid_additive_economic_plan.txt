@@ -624,102 +624,227 @@ basic_economy_plan = {
 	}
 
 	subplan = {
-		scaling = yes
-		set_name = "Stellar AI Director early modded research rush"
+		optional = yes
+		set_name = "Stellar AI Director primary extermination economy"
 		potential = {
-			years_passed < 50
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_extermination = yes
 			staid_research_construction_priority_ready = yes
 		}
 		income = {
-			physics_research = 350
-			society_research = 350
-			engineering_research = 550
-			unity = 100
+			alloys = 900
+			energy = 600
+			minerals = 400
+			physics_research = 600
+			society_research = 600
+			engineering_research = 900
 		}
 	}
 
 	subplan = {
-		scaling = yes
-		set_name = "Stellar AI Director midgame megastructure rush"
+		optional = yes
+		set_name = "Stellar AI Director primary gestalt_growth economy"
 		potential = {
-			years_passed > 44
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_gestalt_growth = yes
+			staid_research_construction_priority_ready = yes
+		}
+		income = {
+			minerals = 600
+			energy = 500
+			alloys = 250
+			physics_research = 600
+			society_research = 600
+			engineering_research = 900
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director primary defensive economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_defensive = yes
+			staid_research_construction_priority_ready = yes
+		}
+		income = {
+			alloys = 500
+			energy = 400
+			minerals = 350
+			physics_research = 600
+			society_research = 600
+			engineering_research = 900
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director primary research economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_research = yes
 			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			physics_research = 1500
 			society_research = 1500
 			engineering_research = 2500
-			alloys = 500
 			energy = 350
-			minerals = 350
-			unity = 300
-			trade = 150
 		}
 	}
 
 	subplan = {
-		scaling = yes
-		set_name = "Stellar AI Director crisis-scale giga rush"
+		optional = yes
+		set_name = "Stellar AI Director primary diplomatic economy"
 		potential = {
-			years_passed > 79
-			NOT = { staid_catastrophic_collapse_mode = yes }
-			staid_research_construction_priority_ready = yes
-		}
-		income = {
-			physics_research = 4500
-			society_research = 4500
-			engineering_research = 7000
-			alloys = 1500
-			energy = 1000
-			minerals = 1000
-			unity = 600
-			trade = 250
-		}
-	}
-
-	subplan = {
-		scaling = yes
-		set_name = "Stellar AI Director planetcraft survival curve"
-		potential = {
-			years_passed > 119
-			NOT = { staid_catastrophic_collapse_mode = yes }
-			staid_research_construction_priority_ready = yes
-		}
-		income = {
-			physics_research = 10000
-			society_research = 10000
-			engineering_research = 15000
-			alloys = 3500
-			energy = 2500
-			minerals = 2500
-			unity = 1200
-			trade = 400
-		}
-	}
-
-	subplan = {
-		scaling = yes
-		set_name = "Stellar AI Director pathological snowball reserve"
-		potential = {
-			staid_high_scale_snowball_pressure = yes
 			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_diplomatic = yes
 			staid_research_construction_priority_ready = yes
 		}
 		income = {
-			physics_research = 20000
-			society_research = 20000
-			engineering_research = 30000
-			alloys = 10000
-			energy = 10000
-			minerals = 8000
-			consumer_goods = 2500
-			food = 1500
-			unity = 2500
-			trade = 1500
+			trade = 300
+			physics_research = 600
+			society_research = 600
+			engineering_research = 900
+			energy = 250
 		}
-		pops = 1000000
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director lead secondary extermination economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_lead_secondary_extermination = yes
+			staid_research_construction_priority_ready = yes
+		}
+		income = {
+			alloys = 450
+			energy = 300
+			minerals = 250
+			physics_research = 500
+			society_research = 500
+			engineering_research = 750
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director lead secondary conquest economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_lead_secondary_conquest = yes
+		}
+		income = {
+			alloys = 350
+			energy = 250
+			minerals = 180
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director lead secondary gestalt_growth economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_lead_secondary_gestalt_growth = yes
+		}
+		income = {
+			minerals = 350
+			energy = 300
+			alloys = 180
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director lead secondary defensive economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_lead_secondary_defensive = yes
+		}
+		income = {
+			alloys = 300
+			energy = 250
+			minerals = 220
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director lead secondary research economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_lead_secondary_research = yes
+			staid_research_construction_priority_ready = yes
+		}
+		income = {
+			physics_research = 800
+			society_research = 800
+			engineering_research = 1200
+			energy = 220
+		}
+	}
+
+	subplan = {
+		optional = yes
+		set_name = "Stellar AI Director lead secondary diplomatic economy"
+		potential = {
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_archetype_lead_secondary_diplomatic = yes
+			staid_research_construction_priority_ready = yes
+		}
+		income = {
+			trade = 200
+			energy = 180
+			physics_research = 500
+			society_research = 500
+			engineering_research = 750
+		}
 	}
 
 	subplan = {
@@ -892,10 +1017,15 @@ basic_economy_plan = {
 
 	subplan = {
 		optional = yes
-		scaling = yes
 		set_name = "Stellar AI Director militarist conquest fleet reserve"
 		potential = {
-			staid_militarist_conquest_strategy = yes
+			staid_archetype_conquest = yes
+			staid_basic_economy_runway_safe = yes
+			NOT = { staid_core_deficit_short_runway = yes }
+			NOT = { staid_catastrophic_collapse_mode = yes }
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_research_construction_priority_ready = yes
 		}
 		income = {
 			alloys = 600
@@ -907,7 +1037,6 @@ basic_economy_plan = {
 			society_research = 200
 			engineering_research = 310
 		}
-		naval_cap = 6000
 	}
 
 	subplan = {
@@ -947,10 +1076,7 @@ basic_economy_plan = {
 		set_name = "Stellar AI Director modded unlock research reserve"
 		potential = {
 			staid_research_input_runway_safe = yes
-			OR = {
-				staid_core_unlock_research_priority_ready = yes
-				years_passed > 44
-			}
+			staid_core_unlock_research_priority_ready = yes
 		}
 		income = {
 			physics_research = 1200
@@ -971,7 +1097,6 @@ basic_economy_plan = {
 				has_technology = tech_dark_matter_power_core
 				has_technology = esc_tech_dark_matter_power_core_2
 				staid_phase_fleet_conversion_repeatables = yes
-				years_passed > 79
 			}
 		}
 		income = {
@@ -1068,7 +1193,6 @@ basic_economy_plan = {
 				has_technology = tech_battleships
 				has_technology = tech_Carrier_1
 				has_technology = tech_Dreadnought_1
-				years_passed > 79
 			}
 		}
 		income = {

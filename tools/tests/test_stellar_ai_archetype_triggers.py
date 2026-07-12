@@ -60,6 +60,10 @@ PRIMARY_ARCHETYPES = tuple(
 PRIMARY_TRIGGER_NAMES = tuple(
     f"staid_archetype_{archetype.value}" for archetype in ARCHETYPE_PRECEDENCE
 )
+LEAD_SECONDARY_TRIGGER_NAMES = tuple(
+    f"staid_archetype_lead_secondary_{archetype.value}"
+    for archetype in PRIMARY_ARCHETYPES
+)
 
 
 def atom_value(assignment: PDXAssignment) -> str:
@@ -215,11 +219,13 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
             1,
         )
 
-    def test_top_level_trigger_ids_are_unique_and_seven_primaries_exist(self) -> None:
+    def test_top_level_trigger_ids_are_unique_and_public_layers_exist(self) -> None:
         keys = [assignment.key for assignment in self.top_assignments]
         self.assertEqual(len(keys), len(set(keys)))
         self.assertEqual(len(PRIMARY_TRIGGER_NAMES), 7)
         self.assertTrue(set(PRIMARY_TRIGGER_NAMES).issubset(keys))
+        self.assertEqual(len(LEAD_SECONDARY_TRIGGER_NAMES), 6)
+        self.assertTrue(set(LEAD_SECONDARY_TRIGGER_NAMES).issubset(keys))
 
     def test_personality_groups_match_model_and_cover_reviewed_source(self) -> None:
         rendered_personalities: set[str] = set()
@@ -286,6 +292,66 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
                 ],
             )
 
+    def test_public_lead_secondaries_are_bounded_and_reuse_the_rank_circuit(
+        self,
+    ) -> None:
+        evidence = _evidence_assignments(PRIMARY_ARCHETYPES)
+        for archetype in PRIMARY_ARCHETYPES:
+            name = f"staid_archetype_lead_secondary_{archetype.value}"
+            block = self.top[name]
+            self.assertIsInstance(block, PDXBlock)
+            assignments = block_assignments(block)
+            self.assertEqual(
+                [assignment.key for assignment in assignments[:3]],
+                [
+                    "staid_archetype_eligible_country",
+                    "staid_archetype_identity_conflict",
+                    f"staid_archetype_{archetype.value}",
+                ],
+            )
+            self.assertEqual(atom_value(assignments[0]), "yes")
+            self.assertEqual(atom_value(assignments[1]), "no")
+            self.assertEqual(atom_value(assignments[2]), "no")
+
+            gates = block_assignments(block, "OR")
+            self.assertEqual(len(gates), len(PRIMARY_ARCHETYPES))
+            active = gates[0].value
+            self.assertIsInstance(active, PDXBlock)
+            active_references = block_assignments(active)
+            expected_active = [f"staid_archetype_hard_{archetype.value}"] + [
+                f"staid_archetype_{strength.value}_{archetype.value}_at_least_1"
+                for strength in (EvidenceStrength.STRONG, EvidenceStrength.SUPPORTING)
+                if evidence[(archetype, strength)]
+            ]
+            self.assertEqual(
+                [reference.key for reference in active_references], expected_active
+            )
+            self.assertTrue(
+                all(atom_value(reference) == "yes" for reference in active_references)
+            )
+
+            competitor_gates = gates[1:]
+            competitors = tuple(
+                competitor
+                for competitor in PRIMARY_ARCHETYPES
+                if competitor is not archetype
+            )
+            self.assertEqual(len(competitor_gates), len(competitors))
+            for gate, competitor in zip(competitor_gates, competitors, strict=True):
+                self.assertIsInstance(gate.value, PDXBlock)
+                direct = block_assignments(
+                    gate.value, f"staid_archetype_{competitor.value}"
+                )
+                self.assertEqual([atom_value(item) for item in direct], ["yes"])
+                self.assertEqual(len(block_assignments(gate.value, "OR")), 1)
+
+            nested_secondary_references = [
+                assignment
+                for assignment in iter_assignments(block)
+                if assignment.key in LEAD_SECONDARY_TRIGGER_NAMES
+            ]
+            self.assertEqual(nested_secondary_references, [])
+
     def test_balanced_is_eligible_fail_closed_fallback(self) -> None:
         balanced = self.top["staid_archetype_balanced"]
         self.assertIsInstance(balanced, PDXBlock)
@@ -313,6 +379,16 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
         self.assertLessEqual(len(selected), 1, identity)
         return selected[0] if selected else None
 
+    def selected_lead_secondary(self, identity: NationIdentity) -> Archetype | None:
+        evaluator = _TriggerEvaluator(self.top, identity)
+        selected = [
+            archetype
+            for archetype in PRIMARY_ARCHETYPES
+            if evaluator.trigger(f"staid_archetype_lead_secondary_{archetype.value}")
+        ]
+        self.assertLessEqual(len(selected), 1, identity)
+        return selected[0] if selected else None
+
     def assert_model_primary_parity(self, identity: NationIdentity) -> None:
         classification = classify_nation(identity)
         if classification.status is ClassificationStatus.EXCLUDED:
@@ -323,6 +399,20 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
             expected = classification.primary
         self.assertEqual(self.selected_primary(identity), expected, identity)
 
+    def assert_model_lead_secondary_parity(self, identity: NationIdentity) -> None:
+        classification = classify_nation(identity)
+        expected = (
+            classification.secondary[0]
+            if classification.status is ClassificationStatus.CLASSIFIED
+            and classification.secondary
+            else None
+        )
+        actual = self.selected_lead_secondary(identity)
+        self.assertEqual(actual, expected, identity)
+        primary = self.selected_primary(identity)
+        if actual is not None:
+            self.assertIsNot(actual, primary, identity)
+
     def test_all_h08a_identity_fixtures_select_the_same_neutralized_primary(
         self,
     ) -> None:
@@ -331,7 +421,9 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
         self.assertEqual(len(rows), 30)
         for row in rows:
             with self.subTest(case_id=row["case_id"]):
-                self.assert_model_primary_parity(_identity_from_row(row))
+                identity = _identity_from_row(row)
+                self.assert_model_primary_parity(identity)
+                self.assert_model_lead_secondary_parity(identity)
 
     def test_adversarial_mixed_strength_identities_match_h08a_ranking(self) -> None:
         cases = {
@@ -397,6 +489,7 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
         for name, identity in cases.items():
             with self.subTest(case=name):
                 self.assert_model_primary_parity(identity)
+                self.assert_model_lead_secondary_parity(identity)
 
     def test_trigger_graph_is_acyclic_and_has_bounded_depth(self) -> None:
         names = set(self.top)
