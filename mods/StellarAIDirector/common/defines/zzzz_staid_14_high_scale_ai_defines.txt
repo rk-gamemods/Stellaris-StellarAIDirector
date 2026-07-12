@@ -30,7 +30,10 @@ NAI = {
 	BUILDING_EXISTS_DIV_SCORE = 0.2
 	UNDERDEVELOPED_PLANET_LIMIT = 999
 	AI_UNBUILT_DISTRICT_BOOST_POP_THRESHOLD = 250
-	AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 8.0
+	# Save-backed 2230 regression: rich planets with 7-22 unemployed pops and
+	# ample district headroom still produced no queue. Strengthen only the
+	# engine's existing unemployment/underdevelopment candidate signal.
+	AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 20.0
 	AI_STORAGE_BUILDING_CAPPED_RESOURCE_BOOST = 1000
 
 	# Early strategic reconnaissance: vanilla already requests five science ships

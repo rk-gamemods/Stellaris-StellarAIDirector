@@ -10668,7 +10668,10 @@ NAI = {
 	BUILDING_EXISTS_DIV_SCORE = 0.2
 	UNDERDEVELOPED_PLANET_LIMIT = 999
 	AI_UNBUILT_DISTRICT_BOOST_POP_THRESHOLD = 250
-	AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 8.0
+	# Save-backed 2230 regression: rich planets with 7-22 unemployed pops and
+	# ample district headroom still produced no queue. Strengthen only the
+	# engine's existing unemployment/underdevelopment candidate signal.
+	AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 20.0
 	AI_STORAGE_BUILDING_CAPPED_RESOURCE_BOOST = 1000
 
 	# Early strategic reconnaissance: vanilla already requests five science ships
@@ -10723,7 +10726,7 @@ def minerals_planet_construction_budget_text() -> str:
 		modifier = {{ add = 0.50 staid_construction_spenddown_pressure = yes }}
 		modifier = {{ add = 0.25 staid_resource_waste_pressure = yes }}
 		modifier = {{ add = 0.30 staid_high_scale_snowball_pressure = yes }}
-		modifier = {{ add = 0.75 any_owned_planet = {{ num_unemployed > 0 free_jobs < 1 }} }}
+		modifier = {{ add = 0.75 staid_unemployment_construction_pressure = yes }}
 		modifier = {{ add = 0.50 any_owned_planet = {{ free_building_slots > 0 num_unemployed > 0 }} }}
 		modifier = {{ add = 0.20 resource_stockpile_compare = {{ resource = minerals value > 10000 }} }}
 		modifier = {{ add = 0.30 resource_stockpile_compare = {{ resource = minerals value > 25000 }} }}
@@ -11995,13 +11998,18 @@ staid_resource_waste_pressure = {
 \t}
 }
 
+staid_unemployment_construction_pressure = {
+\tis_nomadic = no
+\tany_owned_planet = { num_unemployed > 0 }
+}
+
 staid_construction_spenddown_pressure = {
 \tis_nomadic = no
 \tNOT = { staid_catastrophic_collapse_mode = yes }
 \tOR = {
 \t\tstaid_high_scale_snowball_pressure = yes
 \t\tstaid_resource_waste_pressure = yes
-\t\tany_owned_planet = { num_unemployed > 0 free_jobs < 1 }
+\t\tstaid_unemployment_construction_pressure = yes
 \t\tany_owned_planet = { free_building_slots > 0 num_unemployed > 0 }
 \t\tresource_stockpile_compare = { resource = minerals value > 10000 }
 \t}
@@ -13481,6 +13489,91 @@ _ARCHETYPE_SECONDARY_ECONOMIC_TARGETS = {
     },
 }
 
+_DEFINING_IDENTITY_ECONOMIC_TARGETS = {
+    "machine exterminator": (
+        "staid_identity_machine_exterminator",
+        {
+            "alloys": 900,
+            "energy": 600,
+            "minerals": 400,
+            "unity": 150,
+            "physics_research": 600,
+            "society_research": 600,
+            "engineering_research": 900,
+        },
+        (),
+    ),
+    "rogue servitor": (
+        "staid_identity_rogue_servitor",
+        {
+            "food": 120,
+            "consumer_goods": 220,
+            "energy": 500,
+            "minerals": 350,
+            "alloys": 300,
+            "unity": 250,
+            "physics_research": 600,
+            "society_research": 600,
+            "engineering_research": 900,
+        },
+        ("country_uses_food = yes", "country_uses_consumer_goods = yes"),
+    ),
+    "assimilator": (
+        "staid_identity_assimilator",
+        {
+            "energy": 550,
+            "minerals": 450,
+            "alloys": 550,
+            "unity": 150,
+            "physics_research": 600,
+            "society_research": 600,
+            "engineering_research": 900,
+        },
+        (),
+    ),
+    "devouring swarm": (
+        "staid_identity_devouring_swarm",
+        {
+            "alloys": 800,
+            "energy": 500,
+            "minerals": 400,
+            "unity": 150,
+            "physics_research": 500,
+            "society_research": 500,
+            "engineering_research": 750,
+        },
+        (),
+    ),
+    "inward perfection": (
+        "staid_identity_inward_perfection",
+        {
+            "energy": 400,
+            "minerals": 450,
+            "alloys": 350,
+            "consumer_goods": 220,
+            "unity": 250,
+            "physics_research": 800,
+            "society_research": 800,
+            "engineering_research": 1200,
+        },
+        ("country_uses_consumer_goods = yes",),
+    ),
+    "megacorp": (
+        "staid_identity_megacorp",
+        {
+            "trade": 400,
+            "energy": 350,
+            "consumer_goods": 250,
+            "minerals": 300,
+            "unity": 200,
+            "physics_research": 600,
+            "society_research": 600,
+            "engineering_research": 900,
+        },
+        ("country_uses_consumer_goods = yes",),
+    ),
+}
+
 
 def archetype_economic_subplans_text() -> str:
     """Render bounded identity preferences below relative recovery plans."""
@@ -13505,6 +13598,15 @@ def archetype_economic_subplans_text() -> str:
                 "staid_basic_economy_runway_safe = yes",
                 "NOT = { staid_core_deficit_short_runway = yes }",
                 "NOT = { staid_catastrophic_collapse_mode = yes }",
+                "NOR = {",
+                "\tstaid_identity_machine_exterminator = yes",
+                "\tstaid_identity_rogue_servitor = yes",
+                "\tstaid_identity_assimilator = yes",
+                "\tstaid_identity_devouring_swarm = yes",
+                "\tstaid_identity_inward_perfection = yes",
+                "\tstaid_identity_barbaric_despoiler = yes",
+                "\tstaid_identity_megacorp = yes",
+                "}",
                 f"{trigger_prefix}{archetype} = yes",
             ]
             if research_resources & targets.keys():
@@ -13529,6 +13631,54 @@ def archetype_economic_subplans_text() -> str:
                     )
                 )
             )
+    for label, (trigger, targets, resource_gates) in (
+        _DEFINING_IDENTITY_ECONOMIC_TARGETS.items()
+    ):
+        gates = [
+            "staid_basic_economy_runway_safe = yes",
+            "NOT = { staid_core_deficit_short_runway = yes }",
+            "NOT = { staid_catastrophic_collapse_mode = yes }",
+            f"{trigger} = yes",
+            *resource_gates,
+            "staid_research_construction_priority_ready = yes",
+        ]
+        blocks.append(
+            "\n".join(
+                (
+                    "\tsubplan = {",
+                    "\t\toptional = yes",
+                    f'\t\tset_name = "Stellar AI Director defining {label} economy"',
+                    "\t\tpotential = {",
+                    *(f"\t\t\t{gate}" for gate in gates),
+                    "\t\t}",
+                    "\t\tincome = {",
+                    *(f"\t\t\t{resource} = {value}" for resource, value in targets.items()),
+                    "\t\t}",
+                    "\t}",
+                )
+            )
+        )
+    blocks.append(
+        """\tsubplan = {
+\t\toptional = yes
+\t\tset_name = "Stellar AI Director defining nomadic economy"
+\t\tpotential = {
+\t\t\tstaid_identity_nomadic = yes
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tstaid_research_input_runway_safe = yes
+\t\t}
+\t\tincome = {
+\t\t\talloys = 400
+\t\t\tfood = 150
+\t\t\tenergy = 350
+\t\t\tminerals = 250
+\t\t\tunity = 250
+\t\t\tphysics_research = 500
+\t\t\tsociety_research = 500
+\t\t\tengineering_research = 750
+\t\t}
+\t}"""
+    )
     return "\n\n".join(blocks)
 
 
@@ -13650,10 +13800,7 @@ __STAID_ARCHETYPE_ECONOMIC_SUBPLANS__
 \t\tscaling = yes
 \t\tset_name = "Stellar AI Director unemployed pop construction catch-up"
 \t\tpotential = {
-\t\t\tany_owned_planet = {
-\t\t\t\tnum_unemployed > 0
-\t\t\t\tfree_jobs < 1
-\t\t\t}
+\t\t\tstaid_unemployment_construction_pressure = yes
 \t\t}
 \t\tincome = {
 \t\t\tminerals = 12000
@@ -13819,19 +13966,24 @@ __STAID_ARCHETYPE_ECONOMIC_SUBPLANS__
 
 \tsubplan = {
 \t\toptional = yes
-\t\tscaling = yes
 \t\tset_name = "Stellar AI Director raiding pop acquisition reserve"
 \t\tpotential = {
-\t\t\tstaid_raiding_pop_growth_strategy = yes
+\t\t\tstaid_identity_barbaric_despoiler = yes
+\t\t\tstaid_archetype_conquest = yes
+\t\t\tstaid_basic_economy_runway_safe = yes
+\t\t\tNOT = { staid_core_deficit_short_runway = yes }
+\t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
+\t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {
-\t\t\talloys = 4500
-\t\t\tenergy = 3000
-\t\t\tminerals = 1800
-\t\t\tunity = 800
-\t\t\ttrade = 700
+\t\t\talloys = 650
+\t\t\tenergy = 450
+\t\t\tminerals = 300
+\t\t\tunity = 150
+\t\t\tphysics_research = 400
+\t\t\tsociety_research = 400
+\t\t\tengineering_research = 600
 \t\t}
-\t\tnaval_cap = 4500
 \t}
 
 \tsubplan = {

@@ -981,13 +981,18 @@ staid_resource_waste_pressure = {
 	}
 }
 
+staid_unemployment_construction_pressure = {
+	is_nomadic = no
+	any_owned_planet = { num_unemployed > 0 }
+}
+
 staid_construction_spenddown_pressure = {
 	is_nomadic = no
 	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
 		staid_high_scale_snowball_pressure = yes
 		staid_resource_waste_pressure = yes
-		any_owned_planet = { num_unemployed > 0 free_jobs < 1 }
+		staid_unemployment_construction_pressure = yes
 		any_owned_planet = { free_building_slots > 0 num_unemployed > 0 }
 		resource_stockpile_compare = { resource = minerals value > 10000 }
 	}

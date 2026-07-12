@@ -22,7 +22,7 @@ minerals_expenditure_planets_low = {
 		modifier = { add = 0.50 staid_construction_spenddown_pressure = yes }
 		modifier = { add = 0.25 staid_resource_waste_pressure = yes }
 		modifier = { add = 0.30 staid_high_scale_snowball_pressure = yes }
-		modifier = { add = 0.75 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }
+		modifier = { add = 0.75 staid_unemployment_construction_pressure = yes }
 		modifier = { add = 0.50 any_owned_planet = { free_building_slots > 0 num_unemployed > 0 } }
 		modifier = { add = 0.20 resource_stockpile_compare = { resource = minerals value > 10000 } }
 		modifier = { add = 0.30 resource_stockpile_compare = { resource = minerals value > 25000 } }
@@ -50,7 +50,7 @@ minerals_expenditure_planets_med = {
 		modifier = { add = 0.50 staid_construction_spenddown_pressure = yes }
 		modifier = { add = 0.25 staid_resource_waste_pressure = yes }
 		modifier = { add = 0.30 staid_high_scale_snowball_pressure = yes }
-		modifier = { add = 0.75 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }
+		modifier = { add = 0.75 staid_unemployment_construction_pressure = yes }
 		modifier = { add = 0.50 any_owned_planet = { free_building_slots > 0 num_unemployed > 0 } }
 		modifier = { add = 0.20 resource_stockpile_compare = { resource = minerals value > 10000 } }
 		modifier = { add = 0.30 resource_stockpile_compare = { resource = minerals value > 25000 } }
@@ -77,7 +77,7 @@ minerals_expenditure_planets_high = {
 		modifier = { add = 0.50 staid_construction_spenddown_pressure = yes }
 		modifier = { add = 0.25 staid_resource_waste_pressure = yes }
 		modifier = { add = 0.30 staid_high_scale_snowball_pressure = yes }
-		modifier = { add = 0.75 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }
+		modifier = { add = 0.75 staid_unemployment_construction_pressure = yes }
 		modifier = { add = 0.50 any_owned_planet = { free_building_slots > 0 num_unemployed > 0 } }
 		modifier = { add = 0.20 resource_stockpile_compare = { resource = minerals value > 10000 } }
 		modifier = { add = 0.30 resource_stockpile_compare = { resource = minerals value > 25000 } }

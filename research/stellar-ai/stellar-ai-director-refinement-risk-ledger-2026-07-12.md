@@ -1014,6 +1014,36 @@ Top five risks:
 Rollback boundary: revert the economic renderer, its focused generator/tests,
 and the one economic-plan artifact. Do not revert H08e classification or H09.
 
+### H08f1 — Defining-civic economic branches
+
+Status: defining machine exterminator, rogue servitor, assimilator, devouring
+swarm, inward-perfection, megacorp, barbaric-despoiler, and nomadic identities
+now use dedicated bounded subplans. Broad archetype plans explicitly exclude
+these identities, preventing duplicate primary-plus-civic stacking. Subject and
+overlord remain dynamic labels without fixed resource targets because contracts
+can invert net obligations.
+
+Top five risks:
+
+1. **Dedicated and broad plans can stack.** Broad settled plans contain an
+   explicit NOR over every defining identity; the despoiler plan replaces the
+   former oversized raiding reserve.
+2. **Special economies can request unusable resources.** Machine/hive branches
+   omit ambiguous food/consumer-goods targets; servitor, inward, and corporate
+   branches use exact resource-usage gates.
+3. **War can freeze rich civilian growth.** No defining branch uses war or
+   recent-loss as a veto; runway, deficit, collapse, and research-input safety
+   remain authoritative.
+4. **Nomads can inherit settled planet assumptions.** Their isolated branch
+   uses the country-level nomadic label and contains no archetype-eligibility or
+   owned-planet condition.
+5. **Fixed subject/overlord targets can reverse real contracts.** No economic
+   consumer is added until native net-contract evidence exists.
+
+Rollback boundary: remove the defining branches and broad-plan exclusions,
+restore the previous bounded raiding reserve, and regenerate only the economic
+artifact. Identity labels and primary classification remain.
+
 ## H09a — Retire stateful threat-response runtime
 
 Status: implemented as a cleanup-only slice. The generator deletes the legacy
@@ -1115,3 +1145,39 @@ Top five risks:
 
 Rollback boundary: restore `highest_threat < 50` to each potential and remove
 only the two `0.5` modifiers. H07 colonization-latch repair and H09b/H09c remain.
+
+## H09e — Fillable unemployment and underdeveloped-planet candidate pressure
+
+Status: implemented from `autosave_2230.01.01.sav` evidence. Empire 0 had four
+colonies with 7.35-22.52 unemployed pops, empty queues, positive income, capped
+core banks, and raw district headroom. Nominal open enforcer jobs made the old
+`num_unemployed > 0 AND free_jobs < 1` signal false on three colonies; the
+fourth satisfied it and still failed downstream candidate selection.
+
+The new country trigger treats actual unemployment as actionable without
+assuming nominal jobs are fillable. Economic demand and all three native
+mineral planet-budget bands consume that shared trigger. Separately, the one
+controlled construction-define experiment raises only
+`AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER` from `8.0` to `20.0`; its existing
+2.5-pop threshold, free-job caps, opportunity costs, and build thresholds remain.
+
+Top five risks:
+
+1. **Transient unemployment can cause premature construction.** The budget
+   effect is additive and candidate selection remains native; existing free-job
+   caps and the unbuilt-district population threshold bound actual construction.
+2. **Incompatible nominal jobs can mask demand.** The reusable trigger uses
+   actual unemployment only and deliberately ignores nominal `free_jobs`.
+3. **A global candidate multiplier can overbuild every empire.** Only the
+   engine's existing underdeveloped-planet signal changes, from 8 to 20; no
+   other construction define is altered in this experiment.
+4. **Economic targets can exist without legal candidates.** Save forensics
+   confirmed urban district headroom and empty zones, but runtime proof on the
+   new build is still required to prove queue creation.
+5. **War logistics can crowd civilian construction.** The mineral budget retains
+   its 0.65 wartime share factor, but actual unemployment and capped-resource
+   pressure remain active during war instead of being vetoed.
+
+Rollback boundary: restore the multiplier to `8.0`, replace the reusable
+unemployment trigger with the old free-job conjunction, and regenerate only
+the defines, decision-trigger, mineral-budget, and economic-plan artifacts.

@@ -1563,6 +1563,8 @@ class GeneratedModValidityTests(unittest.TestCase):
             "AI_POPS_SCORE_MULT = 0.25",
             "AI_RESOURCE_TARGET_EXPIRATION_MONTHS = 6",
             "UNDERDEVELOPED_PLANET_LIMIT = 999",
+            "AI_UNBUILT_DISTRICT_BOOST_POP_THRESHOLD = 250",
+            "AI_UNBUILT_DISTRICT_BOOST_MULTIPLIER = 20.0",
             "BUILDING_BUILD_THRESHOLD = 0.1",
         ):
             self.assertIn(marker, text)
@@ -1835,11 +1837,11 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_high_scale_snowball_pressure",
             "staid_core_deficit_short_runway",
             "modifier = { factor = 0.65 staid_war_logistics_pressure = yes }",
-            "any_owned_planet = { num_unemployed > 0 free_jobs < 1 }",
+            "staid_unemployment_construction_pressure = yes",
             "weight = 1.0",
             "weight = 0.8",
             "weight = 0.6",
-            "modifier = { add = 0.75 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }",
+            "modifier = { add = 0.75 staid_unemployment_construction_pressure = yes }",
             "resource_stockpile_compare = { resource = minerals value > 25000 }",
         ):
             self.assertIn(marker, text)
@@ -2633,8 +2635,8 @@ class GeneratedModValidityTests(unittest.TestCase):
             'set_name = "Stellar AI Director raiding pop acquisition reserve"',
             "alloys = 600",
             "engineering_research = 310",
-            "alloys = 4500",
-            "naval_cap = 4500",
+            "alloys = 650",
+            "staid_identity_barbaric_despoiler = yes",
             "factor = 18 staid_militarist_conquest_strategy = yes",
             "factor = 80 staid_raiding_pop_growth_strategy = yes",
             "abduct_pops = yes",
@@ -2839,6 +2841,72 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertNotIn("years_passed", _economic_subplan_block(economy, name))
 
+    def test_defining_identity_economies_replace_broad_archetype_stacking(self):
+        economy = (
+            MOD_ROOT
+            / "common"
+            / "economic_plans"
+            / "zzzz_staid_additive_economic_plan.txt"
+        ).read_text(encoding="utf-8")
+        defining = {
+            "machine exterminator": "staid_identity_machine_exterminator",
+            "rogue servitor": "staid_identity_rogue_servitor",
+            "assimilator": "staid_identity_assimilator",
+            "devouring swarm": "staid_identity_devouring_swarm",
+            "inward perfection": "staid_identity_inward_perfection",
+            "megacorp": "staid_identity_megacorp",
+        }
+        for label, trigger in defining.items():
+            block = _economic_subplan_block(
+                economy, f"Stellar AI Director defining {label} economy"
+            )
+            self.assertIn(f"{trigger} = yes", block)
+            self.assertIn("optional = yes", block)
+            self.assertNotIn("scaling = yes", block)
+            self.assertNotIn("years_passed", block)
+            self.assertNotIn("is_at_war", block)
+            self.assertNotIn("recently_lost_war", block)
+            self.assertNotIn("naval_cap =", block)
+            self.assertNotIn("pops =", block)
+            self.assertIn("staid_basic_economy_runway_safe = yes", block)
+            self.assertIn("staid_research_construction_priority_ready = yes", block)
+
+        nomad = _economic_subplan_block(
+            economy, "Stellar AI Director defining nomadic economy"
+        )
+        self.assertIn("staid_identity_nomadic = yes", nomad)
+        self.assertIn("staid_research_input_runway_safe = yes", nomad)
+        self.assertNotIn("any_owned_planet", nomad)
+        self.assertNotIn("staid_archetype_eligible_country", nomad)
+
+        for label in (
+            "primary extermination",
+            "primary gestalt_growth",
+            "primary defensive",
+            "primary research",
+            "primary diplomatic",
+            "lead secondary extermination",
+            "lead secondary conquest",
+            "lead secondary gestalt_growth",
+            "lead secondary defensive",
+            "lead secondary research",
+            "lead secondary diplomatic",
+        ):
+            block = _economic_subplan_block(
+                economy, f"Stellar AI Director {label} economy"
+            )
+            self.assertIn("NOR = {", block)
+            for trigger in defining.values():
+                self.assertIn(f"{trigger} = yes", block)
+
+        raiding = _economic_subplan_block(
+            economy, "Stellar AI Director raiding pop acquisition reserve"
+        )
+        self.assertIn("staid_identity_barbaric_despoiler = yes", raiding)
+        self.assertIn("alloys = 650", raiding)
+        self.assertNotIn("alloys = 4500", raiding)
+        self.assertNotIn("naval_cap =", raiding)
+
     def test_deficits_suppress_discretionary_research_and_fleet_pressure_but_prioritize_repairs(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
@@ -2894,6 +2962,14 @@ class GeneratedModValidityTests(unittest.TestCase):
             "Stellar AI Director lead secondary research economy",
             "Stellar AI Director lead secondary diplomatic economy",
             "Stellar AI Director militarist conquest fleet reserve",
+            "Stellar AI Director raiding pop acquisition reserve",
+            "Stellar AI Director defining machine exterminator economy",
+            "Stellar AI Director defining rogue servitor economy",
+            "Stellar AI Director defining assimilator economy",
+            "Stellar AI Director defining devouring swarm economy",
+            "Stellar AI Director defining inward perfection economy",
+            "Stellar AI Director defining megacorp economy",
+            "Stellar AI Director defining nomadic economy",
             "Stellar AI Director modded unlock research reserve",
             "Stellar AI Director ESC component resource readiness",
             "Stellar AI Director capped stockpile research conversion",
@@ -3034,7 +3110,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("staid_construction_spenddown_pressure = {", pressure + (
             MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         ).read_text(encoding="utf-8"))
-        self.assertIn("modifier = { add = 0.75 any_owned_planet = { num_unemployed > 0 free_jobs < 1 } }", budget)
+        self.assertIn("modifier = { add = 0.75 staid_unemployment_construction_pressure = yes }", budget)
         self.assertIn("modifier = { add = 0.50 staid_construction_spenddown_pressure = yes }", budget)
         self.assertIn("resource_stockpile_compare = { resource = minerals value > 25000 }", budget)
         self.assertNotIn("factor = 40", budget)
@@ -3053,6 +3129,18 @@ class GeneratedModValidityTests(unittest.TestCase):
         ]
         self.assertIn("NOT = { staid_catastrophic_collapse_mode = yes }", construction_block)
         self.assertNotIn("staid_recovery_mode", construction_block)
+        unemployment_block = extract_top_level_object_text(
+            trigger_text, "staid_unemployment_construction_pressure"
+        )
+        self.assertIn("any_owned_planet = { num_unemployed > 0 }", unemployment_block)
+        self.assertNotIn("free_jobs", unemployment_block)
+        unemployed_plan = _economic_subplan_block(
+            economy, "Stellar AI Director unemployed pop construction catch-up"
+        )
+        self.assertIn(
+            "staid_unemployment_construction_pressure = yes", unemployed_plan
+        )
+        self.assertNotIn("free_jobs", unemployed_plan)
 
     def test_staid_scripted_trigger_graph_has_no_cycles(self):
         self.assertEqual(validate_staid_scripted_trigger_cycles(MOD_ROOT), [])
