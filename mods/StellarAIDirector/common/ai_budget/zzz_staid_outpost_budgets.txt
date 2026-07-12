@@ -27,6 +27,24 @@ alloys_expenditure_starbases_expand = {
 			factor = 0.5
 			highest_threat >= 50
 		}
+
+		# Bounded H08 territorial identity preferences; native expansion-plan,
+		# influence, threat, legality, and resource-type gates remain decisive.
+		modifier = { factor = 1.25 staid_archetype_gestalt_growth = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = { factor = 1.15 staid_archetype_defensive = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = { factor = 1.15 staid_archetype_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = { factor = 1.10 staid_archetype_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = {
+			factor = 1.05
+			staid_archetype_identity_conflict = no
+			staid_archetype_eligible_country = yes
+			OR = {
+				staid_archetype_lead_secondary_gestalt_growth = yes
+				staid_archetype_lead_secondary_defensive = yes
+				staid_archetype_lead_secondary_conquest = yes
+				staid_archetype_lead_secondary_extermination = yes
+			}
+		}
 	}
 
 	desired_min = {
@@ -55,6 +73,24 @@ food_expenditure_starbases_expand = {
 		modifier = {
 			factor = 0.5
 			highest_threat >= 50
+		}
+
+		# Bounded H08 territorial identity preferences; native expansion-plan,
+		# influence, threat, legality, and resource-type gates remain decisive.
+		modifier = { factor = 1.25 staid_archetype_gestalt_growth = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = { factor = 1.15 staid_archetype_defensive = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = { factor = 1.15 staid_archetype_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = { factor = 1.10 staid_archetype_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
+		modifier = {
+			factor = 1.05
+			staid_archetype_identity_conflict = no
+			staid_archetype_eligible_country = yes
+			OR = {
+				staid_archetype_lead_secondary_gestalt_growth = yes
+				staid_archetype_lead_secondary_defensive = yes
+				staid_archetype_lead_secondary_conquest = yes
+				staid_archetype_lead_secondary_extermination = yes
+			}
 		}
 	}
 

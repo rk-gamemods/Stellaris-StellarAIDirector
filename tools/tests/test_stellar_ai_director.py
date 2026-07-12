@@ -88,6 +88,7 @@ from stellar_ai_director_lib import (
     nonconstruction_economic_valuation_dataset_passes,
     nomad_waystation_budget_text,
     outpost_budget_text,
+    outpost_identity_weight_modifiers_text,
     opening_growth_policies_text,
     parse_file,
     parse_numeric,
@@ -488,10 +489,14 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
             "\t\t}\n"
         )
         expected_alloy_weight = expected_alloy_weight.replace(
-            "\n\t}", threat_modifier + "\t}", 1
+            "\n\t}",
+            threat_modifier + outpost_identity_weight_modifiers_text() + "\t}",
+            1,
         )
         expected_food_weight = expected_food_weight.replace(
-            "\n\t}", threat_modifier + "\t}", 1
+            "\n\t}",
+            threat_modifier + outpost_identity_weight_modifiers_text() + "\t}",
+            1,
         )
 
         for text in (artifact, generated):
@@ -518,6 +523,27 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
                 self.assertIn("highest_threat >= 50", weight)
                 self.assertNotIn("factor = 0.25", weight)
                 self.assertNotIn("ai_colonize_plans", weight)
+                for marker in (
+                    "staid_archetype_gestalt_growth = yes",
+                    "staid_archetype_defensive = yes",
+                    "staid_archetype_conquest = yes",
+                    "staid_archetype_extermination = yes",
+                    "staid_archetype_lead_secondary_gestalt_growth = yes",
+                    "staid_archetype_lead_secondary_defensive = yes",
+                    "staid_archetype_lead_secondary_conquest = yes",
+                    "staid_archetype_lead_secondary_extermination = yes",
+                ):
+                    self.assertEqual(weight.count(marker), 1)
+                self.assertNotIn("staid_archetype_hard_", weight)
+                identity_block = outpost_identity_weight_modifiers_text()
+                factors = [
+                    float(value)
+                    for value in re.findall(r"factor = ([0-9.]+)", identity_block)
+                ]
+                self.assertEqual(len(factors), 5)
+                self.assertTrue(all(1.0 < factor <= 1.25 for factor in factors))
+                self.assertLessEqual(max(factors[:-1]) * factors[-1], 1.35)
+                self.assertLess(0.5 * max(factors[:-1]) * factors[-1], 0.70)
                 self.assertIn(f"base = {desired_min}", outpost)
                 self.assertNotIn("clear_orders", outpost)
 
@@ -542,6 +568,23 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
                 extract_assignment_block(food, "weight"),
                 expected_food_weight,
             )
+            archetype_triggers = (
+                MOD_ROOT
+                / "common"
+                / "scripted_triggers"
+                / "zzzz_staid_21_nation_archetype_triggers.txt"
+            ).read_text(encoding="utf-8")
+            for archetype in (
+                "gestalt_growth",
+                "defensive",
+                "conquest",
+                "extermination",
+            ):
+                secondary = extract_top_level_object_text(
+                    archetype_triggers,
+                    f"staid_archetype_lead_secondary_{archetype}",
+                )
+                self.assertIn(f"staid_archetype_{archetype} = no", secondary)
         self.assertEqual(artifact, generated)
 
 

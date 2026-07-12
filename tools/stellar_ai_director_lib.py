@@ -13021,6 +13021,34 @@ def active_outpost_budget_parent_overrides() -> list[str]:
     return sorted(sources)
 
 
+def outpost_identity_weight_modifiers_text() -> str:
+    """Return the shared alloy/food H08 territorial identity modifiers."""
+
+    return (
+        "\n\t\t# Bounded H08 territorial identity preferences; native expansion-plan,\n"
+        "\t\t# influence, threat, legality, and resource-type gates remain decisive.\n"
+        "\t\tmodifier = { factor = 1.25 staid_archetype_gestalt_growth = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }\n"
+        "\t\tmodifier = { factor = 1.15 staid_archetype_defensive = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }\n"
+        "\t\tmodifier = { factor = 1.15 staid_archetype_conquest = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }\n"
+        "\t\tmodifier = { factor = 1.10 staid_archetype_extermination = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }\n"
+        "\t\tmodifier = {\n"
+        "\t\t\tfactor = 1.05\n"
+        "\t\t\tstaid_archetype_identity_conflict = no\n"
+        "\t\t\tstaid_archetype_eligible_country = yes\n"
+        "\t\t\tOR = {\n"
+        "\t\t\t\tstaid_archetype_lead_secondary_gestalt_growth = yes\n"
+        "\t\t\t\tstaid_archetype_lead_secondary_defensive = yes\n"
+        "\t\t\t\tstaid_archetype_lead_secondary_conquest = yes\n"
+        "\t\t\t\tstaid_archetype_lead_secondary_extermination = yes\n"
+        "\t\t\t}\n"
+        "\t\t}\n"
+    )
+
+
 def outpost_budget_text() -> str:
     """Keep native outpost funding eligible beside colonization work."""
 
@@ -13081,6 +13109,7 @@ def outpost_budget_text() -> str:
         "\t\t\thighest_threat >= 50\n"
         "\t\t}\n"
     )
+    identity_weight_modifiers = outpost_identity_weight_modifiers_text()
     softened_outposts = {}
     for object_id, outposts in (
         ("alloys_expenditure_starbases_expand", alloy_outposts),
@@ -13098,7 +13127,11 @@ def outpost_budget_text() -> str:
         weight = extract_assignment_block(outposts, "weight")
         if weight.count("\n\t}") != 1:
             raise ValueError(f"{object_id} weight shape changed; review before generation")
-        weight = weight.replace("\n\t}", threat_weight_modifier + "\t}", 1)
+        weight = weight.replace(
+            "\n\t}",
+            threat_weight_modifier + identity_weight_modifiers + "\t}",
+            1,
+        )
         old_weight_assignment = "\tweight = " + extract_assignment_block(
             outposts, "weight"
         )
