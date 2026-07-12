@@ -39,6 +39,7 @@ from stellar_ai_director_lib import (
     SFT_EQUIVALENCE_AUDIT_MD,
     STELLARAI_INLINE_SCRIPT_DEPENDENCIES,
     STANDALONE_AGGRESSION_PERSONALITY_VALUES,
+    THREAT_OPINION_VALUES,
     WAR_PLANNING_444_PROVENANCE_CSV,
     STELLARIS_INSTALL_ROOT,
     _collect_job_adds,
@@ -103,6 +104,7 @@ from stellar_ai_director_lib import (
     validate_staid_scripted_trigger_cycles,
     validate_generated_patch,
     validate_object_atlas_artifacts,
+    validate_threat_response_contract,
     write_text_file_preserving_generated_timestamp,
 )
 
@@ -2793,7 +2795,6 @@ class GeneratedModValidityTests(unittest.TestCase):
             "Stellar AI Director militarist conquest fleet reserve",
             "Stellar AI Director raiding pop acquisition reserve",
             "Stellar AI Director hostile fauna clearance reserve",
-            "Stellar AI Director threat readiness reserve",
         }
         research_runway_subplans = {
             "Stellar AI Director safe research baseline",
@@ -3432,32 +3433,47 @@ class GeneratedModValidityTests(unittest.TestCase):
                 depth += line.count("{") - line.count("}")
             self.assertEqual(top_level_potentials, 1, f"{object_id} should merge duplicate top-level potential blocks")
 
-    def test_threat_response_war_goal_checks_use_block_syntax(self):
-        trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_threat_response_triggers.txt"
-        parse_file(trigger_path)
-        text = trigger_path.read_text(encoding="utf-8")
-        self.assertIn("using_war_goal = { type = wg_conquest owner = root }", text)
-        self.assertIn("using_war_goal = { type = wg_subjugation owner = root }", text)
-        self.assertIn("using_war_goal = { type = wg_humiliation owner = root }", text)
-        self.assertNotIn("using_war_goal = wg_", text)
+    def test_threat_response_stateful_runtime_is_retired(self):
+        retired_paths = (
+            MOD_ROOT / "common" / "script_values" / "zzz_staid_threat_response_values.txt",
+            MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_threat_response_triggers.txt",
+            MOD_ROOT / "common" / "on_actions" / "zzz_staid_threat_response_on_actions.txt",
+            MOD_ROOT / "events" / "zzz_staid_threat_response_events.txt",
+        )
+        for path in retired_paths:
+            self.assertFalse(path.exists(), f"retired threat-response artifact regenerated: {path}")
 
-    def test_threat_response_observer_event_reads_attacker_war_goal_flags(self):
-        event_path = MOD_ROOT / "events" / "zzz_staid_threat_response_events.txt"
-        parse_file(event_path)
-        text = event_path.read_text(encoding="utf-8")
-        for marker in (
-            "set_timed_country_flag = { flag = staid_tr_war_goal_subjugation",
-            "set_timed_country_flag = { flag = staid_tr_war_goal_conquest",
-            "set_timed_country_flag = { flag = staid_tr_war_goal_humiliation",
-            "limit = { from = { has_country_flag = staid_tr_war_goal_subjugation } }",
-            "limit = { from = { has_country_flag = staid_tr_war_goal_conquest } }",
-            "limit = { from = { has_country_flag = staid_tr_war_goal_humiliation } }",
+        runtime_text = "\n".join(
+            path.read_text(encoding="utf-8-sig")
+            for root in (MOD_ROOT / "common", MOD_ROOT / "events")
+            for path in root.rglob("*.txt")
+        )
+        for forbidden in (
+            "on_war_beginning",
+            "namespace = staid_tr",
+            "id = staid_tr.1",
+            "set_timed_country_flag = { flag = staid_tr_",
+            "set_timed_relation_flag = { who = from flag = staid_tr_",
+            "has_country_flag = staid_tr_defensive_readiness_low",
+            "staid_tr_foreign_affairs_safe",
+            "Stellar AI Director threat readiness reserve",
         ):
-            self.assertIn(marker, text)
-        observer_event = text[text.index("id = staid_tr.2") :]
-        self.assertNotIn("staid_tr_is_subjugation_war_goal", observer_event)
-        self.assertNotIn("staid_tr_is_conquest_war_goal", observer_event)
-        self.assertNotIn("staid_tr_is_humiliation_war_goal", observer_event)
+            self.assertNotIn(forbidden, runtime_text)
+        self.assertEqual(validate_threat_response_contract(), [])
+
+    def test_threat_response_save_compatibility_ids_are_inert(self):
+        opinion_path = MOD_ROOT / "common" / "opinion_modifiers" / "zzz_staid_threat_response_opinions.txt"
+        localisation_path = MOD_ROOT / "localisation" / "english" / "staid_threat_response_l_english.yml"
+        parse_file(opinion_path)
+        opinions = opinion_path.read_text(encoding="utf-8")
+        localisation = localisation_path.read_text(encoding="utf-8-sig")
+        self.assertTrue(localisation_path.read_bytes().startswith(b"\xef\xbb\xbf"))
+        self.assertTrue(THREAT_OPINION_VALUES)
+        self.assertEqual(set(THREAT_OPINION_VALUES.values()), {0})
+        for key in THREAT_OPINION_VALUES:
+            block = extract_top_level_object_text(opinions, f"staid_tr_{key}")
+            self.assertRegex(block, r"(?m)^\s*opinion\s*=\s*0\s*$")
+            self.assertIn(f"staid_tr_{key}:0", localisation)
 
     def test_gigas_habitat_zone_slot_compat_districts_cover_new_habitat_route(self):
         district_path = (
@@ -3549,7 +3565,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn(marker, text)
         nsc3_hull_block = economy[
             economy.index('set_name = "Stellar AI Director NSC3 hull readiness reserve"') : economy.index(
-                'set_name = "Stellar AI Director threat readiness reserve"'
+                'set_name = "Stellar AI Director planetary capacity reserve"'
             )
         ]
         for marker in (

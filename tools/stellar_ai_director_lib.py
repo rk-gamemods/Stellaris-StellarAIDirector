@@ -797,16 +797,19 @@ THREAT_TIER_CUTOFFS = {
     "defensive_readiness_high": 40,
 }
 THREAT_OPINION_VALUES = {
-    "anti_aggressor_low": -30,
-    "anti_aggressor_medium": -60,
-    "anti_aggressor_high": -120,
-    "anti_aggressor_severe": -200,
-    "shared_threat_low": 15,
-    "shared_threat_medium": 30,
-    "shared_threat_high": 60,
-    "alignment_low": 10,
-    "alignment_medium": 25,
-    "alignment_high": 40,
+    # Save-compatibility IDs only. The stateful threat-response producer is
+    # retired, and existing serialized modifiers must resolve without changing
+    # diplomacy while old timed references age out of copied saves.
+    "anti_aggressor_low": 0,
+    "anti_aggressor_medium": 0,
+    "anti_aggressor_high": 0,
+    "anti_aggressor_severe": 0,
+    "shared_threat_low": 0,
+    "shared_threat_medium": 0,
+    "shared_threat_high": 0,
+    "alignment_low": 0,
+    "alignment_medium": 0,
+    "alignment_high": 0,
 }
 THREAT_RELATION_FLAG_DAYS = 7200
 THREAT_COUNTRY_FLAG_DAYS = THREAT_RELATION_FLAG_DAYS
@@ -7588,58 +7591,39 @@ def threat_response_localisation_text() -> str:
 
 
 def threat_response_feasibility_note_text() -> str:
-    return """# Stellar AI Director Threat Response Feasibility
+    return """# Stellar AI Director Threat Response Retirement
 
-Primary development target: Stellaris PC 4.4.5.
-Required compatibility/runtime baseline: installed Pegasus v4.4.4 (5505).
-Local install inspected: `C:/Steam/steamapps/common/Stellaris`.
+## H09a Decision
 
-## Verified Primitives
+- Retire the production `on_war_beginning` event chain, galaxy-wide observer
+  loop, timed flags, relation writes, and threat-readiness economic subplan.
+- Preserve the ten legacy opinion IDs and localization as zero-effect
+  compatibility definitions so serialized references in copied saves resolve.
+- Do not add a migration event. Existing flags are inert because no production
+  trigger, plan, event, or on-action consumes them.
 
-- `on_war_beginning` from vanilla on-actions.
-- `any_attacker`, `any_defender`, `random_defender`, `is_war_leader`, and `using_war_goal` for war context.
-- `has_communications` for observer awareness.
-- `set_timed_country_flag`, `set_timed_relation_flag`, `add_opinion_modifier`, `remove_opinion_modifier`, `decay`, and `accumulative`.
-- Existing Director gates: `staid_core_deficit_short_runway`, `staid_survival_mode`, `staid_recovery_mode`, `staid_fleet_buildup_economy_safe`, and `staid_starbase_defense_economy_safe`.
+## Save Classification
 
-## Intentional Non-Use
+Cleanup-required, copied-save-only. Static checks prove the absence of new
+writes and live consumers. A copied-save runtime check is still required to
+prove the retained zero-effect definitions load cleanly while old timed
+references expire.
 
-- No forced wars, join-war behavior, punitive casus belli, diplomatic-action overrides, or forced `wg_*` dispatch.
-- No raw generator axes are consumed as Stellaris runtime concepts.
-- No uncertain visibility model beyond verified communications.
+## Follow-up Boundary
 
-## Compatibility Position
-
-V1 reacts only from eligible third-party default countries with communications. Direct victims, participants, uncertain country types, and unknown war goals remain outside the third-party economy path. Modded war goals are inert until explicitly classified with evidence and tests.
-
-## Test Steps
-
-Run unit tests, regenerate the patch, validate generated output, run `git diff --check`, refresh the docs index, and verify the generated CSV evidence. Runtime/main-menu/observer validation must stay separate from static checks and should run only after the non-runtime gates are complete.
-
-## Recommendation
-
-Proceed with the bounded V1 implementation as opinion, relation/country flag, and capped economy pressure only.
+Any later threat or arms-race behavior must be a separate native-only,
+stateless, bounded slice. It must not restore these event, state, or absolute
+income/stockpile mechanisms.
 """
 
 
 def generate_threat_response_artifacts() -> None:
-    write_text_file(
-        MOD_ROOT / "common" / "script_values" / "zzz_staid_threat_response_values.txt",
-        threat_response_script_values_text(),
-    )
-    write_text_file(
-        MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_threat_response_triggers.txt",
-        threat_response_triggers_text(),
-    )
+    for retired_path in threat_response_retired_paths(MOD_ROOT).values():
+        retired_path.unlink(missing_ok=True)
     write_text_file(
         MOD_ROOT / "common" / "opinion_modifiers" / "zzz_staid_threat_response_opinions.txt",
         threat_response_opinions_text(),
     )
-    write_text_file(
-        MOD_ROOT / "common" / "on_actions" / "zzz_staid_threat_response_on_actions.txt",
-        threat_response_on_actions_text(),
-    )
-    write_text_file(MOD_ROOT / "events" / "zzz_staid_threat_response_events.txt", threat_response_events_text())
     write_text_file(
         MOD_ROOT / "localisation" / "english" / "staid_threat_response_l_english.yml",
         threat_response_localisation_text(),
@@ -7650,12 +7634,17 @@ def generate_threat_response_artifacts() -> None:
 
 def threat_response_generated_paths(mod_root: Path = MOD_ROOT) -> dict[str, Path]:
     return {
+        "opinions": mod_root / "common" / "opinion_modifiers" / "zzz_staid_threat_response_opinions.txt",
+        "localisation": mod_root / "localisation" / "english" / "staid_threat_response_l_english.yml",
+    }
+
+
+def threat_response_retired_paths(mod_root: Path = MOD_ROOT) -> dict[str, Path]:
+    return {
         "values": mod_root / "common" / "script_values" / "zzz_staid_threat_response_values.txt",
         "triggers": mod_root / "common" / "scripted_triggers" / "zzz_staid_threat_response_triggers.txt",
-        "opinions": mod_root / "common" / "opinion_modifiers" / "zzz_staid_threat_response_opinions.txt",
         "on_actions": mod_root / "common" / "on_actions" / "zzz_staid_threat_response_on_actions.txt",
         "events": mod_root / "events" / "zzz_staid_threat_response_events.txt",
-        "localisation": mod_root / "localisation" / "english" / "staid_threat_response_l_english.yml",
     }
 
 
@@ -7680,64 +7669,32 @@ def validate_threat_response_contract(mod_root: Path = MOD_ROOT) -> list[str]:
         except PDXParseError as exc:
             errors.append(f"Threat-response {label} parse failed: {exc}")
 
-    existing_texts = {label: read_text(path) for label, path in paths.items() if path.exists()}
-    runtime_text = "\n".join(
-        text for label, text in existing_texts.items() if label in {"values", "triggers", "opinions", "on_actions", "events"}
-    )
-    for forbidden in THREAT_FORBIDDEN_EFFECTS:
-        if forbidden in runtime_text:
-            errors.append(f"Threat-response generated files contain forbidden V1 effect: {forbidden}")
-    if "common/diplomatic_actions" in runtime_text:
-        errors.append("Threat-response generated files must not add diplomatic-action overrides")
-    for axis in THREAT_RESPONSE_AXES:
-        if re.search(rf"\b{re.escape(axis)}\b", runtime_text):
-            errors.append(f"Generator-owned axis leaked into runtime generated file: {axis}")
+    for label, path in threat_response_retired_paths(mod_root).items():
+        if path.exists():
+            errors.append(f"Retired threat-response {label} file must be absent: {path}")
 
-    triggers = existing_texts.get("triggers", "")
-    required_gate_terms = (
-        "NOT = { staid_core_deficit_short_runway = yes }",
-        "NOT = { staid_survival_mode = yes }",
-        "NOT = { staid_recovery_mode = yes }",
-        "is_at_war = no",
-        "has_monthly_income = { resource = alloys value > 120 }",
-        "has_monthly_income = { resource = energy value > 100 }",
-        "resource_stockpile_compare = { resource = alloys value > 8000 }",
-        "resource_stockpile_compare = { resource = energy value > 5000 }",
-    )
-    for term in required_gate_terms:
-        if term not in triggers:
-            errors.append(f"Threat-response foreign-affairs safety is missing required gate: {term}")
-
-    events = existing_texts.get("events", "")
-    required_event_terms = (
-        "namespace = staid_tr",
-        "id = staid_tr.1",
-        "staid_tr_attacker_war_leader = yes",
-        "staid_tr_war_goal_classified = yes",
-        "every_country",
-        "staid_tr_observer_eligible = yes",
-        "staid_tr_awareness_known = yes",
-        "remove_opinion_modifier",
-        "add_opinion_modifier",
-        "staid_tr_foreign_affairs_safe = yes",
-    )
-    for term in required_event_terms:
-        if term not in events:
-            errors.append(f"Threat-response event flow is missing required fragment: {term}")
+    opinions = read_text(paths["opinions"]) if paths["opinions"].exists() else ""
+    for key in THREAT_OPINION_VALUES:
+        block_match = re.search(rf"staid_tr_{re.escape(key)}\s*=\s*\{{(.*?)\}}", opinions, re.DOTALL)
+        if block_match is None:
+            errors.append(f"Threat-response compatibility opinion is missing: staid_tr_{key}")
+        elif not re.search(r"\bopinion\s*=\s*0\b", block_match.group(1)):
+            errors.append(f"Threat-response compatibility opinion must be inert: staid_tr_{key}")
 
     economy_path = mod_root / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
     if economy_path.exists():
         economy = read_text(economy_path)
-        for term in (
+        for forbidden in (
             "Stellar AI Director threat readiness reserve",
             "has_country_flag = staid_tr_defensive_readiness_low",
             "staid_tr_foreign_affairs_safe = yes",
-            "alloys = 7",
-            "energy = 6",
-            "naval_cap = 40",
         ):
-            if term not in economy:
-                errors.append(f"Threat-response economy integration is missing required fragment: {term}")
+            if forbidden in economy:
+                errors.append(f"Retired threat-response economy fragment remains live: {forbidden}")
+
+    strategy_path = mod_root / "common" / "scripted_triggers" / "zzzz_staid_20_strategy_kernel_triggers.txt"
+    if strategy_path.exists() and "staid_tr_" in read_text(strategy_path):
+        errors.append("Strategy kernel still consumes retired staid_tr_ state")
 
     classification_csv = threat_classification_csv_path(RESEARCH_ROOT)
     if not classification_csv.exists():
@@ -9992,10 +9949,7 @@ staid_can_afford_research_push = {
 }
 
 staid_security_threatened = {
-	OR = {
-		has_country_flag = staid_tr_defensive_readiness_low
-		staid_crisis_starbase_pressure = yes
-	}
+	staid_crisis_starbase_pressure = yes
 }
 
 staid_security_existential = {
@@ -13946,21 +13900,6 @@ __STAID_RELATIVE_ECONOMIC_REPAIR_SUBPLANS__
 \t\t\tphysics_research = 450
 \t\t\ttrade = 250
 \t\t}
-\t}
-
-\tsubplan = {
-\t\tscaling = yes
-\t\tset_name = "Stellar AI Director threat readiness reserve"
-\t\tpotential = {
-\t\t\thas_country_flag = staid_tr_defensive_readiness_low
-\t\t\tstaid_tr_foreign_affairs_safe = yes
-\t\t}
-\t\tincome = {
-\t\t\talloys = 7
-\t\t\tenergy = 6
-\t\t\ttrade = 25
-\t\t}
-\t\tnaval_cap = 40
 \t}
 
 \tsubplan = {

@@ -1,31 +1,23 @@
-# Stellar AI Director Threat Response Feasibility
+# Stellar AI Director Threat Response Retirement
 
-Primary development target: Stellaris PC 4.4.5.
-Required compatibility/runtime baseline: installed Pegasus v4.4.4 (5505).
-Local install inspected: `C:/Steam/steamapps/common/Stellaris`.
+## H09a Decision
 
-## Verified Primitives
+- Retire the production `on_war_beginning` event chain, galaxy-wide observer
+  loop, timed flags, relation writes, and threat-readiness economic subplan.
+- Preserve the ten legacy opinion IDs and localization as zero-effect
+  compatibility definitions so serialized references in copied saves resolve.
+- Do not add a migration event. Existing flags are inert because no production
+  trigger, plan, event, or on-action consumes them.
 
-- `on_war_beginning` from vanilla on-actions.
-- `any_attacker`, `any_defender`, `random_defender`, `is_war_leader`, and `using_war_goal` for war context.
-- `has_communications` for observer awareness.
-- `set_timed_country_flag`, `set_timed_relation_flag`, `add_opinion_modifier`, `remove_opinion_modifier`, `decay`, and `accumulative`.
-- Existing Director gates: `staid_core_deficit_short_runway`, `staid_survival_mode`, `staid_recovery_mode`, `staid_fleet_buildup_economy_safe`, and `staid_starbase_defense_economy_safe`.
+## Save Classification
 
-## Intentional Non-Use
+Cleanup-required, copied-save-only. Static checks prove the absence of new
+writes and live consumers. A copied-save runtime check is still required to
+prove the retained zero-effect definitions load cleanly while old timed
+references expire.
 
-- No forced wars, join-war behavior, punitive casus belli, diplomatic-action overrides, or forced `wg_*` dispatch.
-- No raw generator axes are consumed as Stellaris runtime concepts.
-- No uncertain visibility model beyond verified communications.
+## Follow-up Boundary
 
-## Compatibility Position
-
-V1 reacts only from eligible third-party default countries with communications. Direct victims, participants, uncertain country types, and unknown war goals remain outside the third-party economy path. Modded war goals are inert until explicitly classified with evidence and tests.
-
-## Test Steps
-
-Run unit tests, regenerate the patch, validate generated output, run `git diff --check`, refresh the docs index, and verify the generated CSV evidence. Runtime/main-menu/observer validation must stay separate from static checks and should run only after the non-runtime gates are complete.
-
-## Recommendation
-
-Proceed with the bounded V1 implementation as opinion, relation/country flag, and capped economy pressure only.
+Any later threat or arms-race behavior must be a separate native-only,
+stateless, bounded slice. It must not restore these event, state, or absolute
+income/stockpile mechanisms.

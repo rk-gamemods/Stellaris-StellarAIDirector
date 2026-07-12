@@ -49,10 +49,7 @@ staid_can_afford_research_push = {
 }
 
 staid_security_threatened = {
-	OR = {
-		has_country_flag = staid_tr_defensive_readiness_low
-		staid_crisis_starbase_pressure = yes
-	}
+	staid_crisis_starbase_pressure = yes
 }
 
 staid_security_existential = {

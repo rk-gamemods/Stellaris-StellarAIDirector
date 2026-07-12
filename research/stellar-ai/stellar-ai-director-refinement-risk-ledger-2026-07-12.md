@@ -897,3 +897,45 @@ Revert H08d independently by restoring the prior H08b renderer, focused tests,
 and generated trigger artifact and removing this ledger section. H08a's offline
 model, H08c's hard-anchor consumers, and every earlier gameplay fix remain
 intact.
+
+## H09a — Retire stateful threat-response runtime
+
+Status: implemented as a cleanup-only slice. The generator deletes the legacy
+`on_war_beginning` hook, threat events, scripted triggers, and script values.
+The threat-readiness economic subplan and strategy-kernel flag consumer are
+removed. No migration event, replacement behavior, H09b budget factor, or
+distance change is included.
+
+The ten legacy `staid_tr_*` opinion modifier IDs and their localization remain
+defined with `opinion = 0`. They are compatibility identifiers only: no
+production event, on-action, trigger, plan, or effect applies or consumes them.
+
+Top five risks:
+
+1. **Deleting serialized opinion IDs can break copied-save references.** Keep
+   the same IDs and localization as zero-effect definitions while old timed
+   references age out.
+2. **A cleanup event can recreate the prohibited stateful control plane.** No
+   migration event or gameplay-state mutation is added; existing timed flags
+   are inert because every consumer is removed.
+3. **A generator rerun can silently restore the retired files.** The generator
+   unlinks all four retired paths, and focused tests require their absence.
+4. **A hidden consumer can preserve readiness pressure.** Negative validation
+   rejects the readiness flag, foreign-affairs trigger, reserve name, war hook,
+   event namespace, and timed threat-state writes across production scripts.
+5. **Removing one emergency input can weaken unrelated defense behavior.**
+   `staid_security_threatened` retains the native crisis-starbase signal; H09a
+   adds no compensating factor until a separately reviewed bounded slice.
+
+Save classification:
+
+`cleanup-required; copied-save-only runtime proof pending`. Static validation
+proves no new state writes and no live consumers. It cannot prove how Pegasus
+4.4.4 resolves pre-existing serialized modifier/flag references, so the retained
+zero-effect IDs require a copied-save load check before later deletion.
+
+Rollback boundary:
+
+Revert H09a independently by restoring the four legacy generated runtime files,
+the readiness subplan, and the strategy-kernel flag branch. Do not combine that
+rollback with any later stateless H09 factor or distance adjustment.
