@@ -329,6 +329,26 @@ REQUIRED_EXPANDED_ROLE_FAMILIES = {
 }
 
 
+class NativeOwnershipRegressionTests(unittest.TestCase):
+    def test_safety_layer_never_issues_scripted_fleet_orders(self):
+        on_action_path = MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt"
+        event_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
+        parse_file(on_action_path)
+        parse_file(event_path)
+        text = event_path.read_text(encoding="utf-8")
+        self.assertIn("id = staid_economy_safety.2", text)
+        self.assertIn("id = staid_economy_safety.4", text)
+        for marker in (
+            "staid_economy_safety.3",
+            "staid_stranded_fleet_warning",
+            "set_mia =",
+            "set_fleet_order =",
+            "set_fleet_stance =",
+            "move_to =",
+        ):
+            self.assertNotIn(marker, text)
+
+
 class GeneratedModValidityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -2664,24 +2684,6 @@ class GeneratedModValidityTests(unittest.TestCase):
         )
         for marker in forbidden_markers:
             self.assertNotIn(marker, live_text)
-
-    def test_generated_safety_layer_never_issues_scripted_fleet_orders(self):
-        on_action_path = MOD_ROOT / "common" / "on_actions" / "zzz_staid_market_and_fleet_safety_on_actions.txt"
-        event_path = MOD_ROOT / "events" / "zzz_staid_market_and_fleet_safety_events.txt"
-        parse_file(on_action_path)
-        parse_file(event_path)
-        text = event_path.read_text(encoding="utf-8")
-        self.assertIn("id = staid_economy_safety.2", text)
-        self.assertIn("id = staid_economy_safety.4", text)
-        for marker in (
-            "staid_economy_safety.3",
-            "staid_stranded_fleet_warning",
-            "set_mia =",
-            "set_fleet_order =",
-            "set_fleet_stance =",
-            "move_to =",
-        ):
-            self.assertNotIn(marker, text)
 
     def test_mem_surveyor_outpost_gate_preserves_targeted_native_exception_only(self):
         outpost_path = (
