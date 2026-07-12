@@ -29,6 +29,8 @@ def main() -> int:
         )
         if not result["ratio_target_met"]:
             failures.append(f"{scenario.name}: research ratio below 2:1")
+        if not result["support_safe"]:
+            failures.append(f"{scenario.name}: energy or consumer-goods support below target")
         if not scenario.bio_ships and scenario.income["food"] <= 50 and result["final_income_food"] > 50:
             failures.append(f"{scenario.name}: normal food income exceeds +50")
     if failures:
