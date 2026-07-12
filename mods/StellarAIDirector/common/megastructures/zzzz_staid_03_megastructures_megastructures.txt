@@ -529,6 +529,7 @@ orbital_arc_furnace_1 = {
 		modifier = { factor = 3 from = { has_technology = giga_tech_asteroid_manufactory } }
 		modifier = { factor = 6 from = { staid_resource_waste_pressure = yes } }
 		modifier = { factor = 1.1 from = { staid_identity_megacorp = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_early_kilo_economy_build_priority_ready = yes staid_basic_economy_runway_safe = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no } }
+		modifier = { factor = 1.15 from = { has_origin = origin_arc_welders is_nomadic = no staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_early_kilo_economy_build_priority_ready = yes staid_basic_economy_runway_safe = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no } }
 	}
 }
 

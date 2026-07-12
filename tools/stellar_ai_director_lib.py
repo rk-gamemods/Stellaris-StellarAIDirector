@@ -6373,6 +6373,13 @@ def identity_megastructure_weight_modifiers(target: dict[str, Any]) -> list[str]
             factors_and_conditions.append(
                 (1.10, f"{identity_trigger} = yes {common}")
             )
+    if str(target["object_id"]) == "orbital_arc_furnace_1":
+        factors_and_conditions.append(
+            (
+                1.15,
+                f"has_origin = origin_arc_welders is_nomadic = no {common}",
+            )
+        )
     return [
         route_modifier_line(factor, condition, country_scope="from")
         for factor, condition in factors_and_conditions

@@ -391,6 +391,28 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         self.assertAlmostEqual(military_ceiling, 1.32825)
         self.assertLess(military_ceiling, 1.33)
 
+        arc_furnace = extract_top_level_object_text(
+            production, "orbital_arc_furnace_1"
+        )
+        arc_welders_line = next(
+            line for line in arc_furnace.splitlines()
+            if "has_origin = origin_arc_welders" in line
+        )
+        self.assertIn("factor = 1.15", arc_welders_line)
+        self.assertIn("from = {", arc_welders_line)
+        self.assertIn("is_nomadic = no", arc_welders_line)
+        self.assertNotIn("origin_arc_welders_nomadic", arc_welders_line)
+        megacorp_line = next(
+            line for line in arc_furnace.splitlines()
+            if "staid_identity_megacorp = yes" in line
+        )
+        megacorp_factor = re.search(r"factor = ([0-9.]+)", megacorp_line)
+        self.assertIsNotNone(megacorp_factor, megacorp_line)
+        self.assertAlmostEqual(
+            float(megacorp_factor.group(1)) * 1.15,
+            1.265,
+        )
+
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:
         inserted: list[str] = []
         for path in ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
