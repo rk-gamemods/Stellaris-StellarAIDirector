@@ -409,17 +409,21 @@ does not substitute for the required 4.4.5 revalidation. The recovery assumes
 the same DLC entitlements and 116-mod playset used by the audit, preserves parent
 DLC/mod toggles, and makes no claim for a different DLC or load-order set.
 
-The recovery branch is intentionally not the live launcher target. At the
-recorded audit, the authoritative newer descriptor
+At the original audit, the authoritative outer descriptor
 `C:/Users/Admin/Documents/Paradox Interactive/Stellaris/mod/StellarAIDirector.mod`
-(modified `2026-07-11T23:43:38.915Z`) pointed to
-`C:/wt/staid-live-rollback/mods/StellarAIDirector`, a clean tree at
-`12325475bdbad06c83471ce2d9d580d7fd69bf25` on
-`codex/live-rollback-c9da`. `dlc_load.json` enabled that descriptor last at
-zero-based position 115 of 116. Older launcher database/registry cache rows
-still reported `C:/wt/staid444-topology/mods/StellarAIDirector`; those older
-cache surfaces are stale and inconsistent with the direct descriptor. Stellaris
-will not load this comparative-recovery branch until an explicit later promotion.
+pointed to the clean rollback tree at `12325475bdbad06c83471ce2d9d580d7fd69bf25`.
+After the user explicitly requested a testable live switch on 2026-07-12, only
+that descriptor's `path` was changed. It now points to
+`C:/wt/staid-comparative-recovery/mods/StellarAIDirector`; the source worktree
+was clean at `916a28594204fdef3f277db61ee3f0360b63c8fd` when selected.
+`dlc_load.json` still enables the descriptor last at zero-based position 115 of
+116, the live inventory resolves the recovery root with `status=ready_to_play`,
+and the knowledge-base status reports `selected_for_next_launch=true`. Older
+launcher database/registry cache rows still report
+`C:/wt/staid444-topology/mods/StellarAIDirector`; that is a recorded stale-root
+conflict, while the enabled descriptor's newer `path` remains authoritative for
+the next launch. This proves live selection, not that Stellaris has loaded the
+files or that runtime behavior has passed.
 
 ## Validation Ledger
 
