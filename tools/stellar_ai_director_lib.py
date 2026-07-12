@@ -11988,6 +11988,30 @@ staid_fleet_buildup_economy_safe = {
 \tused_naval_capacity_percent < 1.40
 }
 
+# Native affordability/resource-share support for a rich wartime empire whose
+# existing templates are satisfied far below naval capacity. This only funds
+# the lane; NSC3 ai_ship_data remains responsible for demand and composition.
+staid_wartime_fleet_surge_ready = {
+\tis_ai = yes
+\tis_country_type = default
+\tis_nomadic = no
+\tis_at_war = yes
+\tcountry_uses_bio_ships = no
+\tuses_standard_ship_sizes = yes
+\tNOT = { staid_catastrophic_collapse_mode = yes }
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_energy_two_month_runway_unsafe = no
+\tstaid_alloys_two_month_runway_unsafe = no
+\tused_naval_capacity_percent < 0.90
+\tOR = {
+\t\thas_technology = tech_battleships
+\t\thas_technology = tech_Battlecruiser_1
+\t\thas_technology = tech_Carrier_1
+\t\thas_technology = tech_Dreadnought_1
+\t}
+\tresource_stockpile_compare = { resource = alloys value > 5000 }
+}
+
 staid_emergency_fleet_spending_required = {
 \tNOT = { staid_catastrophic_collapse_mode = yes }
 \tOR = {
@@ -13208,6 +13232,26 @@ def fleet_alloy_budget_text(
 \t\tmodifier = {
 \t\t\tfactor = 0.25
 \t\t\tstaid_peacetime_high_naval_capacity_guard = yes
+\t\t}""",
+        )
+    ships = insert_top_level_child_modifier(
+        ships,
+        "weight",
+        """\t\t# Bounded wartime surge for satisfied templates far below naval cap.
+\t\t# The vanilla 3x war factor remains; this only adds affordable lane share.
+\t\tmodifier = {
+\t\t\tfactor = 1.5
+\t\t\tstaid_wartime_fleet_surge_ready = yes
+\t\t}""",
+    )
+    ships = insert_top_level_child_modifier(
+        ships,
+        "desired_min",
+        """\t\t# Reserve enough partitioned alloys for at least one current capital-hull
+\t\t# decision. This cannot create a fleet template or bypass construction.
+\t\tmodifier = {
+\t\t\tadd = 5000
+\t\t\tstaid_wartime_fleet_surge_ready = yes
 \t\t}""",
     )
     if archetype_overlay:

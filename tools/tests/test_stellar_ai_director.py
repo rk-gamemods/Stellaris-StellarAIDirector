@@ -696,10 +696,36 @@ class ShipBudgetAvailabilityTests(unittest.TestCase):
             self.assertIn("country_uses_bio_ships = yes", text)
             self.assertIn("factor = 0.25", text)
             self.assertIn("staid_peacetime_high_naval_capacity_guard = yes", text)
+            self.assertIn("factor = 1.5", text)
+            self.assertIn("add = 5000", text)
+            self.assertEqual(text.count("staid_wartime_fleet_surge_ready = yes"), 2)
             self.assertNotIn("NOT = { staid_peacetime_high_naval_capacity_guard = yes }", text)
             self.assertNotIn("staid_fleet_buildup_economy_safe = yes", text)
         self.assertEqual(ships, generated_ships)
 
+    def test_wartime_surge_is_bounded_by_runway_cap_and_capital_hull_tech(self):
+        trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        parse_file(trigger_path)
+        triggers = trigger_path.read_text(encoding="utf-8")
+        surge = extract_top_level_object_text(triggers, "staid_wartime_fleet_surge_ready")
+        for marker in (
+            "is_at_war = yes",
+            "country_uses_bio_ships = no",
+            "NOT = { staid_catastrophic_collapse_mode = yes }",
+            "NOT = { staid_core_deficit_short_runway = yes }",
+            "staid_energy_two_month_runway_unsafe = no",
+            "staid_alloys_two_month_runway_unsafe = no",
+            "used_naval_capacity_percent < 0.90",
+            "has_technology = tech_battleships",
+            "has_technology = tech_Battlecruiser_1",
+            "has_technology = tech_Carrier_1",
+            "has_technology = tech_Dreadnought_1",
+            "resource_stockpile_compare = { resource = alloys value > 5000 }",
+        ):
+            self.assertIn(marker, surge)
+        for forbidden in ("country_event =", "create_fleet", "create_ship", "set_fleet_order"):
+            self.assertNotIn(forbidden, surge)
+        self.assertNotIn("staid_wartime_fleet_minimum_mode", triggers)
 
 class ShipUpgradeBudgetAvailabilityTests(unittest.TestCase):
     def test_ship_upgrade_budget_uses_native_eligibility_without_runway_veto(self):

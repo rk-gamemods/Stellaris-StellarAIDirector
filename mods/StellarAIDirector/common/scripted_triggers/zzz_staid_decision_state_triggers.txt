@@ -1111,6 +1111,30 @@ staid_fleet_buildup_economy_safe = {
 	used_naval_capacity_percent < 1.40
 }
 
+# Native affordability/resource-share support for a rich wartime empire whose
+# existing templates are satisfied far below naval capacity. This only funds
+# the lane; NSC3 ai_ship_data remains responsible for demand and composition.
+staid_wartime_fleet_surge_ready = {
+	is_ai = yes
+	is_country_type = default
+	is_nomadic = no
+	is_at_war = yes
+	country_uses_bio_ships = no
+	uses_standard_ship_sizes = yes
+	NOT = { staid_catastrophic_collapse_mode = yes }
+	NOT = { staid_core_deficit_short_runway = yes }
+	staid_energy_two_month_runway_unsafe = no
+	staid_alloys_two_month_runway_unsafe = no
+	used_naval_capacity_percent < 0.90
+	OR = {
+		has_technology = tech_battleships
+		has_technology = tech_Battlecruiser_1
+		has_technology = tech_Carrier_1
+		has_technology = tech_Dreadnought_1
+	}
+	resource_stockpile_compare = { resource = alloys value > 5000 }
+}
+
 staid_emergency_fleet_spending_required = {
 	NOT = { staid_catastrophic_collapse_mode = yes }
 	OR = {
