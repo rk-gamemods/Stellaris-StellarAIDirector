@@ -9949,6 +9949,19 @@ staid_fleet_balanced_filler_doctrine = {
 '''
 
 
+def archetype_triggers_text() -> str:
+    try:
+        from tools.stellar_ai_archetype_triggers import render_archetype_triggers
+    except ModuleNotFoundError:
+        from stellar_ai_archetype_triggers import render_archetype_triggers
+
+    rendered = render_archetype_triggers(
+        VANILLA_COMMON_ROOT / "personalities" / "00_personalities.txt"
+    )
+    parse_pdx(rendered)
+    return rendered
+
+
 def opening_growth_policies_text() -> str:
     diplomatic_block = find_verified_source_object_block("policies", "diplomatic_stance")
     bombardment_block = find_verified_source_object_block("policies", "orbital_bombardment")
@@ -10784,6 +10797,13 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(
         MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_11_fleet_doctrine_triggers.txt",
         fleet_doctrine_triggers_text(),
+    )
+    write_text_file(
+        MOD_ROOT
+        / "common"
+        / "scripted_triggers"
+        / "zzzz_staid_21_nation_archetype_triggers.txt",
+        archetype_triggers_text(),
     )
     write_text_file(
         MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt",

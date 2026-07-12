@@ -485,3 +485,77 @@ Rollback boundary:
 Revert only H08a if the offline schema or fixtures prove misleading. This slice
 does not alter the live mod; H08b must be a separate trigger-only commit, and any
 later behavior consumer must remain separately reversible.
+
+## H08b — Generated mutually exclusive nation-archetype triggers
+
+Status: implemented as a generated, identity-only production trigger surface.
+The live mod contains the classifiers, but this slice adds no consumer, weight,
+factor, resource rule, flag, event, effect, order, war rule, or economic target.
+
+- `tools/stellar_ai_archetype_triggers.py` owns the focused renderer;
+  `tools/generate_stellar_ai_archetype_triggers.py` exposes one fixed-output,
+  no-flag command; and the broad Director generator owns the same artifact.
+- Generation fails closed unless the installed Pegasus 4.4.4 personality source
+  matches SHA-256
+  `1F89C8D6C9444F575526A8635DB59DF78140AD43401538214E6B62F685298BAA`
+  and every reviewed vanilla personality ID still exists.
+- Seven primary triggers use the H08a precedence order: extermination,
+  gestalt-growth, defensive, research, diplomatic, conquest, and balanced.
+  Candidate helpers keep the primaries mutually exclusive without a deep chain.
+- Every pair of the six non-balanced hard signals is covered by the identity
+  conflict trigger. Conflicting hard evidence fails closed to balanced rather
+  than allowing two archetype consumers to stack.
+- Eligibility is limited to default, non-nomadic countries. Unknown or modded
+  identities without a reviewed signal use balanced; genocidal gestalt signals
+  remain extermination, while non-genocidal gestalt anchors remain
+  gestalt-growth.
+- The mixed `dominator + liberator` case preserves the model's diplomatic
+  tie/precedence. A first-pass diplomatic veto incorrectly routed it to conquest;
+  independent review caught the divergence before commit and a regression test
+  now fixes the intended translation.
+
+Top five risks:
+
+1. **A modded or newly added personality can inherit the wrong broad fallback.**
+   Exact reviewed personality anchors dominate broad behaviors and ethics;
+   unknown identities fall back to balanced, while source hash/ID drift blocks
+   regeneration for the pinned 4.4.4 build.
+2. **Two identity signals can stack downstream multipliers.** The seven primary
+   triggers are candidate-precedence routes, all 15 hard-signal pairs route to
+   conflict, and balanced is the exclusive eligible fallback. Tests assert every
+   boolean reference value and reject duplicate `staid_` trigger IDs across the
+   mod.
+3. **A broad `conqueror`-family behavior can erase a more specific identity.**
+   Exact anchors win first; broad conquest is last among non-balanced routes.
+   Diplomatic mixed evidence retains H08a precedence unless `conqueror` is
+   explicitly present, and no gameplay weight consumes the result in H08b.
+4. **Version or load-order drift can make copied identity assumptions stale.**
+   The renderer verifies the exact source hash and all 30 reviewed IDs before it
+   writes. A dedicated drift test proves generation fails before artifact output.
+5. **A future consumer can turn a stable label into an economic overreaction.**
+   H08b contains only positive identity predicates and bounded boolean routing.
+   Future H08c consumers must remain separate commits, apply small bounded deltas
+   after recovery/legality/runway gates, and prove zero-overlay equivalence.
+
+- The generated artifact parses as PDXScript, is byte-equivalent to its renderer,
+  has an acyclic reference graph with maximum depth four, and uses an exact
+  allowlist of identity predicates and reviewed marker values.
+- The local 4.4.4 `triggers.log` (SHA-256
+  `59D227268A61158475F50C895A833553305E3EC29FC1B1269A7AA4A018C2B316`)
+  verifies the engine predicates used here as country-scope forms. Current
+  vanilla scripted-trigger definitions and AI-weight call sites separately
+  verify the hive, machine, wilderness, pacifist, and federator helpers.
+- JDocMunch rejected the generated `.log` files as an unsupported extension, so
+  exact log excerpts were read only after that direct index attempt failed.
+  CWTools was also not installed (`cwtools` and `cwtools-cli` were both missing;
+  no extension or global tool was found), so the clean custom validator result
+  is supporting parser evidence and is not described as a CWTools pass.
+- Focused H08a/H08b validation currently passes 36 tests plus 42 parameterized
+  subtests. Compilation, scoped Ruff checks, the static Director validator, and
+  `git diff --check` also pass.
+- No Stellaris process or observer simulation was launched. Runtime semantics
+  remain a user gameplay check after this static trigger slice is committed.
+
+Revert H08b independently by removing the generated trigger artifact, focused
+renderer/generator/tests, broad-generator hook, and this ledger section. H08a's
+offline model and every earlier live gameplay recovery slice remain intact.

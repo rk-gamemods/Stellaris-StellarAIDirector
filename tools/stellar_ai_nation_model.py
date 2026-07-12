@@ -14,7 +14,10 @@ from decimal import Decimal, InvalidOperation
 from enum import Enum
 from typing import Iterable, Mapping, TypeAlias
 
-from tools.stellar_ai_economic_model import Lane
+try:
+    from tools.stellar_ai_economic_model import Lane
+except ModuleNotFoundError:
+    from stellar_ai_economic_model import Lane  # type: ignore[no-redef]
 
 
 Number: TypeAlias = Decimal | int | str
@@ -139,7 +142,7 @@ class DiplomacyPolicy(str, Enum):
     EXTERMINATING = "exterminating"
 
 
-_ARCHETYPE_PRECEDENCE = (
+ARCHETYPE_PRECEDENCE = (
     Archetype.EXTERMINATION,
     Archetype.GESTALT_GROWTH,
     Archetype.DEFENSIVE,
@@ -149,7 +152,7 @@ _ARCHETYPE_PRECEDENCE = (
     Archetype.BALANCED,
 )
 _ARCHETYPE_INDEX = {
-    archetype: index for index, archetype in enumerate(_ARCHETYPE_PRECEDENCE)
+    archetype: index for index, archetype in enumerate(ARCHETYPE_PRECEDENCE)
 }
 _PRESSURE_ORDER = (
     PressureLevel.SUPPRESS,
@@ -303,7 +306,7 @@ class NationClassification:
     reason_codes: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
-        if tuple(item.archetype for item in self.evidence) != _ARCHETYPE_PRECEDENCE:
+        if tuple(item.archetype for item in self.evidence) != ARCHETYPE_PRECEDENCE:
             raise ValueError("evidence must contain every archetype in canonical order")
         if len(set(self.secondary)) != len(self.secondary):
             raise ValueError("secondary archetypes must be unique")
@@ -327,34 +330,50 @@ class NationClassification:
         return self.evidence[_ARCHETYPE_INDEX[archetype]]
 
 
+PRIMARY_PERSONALITY_GROUPS: Mapping[Archetype, tuple[str, ...]] = {
+    Archetype.EXTERMINATION: (
+        "fanatic_purifiers",
+        "devouring_swarm",
+        "metalhead",
+        "exterminators",
+        "became_the_crisis",
+        "scorching_infernals",
+        "hyperthermia_empire",
+    ),
+    Archetype.GESTALT_GROWTH: (
+        "hive_mind",
+        "machine_intelligence",
+        "assimilators",
+        "servitors",
+        "hive_mind_friend",
+    ),
+    Archetype.DEFENSIVE: (
+        "decadent_hierarchy",
+        "harmonious_hierarchy",
+        "xenophobic_isolationists",
+    ),
+    Archetype.RESEARCH: ("erudite_explorers",),
+    Archetype.DIPLOMATIC: (
+        "spiritual_seekers",
+        "federation_builders",
+        "peaceful_traders",
+        "migrating_flock",
+    ),
+    Archetype.CONQUEST: (
+        "honorbound_warriors",
+        "evangelising_zealots",
+        "ruthless_capitalists",
+        "hegemonic_imperialists",
+        "slaving_despots",
+        "democratic_crusaders",
+        "fanatic_befrienders",
+    ),
+}
+
 _PERSONALITY_MARKERS: Mapping[str, tuple[Archetype, EvidenceStrength]] = {
-    "fanatic_purifiers": (Archetype.EXTERMINATION, EvidenceStrength.HARD),
-    "devouring_swarm": (Archetype.EXTERMINATION, EvidenceStrength.HARD),
-    "metalhead": (Archetype.EXTERMINATION, EvidenceStrength.HARD),
-    "exterminators": (Archetype.EXTERMINATION, EvidenceStrength.HARD),
-    "became_the_crisis": (Archetype.EXTERMINATION, EvidenceStrength.HARD),
-    "scorching_infernals": (Archetype.EXTERMINATION, EvidenceStrength.HARD),
-    "hyperthermia_empire": (Archetype.EXTERMINATION, EvidenceStrength.HARD),
-    "hive_mind": (Archetype.GESTALT_GROWTH, EvidenceStrength.HARD),
-    "machine_intelligence": (Archetype.GESTALT_GROWTH, EvidenceStrength.HARD),
-    "assimilators": (Archetype.GESTALT_GROWTH, EvidenceStrength.HARD),
-    "servitors": (Archetype.GESTALT_GROWTH, EvidenceStrength.HARD),
-    "hive_mind_friend": (Archetype.GESTALT_GROWTH, EvidenceStrength.HARD),
-    "decadent_hierarchy": (Archetype.DEFENSIVE, EvidenceStrength.HARD),
-    "harmonious_hierarchy": (Archetype.DEFENSIVE, EvidenceStrength.HARD),
-    "xenophobic_isolationists": (Archetype.DEFENSIVE, EvidenceStrength.HARD),
-    "erudite_explorers": (Archetype.RESEARCH, EvidenceStrength.HARD),
-    "spiritual_seekers": (Archetype.DIPLOMATIC, EvidenceStrength.HARD),
-    "federation_builders": (Archetype.DIPLOMATIC, EvidenceStrength.HARD),
-    "peaceful_traders": (Archetype.DIPLOMATIC, EvidenceStrength.HARD),
-    "migrating_flock": (Archetype.DIPLOMATIC, EvidenceStrength.HARD),
-    "honorbound_warriors": (Archetype.CONQUEST, EvidenceStrength.HARD),
-    "evangelising_zealots": (Archetype.CONQUEST, EvidenceStrength.HARD),
-    "ruthless_capitalists": (Archetype.CONQUEST, EvidenceStrength.HARD),
-    "hegemonic_imperialists": (Archetype.CONQUEST, EvidenceStrength.HARD),
-    "slaving_despots": (Archetype.CONQUEST, EvidenceStrength.HARD),
-    "democratic_crusaders": (Archetype.CONQUEST, EvidenceStrength.HARD),
-    "fanatic_befrienders": (Archetype.CONQUEST, EvidenceStrength.HARD),
+    personality_id: (archetype, EvidenceStrength.HARD)
+    for archetype, personality_ids in PRIMARY_PERSONALITY_GROUPS.items()
+    for personality_id in personality_ids
 }
 
 _ETHIC_MARKERS: Mapping[str, tuple[Archetype, EvidenceStrength]] = {
@@ -452,7 +471,7 @@ def _empty_evidence() -> dict[Archetype, dict[str, object]]:
             "ethic_pressure_units": 0,
             "reasons": set(),
         }
-        for archetype in _ARCHETYPE_PRECEDENCE
+        for archetype in ARCHETYPE_PRECEDENCE
     }
 
 
@@ -473,7 +492,7 @@ def _materialize_evidence(
     working: dict[Archetype, dict[str, object]],
 ) -> tuple[ArchetypeEvidence, ...]:
     result: list[ArchetypeEvidence] = []
-    for archetype in _ARCHETYPE_PRECEDENCE:
+    for archetype in ARCHETYPE_PRECEDENCE:
         row = working[archetype]
         reasons = row["reasons"]
         assert isinstance(reasons, set)
