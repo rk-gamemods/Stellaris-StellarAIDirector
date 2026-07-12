@@ -12473,6 +12473,8 @@ staid_influence_claim_pressure = {
 \thas_potential_claims = yes
 \thas_resource = { type = influence amount > 500 }
 \tNOT = { has_ai_expansion_plan = yes }
+\thas_bordering_system = no
+\tNOT = { staid_boxed_in_war_pressure = yes }
 }
 
 staid_boxed_in_claim_urgency = {

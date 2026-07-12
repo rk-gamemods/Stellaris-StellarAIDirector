@@ -1627,6 +1627,8 @@ staid_influence_claim_pressure = {
 	has_potential_claims = yes
 	has_resource = { type = influence amount > 500 }
 	NOT = { has_ai_expansion_plan = yes }
+	has_bordering_system = no
+	NOT = { staid_boxed_in_war_pressure = yes }
 }
 
 staid_boxed_in_claim_urgency = {

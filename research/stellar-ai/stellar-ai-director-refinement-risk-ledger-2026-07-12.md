@@ -498,6 +498,90 @@ Revert only H07c if valid claims remain deferred after expansion ends or if
 aggression regresses. Do not revert H07/H07b outpost availability or H01-H06
 constructor-pressure corrections with it.
 
+## H07d — Deconflict claims from both visible borders and boxed urgency
+
+Status: implemented as a separate, save-safe refinement of H07c; focused static
+validation passed, with copied-save runtime continuation still pending.
+
+Evidence:
+
+- Vanilla Pegasus 4.4.4 defines `has_bordering_system` as an owned border
+  system having an intel-visible, unowned hyperlane neighbor. It excludes
+  precursor/enclave systems, hostile fleets, fleets above `1000`, and systems
+  where another constructor is already building a starbase.
+- The Director already uses that trigger as its topology-backed boxed-in signal
+  and records prior runtime evidence (`TEST_2231`) that internal
+  `has_ai_expansion_plan` state can remain active after every peaceful
+  territorial exit is gone.
+- Conversely, this save does not serialize the evaluated expansion-plan result;
+  raw type-19 candidates do not prove that the planner promoted the visible
+  holes into a formal plan. H07c alone could therefore leave factor-3 claim
+  pressure active before plan creation.
+- Aerea is enclosed by four country-0 systems, while Paunaby and Zosma border
+  country-0 territory. The preserved save series records them as unowned and
+  intel-visible, so `has_bordering_system = yes` directly describes at least
+  one reported route even if the internal plan result is false.
+- A naïve replacement of the plan gate with `has_bordering_system = no` was
+  independently rejected before commit: it could stack factor `3` with boxed-
+  in factor `12` and capped-influence factor `2`, producing a `14.4` generic
+  claim weight. H07d keeps the plan guard and makes those pressure paths
+  mutually exclusive.
+
+Retain H07c's `NOT = { has_ai_expansion_plan = yes }`, and add both
+`has_bordering_system = no` and
+`NOT = { staid_boxed_in_war_pressure = yes }` to
+`staid_influence_claim_pressure`. The shared factor-3 acceleration now requires
+no internal expansion plan, no immediately adjacent visible/unowned safe
+system, and no boxed-in factor-12 pressure. Normal claim weights, the independent
+capped-influence factor `2`, all claim potentials, and vanilla station rules
+remain unchanged. This deconflicts spending pressure; it does not create a
+plan, target, constructor order, claim, or outpost.
+
+Top five risks:
+
+1. **A false-negative plan can still expose distance-two expansion to claims.**
+   Retaining the plan gate protects recognized distance-two routes; runtime
+   evidence must test a viable distance-two target when the serialized save
+   cannot prove the evaluated plan result.
+2. **A stale positive plan can suppress factor-3 claims.** Boxed-in factor `12`
+   remains available for true containment, while normal and capped-influence
+   claim weights remain available elsewhere. Verify claims resume after local
+   expansion ends without assuming a trigger refresh cadence.
+3. **The topology latch can toggle with intel or fleet movement.** Vanilla
+   intentionally ignores unknown, hostile, heavily defended, and already-being-
+   claimed systems. Record those raw conditions before attributing a transition
+   to Director logic.
+4. **Militarist lanes can still accumulate pressure.** Regular and fanatic
+   militarists retain their extra claim objects, and the independent factor `2`
+   remains. Compare maximum individual and summed eligible category weights;
+   do not present them as scheduler probabilities.
+5. **Pressure deconfliction may not produce a construction order.** Native plan
+   creation, target scoring, influence reservation, and constructor assignment
+   remain engine-owned. Keep H07d independently reversible and require gameplay
+   continuation evidence.
+
+Static acceptance:
+
+- The generated decision-state artifact equals `triggers_text()` and parses
+  without trigger cycles or unresolved references.
+- `staid_influence_claim_pressure` contains exactly one no-plan gate, one
+  `has_bordering_system = no`, one boxed-pressure exclusion, and no internal
+  influence-above-900 bypass.
+- The boxed-pressure trigger excluded from factor `3` is required by
+  `staid_boxed_in_claim_urgency`, and that wrapper is the sole input of every
+  preserved factor-12 claim modifier, preventing a `3 * 12` overlap.
+- All three claim objects remain byte-identical and retain their base weights,
+  factor-3 shared trigger, factor-12 boxed urgency, and independent factor-2
+  capped-influence signal.
+- No outpost/station potential, target, order, event, effect, resource grant,
+  persistent state, or constructor rule changes in this slice.
+
+Rollback boundary:
+
+Revert only H07d to restore H07c's plan-only deconfliction if claims are
+materially delayed by safe adjacent systems or the boxed-exclusion interaction.
+Do not revert H07/H07b availability or H01-H06 constructor-pressure corrections.
+
 ## H08a — Deterministic nation identity and bounded policy model
 
 Status: implemented as an offline model and fixture surface; no production mod

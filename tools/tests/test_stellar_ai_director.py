@@ -514,7 +514,7 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
 
 
 class ClaimPressureExpansionPriorityTests(unittest.TestCase):
-    def test_claim_acceleration_waits_until_no_expansion_plan(self):
+    def test_claim_acceleration_requires_no_plan_border_or_boxed_pressure(self):
         trigger_path = (
             MOD_ROOT
             / "common"
@@ -536,6 +536,9 @@ class ClaimPressureExpansionPriorityTests(unittest.TestCase):
         claim_gate = extract_top_level_object_text(
             artifact, "staid_influence_claim_pressure"
         )
+        boxed_gate = extract_top_level_object_text(
+            artifact, "staid_boxed_in_claim_urgency"
+        )
         for marker in (
             "is_nomadic = no",
             "is_at_war = no",
@@ -544,10 +547,13 @@ class ClaimPressureExpansionPriorityTests(unittest.TestCase):
             "has_potential_claims = yes",
             "has_resource = { type = influence amount > 500 }",
             "NOT = { has_ai_expansion_plan = yes }",
+            "has_bordering_system = no",
+            "NOT = { staid_boxed_in_war_pressure = yes }",
         ):
             self.assertEqual(claim_gate.count(marker), 1)
         self.assertNotIn("amount > 900", claim_gate)
         self.assertNotIn("OR = {", claim_gate)
+        self.assertEqual(boxed_gate.count("staid_boxed_in_war_pressure = yes"), 1)
 
         claim_budget = claim_budget_path.read_text(encoding="utf-8")
         expected_objects = {
