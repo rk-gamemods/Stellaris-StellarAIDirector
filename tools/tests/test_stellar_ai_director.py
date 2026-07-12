@@ -2821,8 +2821,8 @@ class GeneratedModValidityTests(unittest.TestCase):
                 "NOT = { staid_core_deficit_short_runway = yes }", block
             )
             self.assertIn("NOT = { staid_catastrophic_collapse_mode = yes }", block)
-            self.assertIn("is_at_war = no", block)
-            self.assertIn("NOT = { recently_lost_war = yes }", block)
+            self.assertNotIn("is_at_war", block)
+            self.assertNotIn("recently_lost_war", block)
             self.assertNotIn("years_passed", block)
             self.assertNotIn("naval_cap =", block)
             self.assertNotIn("pops =", block)

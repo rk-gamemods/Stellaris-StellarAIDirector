@@ -972,9 +972,9 @@ Top five risks:
    one primary and at most one distinct lead secondary; secondary targets are
    independently capped and ordinary plans are non-scaling.
 2. **Identity spending can delay recovery.** Every identity plan requires safe
-   basic runway, no short-runway core deficit, no collapse, peaceful status,
-   and no recent loss; research-bearing plans also require construction-ready
-   research inputs.
+   basic runway, no short-runway core deficit, and no collapse; research-bearing
+   plans also require construction-ready research inputs. War alone is not a
+   veto because safe capped resources must remain available to civilian growth.
 3. **A target can request an unused resource.** Identity plans omit food and
    consumer goods; resource-specific repair remains guarded by `country_uses_*`
    predicates. Runtime proof must still check trade handling for unusual

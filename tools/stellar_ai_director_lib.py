@@ -13505,8 +13505,6 @@ def archetype_economic_subplans_text() -> str:
                 "staid_basic_economy_runway_safe = yes",
                 "NOT = { staid_core_deficit_short_runway = yes }",
                 "NOT = { staid_catastrophic_collapse_mode = yes }",
-                "is_at_war = no",
-                "NOT = { recently_lost_war = yes }",
                 f"{trigger_prefix}{archetype} = yes",
             ]
             if research_resources & targets.keys():
@@ -13805,8 +13803,6 @@ __STAID_ARCHETYPE_ECONOMIC_SUBPLANS__
 \t\t\tstaid_basic_economy_runway_safe = yes
 \t\t\tNOT = { staid_core_deficit_short_runway = yes }
 \t\t\tNOT = { staid_catastrophic_collapse_mode = yes }
-\t\t\tis_at_war = no
-\t\t\tNOT = { recently_lost_war = yes }
 \t\t\tstaid_research_construction_priority_ready = yes
 \t\t}
 \t\tincome = {

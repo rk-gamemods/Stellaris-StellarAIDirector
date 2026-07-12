@@ -630,8 +630,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_extermination = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -652,8 +650,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_gestalt_growth = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -674,8 +670,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_defensive = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -696,8 +690,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_research = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -716,8 +708,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_diplomatic = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -737,8 +727,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_lead_secondary_extermination = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -759,8 +747,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_lead_secondary_conquest = yes
 		}
 		income = {
@@ -777,8 +763,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_lead_secondary_gestalt_growth = yes
 		}
 		income = {
@@ -795,8 +779,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_lead_secondary_defensive = yes
 		}
 		income = {
@@ -813,8 +795,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_lead_secondary_research = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -833,8 +813,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_archetype_lead_secondary_diplomatic = yes
 			staid_research_construction_priority_ready = yes
 		}
@@ -1023,8 +1001,6 @@ basic_economy_plan = {
 			staid_basic_economy_runway_safe = yes
 			NOT = { staid_core_deficit_short_runway = yes }
 			NOT = { staid_catastrophic_collapse_mode = yes }
-			is_at_war = no
-			NOT = { recently_lost_war = yes }
 			staid_research_construction_priority_ready = yes
 		}
 		income = {
