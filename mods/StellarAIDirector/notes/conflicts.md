@@ -13,6 +13,7 @@
 
 ## Expected Additive Surfaces
 
+- `common/economic_plans/zzzz_staid_21_strategic_resource_deficit_recovery.txt` (three unique optional, non-scaling, actual-deficit-only +1 subplans; no strategic-resource object override)
 - `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`
 - `common/script_values/zzz_staid_roi_values.txt`
 - `common/scripted_triggers/zzz_staid_threat_response_triggers.txt`
@@ -37,6 +38,8 @@
 
 - NSC3 and ESC unlock technologies now have copied source-object route AI weights.
 - Fleet-throughput economy gates provide the current ship-use path without guessing direct ship-design templates.
+- The residual ESC readiness subplan is optional and non-scaling and does not target volatile motes, exotic gases, or rare crystals; those resources use separate actual-deficit-only +1 subplans.
+- Vanilla and parent mods retain producer eligibility and ordinary strategic-resource object ownership.
 - ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 
 ## Strategic V2 Compatibility Reviews

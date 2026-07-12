@@ -981,7 +981,7 @@ basic_economy_plan = {
 	}
 
 	subplan = {
-		scaling = yes
+		optional = yes
 		set_name = "Stellar AI Director ESC component resource readiness"
 		potential = {
 			staid_research_input_runway_safe = yes
@@ -995,9 +995,6 @@ basic_economy_plan = {
 			}
 		}
 		income = {
-			volatile_motes = 12
-			exotic_gases = 12
-			rare_crystals = 12
 			sr_dark_matter = 3
 			sr_zro = 3
 			nanites = 3

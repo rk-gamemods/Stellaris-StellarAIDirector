@@ -103,6 +103,9 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 ## NSC3/ESC Design Policy
 
 - NSC3 and ESC unlock technologies now have copied source-object route AI weights and are paired with fleet-throughput economy gates.
+- Ordinary volatile-mote, exotic-gas, and rare-crystal recovery is isolated in three optional, non-scaling `has_deficit`-only subplans with a target of `+1`; small stores or small positive income alone do not activate them.
+- The broader ESC readiness subplan no longer targets those three ordinary resources and is optional and non-scaling; it retains only its existing advanced-resource and support-economy targets.
+- Producer legality remains owned by vanilla and parent mods. The Director emits no ordinary `strategic_resources` object overrides, scripted purchases, free resources, technology gates, or market gates for this recovery lane.
 - ESC internal component-template `key = ...` overrides and direct NSC3 ship-design templates remain manual-review blockers until the atlas models those loader surfaces safely.
 
 ## Threat-Response Policy

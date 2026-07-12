@@ -3415,25 +3415,28 @@ class GeneratedModValidityTests(unittest.TestCase):
             "has_monthly_income = { resource = giga_sr_amb_megaconstruction value > 1 }",
         ):
             self.assertIn(marker, advanced_block)
+        esc_marker = 'set_name = "Stellar AI Director ESC component resource readiness"'
+        esc_marker_index = economy.index(esc_marker)
         esc_resource_block = economy[
-            economy.index('set_name = "Stellar AI Director ESC component resource readiness"') : economy.index(
-                'set_name = "Stellar AI Director capped stockpile research conversion"'
+            economy.rfind("\n\tsubplan = {", 0, esc_marker_index) : economy.index(
+                "\n\tsubplan = {", esc_marker_index
             )
         ]
         for marker in (
+            "optional = yes",
             "NOT = { staid_advanced_component_resource_support_ready = yes }",
             "has_technology = tech_dark_matter_power_core",
             "has_technology = esc_tech_dark_matter_power_core_2",
             "staid_phase_fleet_conversion_repeatables = yes",
-            "volatile_motes = 12",
-            "exotic_gases = 12",
-            "rare_crystals = 12",
             "sr_dark_matter = 3",
             "sr_zro = 3",
             "nanites = 3",
             "engineering_research = 600",
         ):
             self.assertIn(marker, esc_resource_block)
+        self.assertNotIn("scaling =", esc_resource_block)
+        for resource in ("volatile_motes", "exotic_gases", "rare_crystals"):
+            self.assertNotRegex(esc_resource_block, rf"(?m)^\s*{resource}\s*=")
         self.assertIn("staid_trade_planetary_capacity_safe = yes", megastructure_block)
         self.assertNotIn("Stellar AI Director generic trade sell", text)
         self.assertNotIn("Stellar AI Director generic trade buy", text)
