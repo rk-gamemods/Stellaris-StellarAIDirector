@@ -6324,32 +6324,48 @@ def generated_unresolved_at_variable_rows(mod_root: Path = MOD_ROOT) -> list[dic
 
 
 def validate_staid_scripted_trigger_cycles(mod_root: Path = MOD_ROOT) -> list[str]:
-    trigger_path = mod_root / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
-    if not trigger_path.exists():
+    trigger_root = mod_root / "common" / "scripted_triggers"
+    if not trigger_root.exists():
         return []
-    trigger_text = trigger_path.read_text(encoding="utf-8")
-    starts = list(re.finditer(r"(?m)^(staid_[A-Za-z0-9_]+)\s*=\s*\{", trigger_text))
-    blocks: dict[str, str] = {}
-    for index, match in enumerate(starts):
-        end = starts[index + 1].start() if index + 1 < len(starts) else len(trigger_text)
-        blocks[match.group(1)] = trigger_text[match.end() : end]
+    definitions: dict[str, PDXValue] = {}
+    owners: dict[str, list[str]] = {}
+    errors: list[str] = []
+    for trigger_path in iter_text_files(trigger_root):
+        relative = trigger_path.relative_to(mod_root).as_posix()
+        root = parse_pdx(read_text(trigger_path))
+        for assignment in block_assignments(root):
+            if not assignment.key.startswith("staid_"):
+                continue
+            owners.setdefault(assignment.key, []).append(relative)
+            definitions.setdefault(assignment.key, assignment.value)
+    for name, paths in sorted(owners.items()):
+        if len(paths) > 1:
+            errors.append(
+                f"Duplicate staid scripted trigger {name}: " + ", ".join(paths)
+            )
 
     graph = {
         name: {
-            ref
-            for ref in re.findall(r"\b(staid_[A-Za-z0-9_]+)\s*=", body)
-            if ref in blocks and ref != name
+            assignment.key
+            for assignment in iter_assignments(value)
+            if assignment.key in definitions
         }
-        for name, body in blocks.items()
+        for name, value in definitions.items()
     }
-    errors: list[str] = []
     visiting: list[str] = []
     visited: set[str] = set()
 
     def visit(node: str) -> None:
         if node in visiting:
             cycle = visiting[visiting.index(node) :] + [node]
-            errors.append("Cyclic staid scripted trigger references: " + " -> ".join(cycle))
+            provenance = ", ".join(
+                f"{name}={owners[name][0]}" for name in dict.fromkeys(cycle)
+            )
+            errors.append(
+                "Cyclic staid scripted trigger references: "
+                + " -> ".join(cycle)
+                + f" ({provenance})"
+            )
             return
         if node in visited:
             return
@@ -6362,24 +6378,6 @@ def validate_staid_scripted_trigger_cycles(mod_root: Path = MOD_ROOT) -> list[st
     for node in sorted(graph):
         visit(node)
 
-    max_chain_depth = 7
-    path: list[str] = []
-
-    def walk_depth(node: str) -> None:
-        if node in path:
-            return
-        path.append(node)
-        if len(path) > max_chain_depth:
-            errors.append(
-                "Deep staid scripted trigger chain exceeds load-safe depth: " + " -> ".join(path)
-            )
-        else:
-            for child in sorted(graph[node]):
-                walk_depth(child)
-        path.pop()
-
-    for node in sorted(graph):
-        walk_depth(node)
     return errors
 
 

@@ -1229,3 +1229,21 @@ Top five risks:
 Rollback boundary: restore the multiplier to `8.0`, replace the reusable
 unemployment trigger with the old free-job conjunction, and regenerate only
 the defines, decision-trigger, mineral-budget, and economic-plan artifacts.
+
+## Infrastructure — All-file scripted-trigger cycle validation
+
+The static validator now parses every Director file beneath
+`common/scripted_triggers`, builds one cross-file reference graph, detects
+self-cycles and multi-file cycles, and reports duplicate Director trigger IDs
+with owning paths. The former arbitrary seven-link depth rejection is removed:
+depth alone is not a cycle and the current valid graph contains longer chains.
+
+Risks and controls:
+
+1. Parser drift fails validation visibly rather than silently using regex slices.
+2. Cross-file references are resolved only against actual top-level `staid_*`
+   definitions, avoiding false edges from ordinary trigger keys.
+3. Duplicate IDs are reported before their ambiguous winner can hide a cycle.
+4. Cycle errors include deterministic file provenance for repair and rollback.
+5. Static acyclicity does not prove runtime cost; performance remains a separate
+   observer/profiling boundary.

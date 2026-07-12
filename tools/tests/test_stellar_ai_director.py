@@ -3195,6 +3195,58 @@ class GeneratedModValidityTests(unittest.TestCase):
     def test_staid_scripted_trigger_graph_has_no_cycles(self):
         self.assertEqual(validate_staid_scripted_trigger_cycles(MOD_ROOT), [])
 
+    def test_scripted_trigger_cycle_validation_crosses_files_and_reports_owners(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            mod_root = Path(temp_dir)
+            trigger_root = mod_root / "common" / "scripted_triggers"
+            trigger_root.mkdir(parents=True)
+            (trigger_root / "a.txt").write_text(
+                "staid_test_a = { staid_test_b = yes }\n", encoding="utf-8"
+            )
+            (trigger_root / "nested").mkdir()
+            (trigger_root / "nested" / "b.txt").write_text(
+                "staid_test_b = { staid_test_a = yes }\n", encoding="utf-8"
+            )
+
+            errors = validate_staid_scripted_trigger_cycles(mod_root)
+
+            self.assertEqual(len(errors), 1)
+            self.assertIn(
+                "staid_test_a -> staid_test_b -> staid_test_a", errors[0]
+            )
+            self.assertIn("common/scripted_triggers/a.txt", errors[0])
+            self.assertIn("common/scripted_triggers/nested/b.txt", errors[0])
+
+    def test_scripted_trigger_cycle_validation_catches_self_cycles_and_duplicates(
+        self,
+    ):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            mod_root = Path(temp_dir)
+            trigger_root = mod_root / "common" / "scripted_triggers"
+            trigger_root.mkdir(parents=True)
+            (trigger_root / "one.txt").write_text(
+                "staid_self = { staid_self = yes }\n"
+                "staid_duplicate = { always = yes }\n",
+                encoding="utf-8",
+            )
+            (trigger_root / "two.txt").write_text(
+                "staid_duplicate = { always = no }\n", encoding="utf-8"
+            )
+
+            errors = validate_staid_scripted_trigger_cycles(mod_root)
+
+            self.assertTrue(
+                any("staid_self -> staid_self" in error for error in errors)
+            )
+            self.assertTrue(
+                any(
+                    "Duplicate staid scripted trigger staid_duplicate" in error
+                    and "one.txt" in error
+                    and "two.txt" in error
+                    for error in errors
+                )
+            )
+
     def test_july7_inventory_and_static_validation_notes_are_generated(self):
         for path in (GENERATED_VERSION_INVENTORY_MD, MOD_STACK_COMPATIBILITY_MD, MANUAL_STATIC_VALIDATION_MD):
             self.assertTrue(path.exists(), f"Missing generated July 7 note: {path}")
