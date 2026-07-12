@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import unittest
-from decimal import localcontext
+from decimal import Decimal, localcontext
 
 from tools.stellar_ai_economic_model import (
     FAILED_C9,
@@ -10,6 +10,7 @@ from tools.stellar_ai_economic_model import (
     PARENT_ONLY,
     PREZERO_RUNWAY_PLUS_ONE,
     ActivationReason,
+    ActivePrioritySet,
     AllOf,
     Atom,
     EconomicState,
@@ -19,6 +20,7 @@ from tools.stellar_ai_economic_model import (
     Lane,
     ModelLimitError,
     PendingProject,
+    PriorityDecision,
     Project,
     QuantityVector,
     Truth,
@@ -33,6 +35,7 @@ from tools.stellar_ai_economic_model import (
     find_feasible_bundles,
     run_policy_variant,
     schedule_bundle,
+    select_bundle,
 )
 
 
@@ -828,6 +831,91 @@ class EconomicModelContractTests(unittest.TestCase):
 
         self.assertEqual(forward.snapshots[0].selected.project_ids, ("alpha",))
         self.assertEqual(reverse.snapshots[0].selected.project_ids, ("alpha",))
+
+    def test_bundle_selection_uses_effective_priority_and_reports_same_total(self) -> None:
+        checkpoint = state(stockpile=quantities(minerals=60))
+        hulls = Project(
+            project_id="hulls",
+            lane=Lane.NEW_HULLS,
+            base_priority=90,
+            one_time_cost=quantities(minerals=60),
+        )
+        research = Project(
+            project_id="research",
+            lane=Lane.RESEARCH,
+            base_priority=100,
+            one_time_cost=quantities(minerals=60),
+        )
+        priorities = ActivePrioritySet(
+            (
+                PriorityDecision(hulls, Truth.TRUE, Decimal("108"), None),
+                PriorityDecision(research, Truth.TRUE, Decimal("100"), None),
+            )
+        )
+        search = find_feasible_bundles(checkpoint, (hulls, research))
+
+        selected = select_bundle(search, priorities)
+
+        self.assertEqual(selected.project_ids, ("hulls",))
+        self.assertEqual(selected.total_priority, Decimal("108"))
+
+    def test_bundle_selection_rejects_project_missing_from_active_priorities(self) -> None:
+        checkpoint = state(stockpile=quantities(minerals=60))
+        hulls = Project(
+            project_id="hulls",
+            lane=Lane.NEW_HULLS,
+            base_priority=90,
+            one_time_cost=quantities(minerals=60),
+        )
+        research = Project(
+            project_id="research",
+            lane=Lane.RESEARCH,
+            base_priority=100,
+            one_time_cost=quantities(minerals=60),
+        )
+        priorities = ActivePrioritySet(
+            (PriorityDecision(hulls, Truth.TRUE, Decimal("108"), None),)
+        )
+        search = find_feasible_bundles(checkpoint, (hulls, research))
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "bundle search projects missing from active priorities: research",
+        ):
+            select_bundle(search, priorities)
+
+    def test_bundle_selection_validates_rejected_only_project_priorities(self) -> None:
+        checkpoint = state(stockpile=quantities(minerals=60))
+        hulls = Project(
+            project_id="hulls",
+            lane=Lane.NEW_HULLS,
+            base_priority=90,
+            one_time_cost=quantities(minerals=60),
+        )
+        research = Project(
+            project_id="research",
+            lane=Lane.RESEARCH,
+            base_priority=100,
+            one_time_cost=quantities(minerals=120),
+        )
+        priorities = ActivePrioritySet(
+            (PriorityDecision(hulls, Truth.TRUE, Decimal("108"), None),)
+        )
+        search = find_feasible_bundles(checkpoint, (hulls, research))
+        self.assertNotIn(
+            "research",
+            {
+                project.project_id
+                for result in search.feasible
+                for project in result.projects
+            },
+        )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "bundle search projects missing from active priorities: research",
+        ):
+            select_bundle(search, priorities)
 
     def test_one_requested_income_does_not_select_two_full_producers(self) -> None:
         checkpoint = state(

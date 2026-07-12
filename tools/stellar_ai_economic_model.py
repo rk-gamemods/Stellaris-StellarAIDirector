@@ -1347,6 +1347,27 @@ def select_bundle(
     search: BundleSearchResult, priorities: ActivePrioritySet
 ) -> SelectedBundle:
     active = priorities.active
+    effective_priority_by_id: dict[str, Decimal] = {}
+    for item in active:
+        project_id = item.project.project_id
+        if project_id in effective_priority_by_id:
+            raise ValueError("active priority project IDs must be unique")
+        effective_priority_by_id[project_id] = item.priority
+
+    searched_project_ids = {
+        project.project_id
+        for result in search.feasible + search.rejected
+        for project in result.projects
+    }
+    missing_priority_ids = sorted(
+        searched_project_ids - effective_priority_by_id.keys()
+    )
+    if missing_priority_ids:
+        raise ValueError(
+            "bundle search projects missing from active priorities: "
+            + ", ".join(missing_priority_ids)
+        )
+
     requested_by_resource: dict[str, Decimal] = {}
     bonus_by_resource: dict[str, Decimal] = {}
     for item in active:
@@ -1426,7 +1447,7 @@ def select_bundle(
         }
         score = sum(
             (
-                project.base_priority
+                effective_priority_by_id[project.project_id]
                 for project in result.projects
                 if project.strategic_resource is None
             ),
@@ -1475,7 +1496,7 @@ def select_bundle(
     }
     total = sum(
         (
-            project.base_priority
+            effective_priority_by_id[project.project_id]
             for project in winner.projects
             if project.strategic_resource is None
         ),
