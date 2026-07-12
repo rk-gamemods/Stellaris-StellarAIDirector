@@ -45,9 +45,10 @@ EXPECTED_PROVENANCE_IDS = {
     "minerals_expenditure_planets_low",
     "minerals_expenditure_planets_med",
     "minerals_expenditure_planets_high",
-    "alloys_expenditure_megastructures",
     "alloys_expenditure_ships",
     "alloys_expenditure_ship_upgrades",
+    "alloys_expenditure_starbases_expand",
+    "food_expenditure_starbases_expand",
     "NAI",
 }
 
@@ -195,10 +196,12 @@ def _validate_high_capacity_workaround(errors: list[str]) -> None:
     upgrades = extract_top_level_object_text(alloys, "alloys_expenditure_ship_upgrades")
     _require("staid_peacetime_high_naval_capacity_guard = yes" in ships,
              "ship budget is missing the 4.4.4 high-naval-capacity workaround", errors)
-    _require("staid_emergency_fleet_spending_required = yes" in ships,
-             "ship budget lost emergency bypass", errors)
-    _require("staid_fleet_buildup_economy_safe = yes" in ships,
-             "ship budget lost Director economy-safety gate", errors)
+    _require("staid_wartime_fleet_surge_ready = yes" in ships,
+             "ship budget lost recurring wartime fleet-pressure lane", errors)
+    _require("staid_emergency_fleet_spending_required" not in ships,
+             "ship budget restored the obsolete emergency-only bypass", errors)
+    _require("staid_fleet_buildup_economy_safe" not in ships,
+             "ship budget restored the obsolete aggregate economy gate", errors)
     _require("can_be_upgraded = yes" in upgrades,
              "ship-upgrade budget no longer checks for upgradeable fleets", errors)
 
@@ -268,7 +271,7 @@ def _validate_provenance(errors: list[str]) -> None:
     with WAR_PLANNING_444_PROVENANCE_CSV.open("r", encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     actual_ids = {row["object_id"] for row in rows}
-    _require(len(rows) == 33, f"expected 33 provenance rows, found {len(rows)}", errors)
+    _require(len(rows) == 34, f"expected 34 provenance rows, found {len(rows)}", errors)
     _require(EXPECTED_PROVENANCE_IDS == actual_ids,
              f"provenance object coverage mismatch; missing={sorted(EXPECTED_PROVENANCE_IDS-actual_ids)}, extra={sorted(actual_ids-EXPECTED_PROVENANCE_IDS)}", errors)
     for row in rows:
@@ -298,7 +301,7 @@ def _validate_generator_and_docs(errors: list[str]) -> None:
             "working Stellar AI 0.10",
             "sub-40-year peaceful opening",
             "modest uncapped reserve",
-            "ship spending pauses at 80% used capacity",
+            "ship-budget share is reduced to 25% at 80% used capacity",
             "validate_staid_444_war_solution.py",
         ):
             _require(marker in readme, f"README is missing replacement-system marker: {marker}", errors)
@@ -354,7 +357,7 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
     print("Stellar AI Director 4.4.4 native war solution validation passed.")
-    print(f"Validated {len(WAR_FILES)} PDXScript files and 33 full-object/define provenance rows.")
+    print(f"Validated {len(WAR_FILES)} PDXScript files and 34 full-object/define provenance rows.")
     return 0
 
 
