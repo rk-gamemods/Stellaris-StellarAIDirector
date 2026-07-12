@@ -130,6 +130,7 @@ diplomatic_stance = {
 			}
 			modifier = { factor = 2 staid_native_war_posture_active = yes }
 			modifier = { factor = 8 staid_boxed_in_war_pressure = yes }
+			modifier = { factor = 1.25 staid_identity_assimilator = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_survival_mode = no staid_recovery_mode = no staid_core_deficit_short_runway = no staid_catastrophic_collapse_mode = no }
 		}
 	}
 
@@ -267,6 +268,7 @@ diplomatic_stance = {
 			modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
 			modifier = { factor = 1.10 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }
 			modifier = { factor = 1.15 staid_role_subject = yes }
+			modifier = { factor = 1.25 staid_identity_rogue_servitor = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes is_at_war = no staid_security_existential = no staid_native_war_posture_active = no }
 		}
 	}
 

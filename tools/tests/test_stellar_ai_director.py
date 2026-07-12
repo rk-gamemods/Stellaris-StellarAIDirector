@@ -4627,6 +4627,7 @@ class GeneratedModValidityTests(unittest.TestCase):
 
         cooperative = option_text("diplo_stance_cooperative")
         cooperative_nomad = option_text("diplo_stance_cooperative_nomad")
+        belligerent = option_text("diplo_stance_belligerent")
         mercantile = option_text("diplo_stance_mercantile")
         isolationist = option_text("diplo_stance_isolationist")
 
@@ -4641,6 +4642,34 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn(marker, cooperative)
         self.assertNotIn("staid_archetype_", cooperative_nomad)
         self.assertNotIn("staid_role_subject", cooperative_nomad)
+        servitor_line = next(
+            line for line in cooperative.splitlines()
+            if "staid_identity_rogue_servitor = yes" in line
+        )
+        for marker in (
+            "factor = 1.25",
+            "staid_archetype_identity_conflict = no",
+            "staid_archetype_eligible_country = yes",
+            "is_at_war = no",
+            "staid_security_existential = no",
+            "staid_native_war_posture_active = no",
+        ):
+            self.assertIn(marker, servitor_line)
+        assimilator_line = next(
+            line for line in belligerent.splitlines()
+            if "staid_identity_assimilator = yes" in line
+        )
+        for marker in (
+            "factor = 1.25",
+            "staid_archetype_identity_conflict = no",
+            "staid_archetype_eligible_country = yes",
+            "staid_survival_mode = no",
+            "staid_recovery_mode = no",
+            "staid_core_deficit_short_runway = no",
+            "staid_catastrophic_collapse_mode = no",
+        ):
+            self.assertIn(marker, assimilator_line)
+        self.assertNotIn("staid_identity_rogue_servitor", cooperative_nomad)
         self.assertIn("factor = 1.40 staid_identity_megacorp = yes", mercantile)
         self.assertIn("factor = 1.40 staid_archetype_defensive = yes", isolationist)
         self.assertIn("factor = 1.15 staid_archetype_lead_secondary_defensive = yes", isolationist)
@@ -4678,11 +4707,11 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn(tag, {"equal", "insert"})
             if tag == "insert":
                 inserted.extend(production[j1:j2])
-        self.assertEqual(len(inserted), 8)
+        self.assertEqual(len(inserted), 10)
         for line in inserted:
             self.assertRegex(
                 line,
-                r"staid_(?:archetype_|identity_megacorp|role_subject)",
+                r"staid_(?:archetype_|identity_(?:megacorp|rogue_servitor|assimilator)|role_subject)",
             )
 
     def test_megastructure_upgrade_stages_are_prioritized_over_new_starts(self):

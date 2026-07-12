@@ -10829,6 +10829,19 @@ def opening_growth_policies_text(*, identity_overlay: bool = True) -> str:
         "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }"
     )
     cooperative_subject = "\t\t\tmodifier = { factor = 1.15 staid_role_subject = yes }"
+    cooperative_servitor = (
+        "\t\t\tmodifier = { factor = 1.25 staid_identity_rogue_servitor = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes "
+        "is_at_war = no staid_security_existential = no "
+        "staid_native_war_posture_active = no }"
+    )
+    belligerent_assimilator = (
+        "\t\t\tmodifier = { factor = 1.25 staid_identity_assimilator = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes "
+        "staid_survival_mode = no staid_recovery_mode = no "
+        "staid_core_deficit_short_runway = no "
+        "staid_catastrophic_collapse_mode = no }"
+    )
     belligerent_native = "\t\t\tmodifier = { factor = 2 staid_native_war_posture_active = yes }"
     belligerent_boxed = "\t\t\tmodifier = { factor = 8 staid_boxed_in_war_pressure = yes }"
     mercantile_opening = "\t\t\tmodifier = { factor = 5 staid_opening_trade_to_research = yes staid_is_diplomatic_opening_phase = yes }"
@@ -10877,6 +10890,16 @@ def opening_growth_policies_text(*, identity_overlay: bool = True) -> str:
             diplomatic_block = insert_policy_option_ai_weight_modifier(
                 diplomatic_block, "diplo_stance_cooperative", modifier
             )
+        diplomatic_block = insert_policy_option_ai_weight_modifier(
+            diplomatic_block,
+            "diplo_stance_cooperative",
+            cooperative_servitor,
+        )
+        diplomatic_block = insert_policy_option_ai_weight_modifier(
+            diplomatic_block,
+            "diplo_stance_belligerent",
+            belligerent_assimilator,
+        )
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_opening)
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_exit)
     if identity_overlay:
