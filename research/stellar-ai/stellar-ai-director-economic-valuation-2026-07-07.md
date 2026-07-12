@@ -1,6 +1,6 @@
 # Stellar AI Director Economic Valuation Dataset
 
-Generated: 2026-07-12T13:54:21.919014+00:00
+Generated: 2026-07-12T18:52:10.019374+00:00
 
 This dataset is the required evidence gate before generating new late-game unemployment or construction-pressure weights. It mines the active Irony stack plus vanilla for planet `buildings`, `zones`, and `districts`, records the top-level load winner, and computes rough long-horizon ROI against the 2350 target end date.
 
@@ -24,14 +24,14 @@ Active mod count: 116
 
 ## Data Quality Flags
 
-- ai_weight_absent: 1256
+- ai_weight_absent: 1252
 - ai_weight_zero_or_gated_zero: 34
 - has_ai_or_direct_output: 214
 - has_build_cost: 616
 - has_jobs: 348
 - has_upkeep: 758
 - none: 1
-- overridden_in_stack: 123
+- overridden_in_stack: 127
 - uses_inline_script: 1037
 
 ## Highest Rough ROI At 2250 Horizon
