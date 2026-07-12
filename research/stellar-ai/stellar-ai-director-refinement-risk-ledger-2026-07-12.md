@@ -414,3 +414,74 @@ Rollback boundary:
 
 Revert only H07 if colony completion regresses or no outpost opportunity appears.
 Do not restore H01-H06 megastructure pressure or the removed order watchdog.
+
+## H08a — Deterministic nation identity and bounded policy model
+
+Status: implemented as an offline model and fixture surface; no production mod
+consumer or gameplay weight is connected in this slice.
+
+Evidence:
+
+- Pegasus 4.4.4 `common/personalities/00_personalities.txt` has SHA-256
+  `1F89C8D6C9444F575526A8635DB59DF78140AD43401538214E6B62F685298BAA`.
+  All 30 normal/global personality IDs are either assigned a reviewed anchor or
+  explicitly recorded as outside the seven primary anchors.
+- The integrity-verified `2270.04.15` save has SHA-256
+  `7E49527196CAA35DCCD5FB22FF24E77C08A1EEA84C9263A52E87DF95492784B7`.
+  Its ten AI candidates classify from identity fields alone as three
+  extermination, four conquest, one defensive, one research, and one
+  diplomatic. It supplies no ordinary gestalt-growth or balanced primary, so
+  those remain synthetic adversarial fixtures.
+- The model keeps the engine-selected personality anchor separate from ethics,
+  civics, government, authority, origin, perks, and source-resolved behavior
+  evidence. Primary identity is mutually exclusive for presentation, while the
+  full evidence vector and ordered secondaries remain available to consumers.
+- Dynamic observations use explicit unknown states. Fleet absence, missing
+  templates, filled templates, naval headroom, shipyard use, tracked resource
+  capacity, and tracked resource use are separate facts. Static identity never
+  depends on military power, technology power, stockpiles, income, queues, or
+  observed outcomes.
+- Policy output is a bounded five-level category over the existing twelve model
+  lanes. It is not mapped to a Stellaris multiplier or mutable priority number.
+  Recovery, legality, and post-completion runway dominate identity preference.
+
+Top five risks:
+
+1. **A primary label can erase hybrid identity.** Preserve every non-primary
+   evidence component and its reason codes; use the primary only for mutually
+   exclusive routing. Fanatic ethics record three secondary-pressure units to a
+   normal ethic's one, without turning classification into an opaque sum.
+2. **Outcome feedback can rewrite identity and create an overreaction loop.**
+   Keep all economy, fleet, capacity, threat, and queue observations out of
+   `NationIdentity`; they may alter bounded policy output only.
+3. **Missing templates or zero denominators can be mistaken for zero demand.**
+   Distinguish serialized reinforcement demand from template-creation and
+   template-expansion gaps, and keep unknown naval capacity distinct from zero.
+4. **Unknown or modded identities can receive an unsafe confident label.** Use
+   an explicit `insufficient_evidence` status with a neutral balanced primary;
+   exclude non-default and nomadic countries rather than guessing.
+5. **A model-only preference can bypass economic feasibility when integrated.**
+   Do not connect this slice to the selector or mod. A later integration must
+   apply bounded deltas only after existing activation, recovery, legality,
+   affordability, queue, and runway gates, and must prove zero-overlay parity.
+
+Static acceptance:
+
+- Every dataclass is immutable and canonicalizes unordered identity inputs.
+- The fixture tables cover all seven primaries, excluded/conflict/insufficient
+  states, crisis, assimilator, wilderness, nomadic, hard-conflict, low-use and
+  low-capacity, no-template, filled-template, threat, recovery, unsafe-runway,
+  unknown/zero naval-capacity, permutation, and enormous-value cases.
+- The exact ten-save primary distribution is asserted without golden fleet,
+  income, stockpile, or technology thresholds.
+- Pressure outputs remain categorical and bounded under zero, unknown, and
+  enormous inputs. No cost, order, resource, claim, war, flag, or game state is
+  mutated.
+- Focused tests, compilation, lint, formatting, both JData fixture indexes, and
+  `git diff --check` must pass before commit.
+
+Rollback boundary:
+
+Revert only H08a if the offline schema or fixtures prove misleading. This slice
+does not alter the live mod; H08b must be a separate trigger-only commit, and any
+later behavior consumer must remain separately reversible.
