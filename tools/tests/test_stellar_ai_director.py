@@ -63,10 +63,12 @@ from stellar_ai_director_lib import (
     dataset_job_pressure_weight_block,
     director_ai_weight_block,
     extract_top_level_object_text,
+    extract_megastructure_rows,
     fleet_alloy_budget_text,
     fresh_economic_valuation_source_facts,
     gigas_habitat_ai_weight_block,
     generated_unresolved_at_variable_rows,
+    generated_thresholds,
     generate_economic_valuation_dataset,
     generate_mod_files,
     generated_colony_root_scope_errors,
@@ -91,6 +93,7 @@ from stellar_ai_director_lib import (
     stale_stellar_ai_dependency_errors,
     surplus_sink_pressure,
     strategic_subsystem_audit_rows,
+    triggers_text,
     validate_staid_scripted_trigger_cycles,
     validate_generated_patch,
     validate_object_atlas_artifacts,
@@ -478,6 +481,45 @@ class ShipUpgradeBudgetAvailabilityTests(unittest.TestCase):
             self.assertIn("can_be_upgraded = yes", text)
             self.assertNotIn("staid_fleet_buildup_economy_safe = yes", text)
         self.assertEqual(upgrades, generated_upgrades)
+
+
+class MegastructureSafetyGateTests(unittest.TestCase):
+    def test_large_stockpiles_do_not_bypass_megastructure_safety(self):
+        trigger_path = (
+            MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+        )
+        parse_file(trigger_path)
+        text = trigger_path.read_text(encoding="utf-8")
+        generated = triggers_text(generated_thresholds(extract_megastructure_rows()))
+        self.assertEqual(text, generated)
+        blocks = {
+            name: extract_top_level_object_text(text, name)
+            for name in (
+                "staid_megastructure_prep_ready",
+                "staid_megastructure_commit_safe",
+                "staid_megastructure_continuation_priority_ready",
+                "staid_pause_new_megastructure",
+            )
+        }
+
+        for block in blocks.values():
+            self.assertNotIn("staid_high_scale_snowball_pressure = yes", block)
+        self.assertIn("NOT = { staid_recovery_mode = yes }", blocks["staid_megastructure_prep_ready"])
+        self.assertIn("staid_basic_economy_runway_safe = yes", blocks["staid_megastructure_prep_ready"])
+        self.assertIn("staid_trade_planetary_capacity_safe = yes", blocks["staid_megastructure_prep_ready"])
+        self.assertIn(
+            "NOT = { staid_core_deficit_short_runway = yes }",
+            blocks["staid_megastructure_commit_safe"],
+        )
+        self.assertIn(
+            "NOT = { staid_survival_mode = yes }",
+            blocks["staid_megastructure_continuation_priority_ready"],
+        )
+        self.assertIn(
+            "staid_surplus_sink_pressure = yes",
+            blocks["staid_megastructure_continuation_priority_ready"],
+        )
+        self.assertIn("staid_survival_mode = yes", blocks["staid_pause_new_megastructure"])
 
 
 class GeneratedModValidityTests(unittest.TestCase):
@@ -3517,6 +3559,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         for resource in ("volatile_motes", "exotic_gases", "rare_crystals"):
             self.assertNotRegex(esc_resource_block, rf"(?m)^\s*{resource}\s*=")
         self.assertIn("staid_trade_planetary_capacity_safe = yes", megastructure_block)
+        self.assertNotIn("staid_high_scale_snowball_pressure = yes", megastructure_block)
         self.assertNotIn("Stellar AI Director generic trade sell", text)
         self.assertNotIn("Stellar AI Director generic trade buy", text)
 

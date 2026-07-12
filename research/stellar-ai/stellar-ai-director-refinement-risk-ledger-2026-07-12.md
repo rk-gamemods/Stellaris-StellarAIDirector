@@ -192,7 +192,7 @@ economic runway vetoes.
 
 ## H04 — Ship-upgrade budget eligibility
 
-Status: implemented on the research branch; static validation pending commit.
+Status: committed and pushed as `93d1e0921b72a79b0e1a1649424287c8ada13e6d`.
 
 Evidence:
 
@@ -236,3 +236,59 @@ Rollback boundary:
 
 Revert only H04 if upgrade churn or economic damage appears. Do not re-close
 new-hull spending from H03 as part of an upgrade-only rollback.
+
+## H05 — Megastructure safety bypass from large stockpiles
+
+Status: implemented on the research branch; static validation pending commit.
+
+Evidence:
+
+- `staid_high_scale_snowball_pressure` becomes true from any one of minerals
+  above 25,000, energy above 50,000, or alloys above 15,000, plus later
+  high-income/stockpile cases.
+- That single signal bypassed recovery, basic runway, trade-capacity, war/naval,
+  survival, and pause-new-project checks in megastructure prep, commit, and
+  continuation state.
+- The observed failure combined very large alloy holdings, six occupied
+  constructors, several simultaneous megaprojects, and legal unclaimed systems.
+
+Decision:
+
+Large stockpiles no longer bypass megastructure safety state. Prep requires no
+recovery state, basic runway, trade capacity, its explicit stockpile/income
+floors, and peace or adequate naval use. Commit requires no short-runway core
+deficit, basic runway, trade capacity, and peace or adequate naval use.
+Continuation priority requires commit safety, no survival mode, and actual
+surplus or resource-waste pressure. New-project pause conditions apply even to
+large empires. Parent/base project weights remain; this changes only Director
+bonuses and pauses.
+
+Top five risks and controls:
+
+1. **A rich late empire may start fewer valuable projects.** Preserve explicit
+   prep income/stockpile floors and route weights; measure idle constructors and
+   legal high-value candidates before relaxing safety.
+2. **A useful unfinished stage may lose the Director continuation bonus.** Its
+   parent/base weight remains. Require multi-checkpoint stall evidence before a
+   bounded continuation-only exception.
+3. **Trade-capacity safety may be irrelevant to a low-trade empire.** It is an
+   upkeep/logistics headroom proxy, not a universal wealth target; review it
+   separately if low trade but ample relevant runway blocks all projects.
+4. **War gating may block a strategically necessary defense project.** Adequate
+   naval use still permits prep/commit, while object-specific defensive weights
+   remain. Do not create a generic wealth bypass.
+5. **High-scale modifiers remain on non-safety routes.** Audit and remove those
+   as separate H06 changes; H05 does not claim the broad trigger is gone.
+
+Static acceptance:
+
+- Prep, commit, continuation, and pause-new-project blocks contain no
+  `staid_high_scale_snowball_pressure` bypass.
+- Their explicit recovery/deficit/runway/trade/war/survival controls remain.
+- PDX parsing, targeted tests, and the static validator pass without dirtying
+  the worktree.
+
+Rollback boundary:
+
+Revert only H05 if safety-state reachability proves too restrictive. Do not
+restore the generic budget or spam target from H01/H02.

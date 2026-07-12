@@ -11628,18 +11628,9 @@ staid_recovery_mode = {
 staid_megastructure_prep_ready = {
 \tis_nomadic = no
 \tcan_build_megastructures = yes
-\tOR = {
-\t\tNOT = { staid_recovery_mode = yes }
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
-\t\tstaid_basic_economy_runway_safe = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
-\t\tstaid_trade_planetary_capacity_safe = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
+\tNOT = { staid_recovery_mode = yes }
+\tstaid_basic_economy_runway_safe = yes
+\tstaid_trade_planetary_capacity_safe = yes
 \tresource_stockpile_compare = { resource = alloys value > 8000 }
 \thas_monthly_income = { resource = alloys value > 80 }
 \thas_monthly_income = { resource = energy value > 40 }
@@ -11647,47 +11638,31 @@ staid_megastructure_prep_ready = {
 \tOR = {
 \t\tis_at_war = no
 \t\tused_naval_capacity_percent > 0.70
-\t\tstaid_high_scale_snowball_pressure = yes
 \t}
 }
 
 staid_megastructure_commit_safe = {
 \tis_nomadic = no
 \tcan_build_megastructures = yes
-\tOR = {
-\t\tNOT = { staid_core_deficit_short_runway = yes }
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
-\t\tstaid_basic_economy_runway_safe = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
-\tOR = {
-\t\tstaid_trade_planetary_capacity_safe = yes
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
+\tNOT = { staid_core_deficit_short_runway = yes }
+\tstaid_basic_economy_runway_safe = yes
+\tstaid_trade_planetary_capacity_safe = yes
 \tOR = {
 \t\tis_at_war = no
 \t\tused_naval_capacity_percent > 0.65
-\t\tstaid_high_scale_snowball_pressure = yes
 \t}
 }
 
 staid_megastructure_continuation_priority_ready = {
 \tstaid_megastructure_commit_safe = yes
-\tOR = {
-\t\tNOT = { staid_survival_mode = yes }
-\t\tstaid_high_scale_snowball_pressure = yes
-\t}
+\tNOT = { staid_survival_mode = yes }
 \tOR = {
 \t\tstaid_surplus_sink_pressure = yes
 \t\tstaid_resource_waste_pressure = yes
-\t\tstaid_high_scale_snowball_pressure = yes
 \t}
 }
 
 staid_pause_new_megastructure = {
-\tNOT = { staid_high_scale_snowball_pressure = yes }
 \tOR = {
 \t\tstaid_survival_mode = yes
 \t\tAND = { is_at_war = yes used_naval_capacity_percent < 0.55 }

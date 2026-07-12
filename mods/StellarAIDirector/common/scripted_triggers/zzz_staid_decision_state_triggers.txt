@@ -812,18 +812,9 @@ staid_recovery_mode = {
 staid_megastructure_prep_ready = {
 	is_nomadic = no
 	can_build_megastructures = yes
-	OR = {
-		NOT = { staid_recovery_mode = yes }
-		staid_high_scale_snowball_pressure = yes
-	}
-	OR = {
-		staid_basic_economy_runway_safe = yes
-		staid_high_scale_snowball_pressure = yes
-	}
-	OR = {
-		staid_trade_planetary_capacity_safe = yes
-		staid_high_scale_snowball_pressure = yes
-	}
+	NOT = { staid_recovery_mode = yes }
+	staid_basic_economy_runway_safe = yes
+	staid_trade_planetary_capacity_safe = yes
 	resource_stockpile_compare = { resource = alloys value > 8000 }
 	has_monthly_income = { resource = alloys value > 80 }
 	has_monthly_income = { resource = energy value > 40 }
@@ -831,47 +822,31 @@ staid_megastructure_prep_ready = {
 	OR = {
 		is_at_war = no
 		used_naval_capacity_percent > 0.70
-		staid_high_scale_snowball_pressure = yes
 	}
 }
 
 staid_megastructure_commit_safe = {
 	is_nomadic = no
 	can_build_megastructures = yes
-	OR = {
-		NOT = { staid_core_deficit_short_runway = yes }
-		staid_high_scale_snowball_pressure = yes
-	}
-	OR = {
-		staid_basic_economy_runway_safe = yes
-		staid_high_scale_snowball_pressure = yes
-	}
-	OR = {
-		staid_trade_planetary_capacity_safe = yes
-		staid_high_scale_snowball_pressure = yes
-	}
+	NOT = { staid_core_deficit_short_runway = yes }
+	staid_basic_economy_runway_safe = yes
+	staid_trade_planetary_capacity_safe = yes
 	OR = {
 		is_at_war = no
 		used_naval_capacity_percent > 0.65
-		staid_high_scale_snowball_pressure = yes
 	}
 }
 
 staid_megastructure_continuation_priority_ready = {
 	staid_megastructure_commit_safe = yes
-	OR = {
-		NOT = { staid_survival_mode = yes }
-		staid_high_scale_snowball_pressure = yes
-	}
+	NOT = { staid_survival_mode = yes }
 	OR = {
 		staid_surplus_sink_pressure = yes
 		staid_resource_waste_pressure = yes
-		staid_high_scale_snowball_pressure = yes
 	}
 }
 
 staid_pause_new_megastructure = {
-	NOT = { staid_high_scale_snowball_pressure = yes }
 	OR = {
 		staid_survival_mode = yes
 		AND = { is_at_war = yes used_naval_capacity_percent < 0.55 }
