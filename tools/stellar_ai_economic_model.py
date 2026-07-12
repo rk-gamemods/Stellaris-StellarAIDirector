@@ -519,6 +519,7 @@ class ActivationReason(str, Enum):
 class ActivationResult:
     truth: Truth
     requested_income: Decimal
+    remaining_pressure: Decimal
     active_use: Decimal | None
     net_earned_income: Decimal | None
     runway_months: Decimal | None
@@ -533,6 +534,7 @@ def _activation(
     reason: ActivationReason,
     *,
     requested_income: Decimal = ZERO,
+    remaining_pressure: Decimal | None = None,
     active_use: Decimal | None = None,
     net_earned_income: Decimal | None = None,
     runway_months: Decimal | None = None,
@@ -540,9 +542,13 @@ def _activation(
     committed_net_output: Decimal = ZERO,
     committed_pressure_months: int | None = None,
 ) -> ActivationResult:
+    bounded_remaining = (
+        requested_income if remaining_pressure is None else remaining_pressure
+    )
     return ActivationResult(
         truth=truth,
         requested_income=requested_income if truth is Truth.TRUE else ZERO,
+        remaining_pressure=bounded_remaining if truth is Truth.TRUE else ZERO,
         active_use=active_use,
         net_earned_income=net_earned_income,
         runway_months=runway_months,
@@ -762,7 +768,8 @@ def evaluate_policy_activation(
             return _activation(
                 Truth.TRUE,
                 ActivationReason.PREZERO_RUNWAY,
-                requested_income=remaining_pressure,
+                requested_income=desired_increment,
+                remaining_pressure=remaining_pressure,
                 active_use=active_use,
                 net_earned_income=net_earned,
                 runway_months=Decimal(
@@ -828,7 +835,8 @@ def evaluate_policy_activation(
         return _activation(
             Truth.TRUE,
             ActivationReason.ACTUAL_DEFICIT,
-            requested_income=remaining_pressure,
+            requested_income=desired_increment,
+            remaining_pressure=remaining_pressure,
             active_use=active_use,
             net_earned_income=net_earned,
             runway_months=runway,
@@ -870,7 +878,8 @@ def evaluate_policy_activation(
         return _activation(
             Truth.TRUE,
             ActivationReason.PREZERO_RUNWAY,
-            requested_income=remaining_pressure,
+            requested_income=desired_increment,
+            remaining_pressure=remaining_pressure,
             active_use=active_use,
             net_earned_income=net_earned,
             runway_months=projected_runway,
@@ -1287,6 +1296,14 @@ def build_active_priority_set(
             trigger=project.trigger,
             facts=facts,
         )
+        if (
+            activation.truth is Truth.TRUE
+            and activation.committed_pressure_months is None
+        ):
+            activation = replace(
+                activation,
+                requested_income=activation.remaining_pressure,
+            )
         if (
             activation.truth is Truth.TRUE
             and activation.committed_pressure_months is not None

@@ -296,6 +296,8 @@ class EconomicModelContractTests(unittest.TestCase):
         self.assertIs(activation.truth, Truth.TRUE)
         self.assertFalse(activation.committed_recovery)
         self.assertEqual(activation.runway_months, 0)
+        self.assertEqual(activation.requested_income, 1)
+        self.assertEqual(activation.remaining_pressure, 0)
         self.assertEqual(
             tuple(item.project.project_id for item in priorities.active),
             ("fast-gas-recovery",),
@@ -404,7 +406,16 @@ class EconomicModelContractTests(unittest.TestCase):
             months=2,
         )
 
-        self.assertEqual(activation.requested_income, quantities(x=0.4).get("x"))
+        self.assertEqual(activation.requested_income, 1)
+        self.assertEqual(
+            activation.remaining_pressure,
+            quantities(x=0.4).get("x"),
+        )
+        selected_activation = run.snapshots[0].priorities.active[0].activation
+        self.assertEqual(
+            selected_activation.requested_income,
+            quantities(x=0.4).get("x"),
+        )
         self.assertEqual(
             tuple(snapshot.selected.project_ids for snapshot in run.snapshots),
             (("partial-slow-gas",), ()),
