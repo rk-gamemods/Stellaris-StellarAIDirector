@@ -298,5 +298,9 @@ research_federation = {
 		modifier = { add = 70 desc = staid_discovery_federation from = { has_active_tradition = tr_discovery_federations_finish } }
 		modifier = { add = -80 desc = staid_conquest_route_prefers_other_federation from = { staid_aggressive_fleet_pressure = yes NOT = { staid_research_diplomacy_priority_ready = yes } } }
 		modifier = { add = -60 desc = staid_spiritualist_research_federation_drift from = { OR = { has_ethic = ethic_spiritualist has_ethic = ethic_fanatic_spiritualist } NOT = { staid_research_diplomacy_priority_ready = yes } } }
+		modifier = { add = 100 desc = staid_research_identity_research_federation from = { staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes } }
+		modifier = { add = 50 desc = staid_secondary_research_identity_research_federation from = { staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes } }
+		modifier = { add = 100 desc = staid_diplomatic_identity_research_federation from = { staid_archetype_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes } }
+		modifier = { add = 50 desc = staid_secondary_diplomatic_identity_research_federation from = { staid_archetype_lead_secondary_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes } }
 	}
 }

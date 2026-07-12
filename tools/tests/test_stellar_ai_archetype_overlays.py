@@ -23,6 +23,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     FLEET_ARCHETYPE_FACTORS,
     FLEET_THREAT_RESPONSE_FACTOR,
     IDENTITY_CLAIM_BUDGET_PATH,
+    IDENTITY_FEDERATION_PATH,
     IDENTITY_MEGASTRUCTURE_PATH,
     IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
@@ -95,12 +96,12 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             row for row in cls.rows if row["object_type"] == "technology"
         ]
 
-    def test_fixed_allowlist_has_exactly_nine_current_artifacts(self) -> None:
+    def test_fixed_allowlist_has_exactly_ten_current_artifacts(self) -> None:
         self.assertEqual(
             tuple(self.production),
             ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
         )
-        self.assertEqual(len(self.production), 9)
+        self.assertEqual(len(self.production), 10)
         for path, rendered in self.production.items():
             self.assertEqual(
                 path.read_text(encoding="utf-8").replace("\r\n", "\n"),
@@ -119,7 +120,7 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         self.assertNotIn("staid_archetype_hard_", budget)
 
     def test_identity_strategy_vectors_are_bounded_and_state_free(self) -> None:
-        strategy_paths = ARCHETYPE_OVERLAY_ARTIFACT_PATHS[2:]
+        strategy_paths = IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS
         production = "\n".join(self.production[path] for path in strategy_paths)
         zero = "\n".join(self.zero[path] for path in strategy_paths)
         for marker in (
@@ -411,6 +412,42 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         self.assertAlmostEqual(
             float(megacorp_factor.group(1)) * 1.15,
             1.265,
+        )
+
+    def test_research_federation_blends_research_and_diplomatic_identity(self) -> None:
+        production = extract_top_level_object_text(
+            self.production[IDENTITY_FEDERATION_PATH],
+            "research_federation",
+        )
+        zero = extract_top_level_object_text(
+            self.zero[IDENTITY_FEDERATION_PATH],
+            "research_federation",
+        )
+        for archetype in ("research", "diplomatic"):
+            self.assertIn(
+                f"add = 100 desc = staid_{archetype}_identity_research_federation",
+                production,
+            )
+            self.assertIn(
+                f"staid_archetype_{archetype} = yes",
+                production,
+            )
+            self.assertIn(
+                f"add = 50 desc = staid_secondary_{archetype}_identity_research_federation",
+                production,
+            )
+            self.assertIn(
+                f"staid_archetype_lead_secondary_{archetype} = yes",
+                production,
+            )
+        self.assertNotIn("staid_research_identity_research_federation", zero)
+        self.assertNotIn("staid_diplomatic_identity_research_federation", zero)
+        self.assertEqual(production.count("staid_archetype_identity_conflict = no"), 4)
+        self.assertEqual(production.count("staid_archetype_eligible_country = yes"), 4)
+        self.assertEqual(
+            production.count("staid_research_diplomacy_priority_ready = yes")
+            - zero.count("staid_research_diplomacy_priority_ready = yes"),
+            4,
         )
 
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:

@@ -82,6 +82,12 @@ IDENTITY_MEGASTRUCTURE_PATH = (
     / "megastructures"
     / "zzzz_staid_03_megastructures_megastructures.txt"
 )
+IDENTITY_FEDERATION_PATH = (
+    MOD_ROOT
+    / "common"
+    / "federation_types"
+    / "zzzz_staid_15_research_diplomacy_federation_types.txt"
+)
 IDENTITY_FLEET_COMPOSITION_PATH = (
     MOD_ROOT
     / "common"
@@ -151,6 +157,7 @@ ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     IDENTITY_CLAIM_BUDGET_PATH,
     *IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_MEGASTRUCTURE_PATH,
+    IDENTITY_FEDERATION_PATH,
 )
 FLEET_ARCHETYPE_FACTORS = {
     "extermination": 1.12,
@@ -5299,7 +5306,11 @@ def insert_top_level_ai_weight_modifiers(block_text: str, modifier_lines: list[s
     return block_text
 
 
-def research_federation_weight_block(block_text: str) -> str:
+def research_federation_weight_block(
+    block_text: str,
+    *,
+    archetype_overlay: bool = True,
+) -> str:
     modifiers = [
         "\t\t# staid_research_diplomacy_core = verified Research Cooperative preference",
         "\t\tmodifier = { add = 250 desc = staid_research_diplomacy_core from = { staid_research_diplomacy_priority_ready = yes } }",
@@ -5310,6 +5321,19 @@ def research_federation_weight_block(block_text: str) -> str:
         "\t\tmodifier = { add = -80 desc = staid_conquest_route_prefers_other_federation from = { staid_aggressive_fleet_pressure = yes NOT = { staid_research_diplomacy_priority_ready = yes } } }",
         "\t\tmodifier = { add = -60 desc = staid_spiritualist_research_federation_drift from = { OR = { has_ethic = ethic_spiritualist has_ethic = ethic_fanatic_spiritualist } NOT = { staid_research_diplomacy_priority_ready = yes } } }",
     ]
+    if archetype_overlay:
+        common = (
+            "staid_archetype_identity_conflict = no "
+            "staid_archetype_eligible_country = yes "
+            "staid_research_diplomacy_priority_ready = yes"
+        )
+        for archetype in ("research", "diplomatic"):
+            modifiers.extend(
+                (
+                    f"\t\tmodifier = {{ add = 100 desc = staid_{archetype}_identity_research_federation from = {{ staid_archetype_{archetype} = yes {common} }} }}",
+                    f"\t\tmodifier = {{ add = 50 desc = staid_secondary_{archetype}_identity_research_federation from = {{ staid_archetype_lead_secondary_{archetype} = yes {common} }} }}",
+                )
+            )
     return insert_top_level_ai_weight_modifiers(block_text, modifiers)
 
 
@@ -7183,7 +7207,10 @@ def route_override_object_text(
             archetype_overlay=archetype_overlay,
         )
     elif target["object_type"] == "federation_type" and target["object_id"] == "research_federation":
-        block = research_federation_weight_block(block)
+        block = research_federation_weight_block(
+            block,
+            archetype_overlay=archetype_overlay,
+        )
     else:
         if target["object_type"] == "starbase_module":
             block = merge_duplicate_top_level_child_blocks(block, "potential")
@@ -14011,7 +14038,7 @@ def ai_budget_text(
 def render_archetype_consumer_artifacts(
     *, archetype_overlay: bool = True
 ) -> dict[Path, str]:
-    """Render the two fixed H08c consumer artifacts without writing files."""
+    """Render the fixed H08 consumer artifacts without writing files."""
 
     rows = route_override_target_rows()
     technology_rows = [
@@ -14072,6 +14099,13 @@ def render_archetype_consumer_artifacts(
         IDENTITY_MEGASTRUCTURE_PATH.resolve()
     }:
         raise ValueError("Identity megastructure rows violated the fixed output allowlist")
+    federation_rows = [
+        row for row in rows if row["object_type"] == "federation_type"
+    ]
+    if {Path(str(row["generated_file"])).resolve() for row in federation_rows} != {
+        IDENTITY_FEDERATION_PATH.resolve()
+    } or [row["object_id"] for row in federation_rows] != ["research_federation"]:
+        raise ValueError("Identity federation rows violated the fixed output allowlist")
     artifacts = {
         FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(
             ai_budget_text({}, archetype_overlay=archetype_overlay)
@@ -14098,6 +14132,10 @@ def render_archetype_consumer_artifacts(
     artifacts[IDENTITY_MEGASTRUCTURE_PATH] = route_override_file_text(
         megastructure_rows,
         collect_object_names(),
+        archetype_overlay=archetype_overlay,
+    )
+    artifacts[IDENTITY_FEDERATION_PATH] = route_override_file_text(
+        federation_rows,
         archetype_overlay=archetype_overlay,
     )
     if tuple(artifacts) != ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
