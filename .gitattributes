@@ -1,0 +1,15 @@
+# Stellar AI economic-model datasets and generated publication artifacts.
+/research/stellar-ai/stellar-ai-economic-model-scenarios-2026-07-11.csv text eol=lf
+/research/stellar-ai/stellar-ai-economic-model-timeline-2026-07-11.csv text eol=lf
+/research/stellar-ai/stellar-ai-economic-model-summary-2026-07-11.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-economic-checkpoints.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-economic-lane-candidates.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-economic-policy-variants.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-economic-policy-activation-cases.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-active-priority-snapshot.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-concurrent-spending-feasibility.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-lane-starvation.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-policy-activation-matrix.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-policy-counterfactual.csv text eol=lf
+/research/stellar-ai/stellar-ai-director-economic-model-provenance.json text eol=lf
+/research/stellar-ai/stellar-ai-director-comparative-report-attestation.json text eol=lf

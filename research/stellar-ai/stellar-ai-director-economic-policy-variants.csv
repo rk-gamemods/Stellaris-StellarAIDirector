@@ -1,0 +1,6 @@
+policy_id,source_class,mode,income_pressure,priority_bonus,runway_threshold_months,failed_income_target,gameplay_plan,evidence_ref
+parent-only,active_parent,parent_only,0,0,,0,,active parent winner behavior only
+deficit-only-plus-one,proposed_bounded,actual_deficit,1,100,,0,mods/StellarAIDirector/common/economic_plans/zzzz_staid_21_strategic_resource_deficit_recovery.txt,parsed current gameplay deficit plan
+deficit-only-plus-two,proposed_sensitivity,actual_deficit,2,150,,0,,report counterfactual plus two
+prezero-runway-plus-one,proposed_sensitivity,actual_deficit_or_runway,1,100,12,0,,report proposed pre-zero runway rule
+failed-c9da19b3,historical_regression,failed_low_income_target,4500,4500,,4500,,c9da19b3 regression comparison

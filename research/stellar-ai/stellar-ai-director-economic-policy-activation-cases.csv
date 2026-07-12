@@ -1,0 +1,25 @@
+case_id,case_family,resource,stockpile,capacity,earned_income,market_income,active_upkeep,deficit_status,unlocked,expected_active_policies,risk_label,evidence_ref
+volatile_motes_low_capacity_low_use,low_capacity_low_use,volatile_motes,0.05,0.10,0.01,0,0.01,false,true,failed-c9da19b3,small capacity and balanced tiny use must remain safe,user edge-case requirement
+volatile_motes_positive_low_use,positive_low_use,volatile_motes,0.02,0.10,0.02,0,0.01,false,true,failed-c9da19b3,small positive earned net must remain safe,user edge-case requirement
+volatile_motes_actual_deficit,actual_deficit,volatile_motes,0,100,0,0,1,true,true,deficit-only-plus-one|deficit-only-plus-two|prezero-runway-plus-one|failed-c9da19b3,actual deficit activates bounded recovery,report activation fixture
+volatile_motes_market_bridge_not_earned,market_bridge_not_earned,volatile_motes,2,100,0,2,1,true,true,deficit-only-plus-one|deficit-only-plus-two|prezero-runway-plus-one|failed-c9da19b3,market stock cannot masquerade as earned recovery,report market bridge requirement
+volatile_motes_locked_resource,locked_resource,volatile_motes,0,100,0,0,1,true,false,,locked resource fails closed,report activation fixture
+volatile_motes_prezero_runway,prezero_runway,volatile_motes,2,1000,0,0,1,false,true,prezero-runway-plus-one|failed-c9da19b3,runway risk is relative to burn not storage capacity,report pre-zero counterfactual
+volatile_motes_earned_recovery,earned_recovery,volatile_motes,5,100,1,0,1,false,true,failed-c9da19b3,nonnegative earned net ends bounded recovery,report durable earned-income requirement
+volatile_motes_no_active_use,no_active_use,volatile_motes,0,100,0,0,0,false,true,failed-c9da19b3,unlocked unused resource is not an emergency,report unlock-only rejection
+exotic_gases_low_capacity_low_use,low_capacity_low_use,exotic_gases,0.05,0.10,0.01,0,0.01,false,true,failed-c9da19b3,small capacity and balanced tiny use must remain safe,user edge-case requirement
+exotic_gases_positive_low_use,positive_low_use,exotic_gases,0.02,0.10,0.02,0,0.01,false,true,failed-c9da19b3,small positive earned net must remain safe,user edge-case requirement
+exotic_gases_actual_deficit,actual_deficit,exotic_gases,0,100,0,0,1,true,true,deficit-only-plus-one|deficit-only-plus-two|prezero-runway-plus-one|failed-c9da19b3,actual deficit activates bounded recovery,report activation fixture
+exotic_gases_market_bridge_not_earned,market_bridge_not_earned,exotic_gases,2,100,0,2,1,true,true,deficit-only-plus-one|deficit-only-plus-two|prezero-runway-plus-one|failed-c9da19b3,market stock cannot masquerade as earned recovery,report market bridge requirement
+exotic_gases_locked_resource,locked_resource,exotic_gases,0,100,0,0,1,true,false,,locked resource fails closed,report activation fixture
+exotic_gases_prezero_runway,prezero_runway,exotic_gases,2,1000,0,0,1,false,true,prezero-runway-plus-one|failed-c9da19b3,runway risk is relative to burn not storage capacity,report pre-zero counterfactual
+exotic_gases_earned_recovery,earned_recovery,exotic_gases,5,100,1,0,1,false,true,failed-c9da19b3,nonnegative earned net ends bounded recovery,report durable earned-income requirement
+exotic_gases_no_active_use,no_active_use,exotic_gases,0,100,0,0,0,false,true,failed-c9da19b3,unlocked unused resource is not an emergency,report unlock-only rejection
+rare_crystals_low_capacity_low_use,low_capacity_low_use,rare_crystals,0.05,0.10,0.01,0,0.01,false,true,failed-c9da19b3,small capacity and balanced tiny use must remain safe,user edge-case requirement
+rare_crystals_positive_low_use,positive_low_use,rare_crystals,0.02,0.10,0.02,0,0.01,false,true,failed-c9da19b3,small positive earned net must remain safe,user edge-case requirement
+rare_crystals_actual_deficit,actual_deficit,rare_crystals,0,100,0,0,1,true,true,deficit-only-plus-one|deficit-only-plus-two|prezero-runway-plus-one|failed-c9da19b3,actual deficit activates bounded recovery,report activation fixture
+rare_crystals_market_bridge_not_earned,market_bridge_not_earned,rare_crystals,2,100,0,2,1,true,true,deficit-only-plus-one|deficit-only-plus-two|prezero-runway-plus-one|failed-c9da19b3,market stock cannot masquerade as earned recovery,report market bridge requirement
+rare_crystals_locked_resource,locked_resource,rare_crystals,0,100,0,0,1,true,false,,locked resource fails closed,report activation fixture
+rare_crystals_prezero_runway,prezero_runway,rare_crystals,2,1000,0,0,1,false,true,prezero-runway-plus-one|failed-c9da19b3,runway risk is relative to burn not storage capacity,report pre-zero counterfactual
+rare_crystals_earned_recovery,earned_recovery,rare_crystals,5,100,1,0,1,false,true,failed-c9da19b3,nonnegative earned net ends bounded recovery,report durable earned-income requirement
+rare_crystals_no_active_use,no_active_use,rare_crystals,0,100,0,0,0,false,true,failed-c9da19b3,unlocked unused resource is not an emergency,report unlock-only rejection

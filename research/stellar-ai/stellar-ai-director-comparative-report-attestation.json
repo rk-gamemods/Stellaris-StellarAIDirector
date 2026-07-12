@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "filename": "stellar_ai_director_comparative_recovery_plan.md",
+  "origin": "User-provided Downloads report referenced by the 2026-07-11 comparative-recovery task.",
+  "sha256": "e41cc8d6a5a933a8b2507d496057ec6cb7045c0f5611d42208fc4e305d495039",
+  "hash_mode": "raw_bytes_sha256_v1",
+  "attested_date": "2026-07-11",
+  "purpose": "Pin the exact source report used to design the recovery model without vendoring the full report. If a local copy is present, its raw bytes must match this digest."
+}
