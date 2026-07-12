@@ -22,6 +22,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     FLEET_ALLOY_BUDGET_PATH,
     FLEET_ARCHETYPE_FACTORS,
     FLEET_THREAT_RESPONSE_FACTOR,
+    IDENTITY_CLAIM_BUDGET_PATH,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     ROUTE_OVERRIDE_TARGETS,
     TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS,
@@ -92,12 +93,12 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             row for row in cls.rows if row["object_type"] == "technology"
         ]
 
-    def test_fixed_allowlist_has_exactly_five_current_artifacts(self) -> None:
+    def test_fixed_allowlist_has_exactly_six_current_artifacts(self) -> None:
         self.assertEqual(
             tuple(self.production),
             ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
         )
-        self.assertEqual(len(self.production), 5)
+        self.assertEqual(len(self.production), 6)
         for path, rendered in self.production.items():
             self.assertEqual(
                 path.read_text(encoding="utf-8").replace("\r\n", "\n"),
@@ -170,6 +171,47 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         delta = "\n".join(inserted)
         for forbidden in ("country_event =", "set_country_flag =", "create_fleet ="):
             self.assertNotIn(forbidden, delta)
+
+    def test_identity_claim_pressure_is_bounded_and_preserves_distance_policy(self) -> None:
+        production = self.production[IDENTITY_CLAIM_BUDGET_PATH]
+        zero = self.zero[IDENTITY_CLAIM_BUDGET_PATH]
+        for marker in (
+            "staid_archetype_conquest = yes",
+            "staid_archetype_lead_secondary_conquest = yes",
+            "staid_identity_barbaric_despoiler = yes",
+        ):
+            self.assertEqual(production.count(marker), 3)
+            self.assertNotIn(marker, zero)
+        self.assertNotIn("staid_archetype_extermination = yes", production)
+        self.assertNotIn("staid_archetype_hard_", production)
+        for line in production.splitlines():
+            if not any(
+                marker in line
+                for marker in (
+                    "staid_archetype_conquest = yes",
+                    "staid_archetype_lead_secondary_conquest = yes",
+                    "staid_identity_barbaric_despoiler = yes",
+                )
+            ):
+                continue
+            factor = re.search(r"factor = ([0-9.]+)", line)
+            self.assertIsNotNone(factor, line)
+            self.assertTrue(1.0 < float(factor.group(1)) <= 1.15)
+            for safety in (
+                "staid_archetype_identity_conflict = no",
+                "staid_archetype_eligible_country = yes",
+                "has_potential_claims = yes",
+                "staid_basic_economy_runway_safe = yes",
+                "is_at_war = no",
+                "staid_survival_mode = no",
+                "staid_recovery_mode = no",
+                "staid_catastrophic_collapse_mode = no",
+                "staid_core_deficit_short_runway = no",
+            ):
+                self.assertIn(safety, line)
+        defines = (TOOLS_ROOT.parent / "mods" / "StellarAIDirector" / "common" / "defines" / "zzzz_staid_14_high_scale_ai_defines.txt").read_text(encoding="utf-8")
+        self.assertIn("WAR_DECLARATION_MAX_DISTANCE = 300", defines)
+        self.assertIn("WAR_DECLARATION_MALUS_DISTANCE = 25", defines)
 
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:
         inserted: list[str] = []

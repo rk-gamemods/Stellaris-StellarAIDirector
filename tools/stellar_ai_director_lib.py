@@ -59,10 +59,17 @@ IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS = (
     MOD_ROOT / "common" / "tradition_categories" / "zzzz_staid_02_perks_traditions_tradition_categories.txt",
     MOD_ROOT / "common" / "traditions" / "zzzz_staid_02_perks_traditions_traditions.txt",
 )
+IDENTITY_CLAIM_BUDGET_PATH = (
+    MOD_ROOT
+    / "common"
+    / "ai_budget"
+    / "zzzz_staid_08_site_limited_expansion_ai_budget.txt"
+)
 ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     FLEET_ALLOY_BUDGET_PATH,
     TECHNOLOGY_ROUTE_OVERRIDE_PATH,
     *IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
+    IDENTITY_CLAIM_BUDGET_PATH,
 )
 FLEET_ARCHETYPE_FACTORS = {
     "extermination": 1.12,
@@ -6624,7 +6631,45 @@ def gigas_habitat_zone_slot_compat_districts_text() -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def director_ai_budget_weight_block(block: str, target: dict[str, Any]) -> str:
+def identity_claim_budget_modifiers(target: dict[str, Any]) -> list[str]:
+    """Return bounded claim-affordability preferences for conquest identities."""
+
+    if str(target["object_id"]) not in {
+        "influence_expenditure_claims",
+        "influence_expenditure_claims_militarist",
+        "influence_expenditure_claims_fanatic_militarist",
+    }:
+        return []
+    common = (
+        "staid_archetype_identity_conflict = no "
+        "staid_archetype_eligible_country = yes "
+        "has_potential_claims = yes "
+        "staid_basic_economy_runway_safe = yes "
+        "is_at_war = no "
+        "staid_survival_mode = no "
+        "staid_recovery_mode = no "
+        "staid_catastrophic_collapse_mode = no "
+        "staid_core_deficit_short_runway = no"
+    )
+    return [
+        route_modifier_line(1.15, f"staid_archetype_conquest = yes {common}"),
+        route_modifier_line(
+            1.05,
+            f"staid_archetype_lead_secondary_conquest = yes {common}",
+        ),
+        route_modifier_line(
+            1.10,
+            f"staid_identity_barbaric_despoiler = yes {common}",
+        ),
+    ]
+
+
+def director_ai_budget_weight_block(
+    block: str,
+    target: dict[str, Any],
+    *,
+    archetype_overlay: bool = True,
+) -> str:
     base_weights = {
         "influence_expenditure_claims": "0.20",
         "influence_expenditure_claims_militarist": "0.10",
@@ -6633,12 +6678,21 @@ def director_ai_budget_weight_block(block: str, target: dict[str, Any]) -> str:
     object_id = str(target["object_id"])
     if object_id not in base_weights:
         return block
+    identity_lines = "\n".join(
+        (
+            line.replace("\t", "\t\t", 1)
+            for line in identity_claim_budget_modifiers(target)
+        )
+        if archetype_overlay
+        else ()
+    )
+    identity_suffix = f"\n{identity_lines}" if identity_lines else ""
     weight = f"""\
 \tweight = {{
 \t\tweight = {base_weights[object_id]}
 \t\tmodifier = {{ factor = 3 staid_influence_claim_pressure = yes }}
 \t\tmodifier = {{ factor = 12 staid_boxed_in_claim_urgency = yes }}
-\t\tmodifier = {{ factor = 2 has_resource = {{ type = influence amount > 900 }} }}
+\t\tmodifier = {{ factor = 2 has_resource = {{ type = influence amount > 900 }} }}{identity_suffix}
 \t}}"""
     return replace_top_level_child_block(block, "weight", weight)
 
@@ -6662,7 +6716,11 @@ def route_override_object_text(
     if target["object_type"] in {"building", "district"}:
         block = director_infrastructure_weight_block(block, target)
     elif target["object_type"] == "ai_budget":
-        block = director_ai_budget_weight_block(block, target)
+        block = director_ai_budget_weight_block(
+            block,
+            target,
+            archetype_overlay=archetype_overlay,
+        )
     elif (
         target["object_type"] == "megastructure"
         and target["object_id"] == "habitat_central_complex"
@@ -13547,6 +13605,11 @@ def render_archetype_consumer_artifacts(
         path.resolve() for path in IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS
     }:
         raise ValueError("Identity strategy rows violated the fixed output allowlist")
+    claim_rows = [row for row in rows if row["object_type"] == "ai_budget"]
+    if {Path(str(row["generated_file"])).resolve() for row in claim_rows} != {
+        IDENTITY_CLAIM_BUDGET_PATH.resolve()
+    }:
+        raise ValueError("Identity claim rows violated the fixed output allowlist")
     artifacts = {
         FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(
             ai_budget_text({}, archetype_overlay=archetype_overlay)
@@ -13561,6 +13624,10 @@ def render_archetype_consumer_artifacts(
             strategy_rows_by_path[path.resolve()],
             archetype_overlay=archetype_overlay,
         )
+    artifacts[IDENTITY_CLAIM_BUDGET_PATH] = route_override_file_text(
+        claim_rows,
+        archetype_overlay=archetype_overlay,
+    )
     if tuple(artifacts) != ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
         raise ValueError(
             "Archetype consumer renderer violated its fixed output allowlist"
@@ -15576,7 +15643,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "- Fleet payoff exploitation is blocked while over-naval-cap upkeep spirals are likely (`used_naval_capacity_percent >= 1.05`).",
         "- Research sink remains first when the Mega Shipyard unlock is missing because `staid_shipyard_expansion_ready` requires `tech_mega_shipyard`.",
         "- Militarist conquest, raiding-pop acquisition, and early hostile-fauna clearance now have separate fleet reserve lanes; military empires are not forced to wait for peaceful surplus-only fleet spending.",
-        "- War declaration globals return to the working native 4.4.4 envelope: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, minimum score 0.5, and offense/defense allotment 1.0. Boxed-in multipliers remain bounded above vanilla at 8/12.",
+        "- War declaration globals use 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, a 300-hop outer consideration ceiling, a distance preference beginning after 25 hops, minimum score 0.5, and offense/defense allotment 1.0. The preference threshold is not a home-system growth cutoff. Boxed-in multipliers remain bounded above vanilla at 8/12.",
         "- Normal peacetime new-ship budget share falls to 25% at 80% used naval capacity but remains eligible. This bounded native-data workaround reduces exposure to the 4.4.4 executable high-cap declaration defect without permanently freezing weak absolute fleets.",
         "- Native army budgets reserve 200 minerals at baseline, with bounded additions for boxed-in, conquest/raiding, war, and existential-defense states. No desired_max caps recruitment and no army is created by script.",
         "- Empires that already possess a raiding perk, civic, or origin prioritize raiding bombardment and a no-surrender bombardment posture; generic conquerors are not pushed toward `ap_nihilistic_acquisition`.",

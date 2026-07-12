@@ -29,6 +29,9 @@ influence_expenditure_claims = {
 		modifier = { factor = 3 staid_influence_claim_pressure = yes }
 		modifier = { factor = 12 staid_boxed_in_claim_urgency = yes }
 		modifier = { factor = 2 has_resource = { type = influence amount > 900 } }
+		modifier = { factor = 1.15 staid_archetype_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.1 staid_identity_barbaric_despoiler = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -51,6 +54,9 @@ influence_expenditure_claims_militarist = {
 		modifier = { factor = 3 staid_influence_claim_pressure = yes }
 		modifier = { factor = 12 staid_boxed_in_claim_urgency = yes }
 		modifier = { factor = 2 has_resource = { type = influence amount > 900 } }
+		modifier = { factor = 1.15 staid_archetype_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.1 staid_identity_barbaric_despoiler = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
 
@@ -73,5 +79,8 @@ influence_expenditure_claims_fanatic_militarist = {
 		modifier = { factor = 3 staid_influence_claim_pressure = yes }
 		modifier = { factor = 12 staid_boxed_in_claim_urgency = yes }
 		modifier = { factor = 2 has_resource = { type = influence amount > 900 } }
+		modifier = { factor = 1.15 staid_archetype_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.05 staid_archetype_lead_secondary_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.1 staid_identity_barbaric_despoiler = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes has_potential_claims = yes staid_basic_economy_runway_safe = yes is_at_war = no staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }

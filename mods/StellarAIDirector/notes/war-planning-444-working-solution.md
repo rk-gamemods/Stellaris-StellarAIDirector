@@ -19,7 +19,7 @@ The implementation retains Director’s high-scale economic, research, crisis, m
 5. **Army recruitment:** native mineral army budgets receive a small uncapped reserve: 200 base, +300 boxed in, +300 conquest/raiding, and +500 at war or under existential threat. No `desired_max` is used.
 6. **Budget competition:** vanilla planet-budget base weights remain `1.0`, `0.8`, and `0.6`, but receive a `0.65` factor while war logistics are active so construction does not consume the entire mineral budget.
 7. **High naval capacity:** normal peacetime new-ship budget share falls to 25% at 80% used naval capacity but remains eligible, so the workaround no longer freezes weak absolute fleets. `AI_NAVAL_CAP_SCORE_MULT` remains at vanilla `15`.
-8. **Declaration envelope:** global war defines return to the working native range: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, declaration minimum 0.5, and offense/defense allotment 1.0. Only boxed-in multipliers remain modestly above vanilla at 8 and 12.
+8. **Declaration envelope:** global war defines use 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, a 300-hop outer consideration ceiling, a distance preference beginning after 25 hops, declaration minimum 0.5, and offense/defense allotment 1.0. The preference threshold is not a home-system growth cutoff. Only boxed-in multipliers remain modestly above vanilla at 8 and 12.
 
 ## Cevantia / Pobbma Behavior
 
