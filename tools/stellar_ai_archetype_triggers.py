@@ -222,6 +222,37 @@ def render_archetype_triggers(personality_path: Path) -> str:
         "staid_archetype_eligible_country",
         ("is_country_type = default", "is_nomadic = no"),
     )
+    for name, predicate in (
+        ("staid_identity_megacorp", "is_megacorp = yes"),
+        ("staid_role_subject", "is_subject = yes"),
+        ("staid_role_overlord", "is_overlord = yes"),
+        (
+            "staid_identity_rogue_servitor",
+            "has_valid_civic = civic_machine_servitor",
+        ),
+        (
+            "staid_identity_assimilator",
+            "has_valid_civic = civic_machine_assimilator",
+        ),
+        (
+            "staid_identity_machine_exterminator",
+            "has_valid_civic = civic_machine_terminator",
+        ),
+        (
+            "staid_identity_devouring_swarm",
+            "has_valid_civic = civic_hive_devouring_swarm",
+        ),
+        (
+            "staid_identity_inward_perfection",
+            "has_valid_civic = civic_inwards_perfection",
+        ),
+        (
+            "staid_identity_barbaric_despoiler",
+            "has_valid_civic = civic_barbaric_despoilers",
+        ),
+        ("staid_identity_nomadic", "is_nomadic = yes"),
+    ):
+        add_trigger(name, ("is_country_type = default", predicate))
 
     for archetype in primary_archetypes:
         add_trigger(

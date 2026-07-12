@@ -227,6 +227,53 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
         self.assertEqual(len(LEAD_SECONDARY_TRIGGER_NAMES), 6)
         self.assertTrue(set(LEAD_SECONDARY_TRIGGER_NAMES).issubset(keys))
 
+    def test_defining_identity_and_dynamic_role_labels_are_exact_and_orthogonal(
+        self,
+    ) -> None:
+        predicates = {
+            "staid_identity_megacorp": ("is_megacorp", "yes"),
+            "staid_role_subject": ("is_subject", "yes"),
+            "staid_role_overlord": ("is_overlord", "yes"),
+            "staid_identity_rogue_servitor": (
+                "has_valid_civic",
+                "civic_machine_servitor",
+            ),
+            "staid_identity_assimilator": (
+                "has_valid_civic",
+                "civic_machine_assimilator",
+            ),
+            "staid_identity_machine_exterminator": (
+                "has_valid_civic",
+                "civic_machine_terminator",
+            ),
+            "staid_identity_devouring_swarm": (
+                "has_valid_civic",
+                "civic_hive_devouring_swarm",
+            ),
+            "staid_identity_inward_perfection": (
+                "has_valid_civic",
+                "civic_inwards_perfection",
+            ),
+            "staid_identity_barbaric_despoiler": (
+                "has_valid_civic",
+                "civic_barbaric_despoilers",
+            ),
+            "staid_identity_nomadic": ("is_nomadic", "yes"),
+        }
+        for name, (predicate, value) in predicates.items():
+            block = self.top[name]
+            self.assertIsInstance(block, PDXBlock)
+            assignments = block_assignments(block)
+            self.assertEqual(
+                [(item.key, atom_value(item)) for item in assignments],
+                [("is_country_type", "default"), (predicate, value)],
+            )
+            self.assertNotIn("staid_archetype_eligible_country", str(block))
+
+        conflict = self.top["staid_archetype_identity_conflict"]
+        conflict_keys = {item.key for item in iter_assignments(conflict)}
+        self.assertTrue(set(predicates).isdisjoint(conflict_keys))
+
     def test_personality_groups_match_model_and_cover_reviewed_source(self) -> None:
         rendered_personalities: set[str] = set()
         for archetype in PRIMARY_ARCHETYPES:
@@ -644,12 +691,18 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
                 "always",
                 "is_country_type",
                 "is_nomadic",
+                "is_megacorp",
+                "is_subject",
+                "is_overlord",
             }
         )
         assignment_keys = {assignment.key for assignment in iter_assignments(self.root)}
         self.assertEqual(assignment_keys - allowed_keys, set())
 
         for predicate, expected in projected_values.items():
+            expected = set(expected)
+            if predicate == "has_valid_civic":
+                expected.add("civic_machine_servitor")
             actual = {
                 atom_value(assignment)
                 for assignment in iter_assignments(self.root)

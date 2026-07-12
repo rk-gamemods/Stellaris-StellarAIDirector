@@ -11,6 +11,56 @@ staid_archetype_eligible_country = {
 	is_nomadic = no
 }
 
+staid_identity_megacorp = {
+	is_country_type = default
+	is_megacorp = yes
+}
+
+staid_role_subject = {
+	is_country_type = default
+	is_subject = yes
+}
+
+staid_role_overlord = {
+	is_country_type = default
+	is_overlord = yes
+}
+
+staid_identity_rogue_servitor = {
+	is_country_type = default
+	has_valid_civic = civic_machine_servitor
+}
+
+staid_identity_assimilator = {
+	is_country_type = default
+	has_valid_civic = civic_machine_assimilator
+}
+
+staid_identity_machine_exterminator = {
+	is_country_type = default
+	has_valid_civic = civic_machine_terminator
+}
+
+staid_identity_devouring_swarm = {
+	is_country_type = default
+	has_valid_civic = civic_hive_devouring_swarm
+}
+
+staid_identity_inward_perfection = {
+	is_country_type = default
+	has_valid_civic = civic_inwards_perfection
+}
+
+staid_identity_barbaric_despoiler = {
+	is_country_type = default
+	has_valid_civic = civic_barbaric_despoilers
+}
+
+staid_identity_nomadic = {
+	is_country_type = default
+	is_nomadic = yes
+}
+
 staid_archetype_hard_extermination = {
 	OR = {
 		has_ai_personality = fanatic_purifiers

@@ -957,6 +957,30 @@ tests, this ledger section, and regenerate the one trigger artifact. H08a's
 offline secondary tuple, H08c's hard-anchor consumers, H08d's primary parity,
 and H09 remain intact.
 
+## H08f0 — Orthogonal defining-identity and role labels
+
+Status: implemented as ten exact, stateless public country triggers for
+megacorp, subject, overlord, rogue servitor, assimilator, machine exterminator,
+devouring swarm, inward perfection, barbaric despoiler, and nomadic/Arkship
+identity. They are labels for dedicated consumers, not competing archetypes.
+
+Top five risks:
+
+1. **New labels can create false archetype conflicts.** None participates in
+   the H08 hard-conflict counter; each may overlap the primary and runner-up.
+2. **Personality aliases can misclassify reformed empires.** Defining identities
+   use current civic/authority state, never personality-name approximations.
+3. **Subject and overlord status can change.** Both are live role predicates
+   with no flags or cached state and are intentionally separate overlays.
+4. **Arkship scope can be confused with ship scope.** The country label uses
+   `is_nomadic = yes`; ship/starbase Arkship predicates are not used.
+5. **Labels can become expensive if placed in hot consumers.** This slice adds
+   no weights, plans, iterators, effects, or orders; each later consumer requires
+   its own overlap, performance, and rollback review.
+
+Rollback boundary: remove only the ten wrapper triggers and focused tests, then
+regenerate the one archetype artifact. Primary/secondary classification remains.
+
 ## H08f — Bounded identity economic consumers
 
 Status: implemented as dedicated primary archetype economic subplans plus one
