@@ -23,6 +23,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     FLEET_ARCHETYPE_FACTORS,
     FLEET_THREAT_RESPONSE_FACTOR,
     IDENTITY_CLAIM_BUDGET_PATH,
+    IDENTITY_MEGASTRUCTURE_PATH,
     IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     ROUTE_OVERRIDE_TARGETS,
@@ -94,12 +95,12 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             row for row in cls.rows if row["object_type"] == "technology"
         ]
 
-    def test_fixed_allowlist_has_exactly_eight_current_artifacts(self) -> None:
+    def test_fixed_allowlist_has_exactly_nine_current_artifacts(self) -> None:
         self.assertEqual(
             tuple(self.production),
             ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
         )
-        self.assertEqual(len(self.production), 8)
+        self.assertEqual(len(self.production), 9)
         for path, rendered in self.production.items():
             self.assertEqual(
                 path.read_text(encoding="utf-8").replace("\r\n", "\n"),
@@ -264,6 +265,131 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             "country_event =",
         ):
             self.assertNotIn(forbidden, production)
+
+    def test_identity_megastructure_sequencing_is_start_only_and_country_scoped(self) -> None:
+        production = self.production[IDENTITY_MEGASTRUCTURE_PATH]
+        zero = self.zero[IDENTITY_MEGASTRUCTURE_PATH]
+        start_ids = {
+            "macro_test_site_0",
+            "atmosphere_shredder_0",
+            "think_tank_0",
+            "planetary_computer_0",
+            "ring_world_1",
+            "interstellar_habitat_0",
+            "stellar_ring_habitat_0",
+            "mega_shipyard_0",
+            "planetcraft_printer_0",
+            "war_moon_0",
+            "war_system_0",
+            "dyson_sphere_0",
+            "orbital_arc_furnace_1",
+            "asteroid_manufactory_0",
+            "matrioshka_brain_0_g_star",
+        }
+        expected_markers = {
+            **{
+                object_id: ("staid_archetype_research = yes",)
+                for object_id in {
+                    "macro_test_site_0",
+                    "atmosphere_shredder_0",
+                    "think_tank_0",
+                    "planetary_computer_0",
+                }
+            },
+            **{
+                object_id: ("staid_archetype_gestalt_growth = yes",)
+                for object_id in {
+                    "ring_world_1",
+                    "interstellar_habitat_0",
+                    "stellar_ring_habitat_0",
+                }
+            },
+            **{
+                object_id: (
+                    "staid_archetype_conquest = yes",
+                    "staid_archetype_extermination = yes",
+                    "staid_identity_barbaric_despoiler = yes",
+                )
+                for object_id in {
+                    "mega_shipyard_0",
+                    "planetcraft_printer_0",
+                    "war_moon_0",
+                    "war_system_0",
+                }
+            },
+            **{
+                object_id: ("staid_identity_megacorp = yes",)
+                for object_id in {
+                    "dyson_sphere_0",
+                    "orbital_arc_furnace_1",
+                    "asteroid_manufactory_0",
+                    "matrioshka_brain_0_g_star",
+                }
+            },
+        }
+        for target in (
+            row for row in ROUTE_OVERRIDE_TARGETS if row["object_type"] == "megastructure"
+        ):
+            block = extract_top_level_object_text(production, target["object_id"])
+            zero_block = extract_top_level_object_text(zero, target["object_id"])
+            has_identity = "staid_archetype_identity_conflict = no" in block
+            self.assertEqual(has_identity, target["object_id"] in start_ids, target["object_id"])
+            if has_identity:
+                self.assertNotIn("staid_archetype_identity_conflict = no", zero_block)
+                for marker in expected_markers[target["object_id"]]:
+                    self.assertIn(marker, block)
+                if target["object_id"] in {
+                    "interstellar_habitat_0",
+                    "stellar_ring_habitat_0",
+                }:
+                    self.assertIn("staid_identity_inward_perfection = yes", block)
+                for line in block.splitlines():
+                    if "staid_archetype_identity_conflict = no" not in line:
+                        continue
+                    self.assertIn("from = {", line)
+                    factor = re.search(r"factor = ([0-9.]+)", line)
+                    self.assertIsNotNone(factor, line)
+                    self.assertTrue(1.0 < float(factor.group(1)) <= 1.15)
+                    for safety in (
+                        "staid_archetype_eligible_country = yes",
+                        "staid_basic_economy_runway_safe = yes",
+                        "staid_survival_mode = no",
+                        "staid_recovery_mode = no",
+                        "staid_catastrophic_collapse_mode = no",
+                        "staid_core_deficit_short_runway = no",
+                    ):
+                        self.assertIn(safety, line)
+        for excluded in (
+            "habitat_central_complex",
+            "matrioshka_brain_0_o_star",
+            "dyson_sphere_0_o_star",
+            "neutronium_gigaforge_0",
+            "nidavellir_forge_0",
+        ):
+            block = extract_top_level_object_text(production, excluded)
+            self.assertNotIn("staid_archetype_identity_conflict = no", block)
+
+        # A mixed military identity may combine one primary vector, the other
+        # vector's secondary role, and Barbaric Despoiler. Preserve blending,
+        # but make its true cumulative ceiling explicit and regression-safe.
+        military_block = extract_top_level_object_text(production, "mega_shipyard_0")
+
+        def factor_for(marker: str) -> float:
+            line = next(line for line in military_block.splitlines() if marker in line)
+            match = re.search(r"factor = ([0-9.]+)", line)
+            self.assertIsNotNone(match, line)
+            return float(match.group(1))
+
+        military_ceiling = max(
+            factor_for("staid_archetype_conquest = yes")
+            * factor_for("staid_archetype_lead_secondary_extermination = yes")
+            * factor_for("staid_identity_barbaric_despoiler = yes"),
+            factor_for("staid_archetype_extermination = yes")
+            * factor_for("staid_archetype_lead_secondary_conquest = yes")
+            * factor_for("staid_identity_barbaric_despoiler = yes"),
+        )
+        self.assertAlmostEqual(military_ceiling, 1.32825)
+        self.assertLess(military_ceiling, 1.33)
 
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:
         inserted: list[str] = []

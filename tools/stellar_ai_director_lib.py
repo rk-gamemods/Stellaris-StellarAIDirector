@@ -75,6 +75,12 @@ IDENTITY_STATIC_DEFENSE_PATHS = (
     / "starbase_modules"
     / "zzzz_staid_05_starbase_defense_starbase_modules.txt",
 )
+IDENTITY_MEGASTRUCTURE_PATH = (
+    MOD_ROOT
+    / "common"
+    / "megastructures"
+    / "zzzz_staid_03_megastructures_megastructures.txt"
+)
 IDENTITY_SUBJECT_AGREEMENT_ROOT = MOD_ROOT / "common" / "agreement_presets"
 IDENTITY_SUBJECT_AGREEMENT_SOURCES = {
     "00_agreement_presets.txt": (
@@ -122,6 +128,7 @@ ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     *IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     IDENTITY_CLAIM_BUDGET_PATH,
     *IDENTITY_STATIC_DEFENSE_PATHS,
+    IDENTITY_MEGASTRUCTURE_PATH,
 )
 FLEET_ARCHETYPE_FACTORS = {
     "extermination": 1.12,
@@ -6267,6 +6274,111 @@ def identity_static_defense_weight_modifiers(target: dict[str, Any]) -> list[str
     ]
 
 
+def identity_megastructure_weight_modifiers(target: dict[str, Any]) -> list[str]:
+    """Return bounded country-scoped identity sequencing for owned mega routes."""
+
+    if target["object_type"] != "megastructure":
+        return []
+    start_object_ids = {
+        "macro_test_site_0",
+        "atmosphere_shredder_0",
+        "think_tank_0",
+        "planetary_computer_0",
+        "ring_world_1",
+        "interstellar_habitat_0",
+        "stellar_ring_habitat_0",
+        "mega_shipyard_0",
+        "planetcraft_printer_0",
+        "war_moon_0",
+        "war_system_0",
+        "dyson_sphere_0",
+        "orbital_arc_furnace_1",
+        "asteroid_manufactory_0",
+        "matrioshka_brain_0_g_star",
+    }
+    if (
+        target.get("megastructure_stage_kind") != "start"
+        or str(target["object_id"]) not in start_object_ids
+    ):
+        return []
+    route_id = str(target["route_id"])
+    route_gate = route_gate_for_target(target)
+    primary_routes = {
+        "research": {
+            "science_kilo_snowball_core",
+            "research_megastructure_core",
+            "planetary_computer_research_core",
+        },
+        "gestalt_growth": {"ring_world_growth_core", "crowded_tall_route"},
+        "conquest": {
+            "mega_shipyard_core",
+            "planetcraft_route",
+            "war_moon_route",
+            "systemcraft_route",
+        },
+        "extermination": {
+            "mega_shipyard_core",
+            "planetcraft_route",
+            "war_moon_route",
+            "systemcraft_route",
+        },
+    }
+    primary_factors = {
+        "research": 1.15,
+        "gestalt_growth": 1.12,
+        "conquest": 1.10,
+        "extermination": 1.15,
+    }
+    common = (
+        "staid_archetype_identity_conflict = no "
+        "staid_archetype_eligible_country = yes "
+        f"{route_gate} = yes "
+        "staid_basic_economy_runway_safe = yes "
+        "staid_survival_mode = no "
+        "staid_recovery_mode = no "
+        "staid_catastrophic_collapse_mode = no "
+        "staid_core_deficit_short_runway = no"
+    )
+    factors_and_conditions: list[tuple[float, str]] = []
+    for archetype, routes in primary_routes.items():
+        if route_id not in routes:
+            continue
+        factors_and_conditions.append(
+            (
+                primary_factors[archetype],
+                f"staid_archetype_{archetype} = yes {common}",
+            )
+        )
+        factors_and_conditions.append(
+            (
+                1.05,
+                f"staid_archetype_lead_secondary_{archetype} = yes {common}",
+            )
+        )
+    defining_routes = {
+        "staid_identity_megacorp": {
+            "economy_megastructure_core",
+            "early_kilo_economy_core",
+        },
+        "staid_identity_inward_perfection": {"crowded_tall_route"},
+        "staid_identity_barbaric_despoiler": {
+            "mega_shipyard_core",
+            "planetcraft_route",
+            "war_moon_route",
+            "systemcraft_route",
+        },
+    }
+    for identity_trigger, routes in defining_routes.items():
+        if route_id in routes:
+            factors_and_conditions.append(
+                (1.10, f"{identity_trigger} = yes {common}")
+            )
+    return [
+        route_modifier_line(factor, condition, country_scope="from")
+        for factor, condition in factors_and_conditions
+    ]
+
+
 def route_weight_modifiers(
     target: dict[str, Any], *, archetype_overlay: bool = True
 ) -> list[str]:
@@ -6299,6 +6411,7 @@ def route_weight_modifiers(
         lines.extend(technology_archetype_weight_modifiers(target))
         lines.extend(identity_strategy_weight_modifiers(target))
         lines.extend(identity_static_defense_weight_modifiers(target))
+        lines.extend(identity_megastructure_weight_modifiers(target))
     return lines
 
 
@@ -6314,7 +6427,12 @@ GIGAS_HABITAT_UNCOLONIZED_VETO = """        modifier = {
         }"""
 
 
-def gigas_habitat_ai_weight_block(block: str, target: dict[str, Any]) -> str:
+def gigas_habitat_ai_weight_block(
+    block: str,
+    target: dict[str, Any],
+    *,
+    archetype_overlay: bool = True,
+) -> str:
     """Preserve current Gigas site scoring while replacing its global deadlock gate."""
     if (
         target.get("mod_id") != "1121692237"
@@ -6337,7 +6455,16 @@ def gigas_habitat_ai_weight_block(block: str, target: dict[str, Any]) -> str:
             from = { staid_planetary_capacity_growth_ready = yes }
         }"""
     block = block.replace(GIGAS_HABITAT_UNCOLONIZED_VETO, backlog_penalty)
-    return insert_top_level_ai_weight_modifier(block, route_boost)
+    block = insert_top_level_ai_weight_modifier(block, route_boost)
+    if archetype_overlay:
+        block = insert_top_level_ai_weight_modifiers(
+            block,
+            [
+                line.replace("\t", "        ", 1)
+                for line in identity_megastructure_weight_modifiers(target)
+            ],
+        )
+    return block
 
 
 def director_ai_weight_block(
@@ -6921,7 +7048,11 @@ def route_override_object_text(
         target["object_type"] == "megastructure"
         and target["object_id"] == "habitat_central_complex"
     ):
-        block = gigas_habitat_ai_weight_block(block, target)
+        block = gigas_habitat_ai_weight_block(
+            block,
+            target,
+            archetype_overlay=archetype_overlay,
+        )
     elif target["object_type"] in {"tradition_category", "tradition"}:
         block = native_tradition_route_weight_block(
             block,
@@ -13818,6 +13949,13 @@ def render_archetype_consumer_artifacts(
         path.resolve() for path in IDENTITY_STATIC_DEFENSE_PATHS
     }:
         raise ValueError("Identity static-defense rows violated the fixed output allowlist")
+    megastructure_rows = [
+        row for row in rows if row["object_type"] == "megastructure"
+    ]
+    if {Path(str(row["generated_file"])).resolve() for row in megastructure_rows} != {
+        IDENTITY_MEGASTRUCTURE_PATH.resolve()
+    }:
+        raise ValueError("Identity megastructure rows violated the fixed output allowlist")
     artifacts = {
         FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(
             ai_budget_text({}, archetype_overlay=archetype_overlay)
@@ -13841,6 +13979,11 @@ def render_archetype_consumer_artifacts(
             defense_rows_by_path[path.resolve()],
             archetype_overlay=archetype_overlay,
         )
+    artifacts[IDENTITY_MEGASTRUCTURE_PATH] = route_override_file_text(
+        megastructure_rows,
+        collect_object_names(),
+        archetype_overlay=archetype_overlay,
+    )
     if tuple(artifacts) != ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
         raise ValueError(
             "Archetype consumer renderer violated its fixed output allowlist"
