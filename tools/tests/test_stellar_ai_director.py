@@ -456,7 +456,7 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
             vanilla_alloy, "potential"
         ).replace("\t\tNOT = {\n", "\t\tNOR = {\n", 1).replace(
             "\t\t\tai_colonize_plans > 0\n", "", 1
-        )
+        ).replace("\t\thighest_threat < 50\n", "", 1)
         expected_alloy_weight = extract_assignment_block(vanilla_alloy, "weight")
         vanilla_food = extract_top_level_object_text(
             read_text(
@@ -466,8 +466,22 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
         )
         expected_food_potential = extract_assignment_block(
             vanilla_food, "potential"
-        ).replace("\t\t\t\tai_colonize_plans > 0\n", "", 1)
+        ).replace("\t\t\t\tai_colonize_plans > 0\n", "", 1).replace(
+            "\t\thighest_threat < 50\n", "", 1
+        )
         expected_food_weight = extract_assignment_block(vanilla_food, "weight")
+        threat_modifier = (
+            "\n\t\tmodifier = {\n"
+            "\t\t\tfactor = 0.5\n"
+            "\t\t\thighest_threat >= 50\n"
+            "\t\t}\n"
+        )
+        expected_alloy_weight = expected_alloy_weight.replace(
+            "\n\t}", threat_modifier + "\t}", 1
+        )
+        expected_food_weight = expected_food_weight.replace(
+            "\n\t}", threat_modifier + "\t}", 1
+        )
 
         for text in (artifact, generated):
             alloy = extract_top_level_object_text(
@@ -480,7 +494,7 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
                 potential = extract_assignment_block(outpost, "potential")
                 weight = extract_assignment_block(outpost, "weight")
                 self.assertIn("has_ai_expansion_plan = yes", potential)
-                self.assertIn("highest_threat < 50", potential)
+                self.assertNotIn("highest_threat < 50", potential)
                 self.assertIn("is_country_type = fallen_empire", potential)
                 self.assertIn("is_country_type = awakened_fallen_empire", potential)
                 self.assertIn(
@@ -489,6 +503,8 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
                 self.assertNotIn("ai_colonize_plans", potential)
                 self.assertIn("NOR = {", potential)
                 self.assertIn("weight = 0.2", weight)
+                self.assertIn("factor = 0.5", weight)
+                self.assertIn("highest_threat >= 50", weight)
                 self.assertNotIn("factor = 0.25", weight)
                 self.assertNotIn("ai_colonize_plans", weight)
                 self.assertIn(f"base = {desired_min}", outpost)

@@ -1062,3 +1062,32 @@ Top five risks:
 
 Rollback boundary: remove the H09b modifier independently or return the one H09c
 define to `50`. Neither rollback should restore the retired H09a event system.
+
+## H09d — Threat-softened native outpost funding
+
+Status: implemented after the save-backed unclaimed-system report exposed a
+boundary mismatch. Both native outpost expenditure objects previously became
+categorically unavailable at `highest_threat >= 50`, while the bounded ship
+nudge begins only above 50. The hard potential cutoff is now a `0.5` weight
+modifier at threat 50 or higher. Expansion-plan, influence, fallen-empire,
+biological-ship, wilderness, native target scoring, and pathing rules remain.
+
+Top five risks:
+
+1. **An endangered empire can spend on unsafe expansion.** Threat halves the
+   weight, and native expansion planning, target scoring, influence, and system
+   pathing still decide whether an outpost is funded and selected.
+2. **Threat exactly 50 can fall through both policies.** The outpost modifier
+   uses `>= 50`; there is no uncovered equality boundary.
+3. **Internal holes and dangerous frontier targets need different treatment.**
+   The budget surface cannot identify a chosen target; native system scoring
+   remains responsible. Runtime save inspection must distinguish the two.
+4. **Alloy and biological-food budgets can diverge.** The same modifier is
+   generated and tested in both objects, preserving their resource-specific
+   native legality.
+5. **More eligible candidates can add planner work.** No iterator, event,
+   persistent state, or forced order is added, but observer telemetry must
+   verify performance and outpost execution.
+
+Rollback boundary: restore `highest_threat < 50` to each potential and remove
+only the two `0.5` modifiers. H07 colonization-latch repair and H09b/H09c remain.
