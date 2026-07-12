@@ -1775,6 +1775,13 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_consumer_goods_two_month_runway_unsafe = no",
         ):
             self.assertIn(marker, triggers)
+        reachable_block = extract_top_level_object_text(triggers, "staid_research_role_reachable")
+        bootstrap_contract = """\tOR = {
+\t\tstaid_good_research_candidate = yes
+\t\tAND = {
+\t\t\tstaid_research_role_high_conversion_cost = no"""
+        self.assertIn(bootstrap_contract, reachable_block)
+        self.assertEqual(reachable_block.count("staid_research_role_high_conversion_cost = no"), 1)
         self.assertNotIn("staid_research_construction_priority_ready = yes", triggers[
             triggers.index("staid_research_role_candidate = {") :
         ])
