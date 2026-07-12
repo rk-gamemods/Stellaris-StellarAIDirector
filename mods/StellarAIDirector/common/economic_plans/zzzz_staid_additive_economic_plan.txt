@@ -807,26 +807,6 @@ basic_economy_plan = {
 
 	subplan = {
 		scaling = yes
-		set_name = "Stellar AI Director megastructure spam reserve"
-		potential = {
-			OR = {
-				staid_megastructure_commit_safe = yes
-				staid_high_scale_snowball_pressure = yes
-			}
-		}
-		income = {
-			alloys = 8000
-			energy = 8000
-			minerals = 5000
-			giga_sr_sentient_metal = 10
-			giga_sr_negative_mass = 10
-			giga_sr_amb_megaconstruction = 10
-			trade = 1000
-		}
-	}
-
-	subplan = {
-		scaling = yes
 		set_name = "Stellar AI Director habitat and terraforming expansion reserve"
 		potential = {
 			OR = {

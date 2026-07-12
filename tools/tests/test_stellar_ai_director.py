@@ -53,6 +53,7 @@ from stellar_ai_director_lib import (
     collect_variables,
     economic_valuation_evidence_passes,
     economic_valuation_dataset_passes,
+    economic_plan_text,
     build_plan_consumer_policy_buildings,
     build_plan_consumer_policy_rows,
     build_plan_consumer_policy_selected_objects,
@@ -418,6 +419,20 @@ class AlloyBudgetOwnershipTests(unittest.TestCase):
             self.assertIn("alloys_expenditure_ships = {", text)
             self.assertIn("alloys_expenditure_ship_upgrades = {", text)
             self.assertIn("upstream/parent-owned", text)
+        self.assertEqual(artifact, generated)
+
+
+class EconomicPlanBoundednessTests(unittest.TestCase):
+    def test_megastructure_pressure_has_no_global_scaling_spam_target(self):
+        plan_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
+        parse_file(plan_path)
+        artifact = plan_path.read_text(encoding="utf-8")
+        generated = economic_plan_text()
+
+        for text in (artifact, generated):
+            self.assertNotIn("Stellar AI Director megastructure spam reserve", text)
+            self.assertIn("Stellar AI Director mega alloy reserve", text)
+            self.assertIn("Stellar AI Director giga special resource reserve", text)
         self.assertEqual(artifact, generated)
 
 
@@ -2667,9 +2682,10 @@ class GeneratedModValidityTests(unittest.TestCase):
             "country_near_tangible_resource_cap = yes",
             "staid_high_scale_snowball_pressure",
             "Stellar AI Director pathological snowball reserve",
-            "Stellar AI Director megastructure spam reserve",
         ):
             self.assertIn(marker, triggers + economy + market_events + market_values)
+
+        self.assertNotIn("Stellar AI Director megastructure spam reserve", economy)
 
         generated_runtime_text = "\n".join(
             path.read_text(encoding="utf-8")

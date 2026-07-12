@@ -13220,26 +13220,6 @@ __STAID_RELATIVE_ECONOMIC_REPAIR_SUBPLANS__
 
 \tsubplan = {
 \t\tscaling = yes
-\t\tset_name = "Stellar AI Director megastructure spam reserve"
-\t\tpotential = {
-\t\t\tOR = {
-\t\t\t\tstaid_megastructure_commit_safe = yes
-\t\t\t\tstaid_high_scale_snowball_pressure = yes
-\t\t\t}
-\t\t}
-\t\tincome = {
-\t\t\talloys = 8000
-\t\t\tenergy = 8000
-\t\t\tminerals = 5000
-\t\t\tgiga_sr_sentient_metal = 10
-\t\t\tgiga_sr_negative_mass = 10
-\t\t\tgiga_sr_amb_megaconstruction = 10
-\t\t\ttrade = 1000
-\t\t}
-\t}
-
-\tsubplan = {
-\t\tscaling = yes
 \t\tset_name = "Stellar AI Director habitat and terraforming expansion reserve"
 \t\tpotential = {
 \t\t\tOR = {

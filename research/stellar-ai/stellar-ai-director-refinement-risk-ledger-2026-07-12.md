@@ -16,7 +16,7 @@ universal quota or a scripted order.
 
 ## H01 — Generic megastructure alloy-budget ownership
 
-Status: implemented on the research branch; static validation pending commit.
+Status: committed and pushed as `d3c61a3a525826fda2976cb35dec897a6a83105c`.
 
 Evidence:
 
@@ -75,3 +75,57 @@ Rollback boundary:
 Revert only the H01 commit. Do not restore the former weight-8/multi-million
 reserve wholesale; if runtime evidence proves underfunded continuations, add a
 new continuation-only slice with its own five-risk review.
+
+## H02 — Global scaling megastructure income target
+
+Status: implemented on the research branch; static validation pending commit.
+
+Evidence:
+
+- `basic_economy_plan` contained a scaling subplan named `Stellar AI Director
+  megastructure spam reserve`.
+- It activated when either `staid_megastructure_commit_safe` or the broad
+  `staid_high_scale_snowball_pressure` trigger was true.
+- It requested alloy income `8000`, energy `8000`, minerals `5000`, trade
+  `1000`, and three Gigas strategic-resource incomes of `10`, irrespective of
+  actual project cost, consumption, or constructor availability.
+- The verified 2270 save showed homogeneous resolved resource targets across
+  every personality and a fleet-conversion failure despite large stockpiles.
+
+Decision:
+
+Remove only the global scaling spam subplan. Keep the small prep-gated `mega
+alloy reserve`, the separate Gigas special-resource reserve, active-parent
+budget ownership, and route-specific project/continuation weights. This slice
+does not claim that the remaining economic plan is personality-aware.
+
+Top five risks and controls:
+
+1. **A genuinely expensive project may not induce enough production.** Keep
+   project-specific gates and special-resource support; add a bounded
+   cost-backed target only after observed continuation starvation.
+2. **An active stage may lose support mid-build.** Construction costs are paid
+   at start, while upkeep and later stages remain visible to parent and route
+   logic. Test continuation at checkpoints instead of restoring a global goal.
+3. **Broad high-scale bypasses still affect other hooks.** Treat their removal
+   from prep, commit, and new-start weights as a separate rollback slice; H02
+   alone is not proof that megaproject saturation is fully solved.
+4. **Homogeneous base targets may still erase personality differences.** The
+   archetype/economic-mode redesign must measure final merged targets and
+   enforce mutually exclusive modes rather than stacking more subplans.
+5. **A loaded save may retain cached economic-plan state temporarily.** Compare
+   resolved targets after the engine's normal recalculation window and include
+   a fresh-campaign checkpoint before drawing a causal conclusion.
+
+Static acceptance:
+
+- Neither generator output nor the checked-in plan contains the spam subplan.
+- The small prep reserve and Gigas special-resource reserve remain present.
+- Generator output and the checked-in plan are identical.
+- Targeted parsing/tests and the repository static validator pass without
+  changing the worktree.
+
+Rollback boundary:
+
+Revert only the H02 commit. Never restore the fixed `8000/8000/5000` scaling
+vector without evidence that those simultaneous incomes match real demand.
