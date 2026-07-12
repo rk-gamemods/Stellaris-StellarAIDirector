@@ -12,7 +12,7 @@ At 13 colonies the soft ceiling is four actual Tech-Worlds. The staged trigger c
 
 ## Top five risks and follow-up tests
 
-1. Zone occupancy: native weights cannot guarantee conversion when every compatible zone slot is occupied. Runtime-check whether unsuitable existing Tech-Worlds reclassify and whether suitable worlds create research zones.
+1. Zone occupancy: no generic free-zone-slot trigger is verified. The clean bootstrap rejects all known vanilla non-research urban families and plain `zone_urban`, but an active-mod custom urban zone can still create a false positive. Runtime-check whether unsuitable existing Tech-Worlds reclassify and whether suitable worlds create research zones.
 2. Modded district IDs: the greenfield guard explicitly measures vanilla city, generator, mining, and farming districts. Audit high-volume active-stack district aliases before broadening eligibility.
 3. Research-world scarcity: strict conversion-cost guards may leave an empire below one-third when no suitable world exists. This is intentional; verify the capital and special-world research paths remain sufficient.
 4. Input shocks: the runway gate pauses new roles but does not dismantle productive existing research worlds. Verify a consumer-goods or energy shock does not cause designation churn.

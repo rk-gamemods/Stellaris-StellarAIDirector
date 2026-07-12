@@ -658,10 +658,10 @@ staid_research_role_reachable = {
 		uses_district_set = habitat
 		uses_district_set = cosmogenesis_world
 	}
-	staid_research_role_high_conversion_cost = no
 	OR = {
 		staid_good_research_candidate = yes
 		AND = {
+			staid_research_role_high_conversion_cost = no
 			num_districts = { type = district_city value > 0 }
 			has_any_generator_zone = no
 			has_any_mining_zone = no
@@ -670,6 +670,7 @@ staid_research_role_reachable = {
 			has_any_trade_zone = no
 			has_any_unity_zone = no
 			has_any_fortress_zone = no
+			num_zones = { type = zone_urban value < 1 }
 		}
 	}
 }

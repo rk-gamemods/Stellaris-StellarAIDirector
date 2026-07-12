@@ -1732,6 +1732,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_research_role_candidate = yes",
             "factor = 0.2",
             "staid_research_role_reachable = no",
+            "staid_research_role_high_conversion_cost = yes",
             "owner = { staid_research_designation_under_soft_cap = no }",
         ):
             self.assertIn(marker, research)
@@ -1766,6 +1767,7 @@ class GeneratedModValidityTests(unittest.TestCase):
             "has_any_industrial_zone = no",
             "has_any_unity_zone = no",
             "has_any_fortress_zone = no",
+            "num_zones = { type = zone_urban value < 1 }",
             "has_any_generator_zone = yes",
             "num_districts = { type = district_generator value > 3 }",
             "NOT = { staid_catastrophic_collapse_mode = yes }",

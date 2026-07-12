@@ -117,6 +117,7 @@ col_research = {
 			factor = 0.2
 			OR = {
 				staid_research_role_reachable = no
+				staid_research_role_high_conversion_cost = yes
 				AND = {
 					owner = { staid_research_designation_under_soft_cap = no }
 					NOT = { has_designation = col_research }

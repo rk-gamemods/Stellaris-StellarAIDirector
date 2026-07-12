@@ -7074,6 +7074,7 @@ def research_plan_colony_types_text() -> str:
 \t\t\tfactor = 0.2
 \t\t\tOR = {
 \t\t\t\tstaid_research_role_reachable = no
+\t\t\t\tstaid_research_role_high_conversion_cost = yes
 \t\t\t\tAND = {
 \t\t\t\t\towner = { staid_research_designation_under_soft_cap = no }
 \t\t\t\t\tNOT = { has_designation = col_research }
@@ -11648,10 +11649,10 @@ staid_research_role_reachable = {
 \t\tuses_district_set = habitat
 \t\tuses_district_set = cosmogenesis_world
 \t}
-\tstaid_research_role_high_conversion_cost = no
 \tOR = {
 \t\tstaid_good_research_candidate = yes
 \t\tAND = {
+\t\t\tstaid_research_role_high_conversion_cost = no
 \t\t\tnum_districts = { type = district_city value > 0 }
 \t\t\thas_any_generator_zone = no
 \t\t\thas_any_mining_zone = no
@@ -11660,6 +11661,7 @@ staid_research_role_reachable = {
 \t\t\thas_any_trade_zone = no
 \t\t\thas_any_unity_zone = no
 \t\t\thas_any_fortress_zone = no
+\t\t\tnum_zones = { type = zone_urban value < 1 }
 \t\t}
 \t}
 }
