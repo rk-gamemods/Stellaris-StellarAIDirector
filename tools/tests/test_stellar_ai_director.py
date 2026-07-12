@@ -2136,9 +2136,45 @@ class GeneratedModValidityTests(unittest.TestCase):
         }
         self.assertEqual(
             generated_exception_overlaps - dataset_object_ids,
-            {"building_medical_2", "building_stronghold"},
+            {
+                "building_medical_2",
+                "building_stronghold",
+                "building_robot_assembly_plant",
+                "building_spawning_pool",
+            },
             "Every non-dataset override requested by an automation exception needs an explicit compatibility review.",
         )
+        assembly_path = (
+            MOD_ROOT
+            / "common"
+            / "buildings"
+            / "zzzz_staid_07_pop_assembly_buildings.txt"
+        )
+        assembly_text = assembly_path.read_text(encoding="utf-8")
+        assembly_source_text = (
+            STELLARIS_INSTALL_ROOT
+            / "common"
+            / "buildings"
+            / "01_pop_assembly_buildings.txt"
+        ).read_text(encoding="utf-8-sig")
+        for object_id in (
+            "building_robot_assembly_plant",
+            "building_robot_assembly_complex",
+            "building_spawning_pool",
+            "building_offspring_nest",
+        ):
+            source_block = extract_top_level_object_text(
+                assembly_source_text, object_id
+            )
+            generated_block = extract_top_level_object_text(
+                assembly_text, object_id
+            )
+            for child_key in ("potential", "allow", "possible"):
+                self.assertEqual(
+                    child_value_repr(generated_block, object_id, child_key),
+                    child_value_repr(source_block, object_id, child_key),
+                    f"{object_id} changed {child_key} required by automation legality.",
+                )
 
         medical_source = extract_top_level_object_text(
             read_text(STELLARIS_INSTALL_ROOT / "common" / "buildings" / "07_amenity_buildings.txt"),
@@ -3696,13 +3732,28 @@ class GeneratedModValidityTests(unittest.TestCase):
         ):
             self.assertNotIn(marker, macro_test_site_block)
 
-    def test_research_and_pop_assembly_strategy_does_not_emit_inactive_building_ai_weights(self):
+    def test_research_stays_inactive_while_reviewed_origin_assembly_is_materialized(self):
         research_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_06_research_infrastructure_buildings.txt"
         research_district_path = MOD_ROOT / "common" / "districts" / "zzzz_staid_06_research_infrastructure_districts.txt"
         pop_path = MOD_ROOT / "common" / "buildings" / "zzzz_staid_07_pop_assembly_buildings.txt"
         self.assertFalse(research_path.exists())
         self.assertFalse(research_district_path.exists())
-        self.assertFalse(pop_path.exists())
+        self.assertTrue(pop_path.exists())
+        parse_file(pop_path)
+        pop_text = pop_path.read_text(encoding="utf-8")
+        for object_id in (
+            "building_robot_assembly_plant",
+            "building_robot_assembly_complex",
+            "building_spawning_pool",
+            "building_offspring_nest",
+        ):
+            self.assertIn(f"{object_id} = {{", pop_text)
+        for object_id in (
+            "building_machine_assembly_plant",
+            "building_machine_assembly_complex",
+            "building_clone_vats",
+        ):
+            self.assertNotIn(f"{object_id} = {{", pop_text)
         economy_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"
         economy = economy_path.read_text(encoding="utf-8")
         self.assertIn("Stellar AI Director safe research baseline", economy)
