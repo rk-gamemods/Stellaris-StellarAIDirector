@@ -86,6 +86,7 @@ from stellar_ai_director_lib import (
     resource_waste_pressure,
     research_plan_target_count,
     research_under_curve,
+    route_weight_modifiers,
     relative_economic_standard_rows,
     read_text,
     repair_gigas_habitat_spawn_effect_params,
@@ -520,6 +521,45 @@ class MegastructureSafetyGateTests(unittest.TestCase):
             blocks["staid_megastructure_continuation_priority_ready"],
         )
         self.assertIn("staid_survival_mode = yes", blocks["staid_pause_new_megastructure"])
+
+
+class MegastructureRouteHighScaleTests(unittest.TestCase):
+    def test_high_scale_wealth_does_not_multiply_megastructure_route_weights(self):
+        path = (
+            MOD_ROOT
+            / "common"
+            / "megastructures"
+            / "zzzz_staid_03_megastructures_megastructures.txt"
+        )
+        parse_file(path)
+        artifact = path.read_text(encoding="utf-8")
+        self.assertNotIn(
+            "from = { staid_high_scale_snowball_pressure = yes }",
+            artifact,
+        )
+
+        megastructure_targets = [
+            target for target in ROUTE_OVERRIDE_TARGETS if target["object_type"] == "megastructure"
+        ]
+        self.assertTrue(megastructure_targets)
+        for target in megastructure_targets:
+            start_modifiers = "\n".join(route_weight_modifiers(target))
+            upgrade_modifiers = "\n".join(
+                route_weight_modifiers({**target, "megastructure_stage_kind": "upgrade"})
+            )
+            self.assertNotIn("staid_high_scale_snowball_pressure", start_modifiers)
+            self.assertNotIn("staid_high_scale_snowball_pressure", upgrade_modifiers)
+
+        preserved_technology_target = next(
+            target
+            for target in ROUTE_OVERRIDE_TARGETS
+            if target["object_type"] == "technology"
+            and target["route_id"] == "early_kilo_economy_core"
+        )
+        self.assertIn(
+            "staid_high_scale_snowball_pressure",
+            "\n".join(route_weight_modifiers(preserved_technology_target)),
+        )
 
 
 class GeneratedModValidityTests(unittest.TestCase):

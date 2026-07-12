@@ -527,7 +527,6 @@ orbital_arc_furnace_1 = {
 		modifier = { factor = 3 from = { has_technology = tech_orbital_arc_furnace } }
 		modifier = { factor = 3 from = { has_technology = giga_tech_asteroid_manufactory } }
 		modifier = { factor = 6 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 8 from = { staid_high_scale_snowball_pressure = yes } }
 	}
 }
 
@@ -571,7 +570,6 @@ asteroid_manufactory_0 = {
 		modifier = { factor = 3 from = { has_technology = tech_orbital_arc_furnace } }
 		modifier = { factor = 3 from = { has_technology = giga_tech_asteroid_manufactory } }
 		modifier = { factor = 6 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 8 from = { staid_high_scale_snowball_pressure = yes } }
 	}
 }
 
@@ -1076,7 +1074,6 @@ macro_test_site_1 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
@@ -1286,7 +1283,6 @@ macro_test_site_2 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
@@ -1515,7 +1511,6 @@ macro_test_site_3 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
@@ -2024,7 +2019,6 @@ atmosphere_shredder_1 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
@@ -2231,7 +2225,6 @@ atmosphere_shredder_2 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
@@ -2463,7 +2456,6 @@ atmosphere_shredder_3 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_engineering_test_site } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_macro_scale_weather_manipulation } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
@@ -2647,7 +2639,6 @@ think_tank_1 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = tech_science_nexus } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
 	}
@@ -2712,7 +2703,6 @@ think_tank_2 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = tech_science_nexus } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
 	}
@@ -2780,7 +2770,6 @@ think_tank_3 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = tech_science_nexus } }
 		modifier = { factor = 3 from = { staid_research_under_curve = yes } }
 	}
@@ -3027,7 +3016,6 @@ ring_world_2_intermediate = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = tech_ring_world } }
 		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
 	}
@@ -3229,7 +3217,6 @@ ring_world_3_intermediate = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = tech_ring_world } }
 		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
 	}
@@ -3431,10 +3418,8 @@ kugelblitz_1 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_kugelblitz } }
 		modifier = { factor = 10 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 14 from = { staid_high_scale_snowball_pressure = yes } }
 	}
 }
 
@@ -3509,10 +3494,8 @@ kugelblitz_2 = { # Megastructur
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_kugelblitz } }
 		modifier = { factor = 10 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 14 from = { staid_high_scale_snowball_pressure = yes } }
 	}
 }
 
@@ -3586,10 +3569,8 @@ kugelblitz_3 = { # Gigastructur
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_kugelblitz } }
 		modifier = { factor = 10 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 14 from = { staid_high_scale_snowball_pressure = yes } }
 	}
 }
 
@@ -4275,7 +4256,6 @@ planetary_computer_1 = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 5 from = { has_technology = giga_tech_planetary_computer } }
 		modifier = { factor = 4 from = { staid_research_under_curve = yes } }
 		modifier = { factor = 2 from = { staid_planetary_capacity_growth_ready = yes } }
@@ -4601,7 +4581,6 @@ dyson_sphere_0_o_star = {
 		# megastructure_continuation_priority = finish_existing_before_new_start
 		modifier = { factor = 35 from = { staid_megastructure_continuation_priority_ready = yes } }
 		modifier = { factor = 8 from = { staid_resource_waste_pressure = yes } }
-		modifier = { factor = 6 from = { staid_high_scale_snowball_pressure = yes } }
 		modifier = { factor = 8 from = { has_technology = giga_tech_matrioshka_brain_1 } }
 		modifier = { factor = 4 from = { has_technology = giga_tech_neutronium_gigaforge } }
 		modifier = { factor = 0.15 from = { NOT = { staid_apex_site_preservation_ready = yes } } }

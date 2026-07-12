@@ -5961,7 +5961,14 @@ def kugelblitz_start_budget_modifiers(target: dict[str, Any]) -> list[str]:
 def route_extra_modifiers_for_target(target: dict[str, Any]) -> list[str]:
     if target["object_type"] == "megastructure" and target["object_id"] == "kugelblitz_0":
         return []
-    return ROUTE_EXTRA_MODIFIERS.get(str(target["route_id"]), [])
+    modifiers = ROUTE_EXTRA_MODIFIERS.get(str(target["route_id"]), [])
+    if target["object_type"] == "megastructure":
+        return [
+            line
+            for line in modifiers
+            if "staid_high_scale_snowball_pressure" not in line
+        ]
+    return modifiers
 
 
 def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
@@ -5987,7 +5994,6 @@ def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
                 "\t# megastructure_continuation_priority = finish_existing_before_new_start",
                 route_modifier_line(35, "staid_megastructure_continuation_priority_ready = yes", country_scope=country_scope),
                 route_modifier_line(8, "staid_resource_waste_pressure = yes", country_scope=country_scope),
-                route_modifier_line(6, "staid_high_scale_snowball_pressure = yes", country_scope=country_scope),
             ]
         )
     lines.extend(scope_route_modifier_for_target(target, line) for line in route_extra_modifiers_for_target(target))

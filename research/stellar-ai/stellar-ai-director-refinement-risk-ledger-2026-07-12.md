@@ -239,7 +239,7 @@ new-hull spending from H03 as part of an upgrade-only rollback.
 
 ## H05 — Megastructure safety bypass from large stockpiles
 
-Status: implemented on the research branch; static validation pending commit.
+Status: committed and pushed as `ee18d07a07c7e88008e121cbe85089c021f0e8e1`.
 
 Evidence:
 
@@ -292,3 +292,54 @@ Rollback boundary:
 
 Revert only H05 if safety-state reachability proves too restrictive. Do not
 restore the generic budget or spam target from H01/H02.
+
+## H06 — High-scale route multipliers on megaproject objects
+
+Status: implemented on the research branch; static validation pending commit.
+
+Evidence:
+
+- Even after H05, route generation still added direct high-scale factors to
+  early economy kilostructures, storage-cap projects, and every upgrade stage.
+- Those factors operated on project `ai_weight` itself and could multiply a
+  legal start or continuation from a single unrelated large stockpile.
+- The same route table also supports technology objects, where restored
+  high-scale unlock pressure is intentional and must not be removed wholesale.
+
+Decision:
+
+Filter `staid_high_scale_snowball_pressure` modifiers only when the generated
+target is a megastructure. Remove the separate high-scale upgrade multiplier.
+Keep technology-route high-scale modifiers, project technology factors,
+time/lifetime value, safety gates, resource-waste pressure, and the bounded
+continuation bonus.
+
+Top five risks and controls:
+
+1. **Valid rich-empires starts may receive less urgency.** Project technology,
+   timing, lifetime-value, and route-ready factors remain; measure legal idle
+   candidates before adding any bounded factor.
+2. **Useful technology pressure might be removed accidentally.** Unit coverage
+   explicitly proves that the early-kilo technology route still retains the
+   high-scale modifier.
+3. **Upgrade completion may slow.** Keep continuation factor `35` when H05's
+   bounded continuation state is genuinely ready and resource-waste factor `8`.
+4. **Copied megastructure objects may drift with parent updates.** Rebuild from
+   current parent sources and compare object provenance before release.
+5. **Resource-waste pressure can still prefer projects aggressively.** That
+   trigger represents actual capped/unusable resources rather than mere scale;
+   audit it separately if constructor saturation persists.
+
+Static acceptance:
+
+- No generated megastructure object contains a country-scoped high-scale
+  modifier.
+- Source route generation excludes it for both starts and upgrades.
+- A technology route explicitly retains the high-scale modifier.
+- PDX parsing, targeted tests, and the static validator pass without dirtying
+  the worktree.
+
+Rollback boundary:
+
+Revert only H06 if route-level project selection becomes too weak. Do not
+restore H05 safety bypasses or the H01/H02 generic reserve pressure.
