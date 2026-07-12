@@ -2,7 +2,7 @@
 
 ## Intentional Conflicts
 
-- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally replaces the upstream `alloys_expenditure_megastructures` object so late-game megastructure reserves obey Director survival, recovery, prep, and commit gates.
+- `common/ai_budget/zzz_staid_alloys_budget.txt` does not replace upstream `alloys_expenditure_megastructures`; the active parent retains generic reserve ownership while Director object weights rank specific legal projects.
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally replaces upstream Gigas special-resource megastructure budget objects: `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
 - `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
 - `common/technology/zzzz_staid_01_unlock_technology_technology.txt` intentionally replaces copied vanilla/Gigas/NSC3/ESC/Starbase Extended technology objects with Director route AI weights.
@@ -58,7 +58,7 @@
 
 - Reviewed in Irony Conflict Solver Analyze Only for collection `4.4 Stellaris Mod Collection w/Load Order: NSC3, Planetary Diversity`.
 - Existing collection order was preserved; `Stellar AI Director` is the only added local mod and is last after `!!!Universal Resource Patch [2.4+]`.
-- Reviewed `common\ai_budget` conflicts: `alloys_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, `sentient_metal_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
+- Reviewed `common\ai_budget` conflicts: `negative_mass_expenditure_megastructures`, `sentient_metal_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
 - Each reviewed object resolves to `Stellar AI Director ... (LIOS)` as an intentional Director win.
 - No unexplained Director gameplay conflicts were observed in the reviewed Director conflict set.
 - Fresh Irony UI review has not yet been repeated for the strategic v2 starbase and Planetary Diversity surfaces; current classifications are based on generated audits and indexed active conflict-matrix evidence.

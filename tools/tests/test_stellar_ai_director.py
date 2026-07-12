@@ -42,6 +42,7 @@ from stellar_ai_director_lib import (
     STELLARIS_INSTALL_ROOT,
     _collect_job_adds,
     append_child_block_clause,
+    ai_budget_text,
     atlas_object_has_ai_signal,
     block_assignments,
     block_contains_assignment,
@@ -404,6 +405,20 @@ class HabitatRecoveryRegressionTests(unittest.TestCase):
                 if row["object_id"] == "habitat_central_complex"
             )
         self.assertEqual(route_row["weight"], "5")
+
+class AlloyBudgetOwnershipTests(unittest.TestCase):
+    def test_generic_megastructure_alloy_budget_remains_parent_owned(self):
+        budget_path = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt"
+        parse_file(budget_path)
+        artifact = budget_path.read_text(encoding="utf-8")
+        generated = ai_budget_text({})
+
+        for text in (artifact, generated):
+            self.assertNotRegex(text, r"(?m)^alloys_expenditure_megastructures\s*=")
+            self.assertIn("alloys_expenditure_ships = {", text)
+            self.assertIn("alloys_expenditure_ship_upgrades = {", text)
+            self.assertIn("upstream/parent-owned", text)
+        self.assertEqual(artifact, generated)
 
 
 class GeneratedModValidityTests(unittest.TestCase):

@@ -35,7 +35,7 @@ The Director descriptor intentionally omits Stellar AI. Current Stellar AI sourc
 
 ## Current Intentional Supersession
 
-- `common/ai_budget/zzz_staid_alloys_budget.txt` intentionally defines the Director-owned `alloys_expenditure_megastructures` budget using Stellar AI parity evidence without requiring Stellar AI to load.
+- `common/ai_budget/zzz_staid_alloys_budget.txt` owns only ship and upgrade gates; the generic `alloys_expenditure_megastructures` budget remains upstream/parent-owned so it cannot crowd out outposts or fleets.
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally overrides Gigas `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures` budgets.
 - `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets.
 - `common/buildings/zzzz_staid_13_dataset_job_pressure_buildings.txt` maps selected nonmilitary parent buildings to `ai_resource_production`; military-capacity objects are excluded from this generated pressure path.
