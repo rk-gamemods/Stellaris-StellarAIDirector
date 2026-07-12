@@ -390,6 +390,7 @@ diplomatic_stance = {
 			modifier = { factor = 4 staid_opening_military_to_pops = yes staid_is_diplomatic_opening_phase = yes staid_has_safe_basic_stockpiles = yes }
 			modifier = { factor = 0.25 staid_native_war_posture_active = yes }
 			modifier = { factor = 0.10 staid_boxed_in_war_pressure = yes }
+			modifier = { factor = 1.15 staid_identity_ordinary_hive = yes staid_archetype_gestalt_growth = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_role_subject = no has_federation = no is_at_war = no staid_native_war_posture_active = no staid_survival_mode = no staid_recovery_mode = no staid_core_deficit_short_runway = no staid_catastrophic_collapse_mode = no }
 		}
 	}
 

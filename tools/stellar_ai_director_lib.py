@@ -11024,6 +11024,17 @@ def opening_growth_policies_text(*, identity_overlay: bool = True) -> str:
     expansionist_opening = "\t\t\tmodifier = { factor = 4 staid_opening_military_to_pops = yes staid_is_diplomatic_opening_phase = yes staid_has_safe_basic_stockpiles = yes }"
     expansionist_exit = "\t\t\tmodifier = { factor = 0.25 staid_native_war_posture_active = yes }"
     expansionist_boxed = "\t\t\tmodifier = { factor = 0.10 staid_boxed_in_war_pressure = yes }"
+    expansionist_ordinary_hive = (
+        "\t\t\tmodifier = { factor = 1.15 staid_identity_ordinary_hive = yes "
+        "staid_archetype_gestalt_growth = yes "
+        "staid_archetype_identity_conflict = no "
+        "staid_archetype_eligible_country = yes "
+        "staid_role_subject = no has_federation = no is_at_war = no "
+        "staid_native_war_posture_active = no "
+        "staid_survival_mode = no staid_recovery_mode = no "
+        "staid_core_deficit_short_runway = no "
+        "staid_catastrophic_collapse_mode = no }"
+    )
     supremacist_native = "\t\t\tmodifier = { factor = 6 staid_native_war_posture_active = yes }"
     supremacist_boxed = "\t\t\tmodifier = { factor = 8 staid_boxed_in_war_pressure = yes }"
 
@@ -11072,6 +11083,12 @@ def opening_growth_policies_text(*, identity_overlay: bool = True) -> str:
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_opening)
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_exit)
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_boxed)
+    if identity_overlay:
+        diplomatic_block = insert_policy_option_ai_weight_modifier(
+            diplomatic_block,
+            "diplo_stance_expansionist",
+            expansionist_ordinary_hive,
+        )
     for option in ("diplo_stance_supremacist", "diplo_stance_supremacist_nomad"):
         diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, supremacist_native)
         diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, supremacist_boxed)

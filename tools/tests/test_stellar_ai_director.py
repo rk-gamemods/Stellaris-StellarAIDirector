@@ -4630,6 +4630,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         belligerent = option_text("diplo_stance_belligerent")
         mercantile = option_text("diplo_stance_mercantile")
         isolationist = option_text("diplo_stance_isolationist")
+        expansionist = option_text("diplo_stance_expansionist")
 
         for marker in (
             "factor = 1.40 staid_archetype_diplomatic = yes",
@@ -4680,6 +4681,27 @@ class GeneratedModValidityTests(unittest.TestCase):
             "staid_native_war_posture_active = no",
         ):
             self.assertEqual(isolationist.count(gate), 2)
+        ordinary_hive_line = next(
+            line
+            for line in expansionist.splitlines()
+            if "staid_identity_ordinary_hive = yes" in line
+        )
+        for marker in (
+            "factor = 1.15",
+            "staid_archetype_gestalt_growth = yes",
+            "staid_archetype_identity_conflict = no",
+            "staid_archetype_eligible_country = yes",
+            "staid_role_subject = no",
+            "has_federation = no",
+            "is_at_war = no",
+            "staid_native_war_posture_active = no",
+            "staid_survival_mode = no",
+            "staid_recovery_mode = no",
+            "staid_core_deficit_short_runway = no",
+            "staid_catastrophic_collapse_mode = no",
+        ):
+            self.assertIn(marker, ordinary_hive_line)
+        self.assertNotIn("staid_identity_devouring_swarm", expansionist)
         self.assertLessEqual(1.40 * 1.10 * 1.15, 1.80)
         self.assertNotRegex(
             diplomatic,
@@ -4707,11 +4729,11 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertIn(tag, {"equal", "insert"})
             if tag == "insert":
                 inserted.extend(production[j1:j2])
-        self.assertEqual(len(inserted), 10)
+        self.assertEqual(len(inserted), 11)
         for line in inserted:
             self.assertRegex(
                 line,
-                r"staid_(?:archetype_|identity_(?:megacorp|rogue_servitor|assimilator)|role_subject)",
+                r"staid_(?:archetype_|identity_(?:megacorp|rogue_servitor|assimilator|ordinary_hive)|role_subject)",
             )
 
     def test_megastructure_upgrade_stages_are_prioritized_over_new_starts(self):
