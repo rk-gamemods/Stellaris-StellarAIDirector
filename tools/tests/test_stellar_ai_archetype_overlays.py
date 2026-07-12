@@ -39,9 +39,9 @@ from stellar_ai_director_lib import (  # noqa: E402
 
 
 ZERO_OVERLAY_SHA256 = {
-    FLEET_ALLOY_BUDGET_PATH: (
-        "d7b56b79e603407bab4753ed4f26e652213c541fcbd8470235f6c5f15b18b4ee"
-    ),
+    # The technology artifact remains a fixed pre-H08c historical baseline.
+    # The fleet budget is intentionally excluded: global, non-archetype budget
+    # safety slices are allowed to evolve while archetype_overlay=False.
     TECHNOLOGY_ROUTE_OVERRIDE_PATH: (
         "a2b1e92d11ac8eeb1a2d4a5dd215a8381e47b036986cbb3a64eda6abdaaca0e4"
     ),
@@ -102,11 +102,16 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
                 rendered.replace("\r\n", "\n"),
             )
 
-    def test_zero_overlay_is_byte_equivalent_to_pre_h08c_head(self) -> None:
+    def test_zero_overlay_technology_is_byte_equivalent_to_pre_h08c_head(self) -> None:
         self.assertEqual(
-            {path: logical_sha256(text) for path, text in self.zero.items()},
+            {path: logical_sha256(self.zero[path]) for path in ZERO_OVERLAY_SHA256},
             ZERO_OVERLAY_SHA256,
         )
+
+    def test_zero_overlay_keeps_global_wartime_budget_without_archetype_markers(self) -> None:
+        budget = self.zero[FLEET_ALLOY_BUDGET_PATH]
+        self.assertIn("staid_wartime_fleet_surge_ready = yes", budget)
+        self.assertNotIn("staid_archetype_hard_", budget)
 
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:
         inserted: list[str] = []
