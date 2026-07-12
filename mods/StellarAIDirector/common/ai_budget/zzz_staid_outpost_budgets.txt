@@ -2,9 +2,11 @@
 # Pegasus 4.4.4 save-backed outpost availability overrides. Native expansion
 # targets, system scores, pathing, threat, influence, biological-ship rules,
 # wilderness terraforming exclusion, weights, and desired minima remain.
-# Colonization plans now dampen allocation weight instead of making the lane
-# categorically unavailable. The alloy source's ambiguous multi-statement NOT
-# is normalized to the explicit NOR already used by the biological analogue.
+# A colonization-plan count no longer disables or dampens outpost allocation;
+# that count can remain stale after a colony is established. Native colony
+# allocation remains separately prioritized. The alloy source's ambiguous
+# multi-statement NOT is normalized to the explicit NOR used by the biological
+# analogue.
 
 alloys_expenditure_starbases_expand = {
 	resource = alloys
@@ -19,11 +21,6 @@ alloys_expenditure_starbases_expand = {
 		modifier = {
 			factor = 0.5
 			country_uses_bio_ships = yes
-		}
-		# Prefer colonization without making native outpost funding ineligible.
-		modifier = {
-			factor = 0.25
-			ai_colonize_plans > 0
 		}
 	}
 
@@ -50,11 +47,6 @@ food_expenditure_starbases_expand = {
 
 	weight = {
 		weight = 0.2
-		# Match alloy-lane availability dampening for biological construction.
-		modifier = {
-			factor = 0.25
-			ai_colonize_plans > 0
-		}
 	}
 
 	desired_min = {

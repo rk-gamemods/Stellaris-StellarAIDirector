@@ -431,7 +431,7 @@ class AlloyBudgetOwnershipTests(unittest.TestCase):
 
 
 class OutpostBudgetAvailabilityTests(unittest.TestCase):
-    def test_colonization_dampens_but_does_not_veto_outpost_budgets(self):
+    def test_colonization_plan_count_does_not_latch_outpost_budgets(self):
         budget_path = (
             MOD_ROOT / "common" / "ai_budget" / "zzz_staid_outpost_budgets.txt"
         )
@@ -452,6 +452,7 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
         ).replace("\t\tNOT = {\n", "\t\tNOR = {\n", 1).replace(
             "\t\t\tai_colonize_plans > 0\n", "", 1
         )
+        expected_alloy_weight = extract_assignment_block(vanilla_alloy, "weight")
         vanilla_food = extract_top_level_object_text(
             read_text(
                 STELLARIS_INSTALL_ROOT / "common" / "ai_budget" / "00_food_budget.txt"
@@ -461,6 +462,7 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
         expected_food_potential = extract_assignment_block(
             vanilla_food, "potential"
         ).replace("\t\t\t\tai_colonize_plans > 0\n", "", 1)
+        expected_food_weight = extract_assignment_block(vanilla_food, "weight")
 
         for text in (artifact, generated):
             alloy = extract_top_level_object_text(
@@ -482,8 +484,8 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
                 self.assertNotIn("ai_colonize_plans", potential)
                 self.assertIn("NOR = {", potential)
                 self.assertIn("weight = 0.2", weight)
-                self.assertIn("factor = 0.25", weight)
-                self.assertIn("ai_colonize_plans > 0", weight)
+                self.assertNotIn("factor = 0.25", weight)
+                self.assertNotIn("ai_colonize_plans", weight)
                 self.assertIn(f"base = {desired_min}", outpost)
                 self.assertNotIn("clear_orders", outpost)
 
@@ -499,6 +501,14 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
             self.assertEqual(
                 extract_assignment_block(food, "potential"),
                 expected_food_potential,
+            )
+            self.assertEqual(
+                extract_assignment_block(alloy, "weight"),
+                expected_alloy_weight,
+            )
+            self.assertEqual(
+                extract_assignment_block(food, "weight"),
+                expected_food_weight,
             )
         self.assertEqual(artifact, generated)
 

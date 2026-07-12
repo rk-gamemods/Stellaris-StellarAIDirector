@@ -346,9 +346,10 @@ restore H05 safety bypasses or the H01/H02 generic reserve pressure.
 
 ## H07 — Native outpost budget availability beside colonization
 
-Status: implemented and committed on the research branch at `75bca24e`;
-focused static validation passed, with copied-save runtime continuation still
-pending.
+Status: the original availability correction was committed at `75bca24e`.
+The follow-up robustness correction removes its residual factor-0.25
+colonization-plan dampener; focused static validation passed, with copied-save
+runtime continuation still pending.
 
 Evidence:
 
@@ -359,6 +360,10 @@ Evidence:
 - Country 0 has thirteen constructors, eleven of them idle, and no outpost
   order. Executor saturation explains 2255-2257 but is no longer the immediate
   2270 gate between recognized candidate and assigned construction order.
+- In 2268.01 through 2269.07 the same three type-19 candidates persisted with
+  twelve of thirteen constructors idle, zero type-1 colonization plans, no
+  outpost order, 895-1000 influence, and more than 63,000 alloys. Therefore the
+  colonization-plan condition cannot explain the entire observed stall.
 - The one type-1 record is for planet 2, already owned by country 0 with
   `colonize_date="2270.01.26"`; the save date is `2270.04.15`.
 - The vanilla alloy outpost potential puts both country-type exclusions and
@@ -366,23 +371,27 @@ Evidence:
   semantics were not proven by generated docs or CWTools. The biological food
   analogue uses an explicit `NOR`, proving that colonization-plan ineligibility
   is at least the source's intended paired behavior.
-- This save predates H01-H06 and the live descriptor switch, so it cannot prove
-  the corrected megastructure pressure or this new availability hook at runtime.
+- The save series predates H01-H07 and the live descriptor switch, so it cannot
+  prove any current correction at runtime.
 
 Preserve native expansion-plan recognition, system scores, target selection,
 pathing, threat limit, influence reserve, biological-ship rule, wilderness
 terraforming exclusion, base weights, and desired minima. For the alloy lane,
 normalize the ambiguous multi-statement `NOT` to an explicit country-type
-`NOR`. For both alloy and biological-food lanes, move only the colonization-plan
-condition from eligibility to a factor `0.25` weight modifier. This creates a
-bounded allocation signal; it does not promise a scheduler ratio or an outpost.
+`NOR`. For both alloy and biological-food lanes, remove only the
+colonization-plan condition. Do not retain a numeric dampener tied to a count
+that can remain stale. In the ordinary alloy lane, the native colony allocation
+weight remains `0.5` while the outpost allocation weight remains `0.2` (a 2.5:1
+budget-weight ratio). Biological-food colonies use `2.0` versus food outposts at
+`0.2`, and infernal alloy colonies use `0.8`. These are allocation weights, not
+proven scheduler odds. This does not promise an outpost.
 
 Top five risks:
 
 1. **A valid colony ship may compete with an outpost in a constrained economy.**
-   Keep the outpost weight at one quarter while a colonization plan exists and
-   retain all native resource reserves; compare colony and outpost completion
-   in low-resource runtime cases before promotion.
+   Retain the native `0.5` colony and `0.2` outpost weights plus all native
+   resource reserves; compare colony and outpost completion in low-resource
+   runtime cases before promotion.
 2. **The ambiguous alloy `NOT` may not be the actual engine blocker.** The save
    isolates the planner-to-order gap but not executable internals; keep H07 as a
    separate rollback commit and require continuation evidence.
@@ -399,8 +408,9 @@ Top five risks:
 Static acceptance:
 
 - Generated alloy and food objects match their 4.4.4 sources except for the
-  explicit alloy `NOR`, removal of the colonization eligibility clause, and the
-  paired factor-0.25 weight modifiers.
+  explicit alloy `NOR`, removal of the colonization eligibility clause, and
+  generator block ordering. The original weight blocks remain byte-identical to
+  their pinned sources, and the other source subblocks retain their contents.
 - Pinned source hashes and an active-playset scan fail generation if vanilla
   drifts or any enabled parent mod begins overriding either budget object.
 - Threat, influence, country-type, biological, wilderness-terraform, weight,
@@ -412,8 +422,9 @@ Static acceptance:
 
 Rollback boundary:
 
-Revert only H07 if colony completion regresses or no outpost opportunity appears.
-Do not restore H01-H06 megastructure pressure or the removed order watchdog.
+Revert only the H07 follow-up if colony completion regresses; revert original
+H07 separately if the availability override itself proves harmful. Do not
+restore H01-H06 megastructure pressure or the removed order watchdog.
 
 ## H08a — Deterministic nation identity and bounded policy model
 
