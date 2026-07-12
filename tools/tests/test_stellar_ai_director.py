@@ -83,6 +83,7 @@ from stellar_ai_director_lib import (
     NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV,
     NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD,
     nonconstruction_economic_valuation_dataset_passes,
+    nomad_waystation_budget_text,
     outpost_budget_text,
     parse_file,
     parse_numeric,
@@ -532,6 +533,46 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
                 expected_food_weight,
             )
         self.assertEqual(artifact, generated)
+
+
+class NomadWaystationBudgetAvailabilityTests(unittest.TestCase):
+    def test_threat_reduces_but_does_not_disable_waystation_funding(self):
+        path = (
+            MOD_ROOT
+            / "common"
+            / "ai_budget"
+            / "zzzzz_staid_22_nomad_waystation_budgets.txt"
+        )
+        parse_file(path)
+        artifact = path.read_text(encoding="utf-8")
+        self.assertEqual(artifact, nomad_waystation_budget_text())
+        object_ids = (
+            "influence_expenditure_megastructures_waystations",
+            "alloys_expenditure_megastructures_waystations",
+            "food_expenditure_megastructures_waystations",
+        )
+        for object_id in object_ids:
+            block = extract_top_level_object_text(artifact, object_id)
+            potential = extract_assignment_block(block, "potential")
+            weight = extract_assignment_block(block, "weight")
+            self.assertIn("is_nomadic = yes", potential)
+            self.assertIn("has_technology = tech_waystation_1", potential)
+            self.assertNotIn("highest_threat < 50", potential)
+            self.assertIn("factor = 0.5", weight)
+            self.assertIn("highest_threat >= 50", weight)
+            self.assertIn("used_starbase_capacity_percent >= 1", weight)
+            self.assertIn("used_starbase_capacity_percent >= 1.25", weight)
+            self.assertIn("used_starbase_capacity_percent >= 2.0", weight)
+            self.assertNotIn("clear_orders", block)
+            self.assertNotIn("build_megastructure", block)
+        food = extract_top_level_object_text(
+            artifact, "food_expenditure_megastructures_waystations"
+        )
+        alloys = extract_top_level_object_text(
+            artifact, "alloys_expenditure_megastructures_waystations"
+        )
+        self.assertIn("country_uses_bio_ships = yes", food)
+        self.assertIn("country_uses_bio_ships = yes", alloys)
 
 
 class ClaimPressureExpansionPriorityTests(unittest.TestCase):

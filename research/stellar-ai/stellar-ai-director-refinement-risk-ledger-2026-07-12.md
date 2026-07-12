@@ -1044,6 +1044,30 @@ Rollback boundary: remove the defining branches and broad-plan exclusions,
 restore the previous bounded raiding reserve, and regenerate only the economic
 artifact. Identity labels and primary classification remain.
 
+### H08f2 — Nomad Waystation threat-softened budgets
+
+Status: implemented as one focused artifact overriding the native influence,
+alloy, and biological-food Waystation expenditure objects. The Pegasus hard
+`highest_threat < 50` potential cutoff becomes a `0.5` weight modifier at
+threat 50 or higher. Nomads remain excluded from settled outpost logic.
+
+Top five risks:
+
+1. **Wartime Waystations can crowd fleets or reserves.** Threat halves all three
+   resource-lane weights rather than leaving full priority.
+2. **Three budget lanes can diverge.** All three objects receive the same threat
+   rule; biological food/alloy conversion gates remain source-identical.
+3. **Waystations can exceed starbase capacity.** Native 0.5/0.1/0 capacity
+   factors at 100%/125%/200% use remain untouched.
+4. **Country, Arkship, and station scopes can be confused.** The consumers use
+   native `is_nomadic` country budgets only; no ship/starbase predicate is added.
+5. **Budget eligibility does not prove Wayline execution.** Static validation
+   proves source fidelity and gates; Arkship carrier, Contract, Wayline, and
+   ownership-transfer behavior still require runtime proof.
+
+Rollback boundary: delete the focused artifact. Vanilla hard cutoffs resume;
+the nomadic economic branch and identity label remain independent.
+
 ## H09a — Retire stateful threat-response runtime
 
 Status: implemented as a cleanup-only slice. The generator deletes the legacy
