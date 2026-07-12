@@ -2758,9 +2758,22 @@ Active mod count: {playset.get('mod_count', 0)}
 """
 
 
+def build_economic_valuation_dataset(
+    playset: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    """Build the current valuation rows without updating checked artifacts."""
+
+    if playset is None:
+        playset = build_active_playset_snapshot()
+    return enrich_economic_valuation_rows_with_source_facts(
+        build_economic_valuation_rows(playset),
+        playset,
+    )
+
+
 def generate_economic_valuation_dataset() -> list[dict[str, Any]]:
     playset = build_active_playset_snapshot()
-    rows = enrich_economic_valuation_rows_with_source_facts(build_economic_valuation_rows(playset), playset)
+    rows = build_economic_valuation_dataset(playset)
     write_csv(ECONOMIC_VALUATION_DATASET_CSV, rows)
     write_text_file_preserving_generated_timestamp(
         ECONOMIC_VALUATION_DATASET_MD, economic_valuation_dataset_summary(rows, playset)
@@ -6392,14 +6405,47 @@ def route_override_target_rows(snapshot_root: Path = SNAPSHOT_ROOT) -> list[dict
         row["generated_folder"] = generated_common_folder_for_type(row["object_type"])
         row.setdefault("coefficient", "")
         row.setdefault("additional_weight", "")
-        row["generated_file"] = (
-            MOD_ROOT
-            / "common"
-            / row["generated_folder"]
-            / f"zzzz_staid_{row['file_key']}_{row['generated_folder']}.txt"
-        ).as_posix()
+        row["generated_file"] = route_override_generated_file_path(row).as_posix()
         resolved.append(row)
     return resolved
+
+
+def route_override_generated_file_path(
+    row: dict[str, Any],
+    mod_root: Path = MOD_ROOT,
+) -> Path:
+    """Resolve a route artifact from portable row fields, never a captured absolute path."""
+
+    generated_folder = str(row.get("generated_folder", ""))
+    file_key = str(row.get("file_key", ""))
+    safe_component = re.compile(r"^[A-Za-z0-9_]+$")
+    if not safe_component.fullmatch(generated_folder):
+        raise ValueError(f"Invalid route generated_folder: {generated_folder!r}")
+    if not safe_component.fullmatch(file_key):
+        raise ValueError(f"Invalid route file_key: {file_key!r}")
+    return (
+        mod_root
+        / "common"
+        / generated_folder
+        / f"zzzz_staid_{file_key}_{generated_folder}.txt"
+    )
+
+
+def route_override_evidence_rows(
+    rows: list[dict[str, Any]],
+    mod_root: Path = MOD_ROOT,
+) -> list[dict[str, Any]]:
+    """Project operational route rows into a worktree-independent evidence schema."""
+
+    evidence_rows: list[dict[str, Any]] = []
+    for row in rows:
+        evidence_row = dict(row)
+        evidence_row["generated_file"] = route_override_generated_file_path(
+            row,
+            mod_root,
+        ).relative_to(mod_root).as_posix()
+        evidence_rows.append(evidence_row)
+    return evidence_rows
 
 
 def route_override_file_header(folder: str) -> str:
@@ -6626,7 +6672,11 @@ def route_override_report_text(rows: list[dict[str, Any]]) -> str:
         "| --- | --- | --- | --- | --- | --- | --- |",
     ]
     for row in rows:
-        generated_file = Path(row["generated_file"]).relative_to(MOD_ROOT).as_posix()
+        generated_file = (
+            route_override_generated_file_path(row)
+            .relative_to(MOD_ROOT)
+            .as_posix()
+        )
         lines.append(
             f"| {row['route_id']} | `{row['object_id']}` | {row['object_type']} | "
             f"{row['parent_ai_support']} | {row['source_has_ai_weight']} | `{generated_file}` | `{row['source_file']}` |"
@@ -6659,13 +6709,16 @@ def generate_route_override_artifacts() -> list[dict[str, Any]]:
     object_names = collect_object_names()
     grouped: dict[Path, list[dict[str, Any]]] = {}
     for row in rows:
-        grouped.setdefault(Path(row["generated_file"]), []).append(row)
+        grouped.setdefault(route_override_generated_file_path(row), []).append(row)
     for file_path, file_rows in grouped.items():
         write_text_file(
             file_path,
             route_override_file_text(file_rows, object_names),
         )
-    write_csv(RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.csv", rows)
+    write_csv(
+        RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.csv",
+        route_override_evidence_rows(rows),
+    )
     write_text_file(
         RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.md",
         route_override_report_text(rows),

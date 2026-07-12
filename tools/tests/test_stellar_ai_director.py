@@ -58,6 +58,7 @@ from stellar_ai_director_lib import (
     build_plan_consumer_policy_buildings,
     build_plan_consumer_policy_rows,
     build_plan_consumer_policy_selected_objects,
+    build_economic_valuation_dataset,
     dataset_job_pressure_override_rows,
     dataset_ai_resource_production_amounts,
     dataset_job_pressure_family,
@@ -71,7 +72,6 @@ from stellar_ai_director_lib import (
     gigas_habitat_ai_weight_block,
     generated_unresolved_at_variable_rows,
     generated_thresholds,
-    generate_economic_valuation_dataset,
     generate_mod_files,
     generated_colony_root_scope_errors,
     generate_object_atlas_artifacts,
@@ -90,6 +90,8 @@ from stellar_ai_director_lib import (
     research_plan_target_count,
     research_under_curve,
     route_weight_modifiers,
+    route_override_evidence_rows,
+    route_override_generated_file_path,
     relative_economic_standard_rows,
     read_text,
     repair_gigas_habitat_spawn_effect_params,
@@ -969,7 +971,26 @@ class GeneratedModValidityTests(unittest.TestCase):
             self.assertEqual(by_object[object_key]["classification"], "intentional_director_override")
 
     def test_active_stack_economic_valuation_dataset_covers_buildings_zones_and_districts(self):
-        rows = generate_economic_valuation_dataset()
+        artifact_paths = (
+            ECONOMIC_VALUATION_DATASET_CSV,
+            ECONOMIC_VALUATION_DATASET_MD,
+        )
+        before = {
+            path: (path.read_bytes(), path.stat().st_mtime_ns)
+            for path in artifact_paths
+        }
+
+        rows = build_economic_valuation_dataset()
+
+        after = {
+            path: (path.read_bytes(), path.stat().st_mtime_ns)
+            for path in artifact_paths
+        }
+        self.assertEqual(
+            after,
+            before,
+            "Ordinary validation must not refresh checked economic-valuation artifacts.",
+        )
         self.assertTrue(rows)
         self.assertTrue(ECONOMIC_VALUATION_DATASET_CSV.exists())
         self.assertTrue(ECONOMIC_VALUATION_DATASET_MD.exists())
@@ -3988,10 +4009,37 @@ class GeneratedModValidityTests(unittest.TestCase):
         }
         self.assertTrue(required_routes.issubset(covered_routes))
         for row in rows:
-            generated_file = Path(row["generated_file"])
+            generated_file = route_override_generated_file_path(row)
             self.assertTrue(generated_file.exists(), f"Missing route override file: {generated_file}")
             self.assertIn(row["object_id"], generated_file.read_text(encoding="utf-8"))
         self.assertTrue((RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.md").exists())
+
+    def test_route_override_generated_file_resolution_ignores_captured_worktree_path(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            current_mod_root = Path(temp_dir) / "mods" / "StellarAIDirector"
+            row = {
+                "generated_folder": "technology",
+                "file_key": "01_unlock_technology",
+                "generated_file": (
+                    "C:/Users/Admin/Documents/GIT/GameMods/StellarisMods/"
+                    "mods/StellarAIDirector/common/technology/old.txt"
+                ),
+            }
+
+            resolved = route_override_generated_file_path(row, current_mod_root)
+            evidence_row = route_override_evidence_rows([row], current_mod_root)[0]
+
+            self.assertEqual(
+                resolved,
+                current_mod_root
+                / "common"
+                / "technology"
+                / "zzzz_staid_01_unlock_technology_technology.txt",
+            )
+            self.assertEqual(
+                evidence_row["generated_file"],
+                "common/technology/zzzz_staid_01_unlock_technology_technology.txt",
+            )
 
     def test_snowball_checkpoint_routes_cover_research_surface_storage_and_early_kilos(self):
         technology_path = MOD_ROOT / "common" / "technology" / "zzzz_staid_01_unlock_technology_technology.txt"
