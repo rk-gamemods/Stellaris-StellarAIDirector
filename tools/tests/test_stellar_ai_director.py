@@ -62,6 +62,7 @@ from stellar_ai_director_lib import (
     director_ai_weight_block,
     extract_top_level_object_text,
     fresh_economic_valuation_source_facts,
+    gigas_habitat_ai_weight_block,
     generated_unresolved_at_variable_rows,
     generate_economic_valuation_dataset,
     generate_mod_files,
@@ -82,6 +83,7 @@ from stellar_ai_director_lib import (
     research_under_curve,
     relative_economic_standard_rows,
     read_text,
+    repair_gigas_habitat_spawn_effect_params,
     forbidden_generated_surface_errors,
     stale_stellar_ai_dependency_errors,
     surplus_sink_pressure,
@@ -190,7 +192,7 @@ class ActiveStackEconomicValuationMaintenanceTests(unittest.TestCase):
 
 
 class RouteOverrideUnitTests(unittest.TestCase):
-    def test_gigas_habitat_route_preserves_parent_hard_safety_vetoes(self):
+    def test_gigas_habitat_route_preserves_parent_scoring_without_global_deadlock(self):
         target = next(
             target
             for target in ROUTE_OVERRIDE_TARGETS
@@ -199,8 +201,6 @@ class RouteOverrideUnitTests(unittest.TestCase):
             and target["object_id"] == "habitat_central_complex"
         )
 
-        text = director_ai_weight_block(target)
-        parse_pdx(text)
         active_gigas_path = Path(
             r"C:\Steam\steamapps\workshop\content\281990\1121692237\common\megastructures\zz_b_habitats.txt"
         )
@@ -208,6 +208,8 @@ class RouteOverrideUnitTests(unittest.TestCase):
             active_gigas_path.read_text(encoding="utf-8-sig"),
             "habitat_central_complex",
         )
+        text = gigas_habitat_ai_weight_block(active_parent, target)
+        parse_pdx(text)
 
         def factor_zero_modifier_values(container_text, root_key):
             parsed = parse_pdx(container_text)
@@ -224,58 +226,50 @@ class RouteOverrideUnitTests(unittest.TestCase):
             }
 
         active_parent_vetoes = factor_zero_modifier_values(
-            active_parent,
-            "habitat_central_complex",
+            active_parent, "habitat_central_complex"
         )
-        generated_vetoes = factor_zero_modifier_values(text, "ai_weight")
+        generated_vetoes = factor_zero_modifier_values(
+            text, "habitat_central_complex"
+        )
 
-        self.assertIn("\t\tfactor = 125000", text)
-        self.assertIn("\t\t# policy_route = crowded_tall_route", text)
+        self.assertEqual(target["weight"], 5)
         self.assertEqual(len(active_parent_vetoes), 3)
-        self.assertTrue(
-            active_parent_vetoes.issubset(generated_vetoes),
-            "Every active Gigas habitat hard veto must survive the Director route override.",
-        )
+        self.assertEqual(len(generated_vetoes), 2)
+        self.assertIn("ai_weight = {\n        factor = 5", text)
+        self.assertIn("factor = 100", text)
+        self.assertIn("factor = value:num_orbital_sites", text)
         for marker in (
             "has_country_flag = has_recently_built_habitat",
-            "any_planet_within_border",
-            "is_planet_class = pc_habitat",
             "starbase = { NOT = { has_starbase_size >= starbase_starport } }",
         ):
             self.assertIn(marker, active_parent)
             self.assertIn(marker, text)
-        for parent_veto in (
-            """\t\tmodifier = {
-\t\t\tfactor = 0
-\t\t\tfrom = {
-\t\t\t\tnor = {
-\t\t\t\t\thas_void_dweller_origin = yes
-\t\t\t\t\thas_origin = origin_toxic_knights
-\t\t\t\t}
-\t\t\t\thas_country_flag = has_recently_built_habitat
-\t\t\t}
-\t\t}""",
-            """\t\tmodifier = {
-\t\t\t# AI shouldn't build habitats if they have any uncolonised habitats.
-\t\t\tfactor = 0
-\t\t\towner = {
-\t\t\t\tany_planet_within_border = {
-\t\t\t\t\tis_planet_class = pc_habitat
-\t\t\t\t\tis_colony = no
-\t\t\t\t}
-\t\t\t}
-\t\t}""",
-            """\t\tmodifier = {
-\t\t\t# AI shouldn't build habitats if they don't have starports in the system
-\t\t\t# unless they have either the Void Dwellers origin or Voidborn AP.
-\t\t\tfactor = 0
-\t\t\towner = {
-\t\t\t\tis_void_dweller_empire = no
-\t\t\t}
-\t\t\tstarbase = { NOT = { has_starbase_size >= starbase_starport } }
-\t\t}""",
-        ):
-            self.assertIn(parent_veto, text)
+        self.assertNotIn("any_planet_within_border", text)
+        self.assertNotIn("factor = 125000", text)
+        self.assertNotIn("years_passed >", text)
+        self.assertIn("factor = 0.1", text)
+        self.assertIn("ai_colonize_plans > 0", text)
+        self.assertIn("factor = 2", text)
+        self.assertIn("staid_planetary_capacity_growth_ready = yes", text)
+
+    def test_gigas_habitat_route_fails_on_parent_deadlock_gate_drift(self):
+        target = next(
+            target
+            for target in ROUTE_OVERRIDE_TARGETS
+            if target["mod_id"] == "1121692237"
+            and target["object_type"] == "megastructure"
+            and target["object_id"] == "habitat_central_complex"
+        )
+        parent_path = Path(
+            r"C:\Steam\steamapps\workshop\content\281990\1121692237\common\megastructures\zz_b_habitats.txt"
+        )
+        parent = extract_top_level_object_text(
+            parent_path.read_text(encoding="utf-8-sig"),
+            "habitat_central_complex",
+        ).replace("is_colony = no", "is_colony = yes", 1)
+
+        with self.assertRaisesRegex(ValueError, "uncolonized-habitat veto"):
+            gigas_habitat_ai_weight_block(parent, target)
 
 
 RESEARCH_CAPACITY_BUILDINGS_CSV = RESEARCH_ROOT / "stellar-ai-director-research-capacity-buildings-2026-07-09.csv"
@@ -347,6 +341,69 @@ class NativeOwnershipRegressionTests(unittest.TestCase):
             "move_to =",
         ):
             self.assertNotIn(marker, text)
+
+
+class HabitatRecoveryRegressionTests(unittest.TestCase):
+    def test_generated_habitat_preserves_parent_bounds_without_global_empty_habitat_veto(self):
+        path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"
+        parse_file(path)
+        block = extract_top_level_object_text(
+            path.read_text(encoding="utf-8-sig"),
+            "habitat_central_complex",
+        )
+        target = next(
+            target
+            for target in ROUTE_OVERRIDE_TARGETS
+            if target["mod_id"] == "1121692237"
+            and target["object_type"] == "megastructure"
+            and target["object_id"] == "habitat_central_complex"
+        )
+        parent_path = Path(
+            r"C:\Steam\steamapps\workshop\content\281990\1121692237\common\megastructures\zz_b_habitats.txt"
+        )
+        parent = extract_top_level_object_text(
+            parent_path.read_text(encoding="utf-8-sig"),
+            "habitat_central_complex",
+        )
+        expected = gigas_habitat_ai_weight_block(
+            repair_gigas_habitat_spawn_effect_params(parent, target),
+            target,
+        )
+        self.assertEqual(block.strip(), expected.strip())
+
+        for marker in (
+            "ai_weight = {\n        factor = 5",
+            "has_country_flag = has_recently_built_habitat",
+            "starbase = { NOT = { has_starbase_size >= starbase_starport } }",
+            "factor = 100",
+            "factor = value:num_orbital_sites",
+            "factor = 0.1",
+            "ai_colonize_plans > 0",
+            "factor = 2",
+            "staid_planetary_capacity_growth_ready = yes",
+            "count <= value:ai_habitat_cap",
+            "on_build_queued = {",
+            "on_build_unqueued = {",
+            "on_build_cancel = {",
+        ):
+            self.assertIn(marker, block)
+        for marker in (
+            "factor = 125000",
+            "any_planet_within_border",
+            "staid_survival_mode",
+            "staid_recovery_mode",
+            "years_passed >",
+        ):
+            self.assertNotIn(marker, block)
+
+        route_csv = RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.csv"
+        with route_csv.open(newline="", encoding="utf-8-sig") as handle:
+            route_row = next(
+                row
+                for row in csv.DictReader(handle)
+                if row["object_id"] == "habitat_central_complex"
+            )
+        self.assertEqual(route_row["weight"], "5")
 
 
 class GeneratedModValidityTests(unittest.TestCase):

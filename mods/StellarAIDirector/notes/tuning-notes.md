@@ -77,6 +77,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 
 - ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.
 - Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts; generated files preserve parent `@variable` parse context and remove absent optional `pc_magnetar` compatibility references.
+- The Gigas habitat start preserves parent base/site scoring, the 30-year queued-build cooldown, the starport veto, and the AI habitat cap. An active native colonization plan applies a nonzero `0.1` backlog penalty instead of any empty habitat hard-zeroing all future starts; crowded-tall readiness adds only a bounded factor `2`.
 - Exotic projects outside those route starts remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.
 
 ## Planetary-Capacity Policy

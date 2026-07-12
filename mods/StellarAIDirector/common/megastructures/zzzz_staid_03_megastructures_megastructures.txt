@@ -3761,6 +3761,61 @@ habitat_central_complex = {
 
     # root = system
     # from = country
+    ai_weight = {
+        factor = 5
+
+        # ai spam reduction
+        modifier = {
+            factor = 0
+            from = {
+                nor = {
+                    has_void_dweller_origin = yes
+                    has_origin = origin_toxic_knights
+                }
+                has_country_flag = has_recently_built_habitat
+            }
+        }
+
+        modifier = {
+            # A real colonization backlog should delay another habitat, but it
+            # must not turn one stale or uncolonizable habitat into a global veto.
+            factor = 0.1
+            from = { ai_colonize_plans > 0 }
+        }
+
+        modifier = {
+            # AI shouldn't build habitats if they don't have starports in the system
+            # unless they have either the Void Dwellers origin or Voidborn AP.
+            factor = 0
+            owner = {
+                is_void_dweller_empire = no
+            }
+            starbase = { NOT = { has_starbase_size >= starbase_starport } }
+        }
+
+        modifier = {
+            factor = 5
+            exists = sector
+            sector = { has_sector_type = core_sector }
+        }
+
+        modifier = {
+            factor = 100
+            OR = {
+                has_star_flag = ideal_habitat_t1
+                has_star_flag = ideal_habitat_t2
+            }
+        }
+
+        modifier = {
+            factor = value:num_orbital_sites
+        }
+        modifier = {
+            # Bounded crowded-tall pressure; parent site quality remains decisive.
+            factor = 2
+            from = { staid_planetary_capacity_growth_ready = yes }
+        }
+    }
 
     on_build_queued = {
         from = {
@@ -3812,55 +3867,6 @@ habitat_central_complex = {
             country_event = { id = megastructures.10 }
         }
     }
-
-	ai_weight = {
-		factor = 125000
-
-		# policy_route = crowded_tall_route
-		# source_object = megastructure:habitat_central_complex
-		# ai spam reduction
-		modifier = {
-			factor = 0
-			from = {
-				nor = {
-					has_void_dweller_origin = yes
-					has_origin = origin_toxic_knights
-				}
-				has_country_flag = has_recently_built_habitat
-			}
-		}
-
-		modifier = {
-			# AI shouldn't build habitats if they have any uncolonised habitats.
-			factor = 0
-			owner = {
-				any_planet_within_border = {
-					is_planet_class = pc_habitat
-					is_colony = no
-				}
-			}
-		}
-
-		modifier = {
-			# AI shouldn't build habitats if they don't have starports in the system
-			# unless they have either the Void Dwellers origin or Voidborn AP.
-			factor = 0
-			owner = {
-				is_void_dweller_empire = no
-			}
-			starbase = { NOT = { has_starbase_size >= starbase_starport } }
-		}
-		modifier = { factor = 0 from = { staid_survival_mode = yes } }
-		modifier = { factor = 0.35 from = { staid_recovery_mode = yes } }
-		modifier = { factor = 0 from = { NOT = { staid_planetary_capacity_growth_ready = yes } } }
-		modifier = { factor = 4 from = { staid_planetary_capacity_growth_ready = yes } }
-		modifier = { factor = 2 from = { years_passed > 44 } }
-		modifier = { factor = 3 from = { years_passed > 79 } }
-		modifier = { factor = 5 from = { years_passed > 119 } }
-		modifier = { factor = 5 from = { years_passed < 30 } }
-		modifier = { factor = 3 from = { AND = { years_passed > 29 years_passed < 60 } } }
-		modifier = { factor = 2 from = { AND = { years_passed > 59 years_passed < 100 } } }
-	}
 }
 
 

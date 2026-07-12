@@ -661,7 +661,7 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "kugelblitz_1", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_kugelblitz.txt", "route_id": "storage_cap_core", "weight": 150000, "file_key": "03_megastructures"},
     {"object_id": "kugelblitz_2", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_kugelblitz.txt", "route_id": "storage_cap_core", "weight": 170000, "file_key": "03_megastructures"},
     {"object_id": "kugelblitz_3", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_c_kugelblitz.txt", "route_id": "storage_cap_core", "weight": 190000, "file_key": "03_megastructures"},
-    {"object_id": "habitat_central_complex", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_b_habitats.txt", "route_id": "crowded_tall_route", "weight": 125000, "file_key": "03_megastructures"},
+    {"object_id": "habitat_central_complex", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_b_habitats.txt", "route_id": "crowded_tall_route", "weight": 5, "file_key": "03_megastructures"},
     {"object_id": "interstellar_habitat_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_interstellar_habitat.txt", "route_id": "crowded_tall_route", "weight": 145000, "file_key": "03_megastructures"},
     {"object_id": "stellar_ring_habitat_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_stellar_ring_habitat.txt", "route_id": "crowded_tall_route", "weight": 145000, "file_key": "03_megastructures"},
     {"object_id": "planetary_computer_0", "object_type": "megastructure", "mod_id": "1121692237", "source_file": "common/megastructures/zz_e_planetary_computer.txt", "route_id": "planetary_computer_research_core", "weight": 175000, "file_key": "03_megastructures"},
@@ -5987,53 +5987,51 @@ def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
     return lines
 
 
-def parent_ai_hard_safety_modifiers(target: dict[str, Any]) -> list[str]:
+GIGAS_HABITAT_UNCOLONIZED_VETO = """        modifier = {
+            # AI shouldn't build habitats if they have any uncolonised habitats.
+            factor = 0
+            owner = {
+                any_planet_within_border = {
+                    is_planet_class = pc_habitat
+                    is_colony = no
+                }
+            }
+        }"""
+
+
+def gigas_habitat_ai_weight_block(block: str, target: dict[str, Any]) -> str:
+    """Preserve current Gigas site scoring while replacing its global deadlock gate."""
     if (
         target.get("mod_id") != "1121692237"
         or target.get("object_type") != "megastructure"
         or target.get("object_id") != "habitat_central_complex"
     ):
-        return []
+        raise ValueError("Gigas habitat AI transformer received the wrong target")
+    if block.count(GIGAS_HABITAT_UNCOLONIZED_VETO) != 1:
+        raise ValueError("Active Gigas uncolonized-habitat veto drifted; re-audit before generation")
 
-    # Preserve the active Gigas habitat hard vetoes while Director replaces the
-    # parent's positive preference with its crowded-tall route preference.
-    return [
-        "\t# ai spam reduction",
-        "\tmodifier = {",
-        "\t\tfactor = 0",
-        "\t\tfrom = {",
-        "\t\t\tnor = {",
-        "\t\t\t\thas_void_dweller_origin = yes",
-        "\t\t\t\thas_origin = origin_toxic_knights",
-        "\t\t\t}",
-        "\t\t\thas_country_flag = has_recently_built_habitat",
-        "\t\t}",
-        "\t}",
-        "",
-        "\tmodifier = {",
-        "\t\t# AI shouldn't build habitats if they have any uncolonised habitats.",
-        "\t\tfactor = 0",
-        "\t\towner = {",
-        "\t\t\tany_planet_within_border = {",
-        "\t\t\t\tis_planet_class = pc_habitat",
-        "\t\t\t\tis_colony = no",
-        "\t\t\t}",
-        "\t\t}",
-        "\t}",
-        "",
-        "\tmodifier = {",
-        "\t\t# AI shouldn't build habitats if they don't have starports in the system",
-        "\t\t# unless they have either the Void Dwellers origin or Voidborn AP.",
-        "\t\tfactor = 0",
-        "\t\towner = {",
-        "\t\t\tis_void_dweller_empire = no",
-        "\t\t}",
-        "\t\tstarbase = { NOT = { has_starbase_size >= starbase_starport } }",
-        "\t}",
-    ]
+    backlog_penalty = """        modifier = {
+            # A real colonization backlog should delay another habitat, but it
+            # must not turn one stale or uncolonizable habitat into a global veto.
+            factor = 0.1
+            from = { ai_colonize_plans > 0 }
+        }"""
+    route_boost = """        modifier = {
+            # Bounded crowded-tall pressure; parent site quality remains decisive.
+            factor = 2
+            from = { staid_planetary_capacity_growth_ready = yes }
+        }"""
+    block = block.replace(GIGAS_HABITAT_UNCOLONIZED_VETO, backlog_penalty)
+    return insert_top_level_ai_weight_modifier(block, route_boost)
 
 
 def director_ai_weight_block(target: dict[str, Any]) -> str:
+    if (
+        target.get("mod_id") == "1121692237"
+        and target.get("object_type") == "megastructure"
+        and target.get("object_id") == "habitat_central_complex"
+    ):
+        raise ValueError("habitat_central_complex requires the parent-aware Gigas transformer")
     lines = [
         "\tai_weight = {",
         f"\t\tfactor = {target['weight']}",
@@ -6041,7 +6039,6 @@ def director_ai_weight_block(target: dict[str, Any]) -> str:
         f"\t\t# policy_route = {target['route_id']}",
         f"\t\t# source_object = {target['object_type']}:{target['object_id']}",
     ]
-    lines.extend(line.replace("\t", "\t\t", 1) for line in parent_ai_hard_safety_modifiers(target))
     lines.extend(line.replace("\t", "\t\t", 1) for line in route_weight_modifiers(target))
     lines.append("\t}")
     return "\n".join(lines) + "\n"
@@ -6387,6 +6384,11 @@ def route_override_object_text(target: dict[str, Any], object_names: dict[str, s
         block = director_infrastructure_weight_block(block, target)
     elif target["object_type"] == "ai_budget":
         block = director_ai_budget_weight_block(block, target)
+    elif (
+        target["object_type"] == "megastructure"
+        and target["object_id"] == "habitat_central_complex"
+    ):
+        block = gigas_habitat_ai_weight_block(block, target)
     elif target["object_type"] in {"tradition_category", "tradition"}:
         block = native_tradition_route_weight_block(block, target)
     elif target["object_type"] == "federation_type" and target["object_id"] == "research_federation":
@@ -14232,7 +14234,7 @@ def implementation_notes_text(playset: dict[str, Any], thresholds: dict[str, int
         "| fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |",
         "| route unlock overrides | `common/technology/zzzz_staid_01_unlock_technology_technology.txt` | high | full-object copied source overrides add Director AI weights for Mega Engineering, Mega Shipyard, Gigas, NSC3, ESC, and starbase unlock chains |",
         "| AP/tradition category/node route overrides | `common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt`, `common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt`, `common/traditions/zzzz_staid_02_perks_traditions_traditions.txt` | medium | full-object copied source overrides preserve parent selection logic and add bounded Director route pressure to perks, categories, and selectable nodes |",
-        "| megastructure route overrides | `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` | high | full-object copied source overrides add Director AI weights for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft starts |",
+        "| megastructure route overrides | `common/megastructures/zzzz_staid_03_megastructures_megastructures.txt` | high | full-object copied source overrides add Director AI weights for economy multipliers, Mega Shipyard, planetcraft, war moon, and systemcraft starts; the Gigas habitat start uniquely preserves parent scoring and replaces only the global empty-habitat veto with a bounded colonization-plan penalty |",
         "| starbase static-defense policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt`, `common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt` | medium | additive economy reserves plus copied ESC starbase reactor AI weight support when crisis pressure is safe |",
         "| planetary-capacity policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan raises mineral/energy, pop, and empire-size targets without building/job IDs |",
         "| trade-capacity policy | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt`, `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive triggers and economy targets preserve Stellaris 4.4 trade logistics for ship, colony, market, and imbalance pressure |",
@@ -14634,6 +14636,7 @@ def tuning_notes_text(thresholds: dict[str, int]) -> str:
         "",
         "- ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.",
         "- Generated full-object route overrides now cover Dyson Sphere, Mega Shipyard, neutronium gigaforge, Nidavellir forge, Matrioshka brain, planetcraft printer, war moon, and systemcraft starts; generated files preserve parent `@variable` parse context and remove absent optional `pc_magnetar` compatibility references.",
+        "- The Gigas habitat start preserves parent base/site scoring, the 30-year queued-build cooldown, the starport veto, and the AI habitat cap. An active native colonization plan applies a nonzero `0.1` backlog penalty instead of any empty habitat hard-zeroing all future starts; crowded-tall readiness adds only a bounded factor `2`.",
         "- Exotic projects outside those route starts remain inventoried until the core loop is observer-tested against the high-scale crisis benchmark.",
         "",
         "## Planetary-Capacity Policy",
