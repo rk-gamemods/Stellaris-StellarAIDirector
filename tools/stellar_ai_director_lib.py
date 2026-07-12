@@ -40,6 +40,9 @@ DECISION_STATE_TRIGGER_PATH = (
     MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
 )
 OUTPOST_BUDGET_PATH = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_outpost_budgets.txt"
+IDENTITY_DIPLOMATIC_STANCE_PATH = (
+    MOD_ROOT / "common" / "policies" / "zzzz_staid_10_opening_growth_policies.txt"
+)
 CORE_AI_ARTIFACT_PATHS = (
     DECISION_STATE_TRIGGER_PATH,
     OUTPOST_BUDGET_PATH,
@@ -10122,7 +10125,7 @@ def archetype_triggers_text() -> str:
     return rendered
 
 
-def opening_growth_policies_text() -> str:
+def opening_growth_policies_text(*, identity_overlay: bool = True) -> str:
     diplomatic_block = find_verified_source_object_block("policies", "diplomatic_stance")
     bombardment_block = find_verified_source_object_block("policies", "orbital_bombardment")
     surrender_block = find_verified_source_object_block("policies", "orbital_bombardment_accept_surrender")
@@ -10136,10 +10139,43 @@ def opening_growth_policies_text() -> str:
 \t\t\t\tnum_rivals = 0
 \t\t\t}"""
     cooperative_exit = "\t\t\tmodifier = { factor = 0 staid_native_war_posture_active = yes }"
+    cooperative_identity = (
+        "\t\t\tmodifier = { factor = 1.40 staid_archetype_diplomatic = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }"
+    )
+    cooperative_secondary_diplomatic = (
+        "\t\t\tmodifier = { factor = 1.15 staid_archetype_lead_secondary_diplomatic = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }"
+    )
+    cooperative_research = (
+        "\t\t\tmodifier = { factor = 1.15 staid_archetype_research = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }"
+    )
+    cooperative_secondary_research = (
+        "\t\t\tmodifier = { factor = 1.10 staid_archetype_lead_secondary_research = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }"
+    )
+    cooperative_subject = "\t\t\tmodifier = { factor = 1.15 staid_role_subject = yes }"
     belligerent_native = "\t\t\tmodifier = { factor = 2 staid_native_war_posture_active = yes }"
     belligerent_boxed = "\t\t\tmodifier = { factor = 8 staid_boxed_in_war_pressure = yes }"
     mercantile_opening = "\t\t\tmodifier = { factor = 5 staid_opening_trade_to_research = yes staid_is_diplomatic_opening_phase = yes }"
     mercantile_exit = "\t\t\tmodifier = { factor = 0.25 staid_native_war_posture_active = yes }"
+    mercantile_identity = (
+        "\t\t\tmodifier = { factor = 1.40 staid_identity_megacorp = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes }"
+    )
+    isolationist_identity = (
+        "\t\t\tmodifier = { factor = 1.40 staid_archetype_defensive = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes "
+        "has_federation = no staid_role_subject = no is_at_war = no "
+        "staid_native_war_posture_active = no }"
+    )
+    isolationist_secondary = (
+        "\t\t\tmodifier = { factor = 1.15 staid_archetype_lead_secondary_defensive = yes "
+        "staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes "
+        "has_federation = no staid_role_subject = no is_at_war = no "
+        "staid_native_war_posture_active = no }"
+    )
     expansionist_opening = "\t\t\tmodifier = { factor = 4 staid_opening_military_to_pops = yes staid_is_diplomatic_opening_phase = yes staid_has_safe_basic_stockpiles = yes }"
     expansionist_exit = "\t\t\tmodifier = { factor = 0.25 staid_native_war_posture_active = yes }"
     expansionist_boxed = "\t\t\tmodifier = { factor = 0.10 staid_boxed_in_war_pressure = yes }"
@@ -10157,8 +10193,27 @@ def opening_growth_policies_text() -> str:
     for option in ("diplo_stance_cooperative", "diplo_stance_cooperative_nomad"):
         diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, cooperative_opening)
         diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, option, cooperative_exit)
+    if identity_overlay:
+        for modifier in (
+            cooperative_identity,
+            cooperative_secondary_diplomatic,
+            cooperative_research,
+            cooperative_secondary_research,
+            cooperative_subject,
+        ):
+            diplomatic_block = insert_policy_option_ai_weight_modifier(
+                diplomatic_block, "diplo_stance_cooperative", modifier
+            )
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_opening)
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_mercantile", mercantile_exit)
+    if identity_overlay:
+        diplomatic_block = insert_policy_option_ai_weight_modifier(
+            diplomatic_block, "diplo_stance_mercantile", mercantile_identity
+        )
+        for modifier in (isolationist_identity, isolationist_secondary):
+            diplomatic_block = insert_policy_option_ai_weight_modifier(
+                diplomatic_block, "diplo_stance_isolationist", modifier
+            )
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_opening)
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_exit)
     diplomatic_block = insert_policy_option_ai_weight_modifier(diplomatic_block, "diplo_stance_expansionist", expansionist_boxed)
@@ -10198,6 +10253,17 @@ def opening_growth_policies_text() -> str:
         "# The peaceful opening exits at war pressure; boxed-in empires strongly prefer Belligerent/Supremacist posture.\n\n"
         + text
     )
+
+
+def render_identity_diplomatic_stance_artifacts() -> dict[Path, str]:
+    """Render the single existing policy artifact owned by the identity stance slice."""
+
+    artifacts = {IDENTITY_DIPLOMATIC_STANCE_PATH: opening_growth_policies_text()}
+    if tuple(artifacts) != (IDENTITY_DIPLOMATIC_STANCE_PATH,):
+        raise ValueError("Identity diplomatic stance renderer violated its fixed output allowlist")
+    for text in artifacts.values():
+        parse_pdx(text)
+    return artifacts
 
 
 def militarist_bombardment_stances_text() -> str:

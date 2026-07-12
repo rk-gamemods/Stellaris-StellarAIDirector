@@ -1,4 +1,5 @@
 import csv
+import difflib
 import json
 import re
 import tempfile
@@ -20,6 +21,7 @@ from stellar_ai_director_lib import (
     BUILD_PLAN_CONSUMER_POLICY_CSV,
     EmpireState,
     GENERATED_VERSION_INVENTORY_MD,
+    IDENTITY_DIPLOMATIC_STANCE_PATH,
     MANUAL_STATIC_VALIDATION_MD,
     MARKET_CAP_BREAKER_SALES,
     MOD_ROOT,
@@ -44,6 +46,7 @@ from stellar_ai_director_lib import (
     STELLARIS_INSTALL_ROOT,
     _collect_job_adds,
     _economic_subplan_block,
+    _extract_balanced_block_at,
     append_child_block_clause,
     ai_budget_text,
     atlas_object_has_ai_signal,
@@ -85,6 +88,7 @@ from stellar_ai_director_lib import (
     nonconstruction_economic_valuation_dataset_passes,
     nomad_waystation_budget_text,
     outpost_budget_text,
+    opening_growth_policies_text,
     parse_file,
     parse_numeric,
     parse_pdx,
@@ -97,6 +101,7 @@ from stellar_ai_director_lib import (
     relative_economic_standard_rows,
     read_text,
     repair_gigas_habitat_spawn_effect_params,
+    render_identity_diplomatic_stance_artifacts,
     forbidden_generated_surface_errors,
     stale_stellar_ai_dependency_errors,
     surplus_sink_pressure,
@@ -4529,6 +4534,86 @@ class GeneratedModValidityTests(unittest.TestCase):
             [path.name for path in personality_files],
             ["zzzzz_staid_16_standalone_war_pressure.txt"],
         )
+
+    def test_identity_diplomatic_stances_compose_without_overriding_legality(self):
+        parse_file(IDENTITY_DIPLOMATIC_STANCE_PATH)
+        artifact = IDENTITY_DIPLOMATIC_STANCE_PATH.read_text(encoding="utf-8")
+        self.assertEqual(artifact, opening_growth_policies_text())
+        self.assertEqual(
+            render_identity_diplomatic_stance_artifacts(),
+            {IDENTITY_DIPLOMATIC_STANCE_PATH: artifact},
+        )
+        diplomatic = extract_top_level_object_text(artifact, "diplomatic_stance")
+        def option_text(option_name):
+            name_match = re.search(
+                rf'name\s*=\s*"{re.escape(option_name)}"', diplomatic
+            )
+            self.assertIsNotNone(name_match, option_name)
+            name_index = name_match.start()
+            option_start = diplomatic.rfind("option = {", 0, name_index)
+            return _extract_balanced_block_at(
+                diplomatic, diplomatic.index("{", option_start)
+            )
+
+        cooperative = option_text("diplo_stance_cooperative")
+        cooperative_nomad = option_text("diplo_stance_cooperative_nomad")
+        mercantile = option_text("diplo_stance_mercantile")
+        isolationist = option_text("diplo_stance_isolationist")
+
+        for marker in (
+            "factor = 1.40 staid_archetype_diplomatic = yes",
+            "factor = 1.15 staid_archetype_lead_secondary_diplomatic = yes",
+            "factor = 1.15 staid_archetype_research = yes",
+            "factor = 1.10 staid_archetype_lead_secondary_research = yes",
+            "factor = 1.15 staid_role_subject = yes",
+            "factor = 0 staid_native_war_posture_active = yes",
+        ):
+            self.assertIn(marker, cooperative)
+        self.assertNotIn("staid_archetype_", cooperative_nomad)
+        self.assertNotIn("staid_role_subject", cooperative_nomad)
+        self.assertIn("factor = 1.40 staid_identity_megacorp = yes", mercantile)
+        self.assertIn("factor = 1.40 staid_archetype_defensive = yes", isolationist)
+        self.assertIn("factor = 1.15 staid_archetype_lead_secondary_defensive = yes", isolationist)
+        for gate in (
+            "has_federation = no",
+            "staid_role_subject = no",
+            "is_at_war = no",
+            "staid_native_war_posture_active = no",
+        ):
+            self.assertEqual(isolationist.count(gate), 2)
+        self.assertLessEqual(1.40 * 1.10 * 1.15, 1.80)
+        self.assertNotRegex(
+            diplomatic,
+            r"staid_archetype_hard_(?:diplomatic|research|defensive)",
+        )
+        archetype_triggers = (
+            MOD_ROOT
+            / "common"
+            / "scripted_triggers"
+            / "zzzz_staid_21_nation_archetype_triggers.txt"
+        ).read_text(encoding="utf-8")
+        for archetype in ("diplomatic", "research", "defensive"):
+            secondary = extract_top_level_object_text(
+                archetype_triggers,
+                f"staid_archetype_lead_secondary_{archetype}",
+            )
+            self.assertIn(f"staid_archetype_{archetype} = no", secondary)
+        for forbidden in ("country_event =", "set_country_flag =", "factor = 0 staid_archetype_"):
+            self.assertNotIn(forbidden, diplomatic)
+        baseline = opening_growth_policies_text(identity_overlay=False).splitlines()
+        production = artifact.splitlines()
+        matcher = difflib.SequenceMatcher(a=baseline, b=production, autojunk=False)
+        inserted = []
+        for tag, _i1, _i2, j1, j2 in matcher.get_opcodes():
+            self.assertIn(tag, {"equal", "insert"})
+            if tag == "insert":
+                inserted.extend(production[j1:j2])
+        self.assertEqual(len(inserted), 8)
+        for line in inserted:
+            self.assertRegex(
+                line,
+                r"staid_(?:archetype_|identity_megacorp|role_subject)",
+            )
 
     def test_megastructure_upgrade_stages_are_prioritized_over_new_starts(self):
         megastructure_path = MOD_ROOT / "common" / "megastructures" / "zzzz_staid_03_megastructures_megastructures.txt"
