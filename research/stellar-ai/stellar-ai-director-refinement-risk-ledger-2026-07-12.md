@@ -346,7 +346,9 @@ restore H05 safety bypasses or the H01/H02 generic reserve pressure.
 
 ## H07 — Native outpost budget availability beside colonization
 
-Status: implemented on the research branch; static validation pending commit.
+Status: implemented and committed on the research branch at `75bca24e`;
+focused static validation passed, with copied-save runtime continuation still
+pending.
 
 Evidence:
 
