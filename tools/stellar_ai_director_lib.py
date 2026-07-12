@@ -114,6 +114,13 @@ NOMAD_ARKSHIP_ASCENSION_PERK_HASHES = {
     "ap_technological_ascendancy": "21f3e314e15f69e5d062bc0f957971c956b7133252d8875272a0e21b54c10671",
     "ap_eternal_vigilance_nomads": "9a5bf9e600b9d71ad367c80b8471662b886b6dbe065ca1f27e0a97d9d1b561ed",
 }
+IDENTITY_FEDERATION_FAMILY_HASHES = {
+    "default_federation": "a914a0329597c2d3b7b3efe238d58cc5d5d48e446ae71331e8c8b85f998cdcac",
+    "trade_federation": "c34d969f8f154e73d66feb5758790452b4c6ecc2b1379de40ede24c529738460",
+    "research_federation": "3f4a46fe1d3d8e4e56e6f52be601b59a5fefef05f0d15a93ad749ddbcdfbda8c",
+    "military_federation": "6d13bef4bba6de95a1e8193cbc9207501d5483e5b893b3cf1147ed766df93177",
+    "hegemony_federation": "4b83efc59f76c9053dd8c2e1417b4abc0865cf0e45b8a02da7d33ef911d9432d",
+}
 IDENTITY_SUBJECT_AGREEMENT_ROOT = MOD_ROOT / "common" / "agreement_presets"
 IDENTITY_SUBJECT_AGREEMENT_SOURCES = {
     "00_agreement_presets.txt": (
@@ -910,6 +917,10 @@ ROUTE_OVERRIDE_TARGETS = [
     # Verified diplomacy lever: federation type ai_weight is safe to copy and patch.
     # Diplomatic actions, personalities, and federation law rewrites remain gated high-risk work.
     {"object_id": "research_federation", "object_type": "federation_type", "mod_id": "vanilla", "source_file": "common/federation_types/00_federation_types.txt", "route_id": "research_diplomacy_core", "weight": 0, "file_key": "15_research_diplomacy"},
+    {"object_id": "default_federation", "object_type": "federation_type", "mod_id": "vanilla", "source_file": "common/federation_types/00_federation_types.txt", "route_id": "identity_federation_family", "weight": 0, "file_key": "15_research_diplomacy", "federation_identity_only": True},
+    {"object_id": "trade_federation", "object_type": "federation_type", "mod_id": "vanilla", "source_file": "common/federation_types/00_federation_types.txt", "route_id": "identity_federation_family", "weight": 0, "file_key": "15_research_diplomacy", "federation_identity_only": True},
+    {"object_id": "military_federation", "object_type": "federation_type", "mod_id": "vanilla", "source_file": "common/federation_types/00_federation_types.txt", "route_id": "identity_federation_family", "weight": 0, "file_key": "15_research_diplomacy", "federation_identity_only": True},
+    {"object_id": "hegemony_federation", "object_type": "federation_type", "mod_id": "vanilla", "source_file": "common/federation_types/00_federation_types.txt", "route_id": "identity_federation_family", "weight": 0, "file_key": "15_research_diplomacy", "federation_identity_only": True},
 ]
 
 THREAT_RESPONSE_AXES = (
@@ -5332,6 +5343,8 @@ def research_federation_weight_block(
         common = (
             "staid_archetype_identity_conflict = no "
             "staid_archetype_eligible_country = yes "
+            "staid_archetype_extermination = no "
+            "staid_identity_inward_perfection = no "
             "staid_research_diplomacy_priority_ready = yes"
         )
         for archetype in ("research", "diplomatic"):
@@ -5342,6 +5355,48 @@ def research_federation_weight_block(
                 )
             )
     return insert_top_level_ai_weight_modifiers(block_text, modifiers)
+
+
+def identity_federation_family_modifiers(object_id: str) -> list[str]:
+    common = (
+        "staid_archetype_identity_conflict = no "
+        "staid_archetype_eligible_country = yes "
+        "staid_archetype_extermination = no "
+        "staid_identity_inward_perfection = no "
+        "staid_survival_mode = no staid_recovery_mode = no "
+        "staid_core_deficit_short_runway = no "
+        "staid_catastrophic_collapse_mode = no"
+    )
+    mappings: dict[str, tuple[tuple[int, str], ...]] = {
+        "default_federation": (
+            (100, "staid_archetype_diplomatic = yes"),
+            (50, "staid_archetype_lead_secondary_diplomatic = yes"),
+            (50, "staid_archetype_defensive = yes is_at_war = no staid_security_existential = no"),
+            (25, "staid_archetype_lead_secondary_defensive = yes is_at_war = no staid_security_existential = no"),
+        ),
+        "trade_federation": (
+            (125, "staid_identity_megacorp = yes"),
+            (75, "staid_archetype_diplomatic = yes"),
+            (40, "staid_archetype_lead_secondary_diplomatic = yes"),
+        ),
+        "military_federation": (
+            (100, "staid_archetype_defensive = yes"),
+            (50, "staid_archetype_lead_secondary_defensive = yes"),
+            (75, "staid_archetype_conquest = yes"),
+            (40, "staid_archetype_lead_secondary_conquest = yes"),
+        ),
+        "hegemony_federation": (
+            (100, "staid_archetype_conquest = yes"),
+            (50, "staid_archetype_lead_secondary_conquest = yes"),
+            (75, "staid_identity_barbaric_despoiler = yes"),
+            (75, "staid_identity_rogue_servitor = yes"),
+        ),
+    }
+    return [
+        f"\t\tmodifier = {{ add = {weight} desc = staid_identity_{object_id} "
+        f"from = {{ {condition} {common} }} }}"
+        for weight, condition in mappings.get(object_id, ())
+    ]
 
 
 def nomad_arkship_ascension_perk_modifier(object_id: str) -> str | None:
@@ -7210,6 +7265,19 @@ def route_override_object_text(
                 f"Vanilla Nomad ascension perk drifted: {target['object_id']} "
                 f"expected={expected_sha256} actual={actual_sha256}"
             )
+    federation_family_modifiers = identity_federation_family_modifiers(
+        str(target["object_id"])
+    )
+    if str(target["object_id"]) in IDENTITY_FEDERATION_FAMILY_HASHES:
+        expected_sha256 = IDENTITY_FEDERATION_FAMILY_HASHES[str(target["object_id"])]
+        actual_sha256 = hashlib.sha256(
+            normalize_text_file_content(block).encode("utf-8")
+        ).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise ValueError(
+                f"Vanilla federation family drifted: {target['object_id']} "
+                f"expected={expected_sha256} actual={actual_sha256}"
+            )
     if target["object_type"] == "megastructure":
         target = {
             **target,
@@ -7218,7 +7286,13 @@ def route_override_object_text(
     if target["object_type"] == "megastructure" and object_names is not None:
         block = strip_optional_absent_planet_classes(block, object_names)
         block = repair_gigas_habitat_spawn_effect_params(block, target)
-    if target.get("nomad_identity_only"):
+    if target.get("federation_identity_only"):
+        if archetype_overlay:
+            block = insert_top_level_ai_weight_modifiers(
+                block,
+                federation_family_modifiers,
+            )
+    elif target.get("nomad_identity_only"):
         if archetype_overlay and nomad_perk_modifier:
             block = insert_top_level_ai_weight_modifier(block, nomad_perk_modifier)
     elif target["object_type"] in {"building", "district"}:
@@ -14171,7 +14245,10 @@ def render_archetype_consumer_artifacts(
     ]
     if {Path(str(row["generated_file"])).resolve() for row in federation_rows} != {
         IDENTITY_FEDERATION_PATH.resolve()
-    } or [row["object_id"] for row in federation_rows] != ["research_federation"]:
+    } or {row["object_id"] for row in federation_rows} != {
+        "research_federation",
+        *IDENTITY_FEDERATION_FAMILY_HASHES,
+    }:
         raise ValueError("Identity federation rows violated the fixed output allowlist")
     artifacts = {
         FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(

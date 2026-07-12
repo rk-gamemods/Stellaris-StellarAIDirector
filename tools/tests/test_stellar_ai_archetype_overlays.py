@@ -24,6 +24,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     FLEET_THREAT_RESPONSE_FACTOR,
     IDENTITY_CLAIM_BUDGET_PATH,
     IDENTITY_FEDERATION_PATH,
+    IDENTITY_FEDERATION_FAMILY_HASHES,
     IDENTITY_MEGASTRUCTURE_PATH,
     IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
@@ -452,6 +453,108 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             - zero.count("staid_research_diplomacy_priority_ready = yes"),
             4,
         )
+        source_text = (
+            STELLARIS_INSTALL_ROOT
+            / "common"
+            / "federation_types"
+            / "00_federation_types.txt"
+        ).read_text(encoding="utf-8-sig")
+        source_block = extract_top_level_object_text(
+            source_text, "research_federation"
+        )
+        self.assertEqual(
+            hashlib.sha256(
+                normalize_text_file_content(source_block).encode("utf-8")
+            ).hexdigest(),
+            IDENTITY_FEDERATION_FAMILY_HASHES["research_federation"],
+        )
+
+    def test_federation_families_blend_only_compatible_identity_vectors(self) -> None:
+        production = self.production[IDENTITY_FEDERATION_PATH]
+        zero = self.zero[IDENTITY_FEDERATION_PATH]
+        expected_markers = {
+            "default_federation": (
+                "add = 100",
+                "staid_archetype_diplomatic = yes",
+                "staid_archetype_defensive = yes",
+            ),
+            "trade_federation": (
+                "add = 125",
+                "staid_identity_megacorp = yes",
+                "staid_archetype_diplomatic = yes",
+            ),
+            "military_federation": (
+                "add = 100",
+                "staid_archetype_defensive = yes",
+                "staid_archetype_conquest = yes",
+            ),
+            "hegemony_federation": (
+                "add = 100",
+                "staid_archetype_conquest = yes",
+                "staid_identity_barbaric_despoiler = yes",
+                "staid_identity_rogue_servitor = yes",
+            ),
+        }
+        source_text = (
+            STELLARIS_INSTALL_ROOT
+            / "common"
+            / "federation_types"
+            / "00_federation_types.txt"
+        ).read_text(encoding="utf-8-sig")
+        federation_ids = {
+            row["object_id"]
+            for row in ROUTE_OVERRIDE_TARGETS
+            if row["object_type"] == "federation_type"
+        }
+        self.assertEqual(
+            federation_ids,
+            {
+                "default_federation",
+                "trade_federation",
+                "research_federation",
+                "military_federation",
+                "hegemony_federation",
+            },
+        )
+        for object_id, markers in expected_markers.items():
+            block = extract_top_level_object_text(production, object_id)
+            zero_block = extract_top_level_object_text(zero, object_id)
+            for marker in markers:
+                self.assertIn(marker, block)
+            self.assertNotIn(f"staid_identity_{object_id}", zero_block)
+            for line in block.splitlines():
+                if f"desc = staid_identity_{object_id}" not in line:
+                    continue
+                for gate in (
+                    "staid_archetype_identity_conflict = no",
+                    "staid_archetype_eligible_country = yes",
+                    "staid_archetype_extermination = no",
+                    "staid_identity_inward_perfection = no",
+                    "staid_survival_mode = no",
+                    "staid_recovery_mode = no",
+                    "staid_core_deficit_short_runway = no",
+                    "staid_catastrophic_collapse_mode = no",
+                ):
+                    self.assertIn(gate, line)
+            source_block = extract_top_level_object_text(source_text, object_id)
+            self.assertEqual(
+                normalize_text_file_content(zero_block),
+                normalize_text_file_content(source_block),
+                object_id,
+            )
+            self.assertEqual(
+                hashlib.sha256(
+                    normalize_text_file_content(source_block).encode("utf-8")
+                ).hexdigest(),
+                IDENTITY_FEDERATION_FAMILY_HASHES[object_id],
+            )
+        self.assertNotIn("staid_archetype_extermination = yes", production)
+        for excluded in (
+            "spiritualist_federation",
+            "imperial_loyalists_federation",
+            "hke_federation",
+        ):
+            self.assertNotIn(f"{excluded} = {{", production)
 
     def test_nomad_starting_arkships_bias_exactly_three_native_perks(self) -> None:
         path = IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS[0]
