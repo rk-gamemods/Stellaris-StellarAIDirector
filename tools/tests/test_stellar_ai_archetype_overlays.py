@@ -20,6 +20,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
     FLEET_ALLOY_BUDGET_PATH,
     FLEET_ARCHETYPE_FACTORS,
+    FLEET_THREAT_RESPONSE_FACTOR,
     ROUTE_OVERRIDE_TARGETS,
     TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS,
     TECHNOLOGY_ARCHETYPE_ROUTE_FACTORS,
@@ -28,6 +29,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     extract_top_level_object_text,
     fleet_alloy_budget_text,
     fleet_archetype_budget_modifier,
+    fleet_threat_response_budget_modifier,
     render_archetype_consumer_artifacts,
     route_gate_for_target,
     route_override_file_text,
@@ -137,7 +139,8 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         self.assertEqual(
             self.production[FLEET_ALLOY_BUDGET_PATH].count("any_country"),
             self.zero[FLEET_ALLOY_BUDGET_PATH].count("any_country")
-            + len(FLEET_ARCHETYPE_FACTORS),
+            + len(FLEET_ARCHETYPE_FACTORS)
+            + 1,
         )
 
     def test_shared_route_renderer_keeps_every_generated_group_current(self) -> None:
@@ -195,6 +198,45 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         ):
             self.assertEqual(production.count(marker), zero.count(marker))
         self.assertNotIn("Bounded H08c identity bias", zero)
+
+    def test_ship_threat_response_is_bounded_stateless_and_emergency_neutral(self) -> None:
+        production = extract_top_level_object_text(
+            self.production[FLEET_ALLOY_BUDGET_PATH],
+            "alloys_expenditure_ships",
+        )
+        zero = extract_top_level_object_text(
+            self.zero[FLEET_ALLOY_BUDGET_PATH],
+            "alloys_expenditure_ships",
+        )
+        block = fleet_threat_response_budget_modifier()
+
+        self.assertIn(block, production)
+        self.assertNotIn(block, zero)
+        self.assertIn("factor = 1.10", block)
+        for guard in (
+            "highest_threat > 50",
+            "used_naval_capacity_percent < 0.80",
+            "is_at_war = no",
+            "NOT = { recently_lost_war = yes }",
+            "staid_catastrophic_collapse_mode = no",
+            "staid_core_deficit_short_runway = no",
+            "has_ascension_perk = ap_become_the_crisis",
+            "is_crisis_faction = yes",
+        ):
+            self.assertIn(guard, block)
+        for forbidden in (
+            "has_monthly_income",
+            "resource_stockpile_compare",
+            "set_country_flag",
+            "country_event",
+            "economic_plan",
+        ):
+            self.assertNotIn(forbidden, block)
+        maximum_overlap = FLEET_THREAT_RESPONSE_FACTOR * max(
+            FLEET_ARCHETYPE_FACTORS.values()
+        )
+        self.assertAlmostEqual(maximum_overlap, 1.232)
+        self.assertLessEqual(round(maximum_overlap, 3), 1.232)
 
     def test_technology_overlay_matches_only_reviewed_selectable_pairs(self) -> None:
         self.assertEqual(len(self.technology_rows), 42)

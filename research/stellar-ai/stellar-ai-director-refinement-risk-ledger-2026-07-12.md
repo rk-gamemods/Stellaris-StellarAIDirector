@@ -939,3 +939,34 @@ Rollback boundary:
 Revert H09a independently by restoring the four legacy generated runtime files,
 the readiness subplan, and the strategy-kernel flag branch. Do not combine that
 rollback with any later stateless H09 factor or distance adjustment.
+
+## H09b/H09c — Bounded arms-race nudge and war-distance cutoff
+
+Status: implemented as two native, stateless scalar adjustments. A threatened
+AI at peace with less than 80% naval-capacity use receives a `1.10` ship-budget
+factor only when it has not recently lost a war and is outside collapse,
+short-runway, and crisis states. `WAR_DECLARATION_MAX_DISTANCE` returns from the
+Director's restrictive `50` to the Pegasus vanilla ceiling of `300`; the
+existing Director distance malus, score floor, aggression base, and
+offense/defense allotment remain unchanged.
+
+Top five risks:
+
+1. **Fleet spending can crowd out recovery.** The factor is capped at `1.10`,
+   excludes collapse/short-runway/recent-loss states, and has a worst-case
+   overlap of `1.10 * 1.12 = 1.232` with the strongest identity bias.
+2. **`highest_threat` does not identify a useful target.** It only nudges the
+   native ship budget; it does not select enemies, create claims, or order wars.
+3. **Budget availability does not guarantee ships.** Templates, shipyards,
+   affordability, queues, and the engine planner remain required; runtime proof
+   must distinguish allocation from construction.
+4. **A wider declaration radius can expose pathing or homeland-defense faults.**
+   Only the hard cutoff changes to `300`; the malus still begins after 25 jumps,
+   applies `0.05` per additional jump, and bottoms out at a `0.5` multiplier,
+   preserving a nearby-target preference without excluding distant empires.
+5. **Crisis exclusion adds another global crisis predicate evaluation.** No
+   event, pulse, persistent state, or scripted order is added, but observer
+   telemetry should confirm the native budget check is not a measurable cost.
+
+Rollback boundary: remove the H09b modifier independently or return the one H09c
+define to `50`. Neither rollback should restore the retired H09a event system.

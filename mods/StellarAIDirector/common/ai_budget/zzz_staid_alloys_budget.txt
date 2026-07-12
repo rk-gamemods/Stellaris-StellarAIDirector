@@ -8,8 +8,9 @@
 # capacity, peacetime construction receives a bounded share reduction instead
 # of becoming ineligible. This retains a cautious 4.4.4 workaround while weak
 # absolute fleets and civilian science-ship demand can still recover.
-# Identity tie-breakers apply only during ordinary peacetime underfill and never
-# during war, recent-loss, crisis, collapse, or short-runway states.
+# Threat response and identity tie-breakers apply only during ordinary
+# peacetime underfill and never during war, recent-loss, crisis, collapse, or
+# short-runway states.
 
 alloys_expenditure_ships = {
 	resource = alloys
@@ -58,6 +59,24 @@ alloys_expenditure_ships = {
 		modifier = {
 			factor = 0.25
 			staid_peacetime_high_naval_capacity_guard = yes
+		}
+		# Bounded H09b arms-race nudge for threatened peacetime underfill.
+		modifier = {
+			factor = 1.10
+			highest_threat > 50
+			used_naval_capacity_percent < 0.80
+			is_at_war = no
+			NOT = { recently_lost_war = yes }
+			staid_catastrophic_collapse_mode = no
+			staid_core_deficit_short_runway = no
+			NOR = {
+				any_neighbor_country = {
+					has_ascension_perk = ap_become_the_crisis
+				}
+				any_country = {
+					is_crisis_faction = yes
+				}
+			}
 		}
 		# Bounded H08c identity bias for ordinary peacetime underfill only.
 		modifier = {

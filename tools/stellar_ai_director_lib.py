@@ -59,6 +59,7 @@ FLEET_ARCHETYPE_FACTORS = {
     "extermination": 1.12,
     "conquest": 1.08,
 }
+FLEET_THREAT_RESPONSE_FACTOR = 1.10
 TECHNOLOGY_ARCHETYPE_ROUTE_FACTORS = {
     "research": {
         "research_megastructure_core": 1.15,
@@ -9400,12 +9401,9 @@ def generated_surface_artifact_passes(repo_root: Path = REPO_ROOT) -> bool:
         "common/economic_plans/zzzz_staid_additive_economic_plan.txt",
         "common/on_actions/zzz_staid_market_and_fleet_safety_on_actions.txt",
         "events/zzz_staid_market_and_fleet_safety_events.txt",
-        "common/on_actions/zzz_staid_threat_response_on_actions.txt",
         "common/opinion_modifiers/zzz_staid_threat_response_opinions.txt",
         "common/script_values/zzz_staid_roi_values.txt",
-        "common/script_values/zzz_staid_threat_response_values.txt",
         "common/scripted_triggers/zzz_staid_decision_state_triggers.txt",
-        "common/scripted_triggers/zzz_staid_threat_response_triggers.txt",
     }
     file_rows = _read_csv_rows(file_audit_path)
     reference_rows = _read_csv_rows(reference_audit_path)
@@ -10405,7 +10403,7 @@ def strategic_subsystem_audit_rows() -> list[dict[str, str]]:
         ("budget_management", "economy", "Reserve alloys, minerals, and strategic resources for viable construction and fleet pipelines.", "mod:common/ai_budget/zzz_staid_alloys_budget.txt; mod:common/ai_budget/zzz_staid_gigas_resource_budgets.txt; mod:common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt", "vanilla and mod expenditure categories", "ai_budget desired_min/desired_max/expenditure", "source_proven", "all", "deficit gates; positive-alloy fleet gate; defensive emergency bypass; prerequisite readiness", "corrected_static", "The base ship and upgrade budgets now stop during unaffordable peacetime deficits; overlap with mod-specific expenditure categories still needs runtime audit.", "Test simultaneous fleet, planet, and megastructure demand across positive, deficit, and wartime emergency states."),
         ("influence_market", "economy", "Spend capped influence on claims/expansion and limit Director market activity to cap-prevention overflow sales.", "mod:events/zzz_staid_market_and_fleet_safety_events.txt; mod:common/script_values/zzz_staid_roi_values.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "influence pressure; vanilla market_resource_price; resource_stockpile_percent; Gigas Kugelblitz storage stages", "claim ai_weight plus Director-owned 90%-of-cap overflow sale and storage-cap investment gate; no Director market-buy path", "source_proven", "regular|gestalt|subject", "claim viability; no deficit; positive earned income; fixed reserve; 90% actual storage cap", "corrected_static", "Vanilla AI emergency buying and diplomatic trade composition remain engine-side; Director production gates require earned income as well as stockpile.", "Inventory enclave, subject/federation, irregular-event, liability-reduction, and diplomatic trade channels; observe whether emergency buying persists after repair income becomes available."),
         ("territorial_expansion", "grand_strategy", "Recognize boxed-in empires and convert spatial constraint into expansion or conquest pressure.", "mod:common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/ai_budget/zzzz_staid_08_site_limited_expansion_ai_budget.txt; mod:common/policies/zzzz_staid_10_opening_growth_policies.txt", "border access; colony sites; claims; relative power", "native boxed-in declaration multiplier plus claim, stance, personality, and logistics weights", "source_proven", "regular|gestalt|pacifist|genocidal", "available sites; claim legality; pacifist exclusion; influence reserve", "implemented_static_needs_runtime", "The executable owns the exact blocking-country target and closed-border reachability calculation; script exposes no verified target-specific override.", "Use the single fresh 20–30-year observer acceptance run to verify a strong boxed-in empire attacks its blocking neighbor."),
-        ("war_selection", "grand_strategy", "Choose legal, profitable, weak targets and escalate when peaceful expansion is exhausted.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt", "relative power; claims; war goals; borders; threat", "claim budget only; none proven for direct declaration", "mixed", "regular|genocidal|raider|pacifist", "war legality; fleet/economic readiness; target value", "gap_identified", "The claim/CB prerequisite receives boxed-in urgency, but Director still does not directly rank targets or declare ordinary expansion wars.", "Audit personalities, diplomatic actions, casus belli, war goals, and the hardcoded declaration chain before any forced-war implementation."),
+        ("war_selection", "grand_strategy", "Choose legal, profitable, weak targets and escalate when peaceful expansion is exhausted.", "mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/personalities/zzzzz_staid_16_standalone_war_pressure.txt; mod:common/defines/zzzz_staid_14_high_scale_ai_defines.txt", "relative power; claims; war goals; borders; threat", "claim budget, personality weights, and native declaration planner", "mixed", "regular|genocidal|raider|pacifist", "war legality; fleet/economic readiness; target value", "gap_identified", "The claim/CB prerequisite receives boxed-in urgency, but Director still does not directly rank targets or declare ordinary expansion wars.", "Audit personalities, diplomatic actions, casus belli, war goals, and the hardcoded declaration chain before any forced-war implementation."),
         ("diplomacy_personality", "grand_strategy", "Adapt aggression, cooperation, rivalry, and pact behavior to ethics, power, and strategic need.", "mod:common/personalities/zzzzz_staid_16_standalone_war_pressure.txt; mod:common/policies/zzzz_staid_10_opening_growth_policies.txt", "Pegasus 4.4.4 personalities; Stellar AI 0.10 personality values; vanilla policy weights", "full personality objects plus diplomatic-stance policy", "source_proven", "all", "ethics; genocidal legality; subject status", "implemented_static_needs_runtime", "Direct diplomatic-action acceptance overrides remain intentionally untouched; rivalry and target selection remain native.", "Check only final load-order winners, then use the single observer acceptance run for behavioral proof."),
         ("fleet_doctrine", "military", "Scale fleet spending to threat and payoff without bankrupting research or civilian production.", "mod:common/scripted_triggers/zzzz_staid_11_fleet_doctrine_triggers.txt; mod:common/scripted_triggers/zzz_staid_decision_state_triggers.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt; mod:common/ai_budget/zzz_staid_alloys_budget.txt", "relative power; naval capacity; alloy income/runway; war state", "economic plan and alloy ship expenditure budget", "source_proven", "regular|machine|hive|genocidal", "positive alloy income; core deficit; defensive emergency; approved military routes", "corrected_static", "Runtime fleet-manager reinforcement behavior and fleet splitting remain outside current proof.", "Audit fleet templates, reinforcement, merging, and military construction against economic runway."),
         ("hostile_targets", "military", "Treat bosses and lethal fauna separately from ordinary enemy empires and remember failed attacks.", "mod:common/defines/zzzz_staid_14_high_scale_ai_defines.txt; mod:events/zzzz_staid_boss_defeat_escalation_events.txt", "vanilla boss flags; active-stack outlier fleet flags; battle-loss on_action", "boss military-power defines plus defeat escalation", "source_proven", "all_ai_empires", "BOSS/ULTRA_BOSS thresholds; exact survivor flag escalation", "corrected_static", "Only confirmed outlier flags receive adaptive post-loss escalation; the full active-stack boss inventory is not yet classified.", "Classify every is_boss/is_ultra_boss entity and verify AI pathing after a failed attack."),
@@ -10413,7 +10411,7 @@ def strategic_subsystem_audit_rows() -> list[dict[str, str]]:
         ("technology_routes", "progression", "Research economic prerequisites, fleet payoff, megastructure, and modded unlock routes in viable order.", "mod:common/technology/zzzz_staid_01_unlock_technology_technology.txt", "route override dataset; prerequisites; unlock flags", "technology ai_weight", "source_proven", "regular|machine|hive|special_origins", "route prerequisites; resource readiness; feature flags", "implemented_static_needs_runtime", "Competing routes and archetype-inapplicable technologies need a full negative-path audit.", "Validate every route prerequisite graph and empire applicability gate."),
         ("ascension_strategy", "progression", "Choose traditions, ascension perks, and ascension paths that fit the empire and current strategic bottleneck.", "mod:common/tradition_categories/zzzz_staid_02_perks_traditions_tradition_categories.txt; mod:common/traditions/zzzz_staid_02_perks_traditions_traditions.txt; mod:common/ascension_perks/zzzz_staid_02_perks_traditions_ascension_perks.txt", "route overrides; perk/tradition prerequisites", "tradition category/node and ascension-perk ai_weight", "source_proven", "regular|machine|hive|psionic|cybernetic|synthetic|biological", "prerequisites and source potential", "partial_audit", "Current overrides push selected routes but do not yet express a mutually coherent empire-specific ascension plan.", "Audit all path exclusions, prerequisites, synergies, and extreme-empire preferences."),
         ("megastructure_strategy", "progression", "Sequence high-return megastructures only when prerequisites, economy, and sites are ready.", "mod:common/megastructures/zzzz_staid_03_megastructures_megastructures.txt; mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "ROI datasets; site limits; route graph", "megastructure ai_weight plus economic plans/budgets", "mixed", "all_eligible", "prerequisites; site availability; resource runway", "implemented_static_needs_runtime", "Concurrent projects, repair/upgrade decisions, and unique mod chains need adversarial sequencing tests.", "Audit each chain from technology through site, budget, build, and upgrade completion."),
-        ("crisis_response", "military", "Convert economy and fleet production for real crises without permanently starving development.", "mod:common/scripted_triggers/zzz_staid_threat_response_triggers.txt; mod:events/zzz_staid_threat_response_events.txt", "crisis country types; relative power; war goals", "threat events and crisis economic subplans", "mixed", "all_non_crisis_ai", "threat classification; economic readiness; cooldowns", "partial_audit", "Vanilla and modded crises, fallen empires, and pseudo-crisis bosses are not yet exhaustively separated.", "Inventory crisis actors and verify response activation, target legality, and recovery after threat removal."),
+        ("crisis_response", "military", "Convert economy and fleet production for real crises without permanently starving development.", "mod:common/scripted_triggers/zzzz_staid_20_strategy_kernel_triggers.txt; mod:common/ai_budget/zzz_staid_alloys_budget.txt; mod:common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt", "crisis country types; relative power; native crisis predicates", "native crisis budget multipliers plus Director starbase weights", "mixed", "all_non_crisis_ai", "native crisis identity; economic readiness; collapse protection", "partial_audit", "Vanilla and modded crises, fallen empires, and pseudo-crisis bosses are not yet exhaustively separated.", "Inventory crisis actors and verify response activation, target legality, and recovery after threat removal."),
         ("starbase_defense", "military", "Build shipyards and static defense where strategically useful without crowding civilian research worlds.", "mod:common/starbase_buildings/zzzz_staid_05_starbase_defense_starbase_buildings.txt; mod:common/starbase_modules/zzzz_staid_05_starbase_defense_starbase_modules.txt", "route dataset; chokepoints; threat state", "starbase building/module ai_weight and economic plans", "source_proven", "all_starbase_owners", "deficit safety; threat readiness; source potential", "implemented_static_needs_runtime", "Chokepoint value, defensive platform affordability, and modded starbase slot competition need validation.", "Audit module/building selection at border, shipyard, trade, and interior starbases."),
         ("invasion_bombardment", "military", "Use bombardment and armies appropriate to conquest objectives and empire ethics.", "mod:common/bombardment_stances/zzzz_staid_12_militarist_raiding_bombardment.txt; mod:common/ai_budget/zzzz_staid_14_army_recruitment_budget.txt; mod:common/ai_budget/zzzz_staid_14_minerals_planet_construction_budget.txt", "bombardment stances; native army and transport AI; mineral budget competition", "bombardment stance ai_weight plus uncapped native army mineral reserve", "mixed", "militarist|raider|genocidal|pacifist", "ethics; civic; legal stance; economy", "implemented_static_needs_runtime", "Transport escort, invasion thresholds, army-type choice, and planet target choice remain executable-owned.", "Use the single observer acceptance run to confirm useful but non-excessive offensive armies."),
         ("machine_hive_gestalt", "archetype", "Use correct upkeep/resources, jobs, growth, unity, and ascension routes for gestalts and individual machines.", "mod:common/economic_plans/zzzz_staid_additive_economic_plan.txt", "country_uses_* triggers; machine/hive route gates", "economic plans and route weights", "mixed", "machine|individual_machine|hive", "consumer-goods and food use gates; owner type", "partial_audit", "Individual machines, rogue servitors, assimilators, exterminators, and hive variants need separate strategy matrices.", "Build an archetype capability matrix and add negative tests for inapplicable resources and routes."),
@@ -10693,7 +10691,7 @@ NAI = {
 	AI_HOSTILE_FLEET_DISTANCE = 3
 	BOSS_MILITARY_POWER = 100000
 	ULTRA_BOSS_MILITARY_POWER = 500000
-	WAR_DECLARATION_MAX_DISTANCE = 50
+	WAR_DECLARATION_MAX_DISTANCE = 300
 	WAR_DECLARATION_MALUS_DISTANCE = 25
 	WAR_DECLARATION_MALUS = 0.05
 	WAR_DECLARATION_MINIMUM_SCORE = 0.5
@@ -12967,6 +12965,29 @@ def fleet_archetype_budget_modifier(archetype: str, factor: float) -> str:
 \t\t}}"""
 
 
+def fleet_threat_response_budget_modifier() -> str:
+    """Render one bounded, stateless peacetime threat-response nudge."""
+
+    return f"""\t\t# Bounded H09b arms-race nudge for threatened peacetime underfill.
+\t\tmodifier = {{
+\t\t\tfactor = {FLEET_THREAT_RESPONSE_FACTOR:.2f}
+\t\t\thighest_threat > 50
+\t\t\tused_naval_capacity_percent < 0.80
+\t\t\tis_at_war = no
+\t\t\tNOT = {{ recently_lost_war = yes }}
+\t\t\tstaid_catastrophic_collapse_mode = no
+\t\t\tstaid_core_deficit_short_runway = no
+\t\t\tNOR = {{
+\t\t\t\tany_neighbor_country = {{
+\t\t\t\t\thas_ascension_perk = ap_become_the_crisis
+\t\t\t\t}}
+\t\t\t\tany_country = {{
+\t\t\t\t\tis_crisis_faction = yes
+\t\t\t\t}}
+\t\t\t}}
+\t\t}}"""
+
+
 def fleet_alloy_budget_text(
     *,
     archetype_overlay: bool = True,
@@ -12996,6 +13017,11 @@ def fleet_alloy_budget_text(
 \t\t}""",
     )
     if archetype_overlay:
+        ships = insert_top_level_child_modifier(
+            ships,
+            "weight",
+            fleet_threat_response_budget_modifier(),
+        )
         factors = (
             FLEET_ARCHETYPE_FACTORS
             if archetype_factors is None
@@ -13020,8 +13046,9 @@ def fleet_alloy_budget_text(
     )
     overlay_note = (
         """
-# Identity tie-breakers apply only during ordinary peacetime underfill and never
-# during war, recent-loss, crisis, collapse, or short-runway states."""
+# Threat response and identity tie-breakers apply only during ordinary
+# peacetime underfill and never during war, recent-loss, crisis, collapse, or
+# short-runway states."""
         if archetype_overlay
         else ""
     )

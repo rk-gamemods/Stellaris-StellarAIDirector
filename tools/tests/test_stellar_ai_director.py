@@ -1572,7 +1572,7 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("WAR_DECLARATION_MALUS_DISTANCE = 25", text)
         self.assertIn("WAR_DECLARATION_MALUS = 0.05", text)
         self.assertIn("WAR_DECLARATION_MINIMUM_SCORE = 0.5", text)
-        self.assertIn("WAR_DECLARATION_MAX_DISTANCE = 50", text)
+        self.assertIn("WAR_DECLARATION_MAX_DISTANCE = 300", text)
         self.assertIn("OFFENSE_VS_DEFENSE_STRATEGY_ALLOTMENT = 1.0", text)
 
     def test_default_country_type_removes_preplanner_war_deadlock_gates(self):
