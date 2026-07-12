@@ -8,7 +8,7 @@ Generated 2026-07-04 from copied source snapshots and the selected Irony collect
 | --- | --- | --- | --- |
 | state gates | `common/scripted_triggers/zzz_staid_decision_state_triggers.txt` | low | additive namespaced triggers |
 | unlock-research policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | low | additive economic-plan subplan reimplements parity-reference research pressure into validated modded unlock gates |
-| alloy budgets | `common/ai_budget/zzz_staid_alloys_budget.txt` | medium | Director owns ship-conversion gates while the active parent retains the generic megastructure budget |
+| alloy and outpost budgets | `common/ai_budget/zzz_staid_alloys_budget.txt`, `common/ai_budget/zzz_staid_outpost_budgets.txt` | medium | Director owns ship-conversion gates, keeps generic megastructure reserves with the active parent, and keeps native alloy/food outpost lanes eligible beside colonization with factor-0.25 allocation dampening |
 | Gigas special-resource reserves | `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` | medium | intentional full-object overrides of Gigas megastructure special-resource budgets |
 | economy targets | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | high | intentional full-object replacement of `basic_economy_plan` with high-scale Gigas/NSC3/ESC survival targets |
 | fleet-throughput policy | `common/economic_plans/zzzz_staid_additive_economic_plan.txt` | medium | replacement economic-plan subplan maps shipyard ROI into crisis-scale alloy/energy/naval-cap targets after anti-collapse gates |

@@ -10794,6 +10794,10 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
         opening_growth_edicts_text(),
     )
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt", ai_budget_text(thresholds))
+    write_text_file(
+        MOD_ROOT / "common" / "ai_budget" / "zzz_staid_outpost_budgets.txt",
+        outpost_budget_text(),
+    )
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt", gigas_resource_budget_text())
     write_text_file(MOD_ROOT / "common" / "defines" / "zzzz_staid_14_high_scale_ai_defines.txt", high_scale_ai_defines_text())
     write_text_file(
@@ -12612,6 +12616,132 @@ staid_homeland_under_attack = {
         .replace("resource_stockpile_compare = { resource = alloys value > 10000 }",
                  f"resource_stockpile_compare = {{ resource = alloys value > {thresholds['shipyard_stockpile_alloys']} }}")
     )
+
+
+OUTPOST_BUDGET_VANILLA_HASHES = {
+    "alloys_expenditure_starbases_expand": "bda8dc9d856924f7aade4041b86f9876116255ab53b00c59079f231a4cb7130d",
+    "food_expenditure_starbases_expand": "c6f4b69a3e13485d701a177427b523fa0fe76ad0c5cfaef30177539c214a16ca",
+}
+
+
+def active_outpost_budget_parent_overrides() -> list[str]:
+    object_ids = tuple(OUTPOST_BUDGET_VANILLA_HASHES)
+    patterns = {
+        object_id: re.compile(
+            rf"(?m)^[ \t]*{re.escape(object_id)}[ \t]*=[ \t]*\{{"
+        )
+        for object_id in object_ids
+    }
+    sources: list[str] = []
+    for mod in build_active_playset_snapshot()["mods"]:
+        if str(mod.get("name", "")).casefold() == "stellar ai director":
+            continue
+        raw_path = str(mod.get("path", "")).strip()
+        if not raw_path:
+            continue
+        root = Path(raw_path)
+        budget_root = root / "common" / "ai_budget"
+        if not budget_root.exists():
+            continue
+        for path in iter_text_files(budget_root):
+            text = read_text(path)
+            for object_id, pattern in patterns.items():
+                if pattern.search(text):
+                    sources.append(
+                        f"{object_id}:{mod.get('name', '')}:{path}"
+                    )
+    return sorted(sources)
+
+
+def outpost_budget_text() -> str:
+    """Keep native outpost funding eligible beside colonization work."""
+
+    alloy_source = read_text(VANILLA_COMMON_ROOT / "ai_budget" / "00_alloys_budget.txt")
+    food_source = read_text(VANILLA_COMMON_ROOT / "ai_budget" / "00_food_budget.txt")
+    alloy_outposts = extract_top_level_object_text(
+        alloy_source, "alloys_expenditure_starbases_expand"
+    )
+    food_outposts = extract_top_level_object_text(
+        food_source, "food_expenditure_starbases_expand"
+    )
+    source_blocks = {
+        "alloys_expenditure_starbases_expand": alloy_outposts,
+        "food_expenditure_starbases_expand": food_outposts,
+    }
+    for object_id, source_block in source_blocks.items():
+        actual_hash = hashlib.sha256(source_block.encode("utf-8")).hexdigest()
+        expected_hash = OUTPOST_BUDGET_VANILLA_HASHES[object_id]
+        if actual_hash != expected_hash:
+            raise ValueError(
+                f"Vanilla {object_id} source drifted: {actual_hash} != {expected_hash}"
+            )
+    active_overrides = active_outpost_budget_parent_overrides()
+    if active_overrides:
+        raise ValueError(
+            "Active playset overrides native outpost budgets; reconstruct the winner: "
+            + "; ".join(active_overrides)
+        )
+
+    alloy_potential = extract_assignment_block(alloy_outposts, "potential")
+    alloy_not = "\t\tNOT = {\n"
+    alloy_colonization_veto = "\t\t\tai_colonize_plans > 0\n"
+    if alloy_potential.count(alloy_not) != 1 or alloy_potential.count(
+        alloy_colonization_veto
+    ) != 1:
+        raise ValueError(
+            "Vanilla alloy outpost potential changed; review before generation"
+        )
+    alloy_potential = alloy_potential.replace(alloy_not, "\t\tNOR = {\n", 1)
+    alloy_potential = alloy_potential.replace(alloy_colonization_veto, "", 1)
+    alloy_outposts = replace_top_level_child_block(
+        alloy_outposts, "potential", "\tpotential = " + alloy_potential
+    )
+    alloy_outposts = insert_top_level_child_modifier(
+        alloy_outposts,
+        "weight",
+        """\t\t# Prefer colonization without making native outpost funding ineligible.
+\t\tmodifier = {
+\t\t\tfactor = 0.25
+\t\t\tai_colonize_plans > 0
+\t\t}""",
+    )
+
+    food_potential = extract_assignment_block(food_outposts, "potential")
+    food_colonization_veto = "\t\t\t\tai_colonize_plans > 0\n"
+    if food_potential.count(food_colonization_veto) != 1:
+        raise ValueError(
+            "Vanilla biological outpost potential changed; review before generation"
+        )
+    food_potential = food_potential.replace(food_colonization_veto, "", 1)
+    food_outposts = replace_top_level_child_block(
+        food_outposts, "potential", "\tpotential = " + food_potential
+    )
+    food_outposts = insert_top_level_child_modifier(
+        food_outposts,
+        "weight",
+        """\t\t# Match alloy-lane availability dampening for biological construction.
+\t\tmodifier = {
+\t\t\tfactor = 0.25
+\t\t\tai_colonize_plans > 0
+\t\t}""",
+    )
+
+    text = """# Generated by tools/generate_stellar_ai_director_patch.py.
+# Pegasus 4.4.4 save-backed outpost availability overrides. Native expansion
+# targets, system scores, pathing, threat, influence, biological-ship rules,
+# wilderness terraforming exclusion, weights, and desired minima remain.
+# Colonization plans now dampen allocation weight instead of making the lane
+# categorically unavailable. The alloy source's ambiguous multi-statement NOT
+# is normalized to the explicit NOR already used by the biological analogue.
+
+""" + alloy_outposts.rstrip() + "\n\n" + food_outposts.rstrip() + "\n"
+    parse_pdx(
+        "\n".join(
+            line for line in text.splitlines() if not line.lstrip().startswith("#")
+        )
+        + "\n"
+    )
+    return text
 
 
 def fleet_alloy_budget_text() -> str:

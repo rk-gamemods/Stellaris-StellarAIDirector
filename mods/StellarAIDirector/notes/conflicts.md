@@ -3,6 +3,7 @@
 ## Intentional Conflicts
 
 - `common/ai_budget/zzz_staid_alloys_budget.txt` does not replace upstream `alloys_expenditure_megastructures`; the active parent retains generic reserve ownership while Director object weights rank specific legal projects.
+- `common/ai_budget/zzz_staid_outpost_budgets.txt` intentionally replaces vanilla `alloys_expenditure_starbases_expand` and `food_expenditure_starbases_expand`. It preserves native expansion-plan, threat, influence, biological-ship, wilderness-terraform, weight, and desired-min behavior; only colonization-plan eligibility becomes a factor-0.25 weight preference, and the alloy object's ambiguous multi-statement `NOT` becomes the explicit `NOR` used by its food analogue.
 - `common/ai_budget/zzz_staid_gigas_resource_budgets.txt` intentionally replaces upstream Gigas special-resource megastructure budget objects: `sentient_metal_expenditure_megastructures`, `negative_mass_expenditure_megastructures`, and `supertensiles_upkeep_megastructures`.
 - `common/economic_plans/zzzz_staid_additive_economic_plan.txt` intentionally replaces `basic_economy_plan` with Director high-scale survival economy, mandatory modded unlock research, trade-capacity, fleet-throughput, static-defense, and planetary-capacity targets; despite the historical filename, conflict review must treat it as a Director-owned economic-plan surface.
 - `common/technology/zzzz_staid_01_unlock_technology_technology.txt` intentionally replaces copied vanilla/Gigas/NSC3/ESC/Starbase Extended technology objects with Director route AI weights.

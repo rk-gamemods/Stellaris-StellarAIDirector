@@ -62,6 +62,7 @@ from stellar_ai_director_lib import (
     dataset_job_pressure_family,
     dataset_job_pressure_weight_block,
     director_ai_weight_block,
+    extract_assignment_block,
     extract_top_level_object_text,
     extract_megastructure_rows,
     fleet_alloy_budget_text,
@@ -79,6 +80,7 @@ from stellar_ai_director_lib import (
     NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_CSV,
     NONCONSTRUCTION_ECONOMIC_VALUATION_DATASET_MD,
     nonconstruction_economic_valuation_dataset_passes,
+    outpost_budget_text,
     parse_file,
     parse_numeric,
     parse_pdx,
@@ -424,6 +426,79 @@ class AlloyBudgetOwnershipTests(unittest.TestCase):
             self.assertIn("alloys_expenditure_ships = {", text)
             self.assertIn("alloys_expenditure_ship_upgrades = {", text)
             self.assertIn("upstream/parent-owned", text)
+        self.assertEqual(artifact, generated)
+
+
+class OutpostBudgetAvailabilityTests(unittest.TestCase):
+    def test_colonization_dampens_but_does_not_veto_outpost_budgets(self):
+        budget_path = (
+            MOD_ROOT / "common" / "ai_budget" / "zzz_staid_outpost_budgets.txt"
+        )
+        parse_file(budget_path)
+        artifact = budget_path.read_text(encoding="utf-8")
+        generated = outpost_budget_text()
+        vanilla_alloy = extract_top_level_object_text(
+            read_text(
+                STELLARIS_INSTALL_ROOT
+                / "common"
+                / "ai_budget"
+                / "00_alloys_budget.txt"
+            ),
+            "alloys_expenditure_starbases_expand",
+        )
+        expected_alloy_potential = extract_assignment_block(
+            vanilla_alloy, "potential"
+        ).replace("\t\tNOT = {\n", "\t\tNOR = {\n", 1).replace(
+            "\t\t\tai_colonize_plans > 0\n", "", 1
+        )
+        vanilla_food = extract_top_level_object_text(
+            read_text(
+                STELLARIS_INSTALL_ROOT / "common" / "ai_budget" / "00_food_budget.txt"
+            ),
+            "food_expenditure_starbases_expand",
+        )
+        expected_food_potential = extract_assignment_block(
+            vanilla_food, "potential"
+        ).replace("\t\t\t\tai_colonize_plans > 0\n", "", 1)
+
+        for text in (artifact, generated):
+            alloy = extract_top_level_object_text(
+                text, "alloys_expenditure_starbases_expand"
+            )
+            food = extract_top_level_object_text(
+                text, "food_expenditure_starbases_expand"
+            )
+            for outpost, desired_min in ((alloy, "150"), (food, "300")):
+                potential = extract_assignment_block(outpost, "potential")
+                weight = extract_assignment_block(outpost, "weight")
+                self.assertIn("has_ai_expansion_plan = yes", potential)
+                self.assertIn("highest_threat < 50", potential)
+                self.assertIn("is_country_type = fallen_empire", potential)
+                self.assertIn("is_country_type = awakened_fallen_empire", potential)
+                self.assertIn(
+                    "has_resource = { type = influence amount > 75 }", potential
+                )
+                self.assertNotIn("ai_colonize_plans", potential)
+                self.assertIn("NOR = {", potential)
+                self.assertIn("weight = 0.2", weight)
+                self.assertIn("factor = 0.25", weight)
+                self.assertIn("ai_colonize_plans > 0", weight)
+                self.assertIn(f"base = {desired_min}", outpost)
+                self.assertNotIn("clear_orders", outpost)
+
+            self.assertIn("factor = 0.5", extract_assignment_block(alloy, "weight"))
+            self.assertIn("country_uses_bio_ships = yes", alloy)
+            self.assertIn("country_uses_bio_ships = yes", food)
+            self.assertIn("is_wilderness_empire = yes", food)
+            self.assertIn("ai_terraform_plans > 0", food)
+            self.assertEqual(
+                extract_assignment_block(alloy, "potential"),
+                expected_alloy_potential,
+            )
+            self.assertEqual(
+                extract_assignment_block(food, "potential"),
+                expected_food_potential,
+            )
         self.assertEqual(artifact, generated)
 
 

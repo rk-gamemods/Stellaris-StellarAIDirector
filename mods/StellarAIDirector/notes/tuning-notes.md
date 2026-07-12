@@ -73,6 +73,13 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - The unlock-research policy is mandatory survival pressure after the opening curve, not a surplus-only luxury; it keeps physics, society, engineering, and unity pressure on until core Mega Engineering, Mega Shipyard, Gigas, NSC3, and ESC unlock paths are reachable.
 - Direct technology/AP/tradition category/node route overrides are emitted from copied source objects and trace back to the policy matrix and route override report.
 
+## Territorial Expansion Availability Policy
+
+- Native expansion candidates, system scoring, pathing, threat limits, influence reserves, and constructor orders remain engine-owned.
+- A live 2270 save retained three native expansion candidates and eleven idle constructors but no outpost order while a completed colony still occupied the colonization-plan state. The alloy source's ambiguous multi-statement `NOT` is normalized to the explicit country-type `NOR` used by the biological analogue.
+- For both alloy and biological-food outpost budgets, a colonization plan applies factor `0.25` to allocation weight instead of making the lane ineligible. Biological requirements and the wilderness-terraform exclusion remain unchanged.
+- This is availability dampening, not an outpost quota, constructor reservation, forced target, or guaranteed scheduler ratio. Runtime proof requires a native outpost order or completed claim.
+
 ## Mega/Giga Build Priority Policy
 
 - ROI-ready megastructure and gigastructure rows are mapped through generated alloy, special-resource, and economy-plan gates.

@@ -295,7 +295,7 @@ restore the generic budget or spam target from H01/H02.
 
 ## H06 — High-scale route multipliers on megaproject objects
 
-Status: implemented on the research branch; static validation pending commit.
+Status: committed as `f2ff08848d3156f53ff982ee0acde15e6bd9fc9f`.
 
 Evidence:
 
@@ -343,3 +343,72 @@ Rollback boundary:
 
 Revert only H06 if route-level project selection becomes too weak. Do not
 restore H05 safety bypasses or the H01/H02 generic reserve pressure.
+
+## H07 — Native outpost budget availability beside colonization
+
+Status: implemented on the research branch; static validation pending commit.
+
+Evidence:
+
+- The integrity-verified `2270.04.15` save copy has SHA-256
+  `7E49527196CAA35DCCD5FB22FF24E77C08A1EEA84C9263A52E87DF95492784B7`.
+- Paunaby (system 10/star 221), Aerea (70/1186), and Zosma (96/329)
+  remain unowned, surveyed, unrestricted type-19 native expansion candidates.
+- Country 0 has thirteen constructors, eleven of them idle, and no outpost
+  order. Executor saturation explains 2255-2257 but is no longer the immediate
+  2270 gate between recognized candidate and assigned construction order.
+- The one type-1 record is for planet 2, already owned by country 0 with
+  `colonize_date="2270.01.26"`; the save date is `2270.04.15`.
+- The vanilla alloy outpost potential puts both country-type exclusions and
+  `ai_colonize_plans > 0` inside one multi-statement `NOT`. Its exact runtime
+  semantics were not proven by generated docs or CWTools. The biological food
+  analogue uses an explicit `NOR`, proving that colonization-plan ineligibility
+  is at least the source's intended paired behavior.
+- This save predates H01-H06 and the live descriptor switch, so it cannot prove
+  the corrected megastructure pressure or this new availability hook at runtime.
+
+Preserve native expansion-plan recognition, system scores, target selection,
+pathing, threat limit, influence reserve, biological-ship rule, wilderness
+terraforming exclusion, base weights, and desired minima. For the alloy lane,
+normalize the ambiguous multi-statement `NOT` to an explicit country-type
+`NOR`. For both alloy and biological-food lanes, move only the colonization-plan
+condition from eligibility to a factor `0.25` weight modifier. This creates a
+bounded allocation signal; it does not promise a scheduler ratio or an outpost.
+
+Top five risks:
+
+1. **A valid colony ship may compete with an outpost in a constrained economy.**
+   Keep the outpost weight at one quarter while a colonization plan exists and
+   retain all native resource reserves; compare colony and outpost completion
+   in low-resource runtime cases before promotion.
+2. **The ambiguous alloy `NOT` may not be the actual engine blocker.** The save
+   isolates the planner-to-order gap but not executable internals; keep H07 as a
+   separate rollback commit and require continuation evidence.
+3. **Biological or wilderness empires may lose a parent safeguard.** Generate
+   from the version-identified food object and prove the bio requirement plus
+   wilderness/terraform exclusion survive byte-for-byte apart from one clause.
+4. **A stale expansion plan may fund a low-value outpost.** Native scoring,
+   legality, pathing, influence cost, and target ownership remain unchanged;
+   this hook creates no target and issues no order.
+5. **Eligibility may still fail to produce execution.** Static validation proves
+   only that both resource lanes can fund a legal outpost. Runtime proof needs a
+   serialized outpost order or completed claim with an idle constructor.
+
+Static acceptance:
+
+- Generated alloy and food objects match their 4.4.4 sources except for the
+  explicit alloy `NOR`, removal of the colonization eligibility clause, and the
+  paired factor-0.25 weight modifiers.
+- Pinned source hashes and an active-playset scan fail generation if vanilla
+  drifts or any enabled parent mod begins overriding either budget object.
+- Threat, influence, country-type, biological, wilderness-terraform, weight,
+  and desired-min markers remain under regression coverage.
+- No constructor cap, scripted target/order, `clear_orders`, free resource, or
+  forced claim is added.
+- PDX parsing, focused recovery tests, known-object validation, JData provenance
+  validation, static validator, and clean-worktree checks pass before commit.
+
+Rollback boundary:
+
+Revert only H07 if colony completion regresses or no outpost opportunity appears.
+Do not restore H01-H06 megastructure pressure or the removed order watchdog.
