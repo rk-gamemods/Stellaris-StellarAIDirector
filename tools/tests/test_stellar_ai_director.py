@@ -208,6 +208,12 @@ class ActiveStackEconomicValuationMaintenanceTests(unittest.TestCase):
 
 
 class RouteOverrideUnitTests(unittest.TestCase):
+    def test_nihilistic_acquisition_is_not_a_generic_route_target(self):
+        self.assertNotIn(
+            "ap_nihilistic_acquisition",
+            {target["object_id"] for target in ROUTE_OVERRIDE_TARGETS},
+        )
+
     def test_gigas_habitat_route_preserves_parent_scoring_without_global_deadlock(self):
         target = next(
             target
@@ -2626,8 +2632,10 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("raiding = {", bombardment)
         self.assertIn("abduct_pops = yes", bombardment)
         self.assertIn("factor = 60 owner = { staid_raiding_pop_growth_strategy = yes }", bombardment)
-        self.assertIn("ap_nihilistic_acquisition", ascension_perks)
-        self.assertIn("staid_raiding_pop_acquisition_priority", ascension_perks)
+        self.assertNotIn("ap_nihilistic_acquisition = {", ascension_perks)
+        self.assertIn("has_ascension_perk = ap_nihilistic_acquisition", raiding_block)
+        self.assertIn("has_valid_civic = civic_barbaric_despoilers", raiding_block)
+        self.assertIn("has_origin = origin_slavers", raiding_block)
 
     def test_fleet_payoff_routes_bias_economy_without_forcing_wars(self):
         triggers = (MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt").read_text(
@@ -2676,7 +2684,6 @@ class GeneratedModValidityTests(unittest.TestCase):
                 policies,
                 bombardment,
                 generated_object_block(ascension_perks, "ap_lord_of_war"),
-                generated_object_block(ascension_perks, "ap_nihilistic_acquisition"),
             )
         )
 

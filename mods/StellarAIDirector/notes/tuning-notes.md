@@ -65,7 +65,7 @@ Generated thresholds are derived from decision-eligible, resolved ROI rows.
 - War declaration globals return to the working native 4.4.4 envelope: 12–30 months preparation, base aggression 25, enemy-fleet multiplier 1.2, maximum distance 50, minimum score 0.5, and offense/defense allotment 1.0. Boxed-in multipliers remain bounded above vanilla at 8/12.
 - Normal peacetime new-ship budget share falls to 25% at 80% used naval capacity but remains eligible. This bounded native-data workaround reduces exposure to the 4.4.4 executable high-cap declaration defect without permanently freezing weak absolute fleets.
 - Native army budgets reserve 200 minerals at baseline, with bounded additions for boxed-in, conquest/raiding, war, and existential-defense states. No desired_max caps recruitment and no army is created by script.
-- Raiding empires prioritize `ap_nihilistic_acquisition`, raiding bombardment, and no-surrender bombardment posture when their setup supports abducting pops as a growth strategy.
+- Empires that already possess a raiding perk, civic, or origin prioritize raiding bombardment and a no-surrender bombardment posture; generic conquerors are not pushed toward `ap_nihilistic_acquisition`.
 - Hostile space fauna continues to use the engine's separate boss readiness lane at 100000/500000 military power. Ordinary empire confidence uses the native `ENEMY_FLEET_POWER_MULT = 1.2`; boss readiness is not made easier by the war-planner repair.
 
 ## Unlock-Research Policy
