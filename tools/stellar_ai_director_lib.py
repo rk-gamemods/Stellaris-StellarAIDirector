@@ -98,6 +98,9 @@ IDENTITY_ORIGIN_ASSEMBLY_HASHES = {
     "building_robot_assembly_plant": "c8a593e0f6baff2378810456aeee0da7d02a17e8eec5cc7f2b18e01b69089068",
     "building_robot_assembly_complex": "bcbbdb1bcd8480aec6f877bc9f48c8b3c4b0d7217c8014d12afce294293baafc",
 }
+IDENTITY_TRADITION_HASHES = {
+    "tradition_synchronicity": "a3b9a73b8da1cbf1c07a5220d28b475ffd9545d747b149d0ef4065871652d51b",
+}
 IDENTITY_FLEET_COMPOSITION_PATH = (
     MOD_ROOT
     / "common"
@@ -256,6 +259,7 @@ IDENTITY_STRATEGY_DEFINING_FACTORS = {
     "staid_identity_barbaric_despoiler": {"tradition_supremacy": 1.12},
     "staid_identity_rogue_servitor": {"tradition_diplomacy": 1.08},
     "staid_identity_assimilator": {"tradition_supremacy": 1.10},
+    "staid_identity_ordinary_hive": {"tradition_synchronicity": 1.12},
 }
 STRATEGIC_RESOURCE_DEFICIT_RECOVERY_PATH = (
     MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_21_strategic_resource_deficit_recovery.txt"
@@ -838,6 +842,7 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "tradition_prosperity", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_prosperity.txt", "route_id": "economy_megastructure_core", "weight": 4, "file_key": "02_perks_traditions"},
     {"object_id": "tradition_adaptability", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_adaptability.txt", "route_id": "crowded_tall_route", "weight": 4, "file_key": "02_perks_traditions"},
     {"object_id": "tradition_mercantile", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_commerce.txt", "route_id": "crowded_tall_route", "weight": 4, "file_key": "02_perks_traditions"},
+    {"object_id": "tradition_synchronicity", "object_type": "tradition_category", "mod_id": "vanilla", "source_file": "common/tradition_categories/00_synchronicity.txt", "route_id": "ordinary_hive_synchronicity", "weight": 1, "file_key": "02_perks_traditions", "identity_extra_condition": "staid_native_war_posture_active = no"},
     # Selectable nodes retain the research/diplomacy route after a tree is adopted.
     # Adoption and finish rewards are automatic engine effects and must never be targeted.
     {"object_id": "tr_discovery_to_boldly_go", "object_type": "tradition", "mod_id": "vanilla", "source_file": "common/traditions/00_discovery.txt", "route_id": "research_diplomacy_core", "weight": 4, "file_key": "02_perks_traditions"},
@@ -6357,6 +6362,9 @@ def identity_strategy_weight_modifiers(target: dict[str, Any]) -> list[str]:
         "staid_catastrophic_collapse_mode = no "
         "staid_core_deficit_short_runway = no"
     )
+    extra_condition = str(target.get("identity_extra_condition", "")).strip()
+    if extra_condition:
+        common = f"{common} {extra_condition}"
     factors_and_conditions: list[tuple[float, str]] = []
     for archetype, object_factors in IDENTITY_STRATEGY_PRIMARY_FACTORS.items():
         factor = object_factors.get(object_id)
@@ -7297,6 +7305,16 @@ def route_override_object_text(
         if actual_sha256 != expected_sha256:
             raise ValueError(
                 f"Vanilla origin assembly consumer drifted: {target['object_id']} "
+                f"expected={expected_sha256} actual={actual_sha256}"
+            )
+    if str(target["object_id"]) in IDENTITY_TRADITION_HASHES:
+        expected_sha256 = IDENTITY_TRADITION_HASHES[str(target["object_id"])]
+        actual_sha256 = hashlib.sha256(
+            normalize_text_file_content(block).encode("utf-8")
+        ).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise ValueError(
+                f"Vanilla identity tradition drifted: {target['object_id']} "
                 f"expected={expected_sha256} actual={actual_sha256}"
             )
     if target["object_type"] == "megastructure":

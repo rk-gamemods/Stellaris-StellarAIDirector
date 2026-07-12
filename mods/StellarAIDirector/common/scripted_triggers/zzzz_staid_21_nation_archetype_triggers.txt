@@ -61,6 +61,14 @@ staid_identity_nomadic = {
 	is_nomadic = yes
 }
 
+staid_identity_ordinary_hive = {
+	is_country_type = default
+	is_nomadic = no
+	is_wilderness_empire = no
+	is_hive_empire = yes
+	NOT = { has_valid_civic = civic_hive_devouring_swarm }
+}
+
 staid_archetype_hard_extermination = {
 	OR = {
 		has_ai_personality = fanatic_purifiers

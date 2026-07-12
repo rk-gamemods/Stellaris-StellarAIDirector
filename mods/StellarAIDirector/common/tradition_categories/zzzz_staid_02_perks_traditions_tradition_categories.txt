@@ -324,3 +324,37 @@ tradition_mercantile = {
 		modifier = { factor = 1.15 staid_identity_megacorp = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_planetary_capacity_growth_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 	}
 }
+
+
+# policy_route = ordinary_hive_synchronicity; source = common/tradition_categories/00_synchronicity.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+tradition_synchronicity = {
+	tree_template = "tree_21_11"
+	adoption_bonus = "tr_synchronicity_adopt"
+	finish_bonus = "tr_synchronicity_finish"
+	traditions = {
+		"tr_synchronicity_cloned_organs"
+		"tr_synchronicity_kinship_gestalt"
+		"tr_synchronicity_integrated_preservation"
+		"tr_synchronicity_harmonious_directives"
+		"tr_synchronicity_collective_reasoning"
+	}
+
+	potential = {
+		is_gestalt = yes
+	}
+
+	ai_weight = {
+		factor = 10
+		modifier = {
+			factor = 3
+			has_origin = origin_necrophage
+		}
+		modifier = {
+			factor = @ap_pending_tradition_suppress
+			has_ap_pending = yes
+		}
+		# policy_route = ordinary_hive_synchronicity; preserve vanilla category and node selection
+		modifier = { factor = 1 staid_surplus_sink_pressure = yes }
+		modifier = { factor = 1.12 staid_identity_ordinary_hive = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_surplus_sink_pressure = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no staid_native_war_posture_active = no }
+	}
+}

@@ -253,6 +253,16 @@ def render_archetype_triggers(personality_path: Path) -> str:
         ("staid_identity_nomadic", "is_nomadic = yes"),
     ):
         add_trigger(name, ("is_country_type = default", predicate))
+    add_trigger(
+        "staid_identity_ordinary_hive",
+        (
+            "is_country_type = default",
+            "is_nomadic = no",
+            "is_wilderness_empire = no",
+            "is_hive_empire = yes",
+            "NOT = { has_valid_civic = civic_hive_devouring_swarm }",
+        ),
+    )
 
     for archetype in primary_archetypes:
         add_trigger(

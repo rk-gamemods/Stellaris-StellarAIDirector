@@ -274,6 +274,28 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
         conflict_keys = {item.key for item in iter_assignments(conflict)}
         self.assertTrue(set(predicates).isdisjoint(conflict_keys))
 
+        ordinary_hive = self.top["staid_identity_ordinary_hive"]
+        ordinary_assignments = block_assignments(ordinary_hive)
+        self.assertEqual(
+            [
+                (item.key, atom_value(item))
+                for item in ordinary_assignments
+                if item.key != "NOT"
+            ],
+            [
+                ("is_country_type", "default"),
+                ("is_nomadic", "no"),
+                ("is_wilderness_empire", "no"),
+                ("is_hive_empire", "yes"),
+            ],
+        )
+        ordinary_civics = [
+            atom_value(item)
+            for item in iter_assignments(ordinary_hive)
+            if item.key == "has_valid_civic"
+        ]
+        self.assertEqual(ordinary_civics, ["civic_hive_devouring_swarm"])
+
     def test_personality_groups_match_model_and_cover_reviewed_source(self) -> None:
         rendered_personalities: set[str] = set()
         for archetype in PRIMARY_ARCHETYPES:
@@ -694,6 +716,8 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
                 "is_megacorp",
                 "is_subject",
                 "is_overlord",
+                "is_hive_empire",
+                "is_wilderness_empire",
             }
         )
         assignment_keys = {assignment.key for assignment in iter_assignments(self.root)}
@@ -703,6 +727,10 @@ class StellarAiArchetypeTriggerTests(unittest.TestCase):
             expected = set(expected)
             if predicate == "has_valid_civic":
                 expected.add("civic_machine_servitor")
+            elif predicate == "is_hive_empire":
+                expected.add("yes")
+            elif predicate == "is_wilderness_empire":
+                expected.add("no")
             actual = {
                 atom_value(assignment)
                 for assignment in iter_assignments(self.root)

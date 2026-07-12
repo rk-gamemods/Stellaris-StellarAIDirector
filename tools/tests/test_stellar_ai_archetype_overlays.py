@@ -30,6 +30,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     IDENTITY_ORIGIN_ASSEMBLY_PATH,
     IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
+    IDENTITY_TRADITION_HASHES,
     NOMAD_ARKSHIP_ASCENSION_PERK_HASHES,
     ROUTE_OVERRIDE_TARGETS,
     TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS,
@@ -142,6 +143,7 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             "staid_identity_barbaric_despoiler = yes",
             "staid_identity_rogue_servitor = yes",
             "staid_identity_assimilator = yes",
+            "staid_identity_ordinary_hive = yes",
         ):
             self.assertIn(marker, production)
             self.assertNotIn(marker, zero)
@@ -150,7 +152,7 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             line
             for line in production.splitlines()
             if re.search(
-                r"staid_(?:archetype_(?:lead_secondary_)?(?:research|diplomatic|defensive|conquest|extermination)|identity_(?:megacorp|inward_perfection|barbaric_despoiler|rogue_servitor|assimilator))",
+                r"staid_(?:archetype_(?:lead_secondary_)?(?:research|diplomatic|defensive|conquest|extermination)|identity_(?:megacorp|inward_perfection|barbaric_despoiler|rogue_servitor|assimilator|ordinary_hive))",
                 line,
             )
         ]
@@ -168,6 +170,35 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
                 "staid_core_deficit_short_runway = no",
             ):
                 self.assertIn(safety, line)
+
+        synchronicity_path = IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS[1]
+        synchronicity_block = extract_top_level_object_text(
+            self.production[synchronicity_path],
+            "tradition_synchronicity",
+        )
+        self.assertIn("factor = 1.12", synchronicity_block)
+        self.assertIn("staid_identity_ordinary_hive = yes", synchronicity_block)
+        self.assertIn("staid_native_war_posture_active = no", synchronicity_block)
+        self.assertNotIn(
+            "staid_identity_devouring_swarm = yes",
+            synchronicity_block,
+        )
+        source_text = (
+            STELLARIS_INSTALL_ROOT
+            / "common"
+            / "tradition_categories"
+            / "00_synchronicity.txt"
+        ).read_text(encoding="utf-8-sig")
+        source_block = extract_top_level_object_text(
+            source_text,
+            "tradition_synchronicity",
+        )
+        self.assertEqual(
+            hashlib.sha256(
+                normalize_text_file_content(source_block).encode("utf-8")
+            ).hexdigest(),
+            IDENTITY_TRADITION_HASHES["tradition_synchronicity"],
+        )
         inserted = []
         for path in IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS:
             before = self.zero[path].replace("\r\n", "\n").splitlines()
