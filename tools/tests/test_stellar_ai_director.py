@@ -3,6 +3,7 @@ import json
 import re
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 import sys
 
@@ -637,12 +638,24 @@ class MegastructureRouteHighScaleTests(unittest.TestCase):
         )
 
 
-class GeneratedModValidityTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        generate_object_atlas_artifacts(SNAPSHOT_ROOT)
-        generate_mod_files()
+class GeneratedModReadOnlyValidationTests(unittest.TestCase):
+    def test_checked_artifact_validation_does_not_call_generators(self):
+        suite = unittest.TestSuite(
+            [GeneratedModValidityTests("test_generated_files_are_valid_load_surfaces")]
+        )
+        result = unittest.TestResult()
+        with (
+            mock.patch(f"{__name__}.generate_object_atlas_artifacts") as atlas_generator,
+            mock.patch(f"{__name__}.generate_mod_files") as mod_generator,
+        ):
+            suite.run(result)
 
+        self.assertTrue(result.wasSuccessful(), result.errors + result.failures)
+        atlas_generator.assert_not_called()
+        mod_generator.assert_not_called()
+
+
+class GeneratedModValidityTests(unittest.TestCase):
     def test_generated_files_are_valid_load_surfaces(self):
         rows = collect_generated_file_audit_rows(MOD_ROOT)
         self.assertTrue(rows, "No generated mod files were found to validate.")
@@ -2648,6 +2661,8 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("staid_basic_economy_runway_safe = yes", aggressive_gate)
         self.assertNotIn("used_naval_capacity_percent < 1.10", aggressive_gate)
         self.assertIn("has_ethic = ethic_militarist", conquest_gate)
+        self.assertIn("NOT = { staid_core_deficit_short_runway = yes }", conquest_gate)
+        self.assertIn("staid_basic_economy_runway_safe = yes", conquest_gate)
         self.assertNotIn("years_passed > 9", conquest_gate)
         self.assertIn("used_naval_capacity_percent > 0.90", naval_gate)
         self.assertIn("is_at_war = yes", naval_gate)
@@ -2667,25 +2682,66 @@ class GeneratedModValidityTests(unittest.TestCase):
             "Stellar AI Director hostile fauna clearance reserve",
             "Stellar AI Director threat readiness reserve",
         }
+        research_runway_subplans = {
+            "Stellar AI Director safe research baseline",
+            "Stellar AI Director opening direct research route",
+            "Stellar AI Director opening trade to research route",
+            "Stellar AI Director opening growth to research route",
+            "Stellar AI Director early modded research rush",
+            "Stellar AI Director midgame megastructure rush",
+            "Stellar AI Director crisis-scale giga rush",
+            "Stellar AI Director planetcraft survival curve",
+            "Stellar AI Director pathological snowball reserve",
+            "Stellar AI Director modded unlock research reserve",
+            "Stellar AI Director ESC component resource readiness",
+            "Stellar AI Director capped stockpile research conversion",
+            "Stellar AI Director 2360 physics catchup",
+            "Stellar AI Director 2360 society catchup",
+            "Stellar AI Director 2360 engineering catchup",
+            "Stellar AI Director NSC3 hull readiness reserve",
+            "Stellar AI Director Planetary Diversity outpost reserve",
+        }
+        fleet_naval_mixed_subplans = {
+            "Stellar AI Director militarist conquest fleet reserve": "staid_militarist_conquest_strategy",
+        }
+        research_runway_gates = (
+            "staid_research_construction_priority_ready = yes",
+            "staid_research_input_runway_safe = yes",
+            "staid_research_minimum_input_runway_safe = yes",
+        )
         subplans = economy.split("\n\tsubplan = {")[1:]
+        research_bearing_subplans = {}
         for subplan in subplans:
-            if "physics_research" in subplan or "society_research" in subplan or "engineering_research" in subplan:
-                self.assertTrue(
-                    any(
-                        gate in subplan
-                        for gate in (
-                            "staid_research_construction_priority_ready = yes",
-                            "staid_research_input_runway_safe = yes",
-                            "staid_research_minimum_input_runway_safe = yes",
-                        )
-                    ),
-                    subplan[:240],
-                )
+            name_match = re.search(r'set_name = "([^"]+)"', subplan)
+            self.assertIsNotNone(name_match, subplan[:240])
+            subplan_name = name_match.group(1)
             if "naval_cap =" in subplan:
-                self.assertTrue(
-                    any(f'set_name = "{name}"' in subplan for name in approved_naval_subplans),
-                    subplan[:240],
-                )
+                self.assertIn(subplan_name, approved_naval_subplans)
+            if any(
+                resource in subplan
+                for resource in ("physics_research", "society_research", "engineering_research")
+            ):
+                self.assertNotIn(subplan_name, research_bearing_subplans)
+                research_bearing_subplans[subplan_name] = subplan
+
+        expected_research_subplans = research_runway_subplans | set(fleet_naval_mixed_subplans)
+        self.assertEqual(
+            set(research_bearing_subplans),
+            expected_research_subplans,
+            "Research-bearing subplans require an explicit purpose classification.",
+        )
+        for subplan_name in research_runway_subplans:
+            subplan = research_bearing_subplans[subplan_name]
+            self.assertTrue(
+                any(gate in subplan for gate in research_runway_gates),
+                subplan_name,
+            )
+        for subplan_name, strategy in fleet_naval_mixed_subplans.items():
+            subplan = research_bearing_subplans[subplan_name]
+            self.assertIn(f"{strategy} = yes", subplan)
+            strategy_gate = extract_top_level_object_text(triggers, strategy)
+            self.assertIn("NOT = { staid_core_deficit_short_runway = yes }", strategy_gate)
+            self.assertIn("staid_basic_economy_runway_safe = yes", strategy_gate)
         self.assertFalse(
             [row["object_id"] for row in dataset_job_pressure_override_rows() if row["pressure_family"] == "military_capacity"]
         )
