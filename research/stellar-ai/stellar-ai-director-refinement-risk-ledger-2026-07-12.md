@@ -1068,6 +1068,30 @@ Top five risks:
 Rollback boundary: delete the focused artifact. Vanilla hard cutoffs resume;
 the nomadic economic branch and identity label remain independent.
 
+### H08f3 — Total-war invasion mineral staging
+
+Status: machine exterminator, devouring-swarm, and assimilator labels add one
+nonstacking 300-mineral desired-min modifier to the native army expenditure
+budget when basic runway is safe and no core short-runway deficit or collapse
+exists. Army definitions, recruitment eligibility, costs, damage, health,
+bombardment, transports, landing targets, and invasion execution are unchanged.
+
+Top five risks:
+
+1. **Army reserves can crowd colony construction.** The addition is 300 minerals
+   and is disabled by deficit/collapse gates; it reserves currency, not units.
+2. **War identities can double-stack other army routes.** The three exact labels
+   share one OR modifier, so multiple labels still add only once.
+3. **Available budget can create excessive armies.** Native recruitment demand,
+   legal army types, costs, and transport planning remain authoritative.
+4. **Assimilators may prefer conquest without immediate invasion capacity.** The
+   modifier only stages minerals; it does not force a target, landing, or war.
+5. **Static validation can overclaim competence.** It proves budget gates and no
+   scripted actions, not recruitment, escort, bombardment, landing, or victory.
+
+Rollback boundary: remove the single desired-min modifier and regenerate only
+the army-budget artifact. Identity and economic consumers remain independent.
+
 ## H09a — Retire stateful threat-response runtime
 
 Status: implemented as a cleanup-only slice. The generator deletes the legacy

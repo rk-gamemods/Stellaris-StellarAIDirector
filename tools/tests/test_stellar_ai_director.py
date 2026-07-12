@@ -1909,6 +1909,15 @@ class GeneratedModValidityTests(unittest.TestCase):
         self.assertIn("base = 200", budget)
         self.assertIn("add = 300", budget)
         self.assertIn("add = 500", budget)
+        for marker in (
+            "staid_basic_economy_runway_safe = yes",
+            "staid_core_deficit_short_runway = no",
+            "staid_catastrophic_collapse_mode = no",
+            "staid_identity_machine_exterminator = yes",
+            "staid_identity_devouring_swarm = yes",
+            "staid_identity_assimilator = yes",
+        ):
+            self.assertIn(marker, budget)
         self.assertNotIn("desired_max", budget)
         self.assertNotIn("country_uses_bio_ships = no", budget)
         self.assertIn("min_assault_armies_for_wars = 0", country_type)

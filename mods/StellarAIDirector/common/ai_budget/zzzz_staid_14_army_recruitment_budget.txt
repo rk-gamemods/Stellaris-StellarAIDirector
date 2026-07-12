@@ -33,6 +33,17 @@ minerals_expenditure_armies = {
 			}
 		}
 		modifier = {
+			add = 300
+			staid_basic_economy_runway_safe = yes
+			staid_core_deficit_short_runway = no
+			staid_catastrophic_collapse_mode = no
+			OR = {
+				staid_identity_machine_exterminator = yes
+				staid_identity_devouring_swarm = yes
+				staid_identity_assimilator = yes
+			}
+		}
+		modifier = {
 			add = 500
 			OR = {
 				is_at_war = yes
