@@ -26,6 +26,8 @@ from stellar_ai_director_lib import (  # noqa: E402
     IDENTITY_FEDERATION_PATH,
     IDENTITY_FEDERATION_FAMILY_HASHES,
     IDENTITY_MEGASTRUCTURE_PATH,
+    IDENTITY_ORIGIN_ASSEMBLY_HASHES,
+    IDENTITY_ORIGIN_ASSEMBLY_PATH,
     IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     NOMAD_ARKSHIP_ASCENSION_PERK_HASHES,
@@ -100,12 +102,12 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             row for row in cls.rows if row["object_type"] == "technology"
         ]
 
-    def test_fixed_allowlist_has_exactly_ten_current_artifacts(self) -> None:
+    def test_fixed_allowlist_has_exactly_eleven_current_artifacts(self) -> None:
         self.assertEqual(
             tuple(self.production),
             ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
         )
-        self.assertEqual(len(self.production), 10)
+        self.assertEqual(len(self.production), 11)
         for path, rendered in self.production.items():
             self.assertEqual(
                 path.read_text(encoding="utf-8").replace("\r\n", "\n"),
@@ -553,6 +555,56 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             "spiritualist_federation",
             "imperial_loyalists_federation",
             "hke_federation",
+        ):
+            self.assertNotIn(f"{excluded} = {{", production)
+
+    def test_mechanist_origin_assembly_consumers_are_emitted_exactly_and_fail_closed(
+        self,
+    ) -> None:
+        production = self.production[IDENTITY_ORIGIN_ASSEMBLY_PATH]
+        zero = self.zero[IDENTITY_ORIGIN_ASSEMBLY_PATH]
+        self.assertEqual(production, zero)
+        expected_ids = set(IDENTITY_ORIGIN_ASSEMBLY_HASHES)
+        emitted_ids = {
+            row["object_id"]
+            for row in route_override_target_rows()
+            if row.get("special_origin_consumer")
+        }
+        self.assertEqual(emitted_ids, expected_ids)
+        source_text = (
+            STELLARIS_INSTALL_ROOT
+            / "common"
+            / "buildings"
+            / "01_pop_assembly_buildings.txt"
+        ).read_text(encoding="utf-8-sig")
+        for object_id in expected_ids:
+            source_block = extract_top_level_object_text(source_text, object_id)
+            generated_block = extract_top_level_object_text(production, object_id)
+            self.assertEqual(
+                hashlib.sha256(
+                    normalize_text_file_content(source_block).encode("utf-8")
+                ).hexdigest(),
+                IDENTITY_ORIGIN_ASSEMBLY_HASHES[object_id],
+            )
+            self.assertIn("staid_pop_assembly_snowball_ready = yes", generated_block)
+            self.assertIn("has_origin = origin_mechanists", generated_block)
+            self.assertIn("has_country_flag = synthetic_empire", generated_block)
+            self.assertIn("is_materialist = yes", generated_block)
+            self.assertEqual(generated_block.count("factor = 1.5"), 1)
+            self.assertEqual(generated_block.count("factor = 1.15"), 1)
+            for source_marker in (
+                "category = pop_assembly",
+                "NOT = { has_policy_flag = robots_outlawed }",
+                "script = jobs/roboticist_add",
+                "script = buildings/nomadic_cost_switcher",
+            ):
+                self.assertIn(source_marker, generated_block)
+        for excluded in (
+            "building_machine_assembly_plant",
+            "building_machine_assembly_complex",
+            "building_clone_vats",
+            "building_spawning_pool",
+            "building_offspring_nest",
         ):
             self.assertNotIn(f"{excluded} = {{", production)
 

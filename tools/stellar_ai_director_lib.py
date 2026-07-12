@@ -88,6 +88,16 @@ IDENTITY_FEDERATION_PATH = (
     / "federation_types"
     / "zzzz_staid_15_research_diplomacy_federation_types.txt"
 )
+IDENTITY_ORIGIN_ASSEMBLY_PATH = (
+    MOD_ROOT
+    / "common"
+    / "buildings"
+    / "zzzz_staid_07_pop_assembly_buildings.txt"
+)
+IDENTITY_ORIGIN_ASSEMBLY_HASHES = {
+    "building_robot_assembly_plant": "c8a593e0f6baff2378810456aeee0da7d02a17e8eec5cc7f2b18e01b69089068",
+    "building_robot_assembly_complex": "bcbbdb1bcd8480aec6f877bc9f48c8b3c4b0d7217c8014d12afce294293baafc",
+}
 IDENTITY_FLEET_COMPOSITION_PATH = (
     MOD_ROOT
     / "common"
@@ -170,6 +180,7 @@ ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     *IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_MEGASTRUCTURE_PATH,
     IDENTITY_FEDERATION_PATH,
+    IDENTITY_ORIGIN_ASSEMBLY_PATH,
 )
 FLEET_ARCHETYPE_FACTORS = {
     "extermination": 1.12,
@@ -851,8 +862,8 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "building_archaeostudies_faculty", "object_type": "building", "mod_id": "3610149307", "source_file": "common/buildings/~stellarai_research_buildings.txt", "route_id": "research_throughput_infrastructure", "weight": 190000, "coefficient": "10", "additional_weight": "1600", "file_key": "06_research_infrastructure"},
     {"object_id": "district_hab_science", "object_type": "district", "mod_id": "vanilla", "source_file": "common/districts/03_habitat_districts.txt", "route_id": "research_throughput_infrastructure", "weight": 210000, "coefficient": "12", "additional_weight": "1800", "file_key": "06_research_infrastructure"},
     # Compounding-growth infrastructure: population and science capacity pay off over the full game clock.
-    {"object_id": "building_robot_assembly_plant", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 155000, "coefficient": "8", "additional_weight": "900", "file_key": "07_pop_assembly"},
-    {"object_id": "building_robot_assembly_complex", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 175000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
+    {"object_id": "building_robot_assembly_plant", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 155000, "coefficient": "8", "additional_weight": "900", "file_key": "07_pop_assembly", "special_origin_consumer": True},
+    {"object_id": "building_robot_assembly_complex", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 175000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly", "special_origin_consumer": True},
     {"object_id": "building_machine_assembly_plant", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 155000, "coefficient": "8", "additional_weight": "900", "file_key": "07_pop_assembly"},
     {"object_id": "building_machine_assembly_complex", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 175000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
     {"object_id": "building_clone_vats", "object_type": "building", "mod_id": "vanilla", "source_file": "common/buildings/01_pop_assembly_buildings.txt", "route_id": "pop_assembly_snowball_core", "weight": 170000, "coefficient": "10", "additional_weight": "1200", "file_key": "07_pop_assembly"},
@@ -5543,12 +5554,12 @@ def director_infrastructure_weight_block(block: str, target: dict[str, Any]) -> 
         object_id = str(target.get("object_id", ""))
         pop_assembly_modifiers = {
             "building_robot_assembly_plant": (
-                "\t\tmodifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
-                "\t\tmodifier = { factor = 4 owner = { is_materialist = yes } }",
+                "\t\tmodifier = { factor = 1.5 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
+                "\t\tmodifier = { factor = 1.15 owner = { is_materialist = yes } }",
             ),
             "building_robot_assembly_complex": (
-                "\t\tmodifier = { factor = 6 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
-                "\t\tmodifier = { factor = 4 owner = { is_materialist = yes } }",
+                "\t\tmodifier = { factor = 1.5 owner = { OR = { has_origin = origin_mechanists has_country_flag = synthetic_empire } } }",
+                "\t\tmodifier = { factor = 1.15 owner = { is_materialist = yes } }",
             ),
             "building_machine_assembly_plant": (
                 "\t\tmodifier = { factor = 7 owner = { OR = { is_machine_empire = yes is_individual_machine = yes } } }",
@@ -7276,6 +7287,16 @@ def route_override_object_text(
         if actual_sha256 != expected_sha256:
             raise ValueError(
                 f"Vanilla federation family drifted: {target['object_id']} "
+                f"expected={expected_sha256} actual={actual_sha256}"
+            )
+    if str(target["object_id"]) in IDENTITY_ORIGIN_ASSEMBLY_HASHES:
+        expected_sha256 = IDENTITY_ORIGIN_ASSEMBLY_HASHES[str(target["object_id"])]
+        actual_sha256 = hashlib.sha256(
+            normalize_text_file_content(block).encode("utf-8")
+        ).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise ValueError(
+                f"Vanilla origin assembly consumer drifted: {target['object_id']} "
                 f"expected={expected_sha256} actual={actual_sha256}"
             )
     if target["object_type"] == "megastructure":
@@ -14250,6 +14271,15 @@ def render_archetype_consumer_artifacts(
         *IDENTITY_FEDERATION_FAMILY_HASHES,
     }:
         raise ValueError("Identity federation rows violated the fixed output allowlist")
+    origin_assembly_rows = [
+        row for row in rows if row.get("special_origin_consumer")
+    ]
+    if {Path(str(row["generated_file"])).resolve() for row in origin_assembly_rows} != {
+        IDENTITY_ORIGIN_ASSEMBLY_PATH.resolve()
+    } or {row["object_id"] for row in origin_assembly_rows} != set(
+        IDENTITY_ORIGIN_ASSEMBLY_HASHES
+    ):
+        raise ValueError("Special-origin assembly rows violated the fixed output allowlist")
     artifacts = {
         FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(
             ai_budget_text({}, archetype_overlay=archetype_overlay)
@@ -14280,6 +14310,10 @@ def render_archetype_consumer_artifacts(
     )
     artifacts[IDENTITY_FEDERATION_PATH] = route_override_file_text(
         federation_rows,
+        archetype_overlay=archetype_overlay,
+    )
+    artifacts[IDENTITY_ORIGIN_ASSEMBLY_PATH] = route_override_file_text(
+        origin_assembly_rows,
         archetype_overlay=archetype_overlay,
     )
     if tuple(artifacts) != ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
