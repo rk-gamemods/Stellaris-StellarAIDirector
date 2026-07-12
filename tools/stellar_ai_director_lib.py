@@ -65,11 +65,22 @@ IDENTITY_CLAIM_BUDGET_PATH = (
     / "ai_budget"
     / "zzzz_staid_08_site_limited_expansion_ai_budget.txt"
 )
+IDENTITY_STATIC_DEFENSE_PATHS = (
+    MOD_ROOT
+    / "common"
+    / "starbase_buildings"
+    / "zzzz_staid_05_starbase_defense_starbase_buildings.txt",
+    MOD_ROOT
+    / "common"
+    / "starbase_modules"
+    / "zzzz_staid_05_starbase_defense_starbase_modules.txt",
+)
 ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     FLEET_ALLOY_BUDGET_PATH,
     TECHNOLOGY_ROUTE_OVERRIDE_PATH,
     *IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     IDENTITY_CLAIM_BUDGET_PATH,
+    *IDENTITY_STATIC_DEFENSE_PATHS,
 )
 FLEET_ARCHETYPE_FACTORS = {
     "extermination": 1.12,
@@ -6188,6 +6199,31 @@ def identity_strategy_weight_modifiers(target: dict[str, Any]) -> list[str]:
     ]
 
 
+def identity_static_defense_weight_modifiers(target: dict[str, Any]) -> list[str]:
+    """Return bounded country-scoped preferences on safe static-defense objects."""
+
+    if target["object_type"] not in {"starbase_building", "starbase_module"}:
+        return []
+    common = (
+        "staid_archetype_identity_conflict = no "
+        "staid_archetype_eligible_country = yes "
+        "staid_static_defense_investment_ready = yes "
+        "staid_survival_mode = no "
+        "staid_recovery_mode = no "
+        "staid_catastrophic_collapse_mode = no "
+        "staid_core_deficit_short_runway = no"
+    )
+    factors_and_conditions = (
+        (1.15, f"staid_archetype_defensive = yes {common}"),
+        (1.05, f"staid_archetype_lead_secondary_defensive = yes {common}"),
+        (1.10, f"staid_identity_inward_perfection = yes {common}"),
+    )
+    return [
+        route_modifier_line(factor, condition, country_scope="owner")
+        for factor, condition in factors_and_conditions
+    ]
+
+
 def route_weight_modifiers(
     target: dict[str, Any], *, archetype_overlay: bool = True
 ) -> list[str]:
@@ -6219,6 +6255,7 @@ def route_weight_modifiers(
     if archetype_overlay:
         lines.extend(technology_archetype_weight_modifiers(target))
         lines.extend(identity_strategy_weight_modifiers(target))
+        lines.extend(identity_static_defense_weight_modifiers(target))
     return lines
 
 
@@ -13610,6 +13647,18 @@ def render_archetype_consumer_artifacts(
         IDENTITY_CLAIM_BUDGET_PATH.resolve()
     }:
         raise ValueError("Identity claim rows violated the fixed output allowlist")
+    defense_rows = [
+        row
+        for row in rows
+        if row["object_type"] in {"starbase_building", "starbase_module"}
+    ]
+    defense_rows_by_path: dict[Path, list[dict[str, Any]]] = defaultdict(list)
+    for row in defense_rows:
+        defense_rows_by_path[Path(str(row["generated_file"])).resolve()].append(row)
+    if set(defense_rows_by_path) != {
+        path.resolve() for path in IDENTITY_STATIC_DEFENSE_PATHS
+    }:
+        raise ValueError("Identity static-defense rows violated the fixed output allowlist")
     artifacts = {
         FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(
             ai_budget_text({}, archetype_overlay=archetype_overlay)
@@ -13628,6 +13677,11 @@ def render_archetype_consumer_artifacts(
         claim_rows,
         archetype_overlay=archetype_overlay,
     )
+    for path in IDENTITY_STATIC_DEFENSE_PATHS:
+        artifacts[path] = route_override_file_text(
+            defense_rows_by_path[path.resolve()],
+            archetype_overlay=archetype_overlay,
+        )
     if tuple(artifacts) != ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
         raise ValueError(
             "Archetype consumer renderer violated its fixed output allowlist"

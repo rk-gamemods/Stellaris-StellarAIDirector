@@ -23,6 +23,7 @@ from stellar_ai_director_lib import (  # noqa: E402
     FLEET_ARCHETYPE_FACTORS,
     FLEET_THREAT_RESPONSE_FACTOR,
     IDENTITY_CLAIM_BUDGET_PATH,
+    IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     ROUTE_OVERRIDE_TARGETS,
     TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS,
@@ -93,12 +94,12 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             row for row in cls.rows if row["object_type"] == "technology"
         ]
 
-    def test_fixed_allowlist_has_exactly_six_current_artifacts(self) -> None:
+    def test_fixed_allowlist_has_exactly_eight_current_artifacts(self) -> None:
         self.assertEqual(
             tuple(self.production),
             ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
         )
-        self.assertEqual(len(self.production), 6)
+        self.assertEqual(len(self.production), 8)
         for path, rendered in self.production.items():
             self.assertEqual(
                 path.read_text(encoding="utf-8").replace("\r\n", "\n"),
@@ -212,6 +213,57 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         defines = (TOOLS_ROOT.parent / "mods" / "StellarAIDirector" / "common" / "defines" / "zzzz_staid_14_high_scale_ai_defines.txt").read_text(encoding="utf-8")
         self.assertIn("WAR_DECLARATION_MAX_DISTANCE = 300", defines)
         self.assertIn("WAR_DECLARATION_MALUS_DISTANCE = 25", defines)
+
+    def test_identity_static_defense_is_owner_scoped_bounded_and_parent_safe(self) -> None:
+        production = "\n".join(
+            self.production[path] for path in IDENTITY_STATIC_DEFENSE_PATHS
+        )
+        zero = "\n".join(self.zero[path] for path in IDENTITY_STATIC_DEFENSE_PATHS)
+        expected_objects = sum(
+            target["object_type"] in {"starbase_building", "starbase_module"}
+            for target in ROUTE_OVERRIDE_TARGETS
+        )
+        for marker in (
+            "staid_archetype_defensive = yes",
+            "staid_archetype_lead_secondary_defensive = yes",
+            "staid_identity_inward_perfection = yes",
+        ):
+            self.assertEqual(production.count(marker), expected_objects)
+            self.assertNotIn(marker, zero)
+        self.assertNotIn("staid_archetype_hard_", production)
+        self.assertNotIn("staid_archetype_conquest = yes", production)
+        self.assertNotIn("staid_archetype_extermination = yes", production)
+        for line in production.splitlines():
+            if not any(
+                marker in line
+                for marker in (
+                    "staid_archetype_defensive = yes",
+                    "staid_archetype_lead_secondary_defensive = yes",
+                    "staid_identity_inward_perfection = yes",
+                )
+            ):
+                continue
+            self.assertIn("owner = {", line)
+            factor = re.search(r"factor = ([0-9.]+)", line)
+            self.assertIsNotNone(factor, line)
+            self.assertTrue(1.0 < float(factor.group(1)) <= 1.15)
+            for safety in (
+                "staid_archetype_identity_conflict = no",
+                "staid_archetype_eligible_country = yes",
+                "staid_static_defense_investment_ready = yes",
+                "staid_survival_mode = no",
+                "staid_recovery_mode = no",
+                "staid_catastrophic_collapse_mode = no",
+                "staid_core_deficit_short_runway = no",
+            ):
+                self.assertIn(safety, line)
+        for forbidden in (
+            "starbase_level =",
+            "ship_size =",
+            "section_template =",
+            "country_event =",
+        ):
+            self.assertNotIn(forbidden, production)
 
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:
         inserted: list[str] = []
