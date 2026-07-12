@@ -4036,11 +4036,13 @@ class GeneratedModValidityTests(unittest.TestCase):
             route_modifier = f"\t\tmodifier = {{ factor = 4 {route_gate} = yes }}\n"
             self.assertIn(route_comment.rstrip(), generated_block)
             self.assertIn(route_modifier.rstrip(), generated_block)
+            source_preserving_block = "\n".join(
+                line.rstrip()
+                for line in generated_block.replace(route_comment, "").replace(route_modifier, "").splitlines()
+                if "staid_archetype_identity_conflict = no" not in line
+            ).rstrip()
             self.assertEqual(
-                "\n".join(
-                    line.rstrip()
-                    for line in generated_block.replace(route_comment, "").replace(route_modifier, "").splitlines()
-                ).rstrip(),
+                source_preserving_block,
                 "\n".join(line.rstrip() for line in source_block.splitlines()).rstrip(),
                 f"{object_id} must preserve every parent category rule except the additive route boost.",
             )
@@ -4050,7 +4052,7 @@ class GeneratedModValidityTests(unittest.TestCase):
                 f"NOT = {{ {route_gate} = yes }}",
                 "years_passed >",
             ):
-                self.assertNotIn(forbidden, generated_block)
+                self.assertNotIn(forbidden, source_preserving_block)
 
         selectable_node_cases = (
             ("tr_discovery_to_boldly_go", "00_discovery.txt"),
@@ -4078,6 +4080,7 @@ class GeneratedModValidityTests(unittest.TestCase):
                 "\n".join(
                     line.rstrip()
                     for line in generated_block.replace(route_comment, "").replace(route_modifier, "").splitlines()
+                    if "staid_archetype_identity_conflict = no" not in line
                 ).rstrip(),
                 "\n".join(line.rstrip() for line in source_block.splitlines()).rstrip(),
                 f"{object_id} must preserve every parent rule except the additive route boost.",

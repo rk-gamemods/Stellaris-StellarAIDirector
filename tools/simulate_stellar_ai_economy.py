@@ -132,11 +132,11 @@ RESOURCES = ORDINARY + ("research",)
 RESEARCH_RATIO = 2.0
 
 PHASE_SUBPLANS = {
-    "early": ("Stellar AI Director safe research baseline", "Stellar AI Director early modded research rush"),
-    "mid": ("Stellar AI Director safe research baseline", "Stellar AI Director midgame megastructure rush"),
-    "late": ("Stellar AI Director safe research baseline", "Stellar AI Director crisis-scale giga rush"),
+    "early": ("Stellar AI Director safe research baseline", "Stellar AI Director opening direct research route"),
+    "mid": ("Stellar AI Director safe research baseline", "Stellar AI Director primary research economy"),
+    "late": ("Stellar AI Director safe research baseline", "Stellar AI Director primary research economy"),
 }
-WAR_SUBPLAN = "Stellar AI Director militarist conquest fleet reserve"
+CONQUEST_SUBPLAN = "Stellar AI Director militarist conquest fleet reserve"
 
 
 @dataclass(frozen=True)
@@ -239,8 +239,8 @@ def load_scenarios(path: Path = SCENARIOS) -> list[Scenario]:
 def targets(scenario: Scenario, policy: PdxPolicy) -> dict[str, float]:
     result = dict(policy.base_income)
     selected = list(PHASE_SUBPLANS[scenario.phase])
-    if scenario.at_war:
-        selected.append(WAR_SUBPLAN)
+    if scenario.aggressive_expansion:
+        selected.append(CONQUEST_SUBPLAN)
     for name in selected:
         if name not in policy.subplan_income:
             raise ValueError(f"Required PDX subplan not found: {name}")

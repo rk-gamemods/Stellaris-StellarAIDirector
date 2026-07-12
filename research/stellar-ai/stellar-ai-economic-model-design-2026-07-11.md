@@ -59,13 +59,15 @@ that active subplan goals are added to the base plan:
 
 | Model phase/state | PDX subplans selected |
 |---|---|
-| Early | safe research baseline; early modded research rush |
-| Mid | safe research baseline; midgame megastructure rush |
-| Late | safe research baseline; crisis-scale giga rush |
-| At war | phase subplans plus militarist conquest fleet reserve |
+| Early | safe research baseline; opening direct research route |
+| Mid | safe research baseline; primary research economy |
+| Late | safe research baseline; primary research economy |
+| Aggressive-expansion identity | phase subplans plus militarist conquest fleet reserve |
 
 This is an explicit scenario mapping. The harness does not pretend to execute
-arbitrary PDX triggers. Expanding trigger evaluation is future work; every
+arbitrary PDX triggers. `aggressive_expansion` is the scenario-level proxy for
+the Conquest identity; war alone does not activate that identity subplan.
+Expanding trigger evaluation is future work; every
 selected subplan name must exist in the current generated PDX or the diagnostic
 stops with an error.
 
