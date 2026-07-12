@@ -27,15 +27,18 @@ from stellar_ai_director_lib import (  # noqa: E402
     IDENTITY_MEGASTRUCTURE_PATH,
     IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
+    NOMAD_ARKSHIP_ASCENSION_PERK_HASHES,
     ROUTE_OVERRIDE_TARGETS,
     TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS,
     TECHNOLOGY_ARCHETYPE_ROUTE_FACTORS,
     TECHNOLOGY_ROUTE_OVERRIDE_PATH,
+    STELLARIS_INSTALL_ROOT,
     collect_object_names,
     extract_top_level_object_text,
     fleet_alloy_budget_text,
     fleet_archetype_budget_modifier,
     fleet_threat_response_budget_modifier,
+    normalize_text_file_content,
     render_archetype_consumer_artifacts,
     route_gate_for_target,
     route_override_file_text,
@@ -448,6 +451,47 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             production.count("staid_research_diplomacy_priority_ready = yes")
             - zero.count("staid_research_diplomacy_priority_ready = yes"),
             4,
+        )
+
+    def test_nomad_starting_arkships_bias_exactly_three_native_perks(self) -> None:
+        path = IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS[0]
+        production = self.production[path]
+        zero = self.zero[path]
+        expected = {
+            "ap_mastery_of_nature": "starting_civilian_arkship",
+            "ap_technological_ascendancy": "starting_science_arkship",
+            "ap_eternal_vigilance_nomads": "starting_military_arkship",
+        }
+        source_text = (
+            STELLARIS_INSTALL_ROOT
+            / "common"
+            / "ascension_perks"
+            / "00_ascension_perks.txt"
+        ).read_text(encoding="utf-8-sig")
+        for object_id, flag in expected.items():
+            block = extract_top_level_object_text(production, object_id)
+            zero_block = extract_top_level_object_text(zero, object_id)
+            line = next(line for line in block.splitlines() if flag in line)
+            self.assertIn("factor = 1.5", line)
+            self.assertIn("is_nomadic = yes", line)
+            self.assertIn(f"has_country_flag = {flag}", line)
+            self.assertNotIn("staid_archetype_eligible_country", line)
+            for other_flag in set(expected.values()) - {flag}:
+                self.assertNotIn(other_flag, block)
+            self.assertNotIn(flag, zero_block)
+
+            source_block = extract_top_level_object_text(source_text, object_id)
+            actual_hash = hashlib.sha256(
+                normalize_text_file_content(source_block).encode("utf-8")
+            ).hexdigest()
+            self.assertEqual(
+                actual_hash,
+                NOMAD_ARKSHIP_ASCENSION_PERK_HASHES[object_id],
+            )
+        self.assertEqual(
+            production.count("has_country_flag = starting_")
+            - zero.count("has_country_flag = starting_"),
+            3,
         )
 
     def test_production_overlay_is_additive_and_has_no_state_mutation(self) -> None:

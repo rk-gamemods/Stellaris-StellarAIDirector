@@ -6,6 +6,9 @@
 # Generated surface: common/ascension_perks
 
 
+# Source-local variables required by copied parent objects.
+@ascension_perk_attunement1 = 30		# Normal ascension perk attunement
+
 # policy_route = research_diplomacy_core; source = common/ascension_perks/00_ascension_perks.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
 ap_technological_ascendancy = {
 	modifier = {
@@ -35,6 +38,128 @@ ap_technological_ascendancy = {
 		modifier = { factor = 5 years_passed > 119 }
 		modifier = { factor = 1.15 staid_archetype_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
 		modifier = { factor = 1.05 staid_archetype_lead_secondary_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_research_diplomacy_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no }
+		modifier = { factor = 1.5 is_nomadic = yes has_country_flag = starting_science_arkship }
+	}
+}
+
+
+# policy_route = nomad_arkship_specialization; source = common/ascension_perks/00_ascension_perks.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+ap_mastery_of_nature = {
+	on_enabled = {
+		custom_tooltip = "describe_decision_mastery_of_nature"
+	}
+	modifier = {
+		deposit_blockers_cost_mult = -0.33
+		add_attunement_the_instrument_of_desire = @ascension_perk_attunement1
+	}
+
+	potential = {
+		NOR = {
+			has_ascension_perk = ap_mastery_of_nature
+			is_environmental_architects_empire = yes
+		}
+	}
+
+	tradition_swap = {
+		inherit_effects = yes
+		inherit_icon = yes
+		name = ap_mastery_of_nature_wilderness
+		trigger = {
+			is_wilderness_empire = yes
+		}
+	}
+
+	tradition_swap = {
+		inherit_effects = no
+		inherit_icon = yes
+		name = ap_mastery_of_nature_nomads
+		trigger = {
+			is_nomadic = yes
+		}
+		modifier = {
+			arkship_harvest_resources_produces_mult = 0.5
+			ship_starbase_stockpile_collection_rate_mult = 0.10
+			add_attunement_the_instrument_of_desire = @ascension_perk_attunement1
+		}
+	}
+
+	ai_weight = {
+		factor = 10
+		modifier = {
+			factor = 0
+			OR = {
+				is_void_dweller_empire = yes
+				has_origin = origin_shattered_ring
+			}
+		}
+		modifier = {
+			factor = 2
+			years_passed > 40
+			num_owned_planets < 5
+		}
+		modifier = {
+			factor = 2
+			years_passed > 80
+			num_owned_planets < 10
+		}
+		modifier = { factor = 1.5 is_nomadic = yes has_country_flag = starting_civilian_arkship }
+	}
+}
+
+
+# policy_route = nomad_arkship_specialization; source = common/ascension_perks/00_ascension_perks.txt; parent_ai = parent_ai_partial; source_ai_weight = yes
+ap_eternal_vigilance_nomads = {
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_technology_waystation_3"
+			OR = {
+				has_technology = tech_waystation_3
+				has_tradition = tr_expansion_finish
+			}
+		}
+	}
+
+	potential = {
+		is_nomadic = yes
+		NOT = {
+			has_ascension_perk = ap_eternal_vigilance_nomads
+		}
+	}
+
+	modifier = {
+		country_commander_cap_add = 1
+		waystation_armor_hardening_add = 0.25
+		waystation_shield_hardening_add = 0.15
+		waystation_hull_mult = 0.25
+		starbase_waystations_alloys_cost_mult = -0.25
+		arkship_fire_rate = 0.25
+		ship_hull_mult = 0.25
+		add_attunement_the_cradle_of_souls = @ascension_perk_attunement1
+	}
+
+	ai_weight = {
+		factor = 2
+		modifier = {
+			factor = 5
+			has_civic = civic_sovereign_guardianship
+		}
+		modifier = {
+			factor = 5
+			has_tradition = tr_unyielding_finish
+		}
+		modifier = {
+			factor = 1.5
+			is_xenophobe = yes
+		}
+		modifier = {
+			factor = 1.5
+			any_neighbor_country = {
+				is_country_type = default
+				opinion_level = { who = root level <= poor }
+				relative_power = { who = root value >= superior }
+			}
+		}
+		modifier = { factor = 1.5 is_nomadic = yes has_country_flag = starting_military_arkship }
 	}
 }
 

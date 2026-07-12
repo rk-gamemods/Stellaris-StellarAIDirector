@@ -109,6 +109,11 @@ IDENTITY_FLEET_COMPOSITION_SOURCES = {
         "Dreadnought": "844ba7d69474d33d0837e97296cdcdaae2159d316ad294032367c00757dae3ec",
     },
 }
+NOMAD_ARKSHIP_ASCENSION_PERK_HASHES = {
+    "ap_mastery_of_nature": "f2a6ad975080986d2144a2c942847536481f56886765bdb9fcf6e6c3519e95c2",
+    "ap_technological_ascendancy": "21f3e314e15f69e5d062bc0f957971c956b7133252d8875272a0e21b54c10671",
+    "ap_eternal_vigilance_nomads": "9a5bf9e600b9d71ad367c80b8471662b886b6dbe065ca1f27e0a97d9d1b561ed",
+}
 IDENTITY_SUBJECT_AGREEMENT_ROOT = MOD_ROOT / "common" / "agreement_presets"
 IDENTITY_SUBJECT_AGREEMENT_SOURCES = {
     "00_agreement_presets.txt": (
@@ -802,6 +807,8 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "tech_starbase_6", "object_type": "technology", "mod_id": "3250900527", "route_id": "fallen_empire_benchmark_route", "weight": 135000, "file_key": "01_unlock_technology"},
     # AP and native tradition category/node pressure for routes that Stellaris otherwise treats as optional flavor.
     {"object_id": "ap_technological_ascendancy", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "research_diplomacy_core", "weight": 150000, "file_key": "02_perks_traditions"},
+    {"object_id": "ap_mastery_of_nature", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "nomad_arkship_specialization", "weight": 0, "file_key": "02_perks_traditions", "nomad_identity_only": True},
+    {"object_id": "ap_eternal_vigilance_nomads", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "nomad_arkship_specialization", "weight": 0, "file_key": "02_perks_traditions", "nomad_identity_only": True},
     {"object_id": "ap_master_builders", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "economy_megastructure_core", "weight": 125000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_galactic_wonders", "object_type": "ascension_perk", "mod_id": "vanilla", "source_file": "common/ascension_perks/00_ascension_perks.txt", "route_id": "economy_megastructure_core", "weight": 150000, "file_key": "02_perks_traditions"},
     {"object_id": "ap_gigastructural_constructs", "object_type": "ascension_perk", "mod_id": "1121692237", "route_id": "economy_megastructure_core", "weight": 120000, "file_key": "02_perks_traditions"},
@@ -5337,6 +5344,21 @@ def research_federation_weight_block(
     return insert_top_level_ai_weight_modifiers(block_text, modifiers)
 
 
+def nomad_arkship_ascension_perk_modifier(object_id: str) -> str | None:
+    starting_flags = {
+        "ap_mastery_of_nature": "starting_civilian_arkship",
+        "ap_technological_ascendancy": "starting_science_arkship",
+        "ap_eternal_vigilance_nomads": "starting_military_arkship",
+    }
+    flag = starting_flags.get(object_id)
+    if not flag:
+        return None
+    return (
+        "\t\tmodifier = { factor = 1.5 is_nomadic = yes "
+        f"has_country_flag = {flag} }}"
+    )
+
+
 def find_verified_source_object_block(common_folder: str, object_id: str, mod_id: str = "vanilla") -> str:
     source_root = mod_source_root_for_id(mod_id)
     folder_root = source_root / "common" / common_folder
@@ -7175,6 +7197,19 @@ def route_override_object_text(
 ) -> str:
     source_text = read_text(Path(target["source_path"]))
     block = extract_top_level_object_text(source_text, target["object_id"])
+    nomad_perk_modifier = nomad_arkship_ascension_perk_modifier(
+        str(target["object_id"])
+    )
+    if nomad_perk_modifier:
+        expected_sha256 = NOMAD_ARKSHIP_ASCENSION_PERK_HASHES[str(target["object_id"])]
+        actual_sha256 = hashlib.sha256(
+            normalize_text_file_content(block).encode("utf-8")
+        ).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise ValueError(
+                f"Vanilla Nomad ascension perk drifted: {target['object_id']} "
+                f"expected={expected_sha256} actual={actual_sha256}"
+            )
     if target["object_type"] == "megastructure":
         target = {
             **target,
@@ -7183,7 +7218,10 @@ def route_override_object_text(
     if target["object_type"] == "megastructure" and object_names is not None:
         block = strip_optional_absent_planet_classes(block, object_names)
         block = repair_gigas_habitat_spawn_effect_params(block, target)
-    if target["object_type"] in {"building", "district"}:
+    if target.get("nomad_identity_only"):
+        if archetype_overlay and nomad_perk_modifier:
+            block = insert_top_level_ai_weight_modifier(block, nomad_perk_modifier)
+    elif target["object_type"] in {"building", "district"}:
         block = director_infrastructure_weight_block(block, target)
     elif target["object_type"] == "ai_budget":
         block = director_ai_budget_weight_block(
@@ -7221,6 +7259,12 @@ def route_override_object_text(
                 target, archetype_overlay=archetype_overlay
             ),
         )
+    if (
+        nomad_perk_modifier
+        and archetype_overlay
+        and not target.get("nomad_identity_only")
+    ):
+        block = insert_top_level_ai_weight_modifier(block, nomad_perk_modifier)
     block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
     return (
         f"# policy_route = {target['route_id']}; source = {target['source_file']}; "
