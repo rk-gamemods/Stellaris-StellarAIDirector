@@ -15,7 +15,6 @@ from stellar_ai_director_lib import (
     extract_assignment_block,
     iter_numbered_child_blocks,
     load_stellaris_save_gamestate,
-    numeric_assignment,
     save_scalar,
     sum_resource_assignments,
 )
@@ -52,8 +51,7 @@ CHECKPOINT_FIELDS = [
     "evidence_file",
 ]
 
-REGULAR_AI_COUNTRY_TYPES = {"1", "2", "colony", "country"}
-FALLEN_OR_SPECIAL_ECONOMY_POWER_FLOOR = 10_000
+REGULAR_AI_COUNTRY_TYPES = {"default"}
 CHECKPOINT_RESOURCE_FIELDS = {
     "alloys_income": "alloys",
     "consumer_goods_income": "consumer_goods",
@@ -235,9 +233,53 @@ def checkpoint_rows(run_dir: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def top_level_scalar_assignment(block_text: str, key: str) -> str:
+    """Return a scalar assigned directly inside a PDX block, ignoring nested blocks."""
+
+    text = block_text.strip()
+    if text.startswith("{") and text.endswith("}"):
+        text = text[1:-1]
+
+    pattern = re.compile(
+        rf'^\s*{re.escape(key)}\s*=\s*(?:"((?:\\.|[^"])*)"|([^\s#{{}}]+))'
+    )
+    depth = 0
+    in_quote = False
+    escaped = False
+    for line in text.splitlines():
+        if depth == 0 and not in_quote:
+            match = pattern.match(line)
+            if match:
+                return match.group(1) if match.group(1) is not None else match.group(2)
+
+        for char in line:
+            if char == "\\" and in_quote and not escaped:
+                escaped = True
+                continue
+            if char == '"' and not escaped:
+                in_quote = not in_quote
+            elif not in_quote and char == "#":
+                break
+            elif not in_quote and char == "{":
+                depth += 1
+            elif not in_quote and char == "}":
+                depth -= 1
+            escaped = False
+    return ""
+
+
+def top_level_numeric_assignment(block_text: str, key: str) -> float | None:
+    value = top_level_scalar_assignment(block_text, key)
+    if not value:
+        return None
+    try:
+        return float(value)
+    except ValueError:
+        return None
+
+
 def country_type(country_block: str) -> str:
-    match = re.search(r'(^|\n)\s*type\s*=\s*"?([A-Za-z0-9_]+)"?', country_block)
-    return match.group(2) if match else ""
+    return top_level_scalar_assignment(country_block, "type")
 
 
 def localized_key_text(block_text: str, key: str) -> str:
@@ -282,13 +324,17 @@ def checkpoint_country_row(
             "empire_rank": str(rank),
             "empire_name": localized_key_text(country_block, "name") or f"country_{country_id}",
             "country_id": country_id,
-            "economy_power": metric_text(numeric_assignment(country_block, "economy_power")),
-            "tech_power": metric_text(numeric_assignment(country_block, "tech_power")),
-            "fleet_power": metric_text(numeric_assignment(country_block, "fleet_size")),
-            "naval_capacity_used": metric_text(numeric_assignment(country_block, "used_naval_capacity")),
-            "naval_capacity_available": metric_text(numeric_assignment(country_block, "naval_capacity")),
+            "economy_power": metric_text(top_level_numeric_assignment(country_block, "economy_power")),
+            "tech_power": metric_text(top_level_numeric_assignment(country_block, "tech_power")),
+            "fleet_power": metric_text(top_level_numeric_assignment(country_block, "military_power")),
+            "naval_capacity_used": metric_text(
+                top_level_numeric_assignment(country_block, "used_naval_capacity")
+            ),
+            "naval_capacity_available": metric_text(
+                top_level_numeric_assignment(country_block, "naval_capacity")
+            ),
             "research": metric_text(research),
-            "pops": metric_text(numeric_assignment(country_block, "num_sapient_pops")),
+            "pops": metric_text(top_level_numeric_assignment(country_block, "num_sapient_pops")),
             "colonies": metric_text(
                 count_numeric_list_assignment(country_block, "controlled_colonies")
                 or count_numeric_list_assignment(country_block, "owned_planets")
@@ -330,20 +376,19 @@ def extract_checkpoint_rows_from_save(
     for country_id, block in countries.items():
         current_type = country_type(block)
         type_counts[current_type or "missing"] += 1
-        economy_power = numeric_assignment(block, "economy_power") or 0.0
-        pops = numeric_assignment(block, "num_sapient_pops") or 0.0
-        fleet_power = numeric_assignment(block, "fleet_size") or 0.0
-        type_ten_regularized = current_type == "10" and 0 < economy_power < FALLEN_OR_SPECIAL_ECONOMY_POWER_FLOOR
-        if (current_type in REGULAR_AI_COUNTRY_TYPES or type_ten_regularized) and pops > 0 and economy_power > 0:
+        economy_power = top_level_numeric_assignment(block, "economy_power") or 0.0
+        pops = top_level_numeric_assignment(block, "num_sapient_pops") or 0.0
+        military_power = top_level_numeric_assignment(block, "military_power") or 0.0
+        if current_type in REGULAR_AI_COUNTRY_TYPES and pops > 0 and economy_power > 0:
             eligible.append((economy_power, country_id, block))
-        elif economy_power > 100 or fleet_power > 1000:
+        elif economy_power > 100 or military_power > 1000:
             special.append(
                 {
                     "country_id": country_id,
                     "type": current_type,
                     "name": localized_key_text(block, "name"),
                     "economy_power": metric_text(economy_power),
-                    "fleet_power": metric_text(fleet_power),
+                    "fleet_power": metric_text(military_power),
                     "pops": metric_text(pops),
                 }
             )

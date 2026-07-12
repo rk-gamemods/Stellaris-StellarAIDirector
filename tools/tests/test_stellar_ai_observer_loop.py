@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from stellar_ai_observer_loop import (
     CHECKPOINT_FIELDS,
     checkpoint_save_report_text,
+    country_type,
     create_observer_run,
     extract_checkpoint_rows_from_save,
     latest_observer_run,
@@ -25,6 +26,18 @@ from manage_stellaris_commands_at_date import (
 
 
 class StellarAiObserverLoopTests(unittest.TestCase):
+    def test_country_type_ignores_nested_type_assignments(self):
+        block = """
+{
+  name={
+    key="Test Empire"
+    type=planet
+  }
+  type=default
+}
+"""
+        self.assertEqual(country_type(block), "default")
+
     def test_commands_at_date_uses_dev_only_game_speed_five(self):
         self.assertIn('2200.01.01 = "game_speed 5"', OBSERVER_COMMAND_SCHEDULE)
         self.assertIn('2200.01.02 = "game_speed 5"', OBSERVER_COMMAND_SCHEDULE)
@@ -154,11 +167,12 @@ date="2250.01.01"
 country={
   1={
     initialized=yes
-    type=country
-    name={ key="Alpha League" }
+    name={ key="Alpha League" type=planet }
+    type=default
     economy_power=1200
     tech_power=800
     fleet_size=130
+    military_power=1096.45
     used_naval_capacity=80
     naval_capacity=96
     num_sapient_pops=1234
@@ -200,21 +214,23 @@ country={
   }
   2={
     initialized=yes
-    type=10
+    type=fallen_empire
     name={ key="Fallen Outlier" }
     economy_power=30000
     tech_power=1000000
     fleet_size=2500
+    military_power=750000
     used_naval_capacity=2500
     num_sapient_pops=20000
   }
   4={
     initialized=yes
-    type=10
+    type=default
     name={ key="Late Regularized Empire" }
     economy_power=4200
     tech_power=9000
     fleet_size=700
+    military_power=3735.445
     used_naval_capacity=650
     num_sapient_pops=7000
   }
@@ -223,6 +239,7 @@ country={
     type=guardian_horror
     economy_power=1
     fleet_size=250
+    military_power=25000
   }
 }
 """
@@ -240,6 +257,7 @@ country={
             self.assertEqual(rows[0]["empire_name"], "Late Regularized Empire")
             self.assertEqual(rows[1]["empire_name"], "Alpha League")
             self.assertEqual(rows[1]["research"], "42")
+            self.assertEqual(rows[1]["fleet_power"], "1096.45")
             self.assertEqual(rows[1]["energy_income"], "50")
             self.assertEqual(rows[1]["food_income"], "15")
             self.assertEqual(rows[1]["naval_capacity_available"], "96")
