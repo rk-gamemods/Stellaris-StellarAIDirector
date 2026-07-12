@@ -513,6 +513,82 @@ class OutpostBudgetAvailabilityTests(unittest.TestCase):
         self.assertEqual(artifact, generated)
 
 
+class ClaimPressureExpansionPriorityTests(unittest.TestCase):
+    def test_claim_acceleration_waits_until_no_expansion_plan(self):
+        trigger_path = (
+            MOD_ROOT
+            / "common"
+            / "scripted_triggers"
+            / "zzz_staid_decision_state_triggers.txt"
+        )
+        claim_budget_path = (
+            MOD_ROOT
+            / "common"
+            / "ai_budget"
+            / "zzzz_staid_08_site_limited_expansion_ai_budget.txt"
+        )
+        parse_file(trigger_path)
+        parse_file(claim_budget_path)
+        artifact = trigger_path.read_text(encoding="utf-8")
+        generated = triggers_text(generated_thresholds(extract_megastructure_rows()))
+        self.assertEqual(artifact, generated)
+
+        claim_gate = extract_top_level_object_text(
+            artifact, "staid_influence_claim_pressure"
+        )
+        for marker in (
+            "is_nomadic = no",
+            "is_at_war = no",
+            "NOT = { has_ethic = ethic_pacifist }",
+            "NOT = { has_ethic = ethic_fanatic_pacifist }",
+            "has_potential_claims = yes",
+            "has_resource = { type = influence amount > 500 }",
+            "NOT = { has_ai_expansion_plan = yes }",
+        ):
+            self.assertEqual(claim_gate.count(marker), 1)
+        self.assertNotIn("amount > 900", claim_gate)
+        self.assertNotIn("OR = {", claim_gate)
+
+        claim_budget = claim_budget_path.read_text(encoding="utf-8")
+        expected_objects = {
+            "influence_expenditure_claims": ("0.20", "has_crisis_level = crisis_level_2"),
+            "influence_expenditure_claims_militarist": (
+                "0.10",
+                "has_ethic = ethic_militarist",
+            ),
+            "influence_expenditure_claims_fanatic_militarist": (
+                "0.15",
+                "has_ethic = ethic_fanatic_militarist",
+            ),
+        }
+        for object_id, (base_weight, potential_marker) in expected_objects.items():
+            block = extract_top_level_object_text(claim_budget, object_id)
+            potential = extract_assignment_block(block, "potential")
+            weight = extract_assignment_block(block, "weight")
+            self.assertIn("is_nomadic = no", potential)
+            self.assertIn("has_potential_claims = yes", potential)
+            self.assertIn(potential_marker, potential)
+            self.assertIn(f"weight = {base_weight}", weight)
+            self.assertEqual(
+                weight.count(
+                    "modifier = { factor = 3 staid_influence_claim_pressure = yes }"
+                ),
+                1,
+            )
+            self.assertEqual(
+                weight.count(
+                    "modifier = { factor = 12 staid_boxed_in_claim_urgency = yes }"
+                ),
+                1,
+            )
+            self.assertEqual(
+                weight.count(
+                    "modifier = { factor = 2 has_resource = { type = influence amount > 900 } }"
+                ),
+                1,
+            )
+
+
 class EconomicPlanBoundednessTests(unittest.TestCase):
     def test_megastructure_pressure_has_no_global_scaling_spam_target(self):
         plan_path = MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_additive_economic_plan.txt"

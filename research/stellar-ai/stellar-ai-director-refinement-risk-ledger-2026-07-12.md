@@ -426,6 +426,78 @@ Revert only the H07 follow-up if colony completion regresses; revert original
 H07 separately if the availability override itself proves harmful. Do not
 restore H01-H06 megastructure pressure or the removed order watchdog.
 
+## H07c — Defer accelerated claim spending while expansion is active
+
+Status: implemented as a separate, save-safe trigger correction; focused
+static validation passed, with copied-save runtime continuation still pending.
+
+Evidence:
+
+- Country 0 is a non-militarist `ruthless_capitalists` personality with
+  authoritarian and fanatic-materialist ethics. At `2270.04.15` it is at peace,
+  holds `980` influence with `+10.75` monthly income, and has three serialized
+  type-19 expansion candidates.
+- The save does not serialize the evaluated results of
+  `has_ai_expansion_plan` or `has_potential_claims`. Claim-budget competition is
+  therefore a strong Director-specific hypothesis, not proven causation.
+- Before this correction, influence above `900` bypassed the shared trigger's
+  no-expansion-plan condition. For this non-militarist empire, the generic claim
+  lane could therefore reach `0.20 * 3 * 2 = 1.20` while the vanilla station lane
+  remained `0.50`.
+- The independent high-influence factor remains on each claim budget object.
+  While an expansion plan exists, this empire's generic claim weight is now
+  bounded at `0.20 * 2 = 0.40`; when no expansion plan exists, the factor-3
+  acceleration can still raise it to `1.20` at capped influence.
+
+Change only `staid_influence_claim_pressure`: retain its peace, non-pacifist,
+potential-claim, and influence-above-500 gates, but require a direct
+`NOT = { has_ai_expansion_plan = yes }`. Preserve all three claim objects,
+their independent high-influence factor `2`, boxed-in urgency factor `12`, base
+weights, and potentials. This reorders discretionary influence pressure without
+creating claims, targets, resources, orders, or persistent state.
+
+Top five risks:
+
+1. **A stale native expansion plan may defer otherwise useful claims.** Keep the
+   independent high-influence factor and boxed-in urgency path; check whether
+   claims resume after the expansion plan clears in runtime continuation.
+2. **Claim competition may not be the planner-to-order blocker.** The save does
+   not expose evaluated budget choice or scheduler internals; keep this as a
+   separate rollback commit and require A/B runtime evidence.
+3. **Militarist claim lanes may still aggregate above the station lane.** This
+   exact save is non-militarist. Do not generalize its `0.40` versus `0.50`
+   comparison; test regular and fanatic militarist expansion separately before
+   broadening the correction.
+4. **Long-distance aggression may start later.** The no-expansion condition
+   delays only the shared factor-3 acceleration, not normal claims, capped
+   influence spend-down, or boxed-in urgency. Check claim creation and war
+   preparation after nearby expansion opportunities are exhausted.
+5. **Boxed-in urgency may still dominate normal expansion.** Its factor `12`
+   is intentionally preserved and could raise this empire's capped-influence
+   generic claim weight to `4.80` even with an expansion plan. The screenshot
+   topology suggests `staid_boxed_in_war_pressure` should be false, but the save
+   does not serialize the evaluated trigger. Verify that path in runtime before
+   altering it.
+
+Static acceptance:
+
+- The generated decision-state trigger artifact equals `triggers_text()` and
+  parses without cycles or unresolved scripted-trigger references.
+- `staid_influence_claim_pressure` contains exactly one direct no-expansion-plan
+  gate and no influence-above-900 bypass.
+- All three claim objects retain their original base, factor-3 shared trigger,
+  factor-12 boxed-in urgency, and independent factor-2 high-influence signal.
+- No claim-budget artifact, order surface, event, effect, persistent state, or
+  constructor target changes in this slice.
+- Generated trigger equality is checked directly and the claim-budget artifact
+  remains byte-identical; the broad all-artifact generator is not used.
+
+Rollback boundary:
+
+Revert only H07c if valid claims remain deferred after expansion ends or if
+aggression regresses. Do not revert H07/H07b outpost availability or H01-H06
+constructor-pressure corrections with it.
+
 ## H08a — Deterministic nation identity and bounded policy model
 
 Status: implemented as an offline model and fixture surface; no production mod
