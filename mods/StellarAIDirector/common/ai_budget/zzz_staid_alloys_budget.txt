@@ -60,8 +60,9 @@ alloys_expenditure_ships = {
 			factor = 0.25
 			staid_peacetime_high_naval_capacity_guard = yes
 		}
-		# Bounded wartime surge for satisfied templates far below naval cap.
-		# The vanilla 3x war factor remains; this only adds affordable lane share.
+		# Wartime surge for satisfied templates far below naval cap while every
+		# modeled recurring fleet-pressure resource remains economically safe.
+		# The vanilla 3x war factor remains; this adds only native budget share.
 		modifier = {
 			factor = 1.5
 			staid_wartime_fleet_surge_ready = yes
@@ -136,12 +137,6 @@ alloys_expenditure_ships = {
 
 		modifier = {
 			factor = trigger:years_passed
-		}
-		# Reserve enough partitioned alloys for at least one current capital-hull
-		# decision. This cannot create a fleet template or bypass construction.
-		modifier = {
-			add = 5000
-			staid_wartime_fleet_surge_ready = yes
 		}
 	}
 

@@ -745,32 +745,56 @@ class ShipBudgetAvailabilityTests(unittest.TestCase):
             self.assertIn("factor = 0.25", text)
             self.assertIn("staid_peacetime_high_naval_capacity_guard = yes", text)
             self.assertIn("factor = 1.5", text)
-            self.assertIn("add = 5000", text)
-            self.assertEqual(text.count("staid_wartime_fleet_surge_ready = yes"), 2)
+            self.assertNotIn("add = 5000", text)
+            self.assertEqual(text.count("staid_wartime_fleet_surge_ready = yes"), 1)
             self.assertNotIn("NOT = { staid_peacetime_high_naval_capacity_guard = yes }", text)
             self.assertNotIn("staid_fleet_buildup_economy_safe = yes", text)
         self.assertEqual(ships, generated_ships)
 
-    def test_wartime_surge_is_bounded_by_runway_cap_and_capital_hull_tech(self):
+    def test_wartime_surge_uses_recurring_income_not_stockpile_runway(self):
         trigger_path = MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
         parse_file(trigger_path)
         triggers = trigger_path.read_text(encoding="utf-8")
         surge = extract_top_level_object_text(triggers, "staid_wartime_fleet_surge_ready")
         for marker in (
             "is_at_war = yes",
-            "country_uses_bio_ships = no",
-            "NOT = { staid_catastrophic_collapse_mode = yes }",
-            "NOT = { staid_core_deficit_short_runway = yes }",
-            "staid_energy_two_month_runway_unsafe = no",
-            "staid_alloys_two_month_runway_unsafe = no",
+            "staid_wartime_fleet_recurring_income_safe = yes",
             "used_naval_capacity_percent < 0.90",
             "has_technology = tech_battleships",
             "has_technology = tech_Battlecruiser_1",
             "has_technology = tech_Carrier_1",
             "has_technology = tech_Dreadnought_1",
-            "resource_stockpile_compare = { resource = alloys value > 5000 }",
         ):
             self.assertIn(marker, surge)
+        for forbidden_gate in (
+            "resource_stockpile_compare",
+            "two_month_runway",
+            "staid_core_deficit_short_runway",
+        ):
+            self.assertNotIn(forbidden_gate, surge)
+        recurring = extract_top_level_object_text(
+            triggers, "staid_standard_fleet_recurring_income_safe"
+        )
+        for resource in ("energy", "alloys", "trade"):
+            self.assertIn(
+                f"has_monthly_income = {{ resource = {resource} value > 0 }}",
+                recurring,
+            )
+        for resource in ("food", "minerals", "giga_sr_sentient_metal", "influence"):
+            self.assertIn(f"resource = {resource}", recurring)
+            self.assertIn("value = 0", recurring)
+            self.assertIn(
+                f"has_monthly_income = {{ resource = {resource} value > 0 }}",
+                recurring,
+            )
+        self.assertNotIn("value >= 0", recurring)
+        bioship = extract_top_level_object_text(
+            triggers, "staid_bioship_fleet_recurring_income_safe"
+        )
+        self.assertIn("country_uses_bio_ships = yes", bioship)
+        self.assertIn(
+            "has_monthly_income = { resource = food value > 0 }", bioship
+        )
         for forbidden in ("country_event =", "create_fleet", "create_ship", "set_fleet_order"):
             self.assertNotIn(forbidden, surge)
         self.assertNotIn("staid_wartime_fleet_minimum_mode", triggers)

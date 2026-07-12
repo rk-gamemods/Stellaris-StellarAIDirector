@@ -594,6 +594,78 @@ staid_food_two_month_runway_unsafe = {
 		}
 	}
 }
+
+# Active-stack recurring fleet pressure. Construction-only resources
+# remain governed by native affordability; wartime stockpiles are not gates.
+staid_standard_fleet_recurring_income_safe = {
+	country_uses_bio_ships = no
+	has_monthly_income = { resource = energy value > 0 }
+	has_monthly_income = { resource = alloys value > 0 }
+	has_monthly_income = { resource = trade value > 0 }
+	OR = {
+		resource_expenses_compare = {
+			resource = food
+			value = 0
+		}
+		has_monthly_income = { resource = food value > 0 }
+	}
+	OR = {
+		resource_expenses_compare = {
+			resource = minerals
+			value = 0
+		}
+		has_monthly_income = { resource = minerals value > 0 }
+	}
+	OR = {
+		resource_expenses_compare = {
+			resource = giga_sr_sentient_metal
+			value = 0
+		}
+		has_monthly_income = { resource = giga_sr_sentient_metal value > 0 }
+	}
+	OR = {
+		resource_expenses_compare = {
+			resource = influence
+			value = 0
+		}
+		has_monthly_income = { resource = influence value > 0 }
+	}
+}
+staid_bioship_fleet_recurring_income_safe = {
+	country_uses_bio_ships = yes
+	has_monthly_income = { resource = energy value > 0 }
+	has_monthly_income = { resource = alloys value > 0 }
+	has_monthly_income = { resource = trade value > 0 }
+	has_monthly_income = { resource = food value > 0 }
+	OR = {
+		resource_expenses_compare = {
+			resource = minerals
+			value = 0
+		}
+		has_monthly_income = { resource = minerals value > 0 }
+	}
+	OR = {
+		resource_expenses_compare = {
+			resource = giga_sr_sentient_metal
+			value = 0
+		}
+		has_monthly_income = { resource = giga_sr_sentient_metal value > 0 }
+	}
+	OR = {
+		resource_expenses_compare = {
+			resource = influence
+			value = 0
+		}
+		has_monthly_income = { resource = influence value > 0 }
+	}
+}
+staid_wartime_fleet_recurring_income_safe = {
+	OR = {
+		staid_standard_fleet_recurring_income_safe = yes
+		staid_bioship_fleet_recurring_income_safe = yes
+	}
+}
+
 # Native colony-scope research role quality and country-scope soft ceiling.
 # This intentionally counts realized designations, never persistent event flags.
 staid_good_research_candidate = {
@@ -1113,18 +1185,16 @@ staid_fleet_buildup_economy_safe = {
 
 # Native affordability/resource-share support for a rich wartime empire whose
 # existing templates are satisfied far below naval capacity. This only funds
-# the lane; NSC3 ai_ship_data remains responsible for demand and composition.
+# the lane; native fleet templates remain responsible for demand and composition.
+# Construction inputs use native affordability. Recurring income gates come from
+# the active NSC3/ESC NEXT/Gigas/SFT fleet-economy model and ignore stockpile size.
 staid_wartime_fleet_surge_ready = {
 	is_ai = yes
 	is_country_type = default
 	is_nomadic = no
 	is_at_war = yes
-	country_uses_bio_ships = no
 	uses_standard_ship_sizes = yes
-	NOT = { staid_catastrophic_collapse_mode = yes }
-	NOT = { staid_core_deficit_short_runway = yes }
-	staid_energy_two_month_runway_unsafe = no
-	staid_alloys_two_month_runway_unsafe = no
+	staid_wartime_fleet_recurring_income_safe = yes
 	used_naval_capacity_percent < 0.90
 	OR = {
 		has_technology = tech_battleships
@@ -1132,7 +1202,6 @@ staid_wartime_fleet_surge_ready = {
 		has_technology = tech_Carrier_1
 		has_technology = tech_Dreadnought_1
 	}
-	resource_stockpile_compare = { resource = alloys value > 5000 }
 }
 
 staid_emergency_fleet_spending_required = {

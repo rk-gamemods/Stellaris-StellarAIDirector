@@ -12006,6 +12006,11 @@ def relative_economic_runway_triggers_text() -> str:
         )
     for resource in ("energy", "minerals", "alloys", "trade", "consumer_goods", "food"):
         blocks.append(_two_month_runway_trigger_text(resource))
+    try:
+        from tools.stellar_ai_fleet_economy_model import render_recurring_income_triggers
+    except ModuleNotFoundError:
+        from stellar_ai_fleet_economy_model import render_recurring_income_triggers
+    blocks.append(render_recurring_income_triggers())
     text = "\n\n".join(blocks) + "\n"
     parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
     return text
@@ -12535,18 +12540,16 @@ staid_fleet_buildup_economy_safe = {
 
 # Native affordability/resource-share support for a rich wartime empire whose
 # existing templates are satisfied far below naval capacity. This only funds
-# the lane; NSC3 ai_ship_data remains responsible for demand and composition.
+# the lane; native fleet templates remain responsible for demand and composition.
+# Construction inputs use native affordability. Recurring income gates come from
+# the active NSC3/ESC NEXT/Gigas/SFT fleet-economy model and ignore stockpile size.
 staid_wartime_fleet_surge_ready = {
 \tis_ai = yes
 \tis_country_type = default
 \tis_nomadic = no
 \tis_at_war = yes
-\tcountry_uses_bio_ships = no
 \tuses_standard_ship_sizes = yes
-\tNOT = { staid_catastrophic_collapse_mode = yes }
-\tNOT = { staid_core_deficit_short_runway = yes }
-\tstaid_energy_two_month_runway_unsafe = no
-\tstaid_alloys_two_month_runway_unsafe = no
+\tstaid_wartime_fleet_recurring_income_safe = yes
 \tused_naval_capacity_percent < 0.90
 \tOR = {
 \t\thas_technology = tech_battleships
@@ -12554,7 +12557,6 @@ staid_wartime_fleet_surge_ready = {
 \t\thas_technology = tech_Carrier_1
 \t\thas_technology = tech_Dreadnought_1
 \t}
-\tresource_stockpile_compare = { resource = alloys value > 5000 }
 }
 
 staid_emergency_fleet_spending_required = {
@@ -13815,20 +13817,11 @@ def fleet_alloy_budget_text(
     ships = insert_top_level_child_modifier(
         ships,
         "weight",
-        """\t\t# Bounded wartime surge for satisfied templates far below naval cap.
-\t\t# The vanilla 3x war factor remains; this only adds affordable lane share.
+        """\t\t# Wartime surge for satisfied templates far below naval cap while every
+\t\t# modeled recurring fleet-pressure resource remains economically safe.
+\t\t# The vanilla 3x war factor remains; this adds only native budget share.
 \t\tmodifier = {
 \t\t\tfactor = 1.5
-\t\t\tstaid_wartime_fleet_surge_ready = yes
-\t\t}""",
-    )
-    ships = insert_top_level_child_modifier(
-        ships,
-        "desired_min",
-        """\t\t# Reserve enough partitioned alloys for at least one current capital-hull
-\t\t# decision. This cannot create a fleet template or bypass construction.
-\t\tmodifier = {
-\t\t\tadd = 5000
 \t\t\tstaid_wartime_fleet_surge_ready = yes
 \t\t}""",
     )

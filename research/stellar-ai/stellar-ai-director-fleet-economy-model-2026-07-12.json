@@ -1,0 +1,411 @@
+{
+  "active_stack_inventory": {
+    "esc_next": {
+      "construction": [
+        "alloys",
+        "energy",
+        "exotic_gases",
+        "food",
+        "minerals",
+        "nanites",
+        "rare_crystals",
+        "sr_dark_matter",
+        "sr_living_metal",
+        "sr_zro",
+        "volatile_motes"
+      ],
+      "files_scanned": 42,
+      "logistics": [],
+      "source_root": "C:\\Steam\\steamapps\\workshop\\content\\281990\\2648658105",
+      "source_sha256": "b9e3bb88a6137bd017666f738f10d1af5623236b6edf87ffe73f0bad429a260a",
+      "upkeep": [
+        "alloys",
+        "energy",
+        "food",
+        "minerals"
+      ]
+    },
+    "gigastructures": {
+      "construction": [
+        "alloys",
+        "energy",
+        "exotic_gases",
+        "giga_sr_negative_mass",
+        "giga_sr_sentient_metal",
+        "minor_artifacts",
+        "rare_crystals",
+        "sr_dark_matter",
+        "sr_zro",
+        "volatile_motes"
+      ],
+      "files_scanned": 32,
+      "logistics": [
+        "trade"
+      ],
+      "source_root": "C:\\Steam\\steamapps\\workshop\\content\\281990\\1121692237",
+      "source_sha256": "b526a380c9ed8f6e8a9133dfb6a2a17406a9921ef2175dc2f400384d5f08e97d",
+      "upkeep": [
+        "alloys",
+        "energy",
+        "food",
+        "giga_sr_sentient_metal",
+        "influence"
+      ]
+    },
+    "nsc3": {
+      "construction": [
+        "alloys",
+        "energy",
+        "exotic_gases",
+        "food",
+        "influence",
+        "minerals",
+        "rare_crystals",
+        "sr_dark_matter",
+        "sr_zro",
+        "volatile_motes"
+      ],
+      "files_scanned": 23,
+      "logistics": [
+        "trade"
+      ],
+      "source_root": "C:\\Steam\\steamapps\\workshop\\content\\281990\\683230077",
+      "source_sha256": "56665bda28ac73e6686b99e026dffc49b7a906dd37669733bb0559b85dcbd536",
+      "upkeep": [
+        "alloys",
+        "energy",
+        "food",
+        "minerals"
+      ]
+    },
+    "spacefleet_tactica": {
+      "construction": [
+        "alloys",
+        "exotic_gases",
+        "giga_sr_sentient_metal",
+        "nanites",
+        "rare_crystals",
+        "sr_living_metal",
+        "volatile_motes"
+      ],
+      "files_scanned": 10,
+      "logistics": [],
+      "source_root": "C:\\Steam\\steamapps\\workshop\\content\\281990\\3696204283",
+      "source_sha256": "febfb4188a179a48305d25ffb28fbf49c6a5e9ca90d9f9564019335eab3edca1",
+      "upkeep": [
+        "alloys",
+        "energy",
+        "food"
+      ]
+    }
+  },
+  "model": "Stellar AI Director fleet recurring-pressure model",
+  "policy": {
+    "bio_positive": [
+      "food"
+    ],
+    "core_positive": [
+      "energy",
+      "alloys",
+      "trade"
+    ],
+    "native_observability_limit": "Country triggers cannot inspect the next auto-design upkeep vector or committed queue completion tranche.",
+    "optional_nonnegative": [
+      "minerals",
+      "giga_sr_sentient_metal",
+      "influence"
+    ],
+    "optional_resource_rule": "zero total expense OR positive net income",
+    "standard_optional_nonnegative": [
+      "food",
+      "minerals",
+      "giga_sr_sentient_metal",
+      "influence"
+    ],
+    "stockpile_gate": false
+  },
+  "scenarios": [
+    {
+      "biological": false,
+      "decision": {
+        "allowed": true,
+        "blocking_resources": [],
+        "projected_net": {
+          "alloys": 90.0,
+          "energy": 180.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": 0.0,
+          "trade": 90.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "minerals": 0,
+        "trade": 100
+      },
+      "name": "standard_positive_zero_stockpile",
+      "tranche_upkeep": {
+        "alloys": 10,
+        "energy": 20,
+        "trade": 10
+      }
+    },
+    {
+      "biological": true,
+      "decision": {
+        "allowed": false,
+        "blocking_resources": [
+          "food"
+        ],
+        "projected_net": {
+          "alloys": 90.0,
+          "energy": 200.0,
+          "food": -10.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": 0.0,
+          "trade": 90.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "food": 40,
+        "trade": 100
+      },
+      "name": "bio_food_pressure",
+      "tranche_upkeep": {
+        "alloys": 10,
+        "food": 50,
+        "trade": 10
+      }
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": false,
+        "blocking_resources": [
+          "minerals"
+        ],
+        "projected_net": {
+          "alloys": 100.0,
+          "energy": 200.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": -1.0,
+          "trade": 100.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "minerals": 5,
+        "trade": 100
+      },
+      "name": "esc_mineral_component_pressure",
+      "tranche_upkeep": {
+        "minerals": 6
+      }
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": false,
+        "blocking_resources": [
+          "giga_sr_sentient_metal"
+        ],
+        "projected_net": {
+          "alloys": 100.0,
+          "energy": 200.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": -1.0,
+          "influence": 0.0,
+          "minerals": 0.0,
+          "trade": 100.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "giga_sr_sentient_metal": 0,
+        "trade": 100
+      },
+      "name": "gigas_sentient_component_pressure",
+      "tranche_upkeep": {
+        "giga_sr_sentient_metal": 1
+      }
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": true,
+        "blocking_resources": [],
+        "projected_net": {
+          "alloys": 500.0,
+          "energy": 2000.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.5,
+          "minerals": 0.0,
+          "trade": 50.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 2000,
+        "energy": 2000,
+        "influence": 1,
+        "trade": 300
+      },
+      "name": "gigas_exceptional_hull_pressure",
+      "tranche_upkeep": {
+        "alloys": 1500,
+        "influence": 0.5,
+        "trade": 250
+      }
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": false,
+        "blocking_resources": [
+          "food"
+        ],
+        "projected_net": {
+          "alloys": 100.0,
+          "energy": 200.0,
+          "food": -1.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": 0.0,
+          "trade": 100.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "food": 0,
+        "trade": 100
+      },
+      "name": "sft_food_pressure_on_standard_hull",
+      "tranche_upkeep": {
+        "food": 1
+      }
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": true,
+        "blocking_resources": [],
+        "projected_net": {
+          "alloys": 100.0,
+          "energy": 200.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": 0.0,
+          "trade": 100.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "sr_zro": -5,
+        "trade": 100
+      },
+      "name": "construction_only_zro_does_not_gate_sustainability",
+      "tranche_upkeep": {}
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": false,
+        "blocking_resources": [
+          "not_at_war"
+        ],
+        "projected_net": {
+          "alloys": 100.0,
+          "energy": 200.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": 0.0,
+          "trade": 100.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "trade": 100
+      },
+      "name": "peace_does_not_surge",
+      "tranche_upkeep": {}
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": false,
+        "blocking_resources": [
+          "naval_capacity"
+        ],
+        "projected_net": {
+          "alloys": 100.0,
+          "energy": 200.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": 0.0,
+          "trade": 100.0
+        }
+      },
+      "monthly_expenses": {},
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "trade": 100
+      },
+      "name": "naval_capacity_boundary_does_not_surge",
+      "tranche_upkeep": {}
+    },
+    {
+      "biological": false,
+      "decision": {
+        "allowed": false,
+        "blocking_resources": [
+          "minerals"
+        ],
+        "projected_net": {
+          "alloys": 100.0,
+          "energy": 200.0,
+          "food": 0.0,
+          "giga_sr_sentient_metal": 0.0,
+          "influence": 0.0,
+          "minerals": -1.0,
+          "trade": 100.0
+        }
+      },
+      "monthly_expenses": {
+        "minerals": 1
+      },
+      "monthly_net": {
+        "alloys": 100,
+        "energy": 200,
+        "minerals": -1,
+        "trade": 100
+      },
+      "name": "war_shock_optional_resource_negative",
+      "tranche_upkeep": {}
+    }
+  ]
+}
