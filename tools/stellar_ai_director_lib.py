@@ -35,6 +35,14 @@ PARADOX_MOD_ROOT = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris
 DLC_LOAD_PATH = Path(r"C:\Users\Admin\Documents\Paradox Interactive\Stellaris\dlc_load.json")
 MOD_ROOT = REPO_ROOT / "mods" / "StellarAIDirector"
 RESEARCH_ROOT = REPO_ROOT / "research" / "stellar-ai"
+DECISION_STATE_TRIGGER_PATH = (
+    MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt"
+)
+OUTPOST_BUDGET_PATH = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_outpost_budgets.txt"
+CORE_AI_ARTIFACT_PATHS = (
+    DECISION_STATE_TRIGGER_PATH,
+    OUTPOST_BUDGET_PATH,
+)
 STRATEGIC_RESOURCE_DEFICIT_RECOVERY_PATH = (
     MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_21_strategic_resource_deficit_recovery.txt"
 )
@@ -10761,6 +10769,7 @@ alloys_expenditure_colonies_expand = {
 def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     rows = rows or extract_megastructure_rows()
     thresholds = generated_thresholds(rows)
+    core_ai_artifacts = render_core_ai_artifacts(rows)
     playset = build_active_playset_snapshot()
     write_json(RESEARCH_ROOT / "stellar-ai-director-active-playset-2026-07-04.json", playset)
     # Remove superseded construction-weight outputs before rebuilding the
@@ -10783,8 +10792,8 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     write_text_file(MOD_ROOT / "descriptor.mod", descriptor_text())
     write_text_file(MOD_ROOT / "README.md", readme_text(playset))
     write_text_file(
-        MOD_ROOT / "common" / "scripted_triggers" / "zzz_staid_decision_state_triggers.txt",
-        triggers_text(thresholds),
+        DECISION_STATE_TRIGGER_PATH,
+        core_ai_artifacts[DECISION_STATE_TRIGGER_PATH],
     )
     write_text_file(
         MOD_ROOT / "common" / "scripted_triggers" / "zzzz_staid_10_opening_strategy_triggers.txt",
@@ -10815,8 +10824,8 @@ def generate_mod_files(rows: list[dict[str, Any]] | None = None) -> None:
     )
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt", ai_budget_text(thresholds))
     write_text_file(
-        MOD_ROOT / "common" / "ai_budget" / "zzz_staid_outpost_budgets.txt",
-        outpost_budget_text(),
+        OUTPOST_BUDGET_PATH,
+        core_ai_artifacts[OUTPOST_BUDGET_PATH],
     )
     write_text_file(MOD_ROOT / "common" / "ai_budget" / "zzz_staid_gigas_resource_budgets.txt", gigas_resource_budget_text())
     write_text_file(MOD_ROOT / "common" / "defines" / "zzzz_staid_14_high_scale_ai_defines.txt", high_scale_ai_defines_text())
@@ -12743,6 +12752,26 @@ def outpost_budget_text() -> str:
         + "\n"
     )
     return text
+
+
+def render_core_ai_artifacts(
+    rows: list[dict[str, Any]] | None = None,
+) -> dict[Path, str]:
+    """Render and parse the fixed core AI artifacts without writing files."""
+
+    source_rows = extract_megastructure_rows() if rows is None else rows
+    thresholds = generated_thresholds(source_rows)
+    artifacts = {
+        DECISION_STATE_TRIGGER_PATH: normalize_text_file_content(
+            triggers_text(thresholds)
+        ),
+        OUTPOST_BUDGET_PATH: normalize_text_file_content(outpost_budget_text()),
+    }
+    if tuple(artifacts) != CORE_AI_ARTIFACT_PATHS:
+        raise ValueError("Core AI artifact renderer violated its fixed output allowlist")
+    for text in artifacts.values():
+        parse_pdx(text)
+    return artifacts
 
 
 def fleet_alloy_budget_text() -> str:
