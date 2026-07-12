@@ -28,8 +28,8 @@ from stellar_ai_observer_loop import (
 )
 
 
-PARSER_CONTRACT = "stellar-ai-save-model-evidence/v1"
-PARSER_VERSION = "1.0.0"
+PARSER_CONTRACT = "stellar-ai-save-model-evidence/v2"
+PARSER_VERSION = "1.1.0"
 NEVER_HUMAN_SENTINEL = "0.01.01"
 MILITARY_SHIP_CLASS = "shipclass_military"
 SYSTEM_STARBASE_SHIP_CLASS = "shipclass_starbase"
@@ -67,6 +67,9 @@ CSV_FIELDS = [
     "fleet_template_current_ship_count",
     "fleet_template_queued_ship_count",
     "fleet_template_reinforcement_demand_ship_count",
+    "fleet_template_target_hulls_json",
+    "fleet_template_current_hulls_json",
+    "fleet_template_reinforcement_demand_hulls_json",
     "shipyard_queue_count",
     "shipyard_parallel_capacity",
     "ship_construction_items_queued",
@@ -288,6 +291,8 @@ def _fleet_template_details(
     country_block: str,
     fleets: dict[str, str],
     templates: dict[str, str],
+    ships: dict[str, str],
+    design_hulls: dict[str, list[str]],
     warnings: list[str],
 ) -> list[dict[str, Any]]:
     manager = _top_level_assignment_block(country_block, "fleet_template_manager")
@@ -312,19 +317,37 @@ def _fleet_template_details(
 
         design = _top_level_assignment_block(block, "fleet_template_design")
         target_ship_count = 0
+        target_hulls: Counter[str] = Counter()
         for entry in _direct_anonymous_blocks(design):
             implementation = _top_level_assignment_block(entry, "ship_design_implementation")
             if not implementation:
                 warnings.append(f"fleet template {template_id} contains an unrecognized design entry")
                 continue
             count = _integer_scalar(entry, "count")
-            target_ship_count += 1 if count is None else count
+            count = 1 if count is None else count
+            target_ship_count += count
+            hull = _implementation_hull(implementation, design_hulls)
+            target_hulls[hull or "unknown"] += count
 
         linked_fleet_id = top_level_scalar_assignment(block, "fleet") or None
         linked_fleet = fleets.get(linked_fleet_id or "")
         current_ship_count: int | None = None
+        current_hulls: Counter[str] | None = None
         if linked_fleet:
-            current_ship_count = len(_numeric_list(_top_level_assignment_block(linked_fleet, "ships")))
+            linked_ship_ids = _numeric_list(_top_level_assignment_block(linked_fleet, "ships"))
+            current_ship_count = len(linked_ship_ids)
+            current_hulls = Counter()
+            for ship_id in linked_ship_ids:
+                ship = ships.get(ship_id)
+                if not ship:
+                    warnings.append(f"fleet template {template_id} references missing ship {ship_id}")
+                    current_hulls["unknown"] += 1
+                    continue
+                implementation = _top_level_assignment_block(
+                    ship, "ship_design_implementation"
+                )
+                hull = _implementation_hull(implementation, design_hulls)
+                current_hulls[hull or "unknown"] += 1
         elif linked_fleet_id:
             warnings.append(f"fleet template {template_id} links to missing fleet {linked_fleet_id}")
 
@@ -332,6 +355,12 @@ def _fleet_template_details(
         reinforcement_demand = None
         if current_ship_count is not None:
             reinforcement_demand = max(target_ship_count - current_ship_count - queued_ship_count, 0)
+        reinforcement_hulls = None
+        if current_hulls is not None and queued_ship_count == 0:
+            reinforcement_hulls = {
+                hull: max(count - current_hulls.get(hull, 0), 0)
+                for hull, count in sorted(target_hulls.items())
+            }
         details.append(
             {
                 "template_id": template_id,
@@ -340,10 +369,41 @@ def _fleet_template_details(
                 "current_ship_count": current_ship_count,
                 "queued_ship_count": queued_ship_count,
                 "reinforcement_demand_ship_count": reinforcement_demand,
+                "target_hulls": dict(sorted(target_hulls.items())),
+                "current_hulls": dict(sorted(current_hulls.items()))
+                if current_hulls is not None
+                else None,
+                "reinforcement_demand_hulls": reinforcement_hulls,
                 "fleet_size_points_not_ship_count": _integer_scalar(block, "fleet_size"),
             }
         )
     return details
+
+
+def _ship_design_hulls(designs: dict[str, str]) -> dict[str, list[str]]:
+    result: dict[str, list[str]] = {}
+    for design_id, block in designs.items():
+        growth_stages = _top_level_assignment_block(block, "growth_stages")
+        hulls = [
+            top_level_scalar_assignment(stage, "ship_size")
+            for stage in _direct_anonymous_blocks(growth_stages)
+        ]
+        result[design_id] = [hull for hull in hulls if hull]
+    return result
+
+
+def _implementation_hull(
+    implementation: str,
+    design_hulls: dict[str, list[str]],
+) -> str | None:
+    design_id = top_level_scalar_assignment(implementation, "design")
+    if not design_id:
+        return None
+    hulls = design_hulls.get(design_id, [])
+    growth_stage = _integer_scalar(implementation, "growth_stage") or 0
+    if 0 <= growth_stage < len(hulls):
+        return hulls[growth_stage]
+    return hulls[0] if hulls else None
 
 
 def _sum_optional(details: list[dict[str, Any]], key: str) -> int | None:
@@ -353,11 +413,25 @@ def _sum_optional(details: list[dict[str, Any]], key: str) -> int | None:
     return sum(values)
 
 
+def _sum_hull_counters(
+    details: list[dict[str, Any]],
+    key: str,
+) -> dict[str, int] | None:
+    if any(detail[key] is None for detail in details):
+        return None
+    result: Counter[str] = Counter()
+    for detail in details:
+        result.update(detail[key])
+    return dict(sorted(result.items()))
+
+
 def _empire_row(
     country_id: str,
     country_block: str,
     fleets: dict[str, str],
     templates: dict[str, str],
+    ships: dict[str, str],
+    design_hulls: dict[str, list[str]],
     queues_by_owner: dict[str, list[dict[str, int | str]]],
 ) -> dict[str, Any]:
     warnings: list[str] = []
@@ -422,7 +496,14 @@ def _empire_row(
         naval_source = "derived_used_naval_capacity_divided_by_navy_coverage"
 
     classification, certainty, evidence = _control_classification(country_block)
-    template_details = _fleet_template_details(country_block, fleets, templates, warnings)
+    template_details = _fleet_template_details(
+        country_block,
+        fleets,
+        templates,
+        ships,
+        design_hulls,
+        warnings,
+    )
     ship_queues = sorted(queues_by_owner.get(country_id, []), key=lambda row: int(row["queue_id"]))
     shipyard_capacity = sum(int(queue["parallel_capacity"]) for queue in ship_queues)
     ship_items = sum(int(queue["queued_items"]) for queue in ship_queues)
@@ -466,6 +547,15 @@ def _empire_row(
         "fleet_template_reinforcement_demand_ship_count": _sum_optional(
             template_details, "reinforcement_demand_ship_count"
         ),
+        "fleet_template_target_hulls": _sum_hull_counters(
+            template_details, "target_hulls"
+        ),
+        "fleet_template_current_hulls": _sum_hull_counters(
+            template_details, "current_hulls"
+        ),
+        "fleet_template_reinforcement_demand_hulls": _sum_hull_counters(
+            template_details, "reinforcement_demand_hulls"
+        ),
         "fleet_templates": template_details,
         "shipyard_queue_count": len(ship_queues),
         "shipyard_parallel_capacity": shipyard_capacity,
@@ -495,12 +585,17 @@ def build_snapshot(save_path: Path) -> dict[str, Any]:
     countries_block = _top_level_assignment_block(gamestate, "country")
     fleets_block = _top_level_assignment_block(gamestate, "fleet")
     templates_block = _top_level_assignment_block(gamestate, "fleet_template")
+    ships_block = _top_level_assignment_block(gamestate, "ships")
+    designs_block = _top_level_assignment_block(gamestate, "ship_design")
     if not countries_block:
         raise ValueError("Stellaris gamestate has no top-level country block")
 
     countries = dict(iter_numbered_child_blocks(countries_block))
     fleets = dict(iter_numbered_child_blocks(fleets_block))
     templates = dict(iter_numbered_child_blocks(templates_block))
+    ships = dict(iter_numbered_child_blocks(ships_block))
+    designs = dict(iter_numbered_child_blocks(designs_block))
+    design_hulls = _ship_design_hulls(designs)
     queues_by_owner, global_warnings = _shipyard_queues(gamestate)
 
     type_counts: Counter[str] = Counter()
@@ -510,7 +605,17 @@ def build_snapshot(save_path: Path) -> dict[str, Any]:
         type_counts[current_type] += 1
         if current_type != "default":
             continue
-        empires.append(_empire_row(country_id, block, fleets, templates, queues_by_owner))
+        empires.append(
+            _empire_row(
+                country_id,
+                block,
+                fleets,
+                templates,
+                ships,
+                design_hulls,
+                queues_by_owner,
+            )
+        )
     empires.sort(key=lambda row: int(row["country_id"]))
 
     meta_date = top_level_scalar_assignment(meta, "date")
@@ -562,6 +667,10 @@ def build_snapshot(save_path: Path) -> dict[str, Any]:
             "reinforcement_contract": (
                 "target template design ships minus linked current fleet ships minus all_queued entries, floored at zero"
             ),
+            "hull_contract": (
+                "template and current ship design IDs resolve through ship_design growth_stages; "
+                "per-hull reinforcement is reported only when the template has no queued entries"
+            ),
         },
         "summary": {
             "country_count": len(countries),
@@ -594,6 +703,14 @@ def render_csv(snapshot: dict[str, Any]) -> str:
         row["ethics"] = "|".join(empire["ethics"])
         row["civics"] = "|".join(empire["civics"])
         row["warnings"] = "|".join(empire["warnings"])
+        for field in (
+            "fleet_template_target_hulls_json",
+            "fleet_template_current_hulls_json",
+            "fleet_template_reinforcement_demand_hulls_json",
+        ):
+            source_field = field.removesuffix("_json")
+            value = empire.get(source_field)
+            row[field] = json.dumps(value, sort_keys=True) if value is not None else ""
         writer.writerow({key: "" if value is None else value for key, value in row.items()})
     return output.getvalue()
 

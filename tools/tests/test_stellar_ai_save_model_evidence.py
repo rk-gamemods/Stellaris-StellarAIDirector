@@ -1,4 +1,6 @@
+import csv
 import hashlib
+import io
 import json
 import sys
 import tempfile
@@ -129,7 +131,18 @@ construction=
     }
   }
 }
-ships={ }
+ships={
+  1={ ship_design_implementation={ design=1 upgrade=4294967295 growth_stage=0 } }
+  2={ ship_design_implementation={ design=1 upgrade=4294967295 growth_stage=0 } }
+  3={ ship_design_implementation={ design=1 upgrade=4294967295 growth_stage=0 } }
+}
+ship_design={
+  1={
+    growth_stages={
+      { ship_size="battleship" parent=4294967295 }
+    }
+  }
+}
 fleet=
 {
   10={
@@ -209,6 +222,17 @@ class StellarAiSaveModelEvidenceTests(unittest.TestCase):
         self.assertEqual(empire["fleet_template_target_ship_count"], 5)
         self.assertEqual(empire["fleet_template_current_ship_count"], 3)
         self.assertEqual(empire["fleet_template_reinforcement_demand_ship_count"], 2)
+        self.assertEqual(empire["fleet_template_target_hulls"], {"battleship": 5})
+        self.assertEqual(empire["fleet_template_current_hulls"], {"battleship": 3})
+        self.assertEqual(
+            empire["fleet_template_reinforcement_demand_hulls"],
+            {"battleship": 2},
+        )
+        csv_row = next(csv.DictReader(io.StringIO(render_csv(snapshot))))
+        self.assertEqual(
+            json.loads(csv_row["fleet_template_target_hulls_json"]),
+            {"battleship": 5},
+        )
         self.assertEqual(empire["shipyard_parallel_capacity"], 3)
         self.assertEqual(empire["ship_construction_items_queued"], 2)
         self.assertEqual(empire["shipyard_active_slots"], 2)
