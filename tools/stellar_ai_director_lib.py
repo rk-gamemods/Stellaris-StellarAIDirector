@@ -17,6 +17,7 @@ import re
 import time
 import zipfile
 from collections import defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -43,6 +44,62 @@ CORE_AI_ARTIFACT_PATHS = (
     DECISION_STATE_TRIGGER_PATH,
     OUTPOST_BUDGET_PATH,
 )
+FLEET_ALLOY_BUDGET_PATH = MOD_ROOT / "common" / "ai_budget" / "zzz_staid_alloys_budget.txt"
+TECHNOLOGY_ROUTE_OVERRIDE_PATH = (
+    MOD_ROOT
+    / "common"
+    / "technology"
+    / "zzzz_staid_01_unlock_technology_technology.txt"
+)
+ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
+    FLEET_ALLOY_BUDGET_PATH,
+    TECHNOLOGY_ROUTE_OVERRIDE_PATH,
+)
+FLEET_ARCHETYPE_FACTORS = {
+    "extermination": 1.12,
+    "conquest": 1.08,
+}
+TECHNOLOGY_ARCHETYPE_ROUTE_FACTORS = {
+    "research": {
+        "research_megastructure_core": 1.15,
+        "science_kilo_snowball_core": 1.15,
+        "planetary_computer_research_core": 1.15,
+    },
+    "diplomatic": {
+        "research_megastructure_core": 1.05,
+        "science_kilo_snowball_core": 1.05,
+        "planetary_computer_research_core": 1.05,
+    },
+    "gestalt_growth": {
+        "pop_assembly_snowball_core": 1.08,
+        "ring_world_growth_core": 1.08,
+    },
+    "defensive": {
+        "fallen_empire_benchmark_route": 1.08,
+    },
+    "conquest": {
+        "mega_shipyard_core": 1.08,
+        "war_moon_route": 1.08,
+        "systemcraft_route": 1.08,
+        "nsc3_capital_hull_route": 1.08,
+        "esc_component_route": 1.08,
+    },
+    "extermination": {
+        "mega_shipyard_core": 1.12,
+        "war_moon_route": 1.12,
+        "systemcraft_route": 1.12,
+        "nsc3_capital_hull_route": 1.12,
+        "esc_component_route": 1.12,
+    },
+}
+TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS = {
+    # Source draw weight is zero or an event-only factor-zero gate makes the
+    # technology inert. ai_weight cannot put these objects into the draw pool.
+    "giga_tech_lunar_assembly",
+    "giga_tech_war_system_1",
+    "tech_ring_world",
+    "esc_tech_dreadnought_computer",
+}
 STRATEGIC_RESOURCE_DEFICIT_RECOVERY_PATH = (
     MOD_ROOT / "common" / "economic_plans" / "zzzz_staid_21_strategic_resource_deficit_recovery.txt"
 )
@@ -5979,7 +6036,54 @@ def route_extra_modifiers_for_target(target: dict[str, Any]) -> list[str]:
     return modifiers
 
 
-def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
+def technology_archetype_weight_modifiers(
+    target: dict[str, Any],
+    archetype_route_factors: Mapping[str, Mapping[str, float]] | None = None,
+) -> list[str]:
+    """Return bounded identity tie-breakers for reviewed technology routes."""
+
+    if target["object_type"] != "technology":
+        return []
+    if target["object_id"] in TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS:
+        return []
+    factors = (
+        TECHNOLOGY_ARCHETYPE_ROUTE_FACTORS
+        if archetype_route_factors is None
+        else archetype_route_factors
+    )
+    route_id = str(target["route_id"])
+    route_gate = route_gate_for_target(target)
+    lines: list[str] = []
+    for archetype, route_factors in factors.items():
+        factor = route_factors.get(route_id)
+        if factor is None:
+            continue
+        if not 1.0 < factor <= 1.15:
+            raise ValueError(
+                f"Technology archetype factor must be in (1.0, 1.15]: "
+                f"{archetype}/{route_id}={factor}"
+            )
+        condition = " ".join(
+            (
+                f"staid_archetype_hard_{archetype} = yes",
+                "staid_archetype_identity_conflict = no",
+                "staid_archetype_eligible_country = yes",
+                f"{route_gate} = yes",
+                "staid_survival_mode = no",
+                "staid_recovery_mode = no",
+                "staid_catastrophic_collapse_mode = no",
+                "staid_core_deficit_short_runway = no",
+                "is_at_war = no",
+                "NOT = { recently_lost_war = yes }",
+            )
+        )
+        lines.append(route_modifier_line(factor, condition))
+    return lines
+
+
+def route_weight_modifiers(
+    target: dict[str, Any], *, archetype_overlay: bool = True
+) -> list[str]:
     route_id = str(target["route_id"])
     route_gate = route_gate_for_target(target)
     mid_factor, late_factor, crisis_factor = ROUTE_TIMING_FACTORS.get(route_id, (2, 3, 5))
@@ -6005,6 +6109,8 @@ def route_weight_modifiers(target: dict[str, Any]) -> list[str]:
             ]
         )
     lines.extend(scope_route_modifier_for_target(target, line) for line in route_extra_modifiers_for_target(target))
+    if archetype_overlay:
+        lines.extend(technology_archetype_weight_modifiers(target))
     return lines
 
 
@@ -6046,7 +6152,9 @@ def gigas_habitat_ai_weight_block(block: str, target: dict[str, Any]) -> str:
     return insert_top_level_ai_weight_modifier(block, route_boost)
 
 
-def director_ai_weight_block(target: dict[str, Any]) -> str:
+def director_ai_weight_block(
+    target: dict[str, Any], *, archetype_overlay: bool = True
+) -> str:
     if (
         target.get("mod_id") == "1121692237"
         and target.get("object_type") == "megastructure"
@@ -6060,7 +6168,12 @@ def director_ai_weight_block(target: dict[str, Any]) -> str:
         f"\t\t# policy_route = {target['route_id']}",
         f"\t\t# source_object = {target['object_type']}:{target['object_id']}",
     ]
-    lines.extend(line.replace("\t", "\t\t", 1) for line in route_weight_modifiers(target))
+    lines.extend(
+        line.replace("\t", "\t\t", 1)
+        for line in route_weight_modifiers(
+            target, archetype_overlay=archetype_overlay
+        )
+    )
     lines.append("\t}")
     return "\n".join(lines) + "\n"
 
@@ -6390,7 +6503,12 @@ def director_ai_budget_weight_block(block: str, target: dict[str, Any]) -> str:
     return replace_top_level_child_block(block, "weight", weight)
 
 
-def route_override_object_text(target: dict[str, Any], object_names: dict[str, set[str]] | None = None) -> str:
+def route_override_object_text(
+    target: dict[str, Any],
+    object_names: dict[str, set[str]] | None = None,
+    *,
+    archetype_overlay: bool = True,
+) -> str:
     source_text = read_text(Path(target["source_path"]))
     block = extract_top_level_object_text(source_text, target["object_id"])
     if target["object_type"] == "megastructure":
@@ -6417,13 +6535,55 @@ def route_override_object_text(target: dict[str, Any], object_names: dict[str, s
     else:
         if target["object_type"] == "starbase_module":
             block = merge_duplicate_top_level_child_blocks(block, "potential")
-        block = replace_top_level_child_block(block, "ai_weight", director_ai_weight_block(target))
+        block = replace_top_level_child_block(
+            block,
+            "ai_weight",
+            director_ai_weight_block(
+                target, archetype_overlay=archetype_overlay
+            ),
+        )
     block = "\n".join(line.rstrip() for line in block.splitlines()) + "\n"
     return (
         f"# policy_route = {target['route_id']}; source = {target['source_file']}; "
         f"parent_ai = {target['parent_ai_support']}; source_ai_weight = {target['source_has_ai_weight']}\n"
         + block
     )
+
+
+def route_override_file_text(
+    file_rows: list[dict[str, Any]],
+    object_names: dict[str, set[str]] | None = None,
+    *,
+    archetype_overlay: bool = True,
+) -> str:
+    """Render one generated route-override file without writing it."""
+
+    if not file_rows:
+        raise ValueError("Route override file renderer requires at least one row")
+    folders = {str(row["generated_folder"]) for row in file_rows}
+    generated_files = {str(row["generated_file"]) for row in file_rows}
+    if len(folders) != 1 or len(generated_files) != 1:
+        raise ValueError(
+            "Route override file rows must share one folder and generated file"
+        )
+    body = [route_override_file_header(str(file_rows[0]["generated_folder"]))]
+    variables = route_override_file_variables(file_rows)
+    if variables:
+        body.append("# Source-local variables required by copied parent objects.")
+        body.extend(variables)
+        body.append("")
+    for row in file_rows:
+        body.append(
+            route_override_object_text(
+                row,
+                object_names,
+                archetype_overlay=archetype_overlay,
+            )
+        )
+        body.append("")
+    text = normalize_text_file_content("\n".join(body))
+    parse_pdx(text)
+    return text
 
 
 def gigas_habitat_compat_scripted_effects_text() -> str:
@@ -6501,16 +6661,10 @@ def generate_route_override_artifacts() -> list[dict[str, Any]]:
     for row in rows:
         grouped.setdefault(Path(row["generated_file"]), []).append(row)
     for file_path, file_rows in grouped.items():
-        body = [route_override_file_header(file_rows[0]["generated_folder"])]
-        variables = route_override_file_variables(file_rows)
-        if variables:
-            body.append("# Source-local variables required by copied parent objects.")
-            body.extend(variables)
-            body.append("")
-        for row in file_rows:
-            body.append(route_override_object_text(row, object_names))
-            body.append("")
-        write_text_file(file_path, "\n".join(body))
+        write_text_file(
+            file_path,
+            route_override_file_text(file_rows, object_names),
+        )
     write_csv(RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.csv", rows)
     write_text_file(
         RESEARCH_ROOT / "stellar-ai-director-route-overrides-2026-07-06.md",
@@ -12774,7 +12928,43 @@ def render_core_ai_artifacts(
     return artifacts
 
 
-def fleet_alloy_budget_text() -> str:
+def fleet_archetype_budget_modifier(archetype: str, factor: float) -> str:
+    """Render one ordinary-peacetime fleet identity tie-breaker."""
+
+    if archetype not in FLEET_ARCHETYPE_FACTORS:
+        raise ValueError(f"Unsupported fleet archetype: {archetype}")
+    if not 1.0 < factor <= 1.15:
+        raise ValueError(
+            f"Fleet archetype factor must be in (1.0, 1.15]: "
+            f"{archetype}={factor}"
+        )
+    return f"""\t\t# Bounded H08c identity bias for ordinary peacetime underfill only.
+\t\tmodifier = {{
+\t\t\tfactor = {factor}
+\t\t\tstaid_archetype_hard_{archetype} = yes
+\t\t\tstaid_archetype_identity_conflict = no
+\t\t\tstaid_archetype_eligible_country = yes
+\t\t\tused_naval_capacity_percent < 0.80
+\t\t\tis_at_war = no
+\t\t\tNOT = {{ recently_lost_war = yes }}
+\t\t\tstaid_catastrophic_collapse_mode = no
+\t\t\tstaid_core_deficit_short_runway = no
+\t\t\tNOR = {{
+\t\t\t\tany_neighbor_country = {{
+\t\t\t\t\thas_ascension_perk = ap_become_the_crisis
+\t\t\t\t}}
+\t\t\t\tany_country = {{
+\t\t\t\t\tis_crisis_faction = yes
+\t\t\t\t}}
+\t\t\t}}
+\t\t}}"""
+
+
+def fleet_alloy_budget_text(
+    *,
+    archetype_overlay: bool = True,
+    archetype_factors: Mapping[str, float] | None = None,
+) -> str:
     source_path = VANILLA_COMMON_ROOT / "ai_budget" / "00_alloys_budget.txt"
     source_text = read_text(source_path)
     ships = extract_top_level_object_text(source_text, "alloys_expenditure_ships")
@@ -12798,6 +12988,18 @@ def fleet_alloy_budget_text() -> str:
 \t\t\tstaid_peacetime_high_naval_capacity_guard = yes
 \t\t}""",
     )
+    if archetype_overlay:
+        factors = (
+            FLEET_ARCHETYPE_FACTORS
+            if archetype_factors is None
+            else archetype_factors
+        )
+        for archetype, factor in factors.items():
+            ships = insert_top_level_child_modifier(
+                ships,
+                "weight",
+                fleet_archetype_budget_modifier(archetype, factor),
+            )
     upgrades = replace_top_level_child_block(
         upgrades,
         "potential",
@@ -12809,24 +13011,80 @@ def fleet_alloy_budget_text() -> str:
 \t\t}
 \t}""",
     )
-    text = """# Pegasus 4.4.4 full-object overrides for alloy-funded ship construction and upgrades.
+    overlay_note = (
+        """
+# Identity tie-breakers apply only during ordinary peacetime underfill and never
+# during war, recent-loss, crisis, collapse, or short-runway states."""
+        if archetype_overlay
+        else ""
+    )
+    text = f"""# Pegasus 4.4.4 full-object overrides for alloy-funded ship construction and upgrades.
 # The vanilla weights and war/crisis multipliers remain. At 80% used naval
 # capacity, peacetime construction receives a bounded share reduction instead
 # of becoming ineligible. This retains a cautious 4.4.4 workaround while weak
-# absolute fleets and civilian science-ship demand can still recover.
+# absolute fleets and civilian science-ship demand can still recover.{overlay_note}
 
 """ + ships.rstrip() + "\n\n" + upgrades.rstrip() + "\n"
     parse_pdx("\n".join(line for line in text.splitlines() if not line.lstrip().startswith("#")) + "\n")
     return text
 
 
-def ai_budget_text(thresholds: dict[str, int]) -> str:
+def ai_budget_text(
+    thresholds: dict[str, int], *, archetype_overlay: bool = True
+) -> str:
     text = '''# Generated by tools/generate_stellar_ai_director_patch.py.
 # The generic alloys_expenditure_megastructures object deliberately remains
 # upstream/parent-owned. Director route weights may rank legal projects, but a
 # global reserve must not crowd out outposts, ships, or other alloy lanes.
 '''
-    return text.rstrip() + "\n\n" + fleet_alloy_budget_text()
+    return text.rstrip() + "\n\n" + fleet_alloy_budget_text(
+        archetype_overlay=archetype_overlay
+    )
+
+
+def render_archetype_consumer_artifacts(
+    *, archetype_overlay: bool = True
+) -> dict[Path, str]:
+    """Render the two fixed H08c consumer artifacts without writing files."""
+
+    rows = route_override_target_rows()
+    technology_rows = [
+        row for row in rows if row["object_type"] == "technology"
+    ]
+    expected_count = sum(
+        target["object_type"] == "technology"
+        for target in ROUTE_OVERRIDE_TARGETS
+    )
+    if len(technology_rows) != expected_count:
+        raise ValueError(
+            "Technology route row count drifted: "
+            f"expected={expected_count}, actual={len(technology_rows)}"
+        )
+    generated_paths = {
+        Path(str(row["generated_file"])).resolve()
+        for row in technology_rows
+    }
+    if generated_paths != {TECHNOLOGY_ROUTE_OVERRIDE_PATH.resolve()}:
+        raise ValueError(
+            "Technology route rows violated the fixed H08c destination: "
+            f"{sorted(str(path) for path in generated_paths)}"
+        )
+    artifacts = {
+        FLEET_ALLOY_BUDGET_PATH: normalize_text_file_content(
+            ai_budget_text({}, archetype_overlay=archetype_overlay)
+        ),
+        TECHNOLOGY_ROUTE_OVERRIDE_PATH: route_override_file_text(
+            technology_rows,
+            archetype_overlay=archetype_overlay,
+        ),
+    }
+    if tuple(artifacts) != ARCHETYPE_OVERLAY_ARTIFACT_PATHS:
+        raise ValueError(
+            "Archetype consumer renderer violated its fixed output allowlist"
+        )
+    for text in artifacts.values():
+        parse_pdx(text)
+    return artifacts
 
 
 def gigas_resource_budget_text() -> str:

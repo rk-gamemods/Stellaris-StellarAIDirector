@@ -726,3 +726,99 @@ Top five risks:
 Revert H08b independently by removing the generated trigger artifact, focused
 renderer/generator/tests, broad-generator hook, and this ledger section. H08a's
 offline model and every earlier live gameplay recovery slice remain intact.
+
+## H08c — Hard-anchored fleet and technology identity tie-breakers
+
+Status: implemented as two bounded native-AI consumer surfaces. This slice
+changes only the alloy ship budget and the existing technology route override;
+it adds no economic-plan target, personality scalar, event, on_action, flag,
+resource, free grant, order, claim, war goal, or declaration.
+
+- The ship budget adds ordinary-peacetime underfill factors of `1.12` for an
+  unambiguous extermination anchor and `1.08` for an unambiguous conquest
+  anchor. Every other identity remains at the native/Director baseline.
+- Ship factors require used naval capacity below `0.80`, peace, no recent loss,
+  no catastrophic collapse, no core-deficit short runway, and the exact inverse
+  of the native crisis `x5` predicate. They therefore cannot compound the
+  native war/recent-loss `x3`, crisis `x5`, or Director high-capacity `x0.25`
+  paths.
+- Technology factors are positive route-specific tie-breakers between `1.05`
+  and `1.15`. They require the matching route gate, peace, no recent loss, no
+  survival/recovery/collapse/short-runway state, one hard identity anchor,
+  default non-nomadic eligibility, and no hard-identity conflict. A route's
+  existing factor-zero veto remains earlier in the block and algebraically
+  decisive.
+- Research/diplomatic anchors affect only the three reviewed research route
+  families; gestalt-growth affects selectable pop-assembly targets; defensive
+  affects the selectable fallen-empire benchmark; and conquest/extermination
+  affect selectable Mega Shipyard, war-moon, systemcraft, NSC3 hull, and ESC
+  component targets.
+- Four source-inert or event-granted technology objects are explicitly neutral:
+  `giga_tech_lunar_assembly`, `giga_tech_war_system_1`, `tech_ring_world`, and
+  `esc_tech_dreadnought_computer`. Their source draw weight or
+  `weight_modifier` is zero, so changing downstream `ai_weight` cannot put them
+  into the draw pool.
+- `tools/generate_stellar_ai_archetype_overlays.py` owns an exact two-path
+  `check|diff|write` allowlist. Its zero-overlay render is logically
+  byte-equivalent to pre-H08c HEAD for both production artifacts.
+
+The consumer intentionally uses `staid_archetype_hard_*`, not the broader H08b
+primary triggers. Adversarial review found that mixed soft evidence can diverge
+between the H08a strength-count model and H08b's fixed candidate precedence.
+For example, fanatic militarist plus materialist is conquest in H08a but can
+route to research in H08b. Until a dedicated parity slice fixes and tests every
+mixed-evidence permutation, soft-only, unknown, balanced, and conflicted
+identities receive no H08c factor.
+
+Top five risks:
+
+1. **Identity pressure can multiply native emergency spending into an extreme
+   response.** Ship tie-breakers are disjoint from war, recent loss, crisis,
+   collapse, and short-runway states. Technology tie-breakers are disjoint from
+   war, recent loss, survival, recovery, collapse, and short runway and alter
+   research selection only, not the research or ship budget. The largest factor
+   is `1.15`.
+2. **Soft or modded identity evidence can be mistranslated.** Consumers require
+   one reviewed hard anchor, `staid_archetype_eligible_country = yes`, and
+   `staid_archetype_identity_conflict = no`. Non-default, nomadic, balanced,
+   unknown, soft-only, and conflicted countries are neutral.
+3. **Large existing technology weights can turn a small factor into route
+   saturation.** Factors apply only to named routes, never globally, never
+   exceed `1.15`, and cannot bypass route factor-zero gates or source
+   prerequisites. Source-inert targets are excluded rather than falsely
+   claiming efficacy.
+4. **A new consumer can double-count the 72 existing economic subplans or
+   elevated personality military scalars.** H08c changes neither surface and
+   does not add research, alloy, or naval-capacity targets.
+5. **Full-object regeneration can overwrite unrelated behavior.** The focused
+   renderer owns exactly two paths, proves zero-overlay parity, validates
+   PDXScript before writing, updates only stale outputs, and verifies every
+   post-write result.
+
+Static acceptance:
+
+- All production identity factors are in `(1.0, 1.15]`, use hard anchors, and
+  fail neutral on conflict. At most one hard anchor can fire after the conflict
+  gate, even where a technology object contains multiple alternative lines.
+- The native ship base, `x3`, `x5`, over-cap, bioship, desired-minimum, and
+  potential rules are unchanged outside the additive H08c blocks.
+- Exactly 42 reviewed technology override objects remain generated. Only
+  selectable objects in the explicit route matrix receive H08c lines; the four
+  proven inert/event targets receive none.
+- Focused tests cover the two-file allowlist, zero-overlay hashes, route matrix,
+  factor bounds, emergency disjointness, conflict neutrality, inert-target
+  exclusions, factor-zero precedence, read-only check/diff modes, and stale-only
+  writes. Runtime behavior remains a user gameplay test; no observer run is
+  authorized by this slice.
+- The exact native crisis inverse includes a global country query. Independent
+  QA rejected copying it onto all 45 technology modifiers: production now adds
+  zero `any_country` scans to the technology artifact and exactly two guarded
+  scans to the ship budget. These are never called from a Director pulse, but
+  their actual late-game runtime cost remains a playtest/profile observation.
+
+Rollback boundary:
+
+Revert H08c independently by removing the two additive modifier families, the
+focused renderer/generator/tests, and this ledger section. H08a's offline model,
+H08b's identity-only triggers, and all earlier expansion/economic recovery
+slices remain intact.

@@ -384,6 +384,8 @@ tech_mega_shipyard = {
 		modifier = { factor = 3 years_passed < 30 }
 		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_core_unlock_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_core_unlock_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -456,6 +458,8 @@ tech_science_nexus = {
 		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
 		modifier = { factor = 4 has_technology = tech_science_nexus }
 		modifier = { factor = 3 staid_research_under_curve = yes }
+		modifier = { factor = 1.15 staid_archetype_hard_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_science_nexus_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.05 staid_archetype_hard_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_science_nexus_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -767,6 +771,8 @@ giga_tech_engineering_test_site = {
 		modifier = { factor = 4 has_technology = giga_tech_engineering_test_site }
 		modifier = { factor = 4 has_technology = giga_tech_macro_scale_weather_manipulation }
 		modifier = { factor = 3 staid_research_under_curve = yes }
+		modifier = { factor = 1.15 staid_archetype_hard_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_science_kilo_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.05 staid_archetype_hard_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_science_kilo_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -845,6 +851,8 @@ giga_tech_macro_scale_weather_manipulation = {
 		modifier = { factor = 4 has_technology = giga_tech_engineering_test_site }
 		modifier = { factor = 4 has_technology = giga_tech_macro_scale_weather_manipulation }
 		modifier = { factor = 3 staid_research_under_curve = yes }
+		modifier = { factor = 1.15 staid_archetype_hard_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_science_kilo_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.05 staid_archetype_hard_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_science_kilo_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -923,6 +931,8 @@ giga_tech_planetary_computer = {
 		modifier = { factor = 5 has_technology = giga_tech_planetary_computer }
 		modifier = { factor = 4 staid_research_under_curve = yes }
 		modifier = { factor = 2 staid_planetary_capacity_growth_ready = yes }
+		modifier = { factor = 1.15 staid_archetype_hard_research = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_planetary_computer_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.05 staid_archetype_hard_diplomatic = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_planetary_computer_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -986,6 +996,7 @@ tech_robotic_workers = {
 		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
 		modifier = { factor = 3 staid_research_under_curve = yes }
 		modifier = { factor = 2 years_passed < 80 }
+		modifier = { factor = 1.08 staid_archetype_hard_gestalt_growth = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_pop_assembly_snowball_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1045,6 +1056,7 @@ tech_robot_assembly_complex = {
 		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
 		modifier = { factor = 3 staid_research_under_curve = yes }
 		modifier = { factor = 2 years_passed < 80 }
+		modifier = { factor = 1.08 staid_archetype_hard_gestalt_growth = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_pop_assembly_snowball_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1105,6 +1117,7 @@ tech_mega_assembly = {
 		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
 		modifier = { factor = 3 staid_research_under_curve = yes }
 		modifier = { factor = 2 years_passed < 80 }
+		modifier = { factor = 1.08 staid_archetype_hard_gestalt_growth = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_pop_assembly_snowball_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1179,6 +1192,7 @@ tech_cloning = {
 		modifier = { factor = 5 staid_planetary_capacity_growth_ready = yes }
 		modifier = { factor = 3 staid_research_under_curve = yes }
 		modifier = { factor = 2 years_passed < 80 }
+		modifier = { factor = 1.08 staid_archetype_hard_gestalt_growth = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_pop_assembly_snowball_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1680,6 +1694,8 @@ giga_tech_war_moon_1 = {
 		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
 		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_war_moon_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_war_moon_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1737,6 +1753,8 @@ giga_tech_war_moon_2 = {
 		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
 		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_war_moon_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_war_moon_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1786,6 +1804,8 @@ giga_tech_war_moon_sections = {
 		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 4 has_technology = giga_tech_war_moon_1 }
 		modifier = { factor = 6 has_technology = giga_tech_war_moon_2 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_war_moon_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_war_moon_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1886,6 +1906,8 @@ giga_tech_war_system_2 = {
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
 		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
 		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1936,6 +1958,8 @@ giga_tech_war_system_3 = {
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
 		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
 		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -1984,6 +2008,8 @@ giga_tech_war_system_4 = {
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
 		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
 		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2034,6 +2060,8 @@ giga_tech_war_system_5 = {
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
 		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
 		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2090,6 +2118,8 @@ giga_tech_war_system_6 = {
 		modifier = { factor = 5 has_technology = giga_tech_war_system_2 }
 		modifier = { factor = 6 has_technology = giga_tech_war_system_3 }
 		modifier = { factor = 8 has_technology = giga_tech_war_system_6 }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_systemcraft_research_priority_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2295,6 +2325,8 @@ tech_Carrier_1 = {
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
 		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2353,6 +2385,8 @@ tech_Dreadnought_1 = {
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
 		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2425,6 +2459,8 @@ tech_Flagship_1 = {
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
 		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2493,6 +2529,8 @@ tech_heavycarrier_1 = {
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
 		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2562,6 +2600,8 @@ tech_supercarrier_1 = {
 		modifier = { factor = 4 has_technology = tech_Dreadnought_1 }
 		modifier = { factor = 6 has_technology = tech_Flagship_1 }
 		modifier = { factor = 0.5 NOT = { staid_nsc3_capital_hull_unlock_ready = yes } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_nsc3_capital_hull_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2644,6 +2684,8 @@ esc_tech_dark_matter_power_core_2 = {
 		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
 		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
 		modifier = { factor = 0.25 NOT = { staid_advanced_component_resource_support_ready = yes } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_esc_component_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_esc_component_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2699,6 +2741,8 @@ esc_tech_strikecraft_5 = {
 		modifier = { factor = 3 has_technology = esc_tech_strikecraft_5 }
 		modifier = { factor = 4 has_technology = esc_tech_dreadnought_computer }
 		modifier = { factor = 0.25 NOT = { staid_advanced_component_resource_support_ready = yes } }
+		modifier = { factor = 1.08 staid_archetype_hard_conquest = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_esc_component_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
+		modifier = { factor = 1.12 staid_archetype_hard_extermination = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_esc_component_unlock_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
 
@@ -2794,5 +2838,6 @@ tech_starbase_6 = {
 		modifier = { factor = 3 years_passed < 30 }
 		modifier = { factor = 2 AND = { years_passed > 29 years_passed < 60 } }
 		modifier = { factor = 2 AND = { years_passed > 59 years_passed < 100 } }
+		modifier = { factor = 1.08 staid_archetype_hard_defensive = yes staid_archetype_identity_conflict = no staid_archetype_eligible_country = yes staid_static_defense_investment_ready = yes staid_survival_mode = no staid_recovery_mode = no staid_catastrophic_collapse_mode = no staid_core_deficit_short_runway = no is_at_war = no NOT = { recently_lost_war = yes } }
 	}
 }
