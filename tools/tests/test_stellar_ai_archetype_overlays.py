@@ -26,12 +26,14 @@ from stellar_ai_director_lib import (  # noqa: E402
     IDENTITY_FEDERATION_PATH,
     IDENTITY_FEDERATION_FAMILY_HASHES,
     IDENTITY_MEGASTRUCTURE_PATH,
+    IDENTITY_NOMAD_TECHNOLOGY_PATH,
     IDENTITY_ORIGIN_ASSEMBLY_HASHES,
     IDENTITY_ORIGIN_ASSEMBLY_PATH,
     IDENTITY_STATIC_DEFENSE_PATHS,
     IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     IDENTITY_TRADITION_HASHES,
     NOMAD_ARKSHIP_ASCENSION_PERK_HASHES,
+    NOMAD_ARKSHIP_TECHNOLOGY_HASHES,
     ROUTE_OVERRIDE_TARGETS,
     TECHNOLOGY_ARCHETYPE_EXCLUDED_OBJECTS,
     TECHNOLOGY_ARCHETYPE_ROUTE_FACTORS,
@@ -103,12 +105,12 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             row for row in cls.rows if row["object_type"] == "technology"
         ]
 
-    def test_fixed_allowlist_has_exactly_eleven_current_artifacts(self) -> None:
+    def test_fixed_allowlist_has_exactly_twelve_current_artifacts(self) -> None:
         self.assertEqual(
             tuple(self.production),
             ARCHETYPE_OVERLAY_ARTIFACT_PATHS,
         )
-        self.assertEqual(len(self.production), 11)
+        self.assertEqual(len(self.production), 12)
         for path, rendered in self.production.items():
             self.assertEqual(
                 path.read_text(encoding="utf-8").replace("\r\n", "\n"),
@@ -690,6 +692,42 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
                 actual_hash,
                 NOMAD_ARKSHIP_ASCENSION_PERK_HASHES[object_id],
             )
+
+    def test_nomad_starting_arkships_bias_exactly_three_contract_unlock_techs(
+        self,
+    ) -> None:
+        production = self.production[IDENTITY_NOMAD_TECHNOLOGY_PATH]
+        zero = self.zero[IDENTITY_NOMAD_TECHNOLOGY_PATH]
+        expected_flags = {
+            "tech_arkship_planetary_refinery": "starting_civilian_arkship",
+            "tech_arkship_system_scanner": "starting_science_arkship",
+            "tech_arkship_stellar_igniter": "starting_military_arkship",
+        }
+        source_text = (
+            STELLARIS_INSTALL_ROOT
+            / "common"
+            / "technology"
+            / "00_nomads_dlc_tech.txt"
+        ).read_text(encoding="utf-8-sig")
+        for object_id, starting_flag in expected_flags.items():
+            block = extract_top_level_object_text(production, object_id)
+            zero_block = extract_top_level_object_text(zero, object_id)
+            self.assertIn("factor = 1.5", block)
+            self.assertIn("is_nomadic = yes", block)
+            self.assertIn(f"has_country_flag = {starting_flag}", block)
+            self.assertNotIn(starting_flag, zero_block)
+            source_block = extract_top_level_object_text(source_text, object_id)
+            self.assertEqual(
+                normalize_text_file_content(zero_block),
+                normalize_text_file_content(source_block),
+            )
+            self.assertEqual(
+                hashlib.sha256(
+                    normalize_text_file_content(source_block).encode("utf-8")
+                ).hexdigest(),
+                NOMAD_ARKSHIP_TECHNOLOGY_HASHES[object_id],
+            )
+        self.assertNotIn("tech_arkship_exodus_jump = {", production)
         self.assertEqual(
             production.count("has_country_flag = starting_")
             - zero.count("has_country_flag = starting_"),
@@ -737,7 +775,7 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
             if row["object_type"] in {"building", "district"}:
                 continue
             grouped[Path(str(row["generated_file"]))].append(row)
-        self.assertEqual(len(grouped), 9)
+        self.assertEqual(len(grouped), 10)
         object_names = collect_object_names()
         for path, rows in grouped.items():
             rendered = route_override_file_text(rows, object_names)
@@ -827,7 +865,7 @@ class ArchetypeOverlayContractTests(unittest.TestCase):
         self.assertLessEqual(round(maximum_overlap, 3), 1.232)
 
     def test_technology_overlay_matches_only_reviewed_selectable_pairs(self) -> None:
-        self.assertEqual(len(self.technology_rows), 42)
+        self.assertEqual(len(self.technology_rows), 45)
         seen_pairs: set[tuple[str, str]] = set()
         selectable_targets: set[str] = set()
         for target in self.technology_rows:

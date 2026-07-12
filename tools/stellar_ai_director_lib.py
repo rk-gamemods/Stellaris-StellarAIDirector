@@ -82,6 +82,12 @@ IDENTITY_MEGASTRUCTURE_PATH = (
     / "megastructures"
     / "zzzz_staid_03_megastructures_megastructures.txt"
 )
+IDENTITY_NOMAD_TECHNOLOGY_PATH = (
+    MOD_ROOT
+    / "common"
+    / "technology"
+    / "zzzz_staid_18_nomad_contracts_technology.txt"
+)
 IDENTITY_FEDERATION_PATH = (
     MOD_ROOT
     / "common"
@@ -128,6 +134,11 @@ NOMAD_ARKSHIP_ASCENSION_PERK_HASHES = {
     "ap_mastery_of_nature": "f2a6ad975080986d2144a2c942847536481f56886765bdb9fcf6e6c3519e95c2",
     "ap_technological_ascendancy": "21f3e314e15f69e5d062bc0f957971c956b7133252d8875272a0e21b54c10671",
     "ap_eternal_vigilance_nomads": "9a5bf9e600b9d71ad367c80b8471662b886b6dbe065ca1f27e0a97d9d1b561ed",
+}
+NOMAD_ARKSHIP_TECHNOLOGY_HASHES = {
+    "tech_arkship_planetary_refinery": "48239e1354152773525acf62866718d0550f77845a279f49f90d2db96c37c800",
+    "tech_arkship_system_scanner": "a4da7927b766369fd2d946576f8db66e988d51be24418da3034501a2d12225c3",
+    "tech_arkship_stellar_igniter": "7b79d6ced273a1636ce800ed8cfb748af7b0ad7bc74518ebf4774a1df12daff6",
 }
 IDENTITY_FEDERATION_FAMILY_HASHES = {
     "default_federation": "a914a0329597c2d3b7b3efe238d58cc5d5d48e446ae71331e8c8b85f998cdcac",
@@ -180,6 +191,7 @@ IDENTITY_SUBJECT_AGREEMENT_SOURCES = {
 ARCHETYPE_OVERLAY_ARTIFACT_PATHS = (
     FLEET_ALLOY_BUDGET_PATH,
     TECHNOLOGY_ROUTE_OVERRIDE_PATH,
+    IDENTITY_NOMAD_TECHNOLOGY_PATH,
     *IDENTITY_STRATEGY_ROUTE_OVERRIDE_PATHS,
     IDENTITY_CLAIM_BUDGET_PATH,
     *IDENTITY_STATIC_DEFENSE_PATHS,
@@ -800,6 +812,9 @@ ROUTE_OVERRIDE_TARGETS = [
     {"object_id": "tech_robot_assembly_complex", "object_type": "technology", "mod_id": "vanilla", "route_id": "pop_assembly_snowball_core", "weight": 165000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_mega_assembly", "object_type": "technology", "mod_id": "vanilla", "route_id": "pop_assembly_snowball_core", "weight": 175000, "file_key": "01_unlock_technology"},
     {"object_id": "tech_cloning", "object_type": "technology", "mod_id": "vanilla", "route_id": "pop_assembly_snowball_core", "weight": 150000, "file_key": "01_unlock_technology"},
+    {"object_id": "tech_arkship_planetary_refinery", "object_type": "technology", "mod_id": "vanilla", "source_file": "common/technology/00_nomads_dlc_tech.txt", "route_id": "nomad_contract_specialization", "weight": 0, "file_key": "18_nomad_contracts", "nomad_identity_only": True},
+    {"object_id": "tech_arkship_system_scanner", "object_type": "technology", "mod_id": "vanilla", "source_file": "common/technology/00_nomads_dlc_tech.txt", "route_id": "nomad_contract_specialization", "weight": 0, "file_key": "18_nomad_contracts", "nomad_identity_only": True},
+    {"object_id": "tech_arkship_stellar_igniter", "object_type": "technology", "mod_id": "vanilla", "source_file": "common/technology/00_nomads_dlc_tech.txt", "route_id": "nomad_contract_specialization", "weight": 0, "file_key": "18_nomad_contracts", "nomad_identity_only": True},
     {"object_id": "giga_tech_kugelblitz", "object_type": "technology", "mod_id": "1121692237", "route_id": "storage_cap_core", "weight": 160000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_matrioshka_brain_1", "object_type": "technology", "mod_id": "1121692237", "route_id": "apex_site_preservation_core", "weight": 210000, "file_key": "01_unlock_technology"},
     {"object_id": "giga_tech_neutronium_gigaforge", "object_type": "technology", "mod_id": "1121692237", "route_id": "apex_site_preservation_core", "weight": 185000, "file_key": "01_unlock_technology"},
@@ -5432,6 +5447,21 @@ def nomad_arkship_ascension_perk_modifier(object_id: str) -> str | None:
     )
 
 
+def nomad_arkship_technology_modifier(object_id: str) -> str | None:
+    starting_flags = {
+        "tech_arkship_planetary_refinery": "starting_civilian_arkship",
+        "tech_arkship_system_scanner": "starting_science_arkship",
+        "tech_arkship_stellar_igniter": "starting_military_arkship",
+    }
+    starting_flag = starting_flags.get(object_id)
+    if starting_flag is None:
+        return None
+    return (
+        "\t\tmodifier = { factor = 1.5 is_nomadic = yes "
+        f"has_country_flag = {starting_flag} }}"
+    )
+
+
 def find_verified_source_object_block(common_folder: str, object_id: str, mod_id: str = "vanilla") -> str:
     source_root = mod_source_root_for_id(mod_id)
     folder_root = source_root / "common" / common_folder
@@ -7276,6 +7306,9 @@ def route_override_object_text(
     nomad_perk_modifier = nomad_arkship_ascension_perk_modifier(
         str(target["object_id"])
     )
+    nomad_technology_modifier = nomad_arkship_technology_modifier(
+        str(target["object_id"])
+    )
     if nomad_perk_modifier:
         expected_sha256 = NOMAD_ARKSHIP_ASCENSION_PERK_HASHES[str(target["object_id"])]
         actual_sha256 = hashlib.sha256(
@@ -7284,6 +7317,16 @@ def route_override_object_text(
         if actual_sha256 != expected_sha256:
             raise ValueError(
                 f"Vanilla Nomad ascension perk drifted: {target['object_id']} "
+                f"expected={expected_sha256} actual={actual_sha256}"
+            )
+    if nomad_technology_modifier:
+        expected_sha256 = NOMAD_ARKSHIP_TECHNOLOGY_HASHES[str(target["object_id"])]
+        actual_sha256 = hashlib.sha256(
+            normalize_text_file_content(block).encode("utf-8")
+        ).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise ValueError(
+                f"Vanilla Nomad contract technology drifted: {target['object_id']} "
                 f"expected={expected_sha256} actual={actual_sha256}"
             )
     federation_family_modifiers = identity_federation_family_modifiers(
@@ -7334,8 +7377,9 @@ def route_override_object_text(
                 federation_family_modifiers,
             )
     elif target.get("nomad_identity_only"):
-        if archetype_overlay and nomad_perk_modifier:
-            block = insert_top_level_ai_weight_modifier(block, nomad_perk_modifier)
+        nomad_modifier = nomad_perk_modifier or nomad_technology_modifier
+        if archetype_overlay and nomad_modifier:
+            block = insert_top_level_ai_weight_modifier(block, nomad_modifier)
     elif target["object_type"] in {"building", "district"}:
         block = director_infrastructure_weight_block(block, target)
     elif target["object_type"] == "ai_budget":
@@ -14224,10 +14268,17 @@ def render_archetype_consumer_artifacts(
 
     rows = route_override_target_rows()
     technology_rows = [
-        row for row in rows if row["object_type"] == "technology"
+        row
+        for row in rows
+        if row["object_type"] == "technology" and not row.get("nomad_identity_only")
+    ]
+    nomad_technology_rows = [
+        row
+        for row in rows
+        if row["object_type"] == "technology" and row.get("nomad_identity_only")
     ]
     expected_count = sum(
-        target["object_type"] == "technology"
+        target["object_type"] == "technology" and not target.get("nomad_identity_only")
         for target in ROUTE_OVERRIDE_TARGETS
     )
     if len(technology_rows) != expected_count:
@@ -14244,6 +14295,12 @@ def render_archetype_consumer_artifacts(
             "Technology route rows violated the fixed H08c destination: "
             f"{sorted(str(path) for path in generated_paths)}"
         )
+    if {
+        Path(str(row["generated_file"])).resolve() for row in nomad_technology_rows
+    } != {IDENTITY_NOMAD_TECHNOLOGY_PATH.resolve()} or {
+        row["object_id"] for row in nomad_technology_rows
+    } != set(NOMAD_ARKSHIP_TECHNOLOGY_HASHES):
+        raise ValueError("Nomad contract technology rows violated the fixed output allowlist")
     strategy_rows = [
         row
         for row in rows
@@ -14306,6 +14363,10 @@ def render_archetype_consumer_artifacts(
         ),
         TECHNOLOGY_ROUTE_OVERRIDE_PATH: route_override_file_text(
             technology_rows,
+            archetype_overlay=archetype_overlay,
+        ),
+        IDENTITY_NOMAD_TECHNOLOGY_PATH: route_override_file_text(
+            nomad_technology_rows,
             archetype_overlay=archetype_overlay,
         ),
     }
