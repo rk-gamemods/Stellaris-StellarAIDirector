@@ -2,6 +2,8 @@
 
 This folder is for Stellaris modding, mod preparation, experiments, and supporting research.
 
+This is the child-specific guidance for Stellaris work in this repository. Global and parent guidance remains active; use this file for Stellaris-specific policy, compatibility, tooling, and delivery constraints. Nested `AGENTS.md` or `AGENTS.override.md` files may add more-specific rules.
+
 ## Working Rules
 
 - Keep each mod in its own folder under `mods/`.
@@ -27,24 +29,37 @@ This folder is for Stellaris modding, mod preparation, experiments, and supporti
 - Also tell the user that the skill issue was queued for Global Skill Reviewer attention, including the affected skill and short issue summary, so the user can decide whether it should be fixed immediately instead of waiting for the reviewer.
 - If Open Brain capture is unavailable, emit a `memory_candidate` with the same review details and still notify the user.
 
+## Stellaris Skills And Tools Catalog
+
+- Use `research/stellaris-skill-catalog/CATALOG.md` as the current catalog entrypoint. It owns skill roots, tool ownership, research surfaces, validation commands, and version boundaries.
+- For catalog/review work, run `python tools\audit_stellaris_skills.py` (no flags). Never hand-edit its generated inventory/review-ledger/status files; update reviewer-owned package digests only after semantic review of the complete package. Refresh both skill roots incrementally with JDocMunch before drawing catalog/review conclusions.
+- Treat `research/stellaris-codex-skills-roadmap-2026-07-08/` and its archived generator as historical design evidence, not current inventory or a source for regenerating active `SKILL.md` files. If task discovery disagrees with disk, verify a fresh/remounted task before reinstalling or duplicating a skill.
+
 ## Munch Tooling Requirements
 
-- JDocMunch, JCodeMunch, and JDataMunch are first-class tools for this project. Use them for documentation, code, and data navigation when relevant; do not silently replace them with broad file reads or ad hoc shell searches.
-- Route by artifact type before searching: use JDocMunch for prose documentation, Markdown plans, guide sections, and research notes; use JCodeMunch for source code, scripts, generated code, symbols, and code references; use JDataMunch for CSV, TSV, Excel, Parquet, JSONL/NDJSON, and any row/column dataset. Do not use JDocMunch as the primary inspection surface for CSV or other tabular data.
-- For tabular research artifacts, call `jdatamunch_guide`, then `list_datasets`. If the needed file is missing or stale, run `index_local` with a stable project-specific dataset name, then use `describe_dataset`, `sample_rows`, `get_rows`, joins, aggregates, or SQL-style JDataMunch tools instead of reading the file into chat. Validate important refreshed datasets with `validate_index` before relying on them for conclusions.
-- JDocMunch may be used to locate prose that references a CSV or to navigate a Markdown companion document, but it is not a substitute for JDataMunch row/column inspection. If JDataMunch fails and a temporary fallback is unavoidable, record the exact JDataMunch tool attempted, the error or remount requirement, and the fallback scope before continuing.
-- Before non-trivial Stellaris work, obey the global Munch MCP startup gate: exact guide discovery, active-thread guide calls, and `C:\Users\Admin\.codex\scripts\assert-munch-mcp-startup.ps1`. Do not continue Munch-dependent project work when active-thread guide calls fail, even if CLI fallbacks work.
-- For JDocMunch specifically, partial lazy-loaded tool discovery is not proof of unavailability. Before using a CLI fallback or reporting missing tools, run exact discovery for the canonical tools: `jdocmunch_guide`, `search_sections`, `get_section`, `get_sections`, `list_docs`, `get_doc`, `get_toc`, `verify_index`, and `index_local`.
-- For JDataMunch specifically, partial lazy-loaded tool discovery is not proof of unavailability. Before using a CLI fallback or reporting missing data tools, run exact discovery for the canonical tools needed by the guide, including `jdatamunch_guide`, `list_datasets`, `index_local`, `validate_index`, `describe_dataset`, `sample_rows`, `get_rows`, and any needed analysis or join tool.
-- Start JDocMunch work by calling `jdocmunch_guide` when the MCP tool is exposed. If exact discovery exposes tools but an MCP call fails with `Transport closed`, classify the cause as a tool-surface problem such as stale active-session handle, remount requirement, config/version issue, or process failure. Do not phrase it as "JDocMunch is unavailable" without that diagnosis.
-- When JDocMunch MCP fails but the installed CLI works, use the CLI only as a temporary fallback while recording the exact blocker and likely recovery path. Save the conclusion in Open Brain before finishing the task.
-- Do not launch nested Codex sessions as a routine Munch preflight. Multiple live Munch MCP server processes are diagnostic in Codex Desktop stdio sessions, not by themselves a reason to kill processes or block work when active-thread guide calls return content. If guide calls return `Transport closed`, treat the active thread as stale/remount-required and follow the global Munch gate.
-- Tested recovery for stale Munch handles in this project: fork the current Codex thread into the same directory, then rerun exact guide discovery, all three mounted guide calls, and the patched preflight. The same-directory fork reset `Transport closed` without closing Codex; do not rely on process killing as the reset mechanism.
-- For local Stellaris project indexing, keep JDocMunch embeddings disabled unless the user explicitly asks to enable them. Prefer `use_embeddings=false` or `JDOCMUNCH_EMBEDDING_PROVIDER=none` for index refreshes.
+- JDocMunch, JCodeMunch, and JDataMunch are first-class. Route by artifact type: JDocMunch for Markdown/prose/research/skills, JCodeMunch for source/scripts/symbols, and JDataMunch for CSV/TSV/Excel/Parquet/JSONL or other row/column data.
+- For tabular work, start with `jdatamunch_guide` and `list_datasets`; index missing sources, then use schema/sample/row/query tools and `validate_index`. Do not use JDocMunch or load raw tabular files into context as the primary inspection path.
+- Follow the global Munch startup gate before non-trivial work and refresh any stale or missing index before relying on it. Local JDocMunch refreshes must keep embeddings disabled. Direct reads are limited to process-control files, edits, and validation cases allowed by global/parent guidance.
+- For prose/code, start with the corresponding repo/index inventory and TOC or structural search before targeted retrieval. If a required Munch guide/tool fails, repair or remount it; use a temporary fallback only while recording the exact blocker and recovery path.
+- Do not launch nested Codex sessions or kill duplicate stdio processes as routine recovery; if a guide call returns `Transport closed`, use the global remount/fresh-thread path.
+
+## Stellaris Knowledge Base Routing
+
+- Treat `knowledge-base/runtime/stellaris_knowledge_base.sqlite3` and `tools/stellaris_kb.py` as first-class project tooling. Run `python tools\stellaris_kb.py status` before relying on the database; use `knowledge-base/README.md` as the operator entrypoint.
+- Route read-only retrieval through `$stl-knowledge-base-query`, reviewed evidence packets through `$stl-knowledge-base-update`, lifecycle/backup/restore work through `$stl-knowledge-base-maintenance`, and unresolved evidence work through `$stl-knowledge-base-gap-research`.
+- The CLI owns every database write, lock, backup, migration, and validation step; do not mutate SQLite directly. Keep version applicability explicit—the current production baseline is Stellaris `4.4.4`, and other-version evidence must not be promoted without comparative proof.
 
 ## Stellaris Modding Defaults
 
-- Target Stellaris PC 4.4.5 stable/current local install unless the task explicitly says 4.4.4 rollback, 4.5 beta, or another version.
+### Native AI-only implementation boundary
+
+- AI behavior fixes must operate through Stellaris's native AI surfaces: personalities, AI budgets, economic plans, policies, diplomatic weights, claims, casus belli, war goals, country types, defines, construction weights, and engine planner settings.
+- Do not use events, on_actions, scripted effects, console commands, hidden helpers, free resources, free armies, forced claims, forced casus belli, forced war goals, forced declarations, or scripted fleet orders to make the AI appear competent.
+- Diagnostic and observer tooling must remain outside the production mod and must never mutate normal gameplay state.
+- If native AI data cannot guarantee an outcome, report that limitation and improve the strongest native weighting or planning surface; do not substitute scripted behavior.
+
+- Target Stellaris PC 4.4.5 stable by repository policy unless the task explicitly says 4.4.4 rollback, 4.5 beta, or another version; verify the current local install separately.
+- Keep the requested/policy target separate from the observed local install and the knowledge-base target. Verify the actual install from current launcher/source evidence before calling it 4.4.5; a machine may temporarily be on the 4.4.4 rollback even while new work still targets 4.4.5.
 - Use `supported_version="v4.4.*"` for stable 4.4 descriptors, including 4.4.5, but remember this is launcher-facing metadata only and does not determine whether script code loads.
 - Treat 4.4.4 notes and generated evidence as historical/rollback references unless revalidated against current 4.4.5 vanilla files, active-stack inventories, conflicts, and runtime logs. Treat 4.5 as a separate porting branch, especially for pop, faction, ethic, job, species, workforce, UI, and AI-economy changes.
 - Prefer small, focused mods with clear compatibility boundaries.
@@ -144,6 +159,7 @@ Only create folders a mod actually needs.
 - Use Irony Mod Manager for dependency, conflict, and load-order investigation on real playsets.
 - Do not assume Stellaris is universally "last mod wins"; validate actual element-level conflict behavior.
 - Do not launch Stellaris, run observer games, or run scenario simulations by default. Only do runtime/game validation when the user explicitly asks for it. Default validation is static: generated file surfaces, parser/load-safety, unresolved placeholders, and references to Stellaris/mod objects that must exist in vanilla, parent-mod, or generated inventories.
+- Static validation does not establish runtime or next-launch readiness; report that boundary and require approved runtime evidence before calling gameplay or UI changes ready.
 - Before and after any explicitly approved observer run that uses dated console commands, check `python tools\manage_stellaris_commands_at_date.py status`. The live `commands_at_date.txt` must be absent outside that active run. If it exists unexpectedly, disable it with `python tools\manage_stellaris_commands_at_date.py disable` and record the cleanup.
 - Observer command schedules must use `game_speed 5` for the dev-only speed shown in-game as `GAME_SPEED_6`; static tests should catch accidental regressions to `game_speed 4`.
 - Keep automated tests for fast universal safety checks only: valid generated files, parseable PDXScript/localization surfaces, known override targets, and valid referenced technologies, resources, scripted triggers, scripted values, or other game/mod entities. Do not encode fast-moving AI strategy, target numbers, decision behavior, launch proof, or observer outcomes as required tests; document that intent in code comments and notes instead.
