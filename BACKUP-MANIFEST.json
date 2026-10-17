@@ -1,0 +1,286 @@
+{
+  "format": "project-recovery-parts-v1",
+  "sourcePlan": {
+    "slug": "stellaris-old-worktrees",
+    "repo": "rk-gamemods/Stellaris-StellarAIDirector",
+    "allowCreate": false,
+    "sources": [
+      {
+        "root": "C:\\wt\\staid-agents-instruction-delivery-20260716"
+      },
+      {
+        "root": "C:\\wt\\staid-comparative-recovery"
+      },
+      {
+        "root": "C:\\wt\\staid-compare-after-c9da"
+      },
+      {
+        "root": "C:\\wt\\staid-compare-before-f4b55"
+      },
+      {
+        "root": "C:\\wt\\staid-fleet-economic-pressure-model"
+      },
+      {
+        "root": "C:\\wt\\staid-live-rollback"
+      },
+      {
+        "root": "C:\\wt\\staid-pipeline-hardening"
+      },
+      {
+        "root": "C:\\wt\\staid-research-refinements"
+      },
+      {
+        "root": "C:\\wt\\staid-save-model-evidence-tool"
+      },
+      {
+        "root": "C:\\wt\\staid444"
+      },
+      {
+        "root": "C:\\wt\\staid444-topology"
+      },
+      {
+        "root": "C:\\wt\\staid444c"
+      }
+    ]
+  },
+  "parts": [
+    {
+      "name": "recovery.tar.gz.part0001",
+      "bytes": 94371840,
+      "sha256": "05d1a7930b717f7ab62af701bad7f03ba474bfa1bc112ea8dacef949d94d635a"
+    },
+    {
+      "name": "recovery.tar.gz.part0002",
+      "bytes": 94371840,
+      "sha256": "27ce72048acc454e1a4cdfb842069b9a75d62bfd39f4fec1aeb366a7a9c2c0d0"
+    },
+    {
+      "name": "recovery.tar.gz.part0003",
+      "bytes": 94371840,
+      "sha256": "e38a47e3dbc8df4880fecaaaf018287d76a6e0ee75e985b9b17fa66f2a8547ee"
+    },
+    {
+      "name": "recovery.tar.gz.part0004",
+      "bytes": 94371840,
+      "sha256": "66f77c6c51ad8b34ad79320cc1fcb6b44046dd047f8813ab7685089a4b6fa3f9"
+    },
+    {
+      "name": "recovery.tar.gz.part0005",
+      "bytes": 94371840,
+      "sha256": "91e78d28f78db232f8f83084b99026a0d05dbac6deef163dd54a8a72ee07da20"
+    },
+    {
+      "name": "recovery.tar.gz.part0006",
+      "bytes": 94371840,
+      "sha256": "e87892dbd1a7036f2f2fb7b4ed9c59393234f1d1635e662b9b98f04bf9b5e7f8"
+    },
+    {
+      "name": "recovery.tar.gz.part0007",
+      "bytes": 94371840,
+      "sha256": "64bf86ca32d7d1a50e9007e3dd89b6cc8f6e3e66756b1fad7bc6c12a6078fb10"
+    },
+    {
+      "name": "recovery.tar.gz.part0008",
+      "bytes": 94371840,
+      "sha256": "fd45cacf173cae46305f9ad12b05a3eaafb37ba2f716d5a546baa7fa759bba81"
+    },
+    {
+      "name": "recovery.tar.gz.part0009",
+      "bytes": 94371840,
+      "sha256": "b933cffc360a3964dcc930e3bde3bc3081528bf565b85020bdacbe048d6bb4d5"
+    },
+    {
+      "name": "recovery.tar.gz.part0010",
+      "bytes": 33059568,
+      "sha256": "514ca5909e6c925eeca9ec616a50e17d8856526e7af62583577e6cee7de29dd5"
+    }
+  ],
+  "archiveSha256": "d0aa24bd3f82e03526b120b974daca50969356925ac691bfcd78401a85832873",
+  "archiveBytes": 882406128,
+  "selectedFiles": 137725,
+  "selectedLogicalBytes": 27566094772,
+  "gitRepositories": 12,
+  "excluded": [
+    {
+      "source": 0,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 1,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 1,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 1,
+      "path": "tools/manual_checks/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 1,
+      "path": ".ruff_cache",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 1,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 2,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 3,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 4,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 4,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 4,
+      "path": "tools/manual_checks/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 4,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 5,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 6,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 6,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 6,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 7,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 7,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 7,
+      "path": "tools/manual_checks/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 7,
+      "path": ".ruff_cache",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 7,
+      "path": ".pytest_cache",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 7,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 8,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 8,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 8,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 9,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 9,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 9,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 10,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 10,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 10,
+      "path": "tools/manual_checks/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 10,
+      "path": ".pytest_cache",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 10,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 11,
+      "path": "tools/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 11,
+      "path": "tools/tests/__pycache__",
+      "reason": "rebuildable/test-generated"
+    },
+    {
+      "source": 11,
+      "path": ".git",
+      "reason": "rebuildable/test-generated"
+    }
+  ],
+  "retained": []
+}
